@@ -1,0 +1,41 @@
+@import "gender.css";
+@import "fileupload.css";
+@import "picture.css";
+@import "reset.css";
+@import "header.css";
+@import "result.css";
+
+body {
+  background: whitesmoke;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  align-items: center;
+  width: 100%;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+.jocoding {
+  font-weight: 700;
+  align-self: flex-end;
+  margin-right: 30px;
+  font-size: 15px;
+  margin-bottom: 15px;
+}
+
+.jocoding a:link {
+  text-decoration: underline;
+  color: #ff0200;
+}
+
+.jocoding a:visited {
+  text-decoration: underline;
+  color: #ff0200;
+}
+
+.disblock {
+  display: none;
+}
