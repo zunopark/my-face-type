@@ -33,7 +33,8 @@ $(".image-upload-wrap").bind("dragleave", function () {
   $(".image-upload-wrap").removeClass("image-dropping");
 });
 
-const URL = "https://teachablemachine.withgoogle.com/models/DohDi_6py/";
+const URL = "https://teachablemachine.withgoogle.com/models/DohDi_6py//";
+
 let model, webcam, labelContainer, maxPredictions;
 
 async function init() {
