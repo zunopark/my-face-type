@@ -6,7 +6,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-top: -60px;
+  margin-top: -80px;
 }
 
 .result div {
@@ -38,6 +38,7 @@
   color: #ecf0f1;
   font-size: 15px;
   font-family: "Yeon Sung", cursive;
+  margin-bottom: 100px;
 }
 
 .hidden {
@@ -47,4 +48,18 @@
 .ai {
   font-family: "Yeon Sung", cursive;
   margin-top: 15px;
+  animation: aiAnim 0.5s linear infinite;
+}
+
+@keyframes aiAnim {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.2);
+    color: #535c68;
+  }
+  100% {
+    transform: scale(1);
+  }
 }
