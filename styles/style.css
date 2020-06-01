@@ -5,6 +5,10 @@
 @import "header.css";
 @import "result.css";
 
+#disqus_thread{
+  width: 100%;
+}
+
 body {
   background: whitesmoke;
   display: flex;
