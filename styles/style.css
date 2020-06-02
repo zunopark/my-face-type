@@ -10,7 +10,7 @@ body {
   background: whitesmoke;
   display: flex;
   flex-direction: column;
-  height: 150vh;
+  height: 140vh;
   align-items: center;
   width: 100%;
 }
