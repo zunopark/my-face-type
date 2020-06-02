@@ -148,10 +148,10 @@ toggle.addEventListener('click', function() {
 	if (toggleNumber) {
 		toggleContainer.style.clipPath = 'inset(0 0 0 50%)';
     toggleContainer.style.backgroundColor = '#D74046';
-    changePicture.style.backgroundImage = 'url(../ornamental/images/woman.jpeg)';
+    changePicture.style.backgroundImage = 'url(/images/woman.jpeg)';
 	} else {
 		toggleContainer.style.clipPath = 'inset(0 50% 0 0)';
     toggleContainer.style.backgroundColor = 'dodgerblue';
-    changePicture.style.backgroundImage = 'url(../ornamental/images/man.jpeg)';
+    changePicture.style.backgroundImage = 'url(/images/man.jpeg)';
 	}
 });
