@@ -5,15 +5,12 @@
 @import "header.css";
 @import "result.css";
 
-#disqus_thread{
-  width: 100%;
-}
 
 body {
   background: whitesmoke;
   display: flex;
   flex-direction: column;
-  height: 100vh;
+  height: 200vh;
   align-items: center;
   width: 100%;
 }
