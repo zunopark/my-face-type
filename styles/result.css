@@ -56,10 +56,16 @@
     transform: scale(1);
   }
   50% {
-    transform: scale(1.2);
+    transform: scale(1.15);
     color: #535c68;
   }
   100% {
     transform: scale(1);
   }
+}
+
+.kakao_ad_area{
+  width: 320px;
+  margin: 0 outo;
+  margin-top: 10px;
 }
