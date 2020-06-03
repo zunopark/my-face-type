@@ -4,6 +4,7 @@
 @import "reset.css";
 @import "header.css";
 @import "result.css";
+@import "media.css";
 
 @import url("https://fonts.googleapis.com/css?family=Asap:400,500,700");
 
@@ -11,7 +12,6 @@ body {
   background: whitesmoke;
   display: flex;
   flex-direction: column;
-  height: 140vh;
   align-items: center;
   width: 100%;
 }

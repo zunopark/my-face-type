@@ -4,7 +4,6 @@
   background: black;
   background-image: linear-gradient(top right, #5d5d5b, #383838);
   /* padding: 7px; */
-  width: 70%;
   box-shadow: -1px 1px 2px 1px rgba(0, 0, 0, 0.1),
     -2px 2px 2px 1px rgba(0, 0, 0, 0.09), -3px 3px 2px 1px rgba(0, 0, 0, 0.08),
     -4px 4px 2px 1px rgba(0, 0, 0, 0.07), -5px 5px 2px 1px rgba(0, 0, 0, 0.06),

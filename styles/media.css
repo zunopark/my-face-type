@@ -1,0 +1,10 @@
+@media screen and (min-width: 500px) {
+  .border {
+    width: 420px;
+  }
+}
+@media screen and (max-width: 500px) {
+  .border {
+    width: 70%;
+  }
+}
