@@ -25,6 +25,8 @@
       name="naver-site-verification"
       content="388bb9c4a4d15bff6005df99c9b9effe5f73f54e"
     />
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+    <link rel="icon" href="/favicon.ico" type="image/x-icon" />
   </head>
   <body>
     <header class="header">
@@ -127,6 +129,21 @@
         async
       ></script>
     </div>
+    <section
+      id="yotube-bottom-link"
+      class="mt-2 d-flex flex-column justify-content-center align-items-center"
+      onclick="gtag('event', '조코딩 유튜브 클릭', {'event_category': '조코딩 유튜브 클릭','event_label': '하단 광고'});"
+    >
+      <iframe
+        width="320"
+        height="180"
+        src="https://www.youtube.com/embed/s6SITKSN9Q0"
+        frameborder="0"
+        allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+        allowfullscreen
+      ></iframe>
+      <h4 class="mt-1">이런 앱 만들면 얼마 벌까? 충격적인 수익 공개합니다</h4>
+    </section>
 
     <div class="comment">
       <div id="disqus_thread"></div>
@@ -135,16 +152,16 @@
          *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
          *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
         /*
-var disqus_config = function () {
-this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
-this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
-};
-*/
+      var disqus_config = function () {
+      this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+      this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+      };
+      */
         (function () {
           // DON'T EDIT BELOW THIS LINE
           var d = document,
             s = d.createElement("script");
-          s.src = "https://yongzuno.disqus.com/embed.js";
+          s.src = "https://7189.disqus.com/embed.js";
           s.setAttribute("data-timestamp", +new Date());
           (d.head || d.body).appendChild(s);
         })();
