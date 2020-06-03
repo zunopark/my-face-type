@@ -6,7 +6,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-top: -140px;
+  margin-top: 15px;
 }
 
 .result div {
@@ -67,6 +67,5 @@
 .ad_box {
   width: 320px;
   margin: 0 outo;
-  position: absolute;
-  bottom: 0px;
+  margin-top: 15px;
 }
