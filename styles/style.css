@@ -22,8 +22,10 @@ body {
 }
 
 .jocoding {
+  width: 100%;
   font-weight: 700;
   align-self: flex-end;
+  text-align: center;
   margin-right: 30px;
   font-size: 15px;
   margin-bottom: 15px;
@@ -111,4 +113,23 @@ a:hover {
 
 .toggle:nth-child(1) {
   right: 0;
+}
+
+.number {
+  margin-top: 10px;
+  margin-bottom: 5px;
+}
+
+.count__num {
+  font-weight: 700;
+}
+
+.timer {
+  color: rgb(129, 129, 129);
+  font-weight: 400;
+  font-size: 12px;
+}
+
+.header {
+  padding-bottom: 16px;
 }

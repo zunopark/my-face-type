@@ -173,3 +173,18 @@ toggle.addEventListener("click", function () {
     changePicture.style.backgroundImage = "url(/images/man.jpeg)";
   }
 });
+
+const countNum = document.querySelector(`.count__num`);
+
+function handleCountNum() {
+  let countNumber = 0;
+  function countUp() {
+    if (countNumber < 794883) {
+      countNumber = countNumber + 1504;
+      countNum.innerHTML = countNumber;
+    }
+  }
+  setInterval(countUp, 1);
+}
+
+handleCountNum();
