@@ -1,2 +1,3 @@
 User-agent: *
 Allow:/
+Sitemap: https://keen-poitras-075b07.netlify.app/sitemap.xml
