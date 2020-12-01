@@ -133,3 +133,10 @@ a:hover {
 .header {
   padding-bottom: 16px;
 }
+
+.share {
+  width: 100%;
+  text-align: center;
+  font-size: 12px;
+  margin-top: 3px;
+}
