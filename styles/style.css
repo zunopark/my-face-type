@@ -93,7 +93,7 @@ a:hover {
 }
 
 .inner-container:nth-child(2) {
-  background: dodgerblue;
+  background: #d74046;
   color: white;
   clip-path: inset(0 50% 0 0);
   transition: 0.3s cubic-bezier(0, 0, 0, 1);
