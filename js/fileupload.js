@@ -250,3 +250,13 @@ function handleCountNum() {
 }
 
 handleCountNum();
+
+const superImg = document.querySelector(`.super__img`);
+
+function handleSuper() {
+  var newWindow = window.open("about:blank");
+  newWindow.location.href =
+    "https://ceo.supermembers.co.kr/?utm_source=naver&utm_medium=cpc&utm_campaign=2020faceApp&utm_term=faceApp&utm_content=faceAppAd";
+}
+
+superImg.addEventListener("click", handleSuper);
