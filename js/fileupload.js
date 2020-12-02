@@ -63,7 +63,7 @@ async function predict() {
   let arr = new Map();
   let description = {
     강민경: [
-      "이마는 둥근형이라 집안일보다 바깥일을 좋아하고, 대인관계가 좋고 인복이 좋은 이마입니다. 눈썹은 재복이 좋고 미간이 넓어서 오픈마인드인 성격입니다. 눈은 고집과 자존심이 있는 눈이며 남자가 많이 따르는, 남자복이 많은 눈입니다. 턱은 재복이 좋지만 변덕이 심할 수 있고 연애운이 광하고 복스러우니 이성을 조심해야 합니다. 전체적으로 출세와 성공에 강합니다.",
+      "이마는 둥근형이라 집안일보다 바깥일을 좋아하고, 대인관계가 좋고 인복이 좋은 이마입니다. 눈썹은 재복이 좋고 미간이 넓어서 오픈마인드인 성격입니다. 눈은 고집과 자존심이 있는 눈이며 남자가 많이 따르는, 남자복이 많은 눈입니다. 턱은 재복이 좋지만 변덕이 심할 수 있고 연애운이 강하고 복스러우니 이성을 조심해야 합니다. 전체적으로 출세와 성공에 강합니다.",
       "개방적인 성격의 관상",
     ],
     "평생 재물운은 타고난 관상": [
@@ -119,7 +119,7 @@ async function predict() {
       "속마음을 숨키면서 누구도 모르겠는 관상",
     ],
     소지섭: [
-      "이마에 세로 주름이 하나 있어 재벌 또는 ceo 관상입니다. 눈이 붕어눈 / 고래눈 이라 재물운이 아주 좋습니다. 귀는 잘 보이지 않아 고집이 쎄보이고 자기 마음을 아무에게도 말하지 않는 성겨입니다. 침묵을 잘하고 잔잔한 성격이며 어떤 경우에는 성질이 강할 때도 보입니다. 노년운은 남들과 비슷하게 살아갈 관상입니다. ",
+      "이마에 세로 주름이 하나 있어 재벌 또는 ceo 관상입니다. 눈이 붕어눈 / 고래눈이라 재물운이 아주 좋습니다. 귀는 잘 보이지 않아 고집이 쎄보이고 자기 마음을 아무에게도 말하지 않는 성격입니다. 침묵을 잘하고 잔잔한 성격이며 어떤 경우에는 성질이 강할 때도 보입니다. 노년운은 남들과 비슷하게 살아갈 관상입니다. ",
       "과묵하고 줏대가 있는 관상",
     ],
     손예진: [
@@ -204,9 +204,7 @@ async function predict() {
   reset.addEventListener("click", handleReset);
 
   function handleReset(e) {
-    location.reload(true);
-    location.href = location.href;
-    history.go(0);
+    location.href = "again.html";
   }
 }
 
@@ -229,16 +227,18 @@ toggle.addEventListener("click", function () {
 });
 
 const countNum = document.querySelector(`.count__num`);
+const time = document.querySelector(`.timer`);
 
 function handleCountNum() {
-  let countNumber = 0;
+  let countNumber = 1209999;
   function countUp() {
-    if (countNumber < 1834883) {
-      countNumber = countNumber + 2504;
+    if (countNumber < 2237773) {
+      countNumber = countNumber + 3104;
       countNum.innerHTML = countNumber;
     }
   }
   setInterval(countUp, 1);
+  time.innerHTML = `(20.12.02 15:00 기준)`;
 }
 
 handleCountNum();

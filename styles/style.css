@@ -140,3 +140,15 @@ a:hover {
   font-size: 12px;
   margin-top: 3px;
 }
+
+.result button {
+  outline: none;
+}
+
+.result button:hover {
+  cursor: pointer;
+}
+
+.result button:active {
+  outline: none;
+}
