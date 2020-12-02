@@ -308,8 +308,7 @@ superImg.addEventListener("click", handleSuper);
 const dosaImg = document.querySelector(`.dosa__img`);
 function handleDosa() {
   var newWindow = window.open("about:blank");
-  newWindow.location.href =
-    "https://qI3YfuJvoki0Qgrq8ipYaA.adtouch.adbrix.io/api/v1/click/WPdlGaH77kuhKCncbUwSvQ";
+  newWindow.location.href = "https://bit.ly/3ogfHm7";
 }
 dosaImg.addEventListener("click", handleDosa);
 
