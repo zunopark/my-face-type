@@ -157,11 +157,15 @@ a:hover {
   width: 320px;
 }
 
-.super__img {
+.super__img,.dosa__img {
   width: 100%;
 }
 
 .super__img:hover {
+  cursor: pointer;
+}
+
+.dosa__img:hover {
   cursor: pointer;
 }
 

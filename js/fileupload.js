@@ -283,23 +283,29 @@ const time = document.querySelector(`.timer`);
 function handleCountNum() {
   let countNumber = 1209999;
   function countUp() {
-    if (countNumber < 2837773) {
+    if (countNumber < 2947773) {
       countNumber = countNumber + 3104;
       countNum.innerHTML = countNumber;
     }
   }
   setInterval(countUp, 1);
-  time.innerHTML = `(20.12.02 18:00 기준)`;
+  time.innerHTML = `(20.12.02 20:00 기준)`;
 }
 
 handleCountNum();
 
 const superImg = document.querySelector(`.super__img`);
-
 function handleSuper() {
   var newWindow = window.open("about:blank");
   newWindow.location.href =
     "https://ceo.supermembers.co.kr/?utm_source=naver&utm_medium=cpc&utm_campaign=2020faceApp&utm_term=faceApp&utm_content=faceAppAd";
 }
-
 superImg.addEventListener("click", handleSuper);
+
+const dosaImg = document.querySelector(`.dosa__img`);
+function handleDosa() {
+  var newWindow = window.open("about:blank");
+  newWindow.location.href =
+    "https://qI3YfuJvoki0Qgrq8ipYaA.adtouch.adbrix.io/api/v1/click/WPdlGaH77kuhKCncbUwSvQ";
+}
+dosaImg.addEventListener("click", handleDosa);
