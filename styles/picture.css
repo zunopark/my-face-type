@@ -20,7 +20,7 @@
 .border:before {
   content: "";
   display: block;
-  padding-bottom: 140%;
+  padding-bottom: 125%;
 }
 
 .frame {
