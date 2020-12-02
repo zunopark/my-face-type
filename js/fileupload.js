@@ -33,7 +33,8 @@ $(".image-upload-wrap").bind("dragleave", function () {
   $(".image-upload-wrap").removeClass("image-dropping");
 });
 
-const URL = "https://teachablemachine.withgoogle.com/models/BeonSzM7K/";
+// const URL = "https://teachablemachine.withgoogle.com/models/BeonSzM7K/";
+const URL = "https://teachablemachine.withgoogle.com/models/FiW0HL4DO/";
 
 let model, webcam, labelContainer, maxPredictions;
 
@@ -191,33 +192,18 @@ async function predict() {
     }
   });
 
-  if (answer === "평생 재물운은 타고난 관상") {
-    let result = document.createElement("div");
-    result.textContent = `${answer}`;
-    labelContainer.appendChild(result);
+  let result = document.createElement("div");
+  result.textContent = `${description[answer][1]}`;
+  labelContainer.appendChild(result);
 
-    let result2 = document.createElement("div");
-    result2.classList.add("celebrity");
-    result2.textContent = `나와 같은 관상을 가진 연예인 : ${description[answer][1]}`;
-    labelContainer.appendChild(result2);
+  let result2 = document.createElement("div");
+  result2.classList.add("celebrity");
+  result2.textContent = `나와 같은 관상을 가진 연예인 : ${answer}`;
+  labelContainer.appendChild(result2);
 
-    let desc = document.createElement("p");
-    desc.textContent = description[answer][0];
-    labelContainer.appendChild(desc);
-  } else {
-    let result = document.createElement("div");
-    result.textContent = `${description[answer][1]}`;
-    labelContainer.appendChild(result);
-
-    let result2 = document.createElement("div");
-    result2.classList.add("celebrity");
-    result2.textContent = `나와 같은 관상을 가진 연예인 : ${answer}`;
-    labelContainer.appendChild(result2);
-
-    let desc = document.createElement("p");
-    desc.textContent = description[answer][0];
-    labelContainer.appendChild(desc);
-  }
+  let desc = document.createElement("p");
+  desc.textContent = description[answer][0];
+  labelContainer.appendChild(desc);
 
   let reset = document.createElement("button");
   reset.innerHTML = "다른 사진도 해보기";
