@@ -12,7 +12,7 @@
 .result div {
   text-align: center;
   margin-bottom: 15px;
-  color: #e74c3c;
+  /* color: #e74c3c; */
 }
 
 .result .celebrity {
@@ -30,7 +30,7 @@
 }
 
 .result button {
-  margin-top: 15px;
+  margin-top: -15px;
   background-color: #162536;
   border-radius: 30px 30px 30px 30px;
   width: 150px;

@@ -215,19 +215,14 @@ async function predict() {
   for (let j = 0; j < 5; j++) {
     starsListImg =
       starsListImg +
-      `
-        <div class="star__list__wrap">
-        <img src="./images/${starsEng[j]}.jpeg" class="star__list__img" />
+      ` <div class="star__list__wrap">
+        <div class="star__list__img">
+        ${resultArray[j].key}
+        </div> 
+
         <div class="percent">${resultArray[j].value}%</div>
       </div>
         `;
-    //   `
-    //   <div class="star__list__wrap">
-    //   <img src="./images/man.jpeg" class="star__list__img" />
-    //   <div class="percent">${resultArray[j].value}%</div>
-
-    // </div>
-    //   `;
   }
 
   let result = document.createElement("div");
@@ -243,10 +238,10 @@ async function predict() {
   desc.textContent = description[answer][0];
   labelContainer.appendChild(desc);
 
-  // let otherResult = document.createElement("div");
-  // otherResult.classList.add("other__result");
-  // otherResult.innerHTML = `${starsListImg}`;
-  // labelContainer.appendChild(otherResult);
+  let otherResult = document.createElement("div");
+  otherResult.classList.add("other__result");
+  otherResult.innerHTML = `${starsListImg}`;
+  labelContainer.appendChild(otherResult);
 
   let reset = document.createElement("button");
   reset.innerHTML = "다른 사진도 해보기";
