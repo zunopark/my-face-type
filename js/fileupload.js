@@ -33,7 +33,8 @@ $(".image-upload-wrap").bind("dragleave", function () {
   $(".image-upload-wrap").removeClass("image-dropping");
 });
 
-const URL = "https://teachablemachine.withgoogle.com/models/BeonSzM7K/";
+// const URL = "https://teachablemachine.withgoogle.com/models/BeonSzM7K/";
+const URL = "https://teachablemachine.withgoogle.com/models/FiW0HL4DO/";
 
 let model, webcam, labelContainer, maxPredictions;
 
@@ -66,9 +67,9 @@ async function predict() {
       "이마는 둥근형이라 집안일보다 바깥일을 좋아하고, 대인관계가 좋고 인복이 좋은 이마입니다. 눈썹은 재복이 좋고 미간이 넓어서 오픈마인드인 성격입니다. 눈은 고집과 자존심이 있는 눈이며 남자가 많이 따르는, 남자복이 많은 눈입니다. 턱은 재복이 좋지만 변덕이 심할 수 있고 연애운이 강하고 복스러우니 이성을 조심해야 합니다. 전체적으로 출세와 성공에 강합니다.",
       "개방적인 성격의 관상",
     ],
-    "평생 재물운은 타고난 관상": [
+    강동원: [
       "좋은 이마를 가졌고 성격이 차분하고 강인하며 정적입니다. 눈이 봉황눈에 가깝기 때문에 재복이 좋은 눈이고 사람을 끌어들입니다. 눈썹또한 재복이 좋고 성격이 강직하니 자존심이 강하며 고집이 있습니다. 귀는 큰편에 가까운데 인복이 좋으며 정이 많은 귀입니다. 얼굴이 갸름하여 성격이 원만하고 입은 무겁습니다. 전체적으로 사람을 끌어들이는 기운이 아주 강하여 성공운이 열린 얼굴입니다.",
-      "강동원",
+      "평생 재물운은 타고난 관상",
     ],
     강소라: [
       "이마가 적당하여 아담하고 결혼운이 좋으며 눈썹은 재복이 좋고 자존심이 강합니다. 인중은 평범하며 입술은 도톰하여 연애운이 좋고 살림을 잘하는 입술입니다. 턱은 강인하고 적당하여 재복이 좋고 말년운이 좋으며 서글서글한 성격을 지닙니다. 칼귀이자 당나귀귀로서 재복과 인복이 좋으며 직업운이 좋고 대인관계가 좋습니다. 씀씀이는 큰편이며 자상하여 좋은 관상으로 볼 수 있습니다.",
@@ -169,33 +170,18 @@ async function predict() {
     }
   });
 
-  if (answer === "평생 재물운은 타고난 관상") {
-    let result = document.createElement("div");
-    result.textContent = `${answer}`;
-    labelContainer.appendChild(result);
+  let result = document.createElement("div");
+  result.textContent = `${description[answer][1]}`;
+  labelContainer.appendChild(result);
 
-    let result2 = document.createElement("div");
-    result2.classList.add("celebrity");
-    result2.textContent = `나와 같은 관상을 가진 연예인 : ${description[answer][1]}`;
-    labelContainer.appendChild(result2);
+  let result2 = document.createElement("div");
+  result2.classList.add("celebrity");
+  result2.textContent = `나와 같은 관상을 가진 연예인 : ${answer}`;
+  labelContainer.appendChild(result2);
 
-    let desc = document.createElement("p");
-    desc.textContent = description[answer][0];
-    labelContainer.appendChild(desc);
-  } else {
-    let result = document.createElement("div");
-    result.textContent = `${description[answer][1]}`;
-    labelContainer.appendChild(result);
-
-    let result2 = document.createElement("div");
-    result2.classList.add("celebrity");
-    result2.textContent = `나와 같은 관상을 가진 연예인 : ${answer}`;
-    labelContainer.appendChild(result2);
-
-    let desc = document.createElement("p");
-    desc.textContent = description[answer][0];
-    labelContainer.appendChild(desc);
-  }
+  let desc = document.createElement("p");
+  desc.textContent = description[answer][0];
+  labelContainer.appendChild(desc);
 
   let reset = document.createElement("button");
   reset.innerHTML = "다른 사진도 해보기";
