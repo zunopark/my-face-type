@@ -242,3 +242,8 @@ a:hover {
   margin-top: 10px;
   color: rgb(182, 182, 182);
 }
+
+.noti {
+  margin-top: 10px;
+  font-size: 12px;
+}
