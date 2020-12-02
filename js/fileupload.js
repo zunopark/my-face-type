@@ -233,7 +233,7 @@ const countNum = document.querySelector(`.count__num`);
 function handleCountNum() {
   let countNumber = 0;
   function countUp() {
-    if (countNumber < 1134883) {
+    if (countNumber < 1834883) {
       countNumber = countNumber + 2504;
       countNum.innerHTML = countNumber;
     }
