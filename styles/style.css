@@ -266,3 +266,17 @@ a:hover {
 .liner__img:hover {
   cursor: pointer;
 }
+
+.hello__members {
+  width: 320px;
+  margin: 12px 0;
+}
+
+.hello__img {
+  width: 100%;
+}
+
+.hello__img:hover {
+  cursor: pointer;
+}
+

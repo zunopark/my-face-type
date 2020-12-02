@@ -281,13 +281,13 @@ const time = document.querySelector(`.timer`);
 function handleCountNum() {
   let countNumber = 1209999;
   function countUp() {
-    if (countNumber < 3418832) {
-      countNumber = countNumber + 6104;
+    if (countNumber < 3923432) {
+      countNumber = countNumber + 9604;
       countNum.innerHTML = countNumber;
     }
   }
   setInterval(countUp, 1);
-  time.innerHTML = `(20.12.02 22:00 기준)`;
+  time.innerHTML = `(20.12.03 01:00 기준)`;
 }
 
 handleCountNum();
@@ -308,10 +308,15 @@ function handleDosa() {
 dosaImg.addEventListener("click", handleDosa);
 
 const linerImg = document.querySelector(`.liner__img`);
-
 function handleLiner() {
   var newWindow = window.open("about:blank");
   newWindow.location.href = "https://getliner.com/?ref=faceapp";
 }
-
 linerImg.addEventListener("click", handleLiner);
+
+const helloImg = document.querySelector(`.hello__img`);
+function handleHello() {
+  var newWindow = window.open("about:blank");
+  newWindow.location.href = "https://hellobot.co/skills/453";
+}
+helloImg.addEventListener("click", handleHello);
