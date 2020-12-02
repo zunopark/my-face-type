@@ -152,3 +152,15 @@ a:hover {
 .result button:active {
   outline: none;
 }
+
+.super__members {
+  width: 320px;
+}
+
+.super__img {
+  width: 100%;
+}
+
+.super__img:hover {
+  cursor: pointer;
+}
