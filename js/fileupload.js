@@ -183,14 +183,53 @@ async function predict() {
 
   maxV = 0;
   answer = "";
+  let resultArray = [];
   arr.forEach((value, key, mapObject) => {
-    console.log(key, value);
+    resultArray.push({ key, value });
+
     if (value > maxV) {
       maxV = value;
       answer = key;
-      console.log(maxV, value);
+      // console.log(maxV, value);
     }
   });
+
+  for (let i = 0; i < resultArray.length - 1; i++) {
+    for (let j = i + 1; j < resultArray.length; j++) {
+      if (resultArray[j].value > resultArray[i].value) {
+        let temp = resultArray[i];
+        resultArray[i] = resultArray[j];
+        resultArray[j] = temp;
+      }
+    }
+  }
+
+  const starsEng = [];
+
+  for (let i = 0; i < 5; i++) {
+    let a = description[resultArray[i].key];
+    starsEng.push(a[2]);
+  }
+
+  let starsListImg = "";
+
+  for (let j = 0; j < 5; j++) {
+    starsListImg =
+      starsListImg +
+      `
+        <div class="star__list__wrap">
+        <img src="./images/${starsEng[j]}.jpeg" class="star__list__img" />
+        <div class="percent">${resultArray[j].value}%</div>
+      </div>
+        `;
+    //   `
+    //   <div class="star__list__wrap">
+    //   <img src="./images/man.jpeg" class="star__list__img" />
+    //   <div class="percent">${resultArray[j].value}%</div>
+
+    // </div>
+    //   `;
+  }
 
   let result = document.createElement("div");
   result.textContent = `${description[answer][1]}`;
@@ -204,6 +243,11 @@ async function predict() {
   let desc = document.createElement("p");
   desc.textContent = description[answer][0];
   labelContainer.appendChild(desc);
+
+  let otherResult = document.createElement("div");
+  otherResult.classList.add("other__result");
+  otherResult.innerHTML = `${starsListImg}`;
+  labelContainer.appendChild(otherResult);
 
   let reset = document.createElement("button");
   reset.innerHTML = "다른 사진도 해보기";
