@@ -286,13 +286,13 @@ const time = document.querySelector(`.timer`);
 function handleCountNum() {
   let countNumber = 1209999;
   function countUp() {
-    if (countNumber < 2947773) {
-      countNumber = countNumber + 3104;
+    if (countNumber < 3418832) {
+      countNumber = countNumber + 6104;
       countNum.innerHTML = countNumber;
     }
   }
   setInterval(countUp, 1);
-  time.innerHTML = `(20.12.02 20:00 기준)`;
+  time.innerHTML = `(20.12.02 22:00 기준)`;
 }
 
 handleCountNum();
@@ -312,3 +312,12 @@ function handleDosa() {
     "https://qI3YfuJvoki0Qgrq8ipYaA.adtouch.adbrix.io/api/v1/click/WPdlGaH77kuhKCncbUwSvQ";
 }
 dosaImg.addEventListener("click", handleDosa);
+
+const linerImg = document.querySelector(`.liner__img`);
+
+function handleLiner() {
+  var newWindow = window.open("about:blank");
+  newWindow.location.href = "https://getliner.com/?ref=faceapp";
+}
+
+linerImg.addEventListener("click", handleLiner);

@@ -247,3 +247,16 @@ a:hover {
   margin-top: 10px;
   font-size: 12px;
 }
+
+.liner__members {
+  width: 320px;
+  margin: 6px 0;
+}
+
+.liner__img {
+  width: 100%;
+}
+
+.liner__img:hover {
+  cursor: pointer;
+}
