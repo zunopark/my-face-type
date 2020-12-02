@@ -193,3 +193,10 @@ a:hover {
   font-size: 16px;
   color: black;
 }
+
+.contact_me {
+  font-size: 16px;
+  text-decoration: none;
+  margin-top: 10px;
+  color: grey;
+}
