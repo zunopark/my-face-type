@@ -172,6 +172,19 @@ async function predict() {
     }
   });
 
+  Array.prototype.shuffle = function () {
+    var length = this.length;
+    while (length) {
+      var index = Math.floor(length-- * Math.random());
+      var temp = this[length];
+      this[length] = this[index];
+      this[index] = temp;
+    }
+    return this;
+  };
+
+  resultArray.shuffle();
+
   for (let i = 0; i < resultArray.length - 1; i++) {
     for (let j = i + 1; j < resultArray.length; j++) {
       if (resultArray[j].value > resultArray[i].value) {
@@ -192,16 +205,117 @@ async function predict() {
   let starsListImg = "";
 
   for (let j = 0; j < 5; j++) {
-    starsListImg =
-      starsListImg +
-      ` <div class="star__list__wrap">
+    if (resultArray[j].value === 0) {
+      starsListImg =
+        starsListImg +
+        ` <div class="star__list__wrap">
         <div class="star__list__img">
         ${resultArray[j].key}
         </div> 
-
-        <div class="percent">${resultArray[j].value}%</div>
+        <div class="percent zero">${resultArray[j].value}%</div>
       </div>
         `;
+    } else if (resultArray[j].value > 0 && resultArray[j].value <= 10) {
+      starsListImg =
+        starsListImg +
+        ` <div class="star__list__wrap">
+        <div class="star__list__img">
+        ${resultArray[j].key}
+        </div> 
+        <div class="percent zeroone">${resultArray[j].value}%</div>
+      </div>
+        `;
+    } else if (resultArray[j].value > 10 && resultArray[j].value <= 20) {
+      starsListImg =
+        starsListImg +
+        ` <div class="star__list__wrap">
+        <div class="star__list__img">
+        ${resultArray[j].key}
+        </div> 
+        <div class="percent onetwo">${resultArray[j].value}%</div>
+      </div>
+        `;
+    } else if (resultArray[j].value > 20 && resultArray[j].value <= 30) {
+      starsListImg =
+        starsListImg +
+        ` <div class="star__list__wrap">
+        <div class="star__list__img">
+        ${resultArray[j].key}
+        </div> 
+        <div class="percent twothree">${resultArray[j].value}%</div>
+      </div>
+        `;
+    } else if (resultArray[j].value > 30 && resultArray[j].value <= 40) {
+      starsListImg =
+        starsListImg +
+        ` <div class="star__list__wrap">
+        <div class="star__list__img">
+        ${resultArray[j].key}
+        </div> 
+        <div class="percent threefour">${resultArray[j].value}%</div>
+      </div>
+        `;
+    } else if (resultArray[j].value > 40 && resultArray[j].value <= 50) {
+      starsListImg =
+        starsListImg +
+        ` <div class="star__list__wrap">
+        <div class="star__list__img">
+        ${resultArray[j].key}
+        </div> 
+        <div class="percent fourfive">${resultArray[j].value}%</div>
+      </div>
+        `;
+    } else if (resultArray[j].value > 50 && resultArray[j].value <= 60) {
+      starsListImg =
+        starsListImg +
+        ` <div class="star__list__wrap">
+        <div class="star__list__img">
+        ${resultArray[j].key}
+        </div> 
+        <div class="percent fivesix">${resultArray[j].value}%</div>
+      </div>
+        `;
+    } else if (resultArray[j].value > 60 && resultArray[j].value <= 70) {
+      starsListImg =
+        starsListImg +
+        ` <div class="star__list__wrap">
+        <div class="star__list__img">
+        ${resultArray[j].key}
+        </div> 
+        <div class="percent sixseven">${resultArray[j].value}%</div>
+      </div>
+        `;
+    } else if (resultArray[j].value > 70 && resultArray[j].value <= 80) {
+      starsListImg =
+        starsListImg +
+        ` <div class="star__list__wrap">
+        <div class="star__list__img">
+        ${resultArray[j].key}
+        </div> 
+        <div class="percent seveneight">${resultArray[j].value}%</div>
+      </div>
+        `;
+    } else if (resultArray[j].value > 80 && resultArray[j].value <= 90) {
+      starsListImg =
+        starsListImg +
+        ` <div class="star__list__wrap">
+        <div class="star__list__img">
+        ${resultArray[j].key}
+        </div> 
+        <div class="percent eightnine">${resultArray[j].value}%</div>
+      </div>
+        `;
+    } else if (resultArray[j].value > 90 && resultArray[j].value <= 100) {
+      starsListImg =
+        starsListImg +
+        ` <div class="star__list__wrap">
+        <div class="star__list__img">
+        ${resultArray[j].key}
+        </div> 
+        <div class="percent nineten">${resultArray[j].value}%</div>
+      </div>
+        `;
+    }
   }
 
   let result = document.createElement("div");

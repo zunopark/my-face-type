@@ -201,7 +201,6 @@ a:hover {
 .percent {
   margin-top: -10px;
   font-size: 16px;
-  color: #e74c3c;
 }
 
 
@@ -280,3 +279,46 @@ a:hover {
   cursor: pointer;
 }
 
+.zero {
+  color: black;
+}
+
+.zeroone {
+  color: rgb(43, 160, 223);
+}
+
+.onetwo {
+  color: rgb(68, 182, 95);
+}
+
+.twothree {
+  color: blue;
+}
+
+.threefour {
+  color: aqua;
+}
+
+.fourfive {
+  color: purple;
+}
+
+.fivesix {
+  color: peru;
+}
+
+.sixseven {
+  color: rgb(149, 30, 196);
+}
+
+.seveneight {
+  color: rgb(196, 77, 178);
+}
+
+.eightnine {
+  color: rgb(204, 92, 129);
+}
+
+.nineten {
+  color: tomato;
+}
