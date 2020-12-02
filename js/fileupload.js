@@ -33,7 +33,6 @@ $(".image-upload-wrap").bind("dragleave", function () {
   $(".image-upload-wrap").removeClass("image-dropping");
 });
 
-// const URL = "https://teachablemachine.withgoogle.com/models/BeonSzM7K/";
 const URL = "https://teachablemachine.withgoogle.com/models/FiW0HL4DO/";
 
 let model, webcam, labelContainer, maxPredictions;
@@ -240,13 +239,13 @@ const time = document.querySelector(`.timer`);
 function handleCountNum() {
   let countNumber = 1209999;
   function countUp() {
-    if (countNumber < 2237773) {
+    if (countNumber < 2837773) {
       countNumber = countNumber + 3104;
       countNum.innerHTML = countNumber;
     }
   }
   setInterval(countUp, 1);
-  time.innerHTML = `(20.12.02 15:00 기준)`;
+  time.innerHTML = `(20.12.02 18:00 기준)`;
 }
 
 handleCountNum();
