@@ -243,10 +243,10 @@ async function predict() {
   desc.textContent = description[answer][0];
   labelContainer.appendChild(desc);
 
-  let otherResult = document.createElement("div");
-  otherResult.classList.add("other__result");
-  otherResult.innerHTML = `${starsListImg}`;
-  labelContainer.appendChild(otherResult);
+  // let otherResult = document.createElement("div");
+  // otherResult.classList.add("other__result");
+  // otherResult.innerHTML = `${starsListImg}`;
+  // labelContainer.appendChild(otherResult);
 
   let reset = document.createElement("button");
   reset.innerHTML = "다른 사진도 해보기";
