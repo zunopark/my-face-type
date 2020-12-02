@@ -254,6 +254,9 @@ async function predict() {
 
   reset.addEventListener("click", handleReset);
 
+  const privacy = document.querySelector(`.noti`);
+  privacy.style.display = "none";
+
   function handleReset(e) {
     location.href = "again.html";
   }
