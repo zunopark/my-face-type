@@ -317,6 +317,6 @@ linerImg.addEventListener("click", handleLiner);
 const helloImg = document.querySelector(`.hello__img`);
 function handleHello() {
   var newWindow = window.open("about:blank");
-  newWindow.location.href = "https://hellobot.co/skills/453";
+  newWindow.location.href = "https://abr.ge/wj4qfp3";
 }
 helloImg.addEventListener("click", handleHello);
