@@ -2,12 +2,15 @@
   .border {
     width: 420px;
   }
-
+  .apologize {
+    width: 320px;
+  }
 }
 @media screen and (max-width: 500px) {
   .border {
     width: 70%;
   }
-
-
+  .apologize {
+    width: 320px;
+  }
 }

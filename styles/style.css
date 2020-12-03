@@ -323,3 +323,19 @@ a:hover {
 .nineten {
   color: tomato;
 }
+
+.apologize {
+  margin-top: 40px;
+  background-color: #fbfbf1;
+  border-radius: 20px;
+  padding: 20px;
+  font-size: 14px;
+  line-height: 19px;
+  font-style: italic;
+  color: rgb(93, 93, 93);
+}
+
+.bold {
+  font-weight: 700;
+  color: black;
+}
