@@ -403,7 +403,8 @@ dosaImg.addEventListener("click", handleDosa);
 const linerImg = document.querySelector(`.liner__img`);
 function handleLiner() {
   var newWindow = window.open("about:blank");
-  newWindow.location.href = "https://getliner.com/?ref=faceapp";
+  newWindow.location.href =
+    "https://getliner.com/?utm_source=site_listing&utm_medium=banner&utm_campaign=physiognomy_kr&utm_content=mock_up_free_web_pdf_hi";
 }
 linerImg.addEventListener("click", handleLiner);
 
