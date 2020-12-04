@@ -372,15 +372,15 @@ const countNum = document.querySelector(`.count__num`);
 const time = document.querySelector(`.timer`);
 
 function handleCountNum() {
-  let countNumber = 1209999;
+  let countNumber = 3209999;
   function countUp() {
-    if (countNumber < 5923432) {
-      countNumber = countNumber + 12994;
+    if (countNumber < 6144211) {
+      countNumber = countNumber + 8994;
       countNum.innerHTML = countNumber;
     }
   }
   setInterval(countUp, 1);
-  time.innerHTML = `(20.12.04 09:00 기준)`;
+  time.innerHTML = `(20.12.04 18:00 기준)`;
 }
 
 handleCountNum();
