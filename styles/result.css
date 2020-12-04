@@ -72,6 +72,11 @@
   margin-bottom: 15px;
 }
 
+.ad_box_top {
+  width: 320px;
+  margin: 0 outo;
+}
+
 .comment {
   width: 100%;
 }
