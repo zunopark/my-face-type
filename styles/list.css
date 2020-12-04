@@ -1,0 +1,29 @@
+.test__ai {
+  /* border: 1px solid black; */
+  margin: 20px 0;
+}
+
+.test__ai:hover {
+  cursor: pointer;
+}
+
+.list__img {
+  width: 320px;
+  height: 180px;
+  object-fit: cover;
+}
+
+.list__title {
+  padding: 16px 10px;
+  background-color: rgb(56, 56, 56);
+  color: white;
+}
+
+.list__title h1 {
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+
+.list__title h2 {
+  font-size: 12px;
+}

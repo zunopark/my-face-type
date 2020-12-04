@@ -340,3 +340,24 @@ a:hover {
   font-weight: 700;
   color: black;
 }
+
+.christmas__dec1 {
+  position: absolute;
+  bottom: -20px;
+  right: -5px;
+  z-index: 99;
+}
+
+.christmas__dec1 img {
+  width: 20px;
+}
+.christmas__dec2 {
+  position: absolute;
+  bottom: -20px;
+  left: -5px;
+  z-index: 99;
+}
+
+.christmas__dec2 img {
+  width: 20px;
+}
