@@ -340,6 +340,16 @@ async function predict() {
   reset.innerHTML = "다른 사진도 해보기";
   labelContainer.appendChild(reset);
 
+  // let boyFriendTest = document.createElement("button");
+  // boyFriendTest.classList.add("boy__friend__btn");
+  // boyFriendTest.innerHTML = "크리스마스를 함께 할 내 남자친구상은?";
+  // labelContainer.appendChild(boyFriendTest);
+
+  // let girlFriendTest = document.createElement("button");
+  // girlFriendTest.classList.add("girl__friend__btn");
+  // girlFriendTest.innerHTML = "크리스마스를 함께 할 내 여자친구상은?";
+  // labelContainer.appendChild(girlFriendTest);
+
   reset.addEventListener("click", handleReset);
 
   const privacy = document.querySelector(`.noti`);
