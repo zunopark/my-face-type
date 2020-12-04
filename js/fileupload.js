@@ -374,13 +374,13 @@ const time = document.querySelector(`.timer`);
 function handleCountNum() {
   let countNumber = 1209999;
   function countUp() {
-    if (countNumber < 5823432) {
-      countNumber = countNumber + 12904;
+    if (countNumber < 5923432) {
+      countNumber = countNumber + 12994;
       countNum.innerHTML = countNumber;
     }
   }
   setInterval(countUp, 1);
-  time.innerHTML = `(20.12.03 22:00 기준)`;
+  time.innerHTML = `(20.12.04 09:00 기준)`;
 }
 
 handleCountNum();
