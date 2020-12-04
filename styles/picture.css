@@ -1,7 +1,7 @@
 .border {
   box-sizing: border-box;
   position: relative;
-  background: #780205;
+  background: #cc231e;
   background-image: linear-gradient(top right, #5d5d5b, #383838);
   /* padding: 7px; */
   box-shadow: -1px 1px 2px 1px rgba(0, 0, 0, 0.1),
