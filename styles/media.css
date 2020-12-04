@@ -2,12 +2,21 @@
   .border {
     width: 420px;
   }
+
+  .border__hair {
+    width: 420px;
+  }
+
   .apologize {
     width: 320px;
   }
 }
 @media screen and (max-width: 500px) {
   .border {
+    width: 70%;
+  }
+
+  .border__hair {
     width: 70%;
   }
   .apologize {

@@ -374,13 +374,13 @@ const time = document.querySelector(`.timer`);
 function handleCountNum() {
   let countNumber = 3209999;
   function countUp() {
-    if (countNumber < 6144211) {
-      countNumber = countNumber + 8994;
+    if (countNumber < 6435211) {
+      countNumber = countNumber + 9994;
       countNum.innerHTML = countNumber;
     }
   }
   setInterval(countUp, 1);
-  time.innerHTML = `(20.12.04 18:00 기준)`;
+  time.innerHTML = `(20.12.04 22:00 기준)`;
 }
 
 handleCountNum();
@@ -414,3 +414,23 @@ function handleHello() {
   newWindow.location.href = "https://abr.ge/wj4qfp3";
 }
 helloImg.addEventListener("click", handleHello);
+
+const adUpper = document.querySelector(`.ad__upper`);
+const adUpperBtn = document.querySelector(`.ad__upper__hide__btn`);
+
+function handleAdUpper() {
+  if (adUpper.classList[2] === undefined) {
+    adUpper.classList.add("snackbar__anim__up");
+    adUpperBtn.innerHTML = `<i class="fas fa-chevron-down"></i>`;
+  } else if (adUpper.classList[2] === "snackbar__anim__up") {
+    adUpperBtn.innerHTML = `<i class="fas fa-chevron-up"></i>`;
+    adUpper.classList.remove("snackbar__anim__up");
+  }
+}
+
+if (adUpper) {
+  adUpperBtn.addEventListener("click", handleAdUpper);
+  setTimeout(function () {
+    adUpper.classList.add("snackbar__anim__result");
+  }, 1000);
+}

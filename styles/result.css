@@ -50,19 +50,26 @@
 .ai {
   font-family: "Yeon Sung", cursive;
   margin-top: 15px;
-  animation: aiAnim 0.5s linear infinite;
+  animation: aiAnim 0.7s linear infinite;
 }
 
 @keyframes aiAnim {
   0% {
-    transform: scale(1);
+    transform: translateX(-2px);
+  }
+  15% {
+    transform: translateX(0px);
+    transform: scale(1.01);
   }
   50% {
-    transform: scale(1.1);
-    color: #535c68;
+    transform: translateX(2px);
+  }
+  85% {
+    transform: translateX(0px);
+    transform: scale(1.01);
   }
   100% {
-    transform: scale(1);
+    transform: translateX(-2px);
   }
 }
 
