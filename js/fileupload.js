@@ -348,7 +348,9 @@ async function predict() {
   privacy.style.display = "none";
 
   function handleReset(e) {
-    location.href = "again.html";
+    location.reload(true);
+    location.href = location.href;
+    history.go(0);
   }
 }
 

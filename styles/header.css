@@ -24,9 +24,16 @@
   color: rgb(68, 68, 68);
 }
 
+.header__title {
+  cursor: pointer;
+}
+
 .header__menu__btn {
   font-size: 20px;
   color: rgb(68, 68, 68);
+}
+.header__menu__btn:hover {
+  cursor: pointer;
 }
 
 .header__menu__wrap {
