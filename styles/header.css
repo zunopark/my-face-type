@@ -1,23 +1,72 @@
-.main__ai__title {
-  width: 100%;
+.header {
+  font-family: "Yeon Sung", cursive;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
-  /* font-family: "East Sea Dokdo", cursive; */
-  font-family: "Yeon Sung", cursive;
-
-  padding: 30px;
+  width: 100%;
 }
 
-.main__ai__title .title {
-  font-size: 50px;
-  margin-bottom: 10px;
+.header__upper {
+  z-index: 2;
+  padding: 20px 20px;
+  background-color: rgb(255, 255, 255);
+  border-bottom: 1px solid rgba(70, 70, 70, 0.3);
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
 }
 
-.main__ai__title .subtitle {
+.header__title {
+  font-size: 24px;
+  font-weight: 700;
+  color: rgb(68, 68, 68);
+}
+
+.header__menu__btn {
   font-size: 20px;
-  opacity: 0.8;
+  color: rgb(68, 68, 68);
+}
+
+.header__menu__wrap {
+  background-color: rgb(255, 255, 255);
+
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  align-items: flex-end;
+  padding-right: 20px;
+  padding: 10px 20px;
+  transform: translateY(0px);
+  transition: 0.5s transform;
+  opacity: 0.5;
+  z-index: 1;
+  top: -90px;
+}
+
+.header__anim__result {
+  opacity: 1;
+}
+
+.header__anim__up {
+  opacity: 1;
+  transform: translateY(150px);
+}
+
+.header__menu__wrap .menu {
+  font-size: 18px;
+  margin: 8px 0px;
+  color: rgb(179, 179, 179);
+}
+
+.header__menu__wrap .menu:hover {
+  cursor: pointer;
+}
+
+.header__menu__wrap .menu__select {
+  color: #e74c3c;
 }
 
 .ad__upper {
@@ -26,7 +75,7 @@
   /* height: 100%; */
   transition: 0.5s transform;
   transform: translateY(0px);
-  margin-top: -50px;
+  margin-top: -84px;
   z-index: 99;
 }
 
@@ -52,7 +101,7 @@
 }
 
 .snackbar__anim__result {
-  transform: translateY(50px);
+  transform: translateY(84px);
   opacity: 1;
 }
 
@@ -63,5 +112,5 @@
 
 .snackbar__anim__down {
   opacity: 1;
-  transform: translateY(50px);
+  transform: translateY(84px);
 }
