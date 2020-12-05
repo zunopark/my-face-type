@@ -379,15 +379,15 @@ const countNum = document.querySelector(`.count__num`);
 const time = document.querySelector(`.timer`);
 if (countNum) {
   function handleCountNum() {
-    let countNumber = 3209999;
+    let countNumber = 4209999;
     function countUp() {
-      if (countNumber < 6735311) {
-        countNumber = countNumber + 10994;
+      if (countNumber < 7135311) {
+        countNumber = countNumber + 18994;
         countNum.innerHTML = countNumber;
       }
     }
     setInterval(countUp, 1);
-    time.innerHTML = `(20.12.05 12:00 기준)`;
+    time.innerHTML = `(20.12.05 21:00 기준)`;
   }
   handleCountNum();
 }
