@@ -7,6 +7,7 @@
 @import "media.css";
 @import "footer.css";
 @import "list.css";
+@import "girlfr.css";
 
 @import url("https://fonts.googleapis.com/css?family=Asap:400,500,700");
 
@@ -20,6 +21,27 @@ body {
 
 * {
   box-sizing: border-box;
+}
+
+.main__ai__title {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  /* font-family: "East Sea Dokdo", cursive; */
+  font-family: "Yeon Sung", cursive;
+  padding: 30px;
+}
+
+.main__ai__title .title {
+  font-size: 50px;
+  margin-bottom: 10px;
+}
+
+.main__ai__title .subtitle {
+  font-size: 20px;
+  opacity: 0.8;
 }
 
 .jocoding {
