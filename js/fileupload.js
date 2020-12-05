@@ -46,18 +46,14 @@ async function init() {
 
   labelContainer = document.getElementById("label-container");
   for (let i = 0; i < maxPredictions; i++) {
-    // and class labels
     labelContainer.appendChild(document.createElement("span"));
   }
-
   predict();
-
   toggle.classList.add("hidden");
 }
 
 async function predict() {
   let image = document.getElementById("face-image");
-  // predict can take in an image, video or canvas html element
   const prediction = await model.predict(image, false);
 
   let arr = new Map();
@@ -151,8 +147,6 @@ async function predict() {
   for (let i = 0; i < maxPredictions; i++) {
     const classPrediction =
       prediction[i].className + ": " + prediction[i].probability.toFixed(2);
-    // labelContainer.childNodes[i].innerHTML = classPrediction;
-    // arr[prediction[i].className] = parseInt((prediction[i].probability * 100).toFixed(0));
     arr.set(
       prediction[i].className,
       parseInt((prediction[i].probability * 100).toFixed(0))
@@ -164,11 +158,9 @@ async function predict() {
   let resultArray = [];
   arr.forEach((value, key, mapObject) => {
     resultArray.push({ key, value });
-
     if (value > maxV) {
       maxV = value;
       answer = key;
-      // console.log(maxV, value);
     }
   });
 
@@ -370,11 +362,13 @@ toggle.addEventListener("click", function () {
   if (toggleNumber) {
     toggleContainer.style.clipPath = "inset(0 0 0 50%)";
     toggleContainer.style.backgroundColor = "dodgerblue";
-    changePicture.style.backgroundImage = "url(/images/man.jpeg)";
+    changePicture.style.backgroundImage =
+      "url(https://kr.object.ncloudstorage.com/your-face/man.jpeg)";
   } else {
     toggleContainer.style.clipPath = "inset(0 50% 0 0)";
     toggleContainer.style.backgroundColor = "#D74046";
-    changePicture.style.backgroundImage = "url(/images/woman.png)";
+    changePicture.style.backgroundImage =
+      "url(https://kr.object.ncloudstorage.com/your-face/woman.png)";
   }
 });
 
@@ -384,13 +378,13 @@ const time = document.querySelector(`.timer`);
 function handleCountNum() {
   let countNumber = 3209999;
   function countUp() {
-    if (countNumber < 6435211) {
-      countNumber = countNumber + 9994;
+    if (countNumber < 6735311) {
+      countNumber = countNumber + 10994;
       countNum.innerHTML = countNumber;
     }
   }
   setInterval(countUp, 1);
-  time.innerHTML = `(20.12.04 22:00 기준)`;
+  time.innerHTML = `(20.12.05 12:00 기준)`;
 }
 
 handleCountNum();
