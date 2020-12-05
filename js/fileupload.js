@@ -383,13 +383,13 @@ if (countNum) {
   function handleCountNum() {
     let countNumber = 4209999;
     function countUp() {
-      if (countNumber < 7135311) {
+      if (countNumber < 7295311) {
         countNumber = countNumber + 18994;
         countNum.innerHTML = countNumber;
       }
     }
     setInterval(countUp, 1);
-    time.innerHTML = `(20.12.05 21:00 기준)`;
+    time.innerHTML = `(20.12.06 00:00 기준)`;
   }
   handleCountNum();
 }
@@ -424,14 +424,14 @@ if (linerImg) {
   }
   linerImg.addEventListener("click", handleLiner);
 }
-const helloImg = document.querySelector(`.hello__img`);
-if (helloImg) {
-  function handleHello() {
-    var newWindow = window.open("about:blank");
-    newWindow.location.href = "https://abr.ge/wj4qfp3";
-  }
-  helloImg.addEventListener("click", handleHello);
-}
+// const helloImg = document.querySelector(`.hello__img`);
+// if (helloImg) {
+//   function handleHello() {
+//     var newWindow = window.open("about:blank");
+//     newWindow.location.href = "https://abr.ge/wj4qfp3";
+//   }
+//   helloImg.addEventListener("click", handleHello);
+// }
 
 // 상단 광고 js
 
