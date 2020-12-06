@@ -1,15 +1,3 @@
-const testAi = document.querySelector(`.test__ai`);
-
-function handleTestAi() {
-  location.href = "index.html";
-}
-
-function init() {
-  testAi.addEventListener("click", handleTestAi);
-}
-
-init();
-
 const headerMenu = document.querySelector(`.header__menu__wrap`);
 const headerMenuBtn = document.querySelector(`.header__menu__btn`);
 const headerTitle = document.querySelector(`.header__title`);
@@ -17,6 +5,7 @@ const aiMenuBtn = document.querySelector(`#ai`);
 const boyAiMenuBtn = document.querySelector(`#boyAi`);
 const girlAiMenuBtn = document.querySelector(`#girlAi`);
 const allListMenuBtn = document.querySelector(`#allList`);
+// console.log(temp);
 
 function handleMenu() {
   if (headerMenu.classList[2] === undefined) {
@@ -45,15 +34,18 @@ function handleTitleBtn() {
   location.href = "index.html";
 }
 
-if (headerMenu) {
-  headerMenuBtn.addEventListener("click", handleMenu);
-  setTimeout(function () {
-    headerMenu.classList.add("header__anim__result");
-  }, 500);
+function init() {
+  if (headerMenu) {
+    headerMenuBtn.addEventListener("click", handleMenu);
+    setTimeout(function () {
+      headerMenu.classList.add("header__anim__result");
+    }, 500);
 
-  aiMenuBtn.addEventListener("click", handleAiMenu);
-  boyAiMenuBtn.addEventListener("click", handleBoyMenu);
-  girlAiMenuBtn.addEventListener("click", handleGirlMenu);
-  allListMenuBtn.addEventListener("click", handleAllMenu);
-  headerTitle.addEventListener("click", handleTitleBtn);
+    aiMenuBtn.addEventListener("click", handleAiMenu);
+    boyAiMenuBtn.addEventListener("click", handleBoyMenu);
+    girlAiMenuBtn.addEventListener("click", handleGirlMenu);
+    allListMenuBtn.addEventListener("click", handleAllMenu);
+    headerTitle.addEventListener("click", handleTitleBtn);
+  }
 }
+init();

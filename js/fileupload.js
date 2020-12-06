@@ -348,7 +348,9 @@ async function predict() {
   privacy.style.display = "none";
 
   function handleReset(e) {
-    location.href = "again.html";
+    location.reload(true);
+    location.href = location.href;
+    history.go(0);
   }
 }
 
@@ -371,132 +373,4 @@ if (toggle) {
         "url(https://kr.object.ncloudstorage.com/your-face/woman.png)";
     }
   });
-}
-
-// 실시간 js
-
-const countNum = document.querySelector(`.count__num`);
-const time = document.querySelector(`.timer`);
-if (countNum) {
-  function handleCountNum() {
-    let countNumber = 3209999;
-    function countUp() {
-      if (countNumber < 6735311) {
-        countNumber = countNumber + 10994;
-        countNum.innerHTML = countNumber;
-      }
-    }
-    setInterval(countUp, 1);
-    time.innerHTML = `(20.12.05 12:00 기준)`;
-  }
-  handleCountNum();
-}
-
-//광고 js
-
-const superImg = document.querySelector(`.super__img`);
-if (superImg) {
-  function handleSuper() {
-    var newWindow = window.open("about:blank");
-    newWindow.location.href =
-      "https://ceo.supermembers.co.kr/?utm_source=naver&utm_medium=cpc&utm_campaign=2020faceApp&utm_term=faceApp&utm_content=faceAppAd";
-  }
-  superImg.addEventListener("click", handleSuper);
-}
-const dosaImg = document.querySelector(`.dosa__img`);
-
-if (dosaImg) {
-  function handleDosa() {
-    var newWindow = window.open("about:blank");
-    newWindow.location.href = "https://bit.ly/3ogfHm7";
-  }
-  dosaImg.addEventListener("click", handleDosa);
-}
-
-const linerImg = document.querySelector(`.liner__img`);
-if (linerImg) {
-  function handleLiner() {
-    var newWindow = window.open("about:blank");
-    newWindow.location.href =
-      "https://getliner.com/?utm_source=site_listing&utm_medium=banner&utm_campaign=physiognomy_kr&utm_content=mock_up_free_web_pdf_hi";
-  }
-  linerImg.addEventListener("click", handleLiner);
-}
-const helloImg = document.querySelector(`.hello__img`);
-if (helloImg) {
-  function handleHello() {
-    var newWindow = window.open("about:blank");
-    newWindow.location.href = "https://abr.ge/wj4qfp3";
-  }
-  helloImg.addEventListener("click", handleHello);
-}
-
-// 상단 광고 js
-
-const adUpper = document.querySelector(`.ad__upper`);
-const adUpperBtn = document.querySelector(`.ad__upper__hide__btn`);
-
-function handleAdUpper() {
-  if (adUpper.classList[2] === undefined) {
-    adUpper.classList.add("snackbar__anim__up");
-  } else if (adUpper.classList[2] === "snackbar__anim__up") {
-    adUpper.classList.remove("snackbar__anim__up");
-  }
-}
-
-if (adUpper) {
-  adUpperBtn.addEventListener("click", handleAdUpper);
-  setTimeout(function () {
-    adUpper.classList.add("snackbar__anim__result");
-  }, 1000);
-}
-
-//header js
-
-const headerMenu = document.querySelector(`.header__menu__wrap`);
-const headerMenuBtn = document.querySelector(`.header__menu__btn`);
-const headerTitle = document.querySelector(`.header__title`);
-const aiMenuBtn = document.querySelector(`#ai`);
-const boyAiMenuBtn = document.querySelector(`#boyAi`);
-const girlAiMenuBtn = document.querySelector(`#girlAi`);
-const allListMenuBtn = document.querySelector(`#allList`);
-
-function handleMenu() {
-  if (headerMenu.classList[2] === undefined) {
-    headerMenu.classList.add("header__anim__up");
-  } else if (headerMenu.classList[2] === "header__anim__up") {
-    headerMenu.classList.remove("header__anim__up");
-  }
-}
-
-function handleAiMenu() {
-  location.href = "index.html";
-}
-
-function handleBoyMenu() {
-  location.href = "boyfr.html";
-}
-
-function handleGirlMenu() {
-  location.href = "girlfr.html";
-}
-function handleAllMenu() {
-  location.href = "list.html";
-}
-
-function handleTitleBtn() {
-  location.href = "index.html";
-}
-
-if (headerMenu) {
-  headerMenuBtn.addEventListener("click", handleMenu);
-  setTimeout(function () {
-    headerMenu.classList.add("header__anim__result");
-  }, 500);
-
-  aiMenuBtn.addEventListener("click", handleAiMenu);
-  boyAiMenuBtn.addEventListener("click", handleBoyMenu);
-  girlAiMenuBtn.addEventListener("click", handleGirlMenu);
-  allListMenuBtn.addEventListener("click", handleAllMenu);
-  headerTitle.addEventListener("click", handleTitleBtn);
 }

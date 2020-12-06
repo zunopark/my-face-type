@@ -24,9 +24,16 @@
   color: rgb(68, 68, 68);
 }
 
+.header__title {
+  cursor: pointer;
+}
+
 .header__menu__btn {
   font-size: 20px;
   color: rgb(68, 68, 68);
+}
+.header__menu__btn:hover {
+  cursor: pointer;
 }
 
 .header__menu__wrap {
@@ -43,7 +50,7 @@
   transition: 0.5s transform;
   opacity: 0.5;
   z-index: 1;
-  top: -90px;
+  top: -94px;
 }
 
 .header__anim__result {
@@ -70,6 +77,8 @@
 }
 
 .ad__upper {
+  position: fixed;
+  top: 0px;
   opacity: 0;
   width: 100%;
   /* height: 100%; */
