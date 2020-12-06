@@ -66,10 +66,6 @@
   background-position: center center;
 }
 
-.ai__boy {
-  font-size: 12px;
-}
-
 .boyfr__file-upload {
   background-color: #ecefff;
   width: 100%;
@@ -80,4 +76,29 @@
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.ai__boy {
+  font-size: 12px;
+  animation: aiAnim 0.7s linear infinite;
+}
+
+@keyframes aiAnim {
+  0% {
+    transform: translateX(-2px);
+  }
+  15% {
+    transform: translateX(0px);
+    transform: scale(1.01);
+  }
+  50% {
+    transform: translateX(2px);
+  }
+  85% {
+    transform: translateX(0px);
+    transform: scale(1.01);
+  }
+  100% {
+    transform: translateX(-2px);
+  }
 }
