@@ -1,4 +1,4 @@
-const aiCont = document.querySelector(`.ai`);
+const aiCont = document.querySelector(`.ai__boy`);
 
 async function readURL(input) {
   if (input.files && input.files[0]) {
@@ -50,7 +50,7 @@ async function init() {
     labelContainer.appendChild(document.createElement("span"));
   }
   predict();
-  toggle.classList.add("hidden");
+  // toggle.classList.add("hidden");
 }
 
 async function predict() {
@@ -60,24 +60,29 @@ async function predict() {
   let arr = new Map();
   let description = {
     dog: [
-      "당신과 어울리는 남자친구는 고양이상입니다.",
-      "남자친구는 고양이상, 황민현, 시우민, 강동원, 이종석, 이준기",
+      "고양이상",
+      "황민현, 시우민, 강동원, 이종석, 이준기",
+      "무뚝뚝한 당신의 첫인상은 차가워 보이지만 묘한 매력을 풍겨 언제나 인기가 넘친다. 자존심이 세계 1등과 맞먹지만 관심 받는 것을 좋아하고 연인에게는 은근히 애교쟁이다. 시크한 츤데레로 연인에게 끊임없이 설렘을 안겨주는 당신은 고양이와 닮았다!",
     ],
     cat: [
-      "당신과 어울리는 남자친구는 강아지상입니다.",
-      "남자친구는 강아지상, 강다니엘, 백현, 박보검, 송중기",
+      "강아지상",
+      "강다니엘, 백현, 박보검, 송중기",
+      "다정다감하고 귀여운 당신은 모든 사람들에게 즐거움을 주는 호감형이다! 친절하고 활발한 성격으로 어디에서도 인기폭발이며 애교와 웃음이 많아 연인에게 특히나 사랑스럽다. 당신은 애인바라기로 애인의 관심이 부족하면 시무룩해지고 외로움을 타는 모습이 마치 강아지와 똑 닮았다!",
     ],
     dear: [
-      "당신과 어울리는 남자친구는 토끼상입니다.",
-      "남자친구는 토끼상, 정국, 바비, 박지훈, 수호",
+      "토끼상",
+      "정국, 바비, 박지훈, 수호",
+      "천진난만하고 귀여운 당신은 주변 사람들에게 기쁨을 주는 행복바이러스다! 호기심이 많아 활발하며 귀엽고 순수한 외모로 연인의 보호본능을 자극한다. 존재 자체가 상큼한 당신은 특별한 애교 없이도 연인에게 너무나도 사랑스럽다!",
     ],
     fox: [
-      "당신과 어울리는 남자친구는 곰상입니다.",
-      "남자친구는 곰상, 마동석, 조진웅, 조세호, 안재홍",
+      "곰상",
+      "마동석, 조진웅, 조세호, 안재홍",
+      "첫 인상은 무서워 보이지만 알고 보면 귀여운 매력의 당신! 꼼꼼하고 섬세한 성격으로 연인을 헌신적으로 챙겨주는 당신은 연인에게 듬직한 존재! 포근한 매력에 듬직함까지 갖춘 최고의 남자다!",
     ],
     rabbit: [
-      "당신과 어울리는 남자친구는 공룡상입니다.",
-      "남자친구는 공룡상, 윤두준, 이민기, 김우빈, 육성재, 공유",
+      "공룡상",
+      "윤두준, 이민기, 김우빈, 육성재, 공유",
+      "무심한 성격에 첫인상은 나쁜 남자 같지만, 알고 보면 따뜻함이 묻어나는 당신! 시크한 매력에 선뜻 다가가지 못하지만 한번 다가가면 헤어나올 수 없는 터프한 매력을 가진 카리스마 있는 남자다.",
     ],
   };
 
@@ -123,13 +128,7 @@ async function predict() {
       }
     }
   }
-
-  const starsEng = [];
-
-  for (let i = 0; i < 5; i++) {
-    let a = description[resultArray[i].key];
-    starsEng.push(a[2]);
-  }
+  console.log(resultArray);
 
   let starsListImg = "";
 
@@ -139,7 +138,7 @@ async function predict() {
         starsListImg +
         ` <div class="star__list__wrap">
         <div class="star__list__img">
-        ${resultArray[j].key}
+        ${description[resultArray[j].key][0]}
         </div> 
         <div class="percent zero">${resultArray[j].value}%</div>
       </div>
@@ -149,7 +148,7 @@ async function predict() {
         starsListImg +
         ` <div class="star__list__wrap">
         <div class="star__list__img">
-        ${resultArray[j].key}
+        ${description[resultArray[j].key][0]}
         </div> 
         <div class="percent zeroone">${resultArray[j].value}%</div>
       </div>
@@ -159,7 +158,7 @@ async function predict() {
         starsListImg +
         ` <div class="star__list__wrap">
         <div class="star__list__img">
-        ${resultArray[j].key}
+        ${description[resultArray[j].key][0]}
         </div> 
         <div class="percent onetwo">${resultArray[j].value}%</div>
       </div>
@@ -169,7 +168,7 @@ async function predict() {
         starsListImg +
         ` <div class="star__list__wrap">
         <div class="star__list__img">
-        ${resultArray[j].key}
+        ${description[resultArray[j].key][0]}
         </div> 
         <div class="percent twothree">${resultArray[j].value}%</div>
       </div>
@@ -179,7 +178,7 @@ async function predict() {
         starsListImg +
         ` <div class="star__list__wrap">
         <div class="star__list__img">
-        ${resultArray[j].key}
+        ${description[resultArray[j].key][0]}
         </div> 
         <div class="percent threefour">${resultArray[j].value}%</div>
       </div>
@@ -189,7 +188,7 @@ async function predict() {
         starsListImg +
         ` <div class="star__list__wrap">
         <div class="star__list__img">
-        ${resultArray[j].key}
+        ${description[resultArray[j].key][0]}
         </div> 
         <div class="percent fourfive">${resultArray[j].value}%</div>
       </div>
@@ -199,7 +198,7 @@ async function predict() {
         starsListImg +
         ` <div class="star__list__wrap">
         <div class="star__list__img">
-        ${resultArray[j].key}
+        ${description[resultArray[j].key][0]}
         </div> 
         <div class="percent fivesix">${resultArray[j].value}%</div>
       </div>
@@ -209,7 +208,7 @@ async function predict() {
         starsListImg +
         ` <div class="star__list__wrap">
         <div class="star__list__img">
-        ${resultArray[j].key}
+        ${description[resultArray[j].key][0]}
         </div> 
         <div class="percent sixseven">${resultArray[j].value}%</div>
       </div>
@@ -219,7 +218,7 @@ async function predict() {
         starsListImg +
         ` <div class="star__list__wrap">
         <div class="star__list__img">
-        ${resultArray[j].key}
+        ${description[resultArray[j].key][0]}
         </div> 
         <div class="percent seveneight">${resultArray[j].value}%</div>
       </div>
@@ -229,7 +228,7 @@ async function predict() {
         starsListImg +
         ` <div class="star__list__wrap">
         <div class="star__list__img">
-        ${resultArray[j].key}
+        ${description[resultArray[j].key][0]}
         </div> 
         <div class="percent eightnine">${resultArray[j].value}%</div>
       </div>
@@ -239,7 +238,7 @@ async function predict() {
         starsListImg +
         ` <div class="star__list__wrap">
         <div class="star__list__img">
-        ${resultArray[j].key}
+        ${description[resultArray[j].key][0]}
         </div> 
         <div class="percent nineten">${resultArray[j].value}%</div>
       </div>
@@ -247,18 +246,18 @@ async function predict() {
     }
   }
 
+  let desc = document.createElement("p");
+  desc.innerHTML = `당신은 ${description[answer][0]} 남자친구와 잘 어울리네요!`;
+  labelContainer.appendChild(desc);
+
   let result = document.createElement("div");
-  result.textContent = `${description[answer][1]}`;
+  result.innerHTML = `${description[answer][0]} 연예인: ${description[answer][1]}`;
   labelContainer.appendChild(result);
 
   let result2 = document.createElement("div");
   result2.classList.add("celebrity");
-  result2.textContent = `${answer}`;
+  result2.innerHTML = `${description[answer][2]}`;
   labelContainer.appendChild(result2);
-
-  let desc = document.createElement("p");
-  desc.textContent = description[answer][0];
-  labelContainer.appendChild(desc);
 
   let otherResult = document.createElement("div");
   otherResult.classList.add("other__result");
@@ -269,43 +268,14 @@ async function predict() {
   reset.innerHTML = "다른 사진도 해보기";
   labelContainer.appendChild(reset);
 
-  // let boyFriendTest = document.createElement("button");
-  // boyFriendTest.classList.add("boy__friend__btn");
-  // boyFriendTest.innerHTML = "크리스마스를 함께 할 내 남자친구상은?";
-  // labelContainer.appendChild(boyFriendTest);
-
-  // let girlFriendTest = document.createElement("button");
-  // girlFriendTest.classList.add("girl__friend__btn");
-  // girlFriendTest.innerHTML = "크리스마스를 함께 할 내 여자친구상은?";
-  // labelContainer.appendChild(girlFriendTest);
-
   reset.addEventListener("click", handleReset);
 
   const privacy = document.querySelector(`.noti`);
   privacy.style.display = "none";
 
   function handleReset(e) {
-    location.href = "again.html";
+    location.reload(true);
+    location.href = location.href;
+    history.go(0);
   }
-}
-
-var toggle = document.getElementById("container");
-var toggleContainer = document.getElementById("toggle-container");
-var toggleNumber;
-let changePicture = document.querySelector(".image-upload-wrap");
-if (toggle) {
-  toggle.addEventListener("click", function () {
-    toggleNumber = !toggleNumber;
-    if (toggleNumber) {
-      toggleContainer.style.clipPath = "inset(0 0 0 50%)";
-      toggleContainer.style.backgroundColor = "dodgerblue";
-      changePicture.style.backgroundImage =
-        "url(https://kr.object.ncloudstorage.com/your-face/man.jpeg)";
-    } else {
-      toggleContainer.style.clipPath = "inset(0 50% 0 0)";
-      toggleContainer.style.backgroundColor = "#D74046";
-      changePicture.style.backgroundImage =
-        "url(https://kr.object.ncloudstorage.com/your-face/woman.png)";
-    }
-  });
 }
