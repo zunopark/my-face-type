@@ -34,7 +34,7 @@ $(".image-upload-wrap").bind("dragleave", function () {
 });
 
 // 동물상 모델 학습
-const URL = "https://teachablemachine.withgoogle.com/models/geNoPYIVp/";
+const URL = "https://teachablemachine.withgoogle.com/models/_29hfPNBO/";
 
 let model, labelContainer, maxPredictions;
 
@@ -58,12 +58,6 @@ async function predict() {
   const prediction = await model.predict(image, false);
 
   let arr = new Map();
-  // 내 얼굴상에 따른 이성친구의 얼굴상을 mapping
-  // 내가 dog 일 때 => 상대방은 cat
-  // 내가 cat 일 때 => 상대방은 dog
-  // 내가 bear 일 때 => 상대방은 rabbit
-  // 내가 dino 일 때 => 상대방은 bear
-  // 내가 rabbit 일 때 => 상대방은 dino
   let description = {
     dog: [
       "당신의 얼굴상과 어울리는 남자친구의 관상은 고양이 얼굴의 관상입니다.",
@@ -73,11 +67,11 @@ async function predict() {
       "당신의 얼굴상과 어울리는 남자친구의 관상은 강아지 얼굴의 관상입니다.",
       "남자친구는 강아지 얼굴의 관상, 강다니엘, 백현, 박보검, 송중기",
     ],
-    bear: [
+    dear: [
       "당신의 얼굴상과 어울리는 남자친구의 관상은 토끼 얼굴의 관상입니다.",
       "남자친구는 토끼 얼굴의 관상, 정국, 바비, 박지훈, 수호",
     ],
-    dino: [
+    fox: [
       "당신의 얼굴상과 어울리는 남자친구의 관상은 곰 얼굴의 관상입니다.",
       "남자친구는 곰 얼굴의 관상, 마동석, 조진웅, 조세호, 안재홍",
     ],
