@@ -28,14 +28,14 @@ if (superImg) {
   superImg.addEventListener("click", handleSuper);
 }
 
-const dosaImg = document.querySelector(`.dosa__img`);
-if (dosaImg) {
-  function handleDosa() {
-    var newWindow = window.open("about:blank");
-    newWindow.location.href = "https://bit.ly/3ogfHm7";
-  }
-  dosaImg.addEventListener("click", handleDosa);
-}
+// const dosaImg = document.querySelector(`.dosa__img`);
+// if (dosaImg) {
+//   function handleDosa() {
+//     var newWindow = window.open("about:blank");
+//     newWindow.location.href = "https://bit.ly/3ogfHm7";
+//   }
+//   dosaImg.addEventListener("click", handleDosa);
+// }
 
 const linerImg = document.querySelector(`.liner__img`);
 if (linerImg) {
