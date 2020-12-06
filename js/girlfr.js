@@ -1,4 +1,4 @@
-const aiCont = document.querySelector(`.ai`);
+const aiCont = document.querySelector(`.ai__boy`);
 
 async function readURL(input) {
   if (input.files && input.files[0]) {
@@ -34,7 +34,7 @@ $(".image-upload-wrap").bind("dragleave", function () {
 });
 
 // 동물상 모델 학습
-const URL = "https://teachablemachine.withgoogle.com/models/_29hfPNBO/";
+const URL = "https://teachablemachine.withgoogle.com/models/geNoPYIVp/";
 
 let model, labelContainer, maxPredictions;
 
@@ -60,24 +60,24 @@ async function predict() {
   let arr = new Map();
   let description = {
     dog: [
-      "당신의 얼굴상과 어울리는 남자친구의 관상은 고양이 얼굴의 관상입니다.",
-      "남자친구는 고양이 얼굴의 관상, 황민현, 시우민, 강동원, 이종석, 이준기",
+      "당신과 어울리는 여자친구는 고양이상입니다.",
+      "여자친구는 고양이상 : 유인영, 제니, 차예련, 한채영",
     ],
     cat: [
-      "당신의 얼굴상과 어울리는 남자친구의 관상은 강아지 얼굴의 관상입니다.",
-      "남자친구는 강아지 얼굴의 관상, 강다니엘, 백현, 박보검, 송중기",
+      "당신과 어울리는 여자친구는 강아지상입니다.",
+      "여자친구는 강아지상 : 박보영, 송혜교, 한지민, 손예진, 방민아",
     ],
-    dear: [
-      "당신의 얼굴상과 어울리는 남자친구의 관상은 토끼 얼굴의 관상입니다.",
-      "남자친구는 토끼 얼굴의 관상, 정국, 바비, 박지훈, 수호",
-    ],
-    fox: [
-      "당신의 얼굴상과 어울리는 남자친구의 관상은 곰 얼굴의 관상입니다.",
-      "남자친구는 곰 얼굴의 관상, 마동석, 조진웅, 조세호, 안재홍",
+    deer: [
+      "당신과 어울리는 여자친구는 사슴상입니다.",
+      "여자친구는 사슴상 : 고아라, 문근영, 이연희, 윤아",
     ],
     rabbit: [
-      "당신의 얼굴상과 어울리는 남자친구의 관상은 공룡 얼굴의 관상입니다.",
-      "남자친구는 공룡 얼굴의 관상, 윤두준, 이민기, 김우빈, 육성재, 공유",
+      "당신과 어울리는 여자친구는 토끼상입니다.",
+      "여자친구는 토끼상 : 나연, 소희, 수지",
+    ],
+    fox: [
+      "당신과 어울리는 여자친구는 여우상입니다.",
+      "여자친구는 여우상 : 경리, 쯔위, 지연, 헤이즈",
     ],
   };
 
