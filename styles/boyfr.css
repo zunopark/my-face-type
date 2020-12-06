@@ -102,3 +102,16 @@
     transform: translateX(-2px);
   }
 }
+
+.boyfr__star {
+  font-size: 16px;
+  margin-top: 6px;
+}
+
+.result .boyfr__celebrity {
+  line-height: 24px;
+  margin-bottom: 8px;
+  color: rgb(95, 0, 0);
+  font-size: 19px;
+  text-align: justify;
+}

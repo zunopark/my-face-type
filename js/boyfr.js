@@ -251,11 +251,12 @@ async function predict() {
   labelContainer.appendChild(desc);
 
   let result = document.createElement("div");
+  result.classList.add("boyfr__star");
   result.innerHTML = `${description[answer][0]} 연예인: ${description[answer][1]}`;
   labelContainer.appendChild(result);
 
   let result2 = document.createElement("div");
-  result2.classList.add("celebrity");
+  result2.classList.add("boyfr__celebrity");
   result2.innerHTML = `${description[answer][2]}`;
   labelContainer.appendChild(result2);
 
