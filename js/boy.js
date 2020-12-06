@@ -1,4 +1,4 @@
-const aiCont = document.querySelector(`.ai`);
+const aiCont = document.querySelector(`.ai__boy`);
 
 async function readURL(input) {
   if (input.files && input.files[0]) {

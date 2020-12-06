@@ -94,9 +94,9 @@
       <h2 class="sub">나랑 어울리는 내 남자친구</h2>
     </div>
 
-    <div class="border">
-      <div class="frame">
-        <div class="image">
+    <div class="boyfr__border">
+      <div class="boyfr__frame">
+        <div class="boyfr__image">
           <script
             class="jsbin"
             src="https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"
@@ -123,7 +123,9 @@
                 alt="your image"
               />
               <div class="image-title-wrap">
-                <div class="ai">관상가가 당신의 관상을 분석중..</div>
+                <div class="ai__boy">
+                  AI가 당신과 잘 어울리는 남자친구를 분석중..
+                </div>
                 <!-- <button
                   type="button"
                   onclick="removeUpload()"
@@ -144,19 +146,13 @@
         </div>
       </div>
     </div>
+    <div id="label-container" class="result"></div>
 
-    <footer class="footer">
-      <div class="contact">
-        <a href="mailto:ghdtlr90@naver.com" class="contact_me">개발자 문의</a>
-        <a href="mailto:ghdtlr90@naver.com" class="contact_me">광고 문의</a>
-      </div>
-      <div class="footer__icon">
-        <i class="fas fa-portrait"></i>
-      </div>
-      <span class="footer__text"> 관상가양반 2020 &copy;</span>
-    </footer>
+    <footer class="footer"></footer>
 
-    <script src="js/fileupload.js"></script>
+    <script src="js/boy.js"></script>
+    <script src="js/footer.js"></script>
+
     <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@1.3.1/dist/tf.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@teachablemachine/image@0.8/dist/teachablemachine-image.min.js"></script>
 

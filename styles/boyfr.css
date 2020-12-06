@@ -51,7 +51,7 @@
   margin-left: 85px;
 }
 
-.girlfr__border {
+.boyfr__border {
   box-sizing: border-box;
   position: relative;
   background: #252525;
@@ -70,13 +70,13 @@
     -15px 15px 2px 1px rgba(0, 0, 0, 0.01),
     -16px 16px 2px 1px rgba(0, 0, 0, 0.01);
 }
-.girlfr__border:before {
+.boyfr__border:before {
   content: "";
   display: block;
   padding-bottom: 125%;
 }
 
-.girlfr__frame {
+.boyfr__frame {
   left: 3%;
   top: 2.5%;
   box-shadow: inset -1px 1px 6px 1px rgba(0, 0, 0, 0.24);
@@ -90,10 +90,14 @@
   position: absolute;
 }
 
-.girlfr__image {
+.boyfr__image {
   box-shadow: inset 0 0 1px 0 rgba(0, 0, 0, 0.2);
   height: 100%;
   width: 100%;
   background-size: cover;
   background-position: center center;
+}
+
+.ai__boy {
+  font-size: 12px;
 }
