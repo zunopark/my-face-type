@@ -332,7 +332,13 @@ async function predict() {
   reset.innerHTML = "다른 사진도 해보기";
   labelContainer.appendChild(reset);
 
+  let otherTest = document.createElement("button");
+  otherTest.classList.add("other__test");
+  otherTest.innerHTML = "다른 테스트도 살펴보기 >";
+  labelContainer.appendChild(otherTest);
+
   reset.addEventListener("click", handleReset);
+  otherTest.addEventListener("click", handleOtherTest);
 
   const privacy = document.querySelector(`.noti`);
   privacy.style.display = "none";
@@ -341,6 +347,10 @@ async function predict() {
     location.reload(true);
     location.href = location.href;
     history.go(0);
+  }
+
+  function handleOtherTest() {
+    location.href = "list.html";
   }
 }
 
