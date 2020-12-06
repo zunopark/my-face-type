@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="인공지능이 말해주는 내 관상! 나와 닮은 연예인은 누구일까? 관상가 양반에게 관상 테스트를 받아 알아보세요! | 관상 테스트 "
+    />
+    <meta
+      name="keywords"
+      content="인공지능, 관상, 관상테스트, 관상가 양반, 인공지능, 연예인 관상 테스트, 연예인, 인스타 관상, 관상보는법, 인스타 관상 테스트, 나와 같은 관상을 가진 연예인"
+    />
+    <meta name="author" content="용섭 준호" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="인공지능이 말해주는 내 관상 테스트" />
+    <meta
+      property="og:description"
+      content="인공지능이 말해주는 내 관상! 나와 닮은 연예인은 누구일까? 관상가 양반에게 관상 테스트를 받아 알아보세요!"
+    />
+    <meta
+      property="og:image"
+      content="https://i.ibb.co/Tr4GyMY/2020-12-02-1-20-23.png"
+    />
+    <link rel="canonical" href="https://yourface.ga" />
+    <link rel="stylesheet" href="styles/style.css" />
+    <link
+      rel="stylesheet"
+      href="https://use.fontawesome.com/releases/v5.5.0/css/all.css"
+      integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU"
+      crossorigin="anonymous"
+    />
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=East+Sea+Dokdo&display=swap");
+      @import url("https://fonts.googleapis.com/css2?family=Yeon+Sung&display=swap");
+    </style>
+    <title>관상 테스트</title>
+    <meta
+      name="naver-site-verification"
+      content="388bb9c4a4d15bff6005df99c9b9effe5f73f54e"
+    />
+    <link
+      rel="shortcut icon"
+      href="http://keen-poitras-075b07.netlify.app/favicon.ico"
+      type="image/x-icon"
+    />
+    <link
+      rel="icon"
+      href="https://yourface.ga//favicon.ico"
+      type="image/x-icon"
+    />
+    <meta
+      name="naver-site-verification"
+      content="7024ffc62a3071ba280488657627fc78d3cd7dfd"
+    />
+    <meta
+      name="google-site-verification"
+      content="3MiHebIuTuzqcXnB_XO4fRIpDzmHAdFfUUBI4TZkrHA"
+    />
+    <script
+      async
+      src="https://www.googletagmanager.com/gtag/js?id=UA-119161496-1"
+    ></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag("js", new Date());
+
+      gtag("config", "UA-119161496-1");
+    </script>
+  </head>
+  <body>
+    <div class="ad__upper">
+      <ins
+        class="kakao_ad_area"
+        style="display: none"
+        data-ad-unit="DAN-XWVEpuHbdOi7o4pX"
+        data-ad-width="320"
+        data-ad-height="50"
+      ></ins>
+      <script
+        type="text/javascript"
+        src="//t1.daumcdn.net/kas/static/ba.min.js"
+        async
+      ></script>
+      <div class="ad__upper__line"></div>
+      <div class="ad__upper__hide__btn"><i class="fas fa-times"></i></div>
+    </div>
+    <header class="header">
+      <div class="header__upper">
+        <div class="header__title">Your.Face</div>
+        <div class="header__menu__btn">
+          <i class="fas fa-bars"></i>
+        </div>
+      </div>
+
+      <div class="header__menu__wrap">
+        <div class="menu menu__select" id="ai">관상가 양반</div>
+        <div class="menu" id="boyAi">내 남자친구 동물상</div>
+        <div class="menu" id="girlAi">내 여자친구 동물상</div>
+        <div class="menu" id="allList">모든 테스트 보기</div>
+      </div>
+    </header>
+
+    <div class="main__ai__title">
+      <h1 class="title">관상가 양반</h1>
+      <h2 class="subtitle">인공지능이 말해주는 내 관상</h2>
+      <h2 class="number">
+        <span class="count__num"></span>명이 관상을 봤어요.
+      </h2>
+      <h2 class="timer"></h2>
+    </div>
+
+    <div id="container">
+      <div class="inner-container">
+        <div class="toggle">
+          <p>남</p>
+        </div>
+        <div class="toggle">
+          <p>여</p>
+        </div>
+      </div>
+      <div class="inner-container" id="toggle-container">
+        <div class="toggle">
+          <p>남</p>
+        </div>
+        <div class="toggle">
+          <p>여</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="border">
+      <div class="frame">
+        <div class="image">
+          <script
+            class="jsbin"
+            src="https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"
+          ></script>
+          <div class="file-upload">
+            <div class="image-upload-wrap">
+              <input
+                class="file-upload-input"
+                type="file"
+                onchange="readURL(this);"
+                accept="image/*"
+              />
+              <div class="drag-text">
+                <i class="far fa-image"></i>
+                <h2>(사진 첨부)</h2>
+                <h3>관상? 얼굴 한번 봅시다</h3>
+              </div>
+            </div>
+            <div class="file-upload-content">
+              <img
+                class="file-upload-image"
+                id="face-image"
+                src="#"
+                alt="your image"
+              />
+              <div class="image-title-wrap">
+                <div class="ai">관상가가 당신의 관상을 분석중..</div>
+                <!-- <button
+                  type="button"
+                  onclick="removeUpload()"
+                  class="remove-image"
+                >
+                  Remove <span class="image-title">Uploaded Image</span>
+                </button> -->
+              </div>
+            </div>
+            <!-- <button
+              class="file-upload-btn"
+              type="button"
+              onclick="$('.file-upload-input').trigger( 'click' )"
+            >
+              Add Image
+            </button> -->
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="noti">*사용자의 사진은 어디에도 저장되지 않습니다.</div>
+    <div id="label-container" class="result"></div>
+
+    <!-- <div class="hello__members">
+      <img src="https://kr.object.ncloudstorage.com/your-face/hello.gif" alt=""
+      / class="hello__img">
+    </div> -->
+
+    <div class="ad_box">
+      <ins
+        class="kakao_ad_area"
+        style="display: none"
+        data-ad-unit="DAN-urmbq33qsgfr"
+        data-ad-width="320"
+        data-ad-height="100"
+      ></ins>
+      <script
+        type="text/javascript"
+        src="//t1.daumcdn.net/kas/static/ba.min.js"
+        async
+      ></script>
+    </div>
+
+    <div class="ad_box2">
+      <ins
+        class="kakao_ad_area"
+        style="display: none"
+        data-ad-unit="DAN-gJ2ilzhw0JsBKnAx"
+        data-ad-width="300"
+        data-ad-height="250"
+      >
+      </ins>
+      <script
+        type="text/javascript"
+        src="//t1.daumcdn.net/kas/static/ba.min.js"
+        async
+      ></script>
+    </div>
+
+    <section
+      id="yotube-bottom-link"
+      class="mt-2 d-flex flex-column justify-content-center align-items-center"
+      onclick="gtag('event', '조코딩 유튜브 클릭', {'event_category': '조코딩 유튜브 클릭','event_label': '하단 광고'});"
+    >
+      <iframe
+        width="320"
+        height="180"
+        src="https://www.youtube.com/embed/s6SITKSN9Q0"
+        frameborder="0"
+        allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+        allowfullscreen
+      ></iframe>
+      <div class="jocoding">
+        <a
+          href="https://www.youtube.com/channel/UCQNE2JmbasNYbjGAcuBiRRg"
+          target="_blank"
+          >제작 도움: 유튜브 조코딩 채널</a
+        >
+      </div>
+    </section>
+    <div class="ad_box">
+      <ins
+        class="kakao_ad_area"
+        style="display: none"
+        data-ad-unit="DAN-t4ibi24i9o38"
+        data-ad-width="320"
+        data-ad-height="100"
+      ></ins>
+      <script
+        type="text/javascript"
+        src="//t1.daumcdn.net/kas/static/ba.min.js"
+        async
+      ></script>
+    </div>
+    <section
+      id="yotube-bottom-link"
+      class="mt-2 d-flex flex-column justify-content-center align-items-center"
+      onclick="gtag('event', '관상 테스트', {'event_category': '관상 테스트 클릭','event_label': '하단 광고'});"
+    >
+      <div class="crazy">
+        <a href="https://www.youtube.com/embed/ZJy3hQxFsxY" target="_blank"
+          >AI 관상 테스트를 만든 개발자가 사는 곳은?</a
+        >
+      </div>
+      <iframe
+        width="320"
+        height="180"
+        src="https://www.youtube.com/embed/ZJy3hQxFsxY"
+        frameborder="0"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowfullscreen
+      ></iframe>
+    </section>
+
+    <div class="liner__members">
+      <img src="https://kr.object.ncloudstorage.com/your-face/liner.png" alt=""
+      / class="liner__img">
+    </div>
+    <div class="super__members">
+      <img src="https://kr.object.ncloudstorage.com/your-face/supermembers.png"
+      alt="" / class="super__img">
+    </div>
+
+    <div class="apologize">
+      안녕하세요, 관상 테스트입니다.<br /><br />
+
+      약 6개월 전에 공부를 목적으로 만들었던 사이트가 갑작스럽게 많은 관심을
+      받게 되었습니다.<br /><br />
+
+      <span class="bold"
+        >여자 폼을 선택했을 때 나왔던 액자 속 그림이 우나영 작가님의
+        작품이었는데, 저희는 저작권 관련하여 인지하지 못하고 계속 사용하고
+        있었습니다.</span
+      ><br /><br />
+
+      <span class="bold"
+        >뒤늦게 해당 상황을 인지하여 후속 조치와 함께 우나영 작가님께 즉시
+        사과드렸으며, 작가님께서 사정을 이해해주시고 사과를
+        받아주셨습니다.</span
+      >
+      <br /><br />
+
+      작가님의 작품을 무단으로 사용한 점, 다시 한번 진심으로 죄송합니다.
+    </div>
+
+    <footer class="footer"></footer>
+
+    <script src="js/footer.js"></script>
+    <script src="js/header.js"></script>
+    <script src="js/livetime.js"></script>
+    <script src="js/ad.js"></script>
+    <script src="js/fileupload.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@1.3.1/dist/tf.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@teachablemachine/image@0.8/dist/teachablemachine-image.min.js"></script>
+
+    <div class="view__number" style="display: none">
+      <!-- Start of CuterCounter Code -->
+      <a href="https://www.webfreecounter.com/" target="_blank"
+        ><img
+          src="https://www.cutercounter.com/hits.php?id=hexkxqda&nd=1&style=1"
+          border="0"
+          alt="visitor counter"
+      /></a>
+      <!-- End of CuterCounter Code -->
+    </div>
+  </body>
+  <!-- 
+Copyright (c) 2020 by Aaron Vanston (https://codepen.io/aaronvanston/pen/yNYOXR)
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ -->
+  <!-- Copyright (c) 2020 by Lasse Diercks (https://codepen.io/lassediercks/pen/ZXezQJ)
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ -->
+</html>
