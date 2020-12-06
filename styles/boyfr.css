@@ -1,60 +1,28 @@
-.girlfr__title {
+.boyfr__title {
   display: flex;
   flex-direction: column;
   align-items: center;
   font-family: "Yeon Sung", cursive;
   padding: 30px;
+  padding-bottom: 20px;
 }
 
-.girlfr__title .title {
+.boyfr__title .title {
   font-size: 26px;
   margin-bottom: 10px;
 }
 
-.girlfr__title .sub {
-  font-size: 20px;
+.boyfr__title .sub {
+  font-size: 18px;
   opacity: 0.8;
-}
-
-.girlfr__frame {
-  margin: 50px auto;
-  border: 25px solid #222;
-  height: 450px;
-  width: 350px;
-  -webkit-box-shadow: px 2px 3px 1px rgba(0, 0, 0, 0.5);
-  box-shadow: 0px 3px 10px 4px rgba(0, 0, 0, 0.3);
-}
-
-.girlfr__border {
-  background: white;
-  height: 100%;
-  width: 100%;
-  /* -webkit-box-shadow: inset 10px 10px 10px 4px rgba(0, 0, 0, 0.4);
-  box-shadow: inset 3px 7px 2px 5px rgba(0, 0, 0, 0.4); */
-}
-
-.girlfr__image {
-  position: absolute;
-  height: 350px;
-  width: 250px;
-  margin-left: 25px;
-  margin-top: 25px;
-  -webkit-box-shadow: inset 10px 10px 10px 4px rgba(0, 0, 0, 0.6);
-  box-shadow: inset 3px 7px 2px 5px rgba(0, 0, 0, 0.1);
-}
-
-.girlfr__text {
-  position: absolute;
-  margin-top: 420px;
-  font-family: "Playball", cursive;
-  font-size: 30px;
-  margin-left: 85px;
+  text-align: center;
+  line-height: 22px;
 }
 
 .boyfr__border {
   box-sizing: border-box;
   position: relative;
-  background: #252525;
+  background: #02228b;
   background-image: linear-gradient(top right, #5d5d5b, #383838);
   /* padding: 7px; */
   box-shadow: -1px 1px 2px 1px rgba(0, 0, 0, 0.1),
@@ -100,4 +68,16 @@
 
 .ai__boy {
   font-size: 12px;
+}
+
+.boyfr__file-upload {
+  background-color: #ecefff;
+  width: 100%;
+  margin: 0 auto;
+  /* padding: 20px; */
+  /* border: 10px solid red; */
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
