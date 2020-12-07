@@ -1,7 +1,9 @@
 @media screen and (min-width: 500px) {
   .border,
   .boyfr__border,
-  .girlfr__border {
+  .girlfr__border,
+  .test__upper,
+  .submitForm {
     width: 420px;
   }
 
@@ -16,7 +18,9 @@
 @media screen and (max-width: 500px) {
   .border,
   .boyfr__border,
-  .girlfr__border {
+  .girlfr__border,
+  .test__upper,
+  .submitForm {
     width: 70%;
   }
 
