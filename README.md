@@ -1,6 +1,7 @@
 # 관상 테스트
 ## Google의 Teachable Machine을 이용한 내 관상 알아보기
 ## 네이버 실시간 검색어 1위를 한 서비스!
+### https://yourface.ga/
 ### 뉴스 기사
 1. '내가 수지랑 같은 관상?… 관상테스트 '화제' https://moneys.mt.co.kr/news/mwView.php?no=2020120208038011890
 
@@ -106,5 +107,3 @@ http://www.list.kr/news/articleView.html?idxno=206100
 
 관상 테스트, 인공지능이 말해주는 내 관상은? 관상 같은 연예인 궁금증
 https://www.ccreview.co.kr/news/articleView.html?idxno=296852
-
-### 사이트 : http://yourface.ga
