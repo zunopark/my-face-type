@@ -337,14 +337,14 @@ async function predict() {
   otherTest.innerHTML = "다른 테스트도 살펴보기 >";
   labelContainer.appendChild(otherTest);
 
-  let makeTest = document.createElement("button");
-  makeTest.classList.add("other__test");
-  makeTest.innerHTML = "나만의 테스트 만들기 >";
-  labelContainer.appendChild(makeTest);
+  // let makeTest = document.createElement("button");
+  // makeTest.classList.add("other__test");
+  // makeTest.innerHTML = "나만의 테스트 만들기 >";
+  // labelContainer.appendChild(makeTest);
 
   reset.addEventListener("click", handleReset);
   otherTest.addEventListener("click", handleOtherTest);
-  makeTest.addEventListener("click", handleMakeTest);
+  // makeTest.addEventListener("click", handleMakeTest);
 
   const privacy = document.querySelector(`.noti`);
   privacy.style.display = "none";
