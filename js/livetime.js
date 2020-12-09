@@ -7,13 +7,13 @@ if (countNum) {
   function handleCountNum() {
     let countNumber = 4209999;
     function countUp() {
-      if (countNumber < 8135311) {
+      if (countNumber < 8235311) {
         countNumber = countNumber + 36994;
         countNum.innerHTML = countNumber;
       }
     }
     setInterval(countUp, 1);
-    time.innerHTML = `(20.12.07 22:00 기준)`;
+    time.innerHTML = `(20.12.09 10:00 기준)`;
   }
   handleCountNum();
 }
