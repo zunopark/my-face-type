@@ -5,15 +5,15 @@ const time = document.querySelector(`.timer`);
 
 if (countNum) {
   function handleCountNum() {
-    let countNumber = 4209999;
+    let countNumber = 7209999;
     function countUp() {
-      if (countNumber < 8295311) {
-        countNumber = countNumber + 36994;
+      if (countNumber < 11362627) {
+        countNumber = countNumber + 37994;
         countNum.innerHTML = countNumber;
       }
     }
     setInterval(countUp, 1);
-    time.innerHTML = `(20.12.10 01:00 기준)`;
+    time.innerHTML = `(20.12.10 10:00 기준)`;
   }
   handleCountNum();
 }
