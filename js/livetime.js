@@ -24,18 +24,9 @@ function getTime() {
   let date = currentTime.getDate();
   let hour = currentTime.getHours();
 
-  let days = Math.floor(currentTime / 86400000);
-  const hours = Math.floor((currentTime % 86400000) / 3600000);
-  const minutes = Math.floor(((currentTime % 86400000) % 3600000) / 60000);
-  const seconds = Math.floor(
-    (((currentTime % 86400000) % 3600000) % 60000) / 1000
-  );
-  console.log(days, hours, minutes, seconds);
-  console.log(year, month, date, hour);
-  console.log(currentTime);
   const time = document.querySelector(`.timer`);
 
   time.innerHTML = `(${year}.${month < 10 ? `0${month}` : month}.${
     date < 10 ? `0${date}` : date
-  } ${hours < 10 ? `0${hour}` : hour}:00 기준)`;
+  } ${hour < 10 ? `0${hour}` : hour}:00 기준)`;
 }
