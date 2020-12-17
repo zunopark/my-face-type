@@ -50,7 +50,7 @@
   transition: 0.5s transform;
   opacity: 0.5;
   z-index: 1;
-  top: -94px;
+  top: -126px;
 }
 
 .header__anim__result {
@@ -59,7 +59,7 @@
 
 .header__anim__up {
   opacity: 1;
-  transform: translateY(150px);
+  transform: translateY(186px);
 }
 
 .header__menu__wrap .menu {
