@@ -5,10 +5,10 @@ const countNum = document.querySelector(`.count__num`);
 if (countNum) {
   getTime();
   function handleCountNum() {
-    let countNumber = 7209999;
+    let countNumber = 2209999;
     function countUp() {
-      if (countNumber < 12362627) {
-        countNumber = countNumber + 37994;
+      if (countNumber < 12412627) {
+        countNumber = countNumber + 27994;
         countNum.innerHTML = countNumber;
       }
     }
