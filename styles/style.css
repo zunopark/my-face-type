@@ -385,3 +385,8 @@ a:hover {
 .christmas__dec2 img {
   width: 20px;
 }
+
+.margin_br {
+  display: inline-block;
+  margin-top: 8px;
+}
