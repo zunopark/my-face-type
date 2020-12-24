@@ -330,11 +330,23 @@ async function predict() {
 
   let reset = document.createElement("button");
   reset.innerHTML = "다른 사진도 해보기";
+  reset.onclick = function () {
+    gtag("event", "한번더 클릭", {
+      event_category: "한번더 클릭",
+      event_label: "결과 버튼",
+    });
+  };
   labelContainer.appendChild(reset);
 
   let otherTest = document.createElement("button");
   otherTest.classList.add("other__test");
-  otherTest.innerHTML = "다른 테스트도 살펴보기 >";
+  otherTest.onclick = function () {
+    gtag("event", "달편지 클릭", {
+      event_category: "달편지 클릭",
+      event_label: "결과 버튼",
+    });
+  };
+  otherTest.innerHTML = `<i class="fas fa-moon moon__i"></i>달편지 - 소중한 사람에게 속마음 전하기`;
   labelContainer.appendChild(otherTest);
 
   // let makeTest = document.createElement("button");
@@ -356,7 +368,7 @@ async function predict() {
   }
 
   function handleOtherTest() {
-    location.href = "list.html";
+    location.href = "http://www.moonletter.ml/";
   }
 
   function handleMakeTest() {

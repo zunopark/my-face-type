@@ -97,12 +97,12 @@
 
 .result .other__test {
   margin-top: -15px;
-  background-color: #f5f9ff;
-  border: 1px solid #162536;
+  background-color: #030025;
+  border: 1px solid #030025;
   border-radius: 30px 30px 30px 30px;
-  width: 150px;
+  width: 100%;
   padding: 10px 10px;
-  color: #162536;
+  color: white;
   font-size: 15px;
   font-family: "Yeon Sung", cursive;
   margin-bottom: 20px;
