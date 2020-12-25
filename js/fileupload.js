@@ -346,7 +346,7 @@ async function predict() {
       event_label: "결과 버튼",
     });
   };
-  otherTest.innerHTML = `<i class="fas fa-moon moon__i"></i>달편지 - 소중한 사람에게 속마음 전하기`;
+  otherTest.innerHTML = `<i class="fas fa-moon moon__i"></i>달편지 - 속마음을 편지로 만들어보세요`;
   labelContainer.appendChild(otherTest);
 
   // let makeTest = document.createElement("button");
