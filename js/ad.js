@@ -62,7 +62,7 @@ const closeBtn = document.querySelector(`.upper__comment`);
 const kakaoGoBtn = document.querySelector(`.lower__button`);
 
 function handleCloseBtn() {
-  todayWeather.classList.add("disappear");
+  todayWeather.classList.add("disblock");
   blackBoard.classList.add("disblock");
 }
 
