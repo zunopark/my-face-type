@@ -73,6 +73,7 @@ function handleGoKakao() {
 
 if (closeBtn) {
   closeBtn.addEventListener("click", handleCloseBtn);
+  blackBoard.addEventListener("click", handleCloseBtn);
   kakaoGoBtn.addEventListener("click", handleGoKakao);
 }
 

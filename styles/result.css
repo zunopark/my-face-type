@@ -108,3 +108,16 @@
   margin-bottom: 20px;
   outline: none;
 }
+
+.result .today__test {
+  margin-top: -15px;
+  color: #fee500;
+  border: 1px solid #391c1c;
+  background-color: #391c1c;
+  border-radius: 30px 30px 30px 30px;
+  width: 100%;
+  padding: 10px 10px;
+  font-size: 15px;
+  margin-bottom: 20px;
+  outline: none;
+}

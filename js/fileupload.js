@@ -338,24 +338,41 @@ async function predict() {
   };
   labelContainer.appendChild(reset);
 
-  let otherTest = document.createElement("button");
-  otherTest.classList.add("other__test");
-  otherTest.onclick = function () {
-    gtag("event", "달편지 클릭", {
-      event_category: "달편지 클릭",
-      event_label: "결과 버튼",
+  // let otherTest = document.createElement("button");
+  // otherTest.classList.add("other__test");
+  // otherTest.onclick = function () {
+  //   gtag("event", "달편지 클릭", {
+  //     event_category: "달편지 클릭",
+  //     event_label: "결과 버튼",
+  //   });
+  // };
+  // otherTest.innerHTML = `<i class="fas fa-moon moon__i"></i>달편지 - 속마음을 편지로 만들어보세요`;
+  // labelContainer.appendChild(otherTest);
+
+  let todayTest = document.createElement("button");
+  todayTest.classList.add("today__test");
+  todayTest.onclick = function () {
+    gtag("event", "오늘의 비서 - 날씨", {
+      event_category: "오늘의 비서 - 날씨",
+      event_label: "플러스 친구",
     });
   };
-  otherTest.innerHTML = `<i class="fas fa-moon moon__i"></i>달편지 - 속마음을 편지로 만들어보세요`;
-  labelContainer.appendChild(otherTest);
+  todayTest.innerHTML = `오늘의 비서 - 날씨 (매일 아침 날씨 알림 받기)`;
+  labelContainer.appendChild(todayTest);
 
   // let makeTest = document.createElement("button");
   // makeTest.classList.add("other__test");
   // makeTest.innerHTML = "나만의 테스트 만들기 >";
   // labelContainer.appendChild(makeTest);
 
+  function handleGoTodayWeather() {
+    var newWindow = window.open("about:blank");
+    newWindow.location.href = "http://pf.kakao.com/_uGQJK";
+  }
+
   reset.addEventListener("click", handleReset);
-  otherTest.addEventListener("click", handleOtherTest);
+  // otherTest.addEventListener("click", handleOtherTest);
+  todayTest.addEventListener("click", handleGoTodayWeather);
   // makeTest.addEventListener("click", handleMakeTest);
 
   const privacy = document.querySelector(`.noti`);

@@ -441,7 +441,9 @@ a:hover {
 }
 
 .lower__button {
-  border: 1px solid black;
+  color: #fee500;
+  border: 1px solid #391c1c;
+  background-color: #391c1c;
   font-weight: 700;
   font-size: 18px;
   border-radius: 12px;
