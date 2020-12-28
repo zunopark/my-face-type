@@ -70,9 +70,6 @@ body {
   color: #ff0200;
 }
 
-.disblock {
-  display: none;
-}
 /* 
 a {
   text-decoration: none;
@@ -394,4 +391,98 @@ a:hover {
 .moon__i {
   color: rgba(255, 255, 104, 1);
   margin-right: 1px;
+}
+
+/* 오늘의 비서 - 날씨 팝업 */
+
+.today__weather__wrap {
+  width: 90%;
+}
+
+.today__weather {
+  z-index: 99;
+  position: fixed;
+  bottom: 40vh;
+  width: 90%;
+}
+
+.upper__comment {
+  text-align: center;
+  margin-bottom: 10px;
+  width: 100%;
+  background-color: #e7e7e7;
+  padding: 14px;
+  border-radius: 0 0 10px 10px;
+}
+
+.upper__comment:hover {
+  cursor: pointer;
+}
+
+.lower__comment {
+  padding: 20px;
+  padding-bottom: 10px;
+  background-color: #fee500;
+  display: flex;
+  flex-direction: column;
+  text-align: justify;
+  border-radius: 10px 10px 0 0;
+}
+
+.lower__title {
+  font-size: 24px;
+  font-weight: 700;
+  line-height: 32px;
+}
+.lower__sub {
+  font-size: 20px;
+  line-height: 26px;
+}
+
+.lower__button {
+  border: 1px solid black;
+  font-weight: 700;
+  font-size: 18px;
+  border-radius: 12px;
+  text-align: center;
+  padding: 8px;
+  padding-top: 10px;
+  margin-top: 12px;
+}
+
+.lower__button:hover {
+  cursor: pointer;
+}
+
+.lower__ment {
+  text-align: center;
+  font-size: 14px;
+  margin-top: 8px;
+}
+
+.black__board {
+  width: 100%;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  background-color: rgba(0, 0, 0, 0.7);
+  opacity: 1;
+  z-index: 60;
+  transition: all 0.5s;
+}
+
+.black__board:hover {
+  cursor: pointer;
+}
+
+.disblock {
+  display: none;
+}
+
+.disappear {
+  opacity: 0;
+}
+
+.appear {
+  opacity: 1;
 }
