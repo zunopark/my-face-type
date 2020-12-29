@@ -18,10 +18,7 @@
       property="og:description"
       content="인공지능이 말해주는 내 관상! 나와 닮은 연예인은 누구일까? 관상가 양반에게 관상 테스트를 받아 알아보세요!"
     />
-    <meta
-      property="og:image"
-      content="https://kr.object.ncloudstorage.com/your-face/%E1%84%86%E1%85%A6%E1%84%90%E1%85%A1%E1%84%8B%E1%85%B5%E1%84%86%E1%85%B5%E1%84%8C%E1%85%B5.jpeg"
-    />
+    <meta property="og:image" content="https://i.ibb.co/3sTK7mL/meta.jpg" />
     <link rel="canonical" href="https://yourface.ga" />
     <link rel="stylesheet" href="styles/style.css" />
     <link
@@ -98,11 +95,41 @@
 
       <div class="header__menu__wrap">
         <div class="menu menu__select" id="ai">관상가 양반</div>
+        <div
+          class="menu"
+          id="animal"
+          onclick="gtag('event', '동물상 테스트 클릭', {'event_category': '동물상 테스트 클릭','event_label': '메뉴 클릭'});"
+        >
+          동물상 테스트 by 조코딩
+        </div>
         <div class="menu" id="boyAi">내 남자친구 동물상</div>
         <div class="menu" id="girlAi">내 여자친구 동물상</div>
         <div class="menu" id="allList">모든 테스트 보기</div>
       </div>
     </header>
+    <div class="black__board disblock"></div>
+    <div class="today__weather__wrap disblock">
+      <div class="today__weather">
+        <div class="lower__comment">
+          <span class="lower__title">오늘의 비서 - 날씨 (NEW)</span>
+          <span class="lower__sub"
+            >매일 아침 8시마다 카카오톡으로 날씨를 받아보기만 하세요!
+            <br />
+          </span>
+
+          <div
+            class="lower__button"
+            onclick="gtag('event', '오늘의 비서 - 날씨', {'event_category': '오늘의 비서 - 날씨','event_label': '플러스 친구'});"
+          >
+            플러스 친구하고 날씨 알림 받기 >
+          </div>
+          <div class="lower__ment">제가 직접 만들었어요!!</div>
+        </div>
+        <div class="upper__comment">
+          <span class="upper__title">닫기</span>
+        </div>
+      </div>
+    </div>
 
     <div class="main__ai__title">
       <h1 class="title">관상가 양반</h1>
@@ -204,6 +231,15 @@
       ></script>
     </div>
 
+    <!-- <div class="hello__members">
+      <img
+        src="https://kr.object.ncloudstorage.com/your-face/test.jpg"
+        alt=""
+        class="hello__img"
+        onclick="gtag('event', '테스트 만들기', {'event_category': '테스트 만들기 클릭','event_label': '하단 광고'});"
+      />
+    </div> -->
+
     <div class="ad_box2">
       <ins
         class="kakao_ad_area"
@@ -241,6 +277,7 @@
         >
       </div>
     </section>
+
     <div class="ad_box">
       <ins
         class="kakao_ad_area"
@@ -255,6 +292,7 @@
         async
       ></script>
     </div>
+
     <section
       id="yotube-bottom-link"
       class="mt-2 d-flex flex-column justify-content-center align-items-center"
@@ -262,8 +300,11 @@
     >
       <div class="crazy">
         <a href="https://www.youtube.com/embed/ZJy3hQxFsxY" target="_blank"
-          >AI 관상 테스트를 만든 개발자가 사는 곳은?</a
-        >
+          >하루만에 만든 사이트로 일주일에 천만원 벌기 <br /><span
+            class="margin_br"
+            >나를 연쇄창업가로 만들어준 광인회관은?</span
+          >
+        </a>
       </div>
       <iframe
         width="320"
@@ -276,12 +317,22 @@
     </section>
 
     <div class="liner__members">
-      <img src="https://kr.object.ncloudstorage.com/your-face/liner.png" alt=""
-      / class="liner__img">
+      <img
+        src="https://i.ibb.co/tCwJkRH/liner.png"
+        alt=""
+        class="liner__img"
+        onclick="gtag('event', '라이너', {'event_category':
+      '라이너 클릭','event_label': '하단 광고'});"
+      />
     </div>
     <div class="super__members">
-      <img src="https://kr.object.ncloudstorage.com/your-face/supermembers.png"
-      alt="" / class="super__img">
+      <img
+        src="https://i.ibb.co/0MCxTMn/supermembers.png"
+        alt=""
+        class="super__img"
+        onclick="gtag('event', '슈맴 테스트',
+      {'event_category': '슈맴 클릭','event_label': '하단 광고'});"
+      />
     </div>
 
     <div class="apologize">

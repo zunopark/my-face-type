@@ -404,12 +404,12 @@ if (toggle) {
       toggleContainer.style.clipPath = "inset(0 0 0 50%)";
       toggleContainer.style.backgroundColor = "dodgerblue";
       changePicture.style.backgroundImage =
-        "url(https://kr.object.ncloudstorage.com/your-face/man.jpeg)";
+        "url(https://i.ibb.co/B2kj8Pk/man.png)";
     } else {
       toggleContainer.style.clipPath = "inset(0 50% 0 0)";
       toggleContainer.style.backgroundColor = "#D74046";
       changePicture.style.backgroundImage =
-        "url(https://kr.object.ncloudstorage.com/your-face/woman.png)";
+        "url(https://i.ibb.co/B2kj8Pk/man.png)";
     }
   });
 }
