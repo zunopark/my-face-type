@@ -357,7 +357,7 @@ async function predict() {
       event_label: "플러스 친구",
     });
   };
-  todayTest.innerHTML = `오늘의 비서 - 날씨 (매일 아침 날씨 알림 받기)`;
+  todayTest.innerHTML = `오늘의 비서 - 날씨 (매일 아침 날씨 알아보기)`;
   labelContainer.appendChild(todayTest);
 
   // let makeTest = document.createElement("button");

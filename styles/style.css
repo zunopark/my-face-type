@@ -421,7 +421,7 @@ a:hover {
 
 .lower__comment {
   padding: 20px;
-  padding-bottom: 10px;
+  /* padding-bottom: 10px; */
   background-color: #fee500;
   display: flex;
   flex-direction: column;
