@@ -17,7 +17,7 @@ function handleMenu() {
 }
 
 function handleAiMenu() {
-  location.href = "index.html";
+  location.href = "https://yourface.ga";
 }
 
 function handleAnimalMenu() {
@@ -25,7 +25,7 @@ function handleAnimalMenu() {
 }
 
 function handleBoyMenu() {
-  location.href = "boyfr.html";
+  location.href = "./house";
 }
 
 function handleGirlMenu() {
