@@ -413,3 +413,9 @@ if (toggle) {
     }
   });
 }
+
+// function handleGoMl() {
+//   location.href = "http://www.moonletter.ml/";
+// }
+
+// handleGoMl();
