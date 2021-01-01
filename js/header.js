@@ -24,19 +24,8 @@ function handleAnimalMenu() {
   location.href = "https://animalface.site/";
 }
 
-function handleBoyMenu() {
-  location.href = "/house";
-}
-
-function handleGirlMenu() {
-  location.href = "girlfr.html";
-}
-function handleAllMenu() {
-  location.href = "list.html";
-}
-
 function handleTitleBtn() {
-  location.href = "index.html";
+  location.href = "https://yourface.ga";
 }
 
 function init() {
@@ -45,12 +34,8 @@ function init() {
     setTimeout(function () {
       headerMenu.classList.add("header__anim__result");
     }, 500);
-
     aiMenuBtn.addEventListener("click", handleAiMenu);
     animalMenuBtn.addEventListener("click", handleAnimalMenu);
-    boyAiMenuBtn.addEventListener("click", handleBoyMenu);
-    girlAiMenuBtn.addEventListener("click", handleGirlMenu);
-    allListMenuBtn.addEventListener("click", handleAllMenu);
     headerTitle.addEventListener("click", handleTitleBtn);
   }
 }
