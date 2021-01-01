@@ -25,7 +25,7 @@ function handleAnimalMenu() {
 }
 
 function handleBoyMenu() {
-  location.href = "./house";
+  location.href = "/house";
 }
 
 function handleGirlMenu() {
