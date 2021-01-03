@@ -56,28 +56,28 @@ if (helloImg) {
   helloImg.addEventListener("click", handleHello);
 }
 
-// const todayWeather = document.querySelector(`.today__weather__wrap`);
-// const blackBoard = document.querySelector(`.black__board`);
-// const closeBtn = document.querySelector(`.upper__comment`);
+const todayWeather = document.querySelector(`.today__weather__wrap`);
+const blackBoard = document.querySelector(`.black__board`);
+const closeBtn = document.querySelector(`.upper__comment`);
 // const kakaoGoBtn = document.querySelector(`.lower__button`);
 
-// function handleCloseBtn() {
-//   todayWeather.classList.add("disblock");
-//   blackBoard.classList.add("disblock");
-// }
+function handleCloseBtn() {
+  todayWeather.classList.add("disblock");
+  blackBoard.classList.add("disblock");
+}
 
-// function handleGoKakao() {
-//   var newWindow = window.open("about:blank");
-//   newWindow.location.href = "http://pf.kakao.com/_uGQJK";
-// }
+function handleGoKakao() {
+  var newWindow = window.open("about:blank");
+  newWindow.location.href = "http://pf.kakao.com/_uGQJK";
+}
 
-// if (closeBtn) {
-//   closeBtn.addEventListener("click", handleCloseBtn);
-//   blackBoard.addEventListener("click", handleCloseBtn);
-//   kakaoGoBtn.addEventListener("click", handleGoKakao);
-// }
+if (closeBtn) {
+  closeBtn.addEventListener("click", handleCloseBtn);
+  blackBoard.addEventListener("click", handleCloseBtn);
+  // kakaoGoBtn.addEventListener("click", handleGoKakao);
+}
 
-// setTimeout(function () {
-//   todayWeather.classList.remove("disblock");
-//   blackBoard.classList.remove("disblock");
-// }, 1000);
+setTimeout(function () {
+  todayWeather.classList.remove("disblock");
+  blackBoard.classList.remove("disblock");
+}, 1000);
