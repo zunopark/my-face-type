@@ -8,6 +8,6 @@ function init() {
   <div class="footer__icon">
     <i class="fas fa-portrait"></i>
   </div>
-  <span class="footer__text"> Your.Face 2020 &copy;</span>`;
+  <span class="footer__text"> Your.Face 2021 &copy;</span>`;
 }
 init();
