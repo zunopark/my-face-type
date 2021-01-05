@@ -1,23 +1,38 @@
 @media screen and (min-width: 500px) {
-  .border,
+  .ad__upper,
+  .header,
+  .footer,
   .test__upper,
   .submitForm {
-    width: 420px;
+    width: 500px;
+  }
+
+  .border {
+    width: 350px;
   }
 
   .border__hair {
-    width: 420px;
+    width: 500px;
   }
 
   .apologize {
     width: 320px;
   }
+  body {
+    border-right: 1px solid black;
+  }
 }
-@media screen and (max-width: 500px) {
+@media screen and (max-width: 499px) {
   .border,
   .test__upper,
   .submitForm {
     width: 70%;
+  }
+
+  .ad__upper,
+  .header,
+  .footer {
+    width: 100%;
   }
 
   .border__hair {
