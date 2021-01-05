@@ -4,7 +4,9 @@
   .footer,
   .test__upper,
   .submitForm,
-  .header__menu__wrap {
+  .header__menu__wrap,
+  .today__weather__wrap,
+  .lower__comment {
     width: 500px;
   }
 
@@ -32,7 +34,10 @@
 
   .ad__upper,
   .header,
-  .footer {
+  .footer,
+  .today__weather__wrap,
+  .today__weather,
+  .lower__comment {
     width: 100%;
   }
 

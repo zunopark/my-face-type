@@ -1,3 +1,5 @@
+// 사진 올리는거
+
 const aiCont = document.querySelector(`.ai`);
 
 async function readURL(input) {
@@ -32,6 +34,8 @@ $(".image-upload-wrap").bind("dragover", function () {
 $(".image-upload-wrap").bind("dragleave", function () {
   $(".image-upload-wrap").removeClass("image-dropping");
 });
+
+// url 설정
 
 const URL = "https://teachablemachine.withgoogle.com/models/FiW0HL4DO/";
 

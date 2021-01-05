@@ -59,25 +59,29 @@ if (helloImg) {
 // const todayWeather = document.querySelector(`.today__weather__wrap`);
 // const blackBoard = document.querySelector(`.black__board`);
 // const closeBtn = document.querySelector(`.upper__comment`);
-// const kakaoGoBtn = document.querySelector(`.lower__button`);
+// const shareBtn = document.querySelector(`.lower__button`);
 
 // function handleCloseBtn() {
 //   todayWeather.classList.add("disblock");
 //   blackBoard.classList.add("disblock");
 // }
 
-// function handleGoKakao() {
-//   var newWindow = window.open("about:blank");
-//   newWindow.location.href = "http://pf.kakao.com/_uGQJK";
-// }
-
 // if (closeBtn) {
 //   closeBtn.addEventListener("click", handleCloseBtn);
 //   blackBoard.addEventListener("click", handleCloseBtn);
-//   // kakaoGoBtn.addEventListener("click", handleGoKakao);
 // }
+// shareBtn.addEventListener("click", handleCopy);
 
 // setTimeout(function () {
 //   todayWeather.classList.remove("disblock");
 //   blackBoard.classList.remove("disblock");
-// }, 1000);
+// }, 10);
+
+// function handleCopy() {
+//   var urlLink = document.getElementById("shareUrl");
+//   console.log(window.document.location.href, urlLink);
+//   urlLink.value = window.document.location.href;
+//   urlLink.select();
+//   document.execCommand("copy");
+//   urlLink.blur();
+// }
