@@ -3,7 +3,8 @@
   .header,
   .footer,
   .test__upper,
-  .submitForm {
+  .submitForm,
+  .header__menu__wrap {
     width: 500px;
   }
 
