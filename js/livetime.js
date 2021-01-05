@@ -7,7 +7,7 @@ if (countNum) {
   function handleCountNum() {
     let countNumber = 2209999;
     function countUp() {
-      if (countNumber < 17432627) {
+      if (countNumber < 18132627) {
         countNumber = countNumber + 57994;
         countNum.innerHTML = countNumber;
       }
