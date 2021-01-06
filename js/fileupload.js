@@ -361,7 +361,7 @@ async function predict() {
       event_label: "플러스 친구",
     });
   };
-  todayTest.innerHTML = `오늘의 비서 - 날씨 (매일 아침 날씨 알아보기)`;
+  todayTest.innerHTML = `<span>나와 닮은 펜트하우스 등장인물은?</span>`;
   labelContainer.appendChild(todayTest);
 
   // let makeTest = document.createElement("button");
@@ -370,8 +370,7 @@ async function predict() {
   // labelContainer.appendChild(makeTest);
 
   function handleGoTodayWeather() {
-    var newWindow = window.open("about:blank");
-    newWindow.location.href = "http://pf.kakao.com/_uGQJK";
+    location.href = "https://yourface.ga/house/";
   }
 
   reset.addEventListener("click", handleReset);
