@@ -1,4 +1,13 @@
 @media screen and (min-width: 500px) {
+  .bg__dust {
+    content: url("https://i.ibb.co/w4BTZxH/image.png");
+    position: absolute;
+    z-index: -1;
+    width: 100%;
+    opacity: 1;
+    /* margin-top: 64px; */
+  }
+
   .ad__upper,
   .footer,
   .test__upper,
@@ -35,6 +44,14 @@
   }
 }
 @media screen and (max-width: 499px) {
+  .bg__dust {
+    content: url("https://i.ibb.co/7Gbh2BT/image.png");
+    position: absolute;
+    z-index: -1;
+    width: 100%;
+    opacity: 1;
+    /* margin-top: 64px; */
+  }
   .border,
   .test__upper,
   .submitForm {

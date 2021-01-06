@@ -25,6 +25,9 @@ body {
 
 .bg__dust {
   position: absolute;
+  z-index: -1;
+  width: 100%;
+  /* margin-top: 64px; */
 }
 
 .body__wrap {
