@@ -201,6 +201,13 @@ async function predict() {
 
   let starsListImg = "";
 
+  console.log(
+    resultArray[0].value,
+    resultArray[0].key,
+    answer,
+    description[answer][1]
+  );
+
   for (let j = 0; j < 4; j++) {
     if (resultArray[j].value === 0) {
       starsListImg =
@@ -360,14 +367,6 @@ async function predict() {
     location.reload(true);
     location.href = location.href;
     history.go(0);
-  }
-
-  function handleOtherTest() {
-    location.href = "http://www.moonletter.ml/";
-  }
-
-  function handleMakeTest() {
-    location.href = "testmake.html";
   }
 }
 

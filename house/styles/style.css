@@ -154,40 +154,6 @@ body {
   cursor: pointer;
 }
 
-.other__result {
-  margin-top: 10px;
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  /* overflow-x: scroll;
-  overflow-x: hidden; */
-  white-space: nowrap;
-}
-
-.star__list__wrap {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.star__list__img {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 48px;
-  height: 48px;
-  border-radius: 50%;
-  border: 1px solid black;
-  font-size: 16px;
-  margin: 0 4px;
-  color: black;
-}
-
-.percent {
-  margin-top: -10px;
-  font-size: 16px;
-}
-
 .contact {
   display: flex;
   flex-direction: row;
@@ -210,50 +176,6 @@ body {
   font-size: 10px;
   color: #fff4ba;
   font-family: "62570체";
-}
-
-.zero {
-  color: black;
-}
-
-.zeroone {
-  color: rgb(43, 160, 223);
-}
-
-.onetwo {
-  color: rgb(68, 182, 95);
-}
-
-.twothree {
-  color: blue;
-}
-
-.threefour {
-  color: aqua;
-}
-
-.fourfive {
-  color: purple;
-}
-
-.fivesix {
-  color: peru;
-}
-
-.sixseven {
-  color: rgb(149, 30, 196);
-}
-
-.seveneight {
-  color: rgb(196, 77, 178);
-}
-
-.eightnine {
-  color: rgb(204, 92, 129);
-}
-
-.nineten {
-  color: tomato;
 }
 
 .bold {
@@ -293,4 +215,26 @@ body {
 
 .house__sub {
   width: 80%;
+}
+
+.ad_box {
+  width: 320px;
+  margin: 0 outo;
+  margin-bottom: 15px;
+}
+
+.ad_box_top {
+  width: 320px;
+  margin: 0 outo;
+}
+
+.comment {
+  width: 100%;
+}
+
+.ad_box2 {
+  width: 300px;
+  margin: 0 auto;
+  margin-top: 15px;
+  margin-bottom: 30px;
 }
