@@ -9,11 +9,6 @@
     width: 500px;
   }
 
-  .result__answer {
-    position: relative;
-    font-size: 20px;
-  }
-
   .result__box {
     z-index: -1;
     position: absolute;

@@ -9,35 +9,46 @@
 }
 
 .main__result {
-  width: 100%;
+  padding: 10px;
+  padding-bottom: 8px;
+  background-color: black;
+  border: 2px solid rgb(212, 175, 6);
   color: #fff4ba;
-  margin-bottom: 10px;
-}
-.result__answer {
-  position: relative;
+  width: 100%;
+  margin-top: 10px;
+  margin-bottom: 20px;
   font-size: 16px;
 }
 
-.result__box {
-  z-index: -1;
-  position: absolute;
-  right: 0px;
-  bottom: -15px;
-  width: 100%;
+.main__result span {
+  background: linear-gradient(
+    to right,
+    #ddc59b,
+    #fff9cf,
+    #af7c31,
+    #caac78,
+    #ac792f
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.result__img {
+  width: 40%;
 }
 
 .celebrity {
   text-align: center;
-  margin-bottom: 8px;
+  margin-bottom: 10px;
   color: #fff4ba;
-  font-size: 14px;
+  font-size: 16px;
 }
 
 .result p {
-  font-size: 18px;
+  font-size: 14px;
   text-align: justify;
-  color: #162536;
-  line-height: 23px;
+  color: white;
+  line-height: 24px;
 }
 
 .result button {
@@ -59,28 +70,30 @@
 }
 
 .ai {
-  font-family: "Yeon Sung", cursive;
+  font-family: "62570체";
+  color: white;
   margin-top: 15px;
   animation: aiAnim 0.7s linear infinite;
+  font-size: 12px;
 }
 
 @keyframes aiAnim {
   0% {
-    transform: translateX(-2px);
+    transform: translateX(-1px);
   }
   15% {
     transform: translateX(0px);
     transform: scale(1.01);
   }
   50% {
-    transform: translateX(2px);
+    transform: translateX(1px);
   }
   85% {
     transform: translateX(0px);
     transform: scale(1.01);
   }
   100% {
-    transform: translateX(-2px);
+    transform: translateX(-1px);
   }
 }
 

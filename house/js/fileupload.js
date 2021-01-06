@@ -194,14 +194,14 @@ async function predict() {
 
   const starsEng = [];
 
-  for (let i = 0; i < 5; i++) {
+  for (let i = 0; i < 4; i++) {
     let a = description[resultArray[i].key];
     starsEng.push(a[2]);
   }
 
   let starsListImg = "";
 
-  for (let j = 0; j < 5; j++) {
+  for (let j = 0; j < 4; j++) {
     if (resultArray[j].value === 0) {
       starsListImg =
         starsListImg +
@@ -315,27 +315,25 @@ async function predict() {
     }
   }
 
+  let resultImg = document.createElement("img");
+  resultImg.classList.add("result__img");
+  resultImg.src = `https://i.ibb.co/vmw1sN9/image.png`;
+  labelContainer.appendChild(resultImg);
+
   let result = document.createElement("div");
   result.classList.add("main__result");
-  result.innerHTML = `
-  <div class="result__answer">
-          <img
-            src="https://i.ibb.co/XWJpN4v/image.png"
-            alt=""
-            class="result__box"
-          />
-          과묵하고 줏대가 있는 관상
-        </div>
-  `;
+  result.innerHTML = `<span>심수련 (이지아)</span>`;
   labelContainer.appendChild(result);
 
   let result2 = document.createElement("div");
   result2.classList.add("celebrity");
-  result2.textContent = `나와 같은 관상을 가진 연예인 : ${answer}`;
+  // result2.textContent = `${answer} (이지아)`;
+  result2.textContent = `착하지만 치밀한 성격`;
   labelContainer.appendChild(result2);
 
   let desc = document.createElement("p");
-  desc.textContent = description[answer][0];
+  // desc.textContent = description[answer][0];
+  desc.textContent = `치밀하고 계획적이지만 양심적이고 선해 보입니다. 또한 모성애가 강해 아이를 위한 삶을 살아갑니다. 일을 미리 계획하는 쪽으로는 천재적인 기질을 보입니다. 우아하고 고상한 외모에 맞게 기가 매우 셉니다. 나긋나긋하지만 한마디 한마디가 굉장히 날카롭습니다. 하지만 가끔 치명적인 실수로 인해 불행이 찾아올 수 있으니 조심하세요.`;
   labelContainer.appendChild(desc);
 
   let otherResult = document.createElement("div");
@@ -353,42 +351,7 @@ async function predict() {
   };
   labelContainer.appendChild(reset);
 
-  // let otherTest = document.createElement("button");
-  // otherTest.classList.add("other__test");
-  // otherTest.onclick = function () {
-  //   gtag("event", "달편지 클릭", {
-  //     event_category: "달편지 클릭",
-  //     event_label: "결과 버튼",
-  //   });
-  // };
-  // otherTest.innerHTML = `<i class="fas fa-moon moon__i"></i>달편지 - 속마음을 편지로 만들어보세요`;
-  // labelContainer.appendChild(otherTest);
-
-  let todayTest = document.createElement("button");
-  todayTest.classList.add("today__test");
-  todayTest.onclick = function () {
-    gtag("event", "오늘의 비서 - 날씨", {
-      event_category: "오늘의 비서 - 날씨",
-      event_label: "플러스 친구",
-    });
-  };
-  todayTest.innerHTML = `오늘의 비서 - 날씨 (매일 아침 날씨 알아보기)`;
-  labelContainer.appendChild(todayTest);
-
-  // let makeTest = document.createElement("button");
-  // makeTest.classList.add("other__test");
-  // makeTest.innerHTML = "나만의 테스트 만들기 >";
-  // labelContainer.appendChild(makeTest);
-
-  function handleGoTodayWeather() {
-    var newWindow = window.open("about:blank");
-    newWindow.location.href = "http://pf.kakao.com/_uGQJK";
-  }
-
   reset.addEventListener("click", handleReset);
-  // otherTest.addEventListener("click", handleOtherTest);
-  todayTest.addEventListener("click", handleGoTodayWeather);
-  // makeTest.addEventListener("click", handleMakeTest);
 
   const privacy = document.querySelector(`.noti`);
   privacy.style.display = "none";
