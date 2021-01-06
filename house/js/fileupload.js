@@ -39,7 +39,7 @@ $(".image-upload-wrap").bind("dragleave", function () {
 
 // url 설정
 
-const URL = "https://teachablemachine.withgoogle.com/models/FiW0HL4DO/";
+const URL = "https://teachablemachine.withgoogle.com/models/QgTC6_yQ1/";
 
 let model, webcam, labelContainer, maxPredictions;
 
@@ -63,89 +63,55 @@ async function predict() {
 
   let arr = new Map();
   let description = {
-    강민경: [
-      "이마는 둥근형이라 집안일보다 바깥일을 좋아하고, 대인관계가 좋고 인복이 좋은 이마입니다. 눈썹은 재복이 좋고 미간이 넓어서 자유로운 성격입니다. 눈은 약간의 고집과 자존심이 있는 눈이며 남자가 많이 따르는, 남자복이 많은 눈입니다. 턱은 재복이 좋지만 변덕이 심할 수 있고 연애운이 강하고 복스러우니 이성을 조심해야 합니다. 결과적으로 출세와 성공에 강합니다.",
-      "개방적인 성격의 관상",
+    심수련: [
+      "선량하고 믿음직스러워 보이는 인상입니다. 부드러운 미소와 타인을 생각하는 마음은 주변 사람들의 마음을 사로잡기에 충분하네요. 그러나 사업과 같은 중요한 일을 할 때는 계획적이고 치밀한 모습을 보여주며 리더쉽을 발휘하기도 하며, 나긋나긋하지만 날카롭게 핵심을 찔러 상대방을 당황시키기도 합니다. 자기 사람이라고 느껴질 때 한없이 잘해주며, 그로 인해 가끔 뒷통수를 맞게 되기도 합니다.",
+      "부드러운 카리스마",
+      "https://i.ibb.co/vmw1sN9/image.png",
     ],
-    강동원: [
-      "좋은 이마를 가졌고 성격이 강인하며 정적입니다. 눈이 봉황눈에 가깝기 때문에 재복이 좋은 눈이고 사람을 끌어들입니다. 눈썹을 보니 성격이 강직하니 자존심이 강하며 고집이 있습니다. 귀는 인복이 좋으며 정이 많은 귀입니다. 턱선이 약간 갸름하여 성격이 원만하고 입은 무겁습니다. 전체적으로 사람을 끌어들이는 기운이 강하여 성공운이 열린 얼굴입니다.",
-      "평생 재물운은 타고난 관상",
+    천서진: [
+      "날카로워 보이는 인상이지만 의외로 속은 여립니다. 남들이 흉내낼 수 없는 우아함을 타고 났기에 주변 사람들의 선망의 대상입니다. 가지고 싶은 것은 무조건 가져야 하는 야망가 타입입니다. 본인의 지위와 명성을 삶에서 가장 중요한 가치로 두고 있기 때문에, 가장 참을 수 없는 것은 자신의 자존심을 뭉개는 것입니다. 사랑할 때 역시 불도저처럼 적극적인 모습을 보입니다. ",
+      "욕망이 이끄는 대로",
+      "https://i.ibb.co/qyq6HHJ/image.png",
     ],
-    강소라: [
-      "이마가 적당하여 아담하고 결혼운이 좋으며 눈썹은 재복이 좋고 자존심이 강합니다. 입술은 도톰하여 연애운이 좋고 살림을 잘하는 입술입니다. 턱은 강인하고 재복이 좋고 말년운이 좋으며 서글서글한 성격을 지닙니다. 당나귀귀에 가까워 인복이 좋으며 직업운이 좋고 대인관계가 좋습니다. 씀씀이는 큰편이나 자상하여 좋은 관상으로 볼 수 있습니다.",
-      "결혼하면 잘살 관상",
+    오윤희: [
+      "부드럽고 선한 인상은 주변 사람들에게 호감을 주며, 특유의 밝은 에너지로 궂은 일을 겪어도 금세 일어나는 모습을 보입니다. 추진력이 강해 목표한 일을 금세 해내고, 그런 모습을 본 주변 사람들이 도움을 주어 운이 따라주기도 합니다. 그러나 귀가 얇아 충동적인 행동을 할 때가 있으며, 자신과 가까운 사람의 일에서는 이성적인 판단이 흐려져 잘못된 선택을 할 수도 있으니 항상 주의해야겠습니다.",
+      "선 혹은 악",
+      "https://i.ibb.co/nkcfMdS/image.png",
     ],
-    김수현: [
-      "눈썹은 굵고 진하여 재물복이 좋습니다. 끈기가 강한 눈썹입니다. 눈썹과 눈 사이에 살이 별로 없는데 이기주의적인 성향이 조금 있으나 성격이 세심합니다. 날카로운 눈은 예리하고 관찰력이 좋으며 눈치가 빠릅니다. 코를 보면 재물복이 좋으며 재물에 대한 욕심이 있습니다. 재주와 재능이 좋은 인중이며 예능계열쪽으로 좋은 하관입니다. 긍정적인 성향으로 말년운이 무난합니다.",
-      "섬세하고 끈기가 있으며 의지력이 강한 관상",
+    주단태: [
+      "호감형이지만 다른사람들로 하여금 함부로 할 수 없게 하는 카리스마를 가지고 있습니다. 사람의 마음을 잘 읽으며 처세술에 능합니다. 두뇌 회전 속도가 빠르며 손익에 밝고, 사람들의 마음을 흔드는 능력이 있어 모두들 당신을 '좋은 사람'이라고 생각합니다. 그러나 마음 한 구석에 결여된 도덕성과 약간의 폭력성이 잠재되어 있으니, 당신 안의 야수가 탈출하지 못하도록 조심하세요. ",
+      "가면을 쓴 야수",
+      "https://i.ibb.co/GJVG6s2/image.png",
     ],
-    김옥빈: [
-      "이마는 적당하며 당돌한 면이 있고 눈썹이 길고 진하여 재복이 좋습니다. 눈은 이성을 유혹하는 눈으로서 기가 강하며 연애운이 강합니다. 이성을 꼬시는 재주가 좋고 자존심이 강한 입입니다. 볼은 욕심이 많고 고집이 강하며 이기적인 면도 있지만 재복이 좋고 생활력이 강하며 인복이 좋습니다. 전체적으로 흠잡을 곳이 없는 완벽한 관상이지만 단점으로는 얼굴에서 나오는 기가 강합니다.",
-      "강한 기를 가지고 있는 관상",
+    강마리: [
+      "귀족스러운 외모를 가지고 있지만 어딘지 모르게 친근함이 느껴지는 타입. 감정이 매우 풍부해 타인의 말에 공감을 잘 해줍니다. 특유의 친근함으로 사람들과 어울려 다니기를 좋아하며, 특히 연상들에게 인기가 많겠네요. 사치스러워 보이지만 쓸 때 쓰고, 썼으면 또 벌면 된다는 생각으로 즐겁게 산다고 하는 것이 맞겠습니다. 사랑에 빠지게 되면 앞뒤 재지 않고 모두 퍼주는 스타일입니다.",
+      "깨방정 마님",
+      "https://i.ibb.co/D4P11Sm/image.png",
     ],
-    박해일: [
-      "이마는 훤칠하고 깨끗하여 이성운이 좋고 두뇌가 좋습니다. 자아도취적인 경향도 강하며 의지력이 강하고 무엇이든지 집중하는 성격입니다. 눈을 보면 이성운이 강하며 재물에 대한 집착이 강합니다. 화려하고 동시에 깨끗하고 수려한 것을 추구하는 상입니다. 낙천적이고 긍정적인 마인드를 볼 수 있는 입꼬리와 입이 미세하게 나와있어 말재주가 좋습니다.",
-      "이성운이 강한 관상",
+    이규진: [
+      "동글동글 귀여운 인상에 연상들의 귀여움을 독차지합니다. 이런 외모와는 달리 계산적이고 냉철하여 사업과 같은 중요한 일을 할 때는 신중한 모습을 보이기도 합니다. 자신보다 윗 사람에게 약하며, 때로는 찌질할 정도로 속좁은 모습을 보이기도 하지만, 그마저도 귀여움으로 승화시키는 당신! ",
+      "찌질한 귀요미",
+      "https://i.ibb.co/9TGp6RC/image.png",
     ],
-    송중기: [
-      "이마가 짱구이마에 가까워 머리가 좋고 지혜롭습니다. 노력은 잘 안하는편이지만 머리는 뛰어난 재능충 유형입니다. 코는 재복이 좋고 여복이 좋으며 연애운이 좋은 눈입니다. 강인하며 직업운이 좋고 말년운이 깔끔하며 재능이 다재다능한 상입니다. 원숭이상에 가까운 상이라 재능을 통해 화려한 인생을 살 수도 있습니다.",
-      "머리가 뛰어난 천재형 관상",
+    마두기: [
+      "강렬한 스타일을 추구합니다. 자기만의 세계가 있는 타입. 주변 사람들이 보기에 굉장히 개성이 넘쳐서 때론 다가가기 힘들 수도 있습니다. 예술적 감각이 뛰어나며 재능이 많아 예술가로서도 성공할 가능성이 크지만, 돈 관리를 잘 하고 흐름을 읽는 것에 매우 밝아 정치계에 들어간다면 대성할 확률이 높습니다. 그런데 이런 모습이 지나치게 된다면 다른 사람들이 당신을 이익만 좇는 사람으로 인식할 수도 있으니 조심하세요.",
+      "매력적인 팔색조",
+      "https://i.ibb.co/ng2Nr1w/image.png",
     ],
-    안소희: [
-      "갈매기 상의 이마는 슬기롭고 지혜로운 여성을 말합니다. 재벌가의 눈썹을 지녔고 부모복이 좋고 남편복이 좋습니다. 눈이 매혹적이고 화개살이 있는 눈이라 사람들에게 사랑받고 이성운이 강한 눈이나 출세하지 않으면 필요없는 남자들이 많이 붙을 수 있습니다. 이성을 많이 꼬시는 눈이고 예능기질이 강하며 성격이 온순하고 착하고 선한 성격입니다.",
-      "사회성 좋은 화개살 강한 관상",
+    배로나: [
+      "서글서글한 눈매로 쉽게 타인의 호감을 사며, 밝고 당찬 성격으로 난관이 닥쳐도 특유의 솔직함으로 이를 헤쳐나갑니다. 조금만 노력해도 평범한 사람들보다 훨씬 나은 결과물을 낼 수 있을 정도의 재능을 가졌습니다. 잠재력이 뛰어나고 목적의식도 강합니다. 때로는 너무 큰 욕심을 부려 화를 입을 것이 우려되나, 이마저도 본인의 능력으로 잘 해결해나가는 모습을 보여주어 주변의 시기와 질투를 사기도 합니다.",
+      "빛나는 재능의 소유자",
+      "https://i.ibb.co/8jx9Jst/image.png",
     ],
-    수지: [
-      "남자가 꼬이고 남편때문에 마음고생할 수 있는 이마입니다. 성격이 남자다운면도 있고 서글서글하고 붙임성이 좋고 사회성이 좋습니다. 연애운도 좋고 눈썹이 가지런하여 여성스럽고 차분합니다. 좋은 성격은 다가지고 있다고 보시면 됩니다. 하지만 돌아서면 아주 냉담한 면도 있습니다. 얼굴이 개성이 강한 얼굴이라 사람 마음을 끌어당기는 면이 강합니다.",
-      "연애운이 좋을 관상",
+    민설아: [
+      "크고 맑은 눈망울을 가지고 있어 누구나 당신의 눈을 본다면 빠져들 것입니다. 마음씨가 착해 자신이 사랑하는 것들을 잘 챙기고, 설령 상처받았다고 해도 그 사람의 행복을 빌어줄 만큼 배려심이 깊습니다. 때로는 자신의 재능과 능력을 시기해 모함을 받기도 하지만, 이런 상황에서도 씩씩하게 오뚜기처럼 일어나는 모습이 정말 매력적이군요.",
+      "씩씩한 오뚜기",
+      "https://i.ibb.co/nB34ZDF/image.png",
     ],
-    유승호: [
-      "이마가 깨끗하고 시원하여 성격도 시원스럽고 사회성도 좋고 눈이 길상이라 재복도 좋고 마음씨가 선하고 감정이 풍부합니다. 코를 보면 감각이 뛰어나고 재능이 많고 대인관계가 좋고 성격은 차분하면서도 약간 급한면이 있습니다. 입이 큰편이라서 결단력이 좋고 시원스러운 성격이고 마음씨가 넓고 자상하다고 보시면 됩니다.",
-      "전체적으로 완벽한 관상",
-    ],
-    유아인: [
-      "이마를 볼때 성격은 착하고 인정이 많습니다. 하지만 뺀질이 기질도 있고 남의 말을 잘 안 듣는 성향이 강합니다. 눈은 다정하면서 차분하고 사색적이고 반항아기질이 있고 개성이 강하고 주관이 뚜렷한 눈입니다. 남과 다른 인생을 살려하고 평범한 인생을 싫어하는 눈입니다. 턱은 강인한편이라 재복이 좋고 말년운이 좋지만 예민한면도 강합니다.",
-      "평범한 인생을 살지 않을 관상",
-    ],
-    김태희: [
-      "귀가 당나귀 귀라서 재복이 좋고 인복이 좋은 상입니다. 작고 예쁜 정면 두상은 높은 판단력을 지니고 있으며 머리 회전이 빠르고 똑똑하며 눈썹이 눈꼬리보다 길어서 재복이 아주 좋습니다. 이빨이 두상에 비해 큰 편이라서 성격 또한 시원시원 할 것입니다. ",
-      "재복과 인복이 좋은 관상",
-    ],
-    문채원: [
-      "눈썹이 재복이 좋은 눈썹입니다. 눈은 내조를 잘하는 눈입니다. 입은 자기 속마음을 잘 말하지 않아 보이고 턱은 말년에 운이 좋아 연말에 행운을 기대해도 좋을 것 같습니다. 귀가 낭비벽이 심한 귀라 절제를 해야합니다. 하나 문제라면 이마때문에 남편이 사고칠 수 있는 이마인데 착한 남편을 만나면 좋을 관상입니다.",
-      "남편을 잘만나야 현모양처인 관상",
-    ],
-    박보영: [
-      "이마가 적당하면서 약간 특이한 것이 남편을 좌지우지 하는 이마입니다. 눈썹과 코는 재복이 아주 좋습니다. 또한 귀와 눈꼬리가 옆에 있기 때문에 현실주의자입니다. 얼굴에 비해서 입이 약간 작은 것이 자기 속마음을 남에게 잘 말하지 않지만 남자와 달리 여자는 입이 작아도 괜찮습니다. 눈이 약간 부리부리하니 자기 주관대로 가정을 꾸려나갈 눈입니다.",
-      "속마음을 숨키면서 누구도 모르겠는 관상",
-    ],
-    소지섭: [
-      "이마에 세로 주름이 하나 있어 재벌 또는 ceo 관상입니다. 눈이 붕어눈 / 고래눈이라 재물운이 아주 좋습니다. 귀는 잘 보이지 않아 고집이 쎄보이고 자기 마음을 아무에게도 말하지 않는 성격입니다. 침묵을 잘하고 잔잔한 성격이며 어떤 경우에는 성질이 강할 때도 보입니다. 노년운은 남들과 비슷하게 살아갈 관상입니다. ",
-      "과묵하고 줏대가 있는 관상",
-    ],
-    손예진: [
-      "이마가 갈매기상이라 현모양처상이며 지혜롭습니다. 얼굴해 비해 코가 크지만 그에 비해 콧구멍은 보이지 않아 재물이 들어올 상이며 귀를 보아하니 출세를 해야 재복이 산더미처럼 들어올 귀입니다. 턱도 갸름하니 성격이 좋아보이며 이마가 너무 훨칠하여 남편과 트러블이 발생할 수도 있지만 지혜롭기 때문에 모든지 지혜롭게 대쳐해 나갈 수 있는 관상입니다. ",
-      "머리가 좋고 지혜로운 관상",
-    ],
-    원빈: [
-      "코와 귀가 아주 재복이 좋고 특히 귀는 재복에 완벽한 귀입니다. 낭비벽이 약간 있으나 신경쓰지 않아도 됩니다. 얼굴형은 미남형이라 연예인을 하면 적성에 맞을 것이며 이마가 사각형이라 사회성도 매우 좋습니다. 눈은 잘생김을 넘어서 아름다운 눈입니다. 아름다운 눈은 정에 약한 눈입니다. 눈이 들어간 형태라 판단력과 머리 회전이 빠릅니다. 하지만 약간 외로운 상이며 결혼은 하고 싶을 때 하면 됩니다. 전체적으로 정적이며 과묵한 관상입니다.",
-      "마음만 먹으면 뭐든지 할 수 있는 관상",
-    ],
-    이광수: [
-      "이마는 적당하면서 관운이 강하고 개인주의 성향이 있습니다. 눈썹은 길고 진하여 재복이 좋으면서 눈썹뼈와 코를 보아하니 정력이 아주 강해 보입니다. 정력이 좋은 만큼 눈을 보아하니 가정에 충실한 눈이라 할 수 있습니다. 성격이 급하지만 대인 관계는 평소에 잘 쌓지만 말상이라 직업운이 강하며 욕심이 많은 상입니다. 귀는 성공과 출세가 가능한 귀로 보이며 인복도 물론 좋은 귀입니다. 전체적으로 흡잡을데 없는 좋은 관상입니다. ",
-      "누구보다 정력이 좋은 관상",
-    ],
-    이승기: [
-      "말상이라 직업운이 아주 강합니다. 이마가 사각형이라 사회성도 강하고 가정보다는 일을 중요하게 생각하는 성격입니다. 코를 보아하니 강하고 활력이 있어 사업을 하면 아주 좋은 관상입니다. 귀가 커서 인복이 좋고 기분파에 속하고 의리가 아주 강한 얼굴입니다. 귀밑 턱이 갸름하여 인생에 굴곡이 없어 보이고 입이 큰편이라 시원한 성격이며 낙천적인 성격이라 할 수 있는 관상입니다. ",
-      "인생에 굴곡이 없을 관상",
-    ],
-    크리스탈: [
-      "이마가 넓고 둥근형이라 이혼수가 살짝 있어 보입니다. 하지만 남편을 제외한 다른 사람하고는 항상 좋은 관계를 유지할 상입니다. 눈썹은 자상하며 눈은 자존심이 강한 눈이며 코는 재복이 있는 코입니다. 입은 가늘다보니 속마음을 잘 말하지 않는 입입니다. 귀 또한 정면에서 잘 안보이는 귀라 속마음을 알 수 없어 보여 겉으로는 모든 사람들에게 잘해주어 전체적으로 사회성도 좋고 붙입성도 좋은 대인관계가 아주 좋은 관상입니다. ",
-      "대인관계 마스터 관상",
-    ],
-    손나은: [
-      "이미가 적당한 크기라 잔머리가 잘 돌아가고 눈치가 빠른 이마입니다. 눈썹은 길고 가지런하며 여성스러운 눈썹입니다. 눈은 얌체기질이 있지만 이성운은 아주 강한 눈입니다. 코가 짧고 콧구멍이 잘 보이니 애교가 많은 편이며 씀씀이도 강합니다. 하지만 남편복이 약한 코입니다. 코를 통해 쓸데없는 남자들이 붙을 것을 알 수 있습니다. 인중은 짧은 편이라 대인 관계가 원활하지만 이런 인중은 자기와 비슷한 부류의 사람들과 친해지려 합니다. 전체적으로 이성운이 강한 관상이지만 배우자를 만날 때 심사숙고해야합니다.",
-      "쓸데없이 남자들이 달라 붙는 관상",
+    하은별: [
+      "맑고 깨끗한 인상의 소유자입니다. 완벽주의자 성향이 있고 경쟁심도 있어 목표한 바를 이루기 위해서 갖은 노력을 하는 스타일입니다. 솔직한 성격이라 표정이 얼굴에 그대로 드러나는데, 중요한 순간엔 포커페이스를 유지하기도 합니다. 목표를 이루려는 과정에서 자기 자신을 괴롭히기도 하는데 이런 습관은 몸을 해칠 수도 있으니 각별히 유의하셔야겠습니다.",
+      "유리멘탈 공주님",
+      "https://i.ibb.co/zN6DqkJ/image.png",
     ],
   };
 
@@ -205,7 +171,7 @@ async function predict() {
     resultArray[0].value,
     resultArray[0].key,
     answer,
-    description[answer][1]
+    description[resultArray[0].key][2]
   );
 
   for (let j = 0; j < 4; j++) {
@@ -214,9 +180,11 @@ async function predict() {
         starsListImg +
         ` <div class="star__list__wrap">
         <div class="star__list__img">
-        ${resultArray[j].key}
+        <img src=${description[resultArray[j].key][2]} alt="">
         </div> 
-        <div class="percent zero">${resultArray[j].value}%</div>
+        <div class="percent zero">${resultArray[j].key} ${
+          resultArray[j].value
+        }%</div>
       </div>
         `;
     } else if (resultArray[j].value > 0 && resultArray[j].value <= 10) {
@@ -224,9 +192,12 @@ async function predict() {
         starsListImg +
         ` <div class="star__list__wrap">
         <div class="star__list__img">
-        ${resultArray[j].key}
+        <img src=${description[resultArray[j].key][2]} alt="">
+        
         </div> 
-        <div class="percent zeroone">${resultArray[j].value}%</div>
+        <div class="percent zeroone">${resultArray[j].key} ${
+          resultArray[j].value
+        }%</div>
       </div>
         `;
     } else if (resultArray[j].value > 10 && resultArray[j].value <= 20) {
@@ -234,9 +205,12 @@ async function predict() {
         starsListImg +
         ` <div class="star__list__wrap">
         <div class="star__list__img">
-        ${resultArray[j].key}
+        <img src=${description[resultArray[j].key][2]} alt="">
+        
         </div> 
-        <div class="percent onetwo">${resultArray[j].value}%</div>
+        <div class="percent onetwo">${resultArray[j].key} ${
+          resultArray[j].value
+        }%</div>
       </div>
         `;
     } else if (resultArray[j].value > 20 && resultArray[j].value <= 30) {
@@ -244,9 +218,12 @@ async function predict() {
         starsListImg +
         ` <div class="star__list__wrap">
         <div class="star__list__img">
-        ${resultArray[j].key}
+        <img src=${description[resultArray[j].key][2]} alt="">
+        
         </div> 
-        <div class="percent twothree">${resultArray[j].value}%</div>
+        <div class="percent twothree">${resultArray[j].key} ${
+          resultArray[j].value
+        }%</div>
       </div>
         `;
     } else if (resultArray[j].value > 30 && resultArray[j].value <= 40) {
@@ -254,9 +231,12 @@ async function predict() {
         starsListImg +
         ` <div class="star__list__wrap">
         <div class="star__list__img">
-        ${resultArray[j].key}
+        <img src=${description[resultArray[j].key][2]} alt="">
+        
         </div> 
-        <div class="percent threefour">${resultArray[j].value}%</div>
+        <div class="percent threefour">${resultArray[j].key} ${
+          resultArray[j].value
+        }%</div>
       </div>
         `;
     } else if (resultArray[j].value > 40 && resultArray[j].value <= 50) {
@@ -264,9 +244,12 @@ async function predict() {
         starsListImg +
         ` <div class="star__list__wrap">
         <div class="star__list__img">
-        ${resultArray[j].key}
+        <img src=${description[resultArray[j].key][2]} alt="">
+        
         </div> 
-        <div class="percent fourfive">${resultArray[j].value}%</div>
+        <div class="percent fourfive">${resultArray[j].key} ${
+          resultArray[j].value
+        }%</div>
       </div>
         `;
     } else if (resultArray[j].value > 50 && resultArray[j].value <= 60) {
@@ -274,9 +257,12 @@ async function predict() {
         starsListImg +
         ` <div class="star__list__wrap">
         <div class="star__list__img">
-        ${resultArray[j].key}
+        <img src=${description[resultArray[j].key][2]} alt="">
+        
         </div> 
-        <div class="percent fivesix">${resultArray[j].value}%</div>
+        <div class="percent fivesix">${resultArray[j].key} ${
+          resultArray[j].value
+        }%</div>
       </div>
         `;
     } else if (resultArray[j].value > 60 && resultArray[j].value <= 70) {
@@ -284,9 +270,12 @@ async function predict() {
         starsListImg +
         ` <div class="star__list__wrap">
         <div class="star__list__img">
-        ${resultArray[j].key}
+        <img src=${description[resultArray[j].key][2]} alt="">
+        
         </div> 
-        <div class="percent sixseven">${resultArray[j].value}%</div>
+        <div class="percent sixseven">${resultArray[j].key} ${
+          resultArray[j].value
+        }%</div>
       </div>
         `;
     } else if (resultArray[j].value > 70 && resultArray[j].value <= 80) {
@@ -294,9 +283,12 @@ async function predict() {
         starsListImg +
         ` <div class="star__list__wrap">
         <div class="star__list__img">
-        ${resultArray[j].key}
+        <img src=${description[resultArray[j].key][2]} alt="">
+        
         </div> 
-        <div class="percent seveneight">${resultArray[j].value}%</div>
+        <div class="percent seveneight">${resultArray[j].key} ${
+          resultArray[j].value
+        }%</div>
       </div>
         `;
     } else if (resultArray[j].value > 80 && resultArray[j].value <= 90) {
@@ -304,9 +296,12 @@ async function predict() {
         starsListImg +
         ` <div class="star__list__wrap">
         <div class="star__list__img">
-        ${resultArray[j].key}
+        <img src=${description[resultArray[j].key][2]} alt="">
+        
         </div> 
-        <div class="percent eightnine">${resultArray[j].value}%</div>
+        <div class="percent eightnine">${resultArray[j].key} ${
+          resultArray[j].value
+        }%</div>
       </div>
         `;
     } else if (resultArray[j].value > 90 && resultArray[j].value <= 100) {
@@ -314,9 +309,12 @@ async function predict() {
         starsListImg +
         ` <div class="star__list__wrap">
         <div class="star__list__img">
-        ${resultArray[j].key}
+        <img src=${description[resultArray[j].key][2]} alt="">
+        
         </div> 
-        <div class="percent nineten">${resultArray[j].value}%</div>
+        <div class="percent nineten">${resultArray[j].key} ${
+          resultArray[j].value
+        }%</div>
       </div>
         `;
     }
@@ -324,23 +322,22 @@ async function predict() {
 
   let resultImg = document.createElement("img");
   resultImg.classList.add("result__img");
-  resultImg.src = `https://i.ibb.co/vmw1sN9/image.png`;
+  resultImg.src = `${description[answer][2]}`;
   labelContainer.appendChild(resultImg);
 
   let result = document.createElement("div");
   result.classList.add("main__result");
-  result.innerHTML = `<span>심수련 (이지아)</span>`;
+  result.innerHTML = `<span>${description[answer][1]}, ${answer}</span>`;
   labelContainer.appendChild(result);
 
-  let result2 = document.createElement("div");
-  result2.classList.add("celebrity");
-  // result2.textContent = `${answer} (이지아)`;
-  result2.textContent = `착하지만 치밀한 성격`;
-  labelContainer.appendChild(result2);
+  // let result2 = document.createElement("div");
+  // result2.classList.add("celebrity");
+  // // result2.textContent = `${answer} (이지아)`;
+  // result2.textContent = `착하지만 치밀한 성격`;
+  // labelContainer.appendChild(result2);
 
   let desc = document.createElement("p");
-  // desc.textContent = description[answer][0];
-  desc.textContent = `치밀하고 계획적이지만 양심적이고 선해 보입니다. 또한 모성애가 강해 아이를 위한 삶을 살아갑니다. 일을 미리 계획하는 쪽으로는 천재적인 기질을 보입니다. 우아하고 고상한 외모에 맞게 기가 매우 셉니다. 나긋나긋하지만 한마디 한마디가 굉장히 날카롭습니다. 하지만 가끔 치명적인 실수로 인해 불행이 찾아올 수 있으니 조심하세요.`;
+  desc.textContent = description[answer][0];
   labelContainer.appendChild(desc);
 
   let otherResult = document.createElement("div");
@@ -348,8 +345,9 @@ async function predict() {
   otherResult.innerHTML = `${starsListImg}`;
   labelContainer.appendChild(otherResult);
 
-  let reset = document.createElement("button");
-  reset.innerHTML = "다른 사진도 해보기";
+  let reset = document.createElement("img");
+  reset.classList.add("reset__btn");
+  reset.src = `https://i.ibb.co/d5fSrCg/image.png`;
   reset.onclick = function () {
     gtag("event", "한번더 클릭", {
       event_category: "한번더 클릭",
