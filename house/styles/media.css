@@ -9,6 +9,19 @@
     width: 500px;
   }
 
+  .result__answer {
+    position: relative;
+    font-size: 20px;
+  }
+
+  .result__box {
+    z-index: -1;
+    position: absolute;
+    right: 0px;
+    bottom: -22px;
+    width: 100%;
+  }
+
   .border {
     width: 350px;
   }
@@ -20,8 +33,10 @@
   .apologize {
     width: 320px;
   }
-  body {
-    border-right: 1px solid black;
+
+  .frame__dust {
+    transform: scale(2);
+    bottom: 10px;
   }
 }
 @media screen and (max-width: 499px) {
@@ -29,6 +44,10 @@
   .test__upper,
   .submitForm {
     width: 70%;
+  }
+
+  .border__wrap {
+    width: 100%;
   }
 
   .ad__upper,
@@ -44,6 +63,7 @@
   .border__hair {
     width: 70%;
   }
+
   .apologize {
     width: 320px;
   }

@@ -118,42 +118,50 @@
           alt=""
           class="house__sub"
         />
-        <!-- <h2 class="number"><span class="count__num"></span>번 관상을 봤어요.</h2>
-      <h2 class="timer"></h2> -->
+        <h2 class="number">
+          당신은 <span class="count__num"></span>번째 손님입니다.
+        </h2>
+        <h2 class="timer"></h2>
       </div>
-
-      <div class="border">
-        <div class="frame">
-          <div class="image">
-            <script
-              class="jsbin"
-              src="https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"
-            ></script>
-            <div class="file-upload">
-              <div class="image-upload-wrap">
-                <input
-                  class="file-upload-input"
-                  type="file"
-                  onchange="readURL(this);"
-                  accept="image/*"
-                />
-                <div class="drag-text">
-                  <img
-                    src="https://i.ibb.co/d6wMx9p/image.png"
-                    alt=""
-                    class="house__photo__upload"
+      <div class="border__wrap">
+        <img
+          src="https://i.ibb.co/XkhXXKn/image.png"
+          alt=""
+          class="frame__dust"
+        />
+        <div class="border">
+          <div class="frame">
+            <div class="image">
+              <script
+                class="jsbin"
+                src="https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"
+              ></script>
+              <div class="file-upload">
+                <div class="image-upload-wrap">
+                  <input
+                    class="file-upload-input"
+                    type="file"
+                    onchange="readURL(this);"
+                    accept="image/*"
                   />
+                  <div class="drag-text">
+                    <img
+                      src="https://i.ibb.co/d6wMx9p/image.png"
+                      alt=""
+                      class="house__photo__upload"
+                    />
+                  </div>
                 </div>
-              </div>
-              <div class="file-upload-content">
-                <img
-                  class="file-upload-image"
-                  id="face-image"
-                  src="#"
-                  alt="your image"
-                />
-                <div class="image-title-wrap">
-                  <div class="ai">관상가가 당신의 관상을 분석중..</div>
+                <div class="file-upload-content">
+                  <img
+                    class="file-upload-image"
+                    id="face-image"
+                    src="#"
+                    alt="your image"
+                  />
+                  <div class="image-title-wrap">
+                    <div class="ai">관상가가 당신의 관상을 분석중..</div>
+                  </div>
                 </div>
               </div>
             </div>

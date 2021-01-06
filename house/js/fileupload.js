@@ -1,6 +1,7 @@
 // 사진 올리는거
 
 const aiCont = document.querySelector(`.ai`);
+const noti = document.querySelector(`.noti`);
 
 async function readURL(input) {
   if (input.files && input.files[0]) {
@@ -18,6 +19,7 @@ async function readURL(input) {
     await reader.readAsDataURL(input.files[0]);
     await init();
     aiCont.classList.add("disblock");
+    noti.classList.add("disblock");
   } else {
     removeUpload();
   }
@@ -314,7 +316,17 @@ async function predict() {
   }
 
   let result = document.createElement("div");
-  result.textContent = `${description[answer][1]}`;
+  result.classList.add("main__result");
+  result.innerHTML = `
+  <div class="result__answer">
+          <img
+            src="https://i.ibb.co/XWJpN4v/image.png"
+            alt=""
+            class="result__box"
+          />
+          과묵하고 줏대가 있는 관상
+        </div>
+  `;
   labelContainer.appendChild(result);
 
   let result2 = document.createElement("div");
