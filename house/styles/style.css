@@ -1,0 +1,282 @@
+@import "picture.css";
+@import "reset.css";
+@import "header.css";
+@import "result.css";
+@import "media.css";
+@import "footer.css";
+@import "ad.css";
+
+@font-face {
+  font-family: "62570체";
+  src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_20-04@2.3/62570체.woff")
+    format("woff");
+  font-weight: normal;
+  font-style: normal;
+}
+
+body {
+  background: linear-gradient(
+    to bottom,
+    rgba(3, 3, 3, 1) 0%,
+    rgba(3, 3, 3, 1) 60%,
+    rgba(3, 3, 3, 1) 100%
+  );
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+.body__wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+.main__ai__title {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  font-family: "62570체";
+  padding: 30px;
+}
+
+.main__ai__title .title {
+  font-size: 50px;
+  margin-bottom: 10px;
+}
+
+.main__ai__title .subtitle {
+  font-size: 20px;
+  opacity: 0.8;
+}
+
+#container {
+  width: 160px;
+  height: 36px;
+  position: relative;
+  border-radius: 6px;
+  overflow: hidden;
+  user-select: none;
+  cursor: pointer;
+  margin-bottom: 10px;
+}
+
+.inner-container {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: inherit;
+  height: inherit;
+  text-transform: uppercase;
+  font-size: 0.6em;
+  letter-spacing: 0.2em;
+}
+
+.inner-container:first-child {
+  background: #e9e9e9;
+  color: #a9a9a9;
+}
+
+.inner-container:nth-child(2) {
+  background: #d74046;
+  color: white;
+  clip-path: inset(0 50% 0 0);
+  transition: 0.3s cubic-bezier(0, 0, 0, 1);
+}
+
+.number {
+  margin-top: 10px;
+  margin-bottom: 5px;
+}
+
+.count__num {
+  font-weight: 700;
+}
+
+.timer {
+  color: rgb(129, 129, 129);
+  font-weight: 400;
+  font-size: 12px;
+}
+
+.header {
+  padding-bottom: 16px;
+}
+
+.share {
+  width: 100%;
+  text-align: center;
+  font-size: 12px;
+  margin-top: 3px;
+}
+
+.result button {
+  outline: none;
+}
+
+.result button:hover {
+  cursor: pointer;
+}
+
+.result button:active {
+  outline: none;
+}
+
+.super__members {
+  width: 320px;
+  margin-bottom: 15px;
+}
+
+.super__img {
+  width: 100%;
+}
+
+.super__img:hover {
+  cursor: pointer;
+}
+
+.other__result {
+  margin-top: 10px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  /* overflow-x: scroll;
+  overflow-x: hidden; */
+  white-space: nowrap;
+}
+
+.star__list__wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.star__list__img {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border: 1px solid black;
+  font-size: 16px;
+  margin: 0 4px;
+  color: black;
+}
+
+.percent {
+  margin-top: -10px;
+  font-size: 16px;
+}
+
+.contact {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  width: 180px;
+  margin-bottom: 30px;
+}
+
+.contact_me {
+  font-weight: 700;
+  font-size: 16px;
+  text-decoration: none;
+  margin-top: 10px;
+  color: rgb(182, 182, 182);
+}
+
+.noti {
+  margin-top: 10px;
+  font-size: 12px;
+}
+
+.zero {
+  color: black;
+}
+
+.zeroone {
+  color: rgb(43, 160, 223);
+}
+
+.onetwo {
+  color: rgb(68, 182, 95);
+}
+
+.twothree {
+  color: blue;
+}
+
+.threefour {
+  color: aqua;
+}
+
+.fourfive {
+  color: purple;
+}
+
+.fivesix {
+  color: peru;
+}
+
+.sixseven {
+  color: rgb(149, 30, 196);
+}
+
+.seveneight {
+  color: rgb(196, 77, 178);
+}
+
+.eightnine {
+  color: rgb(204, 92, 129);
+}
+
+.nineten {
+  color: tomato;
+}
+
+.bold {
+  font-weight: 700;
+}
+
+.black__board {
+  width: 100%;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  background-color: rgba(0, 0, 0, 0.7);
+  opacity: 1;
+  z-index: 60;
+  transition: all 0.5s;
+}
+
+.black__board:hover {
+  cursor: pointer;
+}
+
+.disblock {
+  display: none;
+}
+
+.disappear {
+  opacity: 0;
+}
+
+.appear {
+  opacity: 1;
+}
+
+.house__title {
+  width: 50%;
+}
+
+.house__sub {
+  width: 80%;
+}

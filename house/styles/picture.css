@@ -1,0 +1,112 @@
+.border {
+  box-sizing: border-box;
+  position: relative;
+  background: url(https://i.ibb.co/HYHVFgs/2021-01-06-11-24-19.png);
+  background-size: 100%;
+}
+
+.border:before {
+  content: "";
+  display: block;
+  padding-bottom: 100%;
+}
+
+.frame {
+  left: 3%;
+  top: 2.5%;
+  /* box-shadow: inset -1px 1px 6px 1px rgba(0, 0, 0, 0.24); */
+  width: 94%;
+  height: 95%;
+  background: white;
+  align-items: center;
+  display: flex;
+  box-sizing: border-box;
+  position: absolute;
+}
+
+.image {
+  box-shadow: inset 0 0 1px 0 rgba(0, 0, 0, 0.2);
+  height: 100%;
+  width: 100%;
+  background-size: cover;
+  background-position: center center;
+}
+
+.file-upload {
+  background-color: #030303;
+  width: 100%;
+  margin: 0 auto;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.file-upload-btn:active {
+  border: 0;
+  transition: all 0.2s ease;
+}
+
+.file-upload-content {
+  display: none;
+  text-align: center;
+  line-height: 100%;
+}
+
+.file-upload-content img {
+  vertical-align: middle;
+}
+
+.file-upload-input {
+  position: absolute;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  outline: none;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.image-upload-wrap {
+  position: relative;
+  height: 80%;
+  width: 80%;
+  background: linear-gradient(
+    to bottom,
+    rgba(3, 3, 3, 0.5) 0%,
+    rgba(3, 3, 3, 0.5) 100%
+  );
+}
+
+.image-dropping,
+.image-upload-wrap:hover {
+  opacity: 0.7;
+}
+
+.image-title-wrap {
+  padding: 0 15px 15px 15px;
+  color: #222;
+}
+
+.drag-text {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  font-size: 10px;
+}
+
+.house__photo__upload {
+  width: 36%;
+}
+
+.file-upload-image {
+  max-height: 200px;
+  max-width: 200px;
+  margin: auto;
+  padding: 20px;
+  background-size: cover;
+}

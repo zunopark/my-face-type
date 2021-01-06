@@ -4,7 +4,8 @@
   .test__upper,
   .submitForm,
   .today__weather__wrap,
-  .lower__comment {
+  .lower__comment,
+  .body__wrap {
     width: 500px;
   }
 
@@ -35,7 +36,8 @@
   .footer,
   .today__weather__wrap,
   .today__weather,
-  .lower__comment {
+  .lower__comment,
+  .body__wrap {
     width: 100%;
   }
 
