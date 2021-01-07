@@ -119,13 +119,19 @@
   align-items: center;
   margin: 0px 8px;
 }
+.star__list__wrap2 {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 0px 2px;
+}
 
 .star__list__img {
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 48px;
-  height: 48px;
+  width: 52px;
+  height: 52px;
   /* border-radius: 50%; */
   /* border: 1px solid white; */
   font-size: 12px;

@@ -241,3 +241,13 @@ body {
   margin-top: 15px;
   margin-bottom: 30px;
 }
+
+.intro__character__wrap {
+  color: white;
+  font-family: "62570체";
+}
+
+.intro__wrap {
+  display: flex;
+  margin-top: 10px;
+}
