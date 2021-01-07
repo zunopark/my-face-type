@@ -286,6 +286,7 @@ a:hover {
 
 .house__img {
   width: 100%;
+  border: 2px solid rgb(212, 175, 6);
 }
 
 .house__img:hover {
@@ -497,4 +498,33 @@ a:hover {
 
 .appear {
   opacity: 1;
+}
+
+.house__btn button {
+  padding: 10px;
+  padding-bottom: 8px;
+  background-color: #323232;
+  border: 2px solid rgb(212, 175, 6);
+  color: #fff4ba;
+  width: 100%;
+  margin-top: 10px;
+  margin-bottom: 20px;
+  font-size: 16px;
+}
+
+.house__btn button:hover {
+  cursor: pointer;
+}
+
+.house__btn button span {
+  background: linear-gradient(
+    to right,
+    #ddc59b,
+    #fff9cf,
+    #af7c31,
+    #caac78,
+    #ac792f
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
