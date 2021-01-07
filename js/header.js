@@ -3,9 +3,8 @@ const headerMenuBtn = document.querySelector(`.header__menu__btn`);
 const headerTitle = document.querySelector(`.header__title`);
 const aiMenuBtn = document.querySelector(`#ai`);
 const animalMenuBtn = document.querySelector(`#animal`);
-const boyAiMenuBtn = document.querySelector(`#boyAi`);
-const girlAiMenuBtn = document.querySelector(`#girlAi`);
-const allListMenuBtn = document.querySelector(`#allList`);
+const houseMenuBtn = document.querySelector(`#house`);
+
 // console.log(temp);
 
 function handleMenu() {
@@ -18,6 +17,10 @@ function handleMenu() {
 
 function handleAiMenu() {
   location.href = "https://yourface.ga";
+}
+
+function handleHouseMenu() {
+  location.href = "https://yourface.ga/house";
 }
 
 function handleAnimalMenu() {
@@ -35,6 +38,7 @@ function init() {
       headerMenu.classList.add("header__anim__result");
     }, 500);
     aiMenuBtn.addEventListener("click", handleAiMenu);
+    houseMenuBtn.addEventListener("click", handleHouseMenu);
     animalMenuBtn.addEventListener("click", handleAnimalMenu);
     headerTitle.addEventListener("click", handleTitleBtn);
   }

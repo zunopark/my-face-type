@@ -292,6 +292,9 @@ a:hover {
   cursor: pointer;
 }
 
+.house__btn {
+}
+
 .liner__members {
   width: 320px;
   margin: 6px 0;
