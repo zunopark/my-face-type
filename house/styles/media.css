@@ -69,7 +69,8 @@
   .today__weather,
   .lower__comment,
   .body__wrap,
-  .contact {
+  .contact,
+  .house__banner {
     width: 100%;
   }
 

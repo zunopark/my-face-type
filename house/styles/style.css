@@ -260,3 +260,30 @@ body {
   margin-top: 50px;
   font-size: 12px;
 }
+
+.house__banner {
+  width: 320px;
+  margin-bottom: 20px;
+  margin-top: 120px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.house__banner__title {
+  font-size: 12px;
+  margin-top: 12px;
+  line-height: 18px;
+  text-align: center;
+  width: 100%;
+  font-weight: 700;
+  color: white;
+}
+
+.house__img {
+  width: 100%;
+}
+
+.house__img:hover {
+  cursor: pointer;
+}

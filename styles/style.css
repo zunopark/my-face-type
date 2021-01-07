@@ -293,9 +293,6 @@ a:hover {
   cursor: pointer;
 }
 
-.house__btn {
-}
-
 .liner__members {
   width: 320px;
   margin: 6px 0;
@@ -511,11 +508,11 @@ a:hover {
 .house__btn button {
   padding: 10px;
   padding-bottom: 8px;
-  background-color: #323232;
+  background-color: #000000;
   border: 2px solid rgb(212, 175, 6);
   color: #fff4ba;
   width: 100%;
-  margin-top: 10px;
+  margin-top: 4px;
   margin-bottom: 20px;
   font-size: 16px;
 }
