@@ -62,7 +62,7 @@ for (let j = 0; j < 5; j++) {
   starsListImg1 =
     starsListImg1 +
     ` <div class="star__list__wrap2">
-      <div class="star__list__img">
+      <div class="star__list__img2">
       <img src=${description[j].src} alt="">
       </div> 
       <div class="percent zero">${description[j].key}</div>
@@ -74,7 +74,7 @@ for (let j = 5; j < 10; j++) {
   starsListImg2 =
     starsListImg2 +
     ` <div class="star__list__wrap2">
-      <div class="star__list__img">
+      <div class="star__list__img2">
       <img src=${description[j].src} alt="">
       </div> 
       <div class="percent zero">${description[j].key}</div>
@@ -86,7 +86,7 @@ for (let j = 10; j < 15; j++) {
   starsListImg3 =
     starsListImg3 +
     ` <div class="star__list__wrap2">
-      <div class="star__list__img">
+      <div class="star__list__img2">
       <img src=${description[j].src} alt="">
       </div> 
       <div class="percent zero">${description[j].key}</div>

@@ -117,8 +117,9 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin: 0px 8px;
+  margin: 0px 6px;
 }
+
 .star__list__wrap2 {
   display: flex;
   flex-direction: column;
@@ -130,8 +131,21 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 52px;
-  height: 52px;
+  width: 46px;
+  height: 46px;
+  /* border-radius: 50%; */
+  /* border: 1px solid white; */
+  font-size: 12px;
+  margin: 0 4px;
+  color: white;
+}
+
+.star__list__img2 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 56px;
+  height: 56px;
   /* border-radius: 50%; */
   /* border: 1px solid white; */
   font-size: 12px;
@@ -140,6 +154,10 @@
 }
 
 .star__list__img img {
+  width: 100%;
+}
+
+.star__list__img2 img {
   width: 100%;
 }
 

@@ -8,6 +8,22 @@
   align-items: center;
 }
 
+.contact {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 30px;
+}
+
+.contact_me {
+  margin: 0 20px;
+  font-weight: 700;
+  font-size: 16px;
+  text-decoration: none;
+  margin-top: 10px;
+  color: rgb(182, 182, 182);
+}
+
 .footer__icon {
   color: white;
   font-size: 40px;

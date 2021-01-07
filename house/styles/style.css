@@ -157,23 +157,6 @@ body {
   cursor: pointer;
 }
 
-.contact {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-  width: 180px;
-  margin-bottom: 30px;
-}
-
-.contact_me {
-  font-weight: 700;
-  font-size: 16px;
-  text-decoration: none;
-  margin-top: 10px;
-  color: rgb(182, 182, 182);
-}
-
 .noti {
   margin-top: 10px;
   font-size: 10px;
@@ -245,9 +228,35 @@ body {
 .intro__character__wrap {
   color: white;
   font-family: "62570체";
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .intro__wrap {
   display: flex;
   margin-top: 10px;
+}
+
+.intro__title {
+  margin: 20px 0 10px 0;
+}
+
+.intro__title span {
+  background: linear-gradient(
+    to right,
+    #ddc59b,
+    #fff9cf,
+    #af7c31,
+    #caac78,
+    #ac792f
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.intro__character__wrap .help {
+  margin-top: 50px;
+  font-size: 12px;
 }
