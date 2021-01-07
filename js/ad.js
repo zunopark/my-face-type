@@ -56,6 +56,14 @@ if (helloImg) {
   helloImg.addEventListener("click", handleHello);
 }
 
+const houseTest = document.querySelector(`.house__img`);
+
+function handleGoHouse() {
+  location.href = "https://yourface.ga/house/";
+}
+
+houseTest.addEventListener("click", handleGoHouse);
+
 // const todayWeather = document.querySelector(`.today__weather__wrap`);
 // const blackBoard = document.querySelector(`.black__board`);
 // const closeBtn = document.querySelector(`.upper__comment`);

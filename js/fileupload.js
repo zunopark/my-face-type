@@ -356,11 +356,12 @@ async function predict() {
   let todayTest = document.createElement("button");
   todayTest.classList.add("today__test");
   todayTest.onclick = function () {
-    gtag("event", "오늘의 비서 - 날씨", {
-      event_category: "오늘의 비서 - 날씨",
-      event_label: "플러스 친구",
+    gtag("event", "펜트하우스", {
+      event_category: "펜트하우스",
+      event_label: "테스트",
     });
   };
+
   todayTest.innerHTML = `<span>나와 닮은 펜트하우스 등장인물은?</span>`;
   labelContainer.appendChild(todayTest);
 

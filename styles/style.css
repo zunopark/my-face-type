@@ -273,6 +273,25 @@ a:hover {
   font-size: 12px;
 }
 
+.house__banner {
+  width: 320px;
+  margin: 6px 0;
+  margin-bottom: 20px;
+}
+
+.house__title {
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+.house__img {
+  width: 100%;
+}
+
+.house__img:hover {
+  cursor: pointer;
+}
+
 .liner__members {
   width: 320px;
   margin: 6px 0;
