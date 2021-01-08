@@ -1,6 +1,6 @@
 // 실시간 js
 
-const countNum = document.querySelector(`.count__num`);
+// const countNum = document.querySelector(`.count__num`);
 getTime();
 
 // if (countNum) {

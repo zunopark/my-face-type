@@ -147,6 +147,7 @@
                     type="file"
                     onchange="readURL(this);"
                     accept="image/*"
+                    onclick="func()"
                   />
                   <div class="drag-text">
                     <img
@@ -331,32 +332,29 @@
 
       var countRef = db.collection("view").doc("siteCount");
 
-      const func = async () => {
-        await countRef.update({
+      async function firstRead() {
+        let doc = await countRef.get();
+        const countNum = document.querySelector(`.count__num`);
+        function handleCountNum() {
+          let countNumber = doc.data().house - 200;
+          function countUp() {
+            if (countNumber < doc.data().house) {
+              countNumber = countNumber + 1;
+              countNum.innerHTML = countNumber;
+            }
+          }
+          setInterval(countUp, 1);
+        }
+        handleCountNum();
+      }
+
+      firstRead();
+
+      const func = () => {
+        countRef.update({
           house: firebase.firestore.FieldValue.increment(1),
         });
-
-        let doc = await countRef.get();
-        console.log(doc.data().house);
-
-        const countNum = document.querySelector(`.count__num`);
-
-        if (countNum) {
-          function handleCountNum() {
-            let countNumber = doc.data().house - 200;
-            function countUp() {
-              if (countNumber < doc.data().house) {
-                countNumber = countNumber + 1;
-                countNum.innerHTML = countNumber;
-              }
-            }
-            setInterval(countUp, 1);
-          }
-          handleCountNum();
-        }
       };
-
-      func();
     </script>
   </body>
   <!-- 

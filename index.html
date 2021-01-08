@@ -142,6 +142,7 @@
                 type="file"
                 onchange="readURL(this);"
                 accept="image/*"
+                onclick="func()"
               />
               <div class="drag-text">
                 <i class="far fa-image"></i>
@@ -333,7 +334,7 @@
     <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@1.3.1/dist/tf.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@teachablemachine/image@0.8/dist/teachablemachine-image.min.js"></script>
 
-    <!-- <script src="https://www.gstatic.com/firebasejs/7.23.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.23.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/7.23.0/firebase-analytics.js"></script>
     <script src="https://www.gstatic.com/firebasejs/7.23.0/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/7.23.0/firebase-firestore.js"></script>
@@ -358,34 +359,30 @@
 
       var countRef = db.collection("view").doc("siteCount");
 
-      const func = async () => {
-        await countRef.update({
+      async function firstRead() {
+        let doc = await countRef.get();
+        const countNum = document.querySelector(`.count__num`);
+        function handleCountNum() {
+          let countNumber = doc.data().main - 200;
+          function countUp() {
+            if (countNumber < doc.data().main) {
+              countNumber = countNumber + 1;
+              countNum.innerHTML = countNumber;
+            }
+          }
+          setInterval(countUp, 1);
+        }
+        handleCountNum();
+      }
+
+      firstRead();
+
+      const func = () => {
+        countRef.update({
           main: firebase.firestore.FieldValue.increment(1),
         });
-
-        let doc = await countRef.get();
-        console.log(doc.data().main);
-
-        const countNum = document.querySelector(`.count__num`);
-
-        if (countNum) {
-          function handleCountNum() {
-            let countNumber = doc.data().main - 200;
-            function countUp() {
-              if (countNumber < doc.data().main) {
-                countNumber = countNumber + 1;
-                countNum.innerHTML = countNumber;
-              }
-            }
-            setInterval(countUp, 1);
-          }
-          handleCountNum();
-        }
       };
-
-      func();
-      const countNum = document.querySelector(`.count__num`);
-    </script> -->
+    </script>
   </body>
   <!-- 
 Copyright (c) 2020 by Aaron Vanston (https://codepen.io/aaronvanston/pen/yNYOXR)
