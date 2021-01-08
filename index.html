@@ -342,22 +342,22 @@
     <script>
       // Your web app's Firebase configuration
       // For Firebase JS SDK v7.20.0 and later, measurementId is optional
-      var firebaseConfig = {
-        apiKey: "AIzaSyDH1QT4Ax1d6-WhZmOx3aRgvMSGpTSZp-o",
-        authDomain: "yourface-5947b.firebaseapp.com",
-        projectId: "yourface-5947b",
-        storageBucket: "yourface-5947b.appspot.com",
-        messagingSenderId: "15023596356",
-        appId: "1:15023596356:web:5ea84d70c645102c2fad11",
-        measurementId: "G-Z88J9WJGJZ",
-      };
-      // Initialize Firebase
-      firebase.initializeApp(firebaseConfig);
-      firebase.analytics();
+      // var firebaseConfig = {
+      //   apiKey: "AIzaSyDH1QT4Ax1d6-WhZmOx3aRgvMSGpTSZp-o",
+      //   authDomain: "yourface-5947b.firebaseapp.com",
+      //   projectId: "yourface-5947b",
+      //   storageBucket: "yourface-5947b.appspot.com",
+      //   messagingSenderId: "15023596356",
+      //   appId: "1:15023596356:web:5ea84d70c645102c2fad11",
+      //   measurementId: "G-Z88J9WJGJZ",
+      // };
+      // // Initialize Firebase
+      // firebase.initializeApp(firebaseConfig);
+      // firebase.analytics();
 
-      var db = firebase.firestore();
+      // var db = firebase.firestore();
 
-      var countRef = db.collection("view").doc("siteCount");
+      // var countRef = db.collection("view").doc("siteCount");
 
       // async function firstRead() {
       //   let doc = await countRef.get();
@@ -377,23 +377,23 @@
 
       // firstRead();
 
-      const countNum = document.querySelector(`.count__num`);
-      function handleCountNum() {
-        let countNumber = 21606999 - 200;
-        function countUp() {
-          if (countNumber < 21606999) {
-            countNumber = countNumber + 1;
-            countNum.innerHTML = countNumber;
-          }
-        }
-        setInterval(countUp, 1);
-      }
-      handleCountNum();
+      // const countNum = document.querySelector(`.count__num`);
+      // function handleCountNum() {
+      //   let countNumber = 21606999 - 200;
+      //   function countUp() {
+      //     if (countNumber < 21606999) {
+      //       countNumber = countNumber + 1;
+      //       countNum.innerHTML = countNumber;
+      //     }
+      //   }
+      //   setInterval(countUp, 1);
+      // }
+      // handleCountNum();
 
       const func = () => {
-        countRef.update({
-          main: firebase.firestore.FieldValue.increment(1),
-        });
+        // countRef.update({
+        //   main: firebase.firestore.FieldValue.increment(1),
+        // });
       };
     </script>
   </body>
