@@ -359,23 +359,36 @@
 
       var countRef = db.collection("view").doc("siteCount");
 
-      async function firstRead() {
-        let doc = await countRef.get();
-        const countNum = document.querySelector(`.count__num`);
-        function handleCountNum() {
-          let countNumber = doc.data().main - 200;
-          function countUp() {
-            if (countNumber < doc.data().main) {
-              countNumber = countNumber + 1;
-              countNum.innerHTML = countNumber;
-            }
-          }
-          setInterval(countUp, 1);
-        }
-        handleCountNum();
-      }
+      // async function firstRead() {
+      //   let doc = await countRef.get();
+      //   const countNum = document.querySelector(`.count__num`);
+      //   function handleCountNum() {
+      //     let countNumber = doc.data().main - 200;
+      //     function countUp() {
+      //       if (countNumber < doc.data().main) {
+      //         countNumber = countNumber + 1;
+      //         countNum.innerHTML = countNumber;
+      //       }
+      //     }
+      //     setInterval(countUp, 1);
+      //   }
+      //   handleCountNum();
+      // }
 
-      firstRead();
+      // firstRead();
+
+      const countNum = document.querySelector(`.count__num`);
+      function handleCountNum() {
+        let countNumber = 21606999 - 200;
+        function countUp() {
+          if (countNumber < 21606999) {
+            countNumber = countNumber + 1;
+            countNum.innerHTML = countNumber;
+          }
+        }
+        setInterval(countUp, 1);
+      }
+      handleCountNum();
 
       const func = () => {
         countRef.update({
