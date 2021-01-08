@@ -273,13 +273,15 @@ a:hover {
   font-size: 12px;
 }
 
-.house__banner {
+.house__banner,
+.today__test {
   width: 320px;
   margin: 6px 0;
   margin-bottom: 20px;
 }
 
 .house__title {
+  color: black;
   font-weight: 700;
   margin-bottom: 10px;
 }
@@ -523,7 +525,6 @@ a:hover {
 
 .house__btn button span {
   font-family: "62570체";
-
   background: linear-gradient(
     to right,
     #ddc59b,

@@ -334,6 +334,7 @@ async function predict() {
 
   let reset = document.createElement("button");
   reset.innerHTML = "다른 사진도 해보기";
+  reset.classList.add("reset__btn");
   reset.onclick = function () {
     gtag("event", "한번더 클릭", {
       event_category: "한번더 클릭",
@@ -353,7 +354,7 @@ async function predict() {
   // otherTest.innerHTML = `<i class="fas fa-moon moon__i"></i>달편지 - 속마음을 편지로 만들어보세요`;
   // labelContainer.appendChild(otherTest);
 
-  let todayTest = document.createElement("button");
+  let todayTest = document.createElement("div");
   todayTest.classList.add("today__test");
   todayTest.onclick = function () {
     gtag("event", "펜트하우스", {
@@ -362,7 +363,22 @@ async function predict() {
     });
   };
 
-  todayTest.innerHTML = `<span>나와 닮은 펜트하우스 등장인물은?</span>`;
+  todayTest.innerHTML = `
+<img
+  src="http://yourface.speedgabia.com/썸네일.png"
+  alt=""
+  class="house__img"
+/>
+<a
+  href="https://yourface.ga/house/"
+  class="house__btn"
+  onclick="gtag('event', '펜트하우스', {'event_category':
+'펜트하우스','event_label': '테스트'});"
+>
+  <button>
+    <span> 나와 닮은 펜트하우스 인물 찾기</span>
+  </button>
+</a>`;
   labelContainer.appendChild(todayTest);
 
   // let makeTest = document.createElement("button");
