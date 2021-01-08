@@ -374,13 +374,12 @@ async function predict() {
   reset.classList.add("reset__btn");
   reset.src = `https://i.ibb.co/d5fSrCg/image.png`;
   reset.onclick = function () {
-    gtag("event", "한번더 클릭", {
-      event_category: "한번더 클릭",
+    gtag("event", "한번더 클릭 하우스", {
+      event_category: "한번더 클릭 하우스",
       event_label: "결과 버튼",
     });
   };
   labelContainer.appendChild(reset);
-
   reset.addEventListener("click", handleReset);
 
   const privacy = document.querySelector(`.noti`);
