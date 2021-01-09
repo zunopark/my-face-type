@@ -365,7 +365,7 @@ async function predict() {
 
   todayTest.innerHTML = `
 <img
-  src="https://i.ibb.co/KDZSDgp/image.png"
+  src="https://ifh.cc/g/TwYS6J.jpg"
   alt=""
   class="house__img"
 />
