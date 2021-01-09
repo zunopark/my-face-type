@@ -51,7 +51,6 @@ let description = [
   { key: "로건리", src: "https://i.ibb.co/FzLN8zH/image.png" },
   { key: "하윤철", src: "https://i.ibb.co/sy7yC2d/image.png" },
 ];
-console.log(description[0].key);
 
 const introChar1 = document.querySelector(`.intro__character1`);
 const introChar2 = document.querySelector(`.intro__character2`);

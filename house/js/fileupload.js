@@ -172,6 +172,7 @@ async function predict() {
   };
 
   resultArray.shuffle();
+  console.log(resultArray);
 
   for (let i = 0; i < resultArray.length - 1; i++) {
     for (let j = i + 1; j < resultArray.length; j++) {
