@@ -4,7 +4,7 @@ const countNum = document.querySelector(`.count__num`);
 getTime();
 
 function handleCountNum() {
-  let count = 74812;
+  let count = 81812;
   let countNumber = count - 300;
   function countUp() {
     if (countNumber < count) {
