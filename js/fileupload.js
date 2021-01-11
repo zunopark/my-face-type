@@ -364,18 +364,16 @@ async function predict() {
   };
 
   todayTest.innerHTML = `
-<img
-  src="https://ifh.cc/g/TwYS6J.jpg"
-  alt=""
-  class="house__img"
-/>
+  <div class="house__title2">
+  인공지능이 말해주는 나와 닮은 펜트하우스 인물은?
+</div>
 <a
   href="https://yourface.ga/house/"
   class="house__btn"
   onclick="gtag('event', '펜트하우스', {'event_category':
 '펜트하우스','event_label': '테스트'});"
 >
-  <button>
+  <button class="house__btn__click">
     <span> 나와 닮은 펜트하우스 인물 찾기</span>
   </button>
 </a>`;

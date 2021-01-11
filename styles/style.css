@@ -281,9 +281,10 @@ a:hover {
 }
 
 .house__title {
+  font-family: cursive;
   color: black;
   font-weight: 700;
-  margin-bottom: 10px;
+  /* margin-bottom: 10px; */
 }
 
 .house__img {
@@ -508,8 +509,7 @@ a:hover {
 }
 
 .house__btn button {
-  padding: 10px;
-  padding-bottom: 8px;
+  padding: 12px;
   background-color: #000000;
   border: 2px solid rgb(212, 175, 6);
   color: #fff4ba;
@@ -535,4 +535,15 @@ a:hover {
   );
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+}
+
+.house__btn__click {
+  border-radius: 24px;
+}
+
+.house__title2 {
+  font-family: cursive;
+  color: black;
+  font-weight: 700;
+  font-size: 16px;
 }
