@@ -93,3 +93,9 @@ houseTest.addEventListener("click", handleGoHouse);
 //   document.execCommand("copy");
 //   urlLink.blur();
 // }
+
+const chanAd = document.querySelector(`.chan__ad`);
+
+chanAd.addEventListener("click", function () {
+  location.href = "https://www.gopax.co.kr/signup?refCode=NCW3AE";
+});

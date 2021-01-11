@@ -551,3 +551,13 @@ a:hover {
   margin-bottom: 30px;
   font-size: 16px;
 }
+
+.chan__ad {
+  width: 320px;
+  text-align: center;
+  font-weight: 700;
+  padding: 12px 0;
+  padding-top: 14px;
+  background-color: #181c24;
+  color: white;
+}
