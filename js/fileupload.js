@@ -365,7 +365,7 @@ async function predict() {
 
   todayTest.innerHTML = `
   <div class="house__title2">
-  인공지능이 말해주는 나와 닮은 펜트하우스 인물은?
+  나는 펜트하우스에서 누구와 닮았을까?
 </div>
 <a
   href="https://yourface.ga/house/"
