@@ -39,7 +39,8 @@ $(".image-upload-wrap").bind("dragleave", function () {
 
 // url 설정
 
-const URL = "https://teachablemachine.withgoogle.com/models/QgTC6_yQ1/";
+// const URL = "https://teachablemachine.withgoogle.com/models/QgTC6_yQ1/";
+const URL = "https://teachablemachine.withgoogle.com/models/07M68Vgss/";
 
 let model, webcam, labelContainer, maxPredictions;
 
@@ -172,7 +173,6 @@ async function predict() {
   };
 
   resultArray.shuffle();
-  console.log(resultArray);
 
   for (let i = 0; i < resultArray.length - 1; i++) {
     for (let j = i + 1; j < resultArray.length; j++) {
@@ -193,12 +193,12 @@ async function predict() {
 
   let starsListImg = "";
 
-  console.log(
-    resultArray[0].value,
-    resultArray[0].key,
-    answer,
-    description[resultArray[0].key][2]
-  );
+  // console.log(
+  //   resultArray[0].value,
+  //   resultArray[0].key,
+  //   answer,
+  //   description[resultArray[0].key][2]
+  // );
 
   for (let j = 0; j < 4; j++) {
     if (resultArray[j].value === 0) {
