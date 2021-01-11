@@ -561,3 +561,7 @@ a:hover {
   background-color: #181c24;
   color: white;
 }
+
+.chan__ad:hover {
+  cursor: pointer;
+}
