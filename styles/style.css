@@ -281,10 +281,12 @@ a:hover {
 }
 
 .house__title {
+  text-align: center;
   font-family: cursive;
   color: black;
   font-weight: 700;
-  /* margin-bottom: 10px; */
+  margin-bottom: 10px;
+  font-size: 15px;
 }
 
 .house__img {
@@ -509,7 +511,7 @@ a:hover {
 }
 
 .house__btn button {
-  padding: 12px;
+  padding: 10px;
   background-color: #000000;
   border: 2px solid rgb(212, 175, 6);
   color: #fff4ba;
@@ -538,12 +540,14 @@ a:hover {
 }
 
 .house__btn__click {
-  border-radius: 24px;
+  border-radius: 20px;
+  margin-top: -40px;
 }
 
 .house__title2 {
   font-family: cursive;
   color: black;
   font-weight: 700;
+  margin-bottom: 30px;
   font-size: 16px;
 }
