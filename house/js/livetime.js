@@ -1,21 +1,21 @@
 // 실시간 js
 
-// const countNum = document.querySelector(`.count__num`);
+const countNum = document.querySelector(`.count__num`);
+
+function handleCountNum() {
+  let count = 104812;
+  let countNumber = count - 300;
+  function countUp() {
+    if (countNumber < count) {
+      countNumber = countNumber + 1;
+      countNum.innerHTML = countNumber;
+    }
+  }
+  setInterval(countUp, 1);
+}
+
+handleCountNum();
 getTime();
-
-// function handleCountNum() {
-//   let count = 81812;
-//   let countNumber = count - 300;
-//   function countUp() {
-//     if (countNumber < count) {
-//       countNumber = countNumber + 1;
-//       countNum.innerHTML = countNumber;
-//     }
-//   }
-//   setInterval(countUp, 1);
-// }
-
-// handleCountNum();
 
 function getTime() {
   let currentTime = new Date();
