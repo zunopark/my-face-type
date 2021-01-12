@@ -31,3 +31,9 @@ function getTime() {
     date < 10 ? `0${date}` : date
   } ${hour < 10 ? `0${hour}` : hour}:00 기준)`;
 }
+
+{
+  {
+    secret.api_key;
+  }
+}

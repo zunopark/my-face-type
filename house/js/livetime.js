@@ -28,7 +28,7 @@ function getTime() {
 
   time.innerHTML = `(${year}.${month < 10 ? `0${month}` : month}.${
     date < 10 ? `0${date}` : date
-  } ${hour < 10 ? `0${hour}` : hour}:00 기준)`;
+  } ${hour < 10 ? `0${hour}` : hour}:00 기준.)`;
 }
 
 // main people
