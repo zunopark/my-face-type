@@ -343,6 +343,9 @@ async function predict() {
   };
   labelContainer.appendChild(reset);
 
+  const subscribeBigWrap = document.querySelector(`.subscribe__big__wrap`);
+  subscribeBigWrap.classList.remove("none");
+
   // let otherTest = document.createElement("button");
   // otherTest.classList.add("other__test");
   // otherTest.onclick = function () {

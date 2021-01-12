@@ -70,6 +70,9 @@ const submitEmail = document.querySelector(`.submit__email`);
 function handleSubmitBtn() {
   if (submitEmail.value !== "") {
     applying.classList.remove("none");
+    setTimeout(function () {
+      submitBtn.disabled = "disabled";
+    }, 100);
   }
   let link = setInterval(function () {
     if (thx.style.display === "block") {
@@ -80,10 +83,5 @@ function handleSubmitBtn() {
     }
   }, 200);
 }
-console.dir(submitEmail);
 
-function init() {
-  submitBtn.addEventListener("click", handleSubmitBtn);
-}
-
-init();
+submitBtn.addEventListener("click", handleSubmitBtn);
