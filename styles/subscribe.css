@@ -1,0 +1,56 @@
+.subscribe__wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.subscribe__title {
+  font-size: 20px;
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+.subscribe__content {
+  font-size: 16px;
+  text-align: center;
+  line-height: 20px;
+  margin-bottom: 6px;
+}
+.submit__email {
+  width: 260px;
+  outline: none;
+  border: 1px solid rgb(104, 104, 104);
+  border-right: none;
+  padding: 10px;
+  background: transparent;
+  text-align: center;
+}
+
+.submit__submit {
+  padding: 4px;
+  border: 1px solid rgb(104, 104, 104);
+  outline: none;
+}
+
+.submit__form {
+  display: flex;
+  justify-content: center;
+  outline: none;
+  margin-bottom: 10px;
+}
+
+.thankyou_message {
+  display: flex;
+  justify-content: center;
+}
+
+.guide__m {
+  text-align: center;
+}
+
+.subscribe__big__wrap {
+  margin-bottom: 30px;
+}
+
+.applying {
+  text-align: center;
+}

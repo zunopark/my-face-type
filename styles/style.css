@@ -7,6 +7,7 @@
 @import "media.css";
 @import "footer.css";
 @import "list.css";
+@import "subscribe.css";
 
 @import url("https://fonts.googleapis.com/css?family=Asap:400,500,700");
 
@@ -564,4 +565,66 @@ a:hover {
 
 .chan__ad:hover {
   cursor: pointer;
+}
+
+.none {
+  display: none;
+}
+
+.black__loading {
+  line-height: 30px;
+  z-index: 10;
+  position: fixed;
+  width: 100%;
+  text-align: center;
+  color: white;
+  background-color: rgba(0, 0, 0, 0.5);
+  transform: translateY(-200px);
+  padding: 10000px 0;
+  transition: 3s all;
+}
+
+.submit__circle {
+  background-color: white;
+  opacity: 0.7;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  margin: 10px;
+}
+
+.submit__circle:nth-child(1) {
+  animation: loading 1s infinite;
+}
+.submit__circle:nth-child(2) {
+  animation: loading 1s infinite 0.3s;
+}
+.submit__circle:nth-child(3) {
+  animation: loading 1s infinite 0.6s;
+}
+
+@keyframes loading {
+  0% {
+    /* background-color: black; */
+    transform: translateY(-10px);
+  }
+  33% {
+    transform: none;
+  }
+  100% {
+  }
+}
+
+.submit__rotate {
+  display: flex;
+}
+
+.submit__rotate__background {
+  position: fixed;
+  bottom: 50px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }

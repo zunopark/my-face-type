@@ -142,7 +142,6 @@
                 type="file"
                 onchange="readURL(this);"
                 accept="image/*"
-                onclick="func()"
               />
               <div class="drag-text">
                 <i class="far fa-image"></i>
@@ -207,27 +206,36 @@
       ></script>
     </div>
 
-    <!-- <section
-      id="yotube-bottom-link"
-      class="mt-2 d-flex flex-column justify-content-center align-items-center"
-      onclick="gtag('event', '조코딩 유튜브 클릭', {'event_category': '조코딩 유튜브 클릭','event_label': '하단 광고'});"
-    >
-      <iframe
-        width="320"
-        height="180"
-        src="https://www.youtube.com/embed/s6SITKSN9Q0"
-        frameborder="0"
-        allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
-        allowfullscreen
-      ></iframe>
-      <div class="jocoding">
-        <a
-          href="https://www.youtube.com/channel/UCQNE2JmbasNYbjGAcuBiRRg"
-          target="_blank"
-          >제작 도움: 유튜브 조코딩 채널</a
+    <div class="subscribe__big__wrap">
+      <div class="subscribe__wrap">
+        <div class="subscribe__title">관상 재밌게 보셨나요?</div>
+        <div class="subscribe__content">
+          구독하면 매주 일요일마다 <br />새로운 테스트를 보내드려요!
+        </div>
+        <form
+          action="https://script.google.com/macros/s/AKfycbzMJEI0x4Mxzyfd2a5RNo-rh69KxHdtW-6Z2c-QEonOg6L5zso/exec"
+          class="gform"
+          method="POST"
+          data-email="example@email.net"
         >
+          <div class="submit__form">
+            <input
+              type="email"
+              class="submit__email"
+              name="face_subemail"
+              placeholder="이메일을 입력하고 신청을 누르세요!"
+              required
+            />
+            <input type="submit" value="구독 신청" class="submit__submit" />
+          </div>
+          <div class="applying none" id="applying">잠시만요, 신청중입니다!</div>
+          <div style="display: none" class="thankyou_message" id="thx">
+            <h2 class="guide__m">감사합니다. 구독 신청이 완료되었습니다.</h2>
+          </div>
+        </form>
       </div>
-    </section> -->
+    </div>
+
     <div class="house__banner">
       <div class="house__title">
         인공지능이 말해주는 나와 닮은 펜트하우스 인물은?
@@ -323,7 +331,6 @@
 
       작가님의 작품을 무단으로 사용한 점, 다시 한번 진심으로 죄송합니다.
     </div>
-    <input type="text" id="shareUrl" style="opacity: 0" />
 
     <footer class="footer"></footer>
 
@@ -335,6 +342,11 @@
 
     <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@1.3.1/dist/tf.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@teachablemachine/image@0.8/dist/teachablemachine-image.min.js"></script>
+    <script
+      data-cfasync="false"
+      type="text/javascript"
+      src="https://cdn.rawgit.com/dwyl/html-form-send-email-via-google-script-without-server/master/form-submission-handler.js"
+    ></script>
   </body>
   <!-- 
 Copyright (c) 2020 by Aaron Vanston (https://codepen.io/aaronvanston/pen/yNYOXR)
