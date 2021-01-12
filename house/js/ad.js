@@ -56,32 +56,27 @@ if (helloImg) {
   helloImg.addEventListener("click", handleHello);
 }
 
-// const todayWeather = document.querySelector(`.today__weather__wrap`);
-// const blackBoard = document.querySelector(`.black__board`);
-// const closeBtn = document.querySelector(`.upper__comment`);
-// const shareBtn = document.querySelector(`.lower__button`);
+// 구독 입력 js
+const thx = document.querySelector(`#thx`);
+const applying = document.querySelector(`#applying`);
+const submitBtn = document.querySelector(`.submit__submit`);
+const submitEmail = document.querySelector(`.submit__email`);
 
-// function handleCloseBtn() {
-//   todayWeather.classList.add("disblock");
-//   blackBoard.classList.add("disblock");
-// }
+function handleSubmitBtn() {
+  if (submitEmail.value !== "") {
+    applying.classList.remove("none");
+    setTimeout(function () {
+      submitBtn.disabled = "disabled";
+    }, 100);
+  }
+  let link = setInterval(function () {
+    if (thx.style.display === "block") {
+      setTimeout(function () {
+        applying.classList.add("none");
+      }, 10);
+      clearInterval(link);
+    }
+  }, 200);
+}
 
-// if (closeBtn) {
-//   closeBtn.addEventListener("click", handleCloseBtn);
-//   blackBoard.addEventListener("click", handleCloseBtn);
-// }
-// shareBtn.addEventListener("click", handleCopy);
-
-// setTimeout(function () {
-//   todayWeather.classList.remove("disblock");
-//   blackBoard.classList.remove("disblock");
-// }, 10);
-
-// function handleCopy() {
-//   var urlLink = document.getElementById("shareUrl");
-//   console.log(window.document.location.href, urlLink);
-//   urlLink.value = window.document.location.href;
-//   urlLink.select();
-//   document.execCommand("copy");
-//   urlLink.blur();
-// }
+submitBtn.addEventListener("click", handleSubmitBtn);

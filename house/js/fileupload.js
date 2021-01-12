@@ -356,12 +356,6 @@ async function predict() {
   result.innerHTML = `<span>${description[answer][1]}, ${answer}</span>`;
   labelContainer.appendChild(result);
 
-  // let result2 = document.createElement("div");
-  // result2.classList.add("celebrity");
-  // // result2.textContent = `${answer} (이지아)`;
-  // result2.textContent = `착하지만 치밀한 성격`;
-  // labelContainer.appendChild(result2);
-
   let desc = document.createElement("p");
   desc.textContent = description[answer][0];
   labelContainer.appendChild(desc);
@@ -382,6 +376,9 @@ async function predict() {
   };
   labelContainer.appendChild(reset);
   reset.addEventListener("click", handleReset);
+
+  const subscribeBigWrap = document.querySelector(`.subscribe__big__wrap`);
+  subscribeBigWrap.classList.remove("none");
 
   const privacy = document.querySelector(`.noti`);
   privacy.style.display = "none";

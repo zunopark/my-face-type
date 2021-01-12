@@ -5,6 +5,7 @@
 @import "media.css";
 @import "footer.css";
 @import "ad.css";
+@import "subscribe.css";
 
 @font-face {
   font-family: "62570체";
@@ -287,4 +288,8 @@ body {
 
 .house__img:hover {
   cursor: pointer;
+}
+
+.none {
+  display: none;
 }

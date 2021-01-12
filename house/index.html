@@ -144,7 +144,6 @@
                     type="file"
                     onchange="readURL(this);"
                     accept="image/*"
-                    onclick="func()"
                   />
                   <div class="drag-text">
                     <img
@@ -175,53 +174,35 @@
 
       <div id="label-container" class="result"></div>
     </div>
-
-    <!-- 
-    <div class="ad_box2">
-      <ins
-        class="kakao_ad_area"
-        style="display: none"
-        data-ad-unit="DAN-l042bAYnbyeEwCIm"
-        data-ad-width="300"
-        data-ad-height="250"
-      ></ins>
-      <script
-        type="text/javascript"
-        src="//t1.daumcdn.net/kas/static/ba.min.js"
-        async
-      ></script>
-    </div> -->
-
-    <!-- <div class="ad_box2">
-      <ins
-        class="kakao_ad_area"
-        style="display: none"
-        data-ad-unit="DAN-gJ2ilzhw0JsBKnAx"
-        data-ad-width="300"
-        data-ad-height="250"
-      >
-      </ins>
-      <script
-        type="text/javascript"
-        src="//t1.daumcdn.net/kas/static/ba.min.js"
-        async
-      ></script>
-    </div> -->
-    <!-- 
-    <div class="ad_box">
-      <ins
-        class="kakao_ad_area"
-        style="display: none"
-        data-ad-unit="DAN-5LwqI5GZyfqaDaCQ"
-        data-ad-width="320"
-        data-ad-height="100"
-      ></ins>
-      <script
-        type="text/javascript"
-        src="//t1.daumcdn.net/kas/static/ba.min.js"
-        async
-      ></script>
-    </div> -->
+    <div class="subscribe__big__wrap none">
+      <div class="subscribe__wrap">
+        <div class="subscribe__title">테스트 재밌게 하셨나요?</div>
+        <div class="subscribe__content">
+          구독하면 매주 일요일마다 <br />새로운 테스트를 보내드려요!
+        </div>
+        <form
+          action="https://script.google.com/macros/s/AKfycbzMJEI0x4Mxzyfd2a5RNo-rh69KxHdtW-6Z2c-QEonOg6L5zso/exec"
+          class="gform"
+          method="POST"
+          data-email="example@email.net"
+        >
+          <div class="submit__form">
+            <input
+              type="email"
+              class="submit__email"
+              name="face_subemail"
+              placeholder="이메일을 입력하고 신청을 누르세요!"
+              required
+            />
+            <input type="submit" value="구독 신청" class="submit__submit" />
+          </div>
+          <div class="applying none" id="applying">잠시만요, 신청중입니다!</div>
+          <div style="display: none" class="thankyou_message" id="thx">
+            <h2 class="guide__m">감사합니다. 구독 신청이 완료되었습니다.</h2>
+          </div>
+        </form>
+      </div>
+    </div>
 
     <section
       id="yotube-bottom-link"
