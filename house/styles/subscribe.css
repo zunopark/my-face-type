@@ -61,10 +61,12 @@
 .thankyou_message {
   display: flex;
   justify-content: center;
+  color: white;
 }
 
 .guide__m {
   text-align: center;
+  color: white;
 }
 
 .subscribe__big__wrap {
@@ -73,4 +75,5 @@
 
 .applying {
   text-align: center;
+  color: white;
 }
