@@ -569,3 +569,9 @@ a:hover {
 .none {
   display: none;
 }
+
+/* #yotube-bottom-link {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+} */

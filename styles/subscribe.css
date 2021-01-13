@@ -19,24 +19,27 @@
   width: 260px;
   outline: none;
   border: 1px solid rgb(104, 104, 104);
-  border-right: none;
   padding: 10px;
   background: transparent;
   text-align: center;
   border-radius: 0px;
+  margin-bottom: 10px;
 }
 
 .submit__submit {
-  padding: 4px;
-  border: 1px solid white;
-  border-radius: 0px;
+  padding: 8px 16px;
+  border: 1px solid black;
+  border-radius: 20px;
   font-weight: 700;
   outline: none;
-  padding: 9px;
+}
+.submit__submit:hover {
+  cursor: pointer;
 }
 
 .submit__form {
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   outline: none;

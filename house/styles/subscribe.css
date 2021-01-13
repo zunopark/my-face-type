@@ -44,6 +44,9 @@
   font-weight: 700;
   outline: none;
 }
+.submit__submit:hover {
+  cursor: pointer;
+}
 
 .submit__form {
   color: black;
