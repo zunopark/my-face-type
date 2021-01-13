@@ -55,12 +55,6 @@ function handleGoHouse() {
 
 houseTest.addEventListener("click", handleGoHouse);
 
-const chanAd = document.querySelector(`.chan__ad`);
-
-chanAd.addEventListener("click", function () {
-  location.href = "https://www.gopax.co.kr/signup?refCode=NCW3AE";
-});
-
 // 구독 입력 js
 const thx = document.querySelector(`#thx`);
 const applying = document.querySelector(`#applying`);
