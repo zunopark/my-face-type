@@ -1,0 +1,38 @@
+.footer {
+  margin: 50px 0;
+  padding-top: 30px;
+  border-top: 3px solid rgba(0, 0, 0, 0.1);
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.contact {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 30px;
+}
+
+.contact_me {
+  margin: 0 20px;
+  font-weight: 700;
+  font-size: 16px;
+  text-decoration: none;
+  margin-top: 10px;
+  color: rgb(182, 182, 182);
+}
+
+.footer__icon {
+  color: white;
+  font-size: 40px;
+  margin-bottom: 20px;
+}
+
+.footer__text {
+  font-size: 14px;
+  color: white;
+  font-weight: 800;
+  text-transform: uppercase;
+}
