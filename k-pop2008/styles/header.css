@@ -5,13 +5,13 @@
   justify-content: space-between;
   align-items: center;
   width: 100%;
-  color: goldenrod;
+  color: white;
 }
 
 .header__upper {
   z-index: 2;
   padding: 20px 20px;
-  background-color: rgba(0, 0, 0, 1);
+  background-color: transparent;
   /* border-bottom: 1px solid rgba(70, 70, 70, 0.3); */
   display: flex;
   width: 100%;
@@ -22,7 +22,6 @@
 .header__title {
   font-size: 24px;
   font-weight: 700;
-  color: goldenrod;
 }
 
 .header__title {
@@ -37,7 +36,7 @@
 }
 
 .header__menu__wrap {
-  background-color: black;
+  background-color: transparent;
   position: absolute;
   display: flex;
   flex-direction: column;

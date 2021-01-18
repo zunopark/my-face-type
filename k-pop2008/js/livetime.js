@@ -92,6 +92,6 @@ for (let j = 10; j < 15; j++) {
       `;
 }
 
-introChar1.innerHTML = starsListImg1;
-introChar2.innerHTML = starsListImg2;
-introChar3.innerHTML = starsListImg3;
+// introChar1.innerHTML = starsListImg1;
+// introChar2.innerHTML = starsListImg2;
+// introChar3.innerHTML = starsListImg3;

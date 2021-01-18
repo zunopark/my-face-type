@@ -575,3 +575,10 @@ a:hover {
   flex-direction: column;
   align-items: center;
 } */
+
+.house__btn {
+  text-decoration: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}

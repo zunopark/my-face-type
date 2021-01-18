@@ -3,7 +3,7 @@
 const countNum = document.querySelector(`.count__num`);
 
 function handleCountNum() {
-  let count = 124812;
+  let count = 142812;
   let countNumber = count - 300;
   function countUp() {
     if (countNumber < count) {

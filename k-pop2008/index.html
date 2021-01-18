@@ -95,24 +95,34 @@
 
     <div class="body__wrap">
       <div class="main__ai__title">
-        <img
-          src="https://i.ibb.co/n6D2hVW/image.png"
-          alt=""
-          class="house__title"
-        />
-        <img
-          src="https://i.ibb.co/frw6M9L/image.png"
-          alt=""
-          class="house__sub"
-        />
-        <h2 class="number">
-          당신은 <span class="count__num"></span>번째 손님입니다.
+        <img src="https://i.ibb.co/rxVgFJd/image.png" alt="" class="title" />
+        <div class="subtitle">인공지능이 말해주는 나와 닮은 아이돌은?</div>
+        <!-- <h2 class="number">
+          벌써 <span class="count__num"></span>회 시도했어요!
         </h2>
-        <h2 class="timer"></h2>
+        <h2 class="timer"></h2> -->
+      </div>
+
+      <div id="container">
+        <div class="inner-container">
+          <div class="toggle">
+            <p>남</p>
+          </div>
+          <div class="toggle">
+            <p>여</p>
+          </div>
+        </div>
+        <div class="inner-container" id="toggle-container">
+          <div class="toggle">
+            <p>남</p>
+          </div>
+          <div class="toggle">
+            <p>여</p>
+          </div>
+        </div>
       </div>
 
       <div class="border__wrap">
-        <img src="https://i.ibb.co/r0Sm44n/2.png" alt="" class="frame__dust" />
         <div class="border">
           <div class="frame">
             <div class="image">
@@ -130,10 +140,11 @@
                   />
                   <div class="drag-text">
                     <img
-                      src="https://i.ibb.co/d6wMx9p/image.png"
+                      src="https://i.ibb.co/3WZhDv5/image.png"
                       alt=""
                       class="house__photo__upload"
                     />
+                    <div class="photo__text">사진 첨부</div>
                   </div>
                 </div>
                 <div class="file-upload-content">
@@ -144,7 +155,7 @@
                     alt="your image"
                   />
                   <div class="image-title-wrap">
-                    <div class="ai">당신과 닮은 펜트하우스 인물은?</div>
+                    <div class="ai">당신과 닮은 아이돌은??</div>
                   </div>
                 </div>
               </div>
@@ -157,6 +168,7 @@
 
       <div id="label-container" class="result"></div>
     </div>
+
     <div class="subscribe__big__wrap none">
       <div class="subscribe__wrap">
         <div class="subscribe__title">테스트 재밌게 하셨나요?</div>
@@ -187,68 +199,26 @@
       </div>
     </div>
 
-    <section
-      id="yotube-bottom-link"
-      class="mt-2 d-flex flex-column justify-content-center align-items-center"
-      onclick="gtag('event', '관상 테스트', {'event_category': '관상 테스트 클릭','event_label': '하단 광고'});"
-    >
-      <div class="crazy">
-        <a href="#">펜트하우스 20회 엔딩 모아보기 </a>
-      </div>
-      <iframe
-        width="320"
-        height="180"
-        src="https://www.youtube.com/embed/Fh-9VjxghTk"
-        frameborder="0"
-        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-        allowfullscreen
-      ></iframe>
-    </section>
-
-    <!-- <div class="liner__members">
-      <img
-        src="https://i.ibb.co/JBHw7ww/liner.png"
-        alt=""
-        class="liner__img"
-        onclick="gtag('event', '라이너', {'event_category':
-      '라이너 클릭','event_label': '하단 광고'});"
-      />
-    </div> -->
-
-    <!-- <div class="super__members">
-      <img
-        src="https://i.ibb.co/x1bCN0Z/supermembers.png"
-        alt=""
-        class="super__img"
-        onclick="gtag('event', '슈맴 테스트',
-      {'event_category': '슈맴 클릭','event_label': '하단 광고'});"
-      />
-    </div> -->
-
-    <div class="intro__character__wrap">
+    <!-- <div class="intro__character__wrap">
       <div class="intro__title">
-        <span> 펜트하우스 등장인물</span>
+        <span>2008년 2세대 아이돌</span>
       </div>
       <div class="intro__character1 intro__wrap"></div>
       <div class="intro__character2 intro__wrap"></div>
       <div class="intro__character3 intro__wrap"></div>
       <div class="help">
-        <span>Teller.혜민 & Designer.서현</span>
+        <span>Designer.서현</span>
       </div>
-    </div>
+    </div> -->
 
     <div class="house__banner">
       <a
         href="https://yourface.ga/"
         class="house__btn"
-        onclick="gtag('event', '펜트하우스', {'event_category':
-      '펜트하우스','event_label': '테스트'});"
+        onclick="gtag('event', '인공지능 관상', {'event_category':
+      '인공지능 관상','event_label': '테스트'});"
       >
-        <img
-          src="https://i.ibb.co/Hxx5S53/image.png"
-          alt=""
-          class="house__img"
-        />
+        <img src="https://ifh.cc/g/8XgcLY.png" alt="" class="house__img" />
         <div class="house__banner__title">
           인공지능이 말해주는 내 관상? (2000만번 이상)
           <br />
@@ -257,11 +227,29 @@
       </a>
     </div>
 
+    <div class="house__banner">
+      <a
+        href="https://yourface.ga/house/"
+        class="house__btn"
+        onclick="gtag('event', '펜트하우스', {'event_category':
+      '펜트하우스','event_label': '테스트'});"
+      >
+        <!-- <div class="house__title">
+          인공지능이 말해주는 나와 닮은 펜트하우스 인물은?
+        </div> -->
+        <img src="https://ifh.cc/g/TwYS6J.jpg" alt="" class="house__img" />
+        <!-- <button>
+          <span> 나와 닮은 펜트하우스 인물 찾기</span>
+        </button> -->
+        <div class="house__banner__title">나와 닮은 펜트하우스 인물 찾기</div>
+      </a>
+    </div>
+
     <footer class="footer"></footer>
 
     <script src="js/footer.js"></script>
     <script src="./js/header.js"></script>
-    <script src="js/livetime.js"></script>
+    <!-- <script src="js/livetime.js"></script> -->
     <script src="js/ad.js"></script>
     <script src="js/fileupload.js"></script>
 

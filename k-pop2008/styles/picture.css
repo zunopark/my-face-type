@@ -2,6 +2,7 @@
   display: flex;
   position: relative;
   justify-content: center;
+  font-family: "Black Han Sans", sans-serif;
 }
 
 .frame__dust {
@@ -16,8 +17,9 @@
 .border {
   box-sizing: border-box;
   position: relative;
-  background: url(https://i.ibb.co/0ZfY2LV/image.png);
+  background: url(https://i.ibb.co/T4F4W4d/image.png);
   background-size: 100%;
+  box-shadow: 0px 8px 20px 6px rgba(0, 0, 0, 0.6);
 }
 
 .border:before {
@@ -29,7 +31,6 @@
 .frame {
   left: 3%;
   top: 2.5%;
-  /* box-shadow: inset -1px 1px 6px 1px rgba(0, 0, 0, 0.24); */
   width: 94%;
   height: 95%;
   background: white;
@@ -48,7 +49,7 @@
 }
 
 .file-upload {
-  background-color: #030303;
+  background-color: white;
   width: 100%;
   margin: 0 auto;
   height: 100%;
@@ -89,8 +90,8 @@
   width: 80%;
   background: linear-gradient(
     to bottom,
-    rgba(3, 3, 3, 0.5) 0%,
-    rgba(3, 3, 3, 0.5) 100%
+    rgba(255, 255, 255, 1) 0%,
+    rgba(255, 255, 255, 1) 100%
   );
 }
 
@@ -115,7 +116,13 @@
 }
 
 .house__photo__upload {
-  width: 36%;
+  width: 24%;
+}
+
+.photo__text {
+  margin-top: 12px;
+  color: #9a49ff;
+  font-size: 18px;
 }
 
 .file-upload-image {

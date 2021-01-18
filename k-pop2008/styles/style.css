@@ -6,17 +6,14 @@
 @import "footer.css";
 @import "ad.css";
 @import "subscribe.css";
-
-@font-face {
-  font-family: "62570체";
-  src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_20-04@2.3/62570체.woff")
-    format("woff");
-  font-weight: normal;
-  font-style: normal;
-}
+@import url("https://fonts.googleapis.com/css2?family=Black+Han+Sans&display=swap");
 
 body {
-  background: linear-gradient(to bottom, #000000 75%, #2b2b2b);
+  background: linear-gradient(
+    295deg,
+    rgba(154, 72, 255, 0.65),
+    rgba(39, 110, 255, 0.65)
+  );
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -24,14 +21,8 @@ body {
   position: relative;
 }
 
-.bg__dust {
-  position: absolute;
-  z-index: -1;
-  width: 100%;
-  /* margin-top: 64px; */
-}
-
 .body__wrap {
+  font-family: "Black Han Sans", sans-serif;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -47,29 +38,49 @@ body {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  font-family: "62570체";
-  padding: 30px;
+  font-family: "Black Han Sans", sans-serif;
+  padding: 30px 30px 20px 30px;
 }
 
 .main__ai__title .title {
-  font-size: 50px;
-  margin-bottom: 10px;
+  width: 84%;
 }
 
 .main__ai__title .subtitle {
-  font-size: 20px;
-  opacity: 0.8;
+  margin-top: 10px;
+  color: white;
+  font-size: 16px;
+  opacity: 1;
+  /* -webkit-text-stroke: -1px #fff; */
+  text-shadow: 1px 2px 1px rgb(27, 27, 27);
+
+  /* text-shadow: -1px -1px 0 #fff, 1px -1px 0 #fff, -1px 1px 0 #fff,
+    1px 1px 0 #fff; */
+}
+
+.number {
+  font-size: 14px;
+  margin-top: 10px;
+  margin-bottom: 5px;
+  color: white;
+  text-shadow: 1px 2px 1px rgb(27, 27, 27);
+}
+
+.timer {
+  color: white;
+  font-weight: 400;
+  font-size: 10px;
 }
 
 #container {
   width: 160px;
   height: 36px;
   position: relative;
-  border-radius: 6px;
   overflow: hidden;
   user-select: none;
   cursor: pointer;
-  margin-bottom: 10px;
+  margin-bottom: 20px;
+  box-shadow: 0px 3px 5px rgba(0, 0, 0, 0.6);
 }
 
 .inner-container {
@@ -78,48 +89,36 @@ body {
   top: 0;
   width: inherit;
   height: inherit;
-  text-transform: uppercase;
-  font-size: 0.6em;
-  letter-spacing: 0.2em;
 }
 
 .inner-container:first-child {
-  background: #e9e9e9;
+  background: #4b4b4b;
   color: #a9a9a9;
 }
 
 .inner-container:nth-child(2) {
-  background: #d74046;
-  color: white;
+  /* background: #d74046; */
+  background-color: white;
+  color: #9a48ff;
   clip-path: inset(0 50% 0 0);
   transition: 0.3s cubic-bezier(0, 0, 0, 1);
 }
 
-.number {
-  color: #fff4ba;
-  font-size: 11px;
-  margin-top: 10px;
-  margin-bottom: 5px;
-  background: linear-gradient(
-    to right,
-    #ddc59b,
-    #fff9cf,
-    #af7c31,
-    #caac78,
-    #ac792f
-  );
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+.toggle {
+  width: 50%;
+  position: absolute;
+  height: inherit;
+  display: flex;
+  box-sizing: border-box;
 }
 
-.count__num {
-  font-weight: 700;
+.toggle p {
+  font-size: 16px;
+  margin: auto;
 }
 
-.timer {
-  color: rgb(129, 129, 129);
-  font-weight: 400;
-  font-size: 10px;
+.toggle:nth-child(1) {
+  right: 0;
 }
 
 .header {
@@ -159,10 +158,10 @@ body {
 }
 
 .noti {
-  margin-top: 10px;
-  font-size: 10px;
+  margin-top: 14px;
+  font-size: 14px;
   color: #fff4ba;
-  font-family: "62570체";
+  font-family: "Black Han Sans", sans-serif;
 }
 
 .bold {
@@ -228,7 +227,7 @@ body {
 
 .intro__character__wrap {
   color: white;
-  font-family: "62570체";
+  font-family: "Black Han Sans", sans-serif;
   margin-top: 10px;
   display: flex;
   flex-direction: column;
@@ -265,10 +264,11 @@ body {
 .house__banner {
   width: 320px;
   margin-bottom: 20px;
-  margin-top: 120px;
+  margin-top: 40px;
   display: flex;
   flex-direction: column;
   align-items: center;
+  text-decoration: none;
 }
 
 .house__banner__title {
@@ -280,6 +280,7 @@ body {
   font-weight: 700;
   color: white;
   outline: none;
+  text-decoration: none;
 }
 
 .house__img {
@@ -292,4 +293,11 @@ body {
 
 .none {
   display: none;
+}
+
+.house__btn {
+  text-decoration: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }

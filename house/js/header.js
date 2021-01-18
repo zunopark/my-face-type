@@ -3,9 +3,8 @@ const headerMenuBtn = document.querySelector(`.header__menu__btn`);
 const headerTitle = document.querySelector(`.header__title`);
 const aiMenuBtn = document.querySelector(`#ai`);
 const animalMenuBtn = document.querySelector(`#animal`);
-const boyAiMenuBtn = document.querySelector(`#boyAi`);
-const girlAiMenuBtn = document.querySelector(`#girlAi`);
-const allListMenuBtn = document.querySelector(`#allList`);
+const idolMenuBtn = document.querySelector(`#idol`);
+
 // console.log(temp);
 
 function handleMenu() {
@@ -28,6 +27,10 @@ function handleTitleBtn() {
   location.href = "https://yourface.ga";
 }
 
+function handleIdolMenu() {
+  location.href = "https://yourface.ga/k-pop2008/";
+}
+
 function init() {
   if (headerMenu) {
     headerMenuBtn.addEventListener("click", handleMenu);
@@ -37,6 +40,7 @@ function init() {
     aiMenuBtn.addEventListener("click", handleAiMenu);
     animalMenuBtn.addEventListener("click", handleAnimalMenu);
     headerTitle.addEventListener("click", handleTitleBtn);
+    idolMenuBtn.addEventListener("click", handleIdolMenu);
   }
 }
 init();
