@@ -5,6 +5,7 @@ const aiMenuBtn = document.querySelector(`#ai`);
 const animalMenuBtn = document.querySelector(`#animal`);
 const houseMenuBtn = document.querySelector(`#house`);
 const idolMenuBtn = document.querySelector(`#idol`);
+const blogMenuBtn = document.querySelector(`#blog`);
 
 // console.log(temp);
 
@@ -18,6 +19,10 @@ function handleMenu() {
 
 function handleAiMenu() {
   location.href = "https://yourface.ga";
+}
+
+function handleBlogMenu() {
+  location.href = "https://yourface.ga/blog";
 }
 
 function handleHouseMenu() {
@@ -46,6 +51,7 @@ function init() {
     animalMenuBtn.addEventListener("click", handleAnimalMenu);
     headerTitle.addEventListener("click", handleTitleBtn);
     idolMenuBtn.addEventListener("click", handleIdolMenu);
+    blogMenuBtn.addEventListener("click", handleBlogMenu);
   }
 }
 init();
