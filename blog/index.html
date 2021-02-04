@@ -54,21 +54,39 @@
       name="google-site-verification"
       content="3MiHebIuTuzqcXnB_XO4fRIpDzmHAdFfUUBI4TZkrHA"
     />
-    <script
-      async
-      src="https://www.googletagmanager.com/gtag/js?id=UA-119161496-1"
-    ></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag() {
-        dataLayer.push(arguments);
-      }
-      gtag("js", new Date());
-
-      gtag("config", "UA-119161496-1");
-    </script>
   </head>
   <body>
-      <h1>test blog</h1>
+    <nav class="navbar">
+      <div class="container">
+    
+        <div class="navbar-header">
+          <button class="navbar-toggler" data-toggle="open-navbar1">
+            <span></span>
+            <span></span>
+            <span></span>
+          </button>
+          <a href="https://yourface.ga">
+            <h4>관상가양반<span> Blog</span></h4>
+          </a>
+        </div>
+    
+        <div class="navbar-menu" id="open-navbar1">
+          <ul class="navbar-nav">
+            <li class="active"><a href="#">Home</a></li>
+            <li><a href="#">About</a></li>
+            <li><a href="#">Contact</a></li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <div class="main__blog__section">
+      <a href="post/fb.html" class="html__link">facebook</a>
+      <a href="post/company.html" class="html__link">5G</a>
+      <a href="post/5g.html" class="html__link">company</a>
+      <a href="post/tech.html" class="html__link">technology</a>
+    </div>
+
+    <script src="js/blog.js"></script>
   </body>
 </html>
