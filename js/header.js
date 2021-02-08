@@ -1,6 +1,7 @@
 const headerMenu = document.querySelector(`.header__menu__wrap`);
 const headerMenuBtn = document.querySelector(`.header__menu__btn`);
-const headerTitle = document.querySelector(`.header__title`);
+const headerTitle = document.querySelector(`.header__title__title`);
+const headerBlog = document.querySelector(`.header__title__blog`);
 const aiMenuBtn = document.querySelector(`#ai`);
 const animalMenuBtn = document.querySelector(`#animal`);
 const houseMenuBtn = document.querySelector(`#house`);
@@ -46,10 +47,12 @@ function init() {
     setTimeout(function () {
       headerMenu.classList.add("header__anim__result");
     }, 500);
+
     aiMenuBtn.addEventListener("click", handleAiMenu);
     houseMenuBtn.addEventListener("click", handleHouseMenu);
     animalMenuBtn.addEventListener("click", handleAnimalMenu);
     headerTitle.addEventListener("click", handleTitleBtn);
+    headerBlog.addEventListener("click", handleBlogMenu);
     idolMenuBtn.addEventListener("click", handleIdolMenu);
     blogMenuBtn.addEventListener("click", handleBlogMenu);
   }
