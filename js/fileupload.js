@@ -343,8 +343,8 @@ async function predict() {
   };
   labelContainer.appendChild(reset);
 
-  const subscribeBigWrap = document.querySelector(`.subscribe__big__wrap`);
-  subscribeBigWrap.classList.remove("none");
+  // const subscribeBigWrap = document.querySelector(`.subscribe__big__wrap`);
+  // subscribeBigWrap.classList.remove("none");
 
   // let otherTest = document.createElement("button");
   // otherTest.classList.add("other__test");
@@ -357,27 +357,27 @@ async function predict() {
   // otherTest.innerHTML = `<i class="fas fa-moon moon__i"></i>달편지 - 속마음을 편지로 만들어보세요`;
   // labelContainer.appendChild(otherTest);
 
-  let todayTest = document.createElement("div");
-  todayTest.classList.add("today__test");
-  todayTest.onclick = function () {
-    gtag("event", "펜트하우스", {
-      event_category: "펜트하우스",
-      event_label: "테스트",
-    });
-  };
+  // let todayTest = document.createElement("div");
+  // todayTest.classList.add("today__test");
+  // todayTest.onclick = function () {
+  //   gtag("event", "펜트하우스", {
+  //     event_category: "펜트하우스",
+  //     event_label: "테스트",
+  //   });
+  // };
 
-  todayTest.innerHTML = `
-  <a
-    href="https://yourface.ga/house/"
-    class="house__btn"
-    onclick="gtag('event', '펜트하우스', {'event_category':
-  '펜트하우스','event_label': '테스트'});"
-  >
-    <button class="house__btn__click">
-      <span> 나와 닮은 펜트하우스 인물 찾기</span>
-    </button>
-  </a>`;
-  labelContainer.appendChild(todayTest);
+  // todayTest.innerHTML = `
+  // <a
+  //   href="https://yourface.ga/house/"
+  //   class="house__btn"
+  //   onclick="gtag('event', '펜트하우스', {'event_category':
+  // '펜트하우스','event_label': '테스트'});"
+  // >
+  //   <button class="house__btn__click">
+  //     <span> 나와 닮은 펜트하우스 인물 찾기</span>
+  //   </button>
+  // </a>`;
+  // labelContainer.appendChild(todayTest);
 
   // let makeTest = document.createElement("button");
   // makeTest.classList.add("other__test");
