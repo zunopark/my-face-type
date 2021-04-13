@@ -31,8 +31,13 @@
 @media screen and (max-width: 499px) {
   .border,
   .test__upper,
-  .submitForm {
+  .submitForm,
+  .dang__ad {
     width: 70%;
+  }
+  .dang__ad {
+    margin-bottom: 30px;
+    margin-top: 30px;
   }
 
   .ad__upper,
