@@ -426,6 +426,12 @@ a:hover {
   margin-top: 8px;
 }
 
+.margin_br__jo {
+  display: inline-block;
+  color: #ff0202;
+  font-size: 12px;
+}
+
 .moon__i {
   color: rgba(255, 255, 104, 1);
   margin-right: 1px;
