@@ -3,11 +3,11 @@ const countNum = document.querySelector(`.count__num`);
 
 if (countNum) {
   function handleCountNum() {
-    let countNumber = 5208;
+    let countNumber = 208;
     function countUp() {
-      if (countNumber < 6483) {
-        countNumber = countNumber + 2;
-        countNum.innerHTML = `2793만${countNumber}`;
+      if (countNumber < 883) {
+        countNumber = countNumber + 7;
+        countNum.innerHTML = `27,936,${countNumber}`;
       }
     }
     setInterval(countUp, 1);
