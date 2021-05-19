@@ -7,6 +7,10 @@
     width: 500px;
   }
 
+  .main__result__content__p {
+    width: 300px;
+  }
+
   .dang__ad {
     width: 320px;
     margin-bottom: 30px;
@@ -36,6 +40,10 @@
   .dang__ad {
     width: 80%;
     margin-bottom: 30px;
+  }
+
+  .label-container p {
+    width: 80%;
   }
 
   .ad__upper,

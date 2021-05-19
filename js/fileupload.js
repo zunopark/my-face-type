@@ -324,6 +324,7 @@ async function predict() {
   labelContainer.appendChild(result2);
 
   let desc = document.createElement("p");
+  desc.classList.add("main__result__content__p");
   desc.textContent = description[answer][0];
   labelContainer.appendChild(desc);
 
@@ -342,6 +343,20 @@ async function predict() {
     });
   };
   labelContainer.appendChild(reset);
+
+  let supermembers = document.createElement("div");
+  supermembers.classList.add("dang__ad");
+  supermembers.innerHTML = `
+  <div class="dang__ment">관상가양반 X 슈퍼맴버스 무료체험 이벤트!</div>
+  <a
+    class="dang__img"
+    href="https://ceo.supermembers.co.kr/?utm_source=faceapp&utm_medium=display&utm_campaign=fa_2105&utm_term=banner&utm_content=freetrial"
+    onclick="gtag('event', '슈퍼맴버스 클릭', {'event_category':
+  '슈퍼맴버스 클릭','event_label': '슈퍼맴버스 클릭'});"
+  >
+    <img src="https://ifh.cc/g/lfpPVO.png" alt="" />
+  </a>`;
+  labelContainer.appendChild(supermembers);
 
   // const subscribeBigWrap = document.querySelector(`.subscribe__big__wrap`);
   // subscribeBigWrap.classList.remove("none");
