@@ -606,7 +606,11 @@ a:hover {
 
 .dang__ad {
   font-size: 20px;
-  margin-top: 20px;
+  /* margin-top: 10px; */
   color: rgb(46, 46, 46);
   font-family: "Yeon Sung", cursive;
+}
+
+.dang__ad .dang__ment {
+  margin-top: 20px;
 }
