@@ -351,8 +351,8 @@ async function predict() {
   <a
     class="dang__img"
     href="https://ceo.supermembers.co.kr/?utm_source=faceapp&utm_medium=display&utm_campaign=fa_2105&utm_term=banner&utm_content=freetrial"
-    onclick="gtag('event', '슈퍼맴버스 클릭', {'event_category':
-  '슈퍼맴버스 클릭','event_label': '슈퍼맴버스 클릭'});"
+    onclick="gtag('event', '슈퍼맴버스 클릭1', {'event_category':
+  '슈퍼맴버스 클릭1','event_label': '슈퍼맴버스 클릭'});"
   >
     <img src="https://ifh.cc/g/lfpPVO.png" alt="" />
   </a>`;
