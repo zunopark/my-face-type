@@ -1,33 +1,33 @@
 // 실시간 js
-const countNum = document.querySelector(`.count__num`);
+const countNum = document.querySelector(`.count__num`)
 
 if (countNum) {
   function handleCountNum() {
-    let countNumber = 508;
+    let countNumber = 318
     function countUp() {
       if (countNumber < 982) {
-        countNumber = countNumber + 7;
-        countNum.innerHTML = `28,226,${countNumber}`;
+        countNumber = countNumber + 7
+        countNum.innerHTML = `31,226,${countNumber}`
       }
     }
-    setInterval(countUp, 1);
+    setInterval(countUp, 1)
   }
 
-  handleCountNum();
+  handleCountNum()
 }
 
-getTime();
+getTime()
 
 function getTime() {
-  let currentTime = new Date();
-  let year = currentTime.getFullYear();
-  let month = currentTime.getMonth() + 1;
-  let date = currentTime.getDate();
-  let hour = currentTime.getHours();
+  let currentTime = new Date()
+  let year = currentTime.getFullYear()
+  let month = currentTime.getMonth() + 1
+  let date = currentTime.getDate()
+  let hour = currentTime.getHours()
 
-  const time = document.querySelector(`.timer`);
+  const time = document.querySelector(`.timer`)
 
   time.innerHTML = `(${year}.${month < 10 ? `0${month}` : month}.${
     date < 10 ? `0${date}` : date
-  } ${hour < 10 ? `0${hour}` : hour}:00 기준)`;
+  } ${hour < 10 ? `0${hour}` : hour}:00 기준)`
 }
