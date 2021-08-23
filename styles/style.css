@@ -1,15 +1,16 @@
-@import "gender.css";
-@import "fileupload.css";
-@import "picture.css";
-@import "reset.css";
-@import "header.css";
-@import "result.css";
-@import "media.css";
-@import "footer.css";
-@import "list.css";
-@import "subscribe.css";
+@import 'gender.css';
+@import 'fileupload.css';
+@import 'picture.css';
+@import 'reset.css';
+@import 'header.css';
+@import 'result.css';
+@import 'media.css';
+@import 'footer.css';
+@import 'list.css';
+@import 'subscribe.css';
+@import 'habitown.css';
 
-@import url("https://fonts.googleapis.com/css?family=Asap:400,500,700");
+@import url('https://fonts.googleapis.com/css?family=Asap:400,500,700');
 
 body {
   background: whitesmoke;
@@ -45,7 +46,7 @@ body {
   justify-content: center;
   align-items: center;
   /* font-family: "East Sea Dokdo", cursive; */
-  font-family: "Yeon Sung", cursive;
+  font-family: 'Yeon Sung', cursive;
   padding: 30px;
 }
 
@@ -439,95 +440,10 @@ a:hover {
 
 /* 오늘의 비서 - 날씨 팝업 */
 
-.today__weather {
-  z-index: 99;
-  position: fixed;
-  bottom: 0;
-}
-
-.upper__comment {
-  text-align: center;
-  width: 100%;
-  background-color: #e7e7e7;
-  padding: 14px;
-}
-
-.upper__comment:hover {
-  cursor: pointer;
-}
-
-.lower__comment {
-  background-color: #fee500;
-  display: flex;
-  align-items: center;
-  text-align: justify;
-  justify-content: space-around;
-  padding: 4px 12px;
-}
-
-.lower__title {
-  font-size: 20px;
-  font-weight: 700;
-  text-align: center;
-}
-
-.lower__sub {
-  font-size: 20px;
-  line-height: 26px;
-}
-
-.lower__button {
-  color: #fee500;
-  border: 1px solid #391c1c;
-  background-color: #391c1c;
-  font-weight: 700;
-  font-size: 16px;
-  border-radius: 12px;
-  text-align: center;
-  padding: 10px 10px 8px 10px;
-}
-
-.lower__button:hover {
-  cursor: pointer;
-}
-
-.lower__ment {
-  text-align: center;
-  font-size: 14px;
-  margin-top: 8px;
-}
-
-.black__board {
-  width: 100%;
-  height: 100vh;
-  position: fixed;
-  top: 0;
-  background-color: rgba(0, 0, 0, 0.7);
-  opacity: 1;
-  z-index: 60;
-  transition: all 0.5s;
-}
-
-.black__board:hover {
-  cursor: pointer;
-}
-
-.disblock {
-  display: none;
-}
-
-.disappear {
-  opacity: 0;
-}
-
-.appear {
-  opacity: 1;
-}
-
 @font-face {
-  font-family: "62570체";
-  src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_20-04@2.3/62570체.woff")
-    format("woff");
+  font-family: '62570체';
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_20-04@2.3/62570체.woff')
+    format('woff');
   font-weight: normal;
   font-style: normal;
 }
@@ -548,7 +464,7 @@ a:hover {
 }
 
 .house__btn button span {
-  font-family: "62570체";
+  font-family: '62570체';
   background: linear-gradient(
     to right,
     #ddc59b,
@@ -608,7 +524,7 @@ a:hover {
   font-size: 20px;
   /* margin-top: 10px; */
   color: rgb(46, 46, 46);
-  font-family: "Yeon Sung", cursive;
+  font-family: 'Yeon Sung', cursive;
 }
 
 .dang__ad .dang__ment {
