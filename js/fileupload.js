@@ -351,7 +351,7 @@ async function predict() {
   <div class="dang__ment2">습관 형성, 목표 달성을 게임처럼 재밌게 달성하세요!</div>
   <a
     class="dang__img"
-    href="https://ceo.supermembers.co.kr/?utm_source=faceapp&utm_medium=display&utm_campaign=fa_2105&utm_term=banner&utm_content=freetrial"
+    href="http://onelink.to/habitown"
     onclick="gtag('event', 'habitown3', {'event_category':
   'habitown3','event_label': 'habitown3'});"
   >
