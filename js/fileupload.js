@@ -347,14 +347,15 @@ async function predict() {
   let supermembers = document.createElement('div')
   supermembers.classList.add('dang__ad')
   supermembers.innerHTML = `
-  <div class="dang__ment">관상가양반 X 슈퍼맴버스 무료체험 이벤트!</div>
+  <div class="dang__ment">관상가양반 X Habitown</div>
+  <div class="dang__ment2">습관 형성, 목표 달성을 게임처럼 재밌게 달성하세요!</div>
   <a
     class="dang__img"
     href="https://ceo.supermembers.co.kr/?utm_source=faceapp&utm_medium=display&utm_campaign=fa_2105&utm_term=banner&utm_content=freetrial"
-    onclick="gtag('event', '슈퍼맴버스 클릭1', {'event_category':
-  '슈퍼맴버스 클릭1','event_label': '슈퍼맴버스 클릭'});"
+    onclick="gtag('event', 'habitown3', {'event_category':
+  'habitown3','event_label': 'habitown3'});"
   >
-    <img src="https://ifh.cc/g/lfpPVO.png" alt="" />
+    <img src="https://ifh.cc/g/atv3xL.jpg"" alt="" />
   </a>`
   labelContainer.appendChild(supermembers)
 
@@ -374,7 +375,7 @@ async function predict() {
 
   if (!never) {
     setTimeout(function () {
-      habitownBannerWrap.classList.add('appear')
+      habitownBannerWrap.classList.remove('disblock')
     }, 1500)
   }
 
@@ -419,30 +420,30 @@ async function predict() {
   // otherTest.innerHTML = `<i class="fas fa-moon moon__i"></i>달편지 - 속마음을 편지로 만들어보세요`;
   // labelContainer.appendChild(otherTest);
 
-  let todayTest = document.createElement('div')
-  todayTest.classList.add('today__test')
-  todayTest.onclick = function () {
-    gtag('event', '펜트하우스', {
-      event_category: '펜트하우스',
-      event_label: '테스트',
-    })
-  }
+  // let todayTest = document.createElement('div')
+  // todayTest.classList.add('today__test')
+  // todayTest.onclick = function () {
+  //   gtag('event', '펜트하우스', {
+  //     event_category: '펜트하우스',
+  //     event_label: '테스트',
+  //   })
+  // }
 
-  todayTest.innerHTML = `
-  <a
-    href="https://yourface.ga/house/"
-    class="house__btn"
-    onclick="gtag('event', '펜트하우스', {'event_category':
-  '펜트하우스','event_label': '테스트'});"
-  >
-    <button class="house__btn__click">
-      <span> 나와 닮은 펜트하우스 인물 찾기</span>
-    </button>
-  </a>`
+  // todayTest.innerHTML = `
+  // <a
+  //   href="https://yourface.ga/house/"
+  //   class="house__btn"
+  //   onclick="gtag('event', '펜트하우스', {'event_category':
+  // '펜트하우스','event_label': '테스트'});"
+  // >
+  //   <button class="house__btn__click">
+  //     <span> 나와 닮은 펜트하우스 인물 찾기</span>
+  //   </button>
+  // </a>`
 
-  setTimeout(function () {
-    labelContainer.appendChild(todayTest)
-  }, 5000)
+  // setTimeout(function () {
+  //   labelContainer.appendChild(todayTest)
+  // }, 5000)
 
   // let makeTest = document.createElement("button");
   // makeTest.classList.add("other__test");
@@ -455,7 +456,7 @@ async function predict() {
 
   reset.addEventListener('click', handleReset)
   // otherTest.addEventListener("click", handleOtherTest);
-  todayTest.addEventListener('click', handleGoTodayWeather)
+  // todayTest.addEventListener('click', handleGoTodayWeather)
   // makeTest.addEventListener("click", handleMakeTest);
 
   const privacy = document.querySelector(`.noti`)
