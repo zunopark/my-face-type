@@ -124,11 +124,6 @@
   border-top: 1px solid rgba(70, 70, 70, 0.3);
 }
 
-.snackbar__anim__result {
-  transform: translateY(84px);
-  opacity: 1;
-}
-
 .snackbar__anim__up {
   opacity: 1;
   transform: translateY(0px);
