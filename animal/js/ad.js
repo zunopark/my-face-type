@@ -1,22 +1,3 @@
-// 상단 광고 js
-const adUpper = document.querySelector(`.ad__upper`);
-const adUpperBtn = document.querySelector(`.ad__upper__hide__btn`);
-
-function handleAdUpper() {
-  if (adUpper.classList[2] === undefined) {
-    adUpper.classList.add("snackbar__anim__up");
-  } else if (adUpper.classList[2] === "snackbar__anim__up") {
-    adUpper.classList.remove("snackbar__anim__up");
-  }
-}
-
-if (adUpper) {
-  adUpperBtn.addEventListener("click", handleAdUpper);
-  setTimeout(function () {
-    adUpper.classList.add("snackbar__anim__result");
-  }, 1000);
-}
-
 //배너 광고 js
 const superImg = document.querySelector(`.super__img`);
 if (superImg) {
