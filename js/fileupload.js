@@ -344,67 +344,67 @@ async function predict() {
   }
   labelContainer.appendChild(reset)
 
-  let supermembers = document.createElement('div')
-  supermembers.classList.add('dang__ad')
-  supermembers.innerHTML = `
-  <div class="dang__ment">관상가양반 X Habitown</div>
-  <div class="dang__ment2">습관 형성, 목표 달성을 게임처럼 재밌게 달성하세요!</div>
-  <a
-    class="dang__img"
-    href="http://onelink.to/habitown"
-    onclick="gtag('event', 'habitown3', {'event_category':
-  'habitown3','event_label': 'habitown3'});"
-  >
-    <img src="https://ifh.cc/g/atv3xL.jpg"" alt="" />
-  </a>`
-  labelContainer.appendChild(supermembers)
+  // let supermembers = document.createElement('div')
+  // supermembers.classList.add('dang__ad')
+  // supermembers.innerHTML = `
+  // <div class="dang__ment">관상가양반 X Habitown</div>
+  // <div class="dang__ment2">습관 형성, 목표 달성을 게임처럼 재밌게 달성하세요!</div>
+  // <a
+  //   class="dang__img"
+  //   href="http://onelink.to/habitown"
+  //   onclick="gtag('event', 'habitown3', {'event_category':
+  // 'habitown3','event_label': 'habitown3'});"
+  // >
+  //   <img src="https://ifh.cc/g/atv3xL.jpg"" alt="" />
+  // </a>`
+  // labelContainer.appendChild(supermembers)
 
-  const habitownBannerWrap = document.querySelector(`.habitown__banner__wrap`)
-  const habitownBanner = document.querySelector(`.habitown__banner`)
-  const downloadBtn = document.querySelector(`.app__download__btn`)
-  const downloadBottonBtn = document.querySelector(
-    `.habitown__download__btn__bottom`,
-  )
+  // const habitownBannerWrap = document.querySelector(`.habitown__banner__wrap`)
+  // const habitownBanner = document.querySelector(`.habitown__banner`)
+  // const downloadBtn = document.querySelector(`.app__download__btn`)
+  // const downloadBottonBtn = document.querySelector(
+  //   `.habitown__download__btn__bottom`,
+  // )
 
-  const cancelNeverBtn = document.querySelector(`.cancel__btn__left`)
+  // const cancelNeverBtn = document.querySelector(`.cancel__btn__left`)
 
-  const cancelBtn = document.querySelector(`.cancel__btn__right`)
-  const blackBoard = document.querySelector(`.black__board`)
+  // const cancelBtn = document.querySelector(`.cancel__btn__right`)
+  // const blackBoard = document.querySelector(`.black__board`)
 
-  const never = localStorage.getItem('never')
+  // const never = localStorage.getItem('never')
 
-  if (!never) {
-    setTimeout(function () {
-      habitownBannerWrap.classList.remove('disblock')
-    }, 1500)
-  }
+  // if (!never) {
+  //   setTimeout(function () {
+  //     habitownBannerWrap.classList.remove('disblock')
+  //   }, 1500)
+  // }
 
-  function handleGoAppDownload() {
-    location.href = 'http://onelink.to/habitown'
-    habitownBanner.classList.add('disblock')
-    blackBoard.classList.add('disblock')
-  }
+  // function handleGoAppDownload() {
+  //   location.href = 'http://onelink.to/habitown'
+  //   habitownBanner.classList.add('disblock')
+  //   blackBoard.classList.add('disblock')
+  // }
 
-  function handleCancelBanner() {
-    habitownBanner.classList.add('disblock')
-    blackBoard.classList.add('disblock')
-  }
+  // function handleCancelBanner() {
+  //   habitownBanner.classList.add('disblock')
+  //   blackBoard.classList.add('disblock')
+  // }
 
-  function handleCancelNeverBanner() {
-    localStorage.setItem('never', 'ok')
-    habitownBanner.classList.add('disblock')
-    blackBoard.classList.add('disblock')
-  }
+  // function handleCancelNeverBanner() {
+  //   localStorage.setItem('never', 'ok')
+  //   habitownBanner.classList.add('disblock')
+  //   blackBoard.classList.add('disblock')
+  // }
 
-  function habitownInit() {
-    downloadBtn.addEventListener('click', handleGoAppDownload)
-    downloadBottonBtn.addEventListener('click', handleGoAppDownload)
-    cancelBtn.addEventListener('click', handleCancelBanner)
-    blackBoard.addEventListener('click', handleCancelBanner)
-    cancelNeverBtn.addEventListener('click', handleCancelNeverBanner)
-  }
+  // function habitownInit() {
+  //   downloadBtn.addEventListener('click', handleGoAppDownload)
+  //   downloadBottonBtn.addEventListener('click', handleGoAppDownload)
+  //   cancelBtn.addEventListener('click', handleCancelBanner)
+  //   blackBoard.addEventListener('click', handleCancelBanner)
+  //   cancelNeverBtn.addEventListener('click', handleCancelNeverBanner)
+  // }
 
-  habitownInit()
+  // habitownInit()
 
   // const subscribeBigWrap = document.querySelector(`.subscribe__big__wrap`);
   // subscribeBigWrap.classList.remove("none");
@@ -450,9 +450,9 @@ async function predict() {
   // makeTest.innerHTML = "나만의 테스트 만들기 >";
   // labelContainer.appendChild(makeTest);
 
-  function handleGoTodayWeather() {
-    location.href = 'https://yourface.ga/house/'
-  }
+  // function handleGoTodayWeather() {
+  //   location.href = 'https://yourface.ga/house/'
+  // }
 
   reset.addEventListener('click', handleReset)
   // otherTest.addEventListener("click", handleOtherTest);
