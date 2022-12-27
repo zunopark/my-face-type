@@ -1,5 +1,5 @@
 .result {
-  font-family: "Black Han Sans", sans-serif;
+  font-family: 'Black Han Sans', sans-serif;
   width: 70%;
   display: flex;
   flex-direction: column;
@@ -89,7 +89,7 @@
 }
 
 .reset__btn {
-  margin-top: 20px;
+  margin-top: 120px;
   color: #bca4fb;
   background-color: white;
   padding: 10px 16px;

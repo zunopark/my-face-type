@@ -344,6 +344,28 @@ async function predict() {
   }
   labelContainer.appendChild(reset)
 
+  let reset2 = document.createElement('button')
+  reset2.innerHTML = '내 사주도 확인하기'
+  reset2.classList.add('reset__btn2')
+  reset2.onclick = function () {
+    gtag('event', '내 사주도 확인하기', {
+      event_category: '내 사주도 확인하기',
+      event_label: '내 사주도 확인하기',
+    })
+  }
+  labelContainer.appendChild(reset2)
+
+  // let reset = document.createElement('button')
+  // reset.innerHTML = '타로 확인하기'
+  // reset.classList.add('reset__btn taro')
+  // reset.onclick = function () {
+  //   gtag('event', '타로 확인', {
+  //     event_category: '타로 확인',
+  //     event_label: '타로 확인',
+  //   })
+  // }
+  // labelContainer.appendChild(reset)
+
   // let supermembers = document.createElement('div')
   // supermembers.classList.add('dang__ad')
   // supermembers.innerHTML = `
