@@ -348,9 +348,9 @@ async function predict() {
   reset2.innerHTML = '내 사주도 확인하기'
   reset2.classList.add('reset__btn2')
   reset2.onclick = function () {
-    gtag('event', '내 사주도 확인하기', {
-      event_category: '내 사주도 확인하기',
-      event_label: '내 사주도 확인하기',
+    gtag('event', '출장도사 Click', {
+      event_category: '출장도사 Click',
+      event_label: '출장도사 Click',
     })
   }
   labelContainer.appendChild(reset2)
