@@ -352,8 +352,6 @@ async function predict() {
       event_category: '내 사주도 확인하기',
       event_label: '내 사주도 확인하기',
     })
-    location.href =
-      'https://chooldo.sng.link/A256t/65gy?_dl=chooldo.sng.link&_smtype=3&_force_redirect=1'
   }
   labelContainer.appendChild(reset2)
 
@@ -478,12 +476,18 @@ async function predict() {
   // }
 
   reset.addEventListener('click', handleReset)
+  reset2.addEventListener('click', handleReset2)
   // otherTest.addEventListener("click", handleOtherTest);
   // todayTest.addEventListener('click', handleGoTodayWeather)
   // makeTest.addEventListener("click", handleMakeTest);
 
   const privacy = document.querySelector(`.noti`)
   privacy.style.display = 'none'
+
+  function handleReset2(e) {
+    location.href =
+      'https://chooldo.sng.link/A256t/65gy?_dl=chooldo.sng.link&_smtype=3&_force_redirect=1'
+  }
 
   function handleReset(e) {
     location.reload(true)
