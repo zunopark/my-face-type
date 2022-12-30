@@ -366,20 +366,19 @@ async function predict() {
   // }
   // labelContainer.appendChild(reset)
 
-  // let supermembers = document.createElement('div')
-  // supermembers.classList.add('dang__ad')
-  // supermembers.innerHTML = `
-  // <div class="dang__ment">관상가양반 X Habitown</div>
-  // <div class="dang__ment2">습관 형성, 목표 달성을 게임처럼 재밌게 달성하세요!</div>
-  // <a
-  //   class="dang__img"
-  //   href="http://onelink.to/habitown"
-  //   onclick="gtag('event', 'habitown3', {'event_category':
-  // 'habitown3','event_label': 'habitown3'});"
-  // >
-  //   <img src="https://ifh.cc/g/atv3xL.jpg"" alt="" />
-  // </a>`
-  // labelContainer.appendChild(supermembers)
+  let supermembers = document.createElement('div')
+  supermembers.classList.add('dang__ad')
+  supermembers.innerHTML = `
+  <div class="dang__ment2">내 사주도 확인하기</div>
+  <a
+    class="dang__img"
+    href="https://chooldo.sng.link/A256t/8ktc?_dl=chooldo.sng.link&_smtype=3&_force_redirect=1"
+    onclick="gtag('event', '출장 - 사주 배너', {'event_category':
+  '출장 - 사주 배너','event_label': '출장 - 사주 배너'});"
+  >
+    <img src="https://i.ibb.co/r4NXRXF/image.png" alt="" />
+  </a>`
+  labelContainer.appendChild(supermembers)
 
   // const habitownBannerWrap = document.querySelector(`.habitown__banner__wrap`)
   // const habitownBanner = document.querySelector(`.habitown__banner`)
