@@ -26,6 +26,7 @@ body {
 
 .dang__img {
   width: 100%;
+  text-decoration: none;
 }
 
 .dang__img img {
@@ -532,6 +533,7 @@ a:hover {
 .dang__ad .dang__ment2 {
   margin-top: 12px;
   font-size: 18px;
+  color: #e74c3c;
 }
 
 .ad_position {
