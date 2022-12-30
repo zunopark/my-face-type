@@ -333,17 +333,6 @@ async function predict() {
   otherResult.innerHTML = `${starsListImg}`
   labelContainer.appendChild(otherResult)
 
-  let reset = document.createElement('button')
-  reset.innerHTML = '다른 사진도 해보기'
-  reset.classList.add('reset__btn')
-  reset.onclick = function () {
-    gtag('event', '한번더 클릭', {
-      event_category: '한번더 클릭',
-      event_label: '결과 버튼',
-    })
-  }
-  labelContainer.appendChild(reset)
-
   // let reset2 = document.createElement('button')
   // reset2.innerHTML = '내 사주도 확인하기'
   // reset2.classList.add('reset__btn2')
@@ -366,10 +355,19 @@ async function predict() {
   // }
   // labelContainer.appendChild(reset)
 
+  let reset = document.createElement('button')
+  reset.innerHTML = '다른 사진도 해보기'
+  reset.classList.add('reset__btn')
+  reset.onclick = function () {
+    gtag('event', '한번더 클릭', {
+      event_category: '한번더 클릭',
+      event_label: '결과 버튼',
+    })
+  }
+  labelContainer.appendChild(reset)
   let supermembers = document.createElement('div')
   supermembers.classList.add('dang__ad')
   supermembers.innerHTML = `
-  
   <a
     class="dang__img"
     href="https://chooldo.sng.link/A256t/8ktc?_dl=chooldo.sng.link&_smtype=3?_force_redirect=1"
