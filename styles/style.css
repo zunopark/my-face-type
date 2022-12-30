@@ -531,9 +531,20 @@ a:hover {
 }
 
 .dang__ad .dang__ment2 {
+  border-radius: 12px 12px 0 0;
+  border-bottom: white 0.5px solid;
   margin-top: 12px;
+  margin-bottom: 0px;
+  padding-top: 10px;
+  padding-bottom: 10px;
   font-size: 18px;
-  color: #e74c3c;
+  color: white;
+  width: 100%;
+  background-color: #ec503c;
+}
+
+.dang__ad img {
+  border-radius: 0 0 12px 12px;
 }
 
 .ad_position {
