@@ -536,9 +536,10 @@ a:hover {
 
 .ad_position {
   font-size: 24px;
-  width: 70%;
+  width: 320px;
   display: flex;
   flex-direction: column;
   align-items: center;
   margin-top: 15px;
+  margin-bottom: 15px;
 }
