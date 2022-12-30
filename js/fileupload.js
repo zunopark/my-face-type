@@ -486,7 +486,7 @@ async function predict() {
 
   function handleReset2(e) {
     location.href =
-      'https://chooldo.sng.link/A256t/65gy?_dl=chooldo.sng.link&_smtype=3&_force_redirect=1'
+      'https://chooldo.sng.link/A256t/nihb?_dl=chooldo.sng.link&_smtype=3&_force_redirect=1'
   }
 
   function handleReset(e) {
