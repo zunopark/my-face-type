@@ -344,16 +344,16 @@ async function predict() {
   }
   labelContainer.appendChild(reset)
 
-  let reset2 = document.createElement('button')
-  reset2.innerHTML = '내 사주도 확인하기'
-  reset2.classList.add('reset__btn2')
-  reset2.onclick = function () {
-    gtag('event', '출장도사 Click', {
-      event_category: '출장도사 Click',
-      event_label: '출장도사 Click',
-    })
-  }
-  labelContainer.appendChild(reset2)
+  // let reset2 = document.createElement('button')
+  // reset2.innerHTML = '내 사주도 확인하기'
+  // reset2.classList.add('reset__btn2')
+  // reset2.onclick = function () {
+  //   gtag('event', '출장도사 Click', {
+  //     event_category: '출장도사 Click',
+  //     event_label: '출장도사 Click',
+  //   })
+  // }
+  // labelContainer.appendChild(reset2)
 
   // let reset = document.createElement('button')
   // reset.innerHTML = '타로 확인하기'
