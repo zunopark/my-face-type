@@ -53,7 +53,7 @@ async function init() {
     labelContainer.appendChild(document.createElement('span'))
   }
   predict()
-  toggle.classList.add('hidden')
+  // toggle.classList.add('hidden')
 }
 
 async function predict() {
