@@ -53,7 +53,7 @@ async function init() {
     labelContainer.appendChild(document.createElement('span'))
   }
   predict()
-  // toggle.classList.add('hidden')
+  toggle.classList.add('hidden')
 }
 
 async function predict() {
@@ -502,7 +502,7 @@ async function predict() {
   }
 }
 
-var toggle = document.getElementById('container')
+var toggle = document.getElementById('container2')
 var toggleContainer = document.getElementById('toggle-container')
 var toggleNumber
 let changePicture = document.querySelector('.image-upload-wrap')
