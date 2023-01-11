@@ -366,18 +366,18 @@ async function predict() {
   }
   labelContainer.appendChild(reset)
 
-  let supermembers = document.createElement('div')
-  supermembers.classList.add('dang__ad')
-  supermembers.innerHTML = `
-  <a
-    class="dang__img"
-    href="https://chooldo.sng.link/A256t/8ktc?_dl=chooldo.sng.link&_smtype=3?_force_redirect=1"
-    onclick="gtag('event', '출장 - 사주 배너', {'event_category':
-  '출장 - 사주 배너','event_label': '출장 - 사주 배너'});"
-  ><div class="dang__ment2">내 사주도 확인하기</div>
-    <img src="https://i.ibb.co/r4NXRXF/image.png" alt="" />
-  </a>`
-  labelContainer.appendChild(supermembers)
+  // let supermembers = document.createElement('div')
+  // supermembers.classList.add('dang__ad')
+  // supermembers.innerHTML = `
+  // <a
+  //   class="dang__img"
+  //   href="https://chooldo.sng.link/A256t/8ktc?_dl=chooldo.sng.link&_smtype=3?_force_redirect=1"
+  //   onclick="gtag('event', '출장 - 사주 배너', {'event_category':
+  // '출장 - 사주 배너','event_label': '출장 - 사주 배너'});"
+  // ><div class="dang__ment2">내 사주도 확인하기</div>
+  //   <img src="https://i.ibb.co/r4NXRXF/image.png" alt="" />
+  // </a>`
+  // labelContainer.appendChild(supermembers)
 
   // const habitownBannerWrap = document.querySelector(`.habitown__banner__wrap`)
   // const habitownBanner = document.querySelector(`.habitown__banner`)
