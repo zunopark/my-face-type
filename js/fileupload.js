@@ -482,10 +482,10 @@ async function predict() {
   const privacy = document.querySelector(`.noti`)
   privacy.style.display = 'none'
 
-  function handleReset2(e) {
-    location.href =
-      'https://chooldo.sng.link/A256t/nihb?_dl=chooldo.sng.link&_smtype=3&_force_redirect=1'
-  }
+  // function handleReset2(e) {
+  //   location.href =
+  //     'https://chooldo.sng.link/A256t/nihb?_dl=chooldo.sng.link&_smtype=3&_force_redirect=1'
+  // }
 
   function handleReset(e) {
     location.reload(true)
