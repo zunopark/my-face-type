@@ -603,9 +603,9 @@ a:hover {
   cursor: pointer;
 }
 
-.bottom_ad_btn:active {
+/* .bottom_ad_btn:active {
   opacity: 0;
-}
+} */
 
 .bottom_ad_btn i {
   margin-right: 2px;

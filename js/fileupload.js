@@ -366,17 +366,17 @@ async function predict() {
   }
   labelContainer.appendChild(reset)
 
-  let supermembers = document.createElement('div')
-  supermembers.classList.add('dang__ad')
-  supermembers.innerHTML = `
-  <a
-    class="dang__img"
-    href="https://chooldo.sng.link/A256t/8ktc?_dl=chooldo.sng.link&_smtype=3?_force_redirect=1"
-    onclick="gtag('event', '사주,운세 보기', {'event_category':
-  '사주,운세 보기','event_label': '사주,운세 보기'});"
-  ><div class="dang__ment2">사주, 운세도 확인하기</div>
-  </a>`
-  labelContainer.appendChild(supermembers)
+  // let supermembers = document.createElement('div')
+  // supermembers.classList.add('dang__ad')
+  // supermembers.innerHTML = `
+  // <a
+  //   class="dang__img"
+  //   href="https://chooldo.sng.link/A256t/8ktc?_dl=chooldo.sng.link&_smtype=3?_force_redirect=1"
+  //   onclick="gtag('event', '사주,운세 보기', {'event_category':
+  // '사주,운세 보기','event_label': '사주,운세 보기'});"
+  // ><div class="dang__ment2">사주, 운세도 확인하기</div>
+  // </a>`
+  // labelContainer.appendChild(supermembers)
 
   // const habitownBannerWrap = document.querySelector(`.habitown__banner__wrap`)
   // const habitownBanner = document.querySelector(`.habitown__banner`)
