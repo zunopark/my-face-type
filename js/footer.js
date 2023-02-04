@@ -1,4 +1,5 @@
-const footer = document.querySelector(`.footer`);
+const footer = document.querySelector(`.footer`)
+const bottomBtn = document.querySelector(`.bottom_ad_btn`)
 
 function init() {
   footer.innerHTML = ` <div class="contact">
@@ -8,6 +9,9 @@ function init() {
   <div class="footer__icon">
     <i class="fas fa-portrait"></i>
   </div>
-  <span class="footer__text"> Your.Face 2021 &copy;</span>`;
+  <span class="footer__text"> Your.Face 2021 &copy;</span>`
+  bottomBtn.addEventListener('click', () => {
+    location.href = 'https://qr.kakaopay.com/Ej9MgSCp09c405780'
+  })
 }
-init();
+init()
