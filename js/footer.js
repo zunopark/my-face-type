@@ -10,8 +10,9 @@ function init() {
     <i class="fas fa-portrait"></i>
   </div>
   <span class="footer__text"> Your.Face 2021 &copy;</span>`
+
   bottomBtn.addEventListener('click', () => {
-    location.href = 'https://qr.kakaopay.com/Ej9MgSCp09c405780'
+    location.href = 'http://pf.kakao.com/_Qfuvxj/chat'
   })
 }
 init()
