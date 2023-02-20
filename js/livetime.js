@@ -43,7 +43,7 @@ if (randomNum == 1) {
     onclick="gtag('event', '리필드스캐너이미지', {'event_category':
   '리필드스캐너이미지','event_label': '리필드스캐너이미지'});"
   ><img
-  src="https://i.ibb.co/L9pfTYB/Kakao-Talk-Photo-2023-02-20-15-03-28-001.jpg"
+  src="https://i.ibb.co/LRt9K5W/scanner2.png"
   alt="scanner"
 />
   </a>`
@@ -56,7 +56,7 @@ if (randomNum == 1) {
   '리필드부스터이미지','event_label': '리필드부스터이미지'});"
   >
   <img
-  src="https://i.ibb.co/2Fhd1N3/booster.jpg"
+  src="https://i.ibb.co/kJMR6bR/booster2.png"
   alt="scanner"
 />
   </a>`

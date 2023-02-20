@@ -24,6 +24,10 @@ body {
   box-sizing: border-box;
 }
 
+.randomBanner {
+  width: 320px;
+}
+
 .dang__img {
   width: 320px;
   text-decoration: none;
