@@ -39,7 +39,7 @@ if (randomNum == 1) {
   randomBanner.innerHTML = `
   <a
     class="dang__img"
-    href=" https://refilled.co.kr/shop?utm_source=keen?utm_campaign=keen?utm_medium=banner?utm_content=scanner"
+    href="https://refilled.co.kr/shop/?utm_source=keen&utm_campaign=keen&utm_medium=banner&utm_content=scanner"
     onclick="gtag('event', '리필드스캐너이미지', {'event_category':
   '리필드스캐너이미지','event_label': '리필드스캐너이미지'});"
   ><img
@@ -51,7 +51,7 @@ if (randomNum == 1) {
   randomBanner.innerHTML = `
   <a
     class="dang__img"
-    href="https://refilled.co.kr/shop?utm_source=keen?utm_campaign=keen?utm_medium=banner?utm_content=booster"
+    href="https://refilled.co.kr/shop/?utm_source=keen&utm_campaign=keen&utm_medium=banner&utm_content=booster"
     onclick="gtag('event', '리필드부스터이미지', {'event_category':
   '리필드부스터이미지','event_label': '리필드부스터이미지'});"
   >
