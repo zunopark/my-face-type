@@ -11,8 +11,8 @@ function init() {
   </div>
   <span class="footer__text"> Your.Face 2021 &copy;</span>`
 
-  bottomBtn.addEventListener('click', () => {
-    location.href = 'http://pf.kakao.com/_Qfuvxj/chat'
-  })
+  // bottomBtn.addEventListener('click', () => {
+  //   location.href = 'http://pf.kakao.com/_Qfuvxj/chat'
+  // })
 }
 init()
