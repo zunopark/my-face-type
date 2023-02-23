@@ -1,5 +1,4 @@
 const footer = document.querySelector(`.footer`)
-const bottomBtn = document.querySelector(`.bottom_ad_btn`)
 
 function init() {
   footer.innerHTML = ` <div class="contact">
@@ -9,10 +8,6 @@ function init() {
   <div class="footer__icon">
     <i class="fas fa-portrait"></i>
   </div>
-  <span class="footer__text"> Your.Face 2021 &copy;</span>`
-
-  // bottomBtn.addEventListener('click', () => {
-  //   location.href = 'http://pf.kakao.com/_Qfuvxj/chat'
-  // })
+  <span class="footer__text"> AI양반 2023 &copy;</span>`
 }
 init()

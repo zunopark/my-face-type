@@ -94,19 +94,6 @@ body {
   color: #ff0200;
 }
 
-/* 
-a {
-  text-decoration: none;
-  opacity: 0.6;
-  padding: 60px;
-  font-weight: bolder;
-  position: absolute;
-  right: 0px;
-  bottom: 0px;
-  font-size: 1.4em;
-  font-family: "Asap", sans-serif;
-} */
-
 a:hover {
   opacity: 1;
 }
@@ -277,23 +264,6 @@ a:hover {
 .crazy a:link {
   color: black;
   text-decoration: none;
-}
-
-.contact {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-  width: 180px;
-  margin-bottom: 30px;
-}
-
-.contact_me {
-  font-weight: 700;
-  font-size: 16px;
-  text-decoration: none;
-  margin-top: 10px;
-  color: rgb(182, 182, 182);
 }
 
 .noti {
@@ -613,4 +583,19 @@ a:hover {
 
 .bottom_ad_btn i {
   margin-right: 2px;
+}
+
+.face_analysis_contents {
+  display: flex;
+  justify-content: space-between;
+  width: 320px;
+  margin-top: 20px;
+  padding: 20px;
+  font-family: 'Yeon Sung', cursive;
+  text-decoration: none;
+  color: black;
+  background-color: white;
+  font-size: 20px;
+  border: 1px solid black;
+  border-radius: 10px;
 }

@@ -1,0 +1,17 @@
+@import 'reset.css';
+@import 'header.css';
+@import 'faceAnalysis.css';
+@import '../../styles/footer.css';
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+body {
+  background: whitesmoke;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
