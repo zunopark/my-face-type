@@ -1,6 +1,7 @@
 @import 'reset.css';
 @import 'header.css';
 @import 'faceAnalysis.css';
+@import 'ad.css';
 @import '../../styles/footer.css';
 * {
   box-sizing: border-box;
