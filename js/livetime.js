@@ -34,30 +34,3 @@ function getTime() {
 
 const randomBanner = document.querySelector(`.randomBanner`)
 const randomNum = Math.floor(Math.random() * 2) + 1
-
-// if (randomNum == 1) {
-//   randomBanner.innerHTML = `
-//   <a
-//     class="dang__img"
-//     href="https://refilled.co.kr/shop/?utm_source=keen&utm_campaign=keen&utm_medium=banner&utm_content=scanner"
-//     onclick="gtag('event', '리필드스캐너이미지', {'event_category':
-//   '리필드스캐너이미지','event_label': '리필드스캐너이미지'});"
-//   ><img
-//   src="https://i.ibb.co/LRt9K5W/scanner2.png"
-//   alt="scanner"
-// />
-//   </a>`
-// } else {
-//   randomBanner.innerHTML = `
-//   <a
-//     class="dang__img"
-//     href="https://refilled.co.kr/shop/?utm_source=keen&utm_campaign=keen&utm_medium=banner&utm_content=booster"
-//     onclick="gtag('event', '리필드부스터이미지', {'event_category':
-//   '리필드부스터이미지','event_label': '리필드부스터이미지'});"
-//   >
-//   <img
-//   src="https://i.ibb.co/kJMR6bR/booster2.png"
-//   alt="scanner"
-// />
-//   </a>`
-// }

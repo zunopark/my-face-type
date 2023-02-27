@@ -333,28 +333,6 @@ async function predict() {
   otherResult.innerHTML = `${starsListImg}`
   labelContainer.appendChild(otherResult)
 
-  // let reset2 = document.createElement('button')
-  // reset2.innerHTML = '내 사주도 확인하기'
-  // reset2.classList.add('reset__btn2')
-  // reset2.onclick = function () {
-  //   gtag('event', '출장도사 Click', {
-  //     event_category: '출장도사 Click',
-  //     event_label: '출장도사 Click',
-  //   })
-  // }
-  // labelContainer.appendChild(reset2)
-
-  // let reset = document.createElement('button')
-  // reset.innerHTML = '타로 확인하기'
-  // reset.classList.add('reset__btn taro')
-  // reset.onclick = function () {
-  //   gtag('event', '타로 확인', {
-  //     event_category: '타로 확인',
-  //     event_label: '타로 확인',
-  //   })
-  // }
-  // labelContainer.appendChild(reset)
-
   let reset = document.createElement('button')
   reset.innerHTML = '다른 사진도 해보기'
   reset.classList.add('reset__btn')
@@ -366,138 +344,15 @@ async function predict() {
   }
   labelContainer.appendChild(reset)
 
-  // let supermembers = document.createElement('div')
-  // supermembers.classList.add('dang__ad')
-  // supermembers.innerHTML = `
-  // <a
-  //   class="dang__img"
-  //   href="https://chooldo.sng.link/A256t/8ktc?_dl=chooldo.sng.link&_smtype=3?_force_redirect=1"
-  //   onclick="gtag('event', '사주,운세 보기', {'event_category':
-  // '사주,운세 보기','event_label': '사주,운세 보기'});"
-  // ><div class="dang__ment2">사주, 운세도 확인하기</div>
-  // </a>`
-  // labelContainer.appendChild(supermembers)
-
-  // const habitownBannerWrap = document.querySelector(`.habitown__banner__wrap`)
-  // const habitownBanner = document.querySelector(`.habitown__banner`)
-  // const downloadBtn = document.querySelector(`.app__download__btn`)
-  // const downloadBottonBtn = document.querySelector(
-  //   `.habitown__download__btn__bottom`,
-  // )
-
-  // const cancelNeverBtn = document.querySelector(`.cancel__btn__left`)
-
-  // const cancelBtn = document.querySelector(`.cancel__btn__right`)
-  // const blackBoard = document.querySelector(`.black__board`)
-
-  // const never = localStorage.getItem('never')
-
-  // if (!never) {
-  //   setTimeout(function () {
-  //     habitownBannerWrap.classList.remove('disblock')
-  //   }, 1500)
-  // }
-
-  // function handleGoAppDownload() {
-  //   location.href =
-  //     'https://chooldo.sng.link/A256t/65gy?_dl=chooldo.sng.link&_smtype=3&_force_redirect=1'
-  // }
-
-  // function handleCancelBanner() {
-  //   habitownBanner.classList.add('disblock')
-  //   blackBoard.classList.add('disblock')
-  // }
-
-  // function handleCancelNeverBanner() {
-  //   localStorage.setItem('never', 'ok')
-  //   habitownBanner.classList.add('disblock')
-  //   blackBoard.classList.add('disblock')
-  // }
-
-  // function habitownInit() {
-  //   downloadBtn.addEventListener('click', handleGoAppDownload)
-  //   downloadBottonBtn.addEventListener('click', handleGoAppDownload)
-  //   cancelBtn.addEventListener('click', handleCancelBanner)
-  //   blackBoard.addEventListener('click', handleCancelBanner)
-  //   cancelNeverBtn.addEventListener('click', handleCancelNeverBanner)
-  // }
-
-  // habitownInit()
-
-  // const subscribeBigWrap = document.querySelector(`.subscribe__big__wrap`);
-  // subscribeBigWrap.classList.remove("none");
-
-  // let otherTest = document.createElement("button");
-  // otherTest.classList.add("other__test");
-  // otherTest.onclick = function () {
-  //   gtag("event", "달편지 클릭", {
-  //     event_category: "달편지 클릭",
-  //     event_label: "결과 버튼",
-  //   });
-  // };
-  // otherTest.innerHTML = `<i class="fas fa-moon moon__i"></i>달편지 - 속마음을 편지로 만들어보세요`;
-  // labelContainer.appendChild(otherTest);
-
-  // let todayTest = document.createElement('div')
-  // todayTest.classList.add('today__test')
-  // todayTest.onclick = function () {
-  //   gtag('event', '펜트하우스', {
-  //     event_category: '펜트하우스',
-  //     event_label: '테스트',
-  //   })
-  // }
-
-  // todayTest.innerHTML = `
-  // <a
-  //   href="https://yourface.ga/house/"
-  //   class="house__btn"
-  //   onclick="gtag('event', '펜트하우스', {'event_category':
-  // '펜트하우스','event_label': '테스트'});"
-  // >
-  //   <button class="house__btn__click">
-  //     <span> 나와 닮은 펜트하우스 인물 찾기</span>
-  //   </button>
-  // </a>`
-
-  // setTimeout(function () {
-  //   labelContainer.appendChild(todayTest)
-  // }, 5000)
-
-  // let makeTest = document.createElement("button");
-  // makeTest.classList.add("other__test");
-  // makeTest.innerHTML = "나만의 테스트 만들기 >";
-  // labelContainer.appendChild(makeTest);
-
-  // function handleGoTodayWeather() {
-  //   location.href = 'https://yourface.ga/house/'
-  // }
-
   reset.addEventListener('click', handleReset)
-  // reset2.addEventListener('click', handleReset2)
-  // otherTest.addEventListener("click", handleOtherTest);
-  // todayTest.addEventListener('click', handleGoTodayWeather)
-  // makeTest.addEventListener("click", handleMakeTest);
 
   const privacy = document.querySelector(`.noti`)
   privacy.style.display = 'none'
-
-  // function handleReset2(e) {
-  //   location.href =
-  //     'https://chooldo.sng.link/A256t/nihb?_dl=chooldo.sng.link&_smtype=3&_force_redirect=1'
-  // }
 
   function handleReset(e) {
     location.reload(true)
     location.href = location.href
     history.go(0)
-  }
-
-  function handleOtherTest() {
-    location.href = 'http://www.moonletter.ml/'
-  }
-
-  function handleMakeTest() {
-    location.href = 'testmake.html'
   }
 }
 
@@ -521,9 +376,3 @@ if (toggle) {
     }
   })
 }
-
-// function handleGoMl() {
-//   location.href = "http://www.moonletter.ml/";
-// }
-
-// handleGoMl();

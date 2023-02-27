@@ -2,8 +2,6 @@
   background-color: #fffae3;
   width: 100%;
   margin: 0 auto;
-  /* padding: 20px; */
-  /* border: 10px solid red; */
   height: 100%;
   display: flex;
   justify-content: center;
@@ -94,8 +92,6 @@
 .drag-text i {
   font-size: 40px;
   color: white;
-  /* background-color: rgba(0, 0, 0, 0.6);
-  padding: 4px 8px; */
   margin-bottom: 10px;
 }
 
@@ -104,9 +100,7 @@
   font-weight: 700;
   text-transform: uppercase;
   color: white;
-  /* background-color: rgba(0, 0, 0, 0.6);
-  padding: 4px 8px; */
-  font-family: "Yeon Sung", cursive;
+  font-family: 'Yeon Sung', cursive;
 
   font-size: 15px;
 }
@@ -116,9 +110,7 @@
   font-size: 18px;
   text-transform: uppercase;
   color: white;
-  /* background-color: rgba(0, 0, 0, 0.6);
-  padding: 4px 8px; */
-  font-family: "Yeon Sung", cursive;
+  font-family: 'Yeon Sung', cursive;
 }
 
 .file-upload-image {

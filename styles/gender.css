@@ -12,8 +12,7 @@
 }
 
 .switch label {
-  font-family: "East Sea Dokdo", cursive;
-
+  font-family: 'East Sea Dokdo', cursive;
   background-color: transparent;
   color: #95a5a6;
   height: 50px;
@@ -53,4 +52,3 @@
 input:checked + label {
   color: #ecf0f1;
 }
-
