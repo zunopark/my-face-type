@@ -1,17 +1,17 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta
       name="description"
-      content="인공지능이 말해주는 내 관상! 나와 닮은 연예인은 누구일까? 관상가 양반에게 관상 테스트를 받아 알아보세요! | 관상 테스트 "
+      content="인공지능이 말해주는 내 관상! 나와 닮은 연예인은 누구일까? 관상가 양반에게 관상 테스트를 받아 알아보세요! | 관상 테스트"
     />
     <meta
       name="keywords"
       content="인공지능, 관상, 관상테스트, 관상가 양반, 인공지능, 연예인 관상 테스트, 연예인, 인스타 관상, 관상보는법, 인스타 관상 테스트, 나와 같은 관상을 가진 연예인"
     />
-    <meta name="author" content="용섭 준호" />
+    <meta name="author" content="AI-YANGBAN" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="인공지능이 말해주는 내 관상 테스트" />
     <meta
@@ -31,7 +31,7 @@
       @import url('https://fonts.googleapis.com/css2?family=East+Sea+Dokdo&display=swap');
       @import url('https://fonts.googleapis.com/css2?family=Yeon+Sung&display=swap');
     </style>
-    <title>관상 테스트 | 관상가 양반</title>
+    <title>AI Face Reader</title>
     <meta
       name="naver-site-verification"
       content="388bb9c4a4d15bff6005df99c9b9effe5f73f54e"
@@ -83,23 +83,24 @@
     <header class="header">
       <div class="header__upper">
         <div class="header__title">
-          <div class="header__title__title">AI양반</div>
+          <div class="header__title__title">AI.FACE</div>
         </div>
         <div class="language__wrap">
-          <a href="/en/" class="language">Eng</a>
+          <a href="/en/" class="language language__selected">Eng</a>
           |
-          <a href="/index.html" class="language language__selected">한글</a>
+          <a href="/index.html" class="language">한글</a>
         </div>
       </div>
     </header>
     <!-- <div id="google_translate_element"></div> -->
 
     <div class="main__ai__title">
-      <h1 class="title">관상가 양반</h1>
-      <h2 class="subtitle">인공지능이 말해주는 내 관상</h2>
+      <h1 class="title">Face Reader</h1>
+      <h2 class="subtitle">A.I. speaks my physiognomy</h2>
       <h2 class="number">
+        Used
         <span class="count__num"></span>
-        번 관상을 봤어요.
+        times
       </h2>
       <h2 class="timer"></h2>
     </div>
@@ -151,8 +152,8 @@
               />
               <div class="drag-text">
                 <i class="far fa-image"></i>
-                <h2>(사진 첨부)</h2>
-                <h3>관상? 얼굴 한번 봅시다</h3>
+                <h2>(Attach photo)</h2>
+                <h3>I will read your face</h3>
               </div>
             </div>
             <div class="file-upload-content">
@@ -163,14 +164,14 @@
                 alt="your image"
               />
               <div class="image-title-wrap">
-                <div class="ai">관상가가 당신의 관상을 분석중..</div>
+                <div class="ai">analyzing your Face...</div>
               </div>
             </div>
           </div>
         </div>
       </div>
     </div>
-    <div class="noti">*사용자의 사진은 어디에도 저장되지 않습니다.</div>
+    <div class="noti">*The user's photos are not stored anywhere.</div>
 
     <div id="label-container" class="result"></div>
     <div class="ad_box2">
@@ -195,16 +196,6 @@
         ;(adsbygoogle = window.adsbygoogle || []).push({})
       </script>
     </div>
-    <a
-      href="/analysis/"
-      class="face_analysis_contents"
-      style="margin-bottom: 10px;"
-      onclick="gtag('event', '관상학적 해석', {'event_category': '관상학적 해석','event_label': '관상학적 해석'})"
-    >
-      눈, 코, 입 부위별 관상 해석 보기
-      <span>></span>
-    </a>
-
     <div class="ad_box4">
       <ins
         class="adsbygoogle"
