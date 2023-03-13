@@ -344,7 +344,19 @@ async function predict() {
   }
   labelContainer.appendChild(reset)
 
+  let share = document.createElement('button')
+  share.innerHTML = '주변에 관상 테스트 알려주기'
+  share.classList.add('share__btn')
+  share.onclick = function () {
+    gtag('event', '공유하기', {
+      event_category: '공유하기',
+      event_label: '공유 버튼',
+    })
+  }
+  labelContainer.appendChild(share)
+
   reset.addEventListener('click', handleReset)
+  share.addEventListener('click', handleNewShareBtn)
 
   const privacy = document.querySelector(`.noti`)
   privacy.style.display = 'none'
@@ -353,6 +365,19 @@ async function predict() {
     location.reload(true)
     location.href = location.href
     history.go(0)
+  }
+
+  const handleNewShareBtn = async () => {
+    try {
+      await navigator.share({
+        title: '공유 테스트', // 공유될 제목
+        text: '테스트 입니다. 테스트 입니다.', // 공유될 설명
+        url: 'https://keen-poitras-075b07.netlify.app/',
+      })
+      console.log('공유 성공')
+    } catch (e) {
+      console.log('공유 실패')
+    }
   }
 }
 
