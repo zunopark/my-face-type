@@ -344,19 +344,19 @@ async function predict() {
   }
   labelContainer.appendChild(reset)
 
-  let share = document.createElement('button')
-  share.innerHTML = '주변에 관상 테스트 알려주기'
-  share.classList.add('share__btn')
-  share.onclick = function () {
-    gtag('event', '공유하기', {
-      event_category: '공유하기',
-      event_label: '공유 버튼',
-    })
-  }
-  labelContainer.appendChild(share)
+  // let share = document.createElement('button')
+  // share.innerHTML = '주변에 관상 테스트 알려주기'
+  // share.classList.add('share__btn')
+  // share.onclick = function () {
+  //   gtag('event', '공유하기', {
+  //     event_category: '공유하기',
+  //     event_label: '공유 버튼',
+  //   })
+  // }
+  // labelContainer.appendChild(share)
 
   reset.addEventListener('click', handleReset)
-  share.addEventListener('click', handleNewShareBtn)
+  // share.addEventListener('click', handleNewShareBtn)
 
   const privacy = document.querySelector(`.noti`)
   privacy.style.display = 'none'
