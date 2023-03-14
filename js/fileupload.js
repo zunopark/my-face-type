@@ -373,7 +373,7 @@ async function predict() {
         title: '관상 테스트',
         description:
           '본인 얼굴을 직접 사진 찍어서 관상 무료로 보세요~ 95% 적중~!',
-        imageUrl: 'https://i.ibb.co/XzBbLTN/Group-1043.png',
+        imageUrl: 'https://i.ibb.co/QYMyVRd/Group-1043-1.png',
         link: {
           mobileWebUrl: 'https://keen-poitras-075b07.netlify.app/',
           androidExecParams: 'test',
