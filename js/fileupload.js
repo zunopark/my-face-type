@@ -1,5 +1,4 @@
 // 사진 올리는거
-
 const aiCont = document.querySelector(`.ai`)
 
 async function readURL(input) {
@@ -344,19 +343,19 @@ async function predict() {
   }
   labelContainer.appendChild(reset)
 
-  // let share = document.createElement('button')
-  // share.innerHTML = '주변에 관상 테스트 알려주기'
-  // share.classList.add('share__btn')
-  // share.onclick = function () {
-  //   gtag('event', '공유하기', {
-  //     event_category: '공유하기',
-  //     event_label: '공유 버튼',
-  //   })
-  // }
-  // labelContainer.appendChild(share)
+  let share = document.createElement('button')
+  share.innerHTML = '카톡으로 관상 테스트 알려주기'
+  share.classList.add('share__btn')
+  share.onclick = function () {
+    gtag('event', '공유하기', {
+      event_category: '공유하기',
+      event_label: '공유 버튼',
+    })
+  }
+  labelContainer.appendChild(share)
 
   reset.addEventListener('click', handleReset)
-  // share.addEventListener('click', handleNewShareBtn)
+  share.addEventListener('click', kakaoShare)
 
   const privacy = document.querySelector(`.noti`)
   privacy.style.display = 'none'
@@ -367,17 +366,28 @@ async function predict() {
     history.go(0)
   }
 
-  const handleNewShareBtn = async () => {
-    try {
-      await navigator.share({
-        title: '공유 테스트', // 공유될 제목
-        text: '테스트 입니다. 테스트 입니다.', // 공유될 설명
-        url: 'https://keen-poitras-075b07.netlify.app/',
-      })
-      console.log('공유 성공')
-    } catch (e) {
-      console.log('공유 실패')
-    }
+  function kakaoShare() {
+    Kakao.Share.sendDefault({
+      objectType: 'feed',
+      content: {
+        title: '관상 테스트',
+        description:
+          '본인 얼굴을 직접 사진 찍어서 관상 무료로 보세요~ 95% 적중~!',
+        imageUrl: 'https://i.ibb.co/XzBbLTN/Group-1043.png',
+        link: {
+          mobileWebUrl: 'https://keen-poitras-075b07.netlify.app/',
+          androidExecParams: 'test',
+        },
+      },
+      buttons: [
+        {
+          title: '관상 확인하기',
+          link: {
+            mobileWebUrl: 'https://keen-poitras-075b07.netlify.app/',
+          },
+        },
+      ],
+    })
   }
 }
 
