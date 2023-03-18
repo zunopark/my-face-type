@@ -333,7 +333,9 @@ async function predict() {
   // labelContainer.appendChild(otherResult)
 
   let reset = document.createElement('button')
-  reset.innerHTML = '다른 사진도 해보기'
+  reset.innerHTML = `
+  <span>다른 사진으로 해보기</span>`
+
   reset.classList.add('reset__btn')
   reset.onclick = function () {
     gtag('event', '한번더 클릭', {
@@ -344,12 +346,14 @@ async function predict() {
   labelContainer.appendChild(reset)
 
   let share = document.createElement('button')
-  share.innerHTML = '카톡으로 관상 테스트 알려주기'
+  share.innerHTML = `
+  <span>주변에 관상 테스트 알려주기</span>
+  `
   share.classList.add('share__btn')
   share.onclick = function () {
     gtag('event', '공유하기', {
       event_category: '공유하기',
-      event_label: '공유 버튼',
+      event_label: '공유 버튼 case2',
     })
   }
   labelContainer.appendChild(share)
