@@ -51,19 +51,11 @@
   .main_body_wrap {
     width: 100%;
   }
+
   .border,
   .test__upper,
   .submitForm {
-    width: 70%;
-  }
-
-  .habitown__banner {
-    width: 90%;
-  }
-
-  .dang__ad {
     width: 320px;
-    margin-bottom: 30px;
   }
 
   .label-container p {
