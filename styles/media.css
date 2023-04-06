@@ -46,10 +46,6 @@
   .main_body_wrap {
     width: 500px;
   }
-
-  body {
-    border-right: 1px solid black;
-  }
 }
 @media screen and (max-width: 499px) {
   .main_body_wrap {

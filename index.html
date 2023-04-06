@@ -30,10 +30,16 @@
     <style>
       @import url('https://fonts.googleapis.com/css2?family=East+Sea+Dokdo&display=swap');
       @import url('https://fonts.googleapis.com/css2?family=Yeon+Sung&display=swap');
-      @import url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2302_01@1.0/KimjungchulMyungjo-Bold.woff2');
+      @font-face {
+        font-family: 'KimjungchulMyungjo-Bold';
+        src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2302_01@1.0/KimjungchulMyungjo-Bold.woff2')
+          format('woff2');
+        font-weight: 700;
+        font-style: normal;
+      }
     </style>
 
-    <title>관상 테스트 | 관상가 양반</title>
+    <title>AI 양반 - 관상 테스트 | 관상가 양반</title>
 
     <meta
       name="naver-site-verification"
@@ -90,24 +96,7 @@
   </head>
   <body>
     <div class="main_body_wrap">
-      <header class="header">
-        <div class="header__upper">
-          <div class="header__title">
-            <div class="header__title__title">AI양반</div>
-            <div class="header_title_date"></div>
-          </div>
-        </div>
-        <div class="header_nav_wrap">
-          <a href="" class="header_nav_content header_nav_select">
-            관상
-          </a>
-          <a href="" class="header_nav_content">운세</a>
-          <a href="" class="header_nav_content">사주</a>
-          <a href="" class="header_nav_content">궁합</a>
-          <a href="" class="header_nav_content">별자리</a>
-          <a href="" class="header_nav_content">로또</a>
-        </div>
-      </header>
+      <header id="face" class="header"></header>
 
       <!-- <div id="google_translate_element"></div> -->
       <div class="main_content_wrap">

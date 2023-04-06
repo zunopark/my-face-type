@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="인공지능이 말해주는 내 관상! 나와 닮은 연예인은 누구일까? 관상가 양반에게 관상 테스트를 받아 알아보세요! | 관상 테스트 "
+    />
+    <meta
+      name="keywords"
+      content="인공지능, 관상, 관상테스트, 관상가 양반, 인공지능, 연예인 관상 테스트, 연예인, 인스타 관상, 관상보는법, 인스타 관상 테스트, 나와 같은 관상을 가진 연예인"
+    />
+    <meta name="author" content="용섭 준호" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="인공지능이 말해주는 내 관상 테스트" />
+    <meta
+      property="og:description"
+      content="인공지능이 말해주는 내 관상! 나와 닮은 연예인은 누구일까? 관상가 양반에게 관상 테스트를 받아 알아보세요!"
+    />
+    <meta property="og:image" content="https://i.ibb.co/Hxx5S53/image.png" />
+    <link rel="canonical" href="https://keen-poitras-075b07.netlify.app" />
+    <link rel="stylesheet" href="styles/style.css" />
+    <link
+      rel="stylesheet"
+      href="https://use.fontawesome.com/releases/v5.5.0/css/all.css"
+      integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU"
+      crossorigin="anonymous"
+    />
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=East+Sea+Dokdo&display=swap');
+      @import url('https://fonts.googleapis.com/css2?family=Yeon+Sung&display=swap');
+      @font-face {
+        font-family: 'KimjungchulMyungjo-Bold';
+        src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2302_01@1.0/KimjungchulMyungjo-Bold.woff2')
+          format('woff2');
+        font-weight: 700;
+        font-style: normal;
+      }
+    </style>
+
+    <title>AI 양반 - 운세 | 운세 양반</title>
+
+    <meta
+      name="naver-site-verification"
+      content="388bb9c4a4d15bff6005df99c9b9effe5f73f54e"
+    />
+
+    <link
+      rel="shortcut icon"
+      href="https://keen-poitras-075b07.netlify.app/favicon.ico"
+      type="image/x-icon"
+    />
+    <meta
+      name="naver-site-verification"
+      content="7024ffc62a3071ba280488657627fc78d3cd7dfd"
+    />
+
+    <meta
+      name="google-site-verification"
+      content="lqUA8k_2W3GRy7SI1LBYyL9lglmxhHsaABkRKlWv5yA"
+    />
+    <script
+      async
+      src="https://www.googletagmanager.com/gtag/js?id=UA-119161496-1"
+    ></script>
+    <script>
+      window.dataLayer = window.dataLayer || []
+      function gtag() {
+        dataLayer.push(arguments)
+      }
+      gtag('js', new Date())
+
+      gtag('config', 'UA-119161496-1')
+    </script>
+    <!-- adsense 광고 -->
+    <script
+      async
+      src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4478069136800837"
+      crossorigin="anonymous"
+    ></script>
+
+    <script type="text/javascript">
+      if (typeof history.pushState == 'function') {
+        var CatagoryURL = location.href
+        CatagoryURL = CatagoryURL.replace(/\?category=([0-9]+)/gi, '')
+        history.pushState(null, null, CatagoryURL)
+      }
+    </script>
+    <!-- 카카오 공유 링크  -->
+    <script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
+    <script>
+      Kakao.init('4ff46443835291514c5a215357a6c4c1')
+      Kakao.isInitialized()
+    </script>
+  </head>
+
+  <body>
+    <div class="main_body_wrap">
+      <header id="fortune" class="header"></header>
+      <div id="intro" class="intro-container">
+        <h1>운세를 알려드립니다.</h1>
+        <label for="date">생년월일</label>
+        <input id="date" type="date" />
+        <label for="hour">태어난 시간</label>
+        <select id="hour" name="hour">
+          <option value="">모름</option>
+          <option value="00">00</option>
+          <option value="01">01</option>
+          <option value="02">02</option>
+          <option value="03">03</option>
+          <option value="04">04</option>
+          <option value="05">05</option>
+          <option value="06">06</option>
+          <option value="07">07</option>
+          <option value="08">08</option>
+          <option value="09">09</option>
+          <option value="10">10</option>
+          <option value="11">11</option>
+          <option value="12">12</option>
+          <option value="13">13</option>
+          <option value="14">14</option>
+          <option value="15">15</option>
+          <option value="16">16</option>
+          <option value="17">17</option>
+          <option value="18">18</option>
+          <option value="19">19</option>
+          <option value="20">20</option>
+          <option value="21">21</option>
+          <option value="22">22</option>
+          <option value="23">23</option>
+        </select>
+        <button onclick="start()">오늘의 운세보기</button>
+      </div>
+      <div id="chat" class="chat-container" style="display: none;">
+        <div class="chat-box">
+          <div class="chat-message">
+            <p>오늘의 운세를 알려줘</p>
+          </div>
+        </div>
+        <div id="loader" class="loader" style="display: none;">
+          <i class="fa fa-spinner fa-spin"></i>
+        </div>
+        <div class="chat-input">
+          <input type="text" placeholder="Type your message here..." />
+          <button id="btn" onclick="spinner()">Send</button>
+        </div>
+      </div>
+      <footer class="footer"></footer>
+    </div>
+    <script src="../js/footer.js"></script>
+    <script src="../js/header.js"></script>
+    <script src="./js/main.js"></script>
+  </body>
+</html>

@@ -47,6 +47,9 @@
   color: white;
   background-color: #18181b;
   position: relative;
+  box-shadow: 2px 4px 4px rgba(0, 0, 0, 0.3);
+  overflow-x: scroll;
+  white-space: nowrap;
 }
 
 .header_nav_content {
