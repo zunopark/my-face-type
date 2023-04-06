@@ -16,21 +16,18 @@ if (countNum) {
   handleCountNum()
 }
 
-getTime()
+// getTime()
 
-function getTime() {
-  let currentTime = new Date()
-  let year = currentTime.getFullYear()
-  let month = currentTime.getMonth() + 1
-  let date = currentTime.getDate()
-  let hour = currentTime.getHours()
+// function getTime() {
+//   let currentTime = new Date()
+//   let year = currentTime.getFullYear()
+//   let month = currentTime.getMonth() + 1
+//   let date = currentTime.getDate()
+//   let hour = currentTime.getHours()
 
-  const time = document.querySelector(`.timer`)
+//   const time = document.querySelector(`.timer`)
 
-  time.innerHTML = `(${year}.${month < 10 ? `0${month}` : month}.${
-    date < 10 ? `0${date}` : date
-  } ${hour < 10 ? `0${hour}` : hour}:00 기준)`
-}
-
-const randomBanner = document.querySelector(`.randomBanner`)
-const randomNum = Math.floor(Math.random() * 2) + 1
+//   time.innerHTML = `(${year}.${month < 10 ? `0${month}` : month}.${
+//     date < 10 ? `0${date}` : date
+//   } ${hour < 10 ? `0${hour}` : hour}:00 기준)`
+// }

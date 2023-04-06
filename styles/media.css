@@ -31,11 +31,30 @@
   .apologize {
     width: 320px;
   }
+
+  .header {
+    width: 500px;
+  }
+
+  .header_fixed {
+    width: 500px;
+  }
+
+  .footer {
+    width: 500px;
+  }
+  .main_body_wrap {
+    width: 500px;
+  }
+
   body {
     border-right: 1px solid black;
   }
 }
 @media screen and (max-width: 499px) {
+  .main_body_wrap {
+    width: 100%;
+  }
   .border,
   .test__upper,
   .submitForm {

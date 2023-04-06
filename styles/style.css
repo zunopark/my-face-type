@@ -4,9 +4,9 @@
 @import 'reset.css';
 @import 'header.css';
 @import 'result.css';
-@import 'media.css';
 @import 'footer.css';
 @import 'ad.css';
+@import 'media.css';
 
 @import url('https://fonts.googleapis.com/css?family=Asap:400,500,700');
 
@@ -16,6 +16,23 @@ body {
   flex-direction: column;
   align-items: center;
   width: 100%;
+}
+
+.main_body_wrap {
+  background: #2b2b2e;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.main_content_wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.main_content_wrap_top_margin {
+  margin-top: 68px;
 }
 
 * {
@@ -52,10 +69,10 @@ body {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  /* font-family: "East Sea Dokdo", cursive; */
   font-family: 'Yeon Sung', cursive;
   padding-top: 30px;
   margin-bottom: 10px;
+  color: white;
 }
 
 .main__ai__title .title {
@@ -66,34 +83,6 @@ body {
 .main__ai__title .subtitle {
   font-size: 20px;
   opacity: 0.8;
-}
-
-.jocoding {
-  width: 100%;
-  font-weight: 700;
-  align-self: flex-end;
-  text-align: center;
-  margin-right: 30px;
-  font-size: 15px;
-  margin-bottom: 15px;
-}
-
-.jocoding a {
-  color: white;
-}
-
-.jocoding a:link {
-  text-decoration: underline;
-  color: #ff0200;
-}
-
-.jocoding a:visited {
-  text-decoration: underline;
-  color: #ff0200;
-}
-
-a:hover {
-  opacity: 1;
 }
 
 #container {
@@ -150,6 +139,7 @@ a:hover {
   margin-top: 10px;
   margin-bottom: 5px;
   font-size: 14px;
+  opacity: 0.8;
 }
 
 .count__num {
@@ -160,10 +150,6 @@ a:hover {
   color: rgb(129, 129, 129);
   font-weight: 400;
   font-size: 12px;
-}
-
-.header {
-  padding-bottom: 16px;
 }
 
 .share {
@@ -265,6 +251,7 @@ a:hover {
 }
 
 .noti {
+  color: rgba(255, 255, 255, 0.8);
   margin-top: 10px;
   font-size: 12px;
 }

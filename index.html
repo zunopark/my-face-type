@@ -30,8 +30,11 @@
     <style>
       @import url('https://fonts.googleapis.com/css2?family=East+Sea+Dokdo&display=swap');
       @import url('https://fonts.googleapis.com/css2?family=Yeon+Sung&display=swap');
+      @import url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2302_01@1.0/KimjungchulMyungjo-Bold.woff2');
     </style>
+
     <title>관상 테스트 | 관상가 양반</title>
+
     <meta
       name="naver-site-verification"
       content="388bb9c4a4d15bff6005df99c9b9effe5f73f54e"
@@ -86,37 +89,40 @@
     </script>
   </head>
   <body>
-    <header class="header">
-      <div class="header__upper">
-        <div class="header__title">
-          <div class="header__title__title">AI양반</div>
-          <a class="header__a" href="/blog/">
-            <div class="header__menu">AI 블로그</div>
-          </a>
-          <a class="header__a" href="/analysis/">
-            <div class="header__menu">관상 해석</div>
-          </a>
+    <div class="main_body_wrap">
+      <header class="header">
+        <div class="header__upper">
+          <div class="header__title">
+            <div class="header__title__title">AI양반</div>
+            <div class="header_title_date"></div>
+          </div>
         </div>
-        <div class="language__wrap">
-          <a href="/en/" class="language">Eng</a>
-          |
-          <a href="/index.html" class="language language__selected">한글</a>
+        <div class="header_nav_wrap">
+          <a href="" class="header_nav_content header_nav_select">
+            관상
+          </a>
+          <a href="" class="header_nav_content">운세</a>
+          <a href="" class="header_nav_content">사주</a>
+          <a href="" class="header_nav_content">궁합</a>
+          <a href="" class="header_nav_content">별자리</a>
+          <a href="" class="header_nav_content">로또</a>
         </div>
-      </div>
-    </header>
-    <!-- <div id="google_translate_element"></div> -->
+      </header>
 
-    <div class="main__ai__title">
-      <h1 class="title">관상가 양반</h1>
-      <h2 class="subtitle">인공지능이 말해주는 내 관상</h2>
-      <h2 class="number">
-        <span class="count__num"></span>
-        번 관상을 봤어요.
-      </h2>
-      <h2 class="timer"></h2>
-    </div>
+      <!-- <div id="google_translate_element"></div> -->
+      <div class="main_content_wrap">
+        <div class="main__ai__title">
+          <h1 class="title">관상가 양반</h1>
+          <h2 class="subtitle">인공지능이 알려주는 내 관상</h2>
+          <h2 class="number">
+            지금까지
+            <span class="count__num"></span>
+            번 관상을 봤어요.
+          </h2>
+          <!-- <h2 class="timer"></h2> -->
+        </div>
 
-    <!-- <div id="container">
+        <!-- <div id="container">
       <div class="inner-container">
         <div class="toggle">
           <p>남</p>
@@ -135,114 +141,118 @@
       </div>
     </div> -->
 
-    <div class="ad_box" id="container2">
-      <ins
-        class="adsbygoogle"
-        style="display: inline-block; width: 320px; height: 50px;"
-        data-ad-client="ca-pub-4478069136800837"
-        data-ad-slot="4097923844"
-      ></ins>
-      <script>
-        ;(adsbygoogle = window.adsbygoogle || []).push({})
-      </script>
-    </div>
-    <div class="border">
-      <div class="frame">
-        <div class="image">
-          <script
-            class="jsbin"
-            src="https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"
-          ></script>
-          <div class="file-upload">
-            <div class="image-upload-wrap">
-              <input
-                class="file-upload-input"
-                type="file"
-                onchange="readURL(this);"
-                accept="image/*"
-              />
-              <div class="drag-text">
-                <i class="far fa-image"></i>
-                <h2>(사진 첨부)</h2>
-                <h3>관상? 얼굴 한번 봅시다</h3>
-              </div>
-            </div>
-            <div class="file-upload-content">
-              <img
-                class="file-upload-image"
-                id="face-image"
-                src="#"
-                alt="your image"
-              />
-              <div class="image-title-wrap">
-                <div class="ai">관상가가 당신의 관상을 분석중..</div>
+        <div class="ad_box" id="container2">
+          <ins
+            class="adsbygoogle"
+            style="display: inline-block; width: 320px; height: 50px;"
+            data-ad-client="ca-pub-4478069136800837"
+            data-ad-slot="4097923844"
+          ></ins>
+          <script>
+            ;(adsbygoogle = window.adsbygoogle || []).push({})
+          </script>
+        </div>
+
+        <div class="border">
+          <div class="frame">
+            <div class="image">
+              <script
+                class="jsbin"
+                src="https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"
+              ></script>
+              <div class="file-upload">
+                <div class="image-upload-wrap">
+                  <input
+                    class="file-upload-input"
+                    type="file"
+                    onchange="readURL(this);"
+                    accept="image/*"
+                  />
+                  <div class="drag-text">
+                    <i class="far fa-image"></i>
+                    <h2>(사진 첨부)</h2>
+                    <h3>관상? 얼굴 한번 봅시다</h3>
+                  </div>
+                </div>
+                <div class="file-upload-content">
+                  <img
+                    class="file-upload-image"
+                    id="face-image"
+                    src="#"
+                    alt="your image"
+                  />
+                  <div class="image-title-wrap">
+                    <div class="ai">관상가가 당신의 관상을 분석중..</div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
         </div>
+
+        <div class="noti">*사용자의 사진은 어디에도 저장되지 않습니다.</div>
+
+        <div id="label-container" class="result"></div>
+        <div class="ad_box">
+          <ins
+            class="adsbygoogle"
+            style="display: inline-block; width: 320px; height: 50px;"
+            data-ad-client="ca-pub-4478069136800837"
+            data-ad-slot="6658485451"
+          ></ins>
+          <script>
+            ;(adsbygoogle = window.adsbygoogle || []).push({})
+          </script>
+        </div>
+        <div class="ad_box3">
+          <ins
+            class="adsbygoogle"
+            style="display: inline-block; width: 320px; height: 250px;"
+            data-ad-client="ca-pub-4478069136800837"
+            data-ad-slot="2416326457"
+          ></ins>
+          <script>
+            ;(adsbygoogle = window.adsbygoogle || []).push({})
+          </script>
+        </div>
+        <a
+          href="/analysis/part/nose.html"
+          class="face_analysis_contents"
+          style="margin-bottom: 10px;"
+          onclick="gtag('event', '관상학적 해석', {'event_category': '관상학적 해석','event_label': '관상학적 해석'})"
+        >
+          1. 코 - 관상 해석 알아보기
+          <span>></span>
+        </a>
+        <a
+          href="/analysis/part/eyes.html"
+          class="face_analysis_contents"
+          style="margin-bottom: 10px;"
+          onclick="gtag('event', '관상학적 해석', {'event_category': '관상학적 해석','event_label': '관상학적 해석'})"
+        >
+          2. 눈 - 관상 해석 알아보기
+          <span>></span>
+        </a>
+        <a
+          href="/analysis/"
+          class="face_analysis_contents"
+          style="margin-bottom: 10px;"
+          onclick="gtag('event', '관상학적 해석', {'event_category': '관상학적 해석','event_label': '관상학적 해석'})"
+        >
+          더 많은 관상 해석 보기
+          <span>></span>
+        </a>
+
+        <footer class="footer"></footer>
       </div>
     </div>
-    <div class="noti">*사용자의 사진은 어디에도 저장되지 않습니다.</div>
-
-    <div id="label-container" class="result"></div>
-    <div class="ad_box">
-      <ins
-        class="adsbygoogle"
-        style="display: inline-block; width: 320px; height: 50px;"
-        data-ad-client="ca-pub-4478069136800837"
-        data-ad-slot="6658485451"
-      ></ins>
-      <script>
-        ;(adsbygoogle = window.adsbygoogle || []).push({})
-      </script>
-    </div>
-    <div class="ad_box3">
-      <ins
-        class="adsbygoogle"
-        style="display: inline-block; width: 320px; height: 250px;"
-        data-ad-client="ca-pub-4478069136800837"
-        data-ad-slot="2416326457"
-      ></ins>
-      <script>
-        ;(adsbygoogle = window.adsbygoogle || []).push({})
-      </script>
-    </div>
-    <a
-      href="/analysis/part/nose.html"
-      class="face_analysis_contents"
-      style="margin-bottom: 10px;"
-      onclick="gtag('event', '관상학적 해석', {'event_category': '관상학적 해석','event_label': '관상학적 해석'})"
-    >
-      1. 코 - 관상 해석 알아보기
-      <span>></span>
-    </a>
-    <a
-      href="/analysis/part/eyes.html"
-      class="face_analysis_contents"
-      style="margin-bottom: 10px;"
-      onclick="gtag('event', '관상학적 해석', {'event_category': '관상학적 해석','event_label': '관상학적 해석'})"
-    >
-      2. 눈 - 관상 해석 알아보기
-      <span>></span>
-    </a>
-    <a
-      href="/analysis/"
-      class="face_analysis_contents"
-      style="margin-bottom: 10px;"
-      onclick="gtag('event', '관상학적 해석', {'event_category': '관상학적 해석','event_label': '관상학적 해석'})"
-    >
-      더 많은 관상 해석 보기
-      <span>></span>
-    </a>
-
-    <footer class="footer"></footer>
     <script
       async
       src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4478069136800837"
       crossorigin="anonymous"
     ></script>
     <script src="js/footer.js"></script>
-    <!-- <script src="js/header.js"></script> -->
+    <script src="js/header.js"></script>
     <script src="js/livetime.js"></script>
     <script src="js/ad.js"></script>
     <script src="js/fileupload.js"></script>
