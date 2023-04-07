@@ -53,18 +53,21 @@ const start = async () => {
 
   userMessages.push('나의 오늘의 운세를 알려줘!')
 
-  const response = await fetch('http://127.0.0.1:3000/fortuneTell', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
+  const response = await fetch(
+    'https://fkfucds3e9.execute-api.ap-northeast-2.amazonaws.com/prod/fortuneTell',
+    {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        userInfo: userInfo,
+        myDateTime: myDateTime,
+        userMessages: userMessages,
+        assistantMessages: assistantMessages,
+      }),
     },
-    body: JSON.stringify({
-      userInfo: userInfo,
-      myDateTime: myDateTime,
-      userMessages: userMessages,
-      assistantMessages: assistantMessages,
-    }),
-  })
+  )
 
   const data = await response.json()
 
@@ -106,18 +109,21 @@ const result = async (type) => {
 
   userMessages.push(userMessageContent)
 
-  const response = await fetch('http://127.0.0.1:3000/fortuneTell', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
+  const response = await fetch(
+    'https://fkfucds3e9.execute-api.ap-northeast-2.amazonaws.com/prod/fortuneTell',
+    {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        myDateTime: myDateTime,
+        userInfo: userInfo,
+        userMessages: userMessages,
+        assistantMessages: assistantMessages,
+      }),
     },
-    body: JSON.stringify({
-      myDateTime: myDateTime,
-      userInfo: userInfo,
-      userMessages: userMessages,
-      assistantMessages: assistantMessages,
-    }),
-  })
+  )
 
   const data = await response.json()
 
@@ -147,18 +153,21 @@ const sendMessage = async () => {
   chatInput.value = ''
   spinnerAppear('loader')
 
-  const response = await fetch('http://127.0.0.1:3000/fortuneTell', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
+  const response = await fetch(
+    'https://fkfucds3e9.execute-api.ap-northeast-2.amazonaws.com/prod/fortuneTell',
+    {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        myDateTime: myDateTime,
+        userInfo: userInfo,
+        userMessages: userMessages,
+        assistantMessages: assistantMessages,
+      }),
     },
-    body: JSON.stringify({
-      myDateTime: myDateTime,
-      userInfo: userInfo,
-      userMessages: userMessages,
-      assistantMessages: assistantMessages,
-    }),
-  })
+  )
 
   const data = await response.json()
   spinnerDisappear('loader')
