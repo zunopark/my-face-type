@@ -8,7 +8,7 @@ let userInfo = {}
 
 const spinnerHTML = () => {
   loaderWrap.forEach(function (content) {
-    content.innerHTML = `<div class="loader_wrap"><i class="fa fa-spinner fa-spin"></i><div class="spinner_comment">당신의 운세를 확인중입니다.</div></div>`
+    content.innerHTML = `<div class="loader_wrap"><i class="fa fa-spinner fa-spin"></i><div class="spinner_comment">운세를 분석중입니다.</div></div>`
   })
 }
 
