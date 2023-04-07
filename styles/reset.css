@@ -126,3 +126,14 @@ table {
 img {
   margin-bottom: -4px;
 }
+
+button {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+
+  background-color: transparent;
+  border: none;
+  outline: none;
+  cursor: pointer;
+}

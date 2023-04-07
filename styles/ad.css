@@ -26,9 +26,17 @@
   margin-bottom: 10px;
   margin-top: 10px;
 }
+
 .ad_box5 {
   width: 320px;
   height: 100px;
+  margin: 0 outo;
+  margin-bottom: 10px;
+}
+
+.ad_box6 {
+  width: 320px;
+  height: 140px;
   margin: 0 outo;
   margin-bottom: 10px;
 }

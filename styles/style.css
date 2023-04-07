@@ -1,8 +1,8 @@
+@import 'reset.css';
 @import 'common.css';
 @import 'gender.css';
 @import 'fileupload.css';
 @import 'picture.css';
-@import 'reset.css';
 @import 'header.css';
 @import 'result.css';
 @import 'footer.css';
@@ -123,24 +123,6 @@
   outline: none;
 }
 
-.super__members {
-  width: 320px;
-  margin-bottom: 15px;
-}
-
-.super__img,
-.dosa__img {
-  width: 100%;
-}
-
-.super__img:hover {
-  cursor: pointer;
-}
-
-.dosa__img:hover {
-  cursor: pointer;
-}
-
 .other__result {
   margin-top: 10px;
   width: 100%;
@@ -173,33 +155,6 @@
 .percent {
   margin-top: -10px;
   font-size: 16px;
-}
-
-.crazy {
-  color: black;
-  width: 100%;
-  font-weight: 700;
-  align-self: flex-end;
-  text-align: center;
-  margin-right: 30px;
-  font-size: 16px;
-  margin-bottom: 10px;
-  margin-top: 30px;
-}
-
-.crazy a:active {
-  color: black;
-  text-decoration: none;
-}
-
-.crazy a:visited {
-  color: black;
-  text-decoration: none;
-}
-
-.crazy a:link {
-  color: black;
-  text-decoration: none;
 }
 
 .noti {
