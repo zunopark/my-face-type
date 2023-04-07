@@ -46,6 +46,18 @@ const start = async () => {
     time,
   }
 
+  document.querySelector(`.fortune_user_name`).innerHTML = userInfo.name
+  document.querySelector(`.fortune_user_relationship`).innerHTML =
+    userInfo.relationship
+  document.querySelector(`.fortune_user_gender`).innerHTML = userInfo.gender
+  document.querySelector(
+    `.fortune_user_birth_type`,
+  ).innerHTML = `(${userInfo.dateType})`
+  document.querySelector('.fortune_user_date').innerHTML = userInfo.date
+  document.querySelector('.fortune_user_time').innerHTML = `${
+    userInfo.time === '' ? '태어난 시간 모름' : userInfo.time
+  }`
+
   localStorage.setItem('UserInfo', JSON.stringify(userInfo))
 
   spinnerAppear('loader')
@@ -194,18 +206,6 @@ const fortuneUserData = () => {
     document.querySelector(`.fortune_birth_type`).value = user.dateType
     document.querySelector('.fortune_date').value = user.date
     document.querySelector('.fortune_time').value = user.time
-
-    document.querySelector(`.fortune_user_name`).innerHTML = user.name
-    document.querySelector(`.fortune_user_relationship`).innerHTML =
-      user.relationship
-    document.querySelector(`.fortune_user_gender`).innerHTML = user.gender
-    document.querySelector(
-      `.fortune_user_birth_type`,
-    ).innerHTML = `(${user.dateType})`
-    document.querySelector('.fortune_user_date').innerHTML = user.date
-    document.querySelector('.fortune_user_time').innerHTML = `${
-      user.time === '' ? '태어난 시간 모름' : user.time
-    }`
   }
 }
 
