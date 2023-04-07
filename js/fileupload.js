@@ -347,19 +347,33 @@ async function predict() {
 
   let share = document.createElement('button')
   share.innerHTML = `
-  <span>주변에 관상 테스트 알려주기</span>
+  <span>[새출시] 오늘의 운세도 보기</span>
   `
   share.classList.add('share__btn')
   share.onclick = function () {
-    gtag('event', '공유하기', {
-      event_category: '공유하기',
-      event_label: '공유 버튼 case2',
+    gtag('event', '오늘의 운세 진입', {
+      event_category: '오늘의 운세 진입',
+      event_label: '오늘의 운세 진입',
     })
   }
   labelContainer.appendChild(share)
 
+  // let share = document.createElement('button')
+  // share.innerHTML = `
+  // <span>주변에 관상 테스트 알려주기</span>
+  // `
+  // share.classList.add('share__btn')
+  // share.onclick = function () {
+  //   gtag('event', '공유하기', {
+  //     event_category: '공유하기',
+  //     event_label: '공유 버튼 case2',
+  //   })
+  // }
+  // labelContainer.appendChild(share)
+
   reset.addEventListener('click', handleReset)
-  share.addEventListener('click', kakaoShare)
+  share.addEventListener('click', handleFortune)
+  // share.addEventListener('click', kakaoShare)
 
   const privacy = document.querySelector(`.noti`)
   privacy.style.display = 'none'
@@ -368,6 +382,10 @@ async function predict() {
     location.reload(true)
     location.href = location.href
     history.go(0)
+  }
+
+  function handleFortune() {
+    location.href = '/fortune'
   }
 
   function kakaoShare() {
