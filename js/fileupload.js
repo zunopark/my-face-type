@@ -347,7 +347,7 @@ async function predict() {
 
   let share = document.createElement('button')
   share.innerHTML = `
-  <span>[새출시] 오늘의 운세도 보기</span>
+  <span>오늘의 운세 확인하기</span>
   `
   share.classList.add('share__btn')
   share.onclick = function () {
