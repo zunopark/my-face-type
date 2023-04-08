@@ -186,7 +186,10 @@
             </div>
           </div>
           <div class="fortune_start_btn_wrap" style="display: block;">
-            <button class="fortune_start_btn" onclick="start()">
+            <button
+              class="fortune_start_btn"
+              onclick="gtag('event', '오늘의 운세', {'event_category': '오늘의 운세','event_label': '오늘의 운세 Main CTA'}); start(); "
+            >
               운세 확인하기
             </button>
           </div>
@@ -208,7 +211,12 @@
             </div>
           </div>
           <div class="fortune_user_change_btn">
-            <button class="fortune_user_change">다른 사람 운세 확인하기</button>
+            <button
+              class="fortune_user_change"
+              onclick="gtag('event', '오늘의 운세', {'event_category': '오늘의 운세','event_label': '오늘의 운세 다른 사람 운세 확인'});"
+            >
+              다른 사람 운세 확인하기
+            </button>
           </div>
         </div>
 
@@ -226,7 +234,7 @@
             </div>
             <button
               class="result_love_btn"
-              onclick="result(`love`)"
+              onclick="gtag('event', '오늘의 운세', {'event_category': '오늘의 운세','event_label': '오늘의 운세 애정운'}); result(`love`)"
               style="display: block;"
             >
               애정운 확인하기
@@ -239,7 +247,7 @@
             </div>
             <button
               class="result_wealth_btn"
-              onclick="result(`wealth`)"
+              onclick="gtag('event', '오늘의 운세', {'event_category': '오늘의 운세','event_label': '오늘의 운세 재물운'}); result(`wealth`)"
               style="display: block;"
             >
               재물운 확인하기
@@ -252,7 +260,7 @@
             </div>
             <button
               class="result_health_btn"
-              onclick="result(`health`)"
+              onclick="gtag('event', '오늘의 운세', {'event_category': '오늘의 운세','event_label': '오늘의 운세 건강운'}); result(`health`)"
               style="display: block;"
             >
               건강운 확인하기
@@ -265,7 +273,7 @@
             </div>
             <button
               class="result_business_btn"
-              onclick="result(`business`)"
+              onclick="gtag('event', '오늘의 운세', {'event_category': '오늘의 운세','event_label': '오늘의 운세 사업운'}); result(`business`)"
               style="display: block;"
             >
               사업운 확인하기
@@ -282,7 +290,7 @@
             </div>
             <button
               class="result_study_btn"
-              onclick="result(`study`)"
+              onclick="gtag('event', '오늘의 운세', {'event_category': '오늘의 운세','event_label': '오늘의 운세 학업운'}); result(`study`)"
               style="display: block;"
             >
               학업운 확인하기
