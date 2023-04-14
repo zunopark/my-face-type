@@ -13,7 +13,10 @@ const headerContent = () => {
     관상
   </a>
   <a href="/fortune" class="header_nav_content">운세</a>
- 
+  <a href="/destiny" class="header_nav_content">사주</a>
+  <a href="/compatibility" class="header_nav_content">궁합</a>
+  <a href="/tarot" class="header_nav_content">타로</a>
+  <a href="/lotto" class="header_nav_content">로또</a>
 
 </div>`
   } else if (headerMain.id === 'fortune') {
@@ -28,7 +31,10 @@ const headerContent = () => {
     관상
   </a>
   <a href="/fortune" class="header_nav_content header_nav_select">운세</a>
-
+  <a href="/destiny" class="header_nav_content">사주</a>
+  <a href="/compatibility" class="header_nav_content">궁합</a>
+  <a href="/tarot" class="header_nav_content">타로</a>
+  <a href="/lotto" class="header_nav_content">로또</a>
 </div>`
   } else if (headerMain.id === 'destiny') {
     headerMain.innerHTML = ` <div class="header__upper">
@@ -44,7 +50,6 @@ const headerContent = () => {
   <a href="/fortune" class="header_nav_content">운세</a>
   <a href="/destiny" class="header_nav_content header_nav_select">사주</a>
   <a href="/compatibility" class="header_nav_content">궁합</a>
-  <a href="/constellation" class="header_nav_content">별자리</a>
   <a href="/tarot" class="header_nav_content">타로</a>
   <a href="/lotto" class="header_nav_content">로또</a>
 </div>`
@@ -62,7 +67,6 @@ const headerContent = () => {
   <a href="/fortune" class="header_nav_content">운세</a>
   <a href="/destiny" class="header_nav_content">사주</a>
   <a href="/compatibility" class="header_nav_content header_nav_select">궁합</a>
-  <a href="/constellation" class="header_nav_content">별자리</a>
   <a href="/tarot" class="header_nav_content">타로</a>
   <a href="/lotto" class="header_nav_content">로또</a>
 </div>`
@@ -98,7 +102,6 @@ const headerContent = () => {
   <a href="/fortune" class="header_nav_content">운세</a>
   <a href="/destiny" class="header_nav_content">사주</a>
   <a href="/compatibility" class="header_nav_content">궁합</a>
-  <a href="/constellation" class="header_nav_content">별자리</a>
   <a href="/tarot" class="header_nav_content header_nav_select">타로</a>
   <a href="/lotto" class="header_nav_content">로또</a>
 </div>`
@@ -116,7 +119,6 @@ const headerContent = () => {
   <a href="/fortune" class="header_nav_content">운세</a>
   <a href="/destiny" class="header_nav_content">사주</a>
   <a href="/compatibility" class="header_nav_content">궁합</a>
-  <a href="/constellation" class="header_nav_content">별자리</a>
   <a href="/tarot" class="header_nav_content">타로</a>
   <a href="/lotto" class="header_nav_content header_nav_select">로또</a>
 </div>`
