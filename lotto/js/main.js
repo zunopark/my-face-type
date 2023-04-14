@@ -5,7 +5,7 @@ const handleAppBtn = () => {
   gtag('event', '카카오 플러스 친구 로또', {
     event_category: '카카오 플러스 친구 로또',
     event_label: '카카오 플러스 친구 로또',
-  }
+  })
 }
 
 yangbanAppBtn.addEventListener('click', handleAppBtn)

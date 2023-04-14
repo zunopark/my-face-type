@@ -5,7 +5,7 @@ const handleAppBtn = () => {
   gtag('event', '카카오 플러스 친구 사주', {
     event_category: '카카오 플러스 친구 사주',
     event_label: '카카오 플러스 친구 사주',
-  }
+  })
 }
 
 yangbanAppBtn.addEventListener('click', handleAppBtn)
