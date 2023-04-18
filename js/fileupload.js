@@ -1,5 +1,6 @@
 // 사진 올리는거
 const aiCont = document.querySelector(`.ai`)
+const bottomAdFile = document.querySelector(`.bottom_ad`)
 
 async function readURL(input) {
   if (input.files && input.files[0]) {
@@ -53,6 +54,7 @@ async function init() {
   }
   predict()
   // toggle.classList.add('hidden')
+  bottomAdFile.classList.remove('hidden')
 }
 
 async function predict() {

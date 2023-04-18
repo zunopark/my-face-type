@@ -22,6 +22,7 @@ const spinnerDisappear = (idName) => {
 
 const start = async () => {
   const resultTotal = document.querySelector('.fortune_result_total')
+  const bottomAdFile = document.querySelector(`.bottom_ad`)
 
   const name = document.querySelector(`.fortune_name`).value
   const relationship = document.querySelector(`.fortune_relationship`).value
@@ -91,6 +92,7 @@ const start = async () => {
 
   //assistantMessage 메세지 추가
   assistantMessages.push(data.assistant)
+  bottomAdFile.classList.remove('hidden')
 
   const astrologerMessage = document.createElement('div')
   astrologerMessage.classList.add('fortune_result_content')
