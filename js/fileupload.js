@@ -347,18 +347,18 @@ async function predict() {
   }
   labelContainer.appendChild(reset)
 
-  let share = document.createElement('button')
-  share.innerHTML = `
-  <span>오늘의 운세 확인하기</span>
-  `
-  share.classList.add('share__btn')
-  share.onclick = function () {
-    gtag('event', '오늘의 운세 진입', {
-      event_category: '오늘의 운세 진입',
-      event_label: '오늘의 운세 진입',
-    })
-  }
-  labelContainer.appendChild(share)
+  // let share = document.createElement('button')
+  // share.innerHTML = `
+  // <span>오늘의 운세 확인하기</span>
+  // `
+  // share.classList.add('share__btn')
+  // share.onclick = function () {
+  //   gtag('event', '오늘의 운세 진입', {
+  //     event_category: '오늘의 운세 진입',
+  //     event_label: '오늘의 운세 진입',
+  //   })
+  // }
+  // labelContainer.appendChild(share)
 
   // let share = document.createElement('button')
   // share.innerHTML = `
