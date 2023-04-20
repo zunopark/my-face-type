@@ -374,7 +374,7 @@ async function predict() {
   // labelContainer.appendChild(share)
 
   reset.addEventListener('click', handleReset)
-  share.addEventListener('click', handleFortune)
+  // share.addEventListener('click', handleFortune)
   // share.addEventListener('click', kakaoShare)
 
   const privacy = document.querySelector(`.noti`)
