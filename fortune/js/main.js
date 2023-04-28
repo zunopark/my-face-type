@@ -216,7 +216,7 @@ const fortuneUserChangeBtn = document.querySelector(`.fortune_user_change`)
 fortuneUserChangeBtn.addEventListener('click', handleFortuneReset)
 
 function handleFortuneReset() {
-  localStorage.removeItem('userInfo')
+  localStorage.removeItem('UserInfo')
   location.reload(true)
   location.href = location.href
   history.go(0)
