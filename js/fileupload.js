@@ -347,18 +347,18 @@ async function predict() {
   }
   labelContainer.appendChild(reset)
 
-  // let share = document.createElement('button')
-  // share.innerHTML = `
-  // <span>오늘의 운세 확인하기</span>
-  // `
-  // share.classList.add('share__btn')
-  // share.onclick = function () {
-  //   gtag('event', '오늘의 운세 진입', {
-  //     event_category: '오늘의 운세 진입',
-  //     event_label: '오늘의 운세 진입',
-  //   })
-  // }
-  // labelContainer.appendChild(share)
+  let share = document.createElement('button')
+  share.innerHTML = `
+  <span>이번엔 운세 알아보기</span>
+  `
+  share.classList.add('share__btn')
+  share.onclick = function () {
+    gtag('event', '카카오 플친 메인', {
+      event_category: '카카오 플친 메인',
+      event_label: '카카오 플친 메인',
+    })
+  }
+  labelContainer.appendChild(share)
 
   // let share = document.createElement('button')
   // share.innerHTML = `
@@ -374,7 +374,7 @@ async function predict() {
   // labelContainer.appendChild(share)
 
   reset.addEventListener('click', handleReset)
-  // share.addEventListener('click', handleFortune)
+  share.addEventListener('click', handleFortune)
   // share.addEventListener('click', kakaoShare)
 
   const privacy = document.querySelector(`.noti`)
@@ -387,7 +387,8 @@ async function predict() {
   }
 
   function handleFortune() {
-    location.href = '/fortune'
+    // location.href = '/fortune'
+    location.href = 'http://pf.kakao.com/_Qfuvxj/chat'
   }
 
   function kakaoShare() {
