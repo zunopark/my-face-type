@@ -334,6 +334,14 @@ async function predict() {
   // otherResult.innerHTML = `${starsListImg}`
   // labelContainer.appendChild(otherResult)
 
+  function getResultGtag() {
+    gtag('event', `관상 결과`, {
+      event_category: `관상 결과`,
+      event_label: `관상 결과 : ${answer}`,
+    })
+  }
+  getResultGtag()
+
   let reset = document.createElement('button')
   reset.innerHTML = `
   <span>다른 사진으로 해보기</span>`

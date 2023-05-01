@@ -199,8 +199,6 @@ const fortuneUserData = () => {
   const userData = localStorage.getItem('UserInfo')
   let user = JSON.parse(userData)
 
-  console.log(user)
-
   if (user != null) {
     document.querySelector(`.fortune_name`).value = user.name
     document.querySelector(`.fortune_relationship`).value = user.relationship
