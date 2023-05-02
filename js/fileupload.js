@@ -355,18 +355,18 @@ async function predict() {
   }
   labelContainer.appendChild(reset)
 
-  let share = document.createElement('button')
-  share.innerHTML = `
-  <span>운세 알아보기 (카카오)</span>
-  `
-  share.classList.add('share__btn')
-  share.onclick = function () {
-    gtag('event', '카카오 플친 메인', {
-      event_category: '카카오 플친 메인',
-      event_label: '카카오 플친 메인',
-    })
-  }
-  labelContainer.appendChild(share)
+  // let share = document.createElement('button')
+  // share.innerHTML = `
+  // <span>운세 알아보기 (카카오)</span>
+  // `
+  // share.classList.add('share__btn')
+  // share.onclick = function () {
+  //   gtag('event', '카카오 플친 메인', {
+  //     event_category: '카카오 플친 메인',
+  //     event_label: '카카오 플친 메인',
+  //   })
+  // }
+  // labelContainer.appendChild(share)
 
   // let share = document.createElement('button')
   // share.innerHTML = `
@@ -382,7 +382,7 @@ async function predict() {
   // labelContainer.appendChild(share)
 
   reset.addEventListener('click', handleReset)
-  share.addEventListener('click', handleFortune)
+  // share.addEventListener('click', handleFortune)
   // share.addEventListener('click', kakaoShare)
 
   const privacy = document.querySelector(`.noti`)
