@@ -2,7 +2,7 @@ const footer = document.querySelector(`.footer`)
 const bottomAd = document.querySelector(`.bottom_ad`)
 const headerForAd = document.querySelector(`.header`)
 
-const appVersion = '0.86'
+const appVersion = '0.484'
 
 function init() {
   footer.innerHTML = ` <div class="contact">
