@@ -1,38 +1,40 @@
 .footer {
   margin: 50px 0;
-  padding-top: 30px;
+  padding-top: 10px;
+  padding-left: 20px;
   border-top: 2px solid rgba(255, 255, 255, 0.1);
   width: 100%;
   display: flex;
   flex-direction: column;
-  align-items: center;
-}
-.footer__icon {
-  color: white;
-  font-size: 40px;
-  margin-bottom: 20px;
-}
-
-.footer__text {
-  font-size: 14px;
-  color: white;
-  font-weight: 800;
-  text-transform: uppercase;
+  align-items: flex-start;
 }
 
 .contact {
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
   align-items: center;
-  width: 180px;
   margin-bottom: 30px;
 }
 
 .contact_me {
-  font-weight: 700;
   font-size: 16px;
   text-decoration: none;
   margin-top: 10px;
+  margin-right: 16px;
   color: rgb(182, 182, 182);
+}
+
+.footer_text_wrap {
+  font-size: 14px;
+  font-weight: 300;
+  color: rgb(211, 211, 211);
+  margin-bottom: 10px;
+}
+
+.footer_ceo {
+  margin-right: 16px;
+}
+
+.footer_company {
+  font-weight: 700;
 }

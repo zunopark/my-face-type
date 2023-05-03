@@ -2,15 +2,43 @@ const footer = document.querySelector(`.footer`)
 const bottomAd = document.querySelector(`.bottom_ad`)
 const headerForAd = document.querySelector(`.header`)
 
-const appVersion = 'v0.85'
+const appVersion = '0.86'
 
 function init() {
   footer.innerHTML = ` <div class="contact">
-  <a href="mailto:dydtjq94@yonsei.ac.kr" class="contact_me">광고 문의</a>
-  <a href="mailto:dydtjq94@yonsei.ac.kr" class="contact_me">개발 문의</a>
-  </div>
-  <span class="footer__text"> AI양반 2023 &copy; ${appVersion}</span> `
-
+  <a href="mailto:dydtjq94@yonsei.ac.kr" class="contact_me">
+    문의하기
+  </a>
+  <a href="mailto:dydtjq94@yonsei.ac.kr" class="contact_me">
+    광고 제안
+  </a>
+  <a href="/" class="contact_me">
+    관상 보기
+  </a>
+  <a href="/fortune/" class="contact_me">
+    오늘의 운세
+  </a>
+</div>
+<div class="footer_text_wrap">
+  <span class="footer_company">AI양반 | NMAX (엔맥스)</span>
+</div>
+<div class="footer_text_wrap">
+  <span class="footer_ceo">대표자 : 윤용섭</span>
+  <span class="footer_business_num">사업자등록번호 : 418-12-65319</span>
+</div>
+<div class="footer_text_wrap">
+  <span class="footer_sales_num">
+    통신판매업신고번호 : 2023-성남분당B-0437
+  </span>
+</div>
+<div class="footer_text_wrap">
+  <span class="footer_address">
+    주소 : 경기도 성남시 분당구 판교로 421, 3층
+  </span>
+</div>
+<span class="footer_text_wrap">
+  ⓒ 2023. NMAX, All Rights Reserved. App Version: ${appVersion}
+</span>`
   // if (bottomAd) {
   //   if (headerForAd.id === 'face') {
   //     bottomAd.innerHTML = ` <div class="bottom_ad_top">무료 관상은 어떠셨나요?</div>
@@ -47,7 +75,6 @@ function init() {
   //   </div>`
   //   }
   // }
-
   // const bottomBtn = document.querySelector(`.bottom_ad_btn`)
   // if (bottomBtn) {
   //   bottomBtn.addEventListener('click', () => {
