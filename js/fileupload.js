@@ -316,6 +316,7 @@ async function predict() {
   }
 
   let result = document.createElement('div')
+  result.classList.add('main_result_description')
   result.textContent = `${description[answer][1]}`
   labelContainer.appendChild(result)
 
@@ -329,10 +330,10 @@ async function predict() {
   desc.textContent = description[answer][0]
   labelContainer.appendChild(desc)
 
-  // let otherResult = document.createElement('div')
-  // otherResult.classList.add('other__result')
-  // otherResult.innerHTML = `${starsListImg}`
-  // labelContainer.appendChild(otherResult)
+  let otherResult = document.createElement('div')
+  otherResult.classList.add('other__result')
+  otherResult.innerHTML = `${starsListImg}`
+  labelContainer.appendChild(otherResult)
 
   function getResultGtag() {
     gtag('event', `관상 결과`, {

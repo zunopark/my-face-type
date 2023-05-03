@@ -137,23 +137,25 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  color: red;
 }
 
 .star__list__img {
+  font-family: 'Yeon Sung', cursive;
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 48px;
-  height: 48px;
+  width: 50px;
+  height: 50px;
   border-radius: 50%;
-  border: 1px solid black;
+  border: 1px solid white;
   font-size: 16px;
   margin: 0 4px;
-  color: black;
+  color: white;
 }
 
 .percent {
-  margin-top: -10px;
+  margin-top: 6px;
   font-size: 16px;
 }
 
@@ -215,7 +217,7 @@
 }
 
 .zero {
-  color: black;
+  color: white;
 }
 
 .zeroone {

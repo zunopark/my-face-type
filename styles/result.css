@@ -6,7 +6,7 @@
   margin-top: 15px;
 }
 
-.result div {
+.result .main_result_description {
   font-size: 24px;
   font-family: 'Yeon Sung', cursive;
   color: rgb(255, 214, 32);
@@ -20,7 +20,7 @@
   text-align: center;
   margin-bottom: 12px;
   color: #e7b43c;
-  font-size: 18px;
+  font-size: 20px;
 }
 
 .result p {
