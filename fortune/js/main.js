@@ -66,6 +66,15 @@ const start = async () => {
 
   userMessages.push('나의 오늘의 운세를 알려줘!')
 
+  const fortuneResultGtag = () => {
+    gtag('event', '오늘의 운세 User', {
+      event_category: '오늘의 운세',
+      event_label: `오늘의 운세 User 이름: ${name}, 관계: ${relationship}, 성별: ${gender}, 생일타입: ${dateType}, 생일: ${date}, 태어난시간: ${time}`,
+    })
+  }
+
+  fortuneResultGtag()
+
   const response = await fetch(
     'https://fkfucds3e9.execute-api.ap-northeast-2.amazonaws.com/prod/fortuneTell',
     {
