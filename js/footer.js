@@ -1,5 +1,4 @@
 const footer = document.querySelector(`.footer`)
-const bottomAd = document.querySelector(`.bottom_ad`)
 const headerForAd = document.querySelector(`.header`)
 
 const appVersion = '0.489'
@@ -39,6 +38,7 @@ function init() {
 <span class="footer_text_wrap">
   ⓒ 2023. NMAX, All Rights Reserved. App Version: ${appVersion}
 </span>`
+
   // if (bottomAd) {
   //   if (headerForAd.id === 'face') {
   //     bottomAd.innerHTML = ` <div class="bottom_ad_top">무료 관상은 어떠셨나요?</div>

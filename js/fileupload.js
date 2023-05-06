@@ -1,7 +1,4 @@
 // 사진 올리는거
-const aiCont = document.querySelector(`.ai`)
-const bottomAdFile = document.querySelector(`.bottom_ad`)
-
 async function readURL(input) {
   if (input.files && input.files[0]) {
     var reader = new FileReader()
@@ -16,8 +13,11 @@ async function readURL(input) {
     }
 
     await reader.readAsDataURL(input.files[0])
+
     await init()
-    aiCont.classList.add('disblock')
+
+    const imageTitleWrap = document.querySelector(`.image-title-wrap`)
+    imageTitleWrap.classList.add('disblock')
   } else {
     removeUpload()
   }
@@ -35,8 +35,7 @@ $('.image-upload-wrap').bind('dragleave', function () {
   $('.image-upload-wrap').removeClass('image-dropping')
 })
 
-// url 설정
-
+// url & api 설정
 const URL = 'https://teachablemachine.withgoogle.com/models/FiW0HL4DO/'
 
 let model, webcam, labelContainer, maxPredictions
@@ -54,14 +53,18 @@ async function init() {
   }
   predict()
   // toggle.classList.add('hidden')
-  bottomAdFile.classList.remove('hidden')
 }
 
 async function predict() {
   let image = document.getElementById('face-image')
+
   const prediction = await model.predict(image, false)
 
+  console.log(prediction)
+
   let arr = new Map()
+
+  // 관상 결과 db
   let description = {
     강민경: [
       '이마는 둥근형이라 집안일보다 바깥일을 좋아하고, 대인관계가 좋고 인복이 좋은 이마입니다. 눈썹은 재복이 좋고 미간이 넓어서 자유로운 성격입니다. 눈은 약간의 고집과 자존심이 있는 눈이며 남자가 많이 따르는, 남자복이 많은 눈입니다. 턱은 재복이 좋지만 변덕이 심할 수 있고 연애운이 강하고 복스러우니 이성을 조심해야 합니다. 결과적으로 출세와 성공에 강합니다.',
@@ -315,6 +318,9 @@ async function predict() {
     }
   }
 
+  const privacy = document.querySelector(`.noti`)
+  privacy.style.display = 'none'
+
   let result = document.createElement('div')
   result.classList.add('main_result_description')
   result.textContent = `${description[answer][1]}`
@@ -386,62 +392,60 @@ async function predict() {
   // share.addEventListener('click', handleFortune)
   // share.addEventListener('click', kakaoShare)
 
-  const privacy = document.querySelector(`.noti`)
-  privacy.style.display = 'none'
-
-  function handleReset(e) {
+  // 한번 더 하기 함수
+  function handleReset() {
     location.reload(true)
     location.href = location.href
     history.go(0)
   }
 
-  function handleFortune() {
-    // location.href = '/fortune'
-    location.href = 'http://pf.kakao.com/_Qfuvxj/chat'
-  }
+  // function handleFortune() {
+  //   location.href = '/fortune'
+  // }
 
-  function kakaoShare() {
-    Kakao.Share.sendDefault({
-      objectType: 'feed',
-      content: {
-        title: '관상 테스트',
-        description:
-          '본인 얼굴을 직접 사진 찍어서 관상 무료로 보세요~ 95% 적중~!',
-        imageUrl: 'https://i.ibb.co/QYMyVRd/Group-1043-1.png',
-        link: {
-          mobileWebUrl: 'https://keen-poitras-075b07.netlify.app/',
-          androidExecParams: 'test',
-        },
-      },
-      buttons: [
-        {
-          title: '관상 확인하기',
-          link: {
-            mobileWebUrl: 'https://keen-poitras-075b07.netlify.app/',
-          },
-        },
-      ],
-    })
-  }
+  // function kakaoShare() {
+  //   Kakao.Share.sendDefault({
+  //     objectType: 'feed',
+  //     content: {
+  //       title: '관상 테스트',
+  //       description:
+  //         '본인 얼굴을 직접 사진 찍어서 관상 무료로 보세요~ 95% 적중~!',
+  //       imageUrl: 'https://i.ibb.co/QYMyVRd/Group-1043-1.png',
+  //       link: {
+  //         mobileWebUrl: 'https://keen-poitras-075b07.netlify.app/',
+  //         androidExecParams: 'test',
+  //       },
+  //     },
+  //     buttons: [
+  //       {
+  //         title: '관상 확인하기',
+  //         link: {
+  //           mobileWebUrl: 'https://keen-poitras-075b07.netlify.app/',
+  //         },
+  //       },
+  //     ],
+  //   })
+  // }
 }
 
-var toggle = document.getElementById('container')
-var toggleContainer = document.getElementById('toggle-container')
-var toggleNumber
-let changePicture = document.querySelector('.image-upload-wrap')
-if (toggle) {
-  toggle.addEventListener('click', function () {
-    toggleNumber = !toggleNumber
-    if (toggleNumber) {
-      toggleContainer.style.clipPath = 'inset(0 0 0 50%)'
-      toggleContainer.style.backgroundColor = 'dodgerblue'
-      changePicture.style.backgroundImage =
-        'url(https://i.ibb.co/B2kj8Pk/man.png)'
-    } else {
-      toggleContainer.style.clipPath = 'inset(0 50% 0 0)'
-      toggleContainer.style.backgroundColor = '#D74046'
-      changePicture.style.backgroundImage =
-        'url(https://i.ibb.co/B2kj8Pk/man.png)'
-    }
-  })
-}
+// 남녀 선택 토글 -> 현재 사용하지 않음
+// var toggle = document.getElementById('container')
+// var toggleContainer = document.getElementById('toggle-container')
+// var toggleNumber
+// let changePicture = document.querySelector('.image-upload-wrap')
+// if (toggle) {
+//   toggle.addEventListener('click', function () {
+//     toggleNumber = !toggleNumber
+//     if (toggleNumber) {
+//       toggleContainer.style.clipPath = 'inset(0 0 0 50%)'
+//       toggleContainer.style.backgroundColor = 'dodgerblue'
+//       changePicture.style.backgroundImage =
+//         'url(https://i.ibb.co/B2kj8Pk/man.png)'
+//     } else {
+//       toggleContainer.style.clipPath = 'inset(0 50% 0 0)'
+//       toggleContainer.style.backgroundColor = '#D74046'
+//       changePicture.style.backgroundImage =
+//         'url(https://i.ibb.co/B2kj8Pk/man.png)'
+//     }
+//   })
+// }
