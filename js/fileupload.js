@@ -351,7 +351,7 @@ async function predict() {
 
   let reset = document.createElement('button')
   reset.innerHTML = `
-  <span>다른 사진으로 해보기</span>`
+  <span>다른 사진도 해보기</span>`
 
   reset.classList.add('reset__btn')
   reset.onclick = function () {

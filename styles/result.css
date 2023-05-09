@@ -33,13 +33,13 @@
 }
 
 .result .reset__btn {
-  background-color: #444444;
+  background-color: #ffe924;
   border-radius: 12px;
   margin-top: 12px;
   margin-bottom: 12px;
-  width: 240px;
+  width: 320px;
   padding: 12px 0px;
-  color: white;
+  color: rgb(54, 54, 54);
   font-size: 16px;
   font-family: 'KimjungchulMyungjo-Bold';
   outline: none;
