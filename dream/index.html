@@ -99,125 +99,43 @@
 
   <body>
     <div class="main_body_wrap">
-      <header id="fortune" class="header"></header>
+      <header id="dream" class="header"></header>
       <div class="main_content_wrap">
         <div class="main__ai__title">
-          <h1 class="title">오늘의 운세</h1>
-          <h2 class="subtitle">AI양반이 이제 운세도 알려드려요</h2>
-        </div>
-        <div class="ad_box fortune_upper_ad">
-          <ins
-            class="adsbygoogle"
-            style="display: inline-block; width: 320px; height: 50px;"
-            data-ad-client="ca-pub-4478069136800837"
-            data-ad-slot="6243815810"
-          ></ins>
-          <script>
-            ;(adsbygoogle = window.adsbygoogle || []).push({})
-          </script>
+          <h1
+            class="title"
+            style="
+              text-align: center;
+              font-family: 'KimjungchulMyungjo-Bold';
+              line-height: 60px;
+              font-size: 40px;
+            "
+          >
+            어젯밤 꿈 이야기를
+            <br />
+            들려주세요
+          </h1>
+          <h2 class="subtitle" style="font-family: 'KimjungchulMyungjo-Bold';">
+            꿈이 말해주는 미래를 알려드릴게요.
+          </h2>
         </div>
 
-        <div id="intro" class="fortune_input_wrap">
-          <div class="fortune_input_upper">
-            <div class="fortune_name_wrap">
-              <input
-                type="text"
-                class="fortune_name"
-                placeholder="이름을 입력하세요"
-              />
-            </div>
-            <div class="fortune_relationship_wrap">
-              <select class="fortune_relationship">
-                <option value="본인" selected>관계, 본인</option>
-                <option value="배우자">배우자</option>
-                <option value="아버지">아버지</option>
-                <option value="어머니">어머니</option>
-                <option value="아들">아들</option>
-                <option value="딸">딸</option>
-                <option value="손자">손자</option>
-                <option value="손녀">손녀</option>
-                <option value="여자친구">여자친구</option>
-                <option value="남자친구">남자친구</option>
-                <option value="친구">친구</option>
-                <option value="기타">기타</option>
-              </select>
-            </div>
-          </div>
-          <div class="fortune_input_middle">
-            <div class="fortune_gender_wrap">
-              <select class="fortune_gender">
-                <option value="남성">남성</option>
-                <option value="여성" selected>여성</option>
-              </select>
-            </div>
-            <div class="fortune_birth_type_wrap">
-              <select class="fortune_birth_type">
-                <option value="양력" selected>양력</option>
-                <option value="음력(평)">음력(평)</option>
-                <option value="음력(윤)">음력(윤)</option>
-              </select>
-            </div>
-            <div class="fortune_time_wrap">
-              <select class="fortune_time">
-                <option value="">태어난 시, 모름</option>
-                <option value="23:30 ~ 01:29">자: 23:30 ~ 01:29</option>
-                <option value="01:30 ~ 03:29">축: 01:30 ~ 03:29</option>
-                <option value="03:30 ~ 05:29">인: 03:30 ~ 05:29</option>
-                <option value="05:30 ~ 07:29">묘: 05:30 ~ 07:29</option>
-                <option value="07:30 ~ 09:29">진: 07:30 ~ 09:29</option>
-                <option value="09:30 ~ 11:29">사: 09:30 ~ 11:29</option>
-                <option value="11:30 ~ 13:29">오: 11:30 ~ 13:29</option>
-                <option value="13:30 ~ 15:29">미: 13:30 ~ 15:29</option>
-                <option value="15:30 ~ 17:29">신: 15:30 ~ 17:29</option>
-                <option value="17:30 ~ 19:29">유: 17:30 ~ 19:29</option>
-                <option value="19:30 ~ 21:29">술: 19:30 ~ 21:29</option>
-                <option value="21:30 ~ 23:29">해: 21:30 ~ 23:29</option>
-              </select>
-            </div>
-          </div>
-          <div class="fortune_input_lower">
-            <div class="fortune_date_wrap">
-              <input
-                id="date_input"
-                type="date"
-                class="fortune_date"
-                value="1970-01-01"
-              />
-            </div>
-          </div>
-          <div class="fortune_start_btn_wrap" style="display: block;">
-            <button
-              class="fortune_start_btn"
-              onclick="gtag('event', '오늘의 운세', {'event_category': '오늘의 운세','event_label': '오늘의 운세 Main CTA'}); start(); "
-            >
-              운세 확인하기
-            </button>
+        <div id="intro" class="dream_input_wrap">
+          <div class="dream_main_wrap">
+            <textarea
+              class="dream_main"
+              placeholder="어떤 꾸을 꾸셨나요? 이 곳을 클릭하고 작성해주세요."
+            ></textarea>
           </div>
         </div>
 
-        <div class="fortune_user_info_wrap" style="display: none;">
-          <div class="fortune_user_info">
-            <div class="fortune_user_info_upper">
-              <div class="fortune_user_name"></div>
-              <div class="fortune_user_relationship"></div>
-            </div>
-            <div class="fortune_user_info_middle">
-              <div class="fortune_user_gender"></div>
-            </div>
-            <div class="fortune_user_info_lower">
-              <div class="fortune_user_date"></div>
-              <div class="fortune_user_birth_type"></div>
-              <div class="fortune_user_time"></div>
-            </div>
-          </div>
-          <div class="fortune_user_change_btn">
-            <button
-              class="fortune_user_change"
-              onclick="gtag('event', '오늘의 운세', {'event_category': '오늘의 운세','event_label': '오늘의 운세 다른 사람 운세 확인'});"
-            >
-              다른 사람 운세 확인하기
-            </button>
-          </div>
+        <div class="dream_start_btn_wrap" style="display: block;">
+          <button
+            class="dream_start_btn"
+            onclick="gtag('event', '꿈 해몽', {'event_category': '꿈 해몽','event_label': '꿈 해몽 Main CTA'}); start(); "
+          >
+            나의 꿈 이야기 전달하기
+          </button>
         </div>
 
         <div id="loader" class="loader" style="display: none;"></div>
@@ -228,97 +146,7 @@
               총운
             </div>
           </div>
-          <div class="fortune_result fortune_result_love">
-            <div class="fortune_result_title">
-              애정운
-            </div>
-            <button
-              class="result_love_btn"
-              onclick="gtag('event', '오늘의 운세', {'event_category': '오늘의 운세','event_label': '오늘의 운세 애정운'}); result(`love`)"
-              style="display: block;"
-            >
-              애정운 확인하기
-            </button>
-            <div id="loader_love" class="loader" style="display: none;"></div>
-          </div>
-          <div class="ad_box">
-            <ins
-              class="adsbygoogle"
-              style="display: inline-block; width: 320px; height: 50px;"
-              data-ad-client="ca-pub-4478069136800837"
-              data-ad-slot="1917786906"
-            ></ins>
-            <script>
-              ;(adsbygoogle = window.adsbygoogle || []).push({})
-            </script>
-          </div>
-          <div class="fortune_result fortune_result_wealth">
-            <div class="fortune_result_title">
-              재물운
-            </div>
-            <button
-              class="result_wealth_btn"
-              onclick="gtag('event', '오늘의 운세', {'event_category': '오늘의 운세','event_label': '오늘의 운세 재물운'}); result(`wealth`)"
-              style="display: block;"
-            >
-              재물운 확인하기
-            </button>
-            <div id="loader_wealth" class="loader" style="display: none;"></div>
-          </div>
-          <div class="fortune_result fortune_result_health">
-            <div class="fortune_result_title">
-              건강운
-            </div>
-            <button
-              class="result_health_btn"
-              onclick="gtag('event', '오늘의 운세', {'event_category': '오늘의 운세','event_label': '오늘의 운세 건강운'}); result(`health`)"
-              style="display: block;"
-            >
-              건강운 확인하기
-            </button>
-            <div id="loader_health" class="loader" style="display: none;"></div>
-          </div>
-          <div class="ad_box">
-            <ins
-              class="adsbygoogle"
-              style="display: inline-block; width: 320px; height: 50px;"
-              data-ad-client="ca-pub-4478069136800837"
-              data-ad-slot="1917786906"
-            ></ins>
-            <script>
-              ;(adsbygoogle = window.adsbygoogle || []).push({})
-            </script>
-          </div>
-          <div class="fortune_result fortune_result_business">
-            <div class="fortune_result_title">
-              사업운
-            </div>
-            <button
-              class="result_business_btn"
-              onclick="gtag('event', '오늘의 운세', {'event_category': '오늘의 운세','event_label': '오늘의 운세 사업운'}); result(`business`)"
-              style="display: block;"
-            >
-              사업운 확인하기
-            </button>
-            <div
-              id="loader_business"
-              class="loader"
-              style="display: none;"
-            ></div>
-          </div>
-          <div class="fortune_result fortune_result_study">
-            <div class="fortune_result_title">
-              학업운
-            </div>
-            <button
-              class="result_study_btn"
-              onclick="gtag('event', '오늘의 운세', {'event_category': '오늘의 운세','event_label': '오늘의 운세 학업운'}); result(`study`)"
-              style="display: block;"
-            >
-              학업운 확인하기
-            </button>
-            <div id="loader_study" class="loader" style="display: none;"></div>
-          </div>
+
           <div class="ad_box">
             <ins
               class="adsbygoogle"
@@ -337,6 +165,17 @@
         </div>
       </div>
 
+      <div class="ad_box fortune_upper_ad">
+        <ins
+          class="adsbygoogle"
+          style="display: inline-block; width: 320px; height: 50px;"
+          data-ad-client="ca-pub-4478069136800837"
+          data-ad-slot="6243815810"
+        ></ins>
+        <script>
+          ;(adsbygoogle = window.adsbygoogle || []).push({})
+        </script>
+      </div>
       <div class="ad_box3 fortune_upper_ad3">
         <ins
           class="adsbygoogle"
