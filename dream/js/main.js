@@ -30,8 +30,6 @@ const start = async () => {
     return
   }
 
-  myDateTime = date + time
-
   spinnerAppear('loader')
   document.querySelector(`.dream_start_btn_wrap`).style.display = 'none'
 
