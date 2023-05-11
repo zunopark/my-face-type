@@ -83,6 +83,7 @@ const start = async () => {
   dreamResultGtag()
 
   const totalDreamTeller = await getDreamTell(userMessages)
+
   assistantMessages.push(totalDreamTeller.assistant)
 
   const dataSummaryMessages = [`너무 길어 30자 이하로 요약해줘`]
@@ -93,7 +94,7 @@ const start = async () => {
   spinnerDisappear('loader')
 
   //assistantMessage 메세지 추가
-  assistantMessages.push(data.assistant)
+  // assistantMessages.push(data.assistant)
 
   // 결과 생성
   const astrologerMessage = document.createElement('div')
