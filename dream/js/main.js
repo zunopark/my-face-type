@@ -76,12 +76,12 @@ const start = async () => {
 
   spinnerDisappear('loader')
 
-  // 결과 생성 ${summaryDreamTeller.assistant}
+  // 결과 생성
   const resultTotal = document.querySelector('.dream_result_total')
   resultTotal.innerHTML = `
   <div class="dream_result_upper">
               <div class="dream_result_summary">
-                테스트
+              ${summaryDreamTeller.assistant}
               </div>
               <div class="dream_result_date">- 해몽가 양반 -</div>
             </div>
