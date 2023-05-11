@@ -52,7 +52,7 @@ const start = async () => {
   document.getElementById('intro').style.display = 'none'
   document.querySelector(`.main_ai_title_wrap`).style.display = 'none'
 
-  userMessages.push(`내가 꾼 꿈은 ${dreamContent} 이런 내용인데 꿈 풀이좀 해줘`)
+  userMessages.push(`${dreamContent}`)
 
   const dreamResultGtag = () => {
     gtag('event', '해몽꿈 Content', {
@@ -65,7 +65,7 @@ const start = async () => {
   const totalDreamTeller = await getGPTTell(userMessages)
   assistantMessages.push(totalDreamTeller.assistant)
 
-  const dataSummaryMessages = [`한 줄의 짧은 문장으로 요약해줘`]
+  const dataSummaryMessages = [`한 줄로 요약해줘`]
   const summaryDreamTeller = await getGPTTell(dataSummaryMessages)
 
   document.querySelector('.dream_result_wrap').style.display = 'block'
