@@ -83,17 +83,17 @@ const start = async () => {
   dreamResultGtag()
 
   const totalDreamTeller = await getDreamTell(userMessages)
-  const dataSummaryMessages = [
-    `${totalDreamTeller.assistant} 라는 꿈을 꿨는데 30자 이하의 완성된 문장으로 요약해줘, 요약문장만 보여줘`,
-  ]
-  const summaryDreamTeller = await getDreamSummary(dataSummaryMessages)
+  assistantMessages.push(totalDreamTeller.assistant)
+
+  const dataSummaryMessages = [`너무 길어 30자 이하로 요약해줘`]
+  const summaryDreamTeller = await getDreamTell(dataSummaryMessages)
 
   document.querySelector('.fortune_result_wrap').style.display = 'block'
 
   spinnerDisappear('loader')
 
   //assistantMessage 메세지 추가
-  // assistantMessages.push(data.assistant)
+  assistantMessages.push(data.assistant)
 
   // 결과 생성
   const astrologerMessage = document.createElement('div')
