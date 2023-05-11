@@ -80,38 +80,6 @@ const start = async () => {
   resultTotal.appendChild(astrologerMessage)
 }
 
-// const result = async (type) => {
-//   userMessages.push(userMessageContent)
-
-//   const response = await fetch(
-//     'https://fkfucds3e9.execute-api.ap-northeast-2.amazonaws.com/prod/dreamTell',
-//     {
-//       method: 'POST',
-//       headers: {
-//         'Content-Type': 'application/json',
-//       },
-//       body: JSON.stringify({
-//         myDateTime: myDateTime,
-//         userInfo: userInfo,
-//         userMessages: userMessages,
-//         assistantMessages: assistantMessages,
-//       }),
-//     },
-//   )
-
-//   const data = await response.json()
-
-//   spinnerDisappear(`loader_` + `${type}`)
-
-//   //assistantMessage 메세지 추가
-//   assistantMessages.push(data.assistant)
-
-//   const astrologerMessage = document.createElement('div')
-//   astrologerMessage.classList.add('fortune_result_content')
-//   astrologerMessage.innerHTML = `${data.assistant}`
-//   resultContentWrap.appendChild(astrologerMessage)
-// }
-
 const sendMessage = async () => {
   const chatInput = document.querySelector('.chat-input input')
   const chatMessage = document.createElement('div')
