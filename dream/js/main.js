@@ -67,7 +67,7 @@ const start = async () => {
 
   // const dataSummaryMessages = [`너무 길어. 많이 짧게 단어들로 알려줘`]
 
-  userMessages.push(`너무 길어. 한 줄로 요약해줘`)
+  userMessages.push(`너무 길어. 30글자 이하의 한 줄로 요약해줘`)
   const summaryDreamTeller = await getGPTTell(userMessages)
 
   document.querySelector('.dream_result_wrap').style.display = 'block'
