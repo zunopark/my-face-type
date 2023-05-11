@@ -39,8 +39,8 @@ const getDreamTell = async (text) => {
 }
 
 const getDreamSummary = async (text) => {
-  const response2 = await fetch(
-    'https://fkfucds3e9.execute-api.ap-northeast-2.amazonaws.com/prod/dreamTell',
+  const response = await fetch(
+    'https://fkfucds3e9.execute-api.ap-northeast-2.amazonaws.com/prod/dreamSummary',
     {
       method: 'POST',
       headers: {
@@ -53,8 +53,8 @@ const getDreamSummary = async (text) => {
     },
   )
 
-  const data2 = await response2.json()
-  return data2
+  const data = await response.json()
+  return data
 }
 
 const start = async () => {
