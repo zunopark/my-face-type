@@ -84,10 +84,9 @@ const start = async () => {
 
   const totalDreamTeller = await getDreamTell(userMessages)
   const dataSummaryMessages = [
-    `${totalDreamTeller.assistant} 라는 꿈을 꿨는데 30자 이하의 완성된 문장으로 요약해줘`,
+    `${totalDreamTeller.assistant} 라는 꿈을 꿨는데 30자 이하의 완성된 문장으로 요약해줘, 요약문장만 보여줘`,
   ]
   const summaryDreamTeller = await getDreamSummary(dataSummaryMessages)
-  console.log(summaryDreamTeller)
 
   document.querySelector('.fortune_result_wrap').style.display = 'block'
 
@@ -101,7 +100,7 @@ const start = async () => {
   astrologerMessage.classList.add('fortune_result_content')
   // astrologerMessage.innerHTML = `${dreamContent} // ${totalDreamTeller.assistant}`
   // astrologerMessage.innerHTML = `${dreamContent} // ${summaryDreamTeller.assistant}`
-  astrologerMessage.innerHTML = `${dreamContent} // ${totalDreamTeller.assistant} //${summaryDreamTeller.assistant}`
+  astrologerMessage.innerHTML = `${dreamContent} // ${totalDreamTeller.assistant} // ${summaryDreamTeller.assistant}`
   resultTotal.appendChild(astrologerMessage)
 }
 
