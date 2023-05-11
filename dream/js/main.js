@@ -60,10 +60,10 @@ const start = async () => {
 
   const data = await response.json()
 
-  const dataSummaryMessages = `${data.assistant} 를 30자 이하의 완성된 문장으로 요약해줘`
+  const dataSummaryMessages = `${data.assistant} 라는 꿈을 꿨는데 30자 이하의 완성된 문장으로 요약해줘`
 
   const response2 = await fetch(
-    'https://fkfucds3e9.execute-api.ap-northeast-2.amazonaws.com/prod/dreamTell',
+    'https://fkfucds3e9.execute-api.ap-northeast-2.amazonaws.com/prod/dreamTellSummary',
     {
       method: 'POST',
       headers: {
