@@ -87,7 +87,7 @@ const start = async () => {
 
   const astrologerMessage = document.createElement('div')
   astrologerMessage.classList.add('fortune_result_content')
-  astrologerMessage.innerHTML = `${dreamContent} ${data.assistant} ${data2.assistant}`
+  astrologerMessage.innerHTML = `${dreamContent} ${data.assistant}`
   resultTotal.appendChild(astrologerMessage)
 }
 
