@@ -83,6 +83,7 @@ const start = async () => {
   dreamResultGtag()
 
   const totalDreamTeller = await getDreamTell(userMessages)
+  console.log(totalDreamTeller)
   const dataSummaryMessages = `${totalDreamTeller.assistant} 라는 꿈을 꿨는데 30자 이하의 완성된 문장으로 요약해줘`
   const summaryDreamTeller = await getDreamSummary(dataSummaryMessages)
 
