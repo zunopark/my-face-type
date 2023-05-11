@@ -19,28 +19,9 @@ const spinnerDisappear = (idName) => {
   document.getElementById(idName).style.display = 'none'
 }
 
-const getDreamTell = async (text) => {
+const getGPTTell = async (text) => {
   const response = await fetch(
     'https://fkfucds3e9.execute-api.ap-northeast-2.amazonaws.com/prod/dreamTell',
-    {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        userMessages: text,
-        assistantMessages: assistantMessages,
-      }),
-    },
-  )
-
-  const data = await response.json()
-  return data
-}
-
-const getDreamSummary = async (text) => {
-  const response = await fetch(
-    'https://fkfucds3e9.execute-api.ap-northeast-2.amazonaws.com/prod/dreamSummary',
     {
       method: 'POST',
       headers: {
@@ -82,25 +63,19 @@ const start = async () => {
   }
   dreamResultGtag()
 
-  const totalDreamTeller = await getDreamTell(userMessages)
-
+  const totalDreamTeller = await getGPTTell(userMessages)
   assistantMessages.push(totalDreamTeller.assistant)
 
   const dataSummaryMessages = [`너무 길어 30자 이하로 요약해줘`]
-  const summaryDreamTeller = await getDreamTell(dataSummaryMessages)
+  const summaryDreamTeller = await getGPTTell(dataSummaryMessages)
 
   document.querySelector('.fortune_result_wrap').style.display = 'block'
 
   spinnerDisappear('loader')
 
-  //assistantMessage 메세지 추가
-  // assistantMessages.push(data.assistant)
-
   // 결과 생성
   const astrologerMessage = document.createElement('div')
   astrologerMessage.classList.add('fortune_result_content')
-  // astrologerMessage.innerHTML = `${dreamContent} // ${totalDreamTeller.assistant}`
-  // astrologerMessage.innerHTML = `${dreamContent} // ${summaryDreamTeller.assistant}`
   astrologerMessage.innerHTML = `${dreamContent} // ${totalDreamTeller.assistant} // ${summaryDreamTeller.assistant}`
   resultTotal.appendChild(astrologerMessage)
 }
