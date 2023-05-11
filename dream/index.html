@@ -38,6 +38,7 @@
         src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2302_01@1.0/KimjungchulMyungjo-Bold.woff2')
           format('woff2');
         font-style: normal;
+        font-weight: 300 400 700;
       }
     </style>
 
@@ -101,23 +102,28 @@
     <div class="main_body_wrap">
       <header id="dream" class="header"></header>
       <div class="main_content_wrap">
-        <div class="main__ai__title">
-          <h1
-            class="title"
-            style="
-              text-align: center;
-              font-family: 'KimjungchulMyungjo-Bold';
-              line-height: 60px;
-              font-size: 40px;
-            "
-          >
-            어젯밤 꿈 이야기를
-            <br />
-            들려주세요
-          </h1>
-          <h2 class="subtitle" style="font-family: 'KimjungchulMyungjo-Bold';">
-            꿈이 말해주는 미래를 알려드릴게요.
-          </h2>
+        <!-- <div class="main_ai_title_wrap">
+          <div class="main__ai__title">
+            <h1
+              class="title"
+              style="
+                text-align: center;
+                font-family: 'KimjungchulMyungjo-Bold';
+                line-height: 60px;
+                font-size: 40px;
+              "
+            >
+              어젯밤 꿈 이야기를
+              <br />
+              들려주세요
+            </h1>
+            <h2
+              class="subtitle"
+              style="font-family: 'KimjungchulMyungjo-Bold';"
+            >
+              꿈이 말해주는 미래를 알려드릴게요.
+            </h2>
+          </div>
         </div>
 
         <div id="intro" class="dream_input_wrap">
@@ -136,28 +142,33 @@
           >
             나의 꿈 이야기 전달하기
           </button>
-        </div>
+        </div> -->
 
-        <div id="loader" class="loader" style="display: none;"></div>
+        <div id="loader" class="loader" style="display: block;">
+          <div class="loader_wrap">
+            <div class="dream_loader_title">해몽가 양반이 꿈을</div>
+            <div class="dream_loader_title" style="margin-bottom: 40px;">
+              해석하고 있습니다
+            </div>
+            <div class="dream_loader_description">
+              꿈은 우리의 창의성과 상상력을 촉진하며, 때로는 우리가 놓치고 있던
+              것들을 발견하게 해줄 수도 있습니다.
+            </div>
+            <div class="dream_loader_description" style="margin-top: 20px;">
+              잠시만 기다려주세요.
+            </div>
+
+            <i class="fa fa-spinner fa-spin spinner"></i>
+          </div>
+        </div>
 
         <div class="fortune_result_wrap" style="display: none;">
           <div class="fortune_result fortune_result_total">
             <div class="fortune_result_title">
-              총운
+              나의 꿈
             </div>
           </div>
 
-          <div class="ad_box">
-            <ins
-              class="adsbygoogle"
-              style="display: inline-block; width: 320px; height: 50px;"
-              data-ad-client="ca-pub-4478069136800837"
-              data-ad-slot="1917786906"
-            ></ins>
-            <script>
-              ;(adsbygoogle = window.adsbygoogle || []).push({})
-            </script>
-          </div>
           <!-- <div class="chat-input">
             <input type="text" placeholder="Type your message here..." />
             <button id="btn">Send</button>
@@ -194,8 +205,6 @@
       >
         <img src="https://i.ibb.co/Z277Lsr/Group-1044.png" alt="" />
       </a>
-
-      <div class="bottom_ad hidden"></div>
 
       <footer class="footer"></footer>
     </div>

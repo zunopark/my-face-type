@@ -7,7 +7,7 @@ let myDateTime = ''
 
 const spinnerHTML = () => {
   loaderWrap.forEach(function (content) {
-    content.innerHTML = `<div class="loader_wrap"><i class="fa fa-spinner fa-spin"></i><div class="spinner_comment">해몽가가 꿈을 풀이하는 중입니다.</div></div>`
+    // content.innerHTML = ``
   })
 }
 
@@ -21,8 +21,6 @@ const spinnerDisappear = (idName) => {
 
 const start = async () => {
   const resultTotal = document.querySelector('.fortune_result_total')
-  const bottomAdFile = document.querySelector(`.bottom_ad`)
-
   const dreamContent = document.querySelector(`.dream_main`).value
 
   if (dreamContent === '') {
@@ -30,8 +28,11 @@ const start = async () => {
     return
   }
 
+  // display: none
   spinnerAppear('loader')
   document.querySelector(`.dream_start_btn_wrap`).style.display = 'none'
+  document.getElementById('intro').style.display = 'none'
+  document.querySelector(`.main_ai_title_wrap`).style.display = 'none'
 
   userMessages.push(`내가 꾼 꿈은 ${dreamContent} 이런 내용인데 꿈 풀이좀 해줘`)
 
@@ -59,19 +60,16 @@ const start = async () => {
 
   const data = await response.json()
 
-  document.getElementById('intro').style.display = 'none'
-
   document.querySelector('.fortune_result_wrap').style.display = 'block'
 
   spinnerDisappear('loader')
 
   //assistantMessage 메세지 추가
   assistantMessages.push(data.assistant)
-  bottomAdFile.classList.remove('hidden')
 
   const astrologerMessage = document.createElement('div')
   astrologerMessage.classList.add('fortune_result_content')
-  astrologerMessage.innerHTML = `${data.assistant}`
+  astrologerMessage.innerHTML = `${dreamContent} ${data.assistant}`
   resultTotal.appendChild(astrologerMessage)
 }
 
