@@ -19,6 +19,44 @@ const spinnerDisappear = (idName) => {
   document.getElementById(idName).style.display = 'none'
 }
 
+const getDreamTell = async (text) => {
+  const response = await fetch(
+    'https://fkfucds3e9.execute-api.ap-northeast-2.amazonaws.com/prod/dreamTell',
+    {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        userMessages: text,
+        assistantMessages: assistantMessages,
+      }),
+    },
+  )
+
+  const data = await response.json()
+  return
+}
+
+const getDreamSummary = async (text) => {
+  const response2 = await fetch(
+    'https://fkfucds3e9.execute-api.ap-northeast-2.amazonaws.com/prod/dreamTellSummary',
+    {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        userMessages: text,
+        assistantMessages: assistantMessages,
+      }),
+    },
+  )
+
+  const data2 = await response2.json()
+  return data2
+}
+
 const start = async () => {
   const resultTotal = document.querySelector('.fortune_result_total')
   const dreamContent = document.querySelector(`.dream_main`).value
@@ -44,39 +82,9 @@ const start = async () => {
   }
   dreamResultGtag()
 
-  const response = await fetch(
-    'https://fkfucds3e9.execute-api.ap-northeast-2.amazonaws.com/prod/dreamTell',
-    {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        userMessages: userMessages,
-        assistantMessages: assistantMessages,
-      }),
-    },
-  )
-
-  const data = await response.json()
-
-  const dataSummaryMessages = `${data.assistant} 라는 꿈을 꿨는데 30자 이하의 완성된 문장으로 요약해줘`
-
-  const response2 = await fetch(
-    'https://fkfucds3e9.execute-api.ap-northeast-2.amazonaws.com/prod/dreamTellSummary',
-    {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        userMessages: dataSummaryMessages,
-        assistantMessages: assistantMessages,
-      }),
-    },
-  )
-
-  const data2 = await response2.json()
+  const totalDreamTeller = await getDreamTell(userMessages)
+  const dataSummaryMessages = `${totalDreamTeller.assistant} 라는 꿈을 꿨는데 30자 이하의 완성된 문장으로 요약해줘`
+  const summaryDreamTeller = await getDreamSummary(dataSummaryMessages)
 
   document.querySelector('.fortune_result_wrap').style.display = 'block'
 
@@ -87,7 +95,7 @@ const start = async () => {
 
   const astrologerMessage = document.createElement('div')
   astrologerMessage.classList.add('fortune_result_content')
-  astrologerMessage.innerHTML = `${dreamContent} // ${data.assistant} //${data2.assistant}`
+  astrologerMessage.innerHTML = `${dreamContent} // ${totalDreamTeller.assistant} //${summaryDreamTeller.assistant}`
   resultTotal.appendChild(astrologerMessage)
 }
 
