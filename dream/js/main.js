@@ -40,7 +40,7 @@ const getDreamTell = async (text) => {
 
 const getDreamSummary = async (text) => {
   const response2 = await fetch(
-    'https://sa394esbff.execute-api.ap-northeast-2.amazonaws.com/defaultdreamTellSummary',
+    'https://sa394esbff.execute-api.ap-northeast-2.amazonaws.com/default/dreamTellSummary',
     {
       method: 'POST',
       headers: {
