@@ -60,23 +60,23 @@ const start = async () => {
 
   const data = await response.json()
 
-  // const dataSummaryMessages = `${data.assistant} 를 30자 이하의 완성된 문장으로 요약해줘`
+  const dataSummaryMessages = `${data.assistant} 를 30자 이하의 완성된 문장으로 요약해줘`
 
-  // const response2 = await fetch(
-  //   'https://fkfucds3e9.execute-api.ap-northeast-2.amazonaws.com/prod/dreamTell',
-  //   {
-  //     method: 'POST',
-  //     headers: {
-  //       'Content-Type': 'application/json',
-  //     },
-  //     body: JSON.stringify({
-  //       userMessages: dataSummaryMessages,
-  //       assistantMessages: assistantMessages,
-  //     }),
-  //   },
-  // )
+  const response2 = await fetch(
+    'https://fkfucds3e9.execute-api.ap-northeast-2.amazonaws.com/prod/dreamTell',
+    {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        userMessages: dataSummaryMessages,
+        assistantMessages: assistantMessages,
+      }),
+    },
+  )
 
-  // const data2 = await response2.json()
+  const data2 = await response2.json()
 
   document.querySelector('.fortune_result_wrap').style.display = 'block'
 
@@ -87,7 +87,7 @@ const start = async () => {
 
   const astrologerMessage = document.createElement('div')
   astrologerMessage.classList.add('fortune_result_content')
-  astrologerMessage.innerHTML = `${dreamContent} ${data.assistant}`
+  astrologerMessage.innerHTML = `${dreamContent} // ${data.assistant} //${data2.assistant}`
   resultTotal.appendChild(astrologerMessage)
 }
 
