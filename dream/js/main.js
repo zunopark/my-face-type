@@ -39,7 +39,6 @@ const getGPTTell = async (text) => {
 }
 
 const start = async () => {
-  const resultTotal = document.querySelector('.fortune_result_total')
   const dreamContent = document.querySelector(`.dream_main`).value
 
   if (dreamContent === '') {
@@ -69,15 +68,39 @@ const start = async () => {
   const dataSummaryMessages = [`너무 길어 30자 이하로 요약해줘`]
   const summaryDreamTeller = await getGPTTell(dataSummaryMessages)
 
-  document.querySelector('.fortune_result_wrap').style.display = 'block'
+  document.querySelector('.dream_result_wrap').style.display = 'block'
 
   spinnerDisappear('loader')
 
   // 결과 생성
-  const astrologerMessage = document.createElement('div')
-  astrologerMessage.classList.add('fortune_result_content')
-  astrologerMessage.innerHTML = `${dreamContent} // ${totalDreamTeller.assistant} // ${summaryDreamTeller.assistant}`
-  resultTotal.appendChild(astrologerMessage)
+  const resultTotal = document.querySelector('.dream_result_total')
+  resultTotal.innerHTML = `
+  <div class="dream_result_upper">
+              <div class="dream_result_summary">
+                ${summaryDreamTeller.assistant}
+              </div>
+              <div class="dream_result_date">- 해몽가 양반 -</div>
+            </div>
+            <div class="dream_result_middle">
+              <div class="dream_result_category">
+                나의 꿈
+              </div>
+              <div class="dream_result_mydream">
+                ${dreamContent}
+              </div>
+            </div>
+            <div class="dream_result_lower">
+              <div class="dream_result_category">
+                해몽가 양반의 꿈 풀이
+              </div>
+              <div class="dream_result_total">
+              ${totalDreamTeller.assistant}
+              </div>
+            </div>
+            <a href="/dream" class="dream_result_bottom">
+              다른 꿈 내용도 해몽 물어보기
+            </a>
+  `
 }
 
 const sendMessage = async () => {
@@ -124,7 +147,7 @@ const sendMessage = async () => {
   chatBox.appendChild(astrologerMessage)
 }
 
-const fortuneUserChangeBtn = document.querySelector(`.fortune_user_change`)
+const dreamUserChangeBtn = document.querySelector(`.dream_user_change`)
 
 function handleFortuneReset() {
   location.reload(true)

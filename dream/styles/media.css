@@ -1,16 +1,14 @@
 /* 500px 이상 */
 @media screen and (min-width: 500px) {
-  .fortune_input_wrap,
-  .fortune_user_info_wrap,
-  .fortune_result_wrap {
+  .dream_input_wrap,
+  .dream_user_info_wrap {
     width: 500px;
   }
 }
 /* 500px 미만 */
 @media screen and (max-width: 499px) {
-  .fortune_input_wrap,
-  .fortune_user_info_wrap,
-  .fortune_result_wrap {
+  .dream_input_wrap,
+  .dream_user_info_wrap {
     width: 320px;
   }
 }
