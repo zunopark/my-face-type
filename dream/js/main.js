@@ -65,9 +65,7 @@ const start = async () => {
   const totalDreamTeller = await getGPTTell(userMessages)
   assistantMessages.push(totalDreamTeller.assistant)
 
-  const dataSummaryMessages = [
-    `지금 내용은 너무 길어. 방금 알려준 꿈 내용을 한 줄의 짧은 완성된 문장으로 요약해줘`,
-  ]
+  const dataSummaryMessages = [`한 줄의 짧은 문장으로 요약해줘`]
   const summaryDreamTeller = await getGPTTell(dataSummaryMessages)
 
   document.querySelector('.dream_result_wrap').style.display = 'block'
