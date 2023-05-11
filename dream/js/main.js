@@ -82,11 +82,11 @@ const start = async () => {
   }
   dreamResultGtag()
 
-  const totalDreamTeller = await getDreamTell(userMessages)
-  const dataSummaryMessages = `${totalDreamTeller.assistant} 라는 꿈을 꿨는데 30자 이하의 완성된 문장으로 요약해줘`
-  // const dataSummaryMessages = `이빨 빠지는 꿈을 꿨는데 30자 이하의 완성된 문장으로 요약해줘`
+  // const totalDreamTeller = await getDreamTell(userMessages)
+  // const dataSummaryMessages = `${totalDreamTeller.assistant} 라는 꿈을 꿨는데 30자 이하의 완성된 문장으로 요약해줘`
+  const dataSummaryMessages = `이빨 빠지는 꿈을 꿨는데 30자 이하의 완성된 문장으로 요약해줘`
   const summaryDreamTeller = await getDreamSummary(dataSummaryMessages)
-  console.log(totalDreamTeller)
+  console.log(summaryDreamTeller)
 
   document.querySelector('.fortune_result_wrap').style.display = 'block'
 
@@ -99,7 +99,8 @@ const start = async () => {
   const astrologerMessage = document.createElement('div')
   astrologerMessage.classList.add('fortune_result_content')
   // astrologerMessage.innerHTML = `${dreamContent} // ${totalDreamTeller.assistant}`
-  astrologerMessage.innerHTML = `${dreamContent} // ${totalDreamTeller.assistant} //${summaryDreamTeller.assistant}`
+  astrologerMessage.innerHTML = `${dreamContent} // ${summaryDreamTeller.assistant}`
+  // astrologerMessage.innerHTML = `${dreamContent} // ${totalDreamTeller.assistant} //${summaryDreamTeller.assistant}`
   resultTotal.appendChild(astrologerMessage)
 }
 
