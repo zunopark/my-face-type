@@ -21,7 +21,7 @@ const spinnerDisappear = (idName) => {
 
 const getDreamTell = async (text) => {
   const response = await fetch(
-    'https://sa394esbff.execute-api.ap-northeast-2.amazonaws.com/default/dreamTell',
+    'https://fkfucds3e9.execute-api.ap-northeast-2.amazonaws.com/prod/dreamTell',
     {
       method: 'POST',
       headers: {
@@ -40,7 +40,7 @@ const getDreamTell = async (text) => {
 
 const getDreamSummary = async (text) => {
   const response2 = await fetch(
-    'https://sa394esbff.execute-api.ap-northeast-2.amazonaws.com/default/dreamTellSummary',
+    'https://fkfucds3e9.execute-api.ap-northeast-2.amazonaws.com/prod/dreamTellSummary',
     {
       method: 'POST',
       headers: {
