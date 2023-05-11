@@ -67,19 +67,21 @@ const start = async () => {
 
   // const dataSummaryMessages = [`너무 길어. 많이 짧게 단어들로 알려줘`]
 
-  userMessages.push(`너무 길어. 30글자 이하의 한 줄로 요약해줘`)
+  userMessages.push(
+    `너무 길어. 꿈 내용은 제외하고 꿈 풀이만 30글자 이하의 한 줄로 요약해줘`,
+  )
   const summaryDreamTeller = await getGPTTell(userMessages)
 
   document.querySelector('.dream_result_wrap').style.display = 'block'
 
   spinnerDisappear('loader')
 
-  // 결과 생성
+  // 결과 생성 ${summaryDreamTeller.assistant}
   const resultTotal = document.querySelector('.dream_result_total')
   resultTotal.innerHTML = `
   <div class="dream_result_upper">
               <div class="dream_result_summary">
-                ${summaryDreamTeller.assistant}
+                테스트
               </div>
               <div class="dream_result_date">- 해몽가 양반 -</div>
             </div>
