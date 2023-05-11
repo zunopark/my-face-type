@@ -35,7 +35,7 @@ const getDreamTell = async (text) => {
   )
 
   const data = await response.json()
-  return
+  return data
 }
 
 const getDreamSummary = async (text) => {
