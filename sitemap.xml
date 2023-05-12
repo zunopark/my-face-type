@@ -1,120 +1,26 @@
-<?xml version="1.0" encoding="UTF-8" ?>
+<?xml version="1.0" encoding="UTF-8"?>
 <urlset
-  xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
-  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
-            http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd"
->
+      xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
+            http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
+<!-- created with Free Online Sitemap Generator www.xml-sitemaps.com -->
+
 
 <url>
-  <loc>https://yourface.ga/</loc>
-  <lastmod>2021-04-28T10:43:43+00:00</lastmod>
+  <loc>https://yangban.ai/</loc>
+  <lastmod>2023-05-12T05:48:28+00:00</lastmod>
   <priority>1.00</priority>
 </url>
 <url>
-  <loc>https://yourface.ga/blog/</loc>
-  <lastmod>2021-04-28T10:43:43+00:00</lastmod>
+  <loc>https://yangban.ai/fortune/</loc>
+  <lastmod>2023-05-12T05:48:28+00:00</lastmod>
   <priority>0.80</priority>
 </url>
 <url>
-  <loc>https://yourface.ga/house/</loc>
-  <lastmod>2021-04-28T10:43:43+00:00</lastmod>
+  <loc>https://yangban.ai/dream/</loc>
+  <lastmod>2023-05-12T05:48:28+00:00</lastmod>
   <priority>0.80</priority>
-</url>
-<url>
-  <loc>https://yourface.ga/k-pop2008/</loc>
-  <lastmod>2021-04-28T10:43:43+00:00</lastmod>
-  <priority>0.80</priority>
-</url>
-<url>
-  <loc>https://yourface.ga/blog/post/fb.html</loc>
-  <lastmod>2021-04-28T10:43:43+00:00</lastmod>
-  <priority>0.64</priority>
-</url>
-<url>
-  <loc>https://yourface.ga/blog/post/company.html</loc>
-  <lastmod>2021-04-28T10:43:43+00:00</lastmod>
-  <priority>0.64</priority>
-</url>
-<url>
-  <loc>https://yourface.ga/blog/post/5g.html</loc>
-  <lastmod>2021-04-28T10:43:43+00:00</lastmod>
-  <priority>0.64</priority>
-</url>
-<url>
-  <loc>https://yourface.ga/blog/post/tech.html</loc>
-  <lastmod>2021-04-28T10:43:43+00:00</lastmod>
-  <priority>0.64</priority>
-</url>
-<url>
-  <loc>https://yourface.ga/blog/post/code.html</loc>
-  <lastmod>2021-04-28T10:43:43+00:00</lastmod>
-  <priority>0.64</priority>
-</url>
-<url>
-  <loc>https://yourface.ga/blog/post/fear.html</loc>
-  <lastmod>2021-04-28T10:43:43+00:00</lastmod>
-  <priority>0.64</priority>
-</url>
-<url>
-  <loc>https://yourface.ga/blog/post/know.html</loc>
-  <lastmod>2021-04-28T10:43:43+00:00</lastmod>
-  <priority>0.64</priority>
-</url>
-<url>
-  <loc>https://yourface.ga/blog/post/mind.html</loc>
-  <lastmod>2021-04-28T10:43:43+00:00</lastmod>
-  <priority>0.64</priority>
-</url>
-<url>
-  <loc>https://yourface.ga/blog/post/alter.html</loc>
-  <lastmod>2021-04-28T10:43:43+00:00</lastmod>
-  <priority>0.64</priority>
-</url>
-<url>
-  <loc>https://yourface.ga/blog/post/10.html</loc>
-  <lastmod>2021-04-28T10:43:43+00:00</lastmod>
-  <priority>0.64</priority>
-</url>
-<url>
-  <loc>https://yourface.ga/blog/post/11.html</loc>
-  <lastmod>2021-04-28T10:43:43+00:00</lastmod>
-  <priority>0.64</priority>
-</url>
-<url>
-  <loc>https://yourface.ga/blog/post/12.html</loc>
-  <lastmod>2021-04-28T10:43:43+00:00</lastmod>
-  <priority>0.64</priority>
-</url>
-<url>
-  <loc>https://yourface.ga/blog/post/13.html</loc>
-  <lastmod>2021-04-28T10:43:43+00:00</lastmod>
-  <priority>0.64</priority>
-</url>
-<url>
-  <loc>https://yourface.ga/blog/post/14.html</loc>
-  <lastmod>2021-04-28T10:43:43+00:00</lastmod>
-  <priority>0.64</priority>
-</url>
-<url>
-  <loc>https://yourface.ga/blog/post/15.html</loc>
-  <lastmod>2021-04-28T10:43:43+00:00</lastmod>
-  <priority>0.64</priority>
-</url>
-<url>
-  <loc>https://yourface.ga/blog/post/16.html</loc>
-  <lastmod>2021-04-28T10:43:43+00:00</lastmod>
-  <priority>0.64</priority>
-</url>
-<url>
-  <loc>https://yourface.ga/blog/post/17.html</loc>
-  <lastmod>2021-04-28T10:43:43+00:00</lastmod>
-  <priority>0.64</priority>
-</url>
-<url>
-  <loc>https://yourface.ga/blog/post/18.html</loc>
-  <lastmod>2021-04-28T10:43:43+00:00</lastmod>
-  <priority>0.64</priority>
 </url>
 
 
