@@ -150,6 +150,19 @@ select option {
 }
 
 .fortune_start_btn {
+  background-color: #ffd620;
+  border-radius: 12px;
+  margin-top: 12px;
+  margin-bottom: 12px;
+  width: 100%;
+  padding: 12px 0px;
+  color: #2f2f2f;
+  font-size: 20px;
+  font-family: 'KimjungchulMyungjo-Bold';
+  outline: none;
+  border: none;
+}
+/* .fortune_start_btn {
   background-color: #444444;
   border-radius: 12px;
   margin-top: 12px;
@@ -161,4 +174,4 @@ select option {
   font-family: 'KimjungchulMyungjo-Bold';
   outline: none;
   border: none;
-}
+} */
