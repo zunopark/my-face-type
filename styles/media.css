@@ -40,7 +40,8 @@
     width: 500px;
   }
 
-  .footer {
+  .footer,
+  .bottom_nav {
     width: 500px;
   }
   .bottom_ad {
@@ -70,7 +71,8 @@
   .footer,
   .today__weather__wrap,
   .today__weather,
-  .lower__comment {
+  .lower__comment,
+  .bottom_nav {
     width: 100%;
   }
 

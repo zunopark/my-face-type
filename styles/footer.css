@@ -7,6 +7,7 @@
   display: flex;
   flex-direction: column;
   align-items: flex-start;
+  margin-bottom: 160px;
 }
 
 .contact {
@@ -37,4 +38,38 @@
 
 .footer_company {
   font-weight: 700;
+}
+
+.bottom_nav {
+  display: flex;
+  width: 320px;
+  justify-content: space-around;
+  background-color: #2f2f32;
+  border-top: 1px solid #757575;
+  position: fixed;
+  bottom: 0px;
+}
+
+.bottom_nav_wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: #7a7a7a;
+  text-decoration: none;
+  width: 25%;
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+
+.bottom_nav_selected {
+  color: white;
+}
+
+.bottom_nav_icon {
+  margin-bottom: 16px;
+  font-size: 24px;
+}
+
+.bottom_nav_text {
+  font-size: 20px;
 }

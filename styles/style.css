@@ -21,7 +21,6 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  font-family: 'Yeon Sung', cursive;
   padding-top: 30px;
   margin-bottom: 10px;
   color: white;
@@ -34,7 +33,7 @@
 
 .main__ai__title .subtitle {
   font-size: 20px;
-  opacity: 0.8;
+  font-family: 'KimjungchulMyungjo-Bold';
 }
 
 #container {
@@ -91,7 +90,6 @@
   margin-top: 10px;
   margin-bottom: 5px;
   font-size: 14px;
-  opacity: 0.8;
 }
 
 .count__num {

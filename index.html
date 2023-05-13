@@ -100,11 +100,21 @@
       <!-- <div id="google_translate_element"></div> -->
       <div class="main_content_wrap">
         <div class="main__ai__title">
-          <h1 class="title">관상가 양반</h1>
-          <h2 class="subtitle">인공지능이 알려주는 내 관상</h2>
-          <h2 class="number">
+          <!-- <h1 class="title">관상가 양반</h1> -->
+          <h2 class="subtitle" style="font-size: 28px; color: white;">
+            인공지능이 알려주는 내 관상
+          </h2>
+          <h2
+            class="number"
+            style="
+              font-size: 16px;
+              color: rgb(196, 196, 196);
+              margin-top: 20px;
+              font-weight: 300;
+            "
+          >
             지금까지
-            <span class="count__num"></span>
+            <span class="count__num" style="color: white;"></span>
             번 관상을 봤어요.
           </h2>
         </div>
@@ -231,23 +241,9 @@
         </a> -->
 
         <a
-          href="/fortune/"
-          class="banner_wrap"
-          onclick="gtag('event', '운세 진입 배너 - 관상', {'event_category': '운세 진입 배너 - 관상','event_label': '운세 진입 배너 - 관상'})"
-        >
-          <img src="https://i.ibb.co/wyhSSpW/fortunne.png" />
-        </a>
-        <a
-          href="/dream"
-          class="banner_wrap"
-          onclick="gtag('event', '해몽 진입 배너 - 관상', {'event_category': '해몽 진입 배너 - 관상','event_label': '해몽 진입 배너 - 관상'})"
-        >
-          <img src="https://i.ibb.co/4Y9MnyB/dreammm.png" alt="" />
-        </a>
-        <a
           href="http://pf.kakao.com/_Qfuvxj/chat"
           class="banner_wrap"
-          onclick="gtag('event', '카카오 플러스 친구 진입 배너', {'event_category': '카카오 플러스 친구 진입 배너','event_label': '카카오 플러스 친구 진입 배너'})"
+          onclick="gtag('event', '카카오 플러스 친구 진입 배너 - 관상', {'event_category': '카카오 플러스 친구 진입 배너','event_label': '카카오 플러스 친구 진입 배너'})"
         >
           <img src="https://i.ibb.co/LSNYLB0/Group-1049.png" />
         </a>
@@ -264,6 +260,20 @@
         </div> -->
       </div>
       <footer class="footer"></footer>
+      <nav class="bottom_nav">
+        <a href="/" class="bottom_nav_wrap bottom_nav_selected">
+          <i class="fa fa-thin fa-id-badge bottom_nav_icon"></i>
+          <div class="bottom_nav_text">관상</div>
+        </a>
+        <a href="/fortune" class="bottom_nav_wrap">
+          <i class="fa fa-thin fa-calendar bottom_nav_icon"></i>
+          <div class="bottom_nav_text">오늘의 운세</div>
+        </a>
+        <a href="/dream" class="bottom_nav_wrap">
+          <i class="fa fa-thin fa-moon bottom_nav_icon"></i>
+          <div class="bottom_nav_text">꿈 해몽</div>
+        </a>
+      </nav>
     </div>
 
     <script src="js/footer.js"></script>
