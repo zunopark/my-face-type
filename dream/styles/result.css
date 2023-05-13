@@ -1,7 +1,6 @@
 /* 해몽 결과 css */
 .dream_result {
   width: 100%;
-  margin-bottom: 32px;
   display: flex;
   flex-direction: column;
   align-items: center;
