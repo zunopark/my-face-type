@@ -57,8 +57,8 @@
   color: #7a7a7a;
   text-decoration: none;
   width: 25%;
-  padding-top: 20px;
-  padding-bottom: 20px;
+  padding-top: 10px;
+  padding-bottom: 10px;
 }
 
 .bottom_nav_selected {
@@ -66,10 +66,10 @@
 }
 
 .bottom_nav_icon {
-  margin-bottom: 16px;
-  font-size: 24px;
+  margin-bottom: 8px;
+  font-size: 20px;
 }
 
 .bottom_nav_text {
-  font-size: 20px;
+  font-size: 16px;
 }
