@@ -205,15 +205,27 @@
 
       <footer class="footer"></footer>
       <nav class="bottom_nav">
-        <a href="/" class="bottom_nav_wrap">
+        <a
+          href="/"
+          class="bottom_nav_wrap"
+          onclick="gtag('event', '바텀 네비 - 관상', {'event_category': '바텀 네비 - 관상','event_label': '바텀 네비 - 관상'})"
+        >
           <i class="fa fa-thin fa-id-badge bottom_nav_icon"></i>
           <div class="bottom_nav_text">관상</div>
         </a>
-        <a href="/fortune" class="bottom_nav_wrap">
+        <a
+          href="/fortune"
+          class="bottom_nav_wrap"
+          onclick="gtag('event', '바텀 네비 - 운세', {'event_category': '바텀 네비 - 운세','event_label': '바텀 네비 - 운세'})"
+        >
           <i class="fa fa-thin fa-calendar bottom_nav_icon"></i>
           <div class="bottom_nav_text">오늘의 운세</div>
         </a>
-        <a href="/dream" class="bottom_nav_wrap bottom_nav_selected">
+        <a
+          href="/dream"
+          class="bottom_nav_wrap bottom_nav_selected"
+          onclick="gtag('event', '바텀 네비 - 해몽', {'event_category': '바텀 네비 - 해몽','event_label': '바텀 네비 - 해몽'})"
+        >
           <i class="fa fa-thin fa-moon bottom_nav_icon"></i>
           <div class="bottom_nav_text">꿈 해몽</div>
         </a>
