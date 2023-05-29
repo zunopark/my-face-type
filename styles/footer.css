@@ -74,6 +74,8 @@
 .bottom_nav_img {
   margin-bottom: 8px;
   width: 20px;
+  border: 1px solid white;
+  border-radius: 4px;
 }
 
 .bottom_nav_icon {

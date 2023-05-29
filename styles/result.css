@@ -33,13 +33,27 @@
 }
 
 .result .reset__btn {
-  background-color: #ffe924;
+  background-color: #e0e0e0;
   border-radius: 12px;
-  margin-top: 12px;
+  margin-top: 24px;
   margin-bottom: 12px;
   width: 320px;
   padding: 12px 0px;
   color: rgb(54, 54, 54);
+  font-size: 16px;
+  font-family: 'KimjungchulMyungjo-Bold';
+  outline: none;
+  border: none;
+}
+
+.app_down_btn {
+  background-color: #ffe924;
+  border-radius: 12px;
+  margin-bottom: 12px;
+  width: 320px;
+  padding: 12px 0px;
+  color: rgb(54, 54, 54);
+
   font-size: 16px;
   font-family: 'KimjungchulMyungjo-Bold';
   outline: none;

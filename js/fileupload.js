@@ -60,8 +60,6 @@ async function predict() {
 
   const prediction = await model.predict(image, false)
 
-  console.log(prediction)
-
   let arr = new Map()
 
   // 관상 결과 db
@@ -336,10 +334,10 @@ async function predict() {
   desc.textContent = description[answer][0]
   labelContainer.appendChild(desc)
 
-  let otherResult = document.createElement('div')
-  otherResult.classList.add('other__result')
-  otherResult.innerHTML = `${starsListImg}`
-  labelContainer.appendChild(otherResult)
+  // let otherResult = document.createElement('div')
+  // otherResult.classList.add('other__result')
+  // otherResult.innerHTML = `${starsListImg}`
+  // labelContainer.appendChild(otherResult)
 
   function getResultGtag() {
     gtag('event', `관상 결과`, {
@@ -362,18 +360,18 @@ async function predict() {
   }
   labelContainer.appendChild(reset)
 
-  // let share = document.createElement('button')
-  // share.innerHTML = `
-  // <span>운세 알아보기 (카카오)</span>
-  // `
-  // share.classList.add('share__btn')
-  // share.onclick = function () {
-  //   gtag('event', '카카오 플친 메인', {
-  //     event_category: '카카오 플친 메인',
-  //     event_label: '카카오 플친 메인',
-  //   })
-  // }
-  // labelContainer.appendChild(share)
+  let appDown = document.createElement('button')
+  appDown.innerHTML = `
+  <span>우리 가족 운세 알아보기</span>
+  `
+  appDown.classList.add('app_down_btn')
+  appDown.onclick = function () {
+    gtag('event', '앱 다운로드 버튼 - 관상 결과', {
+      event_category: '앱 다운로드 버튼 - 관상 결과',
+      event_label: '앱 다운로드 버튼 - 관상 결과',
+    })
+  }
+  labelContainer.appendChild(appDown)
 
   // let share = document.createElement('button')
   // share.innerHTML = `
@@ -389,6 +387,7 @@ async function predict() {
   // labelContainer.appendChild(share)
 
   reset.addEventListener('click', handleReset)
+  appDown.addEventListener('click', handleAppDown)
   // share.addEventListener('click', handleFortune)
   // share.addEventListener('click', kakaoShare)
 
@@ -397,6 +396,12 @@ async function predict() {
     location.reload(true)
     location.href = location.href
     history.go(0)
+  }
+
+  // 앱 다운 함수
+  function handleAppDown() {
+    location.href =
+      'https://play.google.com/store/apps/details?id=com.yangban&pli=1'
   }
 
   // function handleFortune() {
