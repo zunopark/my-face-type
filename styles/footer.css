@@ -62,7 +62,8 @@
 }
 
 .bottom_nav_selected {
-  color: white;
+  color: #e7b43c;
+  font-weight: 700;
 }
 
 .bottom_nav_icon {
