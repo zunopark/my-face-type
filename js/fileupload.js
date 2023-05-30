@@ -349,7 +349,7 @@ async function predict() {
 
   let reset = document.createElement('button')
   reset.innerHTML = `
-  <span>다른 사진도 해보기</span>`
+  <span>다른 사진 해보기</span>`
 
   reset.classList.add('reset__btn')
   reset.onclick = function () {
@@ -362,7 +362,7 @@ async function predict() {
 
   let appDown = document.createElement('button')
   appDown.innerHTML = `
-  <span>우리 가족 운세 알아보기</span>
+  <span>운세 알아보기</span>
   `
   appDown.classList.add('app_down_btn')
   appDown.onclick = function () {
