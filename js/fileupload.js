@@ -362,7 +362,7 @@ async function predict() {
 
   let appDown = document.createElement('button')
   appDown.innerHTML = `
-  <span>운세 알아보기</span>
+  <span>오늘의 운세 확인하기</span>
   `
   appDown.classList.add('app_down_btn')
   appDown.onclick = function () {
@@ -454,3 +454,51 @@ async function predict() {
 //     }
 //   })
 // }
+
+const habitownBannerWrap = document.querySelector(`.habitown__banner__wrap`)
+const habitownBanner = document.querySelector(`.habitown__banner`)
+const downloadBtn = document.querySelector(`.app__download__btn`)
+const downloadBottonBtn = document.querySelector(
+  `.habitown__download__btn__bottom`,
+)
+
+// const cancelNeverBtn = document.querySelector(`.cancel__btn__left`)
+
+// const cancelBtn = document.querySelector(`.cancel__btn__right`)
+// const blackBoard = document.querySelector(`.black__board`)
+
+const never = localStorage.getItem('never')
+
+if (!never) {
+  setTimeout(function () {
+    habitownBannerWrap.classList.remove('disblock')
+  }, 1500)
+}
+
+function handleGoAppDownload() {
+  location.href =
+    'https://play.google.com/store/apps/details?id=com.yangban&pli=1'
+  habitownBanner.classList.add('disblock')
+  blackBoard.classList.add('disblock')
+}
+
+function handleCancelBanner() {
+  habitownBanner.classList.add('disblock')
+  blackBoard.classList.add('disblock')
+}
+
+function handleCancelNeverBanner() {
+  localStorage.setItem('never', 'ok')
+  habitownBanner.classList.add('disblock')
+  blackBoard.classList.add('disblock')
+}
+
+function habitownInit() {
+  downloadBtn.addEventListener('click', handleGoAppDownload)
+  downloadBottonBtn.addEventListener('click', handleGoAppDownload)
+  // cancelBtn.addEventListener('click', handleCancelBanner)
+  // blackBoard.addEventListener('click', handleCancelBanner)
+  // cancelNeverBtn.addEventListener('click', handleCancelNeverBanner)
+}
+
+habitownInit()

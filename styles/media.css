@@ -12,7 +12,7 @@
   }
 
   .habitown__banner {
-    width: 500px;
+    width: 400px;
   }
 
   .dang__ad {
@@ -60,6 +60,10 @@
   .test__upper,
   .submitForm {
     width: 320px;
+  }
+
+  .habitown__banner {
+    width: 360px;
   }
 
   .label-container p {
