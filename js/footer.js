@@ -12,13 +12,13 @@ function init() {
     광고 제안
   </a>
   <a href="/" class="contact_me">
-    관상 보기
+    관상
   </a>
   <a href="/fortune" class="contact_me">
-    오늘의 운세
+    운세
   </a>
   <a href="/dream" class="contact_me">
-    무료 꿈 해몽
+    해몽
   </a>
 </div>
 <div class="footer_text_wrap">
