@@ -158,6 +158,7 @@
   justify-content: center;
   opacity: 1;
   transition: 3s transform;
+  margin-top: 12px;
 }
 
 .habitown__banner {
