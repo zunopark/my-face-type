@@ -501,4 +501,4 @@ function habitownInit() {
   // cancelNeverBtn.addEventListener('click', handleCancelNeverBanner)
 }
 
-habitownInit()
+// habitownInit()
