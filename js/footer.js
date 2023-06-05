@@ -6,13 +6,13 @@ const appVersion = '0.504'
 function init() {
   footer.innerHTML = ` <div class="contact">
   <a href="mailto:dydtjq94@yonsei.ac.kr" class="contact_me">
-    문의하기
-  </a>
-  <a href="mailto:dydtjq94@yonsei.ac.kr" class="contact_me">
-    광고 제안
+    문의
   </a>
   <a href="/" class="contact_me">
     관상
+  </a>
+  <a href="/analysis" class="contact_me">
+    관상 해석
   </a>
   <a href="/fortune" class="contact_me">
     운세
