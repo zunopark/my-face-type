@@ -2,12 +2,7 @@ const headerContent = () => {
   const headerMain = document.querySelector(`.header`)
 
   if (headerMain.id === 'face') {
-    headerMain.innerHTML = ` <div class="header__upper header_fixed">
-  <div class="header__title">
-    <a href="/" class="header__title__title">관상가 양반</a>
-    <div class="header_title_date"></div>
-  </div>
-</div>`
+    headerMain.innerHTML = ` `
   } else if (headerMain.id === 'fortune') {
     headerMain.innerHTML = ` <div class="header__upper header_fixed">
   <div class="header__title">
