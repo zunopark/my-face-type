@@ -38,25 +38,25 @@ const headerGetTime = () => {
   const dayOfWeek = today.getDay()
   switch (dayOfWeek) {
     case 0:
-      dayOfWeekString = '일요일'
+      dayOfWeekString = '일'
       break
     case 1:
-      dayOfWeekString = '월요일'
+      dayOfWeekString = '월'
       break
     case 2:
-      dayOfWeekString = '화요일'
+      dayOfWeekString = '화'
       break
     case 3:
-      dayOfWeekString = '수요일'
+      dayOfWeekString = '수'
       break
     case 4:
-      dayOfWeekString = '목요일'
+      dayOfWeekString = '목'
       break
     case 5:
-      dayOfWeekString = '금요일'
+      dayOfWeekString = '금'
       break
     case 6:
-      dayOfWeekString = '토요일'
+      dayOfWeekString = '토'
       break
   }
 
