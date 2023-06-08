@@ -1,22 +1,29 @@
 const headerContent = () => {
   const headerMain = document.querySelector(`.header`)
 
+  //   if (headerMain.id === 'face') {
+  //     headerMain.innerHTML = ` `
+  //   } else if (headerMain.id === 'fortune') {
+  //     headerMain.innerHTML = ` <div class="header__upper header_fixed">
+  //   <div class="header__title">
+  //     <a href="/fortune" class="header__title__title">역술가 양반</a>
+  //     <div class="header_title_date"></div>
+  //   </div>
+  // </div>`
+  //   } else if (headerMain.id === 'dream') {
+  //     headerMain.innerHTML = ` <div class="header__upper header_fixed">
+  //   <div class="header__title">
+  //     <a href="/dream" class="header__title__title">해몽가 양반</a>
+  //     <div class="header_title_date"></div>
+  //   </div>
+  // </div>`
+  //   }
   if (headerMain.id === 'face') {
     headerMain.innerHTML = ` `
   } else if (headerMain.id === 'fortune') {
-    headerMain.innerHTML = ` <div class="header__upper header_fixed">
-  <div class="header__title">
-    <a href="/fortune" class="header__title__title">역술가 양반</a>
-    <div class="header_title_date"></div>
-  </div>
-</div>`
+    headerMain.innerHTML = ``
   } else if (headerMain.id === 'dream') {
-    headerMain.innerHTML = ` <div class="header__upper header_fixed">
-  <div class="header__title">
-    <a href="/dream" class="header__title__title">해몽가 양반</a>
-    <div class="header_title_date"></div>
-  </div>
-</div>`
+    headerMain.innerHTML = ``
   }
 
   const mainContentWrap = this.document.querySelector(`.main_content_wrap`)
