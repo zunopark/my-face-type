@@ -7,7 +7,7 @@ if (countNum) {
     function countUp() {
       if (countNumber < 667) {
         countNumber = countNumber + 3
-        countNum.innerHTML = `41,579,${countNumber}`
+        countNum.innerHTML = `4,157만 9,${countNumber}`
       }
     }
     setInterval(countUp, 1)
