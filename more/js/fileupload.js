@@ -396,7 +396,7 @@ async function predict() {
     // location.reload(true)
     // location.href = location.href
     // history.go(0)
-    location.href = '/more'
+    location.href = '/'
   }
 
   // 앱 다운 함수
