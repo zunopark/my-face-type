@@ -62,9 +62,9 @@ const headerGetTime = () => {
       break
   }
 
-  headerDate.innerHTML = `${year.toString().substring(2)}.${
-    month < 10 ? `0${month}` : month
-  }.${date < 10 ? `0${date}` : date} ${dayOfWeekString}`
+  // headerDate.innerHTML = `${year.toString().substring(2)}.${
+  //   month < 10 ? `0${month}` : month
+  // }.${date < 10 ? `0${date}` : date} ${dayOfWeekString}`
 }
 
 // const headerFixedFunc = () => {

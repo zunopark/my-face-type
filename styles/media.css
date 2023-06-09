@@ -20,7 +20,8 @@
     margin-bottom: 30px;
   }
 
-  .border {
+  .border,
+  .result {
     width: 350px;
   }
 
@@ -58,7 +59,8 @@
 
   .border,
   .test__upper,
-  .submitForm {
+  .submitForm,
+  .result {
     width: 320px;
   }
 
