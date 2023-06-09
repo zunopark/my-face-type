@@ -12,13 +12,16 @@ function init() {
     관상
   </a>
   <a href="/analysis" class="contact_me">
-    관상 해석
+    해석
   </a>
   <a href="/fortune" class="contact_me">
     운세
   </a>
   <a href="/dream" class="contact_me">
     해몽
+  </a>
+  <a href="/blog" class="contact_me">
+    블로그
   </a>
 </div>
 <div class="footer_text_wrap">
