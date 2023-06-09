@@ -393,10 +393,10 @@ async function predict() {
 
   // 한번 더 하기 함수
   function handleReset() {
-    // location.reload(true)
-    // location.href = location.href
-    // history.go(0)
-    location.href = '/more'
+    location.reload(true)
+    location.href = location.href
+    history.go(0)
+    // location.href = '/more'
   }
 
   // 앱 다운 함수
