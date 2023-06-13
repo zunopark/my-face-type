@@ -401,8 +401,9 @@ async function predict() {
 
   // 앱 다운 함수
   function handleAppDown() {
-    location.href =
-      'https://play.google.com/store/apps/details?id=com.yangban&pli=1'
+    // location.href =
+    //   'https://play.google.com/store/apps/details?id=com.yangban&pli=1'
+    location.href = '/fortune'
   }
 
   // function handleFortune() {
