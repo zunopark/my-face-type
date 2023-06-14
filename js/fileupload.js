@@ -362,13 +362,13 @@ async function predict() {
 
   let appDown = document.createElement('button')
   appDown.innerHTML = `
-  <span>오늘의 운세 확인하기</span>
+  <span>관상 1:1 상담받기</span>
   `
   appDown.classList.add('app_down_btn')
   appDown.onclick = function () {
-    gtag('event', '앱 다운로드 버튼 - 관상 결과', {
-      event_category: '앱 다운로드 버튼 - 관상 결과',
-      event_label: '앱 다운로드 버튼 - 관상 결과',
+    gtag('event', '결과 - 관상 상담 신청 [플친]', {
+      event_category: '결과 - 관상 상담 신청 [플친]',
+      event_label: '결과 - 관상 상담 신청 [플친]',
     })
   }
   labelContainer.appendChild(appDown)
@@ -402,8 +402,9 @@ async function predict() {
   // 앱 다운 함수
   function handleAppDown() {
     location.href =
-      'https://play.google.com/store/apps/details?id=com.yangban&pli=1'
-    // location.href = '/fortune'
+      // 'https://play.google.com/store/apps/details?id=com.yangban&pli=1'
+      // location.href = '/fortune'
+      'http://pf.kakao.com/_Qfuvxj/chat'
   }
 
   // function handleFortune() {
