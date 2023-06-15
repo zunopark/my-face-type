@@ -362,7 +362,7 @@ async function predict() {
 
   let appDown = document.createElement('button')
   appDown.innerHTML = `
-  <span>사주 풀이 확인하기</span>
+  <span>무료 사주 풀이 예약</span>
   `
   appDown.classList.add('app_down_btn')
   appDown.onclick = function () {
