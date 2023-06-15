@@ -360,18 +360,18 @@ async function predict() {
   }
   labelContainer.appendChild(reset)
 
-  let appDown = document.createElement('button')
-  appDown.innerHTML = `
-  <span>관상 1:1 상담받기</span>
-  `
-  appDown.classList.add('app_down_btn')
-  appDown.onclick = function () {
-    gtag('event', '결과 - 관상 상담 신청 [플친]', {
-      event_category: '결과 - 관상 상담 신청 [플친]',
-      event_label: '결과 - 관상 상담 신청 [플친]',
-    })
-  }
-  labelContainer.appendChild(appDown)
+  // let appDown = document.createElement('button')
+  // appDown.innerHTML = `
+  // <span>관상 1:1 상담받기</span>
+  // `
+  // appDown.classList.add('app_down_btn')
+  // appDown.onclick = function () {
+  //   gtag('event', '결과 - 관상 상담 신청 [플친]', {
+  //     event_category: '결과 - 관상 상담 신청 [플친]',
+  //     event_label: '결과 - 관상 상담 신청 [플친]',
+  //   })
+  // }
+  // labelContainer.appendChild(appDown)
 
   // let share = document.createElement('button')
   // share.innerHTML = `
@@ -387,7 +387,7 @@ async function predict() {
   // labelContainer.appendChild(share)
 
   reset.addEventListener('click', handleReset)
-  appDown.addEventListener('click', handleAppDown)
+  // appDown.addEventListener('click', handleAppDown)
   // share.addEventListener('click', handleFortune)
   // share.addEventListener('click', kakaoShare)
 
