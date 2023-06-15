@@ -121,7 +121,7 @@ const result = async (type) => {
   if (type === 'love') {
     userMessageContent = '오늘 나의 애정운을 알려줘'
   } else if (type === 'wealth') {
-    userMessageContent = '오늘 나의 재물운을 알려줘'
+    userMessageContent = '나의 2023년 재물운을 알려줘'
   } else if (type === 'health') {
     userMessageContent = '오늘 나의 건강운을 알려줘'
   } else if (type === 'business') {
