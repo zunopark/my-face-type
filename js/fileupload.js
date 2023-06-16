@@ -341,8 +341,7 @@ async function predict() {
 
   function getResultGtag() {
     gtag('event', `관상 결과`, {
-      event_category: `관상 결과`,
-      event_label: `관상 결과 : ${answer}`,
+      result: `${answer}`,
     })
   }
   getResultGtag()
