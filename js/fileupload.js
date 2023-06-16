@@ -362,13 +362,13 @@ async function predict() {
 
   let appDown = document.createElement('button')
   appDown.innerHTML = `
-  <span>무료 사주 풀이 예약</span>
+  <span>오늘의 운세 보기</span>
   `
   appDown.classList.add('app_down_btn')
   appDown.onclick = function () {
-    gtag('event', '결과 - 사주 풀이 워딩', {
-      event_category: '결과 - 사주 풀이 워딩',
-      event_label: '결과 - 사주 풀이 워딩',
+    gtag('event', '결과 - 오늘 운세 워딩', {
+      event_category: '결과 - 오늘 운세 워딩',
+      event_label: '결과 - 오늘 운세 워딩',
     })
   }
   labelContainer.appendChild(appDown)
@@ -402,9 +402,9 @@ async function predict() {
   // 앱 다운 함수
   function handleAppDown() {
     location.href =
-      // 'https://play.google.com/store/apps/details?id=com.yangban&pli=1'
-      // location.href = '/fortune'
-      'http://pf.kakao.com/_Qfuvxj/chat'
+      'https://play.google.com/store/apps/details?id=com.yangban&pli=1'
+    // location.href = '/fortune'
+    // 'http://pf.kakao.com/_Qfuvxj/chat'
   }
 
   // function handleFortune() {
