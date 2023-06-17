@@ -68,8 +68,7 @@ const start = async () => {
 
   const fortuneResultGtag = () => {
     gtag('event', '오늘의 운세 User', {
-      event_category: '오늘의 운세',
-      event_label: `오늘의 운세 User 이름: ${name}, 관계: ${relationship}, 성별: ${gender}, 생일타입: ${dateType}, 생일: ${date}, 태어난시간: ${time}`,
+      event_result: `오늘의 운세 User 이름: ${name}, 관계: ${relationship}, 성별: ${gender}, 생일타입: ${dateType}, 생일: ${date}, 태어난시간: ${time}`,
     })
   }
 

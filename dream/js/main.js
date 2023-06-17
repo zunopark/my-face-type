@@ -56,8 +56,7 @@ const start = async () => {
 
   const dreamResultGtag = () => {
     gtag('event', '해몽꿈 Content', {
-      event_category: '해몽꿈 Content',
-      event_label: `해몽 꿈 작성 내용: ${dreamContent}`,
+      dream_content: `${dreamContent}`,
     })
   }
   dreamResultGtag()
@@ -101,7 +100,7 @@ const start = async () => {
               ${totalDreamTeller.assistant}
               </div>
             </div>
-            <a href="/dream" class="dream_result_bottom" onclick="gtag('event', '해몽 한번 더', {'event_category': '해몽 한번 더','event_label': '해몽 한번 더'})">
+            <a href="/dream" class="dream_result_bottom" onclick="gtag('event', '해몽 한번 더')">
               다른 꿈 내용도 해몽 물어보기
             </a>
   `

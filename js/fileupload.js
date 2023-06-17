@@ -352,10 +352,7 @@ async function predict() {
 
   reset.classList.add('reset__btn')
   reset.onclick = function () {
-    gtag('event', '한번더 클릭', {
-      event_category: '한번더 클릭',
-      event_label: '결과 버튼',
-    })
+    gtag('event', '한번 더 클릭')
   }
   labelContainer.appendChild(reset)
 
@@ -365,10 +362,7 @@ async function predict() {
   `
   appDown.classList.add('app_down_btn')
   appDown.onclick = function () {
-    gtag('event', '결과 - 오늘 운세 워딩', {
-      event_category: '결과 - 오늘 운세 워딩',
-      event_label: '결과 - 오늘 운세 워딩',
-    })
+    gtag('event', '결과 - 오늘 운세 워딩')
   }
   labelContainer.appendChild(appDown)
 
@@ -378,10 +372,7 @@ async function predict() {
   // `
   // share.classList.add('share__btn')
   // share.onclick = function () {
-  //   gtag('event', '공유하기', {
-  //     event_category: '공유하기',
-  //     event_label: '공유 버튼 case2',
-  //   })
+  //   gtag('event', '공유하기')
   // }
   // labelContainer.appendChild(share)
 

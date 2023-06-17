@@ -337,10 +337,7 @@ async function predict() {
   reset.innerHTML = 'Try another photo'
   reset.classList.add('reset__btn')
   reset.onclick = function () {
-    gtag('event', 'en/한번더 클릭', {
-      event_category: 'en/한번더 클릭',
-      event_label: 'en/결과 버튼',
-    })
+    gtag('event', 'en/한번더 클릭')
   }
   labelContainer.appendChild(reset)
 
