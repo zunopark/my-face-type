@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="인공지능이 말해주는 내 관상! 나와 닮은 연예인은 누구일까? 관상가 양반에게 관상 테스트를 받아 알아보세요! | 관상 테스트 "
+    />
+    <meta
+      name="keywords"
+      content="인공지능, 관상, 관상테스트, 관상가 양반, 인공지능, 연예인 관상 테스트, 연예인, 인스타 관상, 관상보는법, 인스타 관상 테스트, 나와 같은 관상을 가진 연예인"
+    />
+    <meta name="author" content="용섭 준호" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="관상 | 인공지능이 말해주는 내 관상" />
+    <meta
+      property="og:description"
+      content="인공지능이 말해주는 내 관상! 나와 닮은 연예인은 누구일까? 관상가 양반에게 관상 테스트를 받아 알아보세요!"
+    />
+    <meta property="og:image" content="https://i.ibb.co/yBkFsf4/faceee.png" />
+    <meta
+      name="google-site-verification"
+      content="5jMrJKVs7H177f1geuB5P3ich8NWoORj_j7ihOOSarQ"
+    />
+    <meta
+      name="google-site-verification"
+      content="1OfOPLe0KtYlpDARcO1LVhTvWfNRNKndeIhnkYo_i34"
+    />
+    <link rel="canonical" href="https://keen-poitras-075b07.netlify.app" />
+    <link rel="stylesheet" href="styles/style.css" />
+    <link
+      rel="stylesheet"
+      href="https://use.fontawesome.com/releases/v5.5.0/css/all.css"
+      integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU"
+      crossorigin="anonymous"
+    />
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=East+Sea+Dokdo&display=swap');
+      @import url('https://fonts.googleapis.com/css2?family=Yeon+Sung&display=swap');
+      @font-face {
+        font-family: 'KimjungchulMyungjo-Bold';
+        src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2302_01@1.0/KimjungchulMyungjo-Bold.woff2')
+          format('woff2');
+        font-style: normal;
+      }
+    </style>
+
+    <title>관상 | 관상 테스트 | 관상가 양반</title>
+    <meta
+      name="naver-site-verification"
+      content="95cd8990ed3962c82f8898a9372ce4b24dddbcb9"
+    />
+
+    <meta
+      name="naver-site-verification"
+      content="d2a00bde5ae1184c75d29957787926125e1183c8"
+    />
+
+    <link
+      rel="shortcut icon"
+      href="https://keen-poitras-075b07.netlify.app/favicon.ico"
+      type="image/x-icon"
+    />
+
+    <script
+      async
+      src="https://www.googletagmanager.com/gtag/js?id=UA-119161496-1"
+    ></script>
+    <script>
+      window.dataLayer = window.dataLayer || []
+      function gtag() {
+        dataLayer.push(arguments)
+      }
+      gtag('js', new Date())
+
+      gtag('config', 'UA-119161496-1')
+      gtag('config', 'G-5TZETSPG3B')
+    </script>
+    <!-- adsense 광고 -->
+    <script
+      async
+      src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4478069136800837"
+      crossorigin="anonymous"
+    ></script>
+
+    <script type="text/javascript">
+      if (typeof history.pushState == 'function') {
+        var CatagoryURL = location.href
+        CatagoryURL = CatagoryURL.replace(/\?category=([0-9]+)/gi, '')
+        history.pushState(null, null, CatagoryURL)
+      }
+    </script>
+    <!-- 카카오 공유 링크  -->
+    <script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
+    <script>
+      Kakao.init('4ff46443835291514c5a215357a6c4c1')
+      Kakao.isInitialized()
+    </script>
+  </head>
+  <body>
+    <div class="main_body_wrap">
+      <header id="face" class="header"></header>
+
+      <!-- <div id="google_translate_element"></div> -->
+      <div class="main_content_wrap">
+        <div class="main__ai__title">
+          <h1 class="title">관상가 양반</h1>
+          <h1 class="subtitle">
+            인공지능이 알려주는 내 관상
+          </h1>
+          <h2
+            class="number"
+            style="
+              font-size: 16px;
+              color: rgb(196, 196, 196);
+              margin-top: 16px;
+              font-weight: 300;
+            "
+          >
+            지금까지
+            <span class="count__num" style="color: white;"></span>
+            번 관상을 봤어요.
+          </h2>
+        </div>
+
+        <!-- <div id="container">
+      <div class="inner-container">
+        <div class="toggle">
+          <p>남</p>
+        </div>
+        <div class="toggle">
+          <p>여</p>
+        </div>
+      </div>
+      <div class="inner-container" id="toggle-container">
+        <div class="toggle">
+          <p>남</p>
+        </div>
+        <div class="toggle">
+          <p>여</p>
+        </div>
+      </div>
+    </div> -->
+
+        <div class="ad_box" id="container2">
+          <ins
+            class="adsbygoogle"
+            style="display: inline-block; width: 320px; height: 50px;"
+            data-ad-client="ca-pub-4478069136800837"
+            data-ad-slot="4097923844"
+          ></ins>
+          <script>
+            ;(adsbygoogle = window.adsbygoogle || []).push({})
+          </script>
+        </div>
+
+        <div class="border">
+          <div class="frame">
+            <div class="image">
+              <script
+                class="jsbin"
+                src="https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"
+              ></script>
+              <div class="file-upload">
+                <div class="image-upload-wrap">
+                  <input
+                    class="file-upload-input"
+                    type="file"
+                    onchange="readURL(this);"
+                    accept="image/*"
+                  />
+                  <div class="drag-text">
+                    <i class="far fa-image"></i>
+                    <h2 style="font-family: KimjungchulMyungjo-Bold;">
+                      (사진 첨부)
+                    </h2>
+                    <h3 style="font-family: KimjungchulMyungjo-Bold;">
+                      관상? 얼굴 한번 봅시다
+                    </h3>
+                  </div>
+                </div>
+                <div class="file-upload-content">
+                  <img
+                    class="file-upload-image"
+                    id="face-image"
+                    src="#"
+                    alt="your image"
+                  />
+                  <div class="image-title-wrap">
+                    <div class="ai">관상가가 당신의 관상을 분석중..</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="noti">*사용자의 사진은 어디에도 저장되지 않습니다.</div>
+
+        <div id="label-container" class="result"></div>
+        <div class="ad_box">
+          <ins
+            class="adsbygoogle"
+            style="display: inline-block; width: 320px; height: 50px;"
+            data-ad-client="ca-pub-4478069136800837"
+            data-ad-slot="6658485451"
+          ></ins>
+          <script>
+            ;(adsbygoogle = window.adsbygoogle || []).push({})
+          </script>
+        </div>
+        <div class="ad_box3">
+          <ins
+            class="adsbygoogle"
+            style="display: inline-block; width: 320px; height: 250px;"
+            data-ad-client="ca-pub-4478069136800837"
+            data-ad-slot="2416326457"
+          ></ins>
+          <script>
+            ;(adsbygoogle = window.adsbygoogle || []).push({})
+          </script>
+        </div>
+        <!-- <div class="ad_box5">
+          <ins
+            class="adsbygoogle"
+            style="display: inline-block; width: 320px; height: 100px;"
+            data-ad-client="ca-pub-4478069136800837"
+            data-ad-slot="5262901512"
+          ></ins>
+          <script>
+            ;(adsbygoogle = window.adsbygoogle || []).push({})
+          </script>
+        </div> -->
+        <!-- <a
+          href="https://play.google.com/store/apps/details?id=com.yangban&pli=1"
+          class="banner_wrap"
+          onclick="gtag('event', '앱 다운로드 배너 - 관상')"
+        >
+          <img src="https://i.ibb.co/SfqhMR2/00.png" />
+        </a> -->
+        <a
+          href="/analysis/"
+          class="face_analysis_contents"
+          style="margin-bottom: 10px;"
+          onclick="gtag('event', '관상학적 해석')"
+        >
+          관상 해석 글로 확인하기
+          <span>></span>
+        </a>
+        <a
+          href="/analysis/part/nose.html"
+          class="face_analysis_contents"
+          style="margin-bottom: 10px;"
+          onclick="gtag('event', '관상학적 해석')"
+        >
+          1. 코 - 관상 해석 알아보기
+          <span>></span>
+        </a>
+        <a
+          href="/analysis/part/eyes.html"
+          class="face_analysis_contents"
+          style="margin-bottom: 10px;"
+          onclick="gtag('event', '관상학적 해석')"
+        >
+          2. 눈 - 관상 해석 알아보기
+          <span>></span>
+        </a>
+
+        <!-- <div
+          style="margin-top: 20px; margin-bottom: 20px;"
+          class="habitown__banner__wrap"
+        >
+          <div class="habitown__banner">
+            <div class="habitown__btn">
+              <div class="habitown__left">
+                <div class="left__icon">
+                  <img src="https://i.ibb.co/qFmvmN2/logo-1.png" alt="" />
+                </div>
+                <div class="left__description">
+                  <div class="left__title">
+                    [공식 앱] 관상가 양반
+                  </div>
+                  <div class="left__sub">인공지능이 알려주는 내 관상</div>
+                  <div class="left__star">
+                    <i class="fas fa-star" style="user-select: auto;"></i>
+                    <i class="fas fa-star" style="user-select: auto;"></i>
+                    <i class="fas fa-star" style="user-select: auto;"></i>
+                    <i class="fas fa-star" style="user-select: auto;"></i>
+                    <i class="fas fa-star" style="user-select: auto;"></i>
+                    <span>322</span>
+                  </div>
+                </div>
+              </div>
+              <div class="habitown__app__download">
+                <a
+                  href="https://play.google.com/store/apps/details?id=com.yangban&pli=1"
+                  class="app__download__btn"
+                  onclick="gtag('event', 'ai양반app 대형 광고1');"
+                >
+                  열기
+                </a>
+              </div>
+            </div>
+
+            <div class="habitown__under__img__wrap">
+              <div class="habitown__img under__img1">
+                <img src="https://i.ibb.co/DVf6t6s/1-1.jpg" alt="" />
+              </div>
+              <div class="habitown__img under__img2">
+                <img src="https://i.ibb.co/5K1ktpf/1-2.jpg" alt="" />
+              </div>
+              <div class="habitown__img under__img3">
+                <img src="https://i.ibb.co/pfL10QP/1-3.jpg" alt="" />
+              </div>
+            </div>
+            <a
+              href="https://play.google.com/store/apps/details?id=com.yangban&pli=1"
+              class="habitown__download__btn__bottom"
+              onclick="gtag('event', 'ai양반app 대형 광고2');"
+            >
+              관상 테스트 앱 열기
+            </a>
+            <div class="habitown__cancel__btn__bottom">
+              <div class="cancel__btn__left">
+                다시 보지 않기
+              </div>
+              <div class="cancel__btn__right">
+                닫기
+              </div>
+            </div>
+          </div>
+          <div class="black__board"></div>
+        </div> -->
+        <!-- <div class="ad_box7">
+          <ins
+            class="adsbygoogle"
+            style="display: inline-block; width: 300px; height: 250px;"
+            data-ad-client="ca-pub-4478069136800837"
+            data-ad-slot="4117107660"
+          ></ins>
+          <script>
+            ;(adsbygoogle = window.adsbygoogle || []).push({})
+          </script>
+        </div> -->
+        <!-- <div class="ad_box5">
+          <ins
+            class="adsbygoogle"
+            style="display: inline-block; width: 320px; height: 100px;"
+            data-ad-client="ca-pub-4478069136800837"
+            data-ad-slot="5262901512"
+          ></ins>
+          <script>
+            ;(adsbygoogle = window.adsbygoogle || []).push({})
+          </script>
+        </div> -->
+      </div>
+      <footer class="footer"></footer>
+      <!-- <div class="bottom_nav2">
+        <div class="botton_nav_wrap2">
+          <span class="bottom_app_down_text">
+            앱 출시 (무료 관상, 운세, 해몽, 궁합)
+          </span>
+          <a
+            href="https://play.google.com/store/apps/details?id=com.yangban&pli=1"
+            class="bottom_app_down_btn"
+            onclick="gtag('event', '앱 다운로드 배너 - 바텀네비')"
+          >
+            다운로드
+          </a>
+        </div>
+      </div> -->
+      <!-- <nav class="bottom_nav">
+        <a
+          href="https://play.google.com/store/apps/details?id=com.yangban&pli=1"
+          class="bottom_nav_wrap"
+          target="_blank"
+          onclick="gtag('event', '바텀 네비 - 양반App')"
+        >
+          <img
+            src="https://i.ibb.co/qFmvmN2/logo-1.png"
+            alt=""
+            class="bottom_nav_img"
+          />
+          <div class="bottom_nav_text">AI 양반</div>
+        </a>
+        <a
+          href="/"
+          class="bottom_nav_wrap bottom_nav_selected"
+          onclick="gtag('event', '바텀 네비 - 관상')"
+        >
+          <i class="fa fa-thin fa-id-badge bottom_nav_icon"></i>
+          <div class="bottom_nav_text">관상</div>
+        </a>
+        <a
+          href="/fortune"
+          class="bottom_nav_wrap"
+          onclick="gtag('event', '바텀 네비 - 운세')"
+        >
+          <i class="fa fa-thin fa-calendar bottom_nav_icon"></i>
+          <div class="bottom_nav_text">운세</div>
+        </a>
+        <a
+          href="/dream"
+          class="bottom_nav_wrap"
+          onclick="gtag('event', '바텀 네비 - 해몽')"
+        >
+          <i class="fa fa-thin fa-moon bottom_nav_icon"></i>
+          <div class="bottom_nav_text">꿈 해몽</div>
+        </a>
+      </nav> -->
+    </div>
+
+    <script src="js/footer.js"></script>
+    <script src="js/header.js"></script>
+    <script src="js/livetime.js"></script>
+    <script src="js/ad.js"></script>
+    <script src="js/fileupload.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@1.3.1/dist/tf.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@teachablemachine/image@0.8/dist/teachablemachine-image.min.js"></script>
+    <script
+      data-cfasync="false"
+      type="text/javascript"
+      src="https://cdn.rawgit.com/dwyl/html-form-send-email-via-google-script-without-server/master/form-submission-handler.js"
+    ></script>
+    <!-- <script>
+      function googleTranslateElementInit() {
+        new google.translate.TranslateElement(
+          {
+            pageLanguage: 'ko',
+            includedLanguages: 'en,ja,ko,zh-CN,zh-TW',
+            layout: google.translate.TranslateElement.InlineLayout.none, // none or HORIZONTAL, SIMPLE
+          },
+          'google_translate_element',
+        )
+      }
+    </script>
+    <script src="http://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script> -->
+  </body>
+  <!-- 
+Copyright (c) 2020 by Aaron Vanston (https://codepen.io/aaronvanston/pen/yNYOXR)
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ -->
+  <!-- Copyright (c) 2020 by Lasse Diercks (https://codepen.io/lassediercks/pen/ZXezQJ)
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ -->
+</html>

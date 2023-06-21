@@ -340,7 +340,7 @@ async function predict() {
   // labelContainer.appendChild(otherResult)
 
   function getResultGtag() {
-    gtag('event', `관상 결과`, {
+    gtag('event', `관상 한 번 더 결과`, {
       result: `${answer}`,
     })
   }
@@ -383,10 +383,10 @@ async function predict() {
 
   // 한번 더 하기 함수
   function handleReset() {
-    // location.reload(true)
-    // location.href = location.href
-    // history.go(0)
-    location.href = '/onemore'
+    location.reload(true)
+    location.href = location.href
+    history.go(0)
+    // location.href = '/more'
   }
 
   // 앱 다운 함수
