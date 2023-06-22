@@ -11,7 +11,7 @@
       name="keywords"
       content="인공지능, 관상, 관상테스트, 관상가 양반, 인공지능, 연예인 관상 테스트, 연예인, 인스타 관상, 관상보는법, 인스타 관상 테스트, 나와 같은 관상을 가진 연예인"
     />
-    <meta name="author" content="Nmax" />
+    <meta name="author" content="용섭 준호" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="관상 | 인공지능이 말해주는 내 관상" />
     <meta
@@ -101,97 +101,125 @@
   <body>
     <div class="main_body_wrap">
       <header id="face" class="header"></header>
-
-      <!-- <div id="google_translate_element"></div> -->
-      <div class="main_content_wrap">
-        <div class="main__ai__title">
-          <h1 class="title">관상가 양반</h1>
-          <h1 class="subtitle">
-            인공지능이 알려주는 내 관상
-          </h1>
-          <h2
-            class="number"
-            style="
-              font-size: 16px;
-              color: rgb(196, 196, 196);
-              margin-top: 16px;
-              font-weight: 300;
-            "
-          >
-            지금까지
-            <span class="count__num" style="color: white;"></span>
-            번 관상을 봤어요.
-          </h2>
+      <header class="header_chat">
+        <div class="header_chat_wrap">
+          <div class="header_chat_title">관상가 양반</div>
         </div>
-
-        <!-- <div id="container">
-      <div class="inner-container">
-        <div class="toggle">
-          <p>남</p>
-        </div>
-        <div class="toggle">
-          <p>여</p>
-        </div>
-      </div>
-      <div class="inner-container" id="toggle-container">
-        <div class="toggle">
-          <p>남</p>
-        </div>
-        <div class="toggle">
-          <p>여</p>
-        </div>
-      </div>
-    </div> -->
-
-        <div class="border">
-          <div class="frame">
-            <div class="image">
-              <script
-                class="jsbin"
-                src="https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"
-              ></script>
-              <div class="file-upload">
-                <div class="image-upload-wrap">
-                  <input
-                    class="file-upload-input"
-                    type="file"
-                    onchange="readURL(this);"
-                    accept="image/*"
-                  />
-                  <div class="drag-text">
-                    <i class="far fa-image"></i>
-                    <h2 style="font-family: KimjungchulMyungjo-Bold;">
-                      (사진 첨부)
-                    </h2>
-                    <h3 style="font-family: KimjungchulMyungjo-Bold;">
-                      관상? 얼굴 한번 봅시다
-                    </h3>
-                  </div>
-                </div>
-                <div class="file-upload-content">
+      </header>
+      <div class="main_chat_wrap">
+        <div class="main_chat_container">
+          <div class="container_user_chat_wrap">
+            <div class="container_user_chat">
+              관상 테스트 - 인공지능이 알려주는 내 관상
+            </div>
+          </div>
+          <div class="container_yangban_chat_wrap">
+            <div class="container_yangban_chat_left">
+              <div class="container_yangban_profile">
+                <img
+                  src="https://i.ibb.co/z2hPLmH/hyemin.jpg"
+                  alt=""
+                  class="yangban_profile_img"
+                />
+              </div>
+            </div>
+            <div class="container_yangban_chat_right">
+              <div class="container_yangban_name">관상가 양반</div>
+              <div class="container_yangban_chat">
+                안녕하세요, 저는 관상가 양반입니다.
+              </div>
+              <div class="container_yangban_chat">
+                지금까지 4,157만 9,669 번 관상 상담을 완료한 전문가입니다.
+              </div>
+              <div class="container_yangban_chat">
+                관상을 보기 위해 아래 사진 선택하기 버튼을 눌러 사진을
+                올려주세요.
+              </div>
+            </div>
+          </div>
+          <div class="container_user_chat_wrap">
+            <div class="file-upload-content">
+              <img
+                class="file-upload-image container_user_chat"
+                id="face-image"
+                src="#"
+                alt="your image"
+              />
+            </div>
+          </div>
+          <div class="file-upload-content">
+            <div class="container_yangban_chat_wrap">
+              <div class="container_yangban_chat_left">
+                <div class="container_yangban_profile">
                   <img
-                    class="file-upload-image"
-                    id="face-image"
-                    src="#"
-                    alt="your image"
+                    src="https://i.ibb.co/z2hPLmH/hyemin.jpg"
+                    alt=""
+                    class="yangban_profile_img"
                   />
-                  <div class="image-title-wrap">
-                    <div class="ai">관상가가 당신의 관상을 분석중..</div>
+                </div>
+              </div>
+              <div class="container_yangban_chat_right">
+                <div class="container_yangban_name">관상가 양반</div>
+                <div class="image-title-wrap container_yangban_chat">
+                  <div id="label-container" class="result"></div>
+
+                  <div class="ai">
+                    <div class="message-loading">
+                      <div class="led led-one"></div>
+                      <div class="led led-two"></div>
+                      <div class="led led-three"></div>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
-
-        <div class="noti">*사용자의 사진은 어디에도 저장되지 않습니다.</div>
-
-        <div id="label-container" class="result"></div>
+        <div class="main_photo_container">
+          <div class="main_photo_container_wrap">
+            <i class="far fa-image"></i>
+            <div class="main_photo_text">사진 선택하기</div>
+            <script
+              class="jsbin"
+              src="https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"
+            ></script>
+            <input
+              class="file-upload-input"
+              type="file"
+              onchange="readURL(this);"
+              accept="image/*"
+            />
+          </div>
+        </div>
+      </div>
+      <!-- <div id="google_translate_element"></div> -->
+      <div class="main_content_wrap">
+        <div class="ad_box">
+          <ins
+            class="adsbygoogle"
+            style="display: inline-block; width: 320px; height: 50px;"
+            data-ad-client="ca-pub-4478069136800837"
+            data-ad-slot="6658485451"
+          ></ins>
+          <script>
+            ;(adsbygoogle = window.adsbygoogle || []).push({})
+          </script>
+        </div>
+        <div class="ad_box3">
+          <ins
+            class="adsbygoogle"
+            style="display: inline-block; width: 320px; height: 250px;"
+            data-ad-client="ca-pub-4478069136800837"
+            data-ad-slot="2416326457"
+          ></ins>
+          <script>
+            ;(adsbygoogle = window.adsbygoogle || []).push({})
+          </script>
+        </div>
       </div>
       <footer class="footer"></footer>
     </div>
 
-    <script src="js/footer.js"></script>
     <script src="js/header.js"></script>
     <script src="js/livetime.js"></script>
     <script src="js/ad.js"></script>

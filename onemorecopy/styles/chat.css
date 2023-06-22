@@ -1,0 +1,146 @@
+.header_chat {
+  position: fixed;
+  top: 0px;
+  z-index: 999;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.header_chat_wrap {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  padding: 20px 0;
+  background-color: #2f2f32;
+}
+
+.header_chat_title {
+  color: white;
+  font-size: 24px;
+  font-weight: 700;
+}
+
+.main_chat_wrap {
+  padding-top: 64px;
+}
+
+.main_chat_container {
+  display: flex;
+  flex-direction: column;
+  padding: 0 16px;
+}
+
+.container_user_chat_wrap {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 16px;
+}
+
+.container_user_chat {
+  background-color: #ffd620;
+  padding: 16px;
+  display: flex;
+  justify-self: flex-end;
+  border-radius: 10px 0 10px 10px;
+}
+
+.container_yangban_chat_wrap {
+  display: flex;
+  margin-bottom: 16px;
+}
+
+.container_yangban_profile {
+  width: 48px;
+}
+.yangban_profile_img {
+  width: 100%;
+  border-radius: 50%;
+}
+
+.container_yangban_chat_right {
+  padding-left: 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.container_yangban_name {
+  color: white;
+  padding-bottom: 6px;
+}
+
+.container_yangban_chat {
+  background-color: #f1efe4;
+  padding: 16px;
+  margin-bottom: 6px;
+  border-radius: 0 10px 10px 10px;
+  line-height: 24px;
+}
+
+.main_photo_container {
+  padding: 0 16px;
+  position: fixed;
+  z-index: 299;
+  bottom: 32px;
+}
+
+.main_photo_container_wrap {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #2f2f32;
+  color: #ffd620;
+  border: 1px solid #ffd620;
+  border-radius: 10px;
+  padding: 18px 0;
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.main_photo_container_wrap i {
+  padding-bottom: 3px;
+  padding-right: 6px;
+  font-size: 24px;
+}
+
+.file-upload-content2 {
+  display: none;
+}
+
+.message-loading {
+  display: flex;
+}
+
+@keyframes pulse {
+  0% {
+    opacity: 0.33;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.led {
+  width: 8px;
+  height: 8px;
+  background-color: #a5a089;
+  padding: 0;
+  border-radius: 50%;
+}
+
+.led-one,
+.led-two {
+  margin-right: 8px;
+}
+
+.led-one {
+  animation: pulse 1s ease alternate infinite;
+}
+
+.led-two {
+  animation: pulse 1s 0.33s ease alternate infinite;
+}
+
+.led-three {
+  animation: pulse 1s 0.66s ease alternate infinite;
+}
