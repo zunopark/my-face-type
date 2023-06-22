@@ -39,7 +39,12 @@ $('.image-upload-wrap').bind('dragleave', function () {
 // url & api 설정
 const URL = 'https://teachablemachine.withgoogle.com/models/FiW0HL4DO/'
 
-let model, webcam, labelContainer, maxPredictions
+let model,
+  webcam,
+  labelContainer,
+  labelContainer2,
+  labelContainer3,
+  maxPredictions
 
 async function init() {
   const modelURL = URL + 'model.json'
@@ -49,6 +54,8 @@ async function init() {
   maxPredictions = model.getTotalClasses()
 
   labelContainer = document.getElementById('label-container')
+  labelContainer2 = document.getElementById('label-container2')
+  labelContainer3 = document.getElementById('label-container3')
   for (let i = 0; i < maxPredictions; i++) {
     labelContainer.appendChild(document.createElement('span'))
   }
@@ -317,20 +324,27 @@ async function predict() {
     }
   }
 
+  let resultChat = document.querySelector(`#result_chat`)
+  let resultChat2 = document.querySelector(`#result_chat2`)
+  let resultChat3 = document.querySelector(`#result_chat3`)
+
+  resultChat.classList.remove('disblock')
   let result = document.createElement('div')
   result.classList.add('main_result_description')
   result.textContent = `${description[answer][1]}`
   labelContainer.appendChild(result)
 
+  resultChat2.classList.remove('disblock')
   let result2 = document.createElement('div')
   result2.classList.add('celebrity')
   result2.textContent = `같은 관상을 가진 연예인 : ${answer}`
-  labelContainer.appendChild(result2)
+  labelContainer2.appendChild(result2)
 
+  resultChat3.classList.remove('disblock')
   let desc = document.createElement('p')
   desc.classList.add('main__result__content__p')
   desc.textContent = description[answer][0]
-  labelContainer.appendChild(desc)
+  labelContainer3.appendChild(desc)
 
   // let otherResult = document.createElement('div')
   // otherResult.classList.add('other__result')
@@ -352,7 +366,7 @@ async function predict() {
   reset.onclick = function () {
     gtag('event', '한번 더 클릭')
   }
-  labelContainer.appendChild(reset)
+  // labelContainer.appendChild(reset)
 
   let appDown = document.createElement('button')
   appDown.innerHTML = `
@@ -362,7 +376,7 @@ async function predict() {
   appDown.onclick = function () {
     gtag('event', '결과 - 오늘 운세 워딩')
   }
-  labelContainer.appendChild(appDown)
+  // labelContainer.appendChild(appDown)
 
   // let share = document.createElement('button')
   // share.innerHTML = `

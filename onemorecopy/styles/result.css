@@ -30,7 +30,7 @@
   font-weight: 400;
 } */
 
-.result .reset__btn {
+/* .reset__btn {
   background-color: #ffffff;
   border-radius: 12px;
   margin-top: 24px;
@@ -82,7 +82,7 @@
   font-family: 'Yeon Sung', cursive;
   outline: none;
   border: none;
-}
+} */
 
 .hidden {
   visibility: hidden;
