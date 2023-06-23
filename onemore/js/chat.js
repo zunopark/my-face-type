@@ -90,20 +90,6 @@ const chatInit = () => {
     <div class="container_yangban_chat_right">
       <div class="container_yangban_name">관상가 양반</div>
       <div class="container_yangban_chat">${data.assistant}</div>
-      <div class="container_yangban_chat">
-      <div class="ad_box8">
-      행운 가득한 하루 보내세요. (행운의 광고)
-      <ins
-        class="adsbygoogle"
-        style="display: inline-block; width: 320px; height: 250px;"
-        data-ad-client="ca-pub-4478069136800837"
-        data-ad-slot="8828552831"
-      ></ins>
-      <script>
-        ;(adsbygoogle = window.adsbygoogle || []).push({})
-      </script>
-    </div>
-      </div>
     </div>`
     }
   }
