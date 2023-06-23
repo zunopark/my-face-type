@@ -44,6 +44,7 @@
   align-self: flex-end;
   border-radius: 10px 0 10px 10px;
   margin-bottom: 6px;
+  font-size: 18px;
 }
 
 .container_yangban_chat_wrap {
@@ -76,8 +77,9 @@
   padding: 16px;
   margin-bottom: 6px;
   border-radius: 0 10px 10px 10px;
-  line-height: 24px;
+  line-height: 27px;
   text-align: left;
+  font-size: 18px;
 }
 
 .main_photo_container {

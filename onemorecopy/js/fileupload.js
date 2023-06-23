@@ -58,6 +58,7 @@ async function init() {
   labelContainer = document.getElementById('label-container')
   labelContainer2 = document.getElementById('label-container2')
   labelContainer3 = document.getElementById('label-container3')
+
   for (let i = 0; i < maxPredictions; i++) {
     labelContainer.appendChild(document.createElement('span'))
   }
@@ -329,23 +330,26 @@ async function predict() {
   let resultChat = document.querySelector(`#result_chat`)
   let resultChat2 = document.querySelector(`#result_chat2`)
   let resultChat3 = document.querySelector(`#result_chat3`)
+  let resultChat4 = document.querySelector(`#result_chat4`)
+
+  resultChat4.classList.remove('disblock')
 
   resultChat.classList.remove('disblock')
   let result = document.createElement('div')
   result.classList.add('main_result_description')
-  result.textContent = `${description[answer][1]}`
+  result.innerHTML = `당신은 <span style="font-weight: 700; color: #d96811;">${description[answer][1]}</span>으로 보입니다.`
   labelContainer.appendChild(result)
 
   resultChat2.classList.remove('disblock')
   let result2 = document.createElement('div')
   result2.classList.add('celebrity')
-  result2.textContent = `같은 관상을 가진 연예인 : ${answer}`
+  result2.innerHTML = `비슷한 관상을 가진 연예인은 <span style="font-weight: 700; color: #d96811;">${answer}</span>입니다.`
   labelContainer2.appendChild(result2)
 
   resultChat3.classList.remove('disblock')
   let desc = document.createElement('p')
   desc.classList.add('main__result__content__p')
-  desc.textContent = description[answer][0]
+  desc.innerHTML = `전체적으로 관상 결과를 알려드리면 다음과 같습니다. ${description[answer][0]}`
   labelContainer3.appendChild(desc)
 
   // let otherResult = document.createElement('div')
