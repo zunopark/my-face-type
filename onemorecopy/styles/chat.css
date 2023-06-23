@@ -135,13 +135,14 @@
 
 .main_chat_input_text {
   background-color: #2f2f32;
-  color: #ffd620;
+  color: white;
   border: none;
   outline: none;
   padding: 18px 0;
   font-size: 20px;
   height: 65px;
   padding-left: 16px;
+  width: 100%;
 }
 
 .main_chat_input_btn {
