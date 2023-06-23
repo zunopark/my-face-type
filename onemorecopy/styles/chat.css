@@ -32,21 +32,23 @@
 .container_user_chat_wrap {
   width: 100%;
   display: flex;
-  justify-content: flex-end;
-  margin-bottom: 16px;
+  align-items: flex-end;
+  flex-direction: column;
+  margin-bottom: 10px;
 }
 
 .container_user_chat {
   background-color: #ffd620;
   padding: 16px;
   display: flex;
-  justify-self: flex-end;
+  align-self: flex-end;
   border-radius: 10px 0 10px 10px;
+  margin-bottom: 6px;
 }
 
 .container_yangban_chat_wrap {
   display: flex;
-  margin-bottom: 16px;
+  margin-bottom: 10px;
 }
 
 .container_yangban_profile {
@@ -79,10 +81,13 @@
 }
 
 .main_photo_container {
-  padding: 0 16px;
+  padding: 0px 16px;
   position: fixed;
   z-index: 299;
-  bottom: 32px;
+  bottom: 0;
+  background-color: #2f2f32;
+  padding-bottom: 40px;
+  padding-top: 16px;
 }
 
 .main_photo_container_wrap {
@@ -90,6 +95,7 @@
   justify-content: center;
   align-items: center;
   background-color: #2f2f32;
+
   color: #ffd620;
   border: 1px solid #ffd620;
   border-radius: 10px;

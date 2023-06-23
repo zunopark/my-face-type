@@ -27,7 +27,7 @@ const headerContent = () => {
   }
 
   const mainContentWrap = this.document.querySelector(`.main_content_wrap`)
-  mainContentWrap.classList.add('main_content_wrap_top_margin')
+  // mainContentWrap.classList.add('main_content_wrap_top_margin')
 }
 
 const headerGetTime = () => {

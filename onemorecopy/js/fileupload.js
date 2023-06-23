@@ -12,6 +12,8 @@ async function readURL(input) {
 
       $('.image-title').html(input.files[0].name)
     }
+    // const faceImageTitle = document.querySelector(`#face-image-text`)
+    // faceImageTitle.classList.remove('none')
 
     await reader.readAsDataURL(input.files[0])
 
