@@ -331,13 +331,15 @@ async function predict() {
   let resultChat2 = document.querySelector(`#result_chat2`)
   let resultChat3 = document.querySelector(`#result_chat3`)
   let resultChat4 = document.querySelector(`#result_chat4`)
+  let resultChat5 = document.querySelector(`#result_chat5`)
 
   resultChat4.classList.remove('disblock')
+  resultChat5.classList.remove('disblock')
 
   resultChat.classList.remove('disblock')
   let result = document.createElement('div')
   result.classList.add('main_result_description')
-  result.innerHTML = `당신은 <span style="font-weight: 700; color: #d96811;">${description[answer][1]}</span>으로 보입니다.`
+  result.innerHTML = `<span style="font-weight: 700; color: #d96811;">${description[answer][1]}</span>으로 보입니다.`
   labelContainer.appendChild(result)
 
   resultChat2.classList.remove('disblock')
@@ -349,7 +351,7 @@ async function predict() {
   resultChat3.classList.remove('disblock')
   let desc = document.createElement('p')
   desc.classList.add('main__result__content__p')
-  desc.innerHTML = `전체적으로 관상 결과를 알려드리면 다음과 같습니다. ${description[answer][0]}`
+  desc.innerHTML = `${description[answer][0]}`
   labelContainer3.appendChild(desc)
 
   // let otherResult = document.createElement('div')
