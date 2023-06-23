@@ -49,6 +49,12 @@
   margin-top: 20px;
 }
 
+.ad_box8 {
+  width: 300px;
+  height: 250px;
+  margin: 0 outo;
+}
+
 .bottom_ad {
   display: flex;
   flex-direction: column;
