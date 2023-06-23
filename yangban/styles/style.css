@@ -1,0 +1,286 @@
+@import 'reset.css';
+@import 'common.css';
+@import 'gender.css';
+@import 'fileupload.css';
+@import 'picture.css';
+@import 'header.css';
+@import 'result.css';
+@import 'footer.css';
+@import 'ad.css';
+@import 'chat.css';
+@import 'main.css';
+@import 'media.css';
+
+@import url('https://fonts.googleapis.com/css?family=Asap:400,500,700');
+
+.randomBanner {
+  width: 320px;
+}
+
+.main__ai__title {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  /* padding-top: 30px; */
+  margin-bottom: 10px;
+  color: white;
+}
+
+.main__ai__title .title {
+  font-size: 32px;
+  font-family: 'KimjungchulMyungjo-Bold';
+  margin-bottom: 6px;
+}
+
+.main__ai__title .subtitle {
+  font-size: 24px;
+  margin-top: 6px;
+}
+
+#container {
+  width: 160px;
+  height: 36px;
+  position: relative;
+  border-radius: 6px;
+  overflow: hidden;
+  user-select: none;
+  cursor: pointer;
+  margin-bottom: 10px;
+}
+
+.inner-container {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: inherit;
+  height: inherit;
+  text-transform: uppercase;
+  font-size: 0.6em;
+  letter-spacing: 0.2em;
+}
+
+.inner-container:first-child {
+  background: #e9e9e9;
+  color: #a9a9a9;
+}
+
+.inner-container:nth-child(2) {
+  background: #d74046;
+  color: white;
+  clip-path: inset(0 50% 0 0);
+  transition: 0.3s cubic-bezier(0, 0, 0, 1);
+}
+
+.toggle {
+  width: 50%;
+  position: absolute;
+  height: inherit;
+  display: flex;
+  box-sizing: border-box;
+}
+
+.toggle p {
+  margin: auto;
+}
+
+.toggle:nth-child(1) {
+  right: 0;
+}
+
+.number {
+  margin-top: 10px;
+  margin-bottom: 5px;
+  font-size: 14px;
+}
+
+.count__num {
+  font-weight: 700;
+}
+
+.timer {
+  color: rgb(129, 129, 129);
+  font-weight: 400;
+  font-size: 12px;
+}
+
+.share {
+  width: 100%;
+  text-align: center;
+  font-size: 12px;
+  margin-top: 3px;
+}
+
+.result button {
+  outline: none;
+}
+
+.result button:hover {
+  cursor: pointer;
+}
+
+.result button:active {
+  outline: none;
+}
+
+.other__result {
+  margin-top: 10px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  /* overflow-x: scroll;
+  overflow-x: hidden; */
+  white-space: nowrap;
+}
+
+.star__list__wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: red;
+}
+
+.star__list__img {
+  font-family: 'Yeon Sung', cursive;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  border: 1px solid white;
+  font-size: 16px;
+  margin: 0 4px;
+  color: white;
+}
+
+.percent {
+  margin-top: 6px;
+  font-size: 16px;
+}
+
+.noti {
+  color: rgba(255, 255, 255, 0.8);
+  margin-top: 10px;
+  font-size: 12px;
+}
+
+.house__banner,
+.today__test {
+  width: 320px;
+  margin: 6px 0;
+  margin-bottom: 20px;
+}
+
+.house__title {
+  text-align: center;
+  font-family: cursive;
+  color: black;
+  font-weight: 700;
+  margin-bottom: 10px;
+  font-size: 15px;
+}
+
+.house__img {
+  width: 100%;
+  border: 2px solid rgb(212, 175, 6);
+}
+
+.house__img:hover {
+  cursor: pointer;
+}
+
+.liner__members {
+  width: 320px;
+  margin: 6px 0;
+}
+
+.liner__img {
+  width: 100%;
+}
+
+.liner__img:hover {
+  cursor: pointer;
+}
+
+.hello__members {
+  width: 320px;
+  margin: 12px 0;
+}
+
+.hello__img {
+  width: 100%;
+}
+
+.hello__img:hover {
+  cursor: pointer;
+}
+
+.zero {
+  color: white;
+}
+
+.zeroone {
+  color: rgb(43, 160, 223);
+}
+
+.onetwo {
+  color: rgb(68, 182, 95);
+}
+
+.twothree {
+  color: rgb(82, 82, 255);
+}
+
+.threefour {
+  color: rgb(82, 255, 255);
+}
+
+.fourfive {
+  color: rgb(255, 85, 255);
+}
+
+.fivesix {
+  color: rgb(255, 172, 90);
+}
+
+.sixseven {
+  color: rgb(77, 255, 119);
+}
+
+.seveneight {
+  color: rgb(255, 90, 230);
+}
+
+.eightnine {
+  color: rgb(255, 93, 147);
+}
+
+.nineten {
+  color: rgb(255, 120, 96);
+}
+
+.bold {
+  font-weight: 700;
+  color: black;
+}
+
+.none {
+  display: none;
+}
+
+.face_analysis_contents {
+  display: flex;
+  justify-content: space-between;
+  width: 320px;
+  margin-top: 20px;
+  padding: 20px;
+  font-family: 'Yeon Sung', cursive;
+  text-decoration: none;
+  color: black;
+  background-color: white;
+  font-size: 20px;
+  border: 1px solid black;
+  border-radius: 10px;
+}

@@ -1,0 +1,75 @@
+@media screen and (min-width: 500px) {
+  .footer,
+  .test__upper,
+  .submitForm,
+  .today__weather__wrap,
+  .lower__comment {
+    width: 500px;
+  }
+
+  .main__result__content__p {
+    width: 300px;
+  }
+
+  .habitown__banner {
+    width: 400px;
+  }
+
+  .dang__ad {
+    width: 320px;
+    margin-bottom: 30px;
+  }
+
+  .header {
+    width: 500px;
+  }
+
+  .header_fixed {
+    width: 500px;
+  }
+
+  .footer,
+  .bottom_nav {
+    width: 500px;
+  }
+
+  .bottom_ad {
+    width: 500px;
+  }
+  .main_body_wrap,
+  .main_chat_wrap,
+  .header_chat,
+  .main_photo_container,
+  .main_chat_input_container,
+  .header_ad,
+  .main_yangban_wrap {
+    width: 500px;
+  }
+
+  .main_upper_content_wrap {
+    width: 468px;
+  }
+}
+@media screen and (max-width: 499px) {
+  .main_body_wrap,
+  .main_chat_wrap,
+  .header_chat,
+  .main_photo_container,
+  .main_chat_input_container,
+  .header_ad,
+  .main_yangban_wrap {
+    width: 100%;
+  }
+
+  .main_upper_content_wrap {
+    width: 100%;
+  }
+
+  .ad__upper,
+  .header,
+  .footer,
+  .lower__comment,
+  .bottom_nav {
+    width: 100%;
+  }
+}

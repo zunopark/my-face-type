@@ -1,0 +1,306 @@
+/* .result {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 15px;
+}
+
+.result .main_result_description {
+  font-size: 24px;
+  font-family: 'KimjungchulMyungjo-Bold';
+  color: #ffd620;
+  text-align: center;
+  margin-bottom: 10px;
+  line-height: 32px;
+}
+
+.result .celebrity {
+  font-family: 'KimjungchulMyungjo-Bold';
+  text-align: center;
+  margin-bottom: 10px;
+  color: white;
+  font-size: 20px;
+}
+
+.result p {
+  font-size: 20px;
+  text-align: justify;
+  color: rgb(219, 218, 218);
+  line-height: 32px;
+  font-weight: 400;
+} */
+
+/* .reset__btn {
+  background-color: #ffffff;
+  border-radius: 12px;
+  margin-top: 24px;
+  margin-bottom: 12px;
+  width: 240px;
+  padding: 12px 0px;
+  color: rgb(54, 54, 54);
+  font-size: 16px;
+  font-family: 'KimjungchulMyungjo-Bold';
+  outline: none;
+  border: none;
+}
+
+.app_down_btn {
+  background-color: #ffe924;
+  border-radius: 12px;
+  margin-bottom: 12px;
+  width: 240px;
+  padding: 12px 0px;
+  color: rgb(54, 54, 54);
+
+  font-size: 16px;
+  font-family: 'KimjungchulMyungjo-Bold';
+  outline: none;
+  border: none;
+}
+
+.share__btn {
+  background-color: #f7e600;
+  border-radius: 12px;
+  margin-bottom: 12px;
+  width: 240px;
+  padding: 12px 0px;
+  color: rgba(0, 0, 0, 0.9);
+  font-size: 16px;
+  font-family: 'KimjungchulMyungjo-Bold';
+  outline: none;
+  border: none;
+}
+
+.result .reset__btn2 {
+  margin-bottom: 10px;
+  background-color: #c53e1c;
+  border-radius: 30px 30px 30px 30px;
+  width: 150px;
+  padding: 10px 10px;
+  color: #ecf0f1;
+  font-size: 15px;
+  font-family: 'Yeon Sung', cursive;
+  outline: none;
+  border: none;
+} */
+
+.hidden {
+  visibility: hidden;
+}
+
+.list__img {
+  width: 320px;
+  height: 180px;
+  object-fit: cover;
+}
+
+.list__title {
+  padding: 16px 10px;
+  background-color: rgb(56, 56, 56);
+  color: white;
+}
+
+.list__title h1 {
+  font-weight: 701;
+  margin-bottom: 6px;
+}
+
+.list__title h2 {
+  font-size: 12px;
+}
+
+.disblock {
+  display: none;
+}
+
+/* 앱 다운 화면 */
+
+.habitown__banner__wrap {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  opacity: 1;
+  transition: 3s transform;
+  margin-top: 12px;
+}
+
+.habitown__banner {
+  /* position: fixed;
+  top: 160px; */
+}
+
+.habitown__upper__title {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 20px;
+  font-size: 20px;
+  color: white;
+}
+
+.habitown__upper__comment {
+  color: white;
+  margin-bottom: 4px;
+  font-weight: 700;
+}
+
+.habitown__lower__comment {
+  color: white;
+  font-size: 14px;
+  opacity: 0.8;
+}
+
+.habitown__img {
+  width: 100%;
+}
+
+.habitown__img img {
+  width: 100%;
+}
+
+.habitown__btn {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.habitown__left {
+  display: flex;
+  align-items: center;
+}
+
+.left__icon {
+  width: 60px;
+  margin-right: 10px;
+}
+
+.left__icon img {
+  border-radius: 10px;
+  width: 100%;
+  border: 1px solid white;
+}
+
+.left__description {
+  color: white;
+}
+
+.left__title {
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.left__sub {
+  font-size: 14px;
+  opacity: 0.8;
+  margin: 4px 0;
+}
+
+.left__star {
+  font-size: 12px;
+  opacity: 1;
+}
+
+.app__download__btn {
+  color: white;
+  background-color: #317bcf;
+  padding: 6px 15px;
+  padding-top: 8px;
+  font-weight: 700;
+  border-radius: 10px;
+  margin: 10px;
+  font-weight: 400;
+  text-decoration: none;
+}
+
+.app__download__btn:hover {
+  cursor: pointer;
+}
+
+.habitown__under__img__wrap {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+}
+
+.habitown__img {
+  width: 33%;
+}
+
+.habitown__img img {
+  border-radius: 10px;
+  border: 0.5px solid rgba(255, 255, 255, 0.6);
+}
+
+.under__img2 {
+  margin: 0 4px;
+}
+
+.habitown__banner__img {
+  width: 100%;
+}
+
+.habitown__banner__img img {
+  width: 100%;
+}
+
+.habitown__download__btn__bottom {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  color: white;
+  background-color: #317bcf;
+  margin-top: 10px;
+  padding: 12px 0 10px 0;
+  font-weight: 700;
+  border-radius: 10px;
+  text-decoration: none;
+}
+
+.habitown__download__btn__bottom:hover {
+  cursor: pointer;
+}
+
+.habitown__cancel__btn__bottom {
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+  margin-top: 10px;
+  text-decoration: underline;
+  padding: 12px 0 10px 0;
+  color: white;
+  opacity: 0.6;
+}
+
+.habitown__cancel__btn__bottom:hover {
+  cursor: pointer;
+}
+
+.black__board {
+  width: 100%;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  background-color: rgba(0, 0, 0, 0.9);
+  opacity: 1;
+  z-index: 60;
+  transition: all 0.5s;
+}
+
+.black__board:hover {
+  cursor: pointer;
+}
+
+.disblock {
+  display: none;
+}
+
+.disappear {
+  opacity: 0;
+}
+
+.appear {
+  opacity: 1;
+}

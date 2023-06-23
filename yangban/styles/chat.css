@@ -8,14 +8,25 @@
 .header_chat_wrap {
   width: 100%;
   display: flex;
-  justify-content: center;
-  padding: 20px 0;
-  background-color: #2f2f32;
+  justify-content: flex-start;
+  align-items: flex-end;
+  padding: 20px;
+  background-color: #18181b;
+}
+
+.header_chat_back {
+  width: 40px;
+}
+
+.header_chat_back i {
+  font-size: 24px;
+  color: white;
 }
 
 .header_chat_title {
   color: white;
   font-size: 24px;
+  font-family: 'KimjungchulMyungjo-Bold';
   font-weight: 700;
 }
 
