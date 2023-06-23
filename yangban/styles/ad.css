@@ -1,7 +1,7 @@
 .header_ad {
   position: fixed;
   top: 64px;
-  padding: 12px 0;
+  padding: 12px 0 8px 0;
   width: 100%;
   display: flex;
   justify-content: center;
