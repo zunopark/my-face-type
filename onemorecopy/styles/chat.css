@@ -88,7 +88,7 @@
   z-index: 299;
   bottom: 0;
   background-color: #2f2f32;
-  padding-bottom: 40px;
+  padding-bottom: 20px;
   padding-top: 16px;
 }
 
@@ -97,13 +97,13 @@
   justify-content: center;
   align-items: center;
   background-color: #2f2f32;
-
   color: #ffd620;
   border: 1px solid #ffd620;
   border-radius: 10px;
   padding: 18px 0;
   font-size: 20px;
   font-weight: 700;
+  height: 65px;
 }
 
 .main_photo_container_wrap i {
@@ -115,6 +115,45 @@
 .file-upload-content2 {
   display: none;
 }
+
+.main_chat_input_container {
+  position: fixed;
+  z-index: 299;
+  bottom: 0;
+  background-color: #2f2f32;
+  padding-bottom: 20px;
+  padding-top: 16px;
+}
+
+.main_chat_input_container_wrap {
+  display: flex;
+  justify-content: space-between;
+  border-top: 1px solid #b4b4b4;
+  border-bottom: 1px solid #b4b4b4;
+  width: 100%;
+}
+
+.main_chat_input_text {
+  background-color: #2f2f32;
+  color: #ffd620;
+  border: none;
+  outline: none;
+  padding: 18px 0;
+  font-size: 20px;
+  height: 65px;
+  padding-left: 16px;
+}
+
+.main_chat_input_btn {
+  padding-right: 16px;
+}
+
+.main_chat_input_btn i {
+  color: #aaaaaa;
+  font-size: 30px;
+}
+
+/* 로딩  */
 
 .message-loading {
   display: flex;

@@ -21,6 +21,12 @@ async function readURL(input) {
 
     const imageTitleWrap = document.querySelector(`.ai`)
     imageTitleWrap.classList.add('disblock')
+    const mainChatInputContainer = document.querySelector(
+      `.main_chat_input_container`,
+    )
+    const mainPhotoContainer = document.querySelector(`.main_photo_container`)
+    mainChatInputContainer.classList.remove('disblock')
+    mainPhotoContainer.classList.add('disblock')
   } else {
     removeUpload()
   }
