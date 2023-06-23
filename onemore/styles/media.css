@@ -40,7 +40,8 @@
   .main_chat_wrap,
   .header_chat,
   .main_photo_container,
-  .main_chat_input_container {
+  .main_chat_input_container,
+  .header_ad {
     width: 500px;
   }
 }
@@ -49,7 +50,8 @@
   .main_chat_wrap,
   .header_chat,
   .main_photo_container,
-  .main_chat_input_container {
+  .main_chat_input_container,
+  .header_ad {
     width: 100%;
   }
 
