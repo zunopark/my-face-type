@@ -49,6 +49,7 @@ const chatInit = () => {
       chatContainer.appendChild(botMessage)
 
       userMessages.push(chatInput.value)
+      chatInput.value = ''
 
       const response = await fetch(
         'https://fkfucds3e9.execute-api.ap-northeast-2.amazonaws.com/prod/dreamTell',
@@ -58,8 +59,6 @@ const chatInit = () => {
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({
-            userInfo: userInfo,
-            myDateTime: myDateTime,
             userMessages: userMessages,
             assistantMessages: assistantMessages,
           }),
@@ -82,8 +81,6 @@ const chatInit = () => {
       <div class="container_yangban_name">관상가 양반</div>
       <div class="container_yangban_chat">${data.assistant}</div>
     </div>`
-
-      chatInput.value = ''
     }
   }
 
