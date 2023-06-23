@@ -37,6 +37,10 @@ const chatInit = () => {
   const chatInputBtn = document.querySelector(`.main_chat_input_btn`)
   const chatInputBtnFunction = async () => {
     if (chatInput.value !== '') {
+      const faceResultChat = document.querySelector(`.main__result__content__p`)
+
+      const faceResult = faceResultChat.innerHTML
+
       const chatContainer = document.querySelector(`.main_chat_container`)
       const message = document.createElement('div')
       message.classList.add('container_user_chat_wrap')
@@ -49,16 +53,22 @@ const chatInit = () => {
       chatContainer.appendChild(botMessage)
 
       userMessages.push(chatInput.value)
+      const chatInpiutValueGtag = () => {
+        gtag('event', `채팅 내용: ${chatInput.value}`)
+      }
+      chatInpiutValueGtag()
+
       chatInput.value = ''
 
       const response = await fetch(
-        'https://fkfucds3e9.execute-api.ap-northeast-2.amazonaws.com/prod/dreamTell',
+        'https://fkfucds3e9.execute-api.ap-northeast-2.amazonaws.com/prod/faceTell',
         {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({
+            faceResult: faceResult,
             userMessages: userMessages,
             assistantMessages: assistantMessages,
           }),
@@ -156,46 +166,4 @@ chatInit()
 
 // function sleep(sec) {
 //   return new Promise((resolve) => setTimeout(resolve, sec * 1000))
-// }
-
-// async function send() {
-//   const query = input.value
-//   if (!query) return
-//   appendMessage(query, 'me')
-//   input.value = ''
-//   loadingOn()
-//   const maxRetries = 3
-//   let retries = 0
-//   let completion
-//   while (retries < maxRetries) {
-//     try {
-//       const response = await fetch(
-//         'https://peaki2yz2rukfci2zv76n233ca0tqgzu.lambda-url.ap-northeast-2.on.aws/postFortune',
-//         {
-//           method: 'POST',
-//           headers: {
-//             'Content-Type': 'application/json',
-//           },
-//           body: JSON.stringify({
-//             birthDatetime: birthDatetime,
-//             userMessage: userMessage,
-//             botMessage: botMessage,
-//           }),
-//         },
-//       )
-//       const prediction = await response.json()
-//       appendMessage(prediction.content, 'bot')
-//       loadingOff()
-//       document.getElementById('intro-message').innerHTML = ''
-//       break
-//     } catch (error) {
-//       await sleep(0.5)
-//       retries++
-//       console.log(error)
-//       console.log(`Error fetching data, retrying (${retries}/${maxRetries})...`)
-//       if (retries === 3) {
-//         alert('서버가 불안정합니다. 잠시 후 다시 시도해주세요!')
-//       }
-//     }
-//   }
 // }

@@ -1,4 +1,4 @@
-.result {
+/* .result {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -11,7 +11,6 @@
   color: #ffd620;
   text-align: center;
   margin-bottom: 10px;
-  /* color: #e74c3c; */
   line-height: 32px;
 }
 
@@ -29,9 +28,9 @@
   color: rgb(219, 218, 218);
   line-height: 32px;
   font-weight: 400;
-}
+} */
 
-.result .reset__btn {
+/* .reset__btn {
   background-color: #ffffff;
   border-radius: 12px;
   margin-top: 24px;
@@ -83,45 +82,10 @@
   font-family: 'Yeon Sung', cursive;
   outline: none;
   border: none;
-}
+} */
 
 .hidden {
   visibility: hidden;
-}
-
-.ai {
-  font-family: 'Yeon Sung', cursive;
-  margin-top: 15px;
-  animation: aiAnim 0.7s linear infinite;
-}
-
-@keyframes aiAnim {
-  0% {
-    transform: translateX(-2px);
-  }
-  15% {
-    transform: translateX(0px);
-    transform: scale(1.01);
-  }
-  50% {
-    transform: translateX(2px);
-  }
-  85% {
-    transform: translateX(0px);
-    transform: scale(1.01);
-  }
-  100% {
-    transform: translateX(-2px);
-  }
-}
-
-.test__ai {
-  /* border: 1px solid black; */
-  margin: 20px 0;
-}
-
-.test__ai:hover {
-  cursor: pointer;
 }
 
 .list__img {
