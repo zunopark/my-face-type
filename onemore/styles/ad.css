@@ -3,6 +3,8 @@
   top: 64px;
   padding: 12px 0;
   width: 100%;
+  display: flex;
+  justify-content: center;
 }
 
 .ad_box {
