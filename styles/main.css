@@ -39,12 +39,14 @@
   align-items: center;
   margin-top: 10px;
   margin-bottom: 24px;
+  width: 100%;
 }
 
 .yangban_profile_wrap {
   display: flex;
   align-items: center;
   text-decoration: none;
+  width: 100%;
 }
 
 .yangban_profile_left {
