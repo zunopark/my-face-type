@@ -359,7 +359,7 @@ async function predict() {
 
   let appDown = document.createElement('button')
   appDown.innerHTML = `
-  <span>관상가 양반과 직접 대화하기</span>
+  <span>chatGPT 양반과 대화하기</span>
   `
   appDown.classList.add('app_down_btn')
   appDown.onclick = function () {
