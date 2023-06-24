@@ -21,12 +21,6 @@ async function readURL(input) {
 
     const imageTitleWrap = document.querySelector(`.ai`)
     imageTitleWrap.classList.add('disblock')
-    const mainChatInputContainer = document.querySelector(
-      `.main_chat_input_container`,
-    )
-    const mainPhotoContainer = document.querySelector(`.main_photo_container`)
-    mainChatInputContainer.classList.remove('disblock')
-    mainPhotoContainer.classList.add('disblock')
   } else {
     removeUpload()
   }
@@ -47,12 +41,7 @@ $('.image-upload-wrap').bind('dragleave', function () {
 // url & api 설정
 const URL = 'https://teachablemachine.withgoogle.com/models/FiW0HL4DO/'
 
-let model,
-  webcam,
-  labelContainer,
-  labelContainer2,
-  labelContainer3,
-  maxPredictions
+let model, webcam, labelContainer, maxPredictions
 
 async function init() {
   const modelURL = URL + 'model.json'
@@ -62,8 +51,6 @@ async function init() {
   maxPredictions = model.getTotalClasses()
 
   labelContainer = document.getElementById('label-container')
-  labelContainer2 = document.getElementById('label-container2')
-  labelContainer3 = document.getElementById('label-container3')
 
   for (let i = 0; i < maxPredictions; i++) {
     labelContainer.appendChild(document.createElement('span'))
@@ -333,34 +320,20 @@ async function predict() {
     }
   }
 
-  let resultChat = document.querySelector(`#result_chat`)
-  let resultChat2 = document.querySelector(`#result_chat2`)
-  let resultChat3 = document.querySelector(`#result_chat3`)
-  let resultChat4 = document.querySelector(`#result_chat4`)
-  let resultChat5 = document.querySelector(`#result_chat5`)
-  let resultChat6 = document.querySelector(`#result_chat6`)
-
-  resultChat4.classList.remove('disblock')
-  resultChat5.classList.remove('disblock')
-  resultChat6.classList.remove('disblock')
-
-  resultChat.classList.remove('disblock')
   let result = document.createElement('div')
   result.classList.add('main_result_description')
-  result.innerHTML = `<span style="font-weight: 700; color: #d96811;">${description[answer][1]}</span>으로 보입니다.`
+  result.innerHTML = `${description[answer][1]}`
   labelContainer.appendChild(result)
 
-  resultChat2.classList.remove('disblock')
   let result2 = document.createElement('div')
   result2.classList.add('celebrity')
-  result2.innerHTML = `비슷한 관상을 가진 연예인은 <span style="font-weight: 700; color: #d96811;">${answer}</span>입니다.`
-  labelContainer2.appendChild(result2)
+  result2.innerHTML = `같은 관상을 가진 연예인 : ${answer}`
+  labelContainer.appendChild(result2)
 
-  resultChat3.classList.remove('disblock')
   let desc = document.createElement('p')
   desc.classList.add('main__result__content__p')
   desc.innerHTML = `${description[answer][0]}`
-  labelContainer3.appendChild(desc)
+  labelContainer.appendChild(desc)
 
   // let otherResult = document.createElement('div')
   // otherResult.classList.add('other__result')
@@ -368,7 +341,7 @@ async function predict() {
   // labelContainer.appendChild(otherResult)
 
   function getResultGtag() {
-    gtag('event', `관상 한 번 더 결과 [채팅형]`, {
+    gtag('event', `관상 한 번 더 결과`, {
       result: `${answer}`,
     })
   }
@@ -382,7 +355,7 @@ async function predict() {
   reset.onclick = function () {
     gtag('event', '한번 더 클릭')
   }
-  // labelContainer.appendChild(reset)
+  labelContainer.appendChild(reset)
 
   let appDown = document.createElement('button')
   appDown.innerHTML = `
@@ -392,7 +365,7 @@ async function predict() {
   appDown.onclick = function () {
     gtag('event', '결과 - 오늘 운세 워딩')
   }
-  // labelContainer.appendChild(appDown)
+  labelContainer.appendChild(appDown)
 
   // let share = document.createElement('button')
   // share.innerHTML = `
