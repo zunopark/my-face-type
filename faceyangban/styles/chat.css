@@ -135,6 +135,23 @@
   padding-top: 16px;
 }
 
+.main_chat_input_example_wrap {
+  position: fixed;
+  z-index: 299;
+  bottom: 103px;
+  padding-left: 16px;
+}
+
+.main_chat_input_example {
+  font-size: 16px;
+  color: FFD620;
+  background-color: #2f2f32;
+  border: 1px solid #ffd620;
+  color: #ffd620;
+  border-radius: 20px;
+  padding: 12px 24px;
+}
+
 .main_chat_input_container_wrap {
   display: flex;
   justify-content: space-between;

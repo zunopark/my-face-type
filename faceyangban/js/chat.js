@@ -5,6 +5,7 @@ const chatInit = () => {
   let yangbanProfileName = '관상가 양반'
   let yangbanProfileImage = 'https://i.ibb.co/s1r45Xv/yangbanppp.png'
   let backendApi = 'faceTell'
+  let chatEx = '재물운은 어때 보여?'
 
   const chatBtnIcon = document.querySelector(`.main_chat_input_btn_icon`)
   const chatInput = document.querySelector(`.main_chat_input_text`)
@@ -39,10 +40,11 @@ const chatInit = () => {
   setInterval(changeBtnColor, 200)
 
   const chatInputBtn = document.querySelector(`.main_chat_input_btn`)
+  const chatInputExBtn = document.querySelector(`.main_chat_input_example`)
+
   const chatInputBtnFunction = async () => {
     if (chatInput.value !== '') {
       const faceResultChat = document.querySelector(`.main__result__content__p`)
-
       const faceResult = faceResultChat.innerHTML
 
       const chatContainer = document.querySelector(`.main_chat_container`)
@@ -99,6 +101,13 @@ const chatInit = () => {
     }
   }
 
+  const chatInputExBtnFunction = () => {
+    chatInput.value = chatEx
+    chatInputBtnFunction()
+  }
+
+  chatInputExBtn.innerHTML = chatEx
+  chatInputExBtn.addEventListener('click', chatInputExBtnFunction)
   chatInputBtn.addEventListener('click', chatInputBtnFunction)
 }
 
