@@ -359,11 +359,11 @@ async function predict() {
 
   let appDown = document.createElement('button')
   appDown.innerHTML = `
-  <span>오늘의 운세 보기</span>
+  <span>관상가 양반과 직접 대화하기</span>
   `
   appDown.classList.add('app_down_btn')
   appDown.onclick = function () {
-    gtag('event', '결과 - 오늘 운세 워딩')
+    gtag('event', '결과 - 양반 대화')
   }
   labelContainer.appendChild(appDown)
 
@@ -392,9 +392,9 @@ async function predict() {
 
   // 앱 다운 함수
   function handleAppDown() {
-    location.href =
-      'https://play.google.com/store/apps/details?id=com.yangban&pli=1'
-    // location.href = '/fortune'
+    // location.href =
+    //   'https://play.google.com/store/apps/details?id=com.yangban&pli=1'
+    location.href = '/yangban'
     // 'http://pf.kakao.com/_Qfuvxj/chat'
   }
 
