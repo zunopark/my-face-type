@@ -28,6 +28,10 @@ body {
   margin-top: 24px;
 }
 
+.main_content_wrap {
+  margin-top: 60px;
+}
+
 * {
   box-sizing: border-box;
 }

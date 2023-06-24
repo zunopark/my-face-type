@@ -27,7 +27,7 @@ const headerContent = () => {
   }
 
   const mainContentWrap = this.document.querySelector(`.main_content_wrap`)
-  mainContentWrap.classList.add('main_content_wrap_top_margin')
+  // mainContentWrap.classList.add('main_content_wrap_top_margin')
 }
 
 const headerGetTime = () => {
@@ -40,31 +40,31 @@ const headerGetTime = () => {
   const dayOfWeek = today.getDay()
   switch (dayOfWeek) {
     case 0:
-      dayOfWeekString = '일'
+      dayOfWeekString = '(일)'
       break
     case 1:
-      dayOfWeekString = '월'
+      dayOfWeekString = '(월)'
       break
     case 2:
-      dayOfWeekString = '화'
+      dayOfWeekString = '(화)'
       break
     case 3:
-      dayOfWeekString = '수'
+      dayOfWeekString = '(수)'
       break
     case 4:
-      dayOfWeekString = '목'
+      dayOfWeekString = '(목)'
       break
     case 5:
-      dayOfWeekString = '금'
+      dayOfWeekString = '(금)'
       break
     case 6:
-      dayOfWeekString = '토'
+      dayOfWeekString = '(토)'
       break
   }
 
-  // headerDate.innerHTML = `${year.toString().substring(2)}.${
-  //   month < 10 ? `0${month}` : month
-  // }.${date < 10 ? `0${date}` : date} ${dayOfWeekString}`
+  headerDate.innerHTML = `${year.toString().substring(2)}.${
+    month < 10 ? `0${month}` : month
+  }.${date < 10 ? `0${date}` : date} ${dayOfWeekString}`
 }
 
 // const headerFixedFunc = () => {

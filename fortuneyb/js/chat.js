@@ -5,7 +5,7 @@ const chatInit = () => {
   let yangbanProfileName = '역술가 양반'
   let yangbanProfileImage =
     'https://i.ibb.co/VMNVgRy/3607184628-A-bearded-Joseon-Dynasty-man-with-a-solemn-express-xl-beta-v2-2-2.png'
-  let backendApi = 'faceTell'
+  let backendApi = 'fortuneTell2'
   let chatEx = '2023년 하반기 운세'
 
   const headerChatTitle = document.querySelector(`.header_chat_title`)

@@ -20,19 +20,6 @@
     margin-bottom: 30px;
   }
 
-  .border,
-  .result {
-    width: 350px;
-  }
-
-  .border__hair {
-    width: 500px;
-  }
-
-  .apologize {
-    width: 320px;
-  }
-
   .header {
     width: 500px;
   }
@@ -45,47 +32,44 @@
   .bottom_nav {
     width: 500px;
   }
+
   .bottom_ad {
     width: 500px;
   }
-  .main_body_wrap {
+  .main_body_wrap,
+  .main_chat_wrap,
+  .header_chat,
+  .main_photo_container,
+  .main_chat_input_container,
+  .header_ad,
+  .main_yangban_wrap {
     width: 500px;
+  }
+
+  .main_upper_content_wrap {
+    width: 468px;
   }
 }
 @media screen and (max-width: 499px) {
-  .main_body_wrap {
+  .main_body_wrap,
+  .main_chat_wrap,
+  .header_chat,
+  .main_photo_container,
+  .main_chat_input_container,
+  .header_ad,
+  .main_yangban_wrap {
     width: 100%;
   }
 
-  .border,
-  .test__upper,
-  .submitForm,
-  .result {
-    width: 320px;
-  }
-
-  .habitown__banner {
-    width: 360px;
-  }
-
-  .label-container p {
-    width: 80%;
+  .main_upper_content_wrap {
+    width: 100%;
   }
 
   .ad__upper,
   .header,
   .footer,
-  .today__weather__wrap,
-  .today__weather,
   .lower__comment,
   .bottom_nav {
     width: 100%;
-  }
-
-  .border__hair {
-    width: 70%;
-  }
-  .apologize {
-    width: 320px;
   }
 }

@@ -4,7 +4,7 @@ const chatInit = () => {
 
   let yangbanProfileName = '해몽가 양반'
   let yangbanProfileImage = 'https://i.ibb.co/chgtsDw/hyemin.jpg'
-  let backendApi = 'faceTell'
+  let backendApi = 'dreamTell'
   let chatEx = '해몽을 해줄 수 있어?'
 
   const headerChatTitle = document.querySelector(`.header_chat_title`)

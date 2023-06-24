@@ -5,8 +5,8 @@ const chatInit = () => {
   let yangbanProfileName = '대박이'
   let yangbanProfileImage =
     'https://i.ibb.co/BqqC4xG/4124575238-cute-character-of-money-esrgan-v1-x2plus.png'
-  let backendApi = 'faceTell'
-  let chatEx = '성공이란 무엇일까?'
+  let backendApi = 'lottoTell'
+  let chatEx = '행운 번호 6개를 뽑아줘 '
 
   const headerChatTitle = document.querySelector(`.header_chat_title`)
   const initYangbanName = document.querySelector(`#init_yangban_chat_profile`)

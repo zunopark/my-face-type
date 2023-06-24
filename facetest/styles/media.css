@@ -48,12 +48,14 @@
   .bottom_ad {
     width: 500px;
   }
-  .main_body_wrap {
+  .main_body_wrap,
+  .header_chat {
     width: 500px;
   }
 }
 @media screen and (max-width: 499px) {
-  .main_body_wrap {
+  .main_body_wrap,
+  .header_chat {
     width: 100%;
   }
 

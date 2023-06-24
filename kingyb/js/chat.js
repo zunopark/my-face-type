@@ -4,8 +4,8 @@ const chatInit = () => {
 
   let yangbanProfileName = '광해군'
   let yangbanProfileImage = 'https://i.ibb.co/TvPc3K7/gwang.png'
-  let backendApi = 'faceTell'
-  let chatEx = '민주주의란 무엇인가요?'
+  let backendApi = 'historyTell'
+  let chatEx = '역사란 무엇인가요?'
 
   const headerChatTitle = document.querySelector(`.header_chat_title`)
   const initYangbanName = document.querySelector(`#init_yangban_chat_profile`)
