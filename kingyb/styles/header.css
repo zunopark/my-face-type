@@ -1,0 +1,74 @@
+.header {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  padding-bottom: 24px;
+}
+
+.header__upper {
+  z-index: 2;
+  padding: 24px;
+  background-color: #18181b;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 100%;
+  margin-bottom: -1px;
+}
+
+.header__title {
+  display: flex;
+  font-family: 'Yeon Sung', cursive;
+  align-items: flex-end;
+}
+
+.header__title:hover {
+  cursor: pointer;
+}
+
+.header__title__title {
+  color: white;
+  font-size: 32px;
+  text-decoration: none;
+}
+
+.header_title_date {
+  color: white;
+  opacity: 0.8;
+  margin-left: 10px;
+}
+
+.header_nav_wrap {
+  width: 100%;
+  padding: 20px;
+  color: white;
+  background-color: #18181b;
+  position: relative;
+  box-shadow: 2px 4px 4px rgba(0, 0, 0, 0.3);
+  overflow-x: scroll;
+  white-space: nowrap;
+}
+
+.header_nav_content {
+  font-size: 18px;
+  color: rgba(255, 255, 255, 0.9);
+  text-decoration: none;
+  margin-right: 6px;
+  font-weight: 300;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  padding-right: 10px;
+}
+
+.header_nav_select {
+  color: rgb(255, 214, 32);
+  font-weight: 500;
+}
+
+.header_fixed {
+  position: fixed;
+  top: 0;
+  z-index: 999;
+}

@@ -1,0 +1,149 @@
+.file-upload {
+  background-color: #fffae3;
+  width: 100%;
+  margin: 0 auto;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.file-upload-btn {
+  width: 100%;
+  margin: 0;
+  color: #fff;
+  background: #1fb264;
+  border: none;
+  padding: 10px;
+  border-radius: 4px;
+  border-bottom: 4px solid #15824b;
+  transition: all 0.2s ease;
+  outline: none;
+  text-transform: uppercase;
+  font-weight: 700;
+}
+
+.file-upload-btn:hover {
+  background: #1aa059;
+  color: #ffffff;
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.file-upload-btn:active {
+  border: 0;
+  transition: all 0.2s ease;
+}
+
+.file-upload-content {
+  display: none;
+  text-align: center;
+  line-height: 100%;
+}
+
+.file-upload-content img {
+  vertical-align: middle;
+}
+
+.file-upload-input {
+  position: absolute;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  outline: none;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.image-upload-wrap {
+  position: relative;
+  height: 80%;
+  width: 80%;
+  background: linear-gradient(
+      to bottom,
+      rgba(44, 44, 44, 0.5) 0%,
+      rgba(44, 44, 44, 0.5) 100%
+    ),
+    url(https://i.ibb.co/B2kj8Pk/man.png);
+  background-size: cover;
+}
+
+.image-dropping,
+.image-upload-wrap:hover {
+  opacity: 0.7;
+}
+
+.image-title-wrap {
+  padding: 0 15px 15px 15px;
+  color: #222;
+}
+
+.drag-text {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  font-size: 10px;
+}
+
+.drag-text i {
+  font-size: 40px;
+  color: white;
+  margin-bottom: 10px;
+}
+
+.drag-text h2 {
+  margin-top: 3px;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: white;
+  font-family: 'Yeon Sung', cursive;
+
+  font-size: 15px;
+}
+.drag-text h3 {
+  margin-top: 10px;
+  font-weight: 700;
+  font-size: 18px;
+  text-transform: uppercase;
+  color: white;
+  font-family: 'Yeon Sung', cursive;
+}
+
+.file-upload-image {
+  max-height: 280px;
+  max-width: 280px;
+  margin: auto;
+  padding: 20px;
+  background-size: cover;
+}
+
+.remove-image {
+  width: 100%;
+  margin: 0;
+  color: #fff;
+  background: #cd4535;
+  border: none;
+  padding: 10px;
+  border-radius: 4px;
+  border-bottom: 4px solid #b02818;
+  transition: all 0.2s ease;
+  outline: none;
+  text-transform: uppercase;
+  font-weight: 700;
+}
+
+.remove-image:hover {
+  background: #c13b2a;
+  color: #ffffff;
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.remove-image:active {
+  border: 0;
+  transition: all 0.2s ease;
+}
