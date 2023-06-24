@@ -7,6 +7,9 @@ const chatInit = () => {
   let backendApi = 'faceTell'
   let chatEx = '재물운은 어때 보여?'
 
+  const headerChatTitle = document.querySelector(`.header_chat_title`)
+  headerChatTitle.innerHTML = yangbanProfileName
+
   const chatBtnIcon = document.querySelector(`.main_chat_input_btn_icon`)
   const chatInput = document.querySelector(`.main_chat_input_text`)
   const changeBtnColor = () => {
