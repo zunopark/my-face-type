@@ -2,7 +2,7 @@ const chatInit = () => {
   let userMessages = []
   let assistantMessages = []
 
-  let yangbanProfileName = '해몽가 양반'
+  let yangbanProfileName = '해몽댁'
   let yangbanProfileImage = 'https://i.ibb.co/chgtsDw/hyemin.jpg'
   let backendApi = 'dreamTell'
   let chatEx = '해몽을 해줄 수 있어?'
