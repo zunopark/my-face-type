@@ -1,6 +1,5 @@
 .header_ad {
-  position: fixed;
-  top: 64px;
+  margin-top: 40px;
   padding: 12px 0 8px 0;
   width: 100%;
   display: flex;
