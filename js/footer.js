@@ -71,11 +71,11 @@ function init() {
     </div>`
     }
   }
-  const bottomBtn = document.querySelector(`.bottom_ad_btn`)
-  if (bottomBtn) {
-    bottomBtn.addEventListener('click', () => {
-      location.href = 'https://qr.kakaopay.com/Ej9MgSCp09c405780'
-    })
-  }
+  // const bottomBtn = document.querySelector(`.bottom_ad_btn`)
+  // if (bottomBtn) {
+  //   bottomBtn.addEventListener('click', () => {
+  //     location.href = 'https://qr.kakaopay.com/Ej9MgSCp09c405780'
+  //   })
+  // }
 }
 init()
