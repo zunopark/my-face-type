@@ -100,7 +100,7 @@ const chatInit = () => {
     <div class="container_yangban_chat_right">
       <div class="container_yangban_name">${yangbanProfileName}</div>
       <div class="container_yangban_chat">${data.assistant}</div>
-      <div class="container_yangban_chat">저와 대화는 어떠셨나요? 힘이 되셨나요? 양반들은 모두 무료로 운영되고 있어요. 응원을 위해 작은 정성 배풀어주시면 더우 좋은 행운이 따라올겁니다! => <a href="https://qr.kakaopay.com/Ej9MgSCp09c405780" onclick="gtag('event', '관상-복채')" >눌러서 응원하기</a></div>
+      <div class="container_yangban_chat">저와 대화는 어떠셨나요? 힘이 되셨나요🙂 양반들은 모두 무료로 운영되고 있어요. 응원을 위해 작은 정성 베풀어주시면 더욱 좋은 행운이 따라올 겁니다! => <a href="https://qr.kakaopay.com/Ej9MgSCp09c405780" onclick="gtag('event', '관상-복채')" >눌러서 응원하기</a></div>
     </div>`
     }
   }
