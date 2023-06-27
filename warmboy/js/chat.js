@@ -13,7 +13,7 @@ const chatInit = () => {
   const initYangbanImge = document.querySelector(`.yangban_profile_img`)
   headerChatTitle.innerHTML = yangbanProfileName
   initYangbanName.innerHTML = yangbanProfileName
-  initYangbanName2.innerHTML = `안녕하세요, 저는 ${yangbanProfileName}입니다.`
+  initYangbanName2.innerHTML = `안녕, 나는 ${yangbanProfileName}야👋`
   initYangbanImge.src = yangbanProfileImage
 
   const chatBtnIcon = document.querySelector(`.main_chat_input_btn_icon`)
