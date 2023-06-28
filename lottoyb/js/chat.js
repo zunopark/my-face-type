@@ -2,9 +2,8 @@ const chatInit = () => {
   let userMessages = []
   let assistantMessages = []
 
-  let yangbanProfileName = '대박이'
-  let yangbanProfileImage =
-    'https://i.ibb.co/BqqC4xG/4124575238-cute-character-of-money-esrgan-v1-x2plus.png'
+  let yangbanProfileName = '대박 도령'
+  let yangbanProfileImage = 'https://i.ibb.co/zX7sQqW/daebak-1.png'
   let backendApi = 'lottoTell'
   let chatEx = '행운 번호 6개를 뽑아줘 '
 
