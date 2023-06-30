@@ -124,7 +124,9 @@ const chatInit = () => {
                     응원하기
                   </button>
                 </a>
+                <span style="margin-top: 4px;">
                 [국민은행: 652702-04-352074]
+                </span>
               </div>
     </div>`
     }
