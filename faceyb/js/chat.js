@@ -108,7 +108,7 @@ const chatInit = () => {
                   style="text-decoration: none; color: black; width: 100%;"
                   href="https://qr.kakaopay.com/Ej9MgSCp05dc04859"
                   target='_blank'
-                  onclick="gtag('event', '관상-복채')"
+                  onclick="gtag('event', '${yangbanProfileName}-복채')"
                 >
                   <button
                     style="
