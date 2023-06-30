@@ -116,7 +116,7 @@ const chatInit = () => {
             width: 100%;
             font-weight: 700;
             font-size: 16px;
-            padding: 10px 0;
+            padding: 10px 20px;
             border-radius: 10px;
           "
         >
