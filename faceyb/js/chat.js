@@ -107,7 +107,7 @@ const chatInit = () => {
 
                 <a
                   style="text-decoration: none; color: black; width: 100%;"
-                  href="https://qr.kakaopay.com/Ej9MgSCp09c405780"
+                  href="https://qr.kakaopay.com/Ej9MgSCp05dc04859"
                   target='_blank'
                   onclick="gtag('event', '관상-복채')"
                 >
@@ -122,7 +122,7 @@ const chatInit = () => {
                       margin-top: 10px;
                     "
                   >
-                    커피 한 잔으로 응원하기
+                    응원하기 [3,000원]
                   </button>
                 </a>
               </div>
