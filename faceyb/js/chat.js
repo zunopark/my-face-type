@@ -102,7 +102,7 @@ const chatInit = () => {
       <div class="container_yangban_chat">${data.assistant}</div>
       <div class="container_yangban_chat">
                 저와 대화는 어떠셨나요? 힘이 되셨나요🙂 양반들은 모두 무료로
-                운영되고 있어요. 더욱 좋은 행운을 담아드리기 위해 작게나마 복채로 응원해주시면 진심으로 감사드립니다! 
+                운영되고 있어요. 더욱 좋은 행운을 담아드리기 위해 자그마한 복채와 함께 응원해주시면 진심으로 감사드립니다! 
 
                 <a
                   style="text-decoration: none; color: black; width: 100%;"
@@ -121,7 +121,7 @@ const chatInit = () => {
                       margin-top: 10px;
                     "
                   >
-                    정성 베풀어주기
+                    응원하기 [복채]
                   </button>
                 </a>
               </div>
