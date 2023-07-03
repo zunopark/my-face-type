@@ -123,7 +123,7 @@ const chatInit = () => {
             margin-top: 10px;
           "
         >
-        ${yangbanProfileName} 응원하기 [복채]
+        ${yangbanProfileName} 응원하기
         </button>
       </a>
     </div>
