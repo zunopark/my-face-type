@@ -119,7 +119,7 @@
 
 /* 로딩 스피너 css */
 .loader {
-  color: rgb(255, 214, 32);
+  color: #ffd620;
   font-size: 20px;
   align-self: center;
 }
