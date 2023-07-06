@@ -30,6 +30,11 @@
       integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU"
       crossorigin="anonymous"
     />
+    <script
+      src="https://kit.fontawesome.com/efc655ee9b.js"
+      crossorigin="anonymous"
+    ></script>
+
     <style>
       @import url('https://fonts.googleapis.com/css2?family=East+Sea+Dokdo&display=swap');
       @import url('https://fonts.googleapis.com/css2?family=Yeon+Sung&display=swap');
@@ -102,6 +107,15 @@
   <body>
     <div class="main_body_wrap">
       <header id="dream" class="header"></header>
+      <header class="header_chat">
+        <div class="header_chat_wrap">
+          <a href="/" class="header_chat_back">
+            <i class="fa-solid fa-chevron-left"></i>
+          </a>
+          <h1 class="header_chat_title">꿈 해몽</h1>
+          <div style="width: 40px;"></div>
+        </div>
+      </header>
       <div class="main_content_wrap">
         <div class="main_ai_title_wrap">
           <div class="main__ai__title">
@@ -126,7 +140,17 @@
             </h2>
           </div>
         </div>
-
+        <div class="ad_box">
+          <ins
+            class="adsbygoogle"
+            style="display: inline-block; width: 320px; height: 50px;"
+            data-ad-client="ca-pub-4478069136800837"
+            data-ad-slot="6243815810"
+          ></ins>
+          <script>
+            ;(adsbygoogle = window.adsbygoogle || []).push({})
+          </script>
+        </div>
         <div id="intro" class="dream_input_wrap">
           <div class="dream_main_wrap">
             <textarea
@@ -173,17 +197,6 @@
         </div>
       </div>
 
-      <div class="ad_box">
-        <ins
-          class="adsbygoogle"
-          style="display: inline-block; width: 320px; height: 50px;"
-          data-ad-client="ca-pub-4478069136800837"
-          data-ad-slot="6243815810"
-        ></ins>
-        <script>
-          ;(adsbygoogle = window.adsbygoogle || []).push({})
-        </script>
-      </div>
       <div class="ad_box3">
         <ins
           class="adsbygoogle"
@@ -205,48 +218,9 @@
       </a> -->
 
       <footer class="footer"></footer>
-      <nav class="bottom_nav">
-        <!-- <a
-          href="https://play.google.com/store/apps/details?id=com.yangban&pli=1"
-          class="bottom_nav_wrap"
-          target="_blank"
-          onclick="gtag('event', '바텀 네비 - 양반App')"
-        >
-          <img
-            src="https://i.ibb.co/qFmvmN2/logo-1.png"
-            alt=""
-            class="bottom_nav_img"
-          />
-          <div class="bottom_nav_text">AI 양반</div>
-        </a> -->
-        <a
-          href="/"
-          class="bottom_nav_wrap"
-          onclick="gtag('event', '바텀 네비 - 관상')"
-        >
-          <i class="fa fa-thin fa-id-badge bottom_nav_icon"></i>
-          <div class="bottom_nav_text">관상</div>
-        </a>
-        <a
-          href="/fortune"
-          class="bottom_nav_wrap"
-          onclick="gtag('event', '바텀 네비 - 운세')"
-        >
-          <i class="fa fa-thin fa-calendar bottom_nav_icon"></i>
-          <div class="bottom_nav_text">운세</div>
-        </a>
-        <a
-          href="/dream"
-          class="bottom_nav_wrap bottom_nav_selected"
-          onclick="gtag('event', '바텀 네비 - 해몽')"
-        >
-          <i class="fa fa-thin fa-moon bottom_nav_icon"></i>
-          <div class="bottom_nav_text">꿈 해몽</div>
-        </a>
-      </nav>
     </div>
     <script src="../js/footer.js"></script>
-    <script src="../js/header.js"></script>
+    <!-- <script src="../js/header.js"></script> -->
     <script src="./js/main.js"></script>
   </body>
 </html>

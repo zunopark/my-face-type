@@ -22,3 +22,38 @@
 .hidden {
   visibility: hidden;
 }
+
+.main_content_wrap {
+  margin-top: 60px;
+}
+
+.header_chat {
+  position: fixed;
+  top: 0px;
+  z-index: 999;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.header_chat_wrap {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  background-color: #2f2f32;
+}
+
+.header_chat_back {
+  width: 40px;
+}
+
+.header_chat_back i {
+  font-size: 24px;
+  color: white;
+}
+
+.header_chat_title {
+  color: white;
+  font-size: 24px;
+  font-weight: 700;
+}

@@ -1,15 +1,16 @@
 @import '../../styles/reset.css';
 @import '../../styles/common.css';
-@import '../../styles/header.css';
 @import '../../styles/footer.css';
 @import '../../styles/ad.css';
 @import '../../styles/media.css';
+@import 'header.css';
 @import 'media.css';
 
 @import 'chat.css';
 @import 'title.css';
 @import 'input.css';
 @import 'result.css';
+@import 'common.css';
 
 .fortune_upper_ad {
   margin-top: 10px;
