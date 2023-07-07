@@ -1,0 +1,54 @@
+.switch {
+  display: flex;
+  flex-direction: row;
+  background-color: #ecf0f1;
+  border-radius: 30px 30px 30px 30px;
+  width: 200px;
+  margin-bottom: 30px;
+}
+.switch input {
+  position: absolute;
+  visibility: hidden;
+}
+
+.switch label {
+  font-family: 'East Sea Dokdo', cursive;
+  background-color: transparent;
+  color: #95a5a6;
+  height: 50px;
+  width: 100px;
+  font-size: 28px;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  cursor: pointer;
+  z-index: 1;
+  transition: color 500ms ease;
+}
+
+.switch-bg {
+  position: absolute;
+  height: 50px;
+  width: 100px;
+
+  background-color: #162536;
+  z-index: 0;
+  transition: transform 0.2s ease-out;
+}
+
+#left-switch:checked ~ .switch-bg {
+  transform: translateX(0%);
+  border-radius: 30px 0 0 30px;
+}
+
+#right-switch:checked ~ .switch-bg {
+  transform: translateX(100%);
+  background-color: #162536;
+  border-radius: 0 30px 30px 0;
+}
+
+input:checked + label {
+  color: #ecf0f1;
+}
