@@ -205,19 +205,19 @@ async function predict() {
   for (let j = 0; j < 5; j++) {
     let resultText
     if (resultArray[j].key === 'dog') {
-      resultText = '강아지'
+      resultText = '강아지상'
     } else if (resultArray[j].key === 'cat') {
-      resultText = '고양이'
+      resultText = '고양이상'
     } else if (resultArray[j].key === 'dinosaur') {
-      resultText = '공룡'
+      resultText = '공룡상'
     } else if (resultArray[j].key === 'bear') {
-      resultText = '곰'
+      resultText = '곰상'
     } else if (resultArray[j].key === 'rabbit') {
-      resultText = '토끼'
+      resultText = '토끼상'
     } else if (resultArray[j].key === 'fox') {
-      resultText = '여우'
+      resultText = '여우상'
     } else if (resultArray[j].key === 'deer') {
-      resultText = '사슴'
+      resultText = '사슴상'
     }
     if (resultArray[j].value === 0) {
       starsListImg =
