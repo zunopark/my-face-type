@@ -19,6 +19,10 @@
   font-style: normal;
 }
 
+.main_upper_content_wrap img {
+  width: 100%;
+}
+
 .randomBanner {
   width: 320px;
 }

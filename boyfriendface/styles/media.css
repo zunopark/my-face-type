@@ -52,10 +52,14 @@
   .header_chat {
     width: 500px;
   }
+  .main_upper_content_wrap {
+    width: 468px;
+  }
 }
 @media screen and (max-width: 499px) {
   .main_body_wrap,
-  .header_chat {
+  .header_chat,
+  .main_upper_contetn_wrap {
     width: 100%;
   }
 

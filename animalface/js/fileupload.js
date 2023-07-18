@@ -353,7 +353,7 @@ async function predict() {
   labelContainer.appendChild(otherResult)
 
   function getResultGtag() {
-    gtag('event', `관상 한 번 더 결과`, {
+    gtag('event', `동물상 결과`, {
       result: `${answer}`,
     })
   }
