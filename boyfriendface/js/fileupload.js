@@ -176,7 +176,7 @@ async function predict() {
   for (let j = 0; j < 5; j++) {
     let resultText
     if (resultArray[j].key === 'dog') {
-      resultText = '공룡상
+      resultText = '공룡상'
     } else if (resultArray[j].key === 'cat') {
       resultText = '곰상'
     } else if (resultArray[j].key === 'dinosaur') {
