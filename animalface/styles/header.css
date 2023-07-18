@@ -3,6 +3,7 @@
   top: 0px;
   z-index: 999;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+  font-family: 'MapoBackpacking';
 }
 
 .header_chat_wrap {
@@ -11,7 +12,7 @@
   justify-content: flex-start;
   align-items: center;
   padding: 20px;
-  background-color: #2f2f32;
+  background-color: #59371e;
 }
 
 .header_chat_back {
@@ -24,7 +25,7 @@
 }
 
 .header_chat_title {
-  color: rgb(106, 106, 106);
+  color: #a5947d;
   font-size: 24px;
   text-decoration: none;
   margin-right: 20px;
