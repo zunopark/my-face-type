@@ -24,11 +24,8 @@ body {
 }
 
 .main_content_wrap_top_margin {
+  /* margin-top: 56px; */
   margin-top: 24px;
-}
-
-.main_content_wrap {
-  margin-top: 60px;
 }
 
 * {

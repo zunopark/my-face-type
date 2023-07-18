@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta
       name="description"
-      content="chatGPT 활용 AI 상담 봇! 양반 AI 들과 따뜻한 하루 보내세요. 관상, 관상 테스트, 관상가 양반"
+      content="인공지능이 말해주는 내 관상! 나와 닮은 연예인은 누구일까? 관상가 양반에게 관상 테스트를 받아 알아보세요! | 관상 테스트 "
     />
     <meta
       name="keywords"
@@ -13,11 +13,11 @@
     />
     <meta name="author" content="Nmax" />
     <meta property="og:type" content="website" />
+    <meta property="og:title" content="관상 | 인공지능이 말해주는 내 관상" />
     <meta
-      property="og:title"
-      content="양반AI - 관상, 관상 테스트, 관상가 양반"
+      property="og:description"
+      content="인공지능이 말해주는 내 관상! 나와 닮은 연예인은 누구일까? 관상가 양반에게 관상 테스트를 받아 알아보세요!"
     />
-    <meta property="og:description" content="AI양반들과 직접 대화해보세요!" />
     <meta property="og:image" content="https://i.ibb.co/TPXQnk0/nammme.png" />
     <meta
       name="google-site-verification"
@@ -27,7 +27,7 @@
       name="google-site-verification"
       content="1OfOPLe0KtYlpDARcO1LVhTvWfNRNKndeIhnkYo_i34"
     />
-    <link rel="canonical" href="https://keen-poitras-075b07.netlify.app/" />
+    <link rel="canonical" href="https://keen-poitras-075b07.netlify.app" />
     <link rel="stylesheet" href="styles/style.css" />
     <link
       rel="stylesheet"
@@ -50,7 +50,7 @@
       }
     </style>
 
-    <title>양반AI | 관상, 관상 테스트, 관상가 양반</title>
+    <title>관상 | 관상 테스트</title>
     <meta
       name="naver-site-verification"
       content="95cd8990ed3962c82f8898a9372ce4b24dddbcb9"
@@ -107,152 +107,326 @@
       <header id="face" class="header"></header>
       <header class="header_chat">
         <div class="header_chat_wrap">
-          <h1 class="header_chat_title">양반 AI</h1>
-          <div class="header_title_date"></div>
+          <a href="/" class="header_chat_back">
+            <!-- <i class="fa-solid fa-chevron-left"></i> -->
+          </a>
+          <h1 class="header_chat_title">관상 테스트</h1>
+          <div style="width: 40px;"></div>
         </div>
       </header>
-      <!-- <div class="header_ad">
-        <div class="ad_box">
+      <div class="main_content_wrap">
+        <div class="main__ai__title">
+          <h1 class="subtitle">
+            인공지능이 알려주는 내 관상
+          </h1>
+          <h2
+            class="number"
+            style="
+              font-size: 16px;
+              color: rgb(196, 196, 196);
+              margin-top: 16px;
+              font-weight: 300;
+            "
+          >
+            지금까지
+            <span class="count__num" style="color: white;"></span>
+            번 관상을 봤어요.
+          </h2>
+        </div>
+
+        <!-- <div id="container">
+      <div class="inner-container">
+        <div class="toggle">
+          <p>남</p>
+        </div>
+        <div class="toggle">
+          <p>여</p>
+        </div>
+      </div>
+      <div class="inner-container" id="toggle-container">
+        <div class="toggle">
+          <p>남</p>
+        </div>
+        <div class="toggle">
+          <p>여</p>
+        </div>
+      </div>
+    </div> -->
+
+        <div class="ad_box" id="container2">
           <ins
             class="adsbygoogle"
             style="display: inline-block; width: 320px; height: 50px;"
             data-ad-client="ca-pub-4478069136800837"
-            data-ad-slot="2066088961"
+            data-ad-slot="4097923844"
           ></ins>
           <script>
             ;(adsbygoogle = window.adsbygoogle || []).push({})
           </script>
         </div>
-      </div> -->
-      <div class="main_yangban_wrap">
-        <div class="main_upper_wrap">
-          <div class="main_upper_title">양반 공식 앱</div>
-          <div class="main_upper_content">
+
+        <div class="border">
+          <div class="frame">
+            <div class="image">
+              <script
+                class="jsbin"
+                src="https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"
+              ></script>
+              <div class="file-upload">
+                <div class="image-upload-wrap">
+                  <input
+                    class="file-upload-input"
+                    type="file"
+                    onchange="readURL(this);"
+                    accept="image/*"
+                  />
+                  <div class="drag-text">
+                    <i class="far fa-image"></i>
+                    <h2 style="font-family: KimjungchulMyungjo-Bold;">
+                      (사진 첨부)
+                    </h2>
+                    <h3 style="font-family: KimjungchulMyungjo-Bold;">
+                      관상? 얼굴 한번 봅시다
+                    </h3>
+                  </div>
+                </div>
+                <div class="file-upload-content">
+                  <img
+                    class="file-upload-image"
+                    id="face-image"
+                    src="#"
+                    alt="your image"
+                  />
+                  <div class="image-title-wrap">
+                    <div class="ai">관상가가 당신의 관상을 분석중..</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="noti">*사용자의 사진은 어디에도 저장되지 않습니다.</div>
+
+        <div id="label-container" class="result"></div>
+        <div class="ad_box">
+          <ins
+            class="adsbygoogle"
+            style="display: inline-block; width: 320px; height: 50px;"
+            data-ad-client="ca-pub-4478069136800837"
+            data-ad-slot="6658485451"
+          ></ins>
+          <script>
+            ;(adsbygoogle = window.adsbygoogle || []).push({})
+          </script>
+        </div>
+        <div class="ad_box3">
+          <ins
+            class="adsbygoogle"
+            style="display: inline-block; width: 320px; height: 250px;"
+            data-ad-client="ca-pub-4478069136800837"
+            data-ad-slot="2416326457"
+          ></ins>
+          <script>
+            ;(adsbygoogle = window.adsbygoogle || []).push({})
+          </script>
+        </div>
+
+        <!-- <div class="ad_box5">
+          <ins
+            class="adsbygoogle"
+            style="display: inline-block; width: 320px; height: 100px;"
+            data-ad-client="ca-pub-4478069136800837"
+            data-ad-slot="5262901512"
+          ></ins>
+          <script>
+            ;(adsbygoogle = window.adsbygoogle || []).push({})
+          </script>
+        </div> -->
+        <!-- <a
+          href="https://play.google.com/store/apps/details?id=com.yangban&pli=1"
+          class="banner_wrap"
+          onclick="gtag('event', '앱 다운로드 배너 - 관상')"
+        >
+          <img src="https://i.ibb.co/SfqhMR2/00.png" />
+        </a> -->
+        <a
+          href="/analysis/"
+          class="face_analysis_contents"
+          style="margin-bottom: 10px;"
+          onclick="gtag('event', '관상학적 해석')"
+        >
+          관상 해석 글로 확인하기
+          <span>></span>
+        </a>
+        <a
+          href="/analysis/part/nose.html"
+          class="face_analysis_contents"
+          style="margin-bottom: 10px;"
+          onclick="gtag('event', '관상학적 해석')"
+        >
+          1. 코 - 관상 해석 알아보기
+          <span>></span>
+        </a>
+        <a
+          href="/analysis/part/eyes.html"
+          class="face_analysis_contents"
+          style="margin-bottom: 10px;"
+          onclick="gtag('event', '관상학적 해석')"
+        >
+          2. 눈 - 관상 해석 알아보기
+          <span>></span>
+        </a>
+
+        <!-- <div
+          style="margin-top: 20px; margin-bottom: 20px;"
+          class="habitown__banner__wrap"
+        >
+          <div class="habitown__banner">
+            <div class="habitown__btn">
+              <div class="habitown__left">
+                <div class="left__icon">
+                  <img src="https://i.ibb.co/qFmvmN2/logo-1.png" alt="" />
+                </div>
+                <div class="left__description">
+                  <div class="left__title">
+                    [공식 앱] 관상가 양반
+                  </div>
+                  <div class="left__sub">인공지능이 알려주는 내 관상</div>
+                  <div class="left__star">
+                    <i class="fas fa-star" style="user-select: auto;"></i>
+                    <i class="fas fa-star" style="user-select: auto;"></i>
+                    <i class="fas fa-star" style="user-select: auto;"></i>
+                    <i class="fas fa-star" style="user-select: auto;"></i>
+                    <i class="fas fa-star" style="user-select: auto;"></i>
+                    <span>322</span>
+                  </div>
+                </div>
+              </div>
+              <div class="habitown__app__download">
+                <a
+                  href="https://play.google.com/store/apps/details?id=com.yangban&pli=1"
+                  class="app__download__btn"
+                  onclick="gtag('event', 'ai양반app 대형 광고1');"
+                >
+                  열기
+                </a>
+              </div>
+            </div>
+
+            <div class="habitown__under__img__wrap">
+              <div class="habitown__img under__img1">
+                <img src="https://i.ibb.co/DVf6t6s/1-1.jpg" alt="" />
+              </div>
+              <div class="habitown__img under__img2">
+                <img src="https://i.ibb.co/5K1ktpf/1-2.jpg" alt="" />
+              </div>
+              <div class="habitown__img under__img3">
+                <img src="https://i.ibb.co/pfL10QP/1-3.jpg" alt="" />
+              </div>
+            </div>
             <a
-              href="https://play.google.com/store/apps/details?id=com.yangban"
-              class="main_upper_content_wrap"
-              onclick="gtag('event', '양반AI 다운로드')"
-              target="_blank"
+              href="https://play.google.com/store/apps/details?id=com.yangban&pli=1"
+              class="habitown__download__btn__bottom"
+              onclick="gtag('event', 'ai양반app 대형 광고2');"
             >
-              <img
-                src="https://i.ibb.co/2FGPZYr/downbannner.png"
-                alt="양반ai 다운로드 배너"
-              />
+              관상 테스트 앱 열기
             </a>
-          </div>
-        </div>
-
-        <div class="main_lower_wrap">
-          <div class="main_lower_title">양반 테스트 3</div>
-          <div class="main_lower_content">
-            <div class="main_lower_content_wrap">
-              <a
-                href="/facetest"
-                class="yangban_profile_wrap"
-                onclick="gtag('event', '홈 - 관상 테스트')"
-              >
-                <div class="yangban_profile_left">
-                  <img
-                    src="https://i.ibb.co/r6L7RRL/facelogo.png"
-                    alt="양반 - 관상 테스트"
-                  />
-                </div>
-                <div class="yangban_profile_right">
-                  <div class="yangban_profile_right_upper">
-                    <div class="yangban_profile_name">관상 테스트</div>
-                    <div class="yangban_profile_hashtag_wrap">
-                      <div class="yangban_profile_hashtag">관상</div>
-                    </div>
-                  </div>
-                  <div class="yangban_profile_right_lower">
-                    <div class="yangban_profile_description">
-                      인공지능이 알려주는 내 관상
-                    </div>
-                  </div>
-                </div>
-              </a>
-            </div>
-            <div class="main_lower_content_wrap">
-              <a
-                href="/fortune"
-                class="yangban_profile_wrap"
-                onclick="gtag('event', '홈 - 오늘의 운세')"
-              >
-                <div class="yangban_profile_left">
-                  <img
-                    src="https://i.ibb.co/tJZTZJr/fortunelogo.png"
-                    alt="양반 - 오늘의 운세"
-                  />
-                </div>
-                <div class="yangban_profile_right">
-                  <div class="yangban_profile_right_upper">
-                    <div class="yangban_profile_name">오늘의 운세</div>
-                    <div class="yangban_profile_hashtag_wrap">
-                      <div class="yangban_profile_hashtag">총운</div>
-                      <div class="yangban_profile_hashtag">사주</div>
-                    </div>
-                  </div>
-                  <div class="yangban_profile_right_lower">
-                    <div class="yangban_profile_description">
-                      내 사주로 알아보는 오늘 운세
-                    </div>
-                  </div>
-                </div>
-              </a>
-            </div>
-            <div class="">
-              <ins
-                class="adsbygoogle"
-                style="display: block;"
-                data-ad-format="fluid"
-                data-ad-layout-key="-ha-5+1w-6l+86"
-                data-ad-client="ca-pub-4478069136800837"
-                data-ad-slot="3160608395"
-              ></ins>
-              <script>
-                ;(adsbygoogle = window.adsbygoogle || []).push({})
-              </script>
-            </div>
-
-            <div class="main_lower_content_wrap">
-              <a
-                href="/dream"
-                class="yangban_profile_wrap"
-                onclick="gtag('event', '홈 - 해몽 테스트')"
-              >
-                <div class="yangban_profile_left">
-                  <img
-                    src="https://i.ibb.co/cv3yp9b/dreamlogo.png"
-                    alt="양반 - 해몽 풀이"
-                  />
-                </div>
-                <div class="yangban_profile_right">
-                  <div class="yangban_profile_right_upper">
-                    <div class="yangban_profile_name">꿈 풀이하기</div>
-                    <div class="yangban_profile_hashtag_wrap">
-                      <div class="yangban_profile_hashtag">해몽</div>
-                      <div class="yangban_profile_hashtag">이야기</div>
-                    </div>
-                  </div>
-                  <div class="yangban_profile_right_lower">
-                    <div class="yangban_profile_description">
-                      어젯밤 꿈 이야기 해석하기
-                    </div>
-                  </div>
-                </div>
-              </a>
+            <div class="habitown__cancel__btn__bottom">
+              <div class="cancel__btn__left">
+                다시 보지 않기
+              </div>
+              <div class="cancel__btn__right">
+                닫기
+              </div>
             </div>
           </div>
-        </div>
+          <div class="black__board"></div>
+        </div> -->
+        <!-- <div class="ad_box7">
+          <ins
+            class="adsbygoogle"
+            style="display: inline-block; width: 300px; height: 250px;"
+            data-ad-client="ca-pub-4478069136800837"
+            data-ad-slot="4117107660"
+          ></ins>
+          <script>
+            ;(adsbygoogle = window.adsbygoogle || []).push({})
+          </script>
+        </div> -->
+        <!-- <div class="ad_box5">
+          <ins
+            class="adsbygoogle"
+            style="display: inline-block; width: 320px; height: 100px;"
+            data-ad-client="ca-pub-4478069136800837"
+            data-ad-slot="5262901512"
+          ></ins>
+          <script>
+            ;(adsbygoogle = window.adsbygoogle || []).push({})
+          </script>
+        </div> -->
       </div>
-
       <footer class="footer"></footer>
+      <!-- <div class="bottom_nav2">
+        <div class="botton_nav_wrap2">
+          <span class="bottom_app_down_text">
+            앱 출시 (무료 관상, 운세, 해몽, 궁합)
+          </span>
+          <a
+            href="https://play.google.com/store/apps/details?id=com.yangban&pli=1"
+            class="bottom_app_down_btn"
+            onclick="gtag('event', '앱 다운로드 배너 - 바텀네비')"
+          >
+            다운로드
+          </a>
+        </div>
+      </div> -->
+      <!-- <nav class="bottom_nav">
+        <a
+          href="https://play.google.com/store/apps/details?id=com.yangban&pli=1"
+          class="bottom_nav_wrap"
+          target="_blank"
+          onclick="gtag('event', '바텀 네비 - 양반App')"
+        >
+          <img
+            src="https://i.ibb.co/qFmvmN2/logo-1.png"
+            alt=""
+            class="bottom_nav_img"
+          />
+          <div class="bottom_nav_text">AI 양반</div>
+        </a>
+        <a
+          href="/"
+          class="bottom_nav_wrap bottom_nav_selected"
+          onclick="gtag('event', '바텀 네비 - 관상')"
+        >
+          <i class="fa fa-thin fa-id-badge bottom_nav_icon"></i>
+          <div class="bottom_nav_text">관상</div>
+        </a>
+        <a
+          href="/fortune"
+          class="bottom_nav_wrap"
+          onclick="gtag('event', '바텀 네비 - 운세')"
+        >
+          <i class="fa fa-thin fa-calendar bottom_nav_icon"></i>
+          <div class="bottom_nav_text">운세</div>
+        </a>
+        <a
+          href="/dream"
+          class="bottom_nav_wrap"
+          onclick="gtag('event', '바텀 네비 - 해몽')"
+        >
+          <i class="fa fa-thin fa-moon bottom_nav_icon"></i>
+          <div class="bottom_nav_text">꿈 해몽</div>
+        </a>
+      </nav> -->
     </div>
 
+    <script src="js/footer.js"></script>
     <script src="js/header.js"></script>
     <script src="js/livetime.js"></script>
     <script src="js/ad.js"></script>
-    <script src="js/footer.js"></script>
+    <script src="js/fileupload.js"></script>
 
     <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@1.3.1/dist/tf.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@teachablemachine/image@0.8/dist/teachablemachine-image.min.js"></script>
