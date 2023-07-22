@@ -377,7 +377,7 @@ async function predict() {
   consult.addEventListener('click', handleConsult)
 
   function handleConsult() {
-    location.href = '/kimmjface'
+    location.href = '/premium'
   }
 
   // 앱 다운 함수

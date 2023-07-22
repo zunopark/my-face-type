@@ -381,7 +381,7 @@ async function predict() {
   consult.addEventListener('click', handleConsult)
 
   function handleConsult() {
-    location.href = '/kimmjface'
+    location.href = '/premium'
   }
 
   // let appDown = document.createElement('button')
