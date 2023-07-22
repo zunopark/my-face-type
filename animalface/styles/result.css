@@ -47,6 +47,27 @@
   border: none;
 }
 
+.consult__btn {
+  background-color: #3f3f3f;
+  border-radius: 12px;
+  margin-bottom: 12px;
+  width: 240px;
+  padding: 12px 0px;
+  color: rgb(54, 54, 54);
+  font-size: 16px;
+  font-family: 'KimjungchulMyungjo-Bold';
+  outline: none;
+  border: none;
+}
+
+.consult__btn span {
+  background: transparent;
+  color: transparent;
+  background-image: linear-gradient(to right, #ffd700, #ffa500);
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+
 .app_down_btn {
   background-color: #ffe924;
   border-radius: 12px;
