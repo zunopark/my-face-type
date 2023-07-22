@@ -333,27 +333,11 @@ async function predict() {
   let reset = document.createElement('button')
   reset.innerHTML = `
   <span>다른 사진 해보기</span>`
-
   reset.classList.add('reset__btn')
   reset.onclick = function () {
     gtag('event', '한번 더 클릭')
   }
   labelContainer.appendChild(reset)
-
-  let consult = document.createElement('button')
-  consult.innerHTML = `
-  <span>관상 더 자세히 알아보기</span>`
-  consult.classList.add('consult__btn')
-  consult.onclick = function () {
-    gtag('event', '결과 후 상담 버튼 클릭')
-  }
-  labelContainer.appendChild(consult)
-
-  consult.addEventListener('click', handleConsult)
-
-  function handleConsult() {
-    location.href = '/kimmjface'
-  }
 
   // let appDown = document.createElement('button')
   // appDown.innerHTML = `

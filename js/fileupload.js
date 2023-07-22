@@ -341,7 +341,7 @@ async function predict() {
   // labelContainer.appendChild(otherResult)
 
   function getResultGtag() {
-    gtag('event', `관상 한 번 더 결과`, {
+    gtag('event', `관상 결과`, {
       result: `${answer}`,
     })
   }
@@ -350,44 +350,34 @@ async function predict() {
   let reset = document.createElement('button')
   reset.innerHTML = `
   <span>다른 사진 해보기</span>`
-
   reset.classList.add('reset__btn')
   reset.onclick = function () {
     gtag('event', '한번 더 클릭')
   }
   labelContainer.appendChild(reset)
 
-  // let appDown = document.createElement('button')
-  // appDown.innerHTML = `
-  // <span>오늘의 운세 보기</span>
-  // `
-  // appDown.classList.add('app_down_btn')
-  // appDown.onclick = function () {
-  //   gtag('event', '결과 - 오늘 운세 워딩')
-  // }
-  // labelContainer.appendChild(appDown)
-
-  // let share = document.createElement('button')
-  // share.innerHTML = `
-  // <span>주변에 관상 테스트 알려주기</span>
-  // `
-  // share.classList.add('share__btn')
-  // share.onclick = function () {
-  //   gtag('event', '공유하기')
-  // }
-  // labelContainer.appendChild(share)
-
   reset.addEventListener('click', handleReset)
-  // appDown.addEventListener('click', handleAppDown)
-  // share.addEventListener('click', handleFortune)
-  // share.addEventListener('click', kakaoShare)
 
-  // 한번 더 하기 함수
   function handleReset() {
     location.reload(true)
     location.href = location.href
     history.go(0)
     // location.href = '/more'
+  }
+
+  let consult = document.createElement('button')
+  consult.innerHTML = `
+  <span>관상 더 자세히 알아보기</span>`
+  consult.classList.add('consult__btn')
+  consult.onclick = function () {
+    gtag('event', '결과 후 상담 버튼 클릭')
+  }
+  labelContainer.appendChild(consult)
+
+  consult.addEventListener('click', handleConsult)
+
+  function handleConsult() {
+    location.href = '/kimmjface'
   }
 
   // 앱 다운 함수
@@ -396,10 +386,6 @@ async function predict() {
   //     'https://play.google.com/store/apps/details?id=com.yangban&pli=1'
   //   location.href = '/fortune'
   //   'http://pf.kakao.com/_Qfuvxj/chat'
-  // }
-
-  // function handleFortune() {
-  //   location.href = '/fortune'
   // }
 
   // function kakaoShare() {

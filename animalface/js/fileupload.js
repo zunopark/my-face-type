@@ -369,6 +369,21 @@ async function predict() {
   }
   labelContainer.appendChild(reset)
 
+  let consult = document.createElement('button')
+  consult.innerHTML = `
+  <span>관상 더 자세히 알아보기</span>`
+  consult.classList.add('consult__btn')
+  consult.onclick = function () {
+    gtag('event', '결과 후 상담 버튼 클릭')
+  }
+  labelContainer.appendChild(consult)
+
+  consult.addEventListener('click', handleConsult)
+
+  function handleConsult() {
+    location.href = '/kimmjface'
+  }
+
   // let appDown = document.createElement('button')
   // appDown.innerHTML = `
   // <span>오늘의 운세 보기</span>
