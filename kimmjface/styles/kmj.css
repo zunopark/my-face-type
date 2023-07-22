@@ -328,6 +328,13 @@
   display: flex;
 }
 
+.fifth_contents_1 {
+  color: white;
+  opacity: 0.8;
+  margin-top: 10px;
+  font-weight: 300;
+}
+
 .sixth_display {
   width: 100%;
   border-bottom: 1px solid #c3c3c34d;
