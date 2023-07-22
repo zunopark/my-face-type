@@ -32,7 +32,12 @@
 }
 
 .header_selected {
-  color: #f1ce81;
+  background: transparent;
+  color: transparent;
+  background-image: linear-gradient(to right, #ffd700, #ffa500);
+  -webkit-background-clip: text;
+  background-clip: text;
+  font-family: 'KimjungchulMyungjo-Bold';
   font-weight: 700;
 }
 
