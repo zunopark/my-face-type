@@ -3,23 +3,30 @@
 .footer-button {
   position: fixed;
   width: 100%;
-  bottom: 0;
-  background: #333;
+  bottom: -1px;
+  background-color: #2f2f2f;
   color: #fff;
   text-align: center;
   padding-bottom: 20px;
 }
 
-.footer-button button {
-  width: 100%;
+.consultBtn {
+  width: 90%;
   border: none;
-  padding: 16px 0;
+  padding: 16px 32px;
+  padding-bottom: 18px;
   text-align: center;
   text-decoration: none;
   display: inline-block;
-  font-size: 24px;
   margin: 4px 2px;
   cursor: pointer;
+  background-color: #222222;
+  border-radius: 10px;
+  margin-top: 10px;
+}
+
+.consultBtn span {
+  font-size: 20px;
   background: transparent;
   color: transparent;
   background-image: linear-gradient(to right, #ffd700, #ffa500);
@@ -30,7 +37,7 @@
 
 #timer {
   font-size: 16px;
-  background-color: rgb(125, 125, 125);
+  background-color: #7d7d7d;
   padding: 12px 0;
   height: 40px;
 }
