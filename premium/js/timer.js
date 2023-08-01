@@ -1,4 +1,4 @@
-let deadline = new Date('2023-08-01T00:00:00')
+let deadline = new Date('2023-08-31T00:00:00')
 
 function getTimeRemaining(endtime) {
   let t = Date.parse(endtime) - Date.parse(new Date())
