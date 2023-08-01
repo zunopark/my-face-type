@@ -20,7 +20,7 @@ function initializeClock(id, endtime) {
   let timeinterval = setInterval(function () {
     let t = getTimeRemaining(endtime)
     clock.innerHTML =
-      '추첨까지 ' +
+      '마감까지 ' +
       t.days +
       '일 ' +
       t.hours +
@@ -31,7 +31,7 @@ function initializeClock(id, endtime) {
       '초 '
     if (t.total <= 0) {
       clearInterval(timeinterval)
-      clock.innerHTML = '시간이 만료되었습니다.'
+      clock.innerHTML = '기한이 만료되었습니다.'
     }
   }, 1000)
 }
