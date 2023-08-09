@@ -227,15 +227,13 @@
         </div>
         <div class="ad_box3">
           <a
-            href="https://play.google.com/store/apps/details?id=com.yangban"
+            id="randomImageAlink"
+            href="https://onelink.to/9wsxet"
             class="main_upper_content_wrap"
             onclick="gtag('event', '양반AI 다운로드')"
             target="_blank"
           >
-            <img
-              src="https://i.ibb.co/2FGPZYr/downbannner.png"
-              alt="양반ai 다운로드 배너"
-            />
+            <img id="randomImage" src="" alt="스픽볼 배너" />
           </a>
         </div>
       </div>
@@ -247,6 +245,28 @@
     <script src="js/livetime.js"></script>
     <script src="js/ad.js"></script>
     <script src="js/fileupload.js"></script>
+
+    <script>
+      window.onload = function () {
+        var images = [
+          'https://i.ibb.co/GnW0PTR/Group-1198.png', // 이미지 1의 경로
+          'https://i.ibb.co/12vLjCL/Group-1199.png', // 이미지 2의 경로
+          'https://i.ibb.co/Tk79bLc/Group-1200.png', // 이미지 3의 경로
+          'https://i.ibb.co/9cwsBTd/Group-1201.png', // 이미지 4의 경로
+        ]
+
+        var randomIndex = Math.floor(Math.random() * images.length)
+        var selectedImage = images[randomIndex]
+
+        let randomIndexGtag = '스픽볼 배너 이미지 선택 ' + randomIndex
+
+        document.getElementById('randomImage').src = selectedImage
+        const randomImageA = document.getElementById('randomImageAlink')
+        randomImageA.addEventListener('click', () => {
+          gtag('event', randomIndexGtag)
+        })
+      }
+    </script>
 
     <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@1.3.1/dist/tf.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@teachablemachine/image@0.8/dist/teachablemachine-image.min.js"></script>
