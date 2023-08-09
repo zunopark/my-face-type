@@ -49,6 +49,14 @@
   margin-top: 20px;
 }
 
+.ad_box8 {
+  width: 320px;
+  height: 180px;
+  margin: 0 outo;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
 .bottom_ad {
   display: flex;
   flex-direction: column;
