@@ -347,7 +347,7 @@ async function predict() {
   consult.onclick = function () {
     gtag('event', '결과 후 상담 버튼 클릭')
   }
-  labelContainer.appendChild(consult)
+  // labelContainer.appendChild(consult)
 
   consult.addEventListener('click', handleConsult)
 
