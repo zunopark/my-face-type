@@ -208,6 +208,7 @@
             id="randomImageAlink"
             href="https://onelink.to/9wsxet"
             class="main_upper_content_wrap"
+            onclick="gtag('event', '스픽볼 다운로드 메인 배너')"
             target="_blank"
           >
             <img id="randomImage" src="" alt="스픽볼 배너" />
@@ -436,10 +437,6 @@
         let randomIndexGtag = '스픽볼 배너 이미지 선택 ' + randomIndex
 
         document.getElementById('randomImage').src = selectedImage
-        const randomImageA = document.getElementById('randomImageAlink')
-        randomImageA.addEventListener('click', () => {
-          gtag('event', randomIndexGtag)
-        })
       }
       imageRandomFunc()
     </script>
