@@ -48,12 +48,12 @@
 }
 
 .consult__btn {
-  background-color: #3f3f3f;
+  background-color: white;
   border-radius: 12px;
   margin-bottom: 12px;
   width: 240px;
   padding: 12px 0px;
-  color: rgb(54, 54, 54);
+  color: white;
   font-size: 16px;
   font-family: 'KimjungchulMyungjo-Bold';
   outline: none;
@@ -63,7 +63,7 @@
 .consult__btn span {
   background: transparent;
   color: transparent;
-  background-image: linear-gradient(to right, #ffd700, #ffa500);
+  background-image: linear-gradient(to right, #00a1e7, #0500e7);
   -webkit-background-clip: text;
   background-clip: text;
 }
