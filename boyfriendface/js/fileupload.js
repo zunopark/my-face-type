@@ -342,17 +342,17 @@ async function predict() {
 
   let consult = document.createElement('button')
   consult.innerHTML = `
-  <span>관상 더 자세히 알아보기</span>`
+  <span>하루 10분 앱태크 [돈버는앱]</span>`
   consult.classList.add('consult__btn')
   consult.onclick = function () {
-    gtag('event', '결과 후 상담 버튼 클릭')
+    gtag('event', '결과 후 스픽볼 배너 - 돈버는앱')
   }
-  // labelContainer.appendChild(consult)
+  labelContainer.appendChild(consult)
 
   consult.addEventListener('click', handleConsult)
 
   function handleConsult() {
-    location.href = '/premium'
+    location.href = 'https://onelink.to/9wsxet'
   }
 
   // let appDown = document.createElement('button')
