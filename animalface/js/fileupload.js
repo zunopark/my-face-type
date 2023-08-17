@@ -371,10 +371,10 @@ async function predict() {
 
   let consult = document.createElement('button')
   consult.innerHTML = `
-  <span>하루 10분 앱태크 [돈버는앱]</span>`
+  <span>스타벅스 커피 무료로 받기</span>`
   consult.classList.add('consult__btn')
   consult.onclick = function () {
-    gtag('event', '결과 후 스픽볼 배너 - 돈버는앱')
+    gtag('event', '결과 후 스픽볼 배너[스타벅스]')
   }
   labelContainer.appendChild(consult)
 

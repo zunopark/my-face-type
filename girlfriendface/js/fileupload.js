@@ -333,24 +333,27 @@ async function predict() {
   let reset = document.createElement('button')
   reset.innerHTML = `
   <span>다른 사진 해보기</span>`
-
   reset.classList.add('reset__btn')
   reset.onclick = function () {
-    gtag('event', '한번 더 클릭')
+    gtag('event', '한번 더 클릭[여자친구]')
   }
   labelContainer.appendChild(reset)
+  reset.addEventListener('click', handleReset)
+  function handleReset() {
+    location.reload(true)
+    location.href = location.href
+    history.go(0)
+  }
 
   let consult = document.createElement('button')
   consult.innerHTML = `
-  <span>하루 10분 앱태크 [돈버는앱]</span>`
+  <span>스타벅스 무료로 받기</span>`
   consult.classList.add('consult__btn')
   consult.onclick = function () {
-    gtag('event', '결과 후 스픽볼 배너 - 돈버는앱')
+    gtag('event', '결과 후 스픽볼 배너[스타벅스]')
   }
   labelContainer.appendChild(consult)
-
   consult.addEventListener('click', handleConsult)
-
   function handleConsult() {
     location.href = 'https://onelink.to/9wsxet'
   }
@@ -375,18 +378,11 @@ async function predict() {
   // }
   // labelContainer.appendChild(share)
 
-  reset.addEventListener('click', handleReset)
   // appDown.addEventListener('click', handleAppDown)
   // share.addEventListener('click', handleFortune)
   // share.addEventListener('click', kakaoShare)
 
   // 한번 더 하기 함수
-  function handleReset() {
-    location.reload(true)
-    location.href = location.href
-    history.go(0)
-    // location.href = '/more'
-  }
 
   // 앱 다운 함수
   // function handleAppDown() {

@@ -370,7 +370,7 @@ async function predict() {
   <span>스타벅스 커피 무료로 받기</span>`
   consult.classList.add('consult__btn')
   consult.onclick = function () {
-    gtag('event', '결과 후 스픽볼 배너 - 스타벅스')
+    gtag('event', '결과 후 스픽볼 배너[스타벅스]')
   }
   labelContainer.appendChild(consult)
 
