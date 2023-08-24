@@ -340,23 +340,24 @@ async function predict() {
   labelContainer.appendChild(reset)
   reset.addEventListener('click', handleReset)
   function handleReset() {
+    window.open('https://onelink.to/9wsxet')
     location.reload(true)
     location.href = location.href
     history.go(0)
   }
 
-  let consult = document.createElement('button')
-  consult.innerHTML = `
-  <span>매일 10분, 200원 앱태크</span>`
-  consult.classList.add('consult__btn')
-  consult.onclick = function () {
-    gtag('event', '결과 후 스픽볼 배너[200원 앱태크]')
-  }
-  labelContainer.appendChild(consult)
-  consult.addEventListener('click', handleConsult)
-  function handleConsult() {
-    location.href = 'https://onelink.to/9wsxet'
-  }
+  // let consult = document.createElement('button')
+  // consult.innerHTML = `
+  // <span>매일 10분, 200원 앱태크</span>`
+  // consult.classList.add('consult__btn')
+  // consult.onclick = function () {
+  //   gtag('event', '결과 후 스픽볼 배너[200원 앱태크]')
+  // }
+  // labelContainer.appendChild(consult)
+  // consult.addEventListener('click', handleConsult)
+  // function handleConsult() {
+  //   location.href = 'https://onelink.to/9wsxet'
+  // }
 
   // let appDown = document.createElement('button')
   // appDown.innerHTML = `

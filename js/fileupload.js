@@ -359,7 +359,7 @@ async function predict() {
   reset.addEventListener('click', handleReset)
 
   function handleReset() {
-    // window.open('https://onelink.to/9wsxet')
+    window.open('https://onelink.to/9wsxet')
 
     location.reload(true)
     location.href = location.href
