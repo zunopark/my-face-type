@@ -359,7 +359,32 @@ async function predict() {
   reset.addEventListener('click', handleReset)
 
   function handleReset() {
-    window.open('https://onelink.to/9wsxet')
+    checkMobile()
+
+    function checkMobile() {
+      const mobileType = navigator.userAgent.toLowerCase()
+
+      if (mobileType.indexOf('android') > -1) {
+        return window.open(
+          'https://play.google.com/store/apps/details?id=com.nmax.cashball',
+          '_blank',
+        )
+      } else if (
+        mobileType.indexOf('iphone') > -1 ||
+        mobileType.indexOf('ipad') > -1 ||
+        mobileType.indexOf('ipod') > -1
+      ) {
+        return window.open(
+          'https://apps.apple.com/kr/app/%EC%8A%A4%ED%94%BD%EB%B3%BC-%EB%8F%88-%EB%B2%84%EB%8A%94-%EC%98%81%EC%96%B4-%ED%9A%8C%ED%99%94-%EC%95%B1-%EC%8A%A4%ED%94%BC%ED%82%B9-%EB%A6%AC%EC%8A%A4%EB%8B%9D/id6457251682',
+          '_blank',
+        )
+      } else {
+        return window.open(
+          'https://play.google.com/store/apps/details?id=com.nmax.cashball',
+          '_blank',
+        )
+      }
+    }
 
     location.reload(true)
     location.href = location.href
