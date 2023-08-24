@@ -9,6 +9,10 @@
 @import 'ad.css';
 @import 'media.css';
 
+.mosaic_style {
+  filter: blur(4px);
+}
+
 @import url('https://fonts.googleapis.com/css?family=Asap:400,500,700');
 
 @font-face {

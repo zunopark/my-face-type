@@ -1,0 +1,261 @@
+Hello! / 안녕하세요! / 헬로!
+Good morning! / 좋은 아침! / 굿 모닝!
+How are you? / 어떻게 지내세요? / 하우 아 유?
+Nice to meet you! / 만나서 반가워요! / 나이스 투 미 츄!
+Have a nice day! / 좋은 하루 보내세요! / 해브 어 나이스 데이!
+See you later! / 나중에 봐요! / 씨 유 레이러!
+Take care! / 조심하세요! / 테이크 케어!
+Good night! / 잘 자요! / 굿 나잇!
+Bye-bye! / 안녕히 가세요! / 바이-바이!
+What's up? / 무슨 일 있어요? / 왓츠 업?
+It's $5. / 5달러에요. / 잇츠 파이브 달러.
+I have three apples. / 나는 세 개의 사과를 가지고 있어요. / 아이 해브 쓰리 애플즈.
+She's 30 years old. / 그녀는 30살이야. / 쉬즈 써리 이어즈 올드.
+See you on Sunday. / 일요일에 봐. / 씨 유 온 선데이.
+I work on Saturdays. / 나는 토요일에 일해. / 아이 웍 온 새러데이즈.
+Today is May 5th. / 오늘은 5월 5일이야. / 투데이 이즈 메이 피프쓰.
+It's on the 3rd. / 3일에 있어. / 잇츠 온 더 써드.
+Meet me on Tuesday. / 화요일에 만나. / 밑 미 온 투즈데이.
+Three days left. / 3일 남았어. / 쓰리 데이즈 레프트.
+I need 5 tickets. / 나는 5장의 티켓이 필요해. / 아이 니드 파이브 티켓츠.
+It's 4:00 PM. / 오후 4시야. / 잇츠 포어 오클락 피엠.
+Call me at 6:30. / 6시 30분에 전화해. / 콜 미 앳 식스 써리.
+The event is on April 2nd. / 이벤트는 4월 2일에 있어. / 디 이벤트 이즈 온 에이프릴 세컨드.
+I'll call on Thursday. / 목요일에 전화할게. / 아일 콜 온 써스데이.
+She leaves on March 15th. / 그녀는 3월 15일에 떠나. / 쉬 리브스 온 마치 피프틴쓰.
+It's 50% off today. / 오늘은 50% 할인이야. / 잇츠 피프티 퍼센트 오프 투데이.
+It's a book. / 그것은 책이야. / 잇츠 어 북.
+I need a pen. / 나는 펜이 필요해. / 아이 니드 어 펜.
+Open the door. / 문을 열어. / 오픈 더 도어.
+Close the window. / 창문을 닫아. / 클로즈 더 윈도우.
+Pass the salt. / 소금 좀 넘겨줘. / 패스 더 솔트.
+Turn off the light. / 불을 꺼. / 턴 오프 더 라이트.
+I have the key. / 나는 열쇠를 가지고 있어. / 아이 해브 더 키.
+She took my phone. / 그녀가 내 폰을 가져갔어. / 쉬 툭 마이 폰.
+Use this chair. / 이 의자를 사용해. / 유즈 디스 체어.
+Find your shoes. / 네 신발을 찾아. / 파인드 유어 슈즈.
+It's her bag. / 그것은 그녀의 가방이야. / 잇츠 허 백.
+Wear your coat. / 네 코트를 입어. / 웨어 유어 코트.
+He's in the car. / 그는 차 안에 있어. / 히즈 인 더 카.
+Drink some water. / 물 좀 마셔. / 드링크 썸 워러.
+Lock the gate. / 문을 잠가. / 락 더 게이트.
+She lost her ring. / 그녀는 반지를 잃어버렸어. / 쉬 로스트 허 링.
+Watch the TV. / 텔레비전을 봐. / 왓치 더 티비.
+Read the paper. / 신문을 읽어. / 리드 더 페이퍼.
+Play the music. / 음악을 틀어. / 플레이 더 뮤직.
+He's on the phone. / 그는 전화 중이야. / 히즈 온 더 폰.
+He's my friend. / 그는 나의 친구야. / 히즈 마이 프렌드.
+She's a teacher. / 그녀는 선생님이야. / 쉬즈 어 티처.
+I'm a student. / 나는 학생이야. / 아임 어 스튜던트.
+You're late. / 너는 늦었어. / 유어 레잍.
+We're happy. / 우리는 행복해. / 위어 해피.
+They're busy. / 그들은 바빠. / 데이어 비지.
+He's a doctor. / 그는 의사야. / 히즈 어 닥터.
+She's kind. / 그녀는 친절해. / 쉬즈 카인드.
+I'm hungry. / 나는 배고파. / 아임 헝그리.
+You're right. / 너가 옳아. / 유어 라잍.
+We're family. / 우리는 가족이야. / 위어 패밀리.
+He's tall. / 그는 키가 커. / 히즈 톨.
+She's young. / 그녀는 젊어. / 쉬즈 영.
+I'm ready. / 나는 준비됐어. / 아임 레디.
+You're wrong. / 너는 틀렸어. / 유어 롱.
+We're early. / 우리는 일찍 왔어. / 위어 얼리.
+They're tired. / 그들은 피곤해. / 데이어 타이어드.
+He's old. / 그는 나이가 많아. / 히즈 올드.
+She's smart. / 그녀는 똑똑해. / 쉬즈 스마트.
+I'm happy. / 행복해. / 아임 해피
+I'm sad. / 슬퍼. / 아임 새드
+I'm angry. / 화나. / 아임 앵그리
+I'm tired. / 피곤해. / 아임 타이어드
+I'm scared. / 무서워. / 아임 스케어드
+I'm bored. / 심심해. / 아임 보어드
+I'm fine. / 괜찮아. / 아임 파인
+I'm sick. / 아파. / 아임 싴
+I'm hungry. / 배고파. / 아임 헝그리
+I'm thirsty. / 목말라. / 아임 써스티
+I'm excited. / 신나. / 아임 익사이티드
+I'm nervous. / 긴장돼. / 아임 너버스
+I'm sorry. / 미안해. / 아임 쏘리
+I'm confused. / 혼란스러워. / 아임 컨퓨즈드
+I'm cold. / 추워. / 아임 콜드
+I'm hot. / 더워. / 아임 핫
+I'm jealous. / 질투나. / 아임 젤러스
+I was there. / 나는 거기 있었어. / 아이 워즈 데어
+I saw it. / 나는 그것을 봤어. / 아이 써우 잇
+I did that. / 나는 그것을 했어. / 아이 디드 댓
+I ate it. / 나는 그것을 먹었어. / 아이 에잍 잇
+I read it. / 나는 그것을 읽었어. / 아이 뤠드 잇
+I met him. / 나는 그를 만났어. / 아이 멭 힘
+I went there. / 나는 거기에 갔어. / 아이 웬트 데어
+I bought it. / 나는 그것을 샀어. / 아이 버트 잇
+I liked it. / 나는 그것을 좋아했어. / 아이 라이크트 잇
+I knew it. / 나는 그것을 알았어. / 아이 뉴 잇
+I lived there. / 나는 거기 살았어. / 아이 리브드 데어
+I visited Paris. / 나는 파리를 방문했어. / 아이 비지티드 페어리스
+I studied hard. / 나는 열심히 공부했어. / 아이 스터디드 하드
+I worked late. / 나는 늦게 일했어. / 아이 워크드 레이트
+I cooked dinner. / 나는 저녁을 요리했어. / 아이 쿡트 디너
+I played soccer. / 나는 축구를 했어. / 아이 플레이드 싸커
+I watched TV. / 나는 티비를 봤어. / 아이 왓치드 티비
+I drove fast. / 나는 빨리 운전했어. / 아이 드로브 패스트
+I sang loudly. / 나는 크게 노래했어. / 아이 세잉 라우들리
+I danced well. / 나는 춤을 잘 췄어. / 아이 댄스드 웰
+I'm at home. / 나는 집에 있어. / 아임 앳 홈
+I'm eating now. / 나는 지금 먹고 있어. / 아임 이팅 나우
+I'm working. / 나는 일하고 있어. / 아임 워킹
+I'm studying. / 나는 공부하고 있어. / 아임 스터디잉
+I'm watching TV. / 나는 티비 보고 있어. / 아임 왓칭 티비
+I'm with friends. / 나는 친구들과 함께 있어. / 아임 윋 프렌즈
+I'm feeling good. / 나는 기분이 좋아. / 아임 필링 굿
+I'm on my way. / 나는 가는 중이야. / 아임 온 마이 웨이
+I'm in a hurry. / 나는 서두르고 있어. / 아임 인 어 허리
+I'm taking a nap. / 나는 낮잠 자고 있어. / 아임 테이킹 어 넵
+I'm at work. / 나는 일하고 있어. / 아임 앳 워크
+I'm in class. / 나는 수업 중이야. / 아임 인 클래스
+I'm on a break. / 나는 휴식 중이야. / 아임 온 어 브레이크
+I'm in a meeting. / 나는 회의 중이야. / 아임 인 어 미팅
+I'm at the gym. / 나는 헬스장에 있어. / 아임 앳 더 짐
+I'm on the bus. / 나는 버스에 있어. / 아임 온 더 버스
+I'm cooking now. / 나는 지금 요리하고 있어. / 아임 쿠킹 나우
+I'm shopping now. / 나는 지금 쇼핑하고 있어. / 아임 쇼핑 나우
+I'm reading now. / 나는 지금 읽고 있어. / 아임 리딩 나우
+I'm at the park. / 나는 공원에 있어. / 아임 앳 더 파크
+I will go. / 내가 갈게. / 아이 윌 고
+I will call you. / 내가 너에게 전화할게. / 아이 윌 콜 유
+I will be there. / 내가 거기에 있을게. / 아이 윌 비 데어
+I will help you. / 내가 너를 도와줄게. / 아이 윌 헾 유
+I will wait for you. / 내가 너를 기다릴게. / 아이 윌 웨잍 포어 유
+I will pick you up. / 내가 너를 데리러 갈게. / 아이 윌 픽 유 업
+I will see you soon. / 내가 곧 너를 볼게. / 아이 윌 씨 유 순
+I will bring it. / 내가 그것을 가져올게. / 아이 윌 브링 잇
+I will meet you there. / 내가 거기에서 너를 만날게. / 아이 윌 밑 유 데어
+I will let you know. / 내가 너에게 알려줄게. / 아이 윌 렛 유 노우
+I won't be late. / 나는 늦지 않을게. / 아이 원트 비 레이트
+I won't forget. / 나는 잊지 않을게. / 아이 원트 포겟
+I won't tell anyone. / 나는 아무에게도 말하지 않을게. / 아이 원트 텔 애니원
+I won't give up. / 나는 포기하지 않을게. / 아이 원트 기브 업
+I won't leave you. / 나는 너를 떠나지 않을게. / 아이 원트 리브 유
+I won't fail you. / 나는 너를 실망시키지 않을게. / 아이 원트 페일 유
+I won't lose it. / 나는 그것을 잃지 않을게. / 아이 원트 루즈 잇
+I won't break it. / 나는 그것을 부수지 않을게. / 아이 원트 브레이크 잇
+I won't eat that. / 나는 그것을 먹지 않을게. / 아이 원트 잇 댓
+I won't miss it. / 나는 그것을 놓치지 않을게. / 아이 원트 미스 잇
+There is a cat. / 고양이가 있어. / 데어 이즈 어 캣
+There is a dog. / 개가 있어. / 데어 이즈 어 독
+There is a book. / 책이 있어. / 데어 이즈 어 북
+There is a chair. / 의자가 있어. / 데어 이즈 어 체어
+There is a car. / 차가 있어. / 데어 이즈 어 카
+Is there a bathroom? / 화장실이 있어? / 이즈 데어 어 배쓰룸?
+Is there a restaurant? / 식당이 있어? / 이즈 데어 어 레스토랑?
+Is there a bank? / 은행이 있어? / 이즈 데어 어 뱅크?
+Is there a hospital? / 병원이 있어? / 이즈 데어 어 하스피럴?
+Is there a park? / 공원이 있어? / 이즈 데어 어 파크?
+Give it to him. / 그에게 줘. / 기브 잇 투 힘
+Talk to her. / 그녀와 얘기해. / 텈 투 허
+I'll write to you. / 나는 너에게 편지를 쓸 거야. / 아일 라이트 투 유
+Send this to your mom. / 이것을 너의 엄마에게 보내. / 센 디스 투 유어 맘
+I'll explain it to you. / 나는 너에게 설명할게. / 아일 익스플레인 잇 투 유
+I said hello to him. / 나는 그에게 안녕이라고 했어. / 아이 세드 헬로 투 힘
+Read this to me. / 이것을 나에게 읽어줘. / 리드 디스 투 미
+I'll sing to you. / 나는 너에게 노래할게. / 아일 싱 투 유
+I gave it to her. / 나는 그녀에게 그것을 줬어. / 아이 게이브 잇 투 허
+I'll bring it to you. / 나는 너에게 그것을 가져다 줄게. / 아일 브링 잇 투 유
+This gift is for you. / 이 선물은 너를 위한 것이야. / 디스 기프트 이즈 포 유
+I'm doing this for my family. / 나는 이것을 내 가족을 위해 하고 있어. / 아임 두잉 디스 포 마이 패밀리
+I bought flowers for her. / 나는 그녀를 위해 꽃을 샀어. / 아이 보트 플라워즈 포 허
+I'm studying for the exam. / 나는 시험을 위해 공부하고 있어. / 아임 스터디잉 포 더 익잼
+I made dinner for you. / 나는 너를 위해 저녁을 만들었어. / 아이 메이드 디너 포 유
+I'm here for you. / 나는 너를 위해 여기에 있어. / 아임 히어 포 유
+I'm praying for your success. / 나는 네 성공을 위해 기도하고 있어. / 아임 프레잉 포 유어 석세스
+I'll fight for my rights. / 나는 내 권리를 위해 싸울 거야. / 아일 파이트 포 마이 라이츠
+I'll wait for you. / 나는 너를 기다릴게. / 아일 웨이트 포 유
+I'm saving money for a car. / 나는 차를 위해 돈을 모으고 있어. / 아임 세이빙 머니 포 어 카
+I'm at the store. / 나는 상점에 있어. / 아임 앳 더 스토어
+Look at me. / 나를 봐. / 루크 앳 미
+I'll meet you at 5 o'clock. / 나는 5시에 너를 만날 거야. / 아일 밑 유 앳 파이브 어클락
+He's good at math. / 그는 수학을 잘해. / 히즈 굿 앳 매스
+I'll be at home. / 나는 집에 있을 거야. / 아일 비 앳 홈
+She's at work. / 그녀는 일하고 있어. / 쉬즈 앳 워크
+I'll see you at the party. / 나는 파티에서 너를 볼 거야. / 아일 씨 유 앳 더 파티
+I'm looking at the menu. / 나는 메뉴를 보고 있어. / 아임 루킹 앳 더 메뉴
+I'll arrive at the station. / 나는 역에 도착할 거야. / 아일 어라이브 앳 더 스테이션
+I'm laughing at the joke. / 나는 그 농담에 웃고 있어. / 아임 래핑 앳 더 조크
+I'm in the car. / 나는 차 안에 있어. / 아임 인 더 카
+I live in Seoul. / 나는 서울에 살아. / 아이 립 인 서울
+I'm interested in music. / 나는 음악에 관심이 있어. / 아임 인터레스티드 인 뮤직
+I'll be there in 10 minutes. / 나는 10분 안에 거기에 있을 거야. / 아일 비 데어 인 텐 미닛츠
+He's in the kitchen. / 그는 부엌에 있어. / 히즈 인 더 키친
+I'm in love with you. / 나는 너에게 사랑에 빠졌어. / 아임 인 러브 윋 유
+I work in a bank. / 나는 은행에서 일해. / 아이 워크 인 어 뱅크
+I'll see you in the morning. / 나는 아침에 너를 볼 거야. / 아일 씨 유 인 더 모닝
+I'm in a hurry. / 나는 서두르고 있어. / 아임 인 어 허리
+I believe in you. / 나는 너를 믿어. / 아이 비립 인 유
+I'm on the phone. / 나는 전화 중이야. / 아임 온 더 폰
+The book is on the table. / 책은 탁자 위에 있어. / 더 북 이즈 온 더 테이블
+I'll see you on Monday. / 나는 월요일에 너를 볼 거야. / 아일 씨 유 온 먼데이
+I'm on a diet. / 나는 다이어트 중이야. / 아임 온 어 다이어트
+He's on the train. / 그는 기차 안에 있어. / 히즈 온 더 트레인
+I'm on my way. / 나는 가는 중이야. / 아임 온 마이 웨이
+The picture is on the wall. / 그림은 벽에 걸려 있어. / 더 픽처 이즈 온 더 월
+I'll be on vacation. / 나는 휴가 중일 거야. / 아일 비 온 베이케이션
+I'm on a team. / 나는 팀의 일원이야. / 아임 온 어 팀
+I'm on TV. / 내가 TV에 나와. / 아임 온 티비
+He sleeps. / 그는 잔다. / 히 슬립스
+She runs. / 그녀는 달린다. / 쉬 런즈
+They swim. / 그들은 수영한다. / 데이 스윔
+You dance. / 너는 춤춘다. / 유 댄스
+I sing. / 나는 노래한다. / 아이 싱
+He laughs. / 그는 웃는다. / 히 래프스
+She cries. / 그녀는 운다. / 쉬 크라이즈
+I arrive. / 나는 도착한다. / 아이 어라이브
+He cooks. / 그는 요리한다. / 히 쿡스
+She jumps. / 그녀는 뛴다. / 쉬 점프스
+We travel. / 우리는 여행한다. / 위 트래블
+They study. / 그들은 공부한다. / 데이 스터디
+She smiles. / 그녀는 웃는다. / 쉬 스마일즈
+I feel great. / 나는 기분이 좋아. / 아이 필 그레이트
+He looks tired. / 그는 피곤해 보여. / 히 룩스 타이어드
+She seems happy. / 그녀는 행복해 보여. / 쉬 심즈 해피
+We are ready. / 우리는 준비됐어. / 위 아 레디
+They become friends. / 그들은 친구가 돼. / 데이 비컴 프렌즈
+You sound excited. / 너는 흥분해 보여. / 유 사운드 익사이티드
+It gets cold. / 추워진다. / 잇 겟츠 콜드
+He stays calm. / 그는 차분해. / 히 스테이즈 컮
+She falls asleep. / 그녀는 잠이 든다. / 쉬 폴즈 어슬립
+I love you. / 나는 너를 사랑해. / 아이 러브 유
+He eats breakfast. / 그는 아침을 먹는다. / 히 이츠 브렉퍼스트
+She reads books. / 그녀는 책을 읽는다. / 쉬 리즈 북스
+We play soccer. / 우리는 축구를 한다. / 위 플레이 싸커
+They watch movies. / 그들은 영화를 본다. / 데이 왓치 무비즈
+You drink coffee. / 너는 커피를 마신다. / 유 드링크 커피
+It holds water. / 그것은 물을 담는다. / 잇 홀즈 워러
+I write letters. / 나는 편지를 쓴다. / 아이 라잍 레터즈
+He drives a car. / 그는 차를 운전한다. / 히 드라이브즈 어 카
+She sings songs. / 그녀는 노래를 부른다. / 쉬 싱즈 송즈
+You can sell them used cars. / 너는 그들에게 중고차를 팔 수 있어. / 유 캔 셀 뎀 유즈드 카즈
+She showed me her photograph. / 그녀는 나에게 그녀의 사진을 보여줬어. / 쉬 쇼우드 미 허 포토그래프
+They give the homeless free meals. / 그들은 노숙자들에게 무료 식사를 제공해. / 데이 기브 더 홈리스 프리 미일즈
+I told him a funny joke. / 나는 그에게 재미있는 농담을 했어. / 아이 톨드 힘 어 퍼니 조크
+He handed her a wedding ring. / 그는 그녀에게 결혼 반지를 건넸어. / 히 핸디드 허 어 웨딩 링
+I promised my daughter a doll. / 나는 내 딸에게 인형을 약속했어. / 아이 프라미스드 마이 도러 어 돌
+Mr. Suh teaches us English. / 서씨는 우리에게 영어를 가르쳐. / 미스터 써 티치즈 어스 잉글리시
+She gave me a kiss. / 그녀는 나에게 키스를 했어. / 쉬 게이브 미 어 키스
+She taught me love. / 그녀는 나에게 사랑을 가르쳤어. / 쉬 토트 미 러브
+He offered her a ride. / 그는 그녀에게 태워주기를 제안했어. / 히 오퍼드 허 어 라이드
+I reserved her a seat. / 나는 그녀를 위해 자리를 예약했어. / 아이 리저브드 허 어 시트
+I gave him a book. / 나는 그에게 책을 줬어. / 아이 게이브 힘 어 북
+He left her much money. / 그는 그녀에게 많은 돈을 남겼어. / 히 레프트 허 머치 머니
+I bought her a car. / 나는 그녀를 위해 차를 샀어. / 아이 보트 허 어 카
+He found the book interesting. / 그는 그 책이 흥미롭다는 것을 발견했다. / 히 파운드 더 북 인터레스팅
+We called her the Queen. / 우리는 그녀를 여왕이라고 불렀다. / 위 콜드 허 더 퀸
+She painted her bedroom pink. / 그녀는 그녀의 침실을 분홍색으로 칠했다. / 쉬 페인티드 허 베드룸 핑크
+I called him the tough guy. / 나는 그를 터프가이라고 불렀다. / 아이 콜드 힘 더 터프 가이
+She found the box empty. / 그녀는 그 상자가 비어있다는 것을 발견했다. / 쉬 파운드 더 박스 엠프티
+The judge found him guilty. / 판사는 그를 유죄로 판결했다. / 더 저지 파운드 힘 길티
+The boys chose me captain. / 소년들은 나를 대장으로 선택했다. / 더 보이즈 초즈 미 캡틴
+I got my car repaired by a mechanic. / 나는 정비사에게 내 차를 수리받았다. / 아이 갓 마이 카 리페어드 바이 어 메카닉
+They considered him a liar. / 그들은 그를 거짓말쟁이로 생각했다. / 데이 컨시더드 힘 어 라이어
+We think him kind. / 우리는 그를 친절하다고 생각한다. / 위 싱크 힘 카인드
+He kept the room warm. / 그는 방을 따뜻하게 유지했다. / 히 켑트 더 룸 웜
+He left the door open. / 그는 문을 열어두었다. / 히 레프트 더 도어 오픈
+They named the ship Titanic. / 그들은 그 배의 이름을 타이타닉이라고 지었다. / 데이 네임드 더 쉽 타이타닉

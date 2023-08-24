@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>결과 내용 가리기</title>
+  </head>
+  <body>
+    <button onclick="openNewPage()">결과 가리기</button>
+    <div id="result" style="display: none;">
+      <!-- 결과 내용 -->
+      <p>이곳에 결과가 표시됩니다.</p>
+    </div>
+
+    <script>
+      function openNewPage() {
+        // 새로운 페이지 열기
+        window.open('새페이지.html')
+
+        // 현재 페이지에 결과 보이기
+        document.getElementById('result').style.display = 'block'
+      }
+    </script>
+  </body>
+</html>
