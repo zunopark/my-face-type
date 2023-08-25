@@ -382,7 +382,7 @@ async function predict() {
 
   // 한번 더 하기 함수
   function handleReset() {
-    checkMobile()
+    // checkMobile()
 
     function checkMobile() {
       const mobileType = navigator.userAgent.toLowerCase()

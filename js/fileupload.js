@@ -359,7 +359,7 @@ async function predict() {
   reset.addEventListener('click', handleReset)
 
   function handleReset() {
-    checkMobile()
+    // checkMobile()
 
     function checkMobile() {
       const mobileType = navigator.userAgent.toLowerCase()
