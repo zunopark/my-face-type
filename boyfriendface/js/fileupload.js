@@ -336,7 +336,7 @@ async function predict() {
 
   reset.classList.add('reset__btn')
   reset.onclick = function () {
-    gtag('event', '한번 더 클릭')
+    gtag('event', '한번 더 클릭[남친상]')
   }
   labelContainer.appendChild(reset)
 
