@@ -359,53 +359,26 @@ async function predict() {
   reset.addEventListener('click', handleReset)
 
   function handleReset() {
-    // checkMobile()
-
-    function checkMobile() {
-      const mobileType = navigator.userAgent.toLowerCase()
-
-      if (mobileType.indexOf('android') > -1) {
-        return window.open(
-          'https://play.google.com/store/apps/details?id=com.nmax.cashball',
-          '_blank',
-        )
-      } else if (
-        mobileType.indexOf('iphone') > -1 ||
-        mobileType.indexOf('ipad') > -1 ||
-        mobileType.indexOf('ipod') > -1
-      ) {
-        return window.open(
-          'https://apps.apple.com/kr/app/%EC%8A%A4%ED%94%BD%EB%B3%BC-%EB%8F%88-%EB%B2%84%EB%8A%94-%EC%98%81%EC%96%B4-%ED%9A%8C%ED%99%94-%EC%95%B1-%EC%8A%A4%ED%94%BC%ED%82%B9-%EB%A6%AC%EC%8A%A4%EB%8B%9D/id6457251682',
-          '_blank',
-        )
-      } else {
-        return window.open(
-          'https://play.google.com/store/apps/details?id=com.nmax.cashball',
-          '_blank',
-        )
-      }
-    }
-
     location.reload(true)
     location.href = location.href
     history.go(0)
     // location.href = '/more'
   }
 
-  // let consult = document.createElement('button')
-  // consult.innerHTML = `
-  // <span>매일 10분, 200원 앱태크</span>`
-  // consult.classList.add('consult__btn')
-  // consult.onclick = function () {
-  //   gtag('event', '결과 후 스픽볼 배너[200원 앱태크]')
-  // }
-  // labelContainer.appendChild(consult)
+  let consult = document.createElement('button')
+  consult.innerHTML = `
+  <span>1:1 고민 상담 [김민정 관상가님]</span>`
+  consult.classList.add('consult__btn')
+  consult.onclick = function () {
+    gtag('event', '결과 - 프리미엄 관상 버튼')
+  }
+  labelContainer.appendChild(consult)
 
-  // consult.addEventListener('click', handleConsult)
+  consult.addEventListener('click', handleConsult)
 
-  // function handleConsult() {
-  //   location.href = 'https://onelink.to/9wsxet'
-  // }
+  function handleConsult() {
+    location.href = '/premium'
+  }
 
   // 앱 다운 함수
   // function handleAppDown() {
