@@ -367,7 +367,7 @@ async function predict() {
 
   let consult = document.createElement('button')
   consult.innerHTML = `
-  <span>1:1 고민 상담 [김민정 관상가님]</span>`
+  <span>관상 더 자세히 알아보기</span>`
   consult.classList.add('consult__btn')
   consult.onclick = function () {
     gtag('event', '결과 - 프리미엄 관상 버튼')
