@@ -362,23 +362,22 @@ async function predict() {
     location.reload(true)
     location.href = location.href
     history.go(0)
-    // location.href = '/more'
   }
 
-  let consult = document.createElement('button')
-  consult.innerHTML = `
-  <span>관상 더 자세히 알아보기</span>`
-  consult.classList.add('consult__btn')
-  consult.onclick = function () {
-    gtag('event', '결과 - 프리미엄 관상 버튼')
-  }
-  labelContainer.appendChild(consult)
+  // let consult = document.createElement('button')
+  // consult.innerHTML = `
+  // <span>관상 더 자세히 알아보기</span>`
+  // consult.classList.add('consult__btn')
+  // consult.onclick = function () {
+  //   gtag('event', '결과 - 프리미엄 관상 버튼')
+  // }
+  // labelContainer.appendChild(consult)
 
-  consult.addEventListener('click', handleConsult)
+  // consult.addEventListener('click', handleConsult)
 
-  function handleConsult() {
-    location.href = '/premium'
-  }
+  // function handleConsult() {
+  //   location.href = '/premium'
+  // }
 
   // 앱 다운 함수
   // function handleAppDown() {
