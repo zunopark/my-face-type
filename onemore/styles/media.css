@@ -1,0 +1,93 @@
+@media screen and (min-width: 500px) {
+  .footer,
+  .test__upper,
+  .submitForm,
+  .today__weather__wrap,
+  .lower__comment {
+    width: 500px;
+  }
+
+  .main__result__content__p {
+    width: 300px;
+  }
+
+  .habitown__banner {
+    width: 400px;
+  }
+
+  .dang__ad {
+    width: 320px;
+    margin-bottom: 30px;
+  }
+
+  .border,
+  .result {
+    width: 350px;
+  }
+
+  .border__hair {
+    width: 500px;
+  }
+
+  .apologize {
+    width: 320px;
+  }
+
+  .header {
+    width: 500px;
+  }
+
+  .header_fixed {
+    width: 500px;
+  }
+
+  .footer,
+  .bottom_nav {
+    width: 500px;
+  }
+  .bottom_ad {
+    width: 500px;
+  }
+  .main_body_wrap,
+  .header_chat {
+    width: 500px;
+  }
+}
+@media screen and (max-width: 499px) {
+  .main_body_wrap,
+  .header_chat {
+    width: 100%;
+  }
+
+  .border,
+  .test__upper,
+  .submitForm,
+  .result {
+    width: 320px;
+  }
+
+  .habitown__banner {
+    width: 360px;
+  }
+
+  .label-container p {
+    width: 80%;
+  }
+
+  .ad__upper,
+  .header,
+  .footer,
+  .today__weather__wrap,
+  .today__weather,
+  .lower__comment,
+  .bottom_nav {
+    width: 100%;
+  }
+
+  .border__hair {
+    width: 70%;
+  }
+  .apologize {
+    width: 320px;
+  }
+}

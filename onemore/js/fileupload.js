@@ -362,7 +362,7 @@ async function predict() {
     // location.reload(true)
     // location.href = location.href
     // history.go(0)
-      location.href = '/onemore'
+    location.href = '/'
   }
 
   // let consult = document.createElement('button')
