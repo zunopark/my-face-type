@@ -365,6 +365,19 @@ async function predict() {
     location.href = '/'
   }
 
+  let share = document.createElement('button')
+  share.innerHTML = '주변에 관상 테스트 알려주기'
+  share.classList.add('share__btn')
+  share.onclick = function () {
+    gtag('event', '공유하기', {
+      event_category: '공유하기',
+      event_label: '공유 버튼',
+    })
+  }
+  labelContainer.appendChild(share)
+
+  share.addEventListener('click', kakaoShare)
+
   // let consult = document.createElement('button')
   // consult.innerHTML = `
   // <span>관상 더 자세히 알아보기</span>`
@@ -388,29 +401,29 @@ async function predict() {
   //   'http://pf.kakao.com/_Qfuvxj/chat'
   // }
 
-  // function kakaoShare() {
-  //   Kakao.Share.sendDefault({
-  //     objectType: 'feed',
-  //     content: {
-  //       title: '관상 테스트',
-  //       description:
-  //         '본인 얼굴을 직접 사진 찍어서 관상 무료로 보세요~ 95% 적중~!',
-  //       imageUrl: 'https://i.ibb.co/QYMyVRd/Group-1043-1.png',
-  //       link: {
-  //         mobileWebUrl: 'https://keen-poitras-075b07.netlify.app/',
-  //         androidExecParams: 'test',
-  //       },
-  //     },
-  //     buttons: [
-  //       {
-  //         title: '관상 확인하기',
-  //         link: {
-  //           mobileWebUrl: 'https://keen-poitras-075b07.netlify.app/',
-  //         },
-  //       },
-  //     ],
-  //   })
-  // }
+  function kakaoShare() {
+    Kakao.Share.sendDefault({
+      objectType: 'feed',
+      content: {
+        title: '관상 테스트',
+        description:
+          '본인 얼굴을 직접 사진 찍어서 관상 무료로 보세요~ 95% 적중~!',
+        imageUrl: 'https://i.ibb.co/QYMyVRd/Group-1043-1.png',
+        link: {
+          mobileWebUrl: 'https://keen-poitras-075b07.netlify.app/',
+          androidExecParams: 'test',
+        },
+      },
+      buttons: [
+        {
+          title: '관상 확인하기',
+          link: {
+            mobileWebUrl: 'https://keen-poitras-075b07.netlify.app/',
+          },
+        },
+      ],
+    })
+  }
 }
 
 // 남녀 선택 토글 -> 현재 사용하지 않음
