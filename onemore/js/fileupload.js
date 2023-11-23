@@ -366,7 +366,7 @@ async function predict() {
   }
 
   let share = document.createElement('button')
-  share.innerHTML = '주변에 관상 테스트 알려주기'
+  share.innerHTML = '3초만에 가족, 친구에게 공유하세요.'
   share.classList.add('share__btn')
   share.onclick = function () {
     gtag('event', '공유하기', {
@@ -405,7 +405,7 @@ async function predict() {
     Kakao.Share.sendDefault({
       objectType: 'feed',
       content: {
-        title: '관상 테스트',
+        title: '인공지능 관상 테스트',
         description:
           '본인 얼굴을 직접 사진 찍어서 관상 무료로 보세요~ 95% 적중~!',
         imageUrl: 'https://i.ibb.co/QYMyVRd/Group-1043-1.png',
