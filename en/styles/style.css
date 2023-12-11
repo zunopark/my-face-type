@@ -59,13 +59,23 @@ body {
 }
 
 .main__ai__title .title {
-  font-size: 50px;
+  font-size: 36px;
   margin-bottom: 10px;
 }
 
 .main__ai__title .subtitle {
   font-size: 20px;
-  opacity: 0.8;
+  opacity: 0.7;
+  width: 90%;
+  text-align: justify;
+  line-height: 25px;
+}
+
+.gender_wrap {
+  margin-top: 12px;
+  margin-bottom: 6px;
+  font-family: 'Yeon Sung', cursive;
+  opacity: 0.7;
 }
 
 .jocoding {
@@ -104,7 +114,7 @@ a:hover {
   overflow: hidden;
   user-select: none;
   cursor: pointer;
-  margin-bottom: 10px;
+  margin-bottom: 20px;
 }
 
 .inner-container {
@@ -207,6 +217,7 @@ a:hover {
   margin-top: 10px;
   width: 100%;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   /* overflow-x: scroll;
   overflow-x: hidden; */
@@ -216,11 +227,13 @@ a:hover {
 .star__list__wrap {
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: flex-start;
+  width: 100%;
+  margin-top: 8px;
 }
 
 .star__list__img {
-  display: flex;
+  /* display: flex;
   justify-content: center;
   align-items: center;
   width: 48px;
@@ -229,39 +242,11 @@ a:hover {
   border: 1px solid black;
   font-size: 16px;
   margin: 0 4px;
+  color: black; */
   color: black;
-}
-
-.percent {
-  margin-top: -10px;
-  font-size: 16px;
-}
-
-.crazy {
-  color: black;
-  width: 100%;
-  font-weight: 700;
-  align-self: flex-end;
-  text-align: center;
-  margin-right: 30px;
-  font-size: 16px;
-  margin-bottom: 10px;
-  margin-top: 30px;
-}
-
-.crazy a:active {
-  color: black;
-  text-decoration: none;
-}
-
-.crazy a:visited {
-  color: black;
-  text-decoration: none;
-}
-
-.crazy a:link {
-  color: black;
-  text-decoration: none;
+  opacity: 0.8;
+  margin-bottom: 4px;
+  margin-left: 4px;
 }
 
 .noti {
@@ -269,99 +254,72 @@ a:hover {
   font-size: 12px;
 }
 
-.house__banner,
-.today__test {
-  width: 320px;
-  margin: 6px 0;
-  margin-bottom: 20px;
+.percent_bar {
+  width: 100%;
+  background-color: #ebebeb;
+  border-radius: 10px;
 }
 
-.house__title {
+.percent {
+  font-size: 12px;
+  padding: 4px 0;
+  border-radius: 10px;
   text-align: center;
-  font-family: cursive;
-  color: black;
-  font-weight: 700;
-  margin-bottom: 10px;
-  font-size: 15px;
-}
-
-.house__img {
-  width: 100%;
-  border: 2px solid rgb(212, 175, 6);
-}
-
-.house__img:hover {
-  cursor: pointer;
-}
-
-.liner__members {
-  width: 320px;
-  margin: 6px 0;
-}
-
-.liner__img {
-  width: 100%;
-}
-
-.liner__img:hover {
-  cursor: pointer;
-}
-
-.hello__members {
-  width: 320px;
-  margin: 12px 0;
-}
-
-.hello__img {
-  width: 100%;
-}
-
-.hello__img:hover {
-  cursor: pointer;
 }
 
 .zero {
-  color: black;
+  color: white;
+  background-color: #eba6be;
 }
 
 .zeroone {
-  color: rgb(43, 160, 223);
+  color: white;
+  background-color: rgb(143, 196, 224);
 }
 
 .onetwo {
-  color: rgb(68, 182, 95);
+  color: white;
+  background-color: rgb(136, 209, 153);
 }
 
 .twothree {
-  color: blue;
+  color: white;
+  background-color: rgb(140, 140, 208);
 }
 
 .threefour {
-  color: aqua;
+  color: white;
+  background-color: rgb(145, 212, 212);
 }
 
 .fourfive {
-  color: purple;
+  color: white;
+  background-color: rgb(202, 148, 202);
 }
 
 .fivesix {
-  color: peru;
+  color: white;
+  background-color: rgb(195, 160, 125);
 }
 
 .sixseven {
-  color: rgb(149, 30, 196);
+  color: white;
+  background-color: rgb(179, 124, 200);
 }
 
 .seveneight {
-  color: rgb(196, 77, 178);
+  color: white;
+  background-color: rgb(200, 133, 190);
 }
 
 .eightnine {
-  color: rgb(204, 92, 129);
+  color: white;
+  background-color: rgb(195, 130, 152);
 }
 
 .nineten {
-  color: tomato;
+  color: white;
+  background-color: rgb(212, 149, 138);
 }
 
 .bold {

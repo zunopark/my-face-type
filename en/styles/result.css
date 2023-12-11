@@ -8,9 +8,9 @@
   margin-top: 15px;
 }
 
-.result div {
+.result .result_face {
   text-align: center;
-  font-size: 18px;
+  font-size: 20px;
   margin-bottom: 12px;
   /* color: #e74c3c; */
 }
@@ -18,8 +18,8 @@
 .result .celebrity {
   text-align: center;
   margin-bottom: 8px;
-  color: rgb(95, 0, 0);
-  font-size: 16px;
+  color: rgb(170, 1, 71);
+  font-size: 18px;
 }
 
 .result p {
@@ -61,6 +61,27 @@
 
 .ai {
   font-family: 'Yeon Sung', cursive;
+  animation: aiAnim 0.7s linear infinite;
+}
+
+@keyframes aiAnim {
+  0% {
+    transform: translateX(-2px);
+  }
+  15% {
+    transform: translateX(0px);
+    transform: scale(1.01);
+  }
+  50% {
+    transform: translateX(2px);
+  }
+  85% {
+    transform: translateX(0px);
+    transform: scale(1.01);
+  }
+  100% {
+    transform: translateX(-2px);
+  }
 }
 
 .test__ai {
@@ -85,7 +106,7 @@
 }
 
 .list__title h1 {
-  font-weight: 701;
+  font-weight: 700;
   margin-bottom: 6px;
 }
 
