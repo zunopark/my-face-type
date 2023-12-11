@@ -1,5 +1,4 @@
 .result {
-  font-family: 'Yeon Sung', cursive;
   color: #e74c3c;
   width: 320px;
   display: flex;
@@ -13,6 +12,7 @@
   font-size: 20px;
   margin-bottom: 12px;
   /* color: #e74c3c; */
+  font-family: 'KimjungchulMyungjo-Bold';
 }
 
 .result .celebrity {
@@ -27,6 +27,7 @@
   text-align: justify;
   color: #162536;
   line-height: 23px;
+  font-family: 'Yeon Sung', cursive;
 }
 
 .result .reset__btn {

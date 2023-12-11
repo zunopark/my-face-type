@@ -409,7 +409,7 @@ async function predict() {
 
   let result2 = document.createElement('div')
   result2.classList.add('celebrity')
-  result2.textContent = `A K-pop celebrity of same fate : ${description[answer][2]}`
+  result2.textContent = `Looks like ${description[answer][2]}`
   labelContainer.appendChild(result2)
 
   let desc = document.createElement('p')
