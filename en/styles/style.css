@@ -222,7 +222,6 @@ a:hover {
   /* overflow-x: scroll;
   overflow-x: hidden; */
   white-space: nowrap;
-  font-family: 'Yeon Sung', cursive;
 }
 
 .star__list__wrap {
@@ -266,6 +265,7 @@ a:hover {
   padding: 4px 0;
   border-radius: 10px;
   text-align: center;
+  font-family: 'Yeon Sung', cursive;
 }
 
 .zero {

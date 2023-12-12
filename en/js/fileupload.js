@@ -405,7 +405,7 @@ async function predict() {
         starsListImg +
         ` <div class="star__list__wrap">
         <div class="star__list__img">
-        ${description[resultArray[j].key][2]}
+        ${description[resultArray[j].key][3]}
         </div> 
         <div class="percent_bar">
         <div class="percent zero" style="width: 1%">
@@ -419,7 +419,7 @@ async function predict() {
         starsListImg +
         ` <div class="star__list__wrap">
       <div class="star__list__img">
-      ${description[resultArray[j].key][2]}
+      ${description[resultArray[j].key][3]}
       </div> 
       <div class="percent_bar">
       <div class="percent zeroone" style="width: ${resultArray[j].value}%">
@@ -433,7 +433,7 @@ async function predict() {
         starsListImg +
         ` <div class="star__list__wrap">
         <div class="star__list__img">
-        ${description[resultArray[j].key][2]}
+        ${description[resultArray[j].key][3]}
         </div> 
         <div class="percent_bar">
         <div class="percent onetwo" style="width: ${resultArray[j].value}%">
@@ -447,7 +447,7 @@ async function predict() {
         starsListImg +
         ` <div class="star__list__wrap">
         <div class="star__list__img">
-        ${description[resultArray[j].key][2]}
+        ${description[resultArray[j].key][3]}
         </div> 
         <div class="percent_bar">
         <div class="percent twothree" style="width: ${resultArray[j].value}%">
@@ -461,7 +461,7 @@ async function predict() {
         starsListImg +
         ` <div class="star__list__wrap">
         <div class="star__list__img">
-        ${description[resultArray[j].key][2]}
+        ${description[resultArray[j].key][3]}
         </div> 
         <div class="percent_bar">
         <div class="percent threefour" style="width: ${resultArray[j].value}%">
@@ -475,7 +475,7 @@ async function predict() {
         starsListImg +
         ` <div class="star__list__wrap">
         <div class="star__list__img">
-        ${description[resultArray[j].key][2]}
+        ${description[resultArray[j].key][3]}
         </div> 
         <div class="percent_bar">
         <div class="percent fourfive" style="width: ${resultArray[j].value}%">
@@ -489,7 +489,7 @@ async function predict() {
         starsListImg +
         ` <div class="star__list__wrap">
         <div class="star__list__img">
-        ${description[resultArray[j].key][2]}
+        ${description[resultArray[j].key][3]}
         </div> 
         <div class="percent_bar">
         <div class="percent fivesix" style="width: ${resultArray[j].value}%">
@@ -503,7 +503,7 @@ async function predict() {
         starsListImg +
         ` <div class="star__list__wrap">
         <div class="star__list__img">
-        ${description[resultArray[j].key][2]}
+        ${description[resultArray[j].key][3]}
         </div> 
         <div class="percent_bar">
         <div class="percent sixseven" style="width: ${resultArray[j].value}%">
@@ -517,7 +517,7 @@ async function predict() {
         starsListImg +
         ` <div class="star__list__wrap">
       <div class="star__list__img">
-      ${description[resultArray[j].key][2]}
+      ${description[resultArray[j].key][3]}
       </div> 
       <div class="percent_bar">
       <div class="percent seveneight" style="width: ${resultArray[j].value}%">
@@ -531,7 +531,7 @@ async function predict() {
         starsListImg +
         ` <div class="star__list__wrap">
       <div class="star__list__img">
-      ${description[resultArray[j].key][2]}
+      ${description[resultArray[j].key][3]}
       </div> 
       <div class="percent_bar">
       <div class="percent eightnine" style="width: ${resultArray[j].value}%">
@@ -545,7 +545,7 @@ async function predict() {
         starsListImg +
         ` <div class="star__list__wrap">
       <div class="star__list__img">
-      ${description[resultArray[j].key][2]}
+      ${description[resultArray[j].key][3]}
       </div> 
       <div class="percent_bar">
       <div class="percent nineten" style="width: ${resultArray[j].value}%">
@@ -564,13 +564,18 @@ async function predict() {
 
   let result2 = document.createElement('div')
   result2.classList.add('celebrity')
-  result2.textContent = `Looks like ${description[answer][2]}`
+  result2.textContent = `You looks like ${description[answer][2]}`
   labelContainer.appendChild(result2)
 
   let desc = document.createElement('p')
   desc.classList.add('main__result__content__p')
   desc.textContent = description[answer][0]
   labelContainer.appendChild(desc)
+
+  let coupleTitle = document.createElement('div')
+  coupleTitle.classList.add('couple__title')
+  coupleTitle.textContent = `A Match Made In Haeven`
+  labelContainer.appendChild(coupleTitle)
 
   let otherResult = document.createElement('div')
   otherResult.classList.add('other__result')

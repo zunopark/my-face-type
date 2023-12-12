@@ -28,6 +28,14 @@
   color: #162536;
   line-height: 23px;
   font-family: 'Yeon Sung', cursive;
+
+  padding-bottom: 20px;
+  border-bottom: 1px solid black;
+}
+
+.couple__title {
+  color: #e74c3c;
+  margin-top: 16px;
 }
 
 .result .reset__btn {
