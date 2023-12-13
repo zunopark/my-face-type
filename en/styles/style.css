@@ -246,6 +246,7 @@ a:hover {
   transform: translate(50, 50);
   object-fit: cover;
   margin: auto;
+  margin-top: 6px;
 }
 
 .other_star_result_wrapper {
