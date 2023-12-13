@@ -725,7 +725,7 @@ async function predict() {
 
   let result2 = document.createElement('div')
   result2.classList.add('celebrity')
-  result2.innerHTML = `look like <span style="font-weight: bold">${description[answer][2]}</span>`
+  result2.innerHTML = `You look like <span style="font-weight: bold">${description[answer][2]}</span>`
   labelContainer.appendChild(result2)
 
   // let desc = document.createElement('div')
