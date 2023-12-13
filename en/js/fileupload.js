@@ -567,9 +567,18 @@ async function predict() {
   result2.innerHTML = `You looks like <span style="font-weight: bold">${description[answer][2]}</span>`
   labelContainer.appendChild(result2)
 
-  let desc = document.createElement('p')
+  // let desc = document.createElement('div')
+  // desc.classList.add('main__result__content__p')
+  // desc.textContent = description[answer][0]
+  // labelContainer.appendChild(desc)
+
+  let desc = document.createElement('div')
   desc.classList.add('main__result__content__p')
-  desc.textContent = description[answer][0]
+  desc.innerHTML = `<div class="main_result_content_wrap">
+<div class=main_result_content_img_wrapper>
+                      <img src="https://i.ibb.co/pLyRpJG/jimmin.webp" alt="k-pop_AI" class="main_result_content_img" /></div>
+                      <p>${description[answer][0]}</p>
+                    </div>`
   labelContainer.appendChild(desc)
 
   let coupleTitle = document.createElement('div')

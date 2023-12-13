@@ -53,7 +53,6 @@ body {
   justify-content: center;
   align-items: center;
   /* font-family: "East Sea Dokdo", cursive; */
-  font-family: 'Yeon Sung', cursive;
   padding-top: 30px;
   margin-bottom: 10px;
 }
@@ -61,6 +60,7 @@ body {
 .main__ai__title .title {
   font-size: 36px;
   margin-bottom: 10px;
+  font-family: 'Yeon Sung', cursive;
 }
 
 .main__ai__title .subtitle {

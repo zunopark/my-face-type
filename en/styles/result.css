@@ -19,18 +19,52 @@
   text-align: center;
   margin-bottom: 8px;
   color: rgb(170, 1, 71);
-  font-size: 18px;
+  font-size: 16px;
 }
 
-.result p {
+.result .main__result__content__p {
   font-size: 16px;
   text-align: justify;
   color: #162536;
-  line-height: 23px;
-  font-family: 'Yeon Sung', cursive;
-
+  line-height: 24px;
   padding-bottom: 20px;
   border-bottom: 1px solid black;
+}
+
+.main_result_content_wrap p {
+  /* background-color: rgba(0, 0, 0, 0.3);
+  color: rgb(212, 212, 212); */
+}
+.main_result_content_wrap {
+  /* background-image: url('https://i.ibb.co/pLyRpJG/jimmin.webp');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center center; */
+  /* backgorund-size: 100% 100%; */
+  position: relative;
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  align-items: center;
+}
+
+.main_result_content_img_wrapper {
+  position: absolute;
+  width: 200px;
+  height: 200px;
+  text-align: center;
+  z-index: -10;
+  border-radius: 50%;
+}
+
+.main_result_content_img {
+  width: 100%;
+  border-radius: 50%;
+  height: 100%;
+  opacity: 0.5;
+  transform: translate(50, 50);
+  object-fit: cover;
+  margin: auto;
 }
 
 .couple__title {
