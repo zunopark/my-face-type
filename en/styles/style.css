@@ -226,9 +226,33 @@ a:hover {
 
 .star__list__wrap {
   display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  margin-top: 8px;
+}
+
+.other_star_img_wrapper {
+  width: 20%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.other_star_img {
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  transform: translate(50, 50);
+  object-fit: cover;
+  margin: auto;
+}
+
+.other_star_result_wrapper {
+  display: felx;
   flex-direction: column;
   align-items: flex-start;
-  width: 100%;
+  width: 80%;
   margin-top: 8px;
 }
 
@@ -246,7 +270,6 @@ a:hover {
   color: black;
   opacity: 0.8;
   margin-bottom: 4px;
-  margin-left: 4px;
 }
 
 .noti {
@@ -257,13 +280,13 @@ a:hover {
 .percent_bar {
   width: 100%;
   background-color: #ebebeb;
-  border-radius: 10px;
+  border-radius: 0 10px 10px 0;
 }
 
 .percent {
   font-size: 12px;
   padding: 4px 0;
-  border-radius: 10px;
+  border-radius: 0 10px 10px 0;
   text-align: center;
   font-family: 'Yeon Sung', cursive;
 }

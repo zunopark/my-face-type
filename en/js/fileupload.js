@@ -94,126 +94,168 @@ async function predict() {
         'The face of an open-minded personality',
         `Cha Eunwoo (ASTRO)`,
         `Tzuyu (TWICE)`,
+        `https://i.ibb.co/g9TrJqt/Cha-Eunwoo.webp`,
+        `https://i.ibb.co/DC6v6LJ/tzuyu.jpg`,
       ],
       강동원: [
         'You have a good forehead, strong in character and static. Your eyes are close to phoenix eyes, so you have good fortune and attract people. Your eyebrows show that you have a strong character, so you are proud and stubborn. The ears are well-fed and affectionate. The jawline is slightly slender, so the personality is amicable, and the mouth is heavy. The overall aura of attracting people is strong, so it is a face with open success luck.',
         'A face with a lifetime of good fortune',
         `Jimmin (BTS)`,
         `Sana (TWICE)`,
+        `https://i.ibb.co/pLyRpJG/jimmin.webp`,
+        `https://i.ibb.co/0hFmxyR/sana.jpg`,
       ],
       강소라: [
         'The forehead is moderate, so it is small and has good marriage luck, and the eyebrows have good fortune and strong self-respect. The lips are full, indicating good love luck and good management. The jaw is strong, with good fortune, good later life, and an easy-going personality. The face is close to that of a donkey, with good career luck and good interpersonal relationships. The writing is large, but it is gentle, so it can be seen as a good contemplative.',
         'A face that will live well if married',
         `Hyunjin (STRAY KIDS)`,
         `Winter (AESPA)`,
+        `https://i.ibb.co/KzR0K05/hyunjin.png`,
+        `https://i.ibb.co/NYMtL9S/winter.jpg`,
       ],
       김수현: [
         'The eyebrows are thick and dark, indicating good fortune. There is not much flesh between the eyebrows and the eyes, and there is a little egotistical tendency, but the personality is attentive. The sharp eyes are sharp, observant, and quick. The nose indicates good fortune and greed for wealth. It is a person with good skills and talents and is a good subordinate for the entertainment industry. They have a positive disposition and have a good later life.',
         'Delicate, persistent, and strong-willed face',
         `Korean Hoon`,
         `Karina (AESPA)`,
+        `https://i.ibb.co/9YX56XS/hoon.jpg`,
+        `https://i.ibb.co/GnDwFVD/karina.jpg`,
       ],
       김옥빈: [
         'The forehead is moderate and has an assertive side, and the eyebrows are long and dark with good fortune. The eyes are strong as eyes that seduce the opposite sex and have strong love luck. The mouth is good at seducing the opposite sex and has a strong sense of pride. The cheeks are greedy, stubborn, and selfish, but they have good fortune, strong livelihood, and a good stomach. Overall, it is a flawless contemplative image, but on the downside, the qi emanating from the face is strong.',
         'A face with a strong energy',
         `Felix (STRAY KIDS)`,
         `Irene (RED VELVET)`,
+        `https://i.ibb.co/y40c6Cp/felix.webp`,
+        `https://i.ibb.co/0yCMKSb/irene.png`,
       ],
       박해일: [
         'The forehead is flawless and clean, showing good rationality and a good brain. The narcissistic tendency is also strong, and the personality is strong-willed and focused on anything. Looking at the eyes, the rationality is strong, and the obsession with wealth is strong. They like things that are colorful and at the same time clean and neat. They are good at speaking, with the corners of their mouth and mouth being finely drawn, which shows their optimistic and positive mindset.',
         'A face that is popular with the opposite sex',
         `Suga (BTS)`,
         `Dahyun (TWICE)`,
+        `https://i.ibb.co/ydXP5rF/suga.webp`,
+        `https://i.ibb.co/xfhBPB5/dahyeon.jpg`,
       ],
       송중기: [
         `My forehead is almost like a chan gui, which makes me intelligent and wise. He doesn't make much effort, but he is a talented person. The nose is good for fortune, and the eyes are good for love. It is strong and has good career luck, a neat final year, and versatile talents. It is close to the monkey statue, so you may live a colorful life through your talents.`,
         'A genius-type face with a brilliant mind',
         `Jungkook (BTS)`,
         `Taeyeon (GIRLS GENERATION)`,
+        `https://i.ibb.co/ctBsR59/jungkook.webp`,
+        `https://i.ibb.co/DfSRrhq/taeyeon.jpg`,
       ],
       안소희: [
         `The forehead of a seagull represents a wise and wise woman. She has the eyebrows of a chaebol, and her parents' clothes are good and her husband's clothes are good. Her eyes are mesmerizing and angry, so she is loved by people and can attract a lot of men who don't need her if she doesn't rise up. 'It has eyes that attract the opposite sex a lot, a strong entertainment temperament, and a mild and good natured personality.`,
         'A strong face with good social skills',
         `RM (BTS)`,
         `Seulgi (RED VELVET)`,
+        `https://i.ibb.co/CvHFBmC/rm.webp`,
+        `https://i.ibb.co/bFbHWx5/seulgi.jpg`,
       ],
       수지: [
         `It is a forehead that can make men flirt and suffer for their husbands. It has a masculine side, and it has a good personality, and it has good social skills. It has good love luck, and it is feminine and calm because it has fine eyebrows. You've got all the makings of a good personality. But when you turn around, you can be very aloof. It's a face with a strong personality, so it attracts people's hearts.`,
         `A face with good love luck`,
         `Taeyong (SUPERM)`,
         `Chaewon (LE SSERAFIM)`,
+        `https://i.ibb.co/RSRqMXz/taeyong.webp`,
+        `https://i.ibb.co/D5cG8Hz/chaewon.jpg`,
       ],
       유승호: [
         `Your forehead is clean and cool, so you have a cool personality, good social skills, and auspicious eyes. If you look at the nose, you have good senses, a lot of talent, good interpersonal relationships, and a calm personality, but a little bit of a rush. You have a large mouth, so you're decisive and cool, and you're big-hearted and compassionate.`,
         'An overall perfect face',
         `V (BTS)`,
         `Nayeon (TWICE)`,
+        `https://i.ibb.co/p1jwFV0/v.webp`,
+        `https://i.ibb.co/P6QQYQK/nayeon.webp`,
       ],
       유아인: [
         `When you look at your forehead, you have a good personality and a lot of recognition, but you also have a short temper and tend to not listen to others. The eyes are affectionate, calm, contemplative, rebellious, individualistic, and subjective. It is the eye that lives a different life and hates ordinary life. The jaw is strong, so it has good fortune, but it also has a sensitive side.`,
         'A face that will not live an ordinary life',
         `J-hope (BTS)`,
         `Yuqi ([G]I-DLE)`,
+        `https://i.ibb.co/bQcvt5b/jhope.webp`,
+        `https://i.ibb.co/K5q2XFN/yuqi.jpg`,
       ],
       김태희: [
         `My ears are donkey ears, so I have good fortune and good inbok. The small and pretty frontal head has high judgment, quick head rotation and intelligence, and the eyebrows are longer than the corners of the eyes, so the jaebok is very good. The teeth are large compared to the head, so the personality will also be cool.`,
         'A face with good jaebok and inbok',
         `Bang Chan (STRAY KIDS)`,
         `Soyeon ([G]I-DLE)`,
+        `https://i.ibb.co/T41R2Dm/bangchan.webp`,
+        `https://i.ibb.co/khGrJn6/soyeon.jpg`,
       ],
       문채원: [
         `Your eyebrows are well-built eyebrows. Your eyes are eyes that are good at listening. The mouth doesn't seem to speak its mind very often, and the chin is lucky, so you can expect good fortune at the end of the year. The ears are wasteful and should be excised. The one problem is your forehead, which may cause your husband to have accidents, but it is a good face to have a good husband.`,
         `It's a face that should meet a good husband`,
         `Lee Know (STRAY KIDS)`,
         `ROSÉ (BLACKPINK)`,
+        `https://i.ibb.co/nDHwGWQ/leeknow.webp`,
+        `https://i.ibb.co/kxqSzQr/rose.jpg`,
       ],
       박보영: [
         `The forehead that is moderate and slightly unusual is the forehead that controls my husband. The eyebrows and nose are very well-fitted. I am also a realist because my ears and eye corners are on the side. Her mouth is a little small compared to her face, which means she doesn't tell others what she really thinks, but unlike men, women don't mind having a small mouth. Her eyes are a little beaky, so they're the eyes that will run the household.`,
         `A face that hides what you're really thinking, but no one knows`,
         `Seungmin (STRAY KIDS)`,
         `Wonyoung (IVE)`,
+        `https://i.ibb.co/Jx9zTkD/seungmin.png`,
+        `https://i.ibb.co/dD6RD8n/wonyoung.png`,
       ],
       소지섭: [
         `There is one vertical wrinkle on my forehead, so it's a chaebol or CEO face. My eyes are crucian/whale eyes, so my fortune is very good. My ears are hard to see, so I'm stubborn and don't speak my mind to anyone. It is a silent and calm personality, and in some cases, it seems to have a strong temper. It is a face that will live a life similar to others.`,
         'Stoic, stern face',
         `Kai (EXO)`,
         `Ryujin (ITZY)`,
+        `https://i.ibb.co/tP0Trnp/kai.webp`,
+        `https://i.ibb.co/vZ2rvfk/ryujin.jpg`,
       ],
       손예진: [
         `He is wise because his forehead is like a gull, and his nose is large compared to his face, but his nostrils are not visible, so he is the one who will have riches, and his ears are the ones who will have a lot of riches. Her chin is also strong, which indicates good character, and her forehead is so broad that she might get into trouble with her husband, but because she is wise, she can deal with everything wisely.`,
         `A face with a good head and wisdom`,
         `Changbin (STRAY KIDS)`,
         `Momo (TWICE)`,
+        `https://i.ibb.co/zm3GfWw/changbin.webp`,
+        `https://i.ibb.co/vJdhXNH/momo.jpg`,
       ],
       원빈: [
         `The nose and ears are very good, especially the ears, which are perfect for jacketing. There is a bit of a waste wall, but you don't have to worry about it. Your face shape is handsome, so you'll be well suited to be an entertainer, and your forehead is square, so your social skills are very good. Your eyes are beautiful eyes, beyond handsome. Beautiful eyes are weak in love, and because they are sunken, they are quick to judge and turn their heads. However, it's a bit of a loner, and you can marry when you want to. Overall, it is a static and reticent face.`,
         `A face that can do anything if it sets its mind to it`,
         `Jin (BTS)`,
         `JENNIE (BLACKPINK)`,
+        `https://i.ibb.co/0ZK9YNy/jin.webp`,
+        `https://i.ibb.co/D9ktshf/jennie.jpg`,
       ],
       이광수: [
         `The forehead is moderate, with a strong sense of guanyin and a tendency toward individualism. The eyebrows are long and dark, indicating good fortune, and the browbone and nose are very strong. The eyes of this horse are also very loyal to the family. Although they are quick-tempered, they are usually good at building interpersonal relationships, but they have strong career luck and are greedy. The ears seem to be the ears of success and advancement, and of course, they are good ears. Overall, it is a good face that is not absorbing.`,
         `A face with more virility than anyone else's`,
         `Teayang (BIGBANG)`,
         `Jihyo (TWICE)`,
+        `https://i.ibb.co/LvKzdGs/taeyang.webp`,
+        `https://i.ibb.co/j8F5gfj/image.png`,
       ],
       이승기: [
         `I have very strong career luck because I am a horse. It has a square forehead, so it is a personality that values work more than family. The nose is strong and energetic, so it is a very good face for business. The ears are large, so it is a face with a good stomach, belonging to a moody personality, and very strong loyalty. The chin below the ears is thin, so it looks like there is no bend in life, and the mouth is large, so it can be said to be a cool personality and an optimistic personality..`,
         `A face that will have no bends in life`,
         `GD (BIGBANG)`,
         `Lisa (BLACKPINK)`,
+        `https://i.ibb.co/103j7gH/GD.webp`,
+        `https://i.ibb.co/k9BnDLq/lisa.jpg`,
       ],
       크리스탈: [
         `Your forehead is broad and rounded, giving you a slight appearance of divorce. But you'll always be on good terms with everyone except your husband. Your eyebrows are bushy, your eyes are proud, and your nose is a snub nose. Your mouth is a thin one, so you don't say much. The ears are also hard to see from the front, so you can't tell what they're really thinking, but on the outside, they're nice to everyone, so overall, it's a very good interpersonal face with good social skills and good stickiness.`,
         `Interpersonal master face`,
         `Taemin (SUPERM)`,
         `Yeji (ITZY)`,
+        `https://i.ibb.co/fM1pWqb/taemin.webp`,
+        `https://i.ibb.co/bFFL9gw/yeji.webp`,
       ],
       손나은: [
         `The forehead is moderate in size, so it's a quick-reading forehead. The eyebrows are long, bushy, and feminine. The eyes have a shy temperament, but they are very strong eyes. His nose is short and his nostrils are clearly visible, so he is affectionate and has strong writing skills. However, it is a weak nose for a husband. Through the nose, you can see that useless men will be attached. Injung is short, so interpersonal relationships are good, but this kind of Injung tries to get acquainted with people who are similar to her. Overall, it's a face with a strong Lee Sung-woon, but you should think carefully when meeting your spouse.`,
         `A face that men cling to uselessly`,
         `Baekhyun (SUPERM)`,
         `Jisoo (BLACKPINK)`,
+        `https://i.ibb.co/gtvgjHc/baekhyun.webp`,
+        `https://i.ibb.co/hcjKfkN/jisoo.webp`,
       ],
     }
   } else {
@@ -223,126 +265,168 @@ async function predict() {
         'The face of an open-minded personality',
         `Jisoo (BLACKPINK)`,
         `Baekhyun (SUPERM)`,
+        `https://i.ibb.co/hcjKfkN/jisoo.webp`,
+        `https://i.ibb.co/gtvgjHc/baekhyun.webp`,
       ],
       강동원: [
         'You have a good forehead, strong in character and static. Your eyes are close to phoenix eyes, so you have good fortune and attract people. Your eyebrows show that you have a strong character, so you are proud and stubborn. The ears are well-fed and affectionate. The jawline is slightly slender, so the personality is amicable, and the mouth is heavy. The overall aura of attracting people is strong, so it is a face with open success luck.',
         'A face with a lifetime of good fortune',
         `Yeji (ITZY)`,
         `Taemin (SUPERM)`,
+        `https://i.ibb.co/bFFL9gw/yeji.webp`,
+        `https://i.ibb.co/fM1pWqb/taemin.webp`,
       ],
       강소라: [
         'The forehead is moderate, so it is small and has good marriage luck, and the eyebrows have good fortune and strong self-respect. The lips are full, indicating good love luck and good management. The jaw is strong, with good fortune, good later life, and an easy-going personality. The face is close to that of a donkey, with good career luck and good interpersonal relationships. The writing is large, but it is gentle, so it can be seen as a good contemplative.',
         'A face that will live well if married',
         `Lisa (BLACKPINK)`,
         `GD (BIGBANG)`,
+        `https://i.ibb.co/k9BnDLq/lisa.jpg`,
+        `https://i.ibb.co/103j7gH/GD.webp`,
       ],
       김수현: [
         'The eyebrows are thick and dark, indicating good fortune. There is not much flesh between the eyebrows and the eyes, and there is a little egotistical tendency, but the personality is attentive. The sharp eyes are sharp, observant, and quick. The nose indicates good fortune and greed for wealth. It is a person with good skills and talents and is a good subordinate for the entertainment industry. They have a positive disposition and have a good later life.',
         'Delicate, persistent, and strong-willed face',
         `Jihyo (TWICE)`,
         `Teayang (BIGBANG)`,
+        `https://i.ibb.co/j8F5gfj/image.png`,
+        `https://i.ibb.co/LvKzdGs/taeyang.webp`,
       ],
       김옥빈: [
         'The forehead is moderate and has an assertive side, and the eyebrows are long and dark with good fortune. The eyes are strong as eyes that seduce the opposite sex and have strong love luck. The mouth is good at seducing the opposite sex and has a strong sense of pride. The cheeks are greedy, stubborn, and selfish, but they have good fortune, strong livelihood, and a good stomach. Overall, it is a flawless contemplative image, but on the downside, the qi emanating from the face is strong.',
         'A face with a strong energy',
         `JENNIE (BLACKPINK)`,
         `Jin (BTS)`,
+        `https://i.ibb.co/D9ktshf/jennie.jpg`,
+        `https://i.ibb.co/0ZK9YNy/jin.webp`,
       ],
       박해일: [
         'The forehead is flawless and clean, showing good rationality and a good brain. The narcissistic tendency is also strong, and the personality is strong-willed and focused on anything. Looking at the eyes, the rationality is strong, and the obsession with wealth is strong. They like things that are colorful and at the same time clean and neat. They are good at speaking, with the corners of their mouth and mouth being finely drawn, which shows their optimistic and positive mindset.',
         'A face that is popular with the opposite sex',
         `Momo (TWICE)`,
         `Changbin (STRAY KIDS)`,
+        `https://i.ibb.co/vJdhXNH/momo.jpg`,
+        `https://i.ibb.co/zm3GfWw/changbin.webp`,
       ],
       송중기: [
         `My forehead is almost like a chan gui, which makes me intelligent and wise. He doesn't make much effort, but he is a talented person. The nose is good for fortune, and the eyes are good for love. It is strong and has good career luck, a neat final year, and versatile talents. It is close to the monkey statue, so you may live a colorful life through your talents.`,
         'A genius-type face with a brilliant mind',
         `Ryujin (ITZY)`,
         `Kai (EXO)`,
+        `https://i.ibb.co/vZ2rvfk/ryujin.jpg`,
+        `https://i.ibb.co/tP0Trnp/kai.webp`,
       ],
       안소희: [
         `The forehead of a seagull represents a wise and wise woman. She has the eyebrows of a chaebol, and her parents' clothes are good and her husband's clothes are good. Her eyes are mesmerizing and angry, so she is loved by people and can attract a lot of men who don't need her if she doesn't rise up. 'It has eyes that attract the opposite sex a lot, a strong entertainment temperament, and a mild and good natured personality.`,
         'A strong face with good social skills',
         `Wonyoung (IVE)`,
         `Seungmin (STRAY KIDS)`,
+        `https://i.ibb.co/dD6RD8n/wonyoung.png`,
+        `https://i.ibb.co/Jx9zTkD/seungmin.png`,
       ],
       수지: [
         `It is a forehead that can make men flirt and suffer for their husbands. It has a masculine side, and it has a good personality, and it has good social skills. It has good love luck, and it is feminine and calm because it has fine eyebrows. You've got all the makings of a good personality. But when you turn around, you can be very aloof. It's a face with a strong personality, so it attracts people's hearts.`,
         `A face with good love luck`,
         `ROSÉ (BLACKPINK)`,
         `Lee Know (STRAY KIDS)`,
+        `https://i.ibb.co/kxqSzQr/rose.jpg`,
+        `https://i.ibb.co/nDHwGWQ/leeknow.webp`,
       ],
       유승호: [
         `Your forehead is clean and cool, so you have a cool personality, good social skills, and auspicious eyes. If you look at the nose, you have good senses, a lot of talent, good interpersonal relationships, and a calm personality, but a little bit of a rush. You have a large mouth, so you're decisive and cool, and you're big-hearted and compassionate.`,
         'An overall perfect face',
         `Soyeon ([G]I-DLE)`,
         `Bang Chan (STRAY KIDS)`,
+        `https://i.ibb.co/khGrJn6/soyeon.jpg`,
+        `https://i.ibb.co/T41R2Dm/bangchan.webp`,
       ],
       유아인: [
         `When you look at your forehead, you have a good personality and a lot of recognition, but you also have a short temper and tend to not listen to others. The eyes are affectionate, calm, contemplative, rebellious, individualistic, and subjective. It is the eye that lives a different life and hates ordinary life. The jaw is strong, so it has good fortune, but it also has a sensitive side.`,
         'A face that will not live an ordinary life',
         `Yuqi ([G]I-DLE)`,
         `J-hope (BTS)`,
+        `https://i.ibb.co/K5q2XFN/yuqi.jpg`,
+        `https://i.ibb.co/bQcvt5b/jhope.webp`,
       ],
       김태희: [
         `My ears are donkey ears, so I have good fortune and good inbok. The small and pretty frontal head has high judgment, quick head rotation and intelligence, and the eyebrows are longer than the corners of the eyes, so the jaebok is very good. The teeth are large compared to the head, so the personality will also be cool.`,
         'A face with good jaebok and inbok',
         `Nayeon (TWICE)`,
         `V (BTS)`,
+        `https://i.ibb.co/P6QQYQK/nayeon.webp`,
+        `https://i.ibb.co/p1jwFV0/v.webp`,
       ],
       문채원: [
         `Your eyebrows are well-built eyebrows. Your eyes are eyes that are good at listening. The mouth doesn't seem to speak its mind very often, and the chin is lucky, so you can expect good fortune at the end of the year. The ears are wasteful and should be excised. The one problem is your forehead, which may cause your husband to have accidents, but it is a good face to have a good husband.`,
         `It's a face that should meet a good husband`,
         `Chaewon (LE SSERAFIM)`,
         `Taeyong (SUPERM)`,
+        `https://i.ibb.co/D5cG8Hz/chaewon.jpg`,
+        `https://i.ibb.co/RSRqMXz/taeyong.webp`,
       ],
       박보영: [
         `The forehead that is moderate and slightly unusual is the forehead that controls my husband. The eyebrows and nose are very well-fitted. I am also a realist because my ears and eye corners are on the side. Her mouth is a little small compared to her face, which means she doesn't tell others what she really thinks, but unlike men, women don't mind having a small mouth. Her eyes are a little beaky, so they're the eyes that will run the household.`,
         `A face that hides what you're really thinking, but no one knows`,
         `Seulgi (RED VELVET)`,
         `RM (BTS)`,
+        `https://i.ibb.co/bFbHWx5/seulgi.jpg`,
+        `https://i.ibb.co/CvHFBmC/rm.webp`,
       ],
       소지섭: [
         `There is one vertical wrinkle on my forehead, so it's a chaebol or CEO face. My eyes are crucian/whale eyes, so my fortune is very good. My ears are hard to see, so I'm stubborn and don't speak my mind to anyone. It is a silent and calm personality, and in some cases, it seems to have a strong temper. It is a face that will live a life similar to others.`,
         'Stoic, stern face',
         `Taeyeon (GIRLS GENERATION)`,
         `Jungkook (BTS)`,
+        `https://i.ibb.co/DfSRrhq/taeyeon.jpg`,
+        `https://i.ibb.co/ctBsR59/jungkook.webp`,
       ],
       손예진: [
         `He is wise because his forehead is like a gull, and his nose is large compared to his face, but his nostrils are not visible, so he is the one who will have riches, and his ears are the ones who will have a lot of riches. Her chin is also strong, which indicates good character, and her forehead is so broad that she might get into trouble with her husband, but because she is wise, she can deal with everything wisely.`,
         `A face with a good head and wisdom`,
         `Dahyun (TWICE)`,
         `Suga (BTS)`,
+        `https://i.ibb.co/xfhBPB5/dahyeon.jpg`,
+        `https://i.ibb.co/ydXP5rF/suga.webp`,
       ],
       원빈: [
         `The nose and ears are very good, especially the ears, which are perfect for jacketing. There is a bit of a waste wall, but you don't have to worry about it. Your face shape is handsome, so you'll be well suited to be an entertainer, and your forehead is square, so your social skills are very good. Your eyes are beautiful eyes, beyond handsome. Beautiful eyes are weak in love, and because they are sunken, they are quick to judge and turn their heads. However, it's a bit of a loner, and you can marry when you want to. Overall, it is a static and reticent face.`,
         `A face that can do anything if it sets its mind to it`,
         `Irene (RED VELVET)`,
         `Felix (STRAY KIDS)`,
+        `https://i.ibb.co/0yCMKSb/irene.png`,
+        `https://i.ibb.co/y40c6Cp/felix.webp`,
       ],
       이광수: [
         `The forehead is moderate, with a strong sense of guanyin and a tendency toward individualism. The eyebrows are long and dark, indicating good fortune, and the browbone and nose are very strong. The eyes of this horse are also very loyal to the family. Although they are quick-tempered, they are usually good at building interpersonal relationships, but they have strong career luck and are greedy. The ears seem to be the ears of success and advancement, and of course, they are good ears. Overall, it is a good face that is not absorbing.`,
         `A face with more virility than anyone else's`,
         `Karina (AESPA)`,
         `Korean Hoon`,
+        `https://i.ibb.co/GnDwFVD/karina.jpg`,
+        `https://i.ibb.co/9YX56XS/hoon.jpg`,
       ],
       이승기: [
         `I have very strong career luck because I am a horse. It has a square forehead, so it is a personality that values work more than family. The nose is strong and energetic, so it is a very good face for business. The ears are large, so it is a face with a good stomach, belonging to a moody personality, and very strong loyalty. The chin below the ears is thin, so it looks like there is no bend in life, and the mouth is large, so it can be said to be a cool personality and an optimistic personality..`,
         `A face that will have no bends in life`,
         `Winter (AESPA)`,
         `Hyunjin (STRAY KIDS)`,
+        `https://i.ibb.co/NYMtL9S/winter.jpg`,
+        `https://i.ibb.co/KzR0K05/hyunjin.png`,
       ],
       크리스탈: [
         `Your forehead is broad and rounded, giving you a slight appearance of divorce. But you'll always be on good terms with everyone except your husband. Your eyebrows are bushy, your eyes are proud, and your nose is a snub nose. Your mouth is a thin one, so you don't say much. The ears are also hard to see from the front, so you can't tell what they're really thinking, but on the outside, they're nice to everyone, so overall, it's a very good interpersonal face with good social skills and good stickiness.`,
         `Interpersonal master face`,
         `Sana (TWICE)`,
         `Jimmin (BTS)`,
+        `https://i.ibb.co/0hFmxyR/sana.jpg`,
+        `https://i.ibb.co/pLyRpJG/jimmin.webp`,
       ],
       손나은: [
         `The forehead is moderate in size, so it's a quick-reading forehead. The eyebrows are long, bushy, and feminine. The eyes have a shy temperament, but they are very strong eyes. His nose is short and his nostrils are clearly visible, so he is affectionate and has strong writing skills. However, it is a weak nose for a husband. Through the nose, you can see that useless men will be attached. Injung is short, so interpersonal relationships are good, but this kind of Injung tries to get acquainted with people who are similar to her. Overall, it's a face with a strong Lee Sung-woon, but you should think carefully when meeting your spouse.`,
         `A face that men cling to uselessly`,
         `Tzuyu (TWICE)`,
         `Cha Eunwoo (ASTRO)`,
+        `https://i.ibb.co/DC6v6LJ/tzuyu.jpg`,
+        `https://i.ibb.co/g9TrJqt/Cha-Eunwoo.webp`,
       ],
     }
   }
@@ -404,20 +488,33 @@ async function predict() {
       starsListImg =
         starsListImg +
         ` <div class="star__list__wrap">
-        <div class="star__list__img">
-        ${description[resultArray[j].key][3]}
-        </div> 
-        <div class="percent_bar">
-        <div class="percent zero" style="width: 1%">
-        ${resultArray[j].value}%
+        <div class="other_star_img_wrapper">
+        <img src="${
+          description[resultArray[j].key][5]
+        }" alt="k-pop_AI" class="other_star_img" />
         </div>
-        </div>
+        <div class="other_star_result_wrapper">
+      <div class="star__list__img">
+      ${description[resultArray[j].key][3]}
+      </div> 
+      <div class="percent_bar">
+      <div class="percent zero" style="width: 1%">
+      ${resultArray[j].value}%
       </div>
-        `
+      </div>
+      </div>
+    </div>
+      `
     } else if (resultArray[j].value > 0 && resultArray[j].value <= 10) {
       starsListImg =
         starsListImg +
         ` <div class="star__list__wrap">
+        <div class="other_star_img_wrapper">
+        <img src="${
+          description[resultArray[j].key][5]
+        }" alt="k-pop_AI" class="other_star_img" />
+        </div>
+        <div class="other_star_result_wrapper">
       <div class="star__list__img">
       ${description[resultArray[j].key][3]}
       </div> 
@@ -426,102 +523,152 @@ async function predict() {
       ${resultArray[j].value}%
       </div>
       </div>
+      </div>
     </div>
       `
     } else if (resultArray[j].value > 10 && resultArray[j].value <= 20) {
       starsListImg =
         starsListImg +
         ` <div class="star__list__wrap">
-        <div class="star__list__img">
-        ${description[resultArray[j].key][3]}
-        </div> 
-        <div class="percent_bar">
-        <div class="percent onetwo" style="width: ${resultArray[j].value}%">
-        ${resultArray[j].value}%
+        <div class="other_star_img_wrapper">
+        <img src="${
+          description[resultArray[j].key][5]
+        }" alt="k-pop_AI" class="other_star_img" />
         </div>
-        </div>
-      </div>
-        `
-    } else if (resultArray[j].value > 20 && resultArray[j].value <= 30) {
-      starsListImg =
-        starsListImg +
-        ` <div class="star__list__wrap">
-        <div class="star__list__img">
-        ${description[resultArray[j].key][3]}
-        </div> 
-        <div class="percent_bar">
-        <div class="percent twothree" style="width: ${resultArray[j].value}%">
-        ${resultArray[j].value}%
-        </div>
-        </div>
-      </div>
-        `
-    } else if (resultArray[j].value > 30 && resultArray[j].value <= 40) {
-      starsListImg =
-        starsListImg +
-        ` <div class="star__list__wrap">
-        <div class="star__list__img">
-        ${description[resultArray[j].key][3]}
-        </div> 
-        <div class="percent_bar">
-        <div class="percent threefour" style="width: ${resultArray[j].value}%">
-        ${resultArray[j].value}%
-        </div>
-        </div>
-      </div>
-        `
-    } else if (resultArray[j].value > 40 && resultArray[j].value <= 50) {
-      starsListImg =
-        starsListImg +
-        ` <div class="star__list__wrap">
-        <div class="star__list__img">
-        ${description[resultArray[j].key][3]}
-        </div> 
-        <div class="percent_bar">
-        <div class="percent fourfive" style="width: ${resultArray[j].value}%">
-        ${resultArray[j].value}%
-        </div>
-        </div>
-      </div>
-        `
-    } else if (resultArray[j].value > 50 && resultArray[j].value <= 60) {
-      starsListImg =
-        starsListImg +
-        ` <div class="star__list__wrap">
-        <div class="star__list__img">
-        ${description[resultArray[j].key][3]}
-        </div> 
-        <div class="percent_bar">
-        <div class="percent fivesix" style="width: ${resultArray[j].value}%">
-        ${resultArray[j].value}%
-        </div>
-        </div>
-      </div>
-        `
-    } else if (resultArray[j].value > 60 && resultArray[j].value <= 70) {
-      starsListImg =
-        starsListImg +
-        ` <div class="star__list__wrap">
-        <div class="star__list__img">
-        ${description[resultArray[j].key][3]}
-        </div> 
-        <div class="percent_bar">
-        <div class="percent sixseven" style="width: ${resultArray[j].value}%">
-        ${resultArray[j].value}%
-        </div>
-        </div>
-      </div>
-        `
-    } else if (resultArray[j].value > 70 && resultArray[j].value <= 80) {
-      starsListImg =
-        starsListImg +
-        ` <div class="star__list__wrap">
+        <div class="other_star_result_wrapper">
       <div class="star__list__img">
       ${description[resultArray[j].key][3]}
       </div> 
       <div class="percent_bar">
-      <div class="percent seveneight" style="width: ${resultArray[j].value}%">
+      <div class="percent onetwo" style="width: ${resultArray[j].value}%">
       ${resultArray[j].value}%
+      </div>
+      </div>
+      </div>
+    </div>
+      `
+    } else if (resultArray[j].value > 20 && resultArray[j].value <= 30) {
+      starsListImg =
+        starsListImg +
+        ` <div class="star__list__wrap">
+        <div class="other_star_img_wrapper">
+        <img src="${
+          description[resultArray[j].key][5]
+        }" alt="k-pop_AI" class="other_star_img" />
+        </div>
+        <div class="other_star_result_wrapper">
+      <div class="star__list__img">
+      ${description[resultArray[j].key][3]}
+      </div> 
+      <div class="percent_bar">
+      <div class="percent twothree" style="width: ${resultArray[j].value}%">
+      ${resultArray[j].value}%
+      </div>
+      </div>
+      </div>
+    </div>
+      `
+    } else if (resultArray[j].value > 30 && resultArray[j].value <= 40) {
+      starsListImg =
+        starsListImg +
+        ` <div class="star__list__wrap">
+        <div class="other_star_img_wrapper">
+        <img src="${
+          description[resultArray[j].key][5]
+        }" alt="k-pop_AI" class="other_star_img" />
+        </div>
+        <div class="other_star_result_wrapper">
+      <div class="star__list__img">
+      ${description[resultArray[j].key][3]}
+      </div> 
+      <div class="percent_bar">
+      <div class="percent threefour" style="width: ${resultArray[j].value}%">
+      ${resultArray[j].value}%
+      </div>
+      </div>
+      </div>
+    </div>
+      `
+    } else if (resultArray[j].value > 40 && resultArray[j].value <= 50) {
+      starsListImg =
+        starsListImg +
+        ` <div class="star__list__wrap">
+        <div class="other_star_img_wrapper">
+        <img src="${
+          description[resultArray[j].key][5]
+        }" alt="k-pop_AI" class="other_star_img" />
+        </div>
+        <div class="other_star_result_wrapper">
+      <div class="star__list__img">
+      ${description[resultArray[j].key][3]}
+      </div> 
+      <div class="percent_bar">
+      <div class="percent fourfive" style="width: ${resultArray[j].value}%">
+      ${resultArray[j].value}%
+      </div>
+      </div>
+      </div>
+    </div>
+      `
+    } else if (resultArray[j].value > 50 && resultArray[j].value <= 60) {
+      starsListImg =
+        starsListImg +
+        ` <div class="star__list__wrap">
+        <div class="other_star_img_wrapper">
+        <img src="${
+          description[resultArray[j].key][5]
+        }" alt="k-pop_AI" class="other_star_img" />
+        </div>
+        <div class="other_star_result_wrapper">
+      <div class="star__list__img">
+      ${description[resultArray[j].key][3]}
+      </div> 
+      <div class="percent_bar">
+      <div class="percent fivesix" style="width: ${resultArray[j].value}%">
+      ${resultArray[j].value}%
+      </div>
+      </div>
+      </div>
+    </div>
+      `
+    } else if (resultArray[j].value > 60 && resultArray[j].value <= 70) {
+      starsListImg =
+        starsListImg +
+        ` <div class="star__list__wrap">
+        <div class="other_star_img_wrapper">
+        <img src="${
+          description[resultArray[j].key][5]
+        }" alt="k-pop_AI" class="other_star_img" />
+        </div>
+        <div class="other_star_result_wrapper">
+      <div class="star__list__img">
+      ${description[resultArray[j].key][3]}
+      </div> 
+      <div class="percent_bar">
+      <div class="percent sixseven" style="width: ${resultArray[j].value}%">
+      ${resultArray[j].value}%
+      </div>
+      </div>
+      </div>
+    </div>
+      `
+    } else if (resultArray[j].value > 70 && resultArray[j].value <= 80) {
+      starsListImg =
+        starsListImg +
+        ` <div class="star__list__wrap">
+        <div class="other_star_img_wrapper">
+        <img src="${
+          description[resultArray[j].key][5]
+        }" alt="k-pop_AI" class="other_star_img" />
+        </div>
+        <div class="other_star_result_wrapper">
+      <div class="star__list__img">
+      ${description[resultArray[j].key][3]}
+      </div> 
+      <div class="percent_bar">
+      <div class="percent seveneignt" style="width: ${resultArray[j].value}%">
+      ${resultArray[j].value}%
+      </div>
       </div>
       </div>
     </div>
@@ -530,6 +677,12 @@ async function predict() {
       starsListImg =
         starsListImg +
         ` <div class="star__list__wrap">
+        <div class="other_star_img_wrapper">
+        <img src="${
+          description[resultArray[j].key][5]
+        }" alt="k-pop_AI" class="other_star_img" />
+        </div>
+        <div class="other_star_result_wrapper">
       <div class="star__list__img">
       ${description[resultArray[j].key][3]}
       </div> 
@@ -538,18 +691,26 @@ async function predict() {
       ${resultArray[j].value}%
       </div>
       </div>
+      </div>
     </div>
       `
     } else if (resultArray[j].value > 90 && resultArray[j].value <= 100) {
       starsListImg =
         starsListImg +
         ` <div class="star__list__wrap">
+        <div class="other_star_img_wrapper">
+        <img src="${
+          description[resultArray[j].key][5]
+        }" alt="k-pop_AI" class="other_star_img" />
+        </div>
+        <div class="other_star_result_wrapper">
       <div class="star__list__img">
       ${description[resultArray[j].key][3]}
       </div> 
       <div class="percent_bar">
       <div class="percent nineten" style="width: ${resultArray[j].value}%">
       ${resultArray[j].value}%
+      </div>
       </div>
       </div>
     </div>
@@ -564,7 +725,7 @@ async function predict() {
 
   let result2 = document.createElement('div')
   result2.classList.add('celebrity')
-  result2.innerHTML = `You looks like <span style="font-weight: bold">${description[answer][2]}</span>`
+  result2.innerHTML = `look like <span style="font-weight: bold">${description[answer][2]}</span>`
   labelContainer.appendChild(result2)
 
   // let desc = document.createElement('div')
@@ -576,7 +737,7 @@ async function predict() {
   desc.classList.add('main__result__content__p')
   desc.innerHTML = `<div class="main_result_content_wrap">
 <div class=main_result_content_img_wrapper>
-                      <img src="https://i.ibb.co/pLyRpJG/jimmin.webp" alt="k-pop_AI" class="main_result_content_img" /></div>
+                      <img src="${description[answer][4]}" alt="k-pop_AI" class="main_result_content_img" /></div>
                       <p>${description[answer][0]}</p>
                     </div>`
   labelContainer.appendChild(desc)
