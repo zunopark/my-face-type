@@ -666,7 +666,7 @@ async function predict() {
       ${description[resultArray[j].key][3]}
       </div> 
       <div class="percent_bar">
-      <div class="percent seveneignt" style="width: ${resultArray[j].value}%">
+      <div class="percent seveneight" style="width: ${resultArray[j].value}%">
       ${resultArray[j].value}%
       </div>
       </div>
