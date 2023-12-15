@@ -718,16 +718,35 @@ async function predict() {
     }
   }
 
+  const fileUploadImg = document.querySelector(`.file-upload-image`)
+  // console.log(fileUploadImg.src)
+
+  let dddd = document.createElement(`div`)
+  dddd.classList.add(`dddd`)
+  dddd.innerHTML = `
+                        <div class=main_result_content_img_wrapper>
+                          <div class=main_result_content_img_div>
+                            <img src="${fileUploadImg.src}" alt="k-pop_AI" class="main_result_content_img" />
+                          </div>
+                          <div class=main_result_content_icon_div>
+                            <i class="fas fa-infinity"></i>
+                          </div>
+                          <div class=main_result_content_img_div>
+                            <img src="${description[answer][4]}" alt="k-pop_AI" class="main_result_content_img" />
+                          </div>
+                        </div>
+  `
+  labelContainer.appendChild(dddd)
+
+  let result2 = document.createElement('div')
+  result2.classList.add('celebrity')
+  result2.innerHTML = `<span style="font-weight: bold">${description[answer][2]}</span>`
+  labelContainer.appendChild(result2)
+
   let result = document.createElement('div')
   result.classList.add('result_face')
   result.textContent = `${description[answer][1]}`
   labelContainer.appendChild(result)
-
-  let result2 = document.createElement('div')
-  result2.classList.add('celebrity')
-  result2.innerHTML = `You look like <span style="font-weight: bold">${description[answer][2]}</span>`
-  labelContainer.appendChild(result2)
-
   // let desc = document.createElement('div')
   // desc.classList.add('main__result__content__p')
   // desc.textContent = description[answer][0]
@@ -736,8 +755,6 @@ async function predict() {
   let desc = document.createElement('div')
   desc.classList.add('main__result__content__p')
   desc.innerHTML = `<div class="main_result_content_wrap">
-<div class=main_result_content_img_wrapper>
-                      <img src="${description[answer][4]}" alt="k-pop_AI" class="main_result_content_img" /></div>
                       <p>${description[answer][0]}</p>
                     </div>`
   labelContainer.appendChild(desc)
@@ -746,6 +763,23 @@ async function predict() {
   coupleTitle.classList.add('couple__title')
   coupleTitle.textContent = `You’re meant to be with`
   labelContainer.appendChild(coupleTitle)
+
+  let coupleDesc = document.createElement(`div`)
+  coupleDesc.classList.add('mmmm')
+  coupleDesc.innerHTML = `
+                        <div class=main_result_content_img_wrapper>
+                          <div class=main_result_content_img_div>
+                            <img src="${fileUploadImg.src}" alt="k-pop_AI" class="main_result_content_img" />
+                          </div>
+                          <div class=main_result_content_icon_div2>
+                            <i class="fas fa-heart"></i>
+                          </div>
+                          <div class=main_result_content_img_div>
+                            <img src="${description[answer][5]}" alt="k-pop_AI" class="main_result_content_img" />
+                          </div>
+                        </div>
+  `
+  labelContainer.appendChild(coupleDesc)
 
   let otherResult = document.createElement('div')
   otherResult.classList.add('other__result')

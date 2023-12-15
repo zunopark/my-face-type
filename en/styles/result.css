@@ -9,7 +9,8 @@
 
 .result .result_face {
   text-align: center;
-  font-size: 20px;
+  font-size: 16px;
+  margin-top: 12px;
   margin-bottom: 12px;
   /* color: #e74c3c; */
   font-family: 'KimjungchulMyungjo-Bold';
@@ -19,6 +20,11 @@
   text-align: center;
   color: rgb(170, 1, 71);
   font-size: 16px;
+  margin-top: 16px;
+}
+
+.mmmm {
+  margin-top: 16px;
 }
 
 .result .main__result__content__p {
@@ -48,14 +54,27 @@
 }
 
 .main_result_content_img_wrapper {
-  /* position: absolute; */
-  width: 100px;
-  height: 100px;
-  text-align: center;
-  z-index: -10;
-  border-radius: 50%;
-  /* top: 20px; */
+  display: flex;
+  justify-content: center;
+  align-items: center;
   margin: 6px 0;
+}
+
+.main_result_content_icon_div {
+  margin: 0 8px;
+  opacity: 0.7;
+  color: black;
+}
+.main_result_content_icon_div2 {
+  margin: 0 8px;
+  opacity: 0.7;
+}
+
+.main_result_content_img_div {
+  text-align: center;
+  border-radius: 50%;
+  width: 80px;
+  height: 80px;
 }
 
 .main_result_content_img {
