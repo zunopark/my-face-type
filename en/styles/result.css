@@ -91,6 +91,7 @@
 .couple__title {
   color: #e74c3c;
   margin-top: 16px;
+  font-weight: bold;
 }
 
 .result .reset__btn {
