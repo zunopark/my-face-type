@@ -823,6 +823,6 @@ async function predict() {
     document.body.appendChild(el)
     el.select()
     document.execCommand('copy')
-    document.querySelector(`.copy__btn`).innerHTML = 'Copy Completed!'
+    document.querySelector(`.copy__btn`).innerHTML = 'Successfully Copied!'
   }
 }
