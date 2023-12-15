@@ -798,6 +798,16 @@ async function predict() {
 
   reset.addEventListener('click', handleReset)
 
+  let copy = document.createElement('button')
+  copy.innerHTML = 'Copy URL address'
+  copy.classList.add('copy__btn')
+  copy.onclick = function () {
+    gtag('event', 'en/주소 복사')
+  }
+  labelContainer.appendChild(copy)
+
+  copy.addEventListener('click', handleCopy)
+
   const privacy = document.querySelector(`.noti`)
   privacy.style.display = 'none'
 
@@ -805,5 +815,14 @@ async function predict() {
     location.reload(true)
     location.href = location.href
     history.go(0)
+  }
+
+  function handleCopy() {
+    const el = document.createElement('textarea')
+    el.value = window.location.href
+    document.body.appendChild(el)
+    el.select()
+    document.execCommand('copy')
+    document.querySelector(`.copy__btn`).innerHTML = 'Copy Completed!'
   }
 }
