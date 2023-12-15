@@ -1,6 +1,7 @@
 // 사진 올리는거
 
 const aiCont = document.querySelector(`.ai`)
+const borderCont = document.querySelector(`.border`)
 
 async function readURL(input) {
   if (input.files && input.files[0]) {
@@ -18,6 +19,7 @@ async function readURL(input) {
     await reader.readAsDataURL(input.files[0])
     await init()
     aiCont.classList.add('disblock')
+    borderCont.classList.add('disblock')
   } else {
     removeUpload()
   }
