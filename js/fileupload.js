@@ -1,4 +1,6 @@
 // 사진 올리는거
+const borderCont = document.querySelector(`.border`)
+
 async function readURL(input) {
   if (input.files && input.files[0]) {
     var reader = new FileReader()
@@ -21,6 +23,7 @@ async function readURL(input) {
 
     const imageTitleWrap = document.querySelector(`.ai`)
     imageTitleWrap.classList.add('disblock')
+    borderCont.classList.add('disblock')
   } else {
     removeUpload()
   }
@@ -320,6 +323,20 @@ async function predict() {
     }
   }
 
+  const fileUploadImg = document.querySelector(`.file-upload-image`)
+  // console.log(fileUploadImg.src)
+
+  let dddd = document.createElement(`div`)
+  dddd.classList.add(`dddd`)
+  dddd.innerHTML = `
+                        <div class=main_result_content_img_wrapper>
+                          <div class=main_result_content_img_div>
+                            <img src="${fileUploadImg.src}" alt="k-pop_AI" class="main_result_content_img" />
+                          </div>
+                        </div>
+  `
+  labelContainer.appendChild(dddd)
+
   let result = document.createElement('div')
   result.classList.add('main_result_description')
   result.innerHTML = `${description[answer][1]}`
@@ -366,14 +383,14 @@ async function predict() {
   }
 
   let share = document.createElement('button')
-  share.innerHTML = '3초만에 가족, 친구에게 공유하세요.'
+  share.innerHTML = '무료 관상 가족에게 알려주기 [3초]'
   share.classList.add('share__btn')
-  share.onclick = function () {
-    gtag('event', '공유하기', {
-      event_category: '공유하기',
-      event_label: '공유 버튼',
-    })
-  }
+  // share.onclick = function () {
+  //   gtag('event', '공유하기', {
+  //     event_category: '공유하기',
+  //     event_label: '공유 버튼',
+  //   })
+  // }
   labelContainer.appendChild(share)
 
   share.addEventListener('click', kakaoShare)

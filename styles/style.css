@@ -39,7 +39,8 @@
   align-items: center;
   /* padding-top: 30px; */
   margin-bottom: 10px;
-  color: white;
+  color: #292929;
+  font-family: 'KimjungchulMyungjo-Bold';
 }
 
 .main__ai__title .title {
@@ -52,6 +53,8 @@
   font-size: 28px;
   font-weight: 700;
   margin-top: 6px;
+  text-align: center;
+  line-height: 36px;
 }
 
 #container {
