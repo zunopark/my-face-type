@@ -12,7 +12,7 @@
   justify-content: flex-start;
   align-items: center;
   padding: 20px;
-  background-color: #e2d2c3;
+  background-color: #2f2f32;
 }
 
 .header_chat_back {
@@ -25,14 +25,14 @@
 }
 
 .header_chat_title {
-  color: rgb(137, 137, 137);
+  color: rgb(202, 202, 202);
   font-size: 20px;
   text-decoration: none;
   margin-right: 16px;
 }
 
 .header_selected {
-  color: rgb(37, 37, 37);
+  color: rgb(251, 213, 0);
   font-weight: 700;
 }
 
