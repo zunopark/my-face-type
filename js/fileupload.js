@@ -379,7 +379,7 @@ async function predict() {
     // location.reload(true)
     // location.href = location.href
     // history.go(0)
-    location.href = '/'
+    location.href = '/onemore'
   }
 
   let share = document.createElement('button')
