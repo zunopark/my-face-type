@@ -8,7 +8,7 @@
 @import 'footer.css';
 @import 'ad.css';
 @import 'media.css';
-
+@import 'faceAnalysis.css';
 .mosaic_style {
   filter: blur(4px);
 }
