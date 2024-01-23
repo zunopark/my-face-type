@@ -4,6 +4,23 @@ const headerForAd = document.querySelector(`.header`)
 const appVersion = '0.504'
 
 function init() {
+  const scrollToTopButton = document.getElementById('scrollToTopButton')
+
+  window.onscroll = function () {
+    if (
+      document.body.scrollTop > 20 ||
+      document.documentElement.scrollTop > 20
+    ) {
+      scrollToTopButton.style.display = 'block'
+    } else {
+      scrollToTopButton.style.display = 'none'
+    }
+  }
+
+  scrollToTopButton.onclick = function () {
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+  }
+
   footer.innerHTML = ` <div class="contact">
   <a href="mailto:dydtjq94@yonsei.ac.kr" class="contact_me">
     문의
@@ -28,7 +45,7 @@ function init() {
   <span class="footer_company">AI양반</span>
 </div>
 <span class="footer_text_wrap">
-  ⓒ 2023. NMAX, All Rights Reserved. App Version: ${appVersion}
+  ⓒ 2024. NMAX, All Rights Reserved. App Version: ${appVersion}
 </span>`
 
   // if (bottomAd) {

@@ -10,6 +10,28 @@
 @import 'media.css';
 @import 'faceAnalysis.css';
 
+#scrollToTopButton {
+  background-color: #fbd500;
+  color: #333;
+  padding: 16px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 20px;
+  font-weight: 700;
+}
+
+#scrollToTopButton {
+  background-color: #fbd500;
+  color: #333;
+  padding: 16px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 20px;
+  font-weight: 700;
+}
+
 .mosaic_style {
   filter: blur(4px);
 }
