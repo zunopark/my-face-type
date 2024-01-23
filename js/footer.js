@@ -8,8 +8,8 @@ function init() {
 
   window.onscroll = function () {
     if (
-      document.body.scrollTop > 20 ||
-      document.documentElement.scrollTop > 20
+      document.body.scrollTop > 1000 ||
+      document.documentElement.scrollTop > 1000
     ) {
       scrollToTopButton.style.display = 'block'
     } else {
