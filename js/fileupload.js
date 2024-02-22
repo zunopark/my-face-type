@@ -383,7 +383,7 @@ async function predict() {
   }
 
   let share = document.createElement('button')
-  share.innerHTML = '관상가양반 복채로 응원하기 [5,000원]'
+  share.innerHTML = '관상가 양반 고마워요 [클릭=응원]'
   share.classList.add('share__btn')
   // share.onclick = function () {
   //   gtag('event', '공유하기', {
