@@ -107,12 +107,12 @@
 }
 
 .share__btn {
-  background-color: #f7e600;
+  background-color: #3382f7;
   border-radius: 12px;
   margin-bottom: 12px;
   width: 320px;
   padding: 12px 0px;
-  color: rgba(0, 0, 0, 0.9);
+  color: white;
   font-size: 16px;
   font-family: 'KimjungchulMyungjo-Bold';
   outline: none;

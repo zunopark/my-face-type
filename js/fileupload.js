@@ -383,7 +383,7 @@ async function predict() {
   }
 
   let share = document.createElement('button')
-  share.innerHTML = '무료 관상 가족에게 알려주기 [3초]'
+  share.innerHTML = 'AI 관상가 양반 응원하기 [5,000원]'
   share.classList.add('share__btn')
   // share.onclick = function () {
   //   gtag('event', '공유하기', {
@@ -393,7 +393,11 @@ async function predict() {
   // }
   labelContainer.appendChild(share)
 
-  share.addEventListener('click', kakaoShare)
+  share.addEventListener('click', handleTossSend5000)
+
+  function handleTossSend5000() {
+    location.href = 'https://toss.me/yangban/5000'
+  }
 
   // let consult = document.createElement('button')
   // consult.innerHTML = `
