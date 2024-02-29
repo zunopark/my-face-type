@@ -383,7 +383,7 @@ async function predict() {
   }
 
   let share = document.createElement('button')
-  share.innerHTML = '복채 보내고 운세 간직하기 [5,000원]'
+  share.innerHTML = '100% 당첨 행운 선물 받기 [스픽캐시]'
   share.classList.add('share__btn')
   // share.onclick = function () {
   //   gtag('event', '공유하기', {
@@ -393,10 +393,15 @@ async function predict() {
   // }
   labelContainer.appendChild(share)
 
-  share.addEventListener('click', handleTossSend5000)
+  share.addEventListener('click', handleSpeakCashLuckyBox)
 
   function handleTossSend5000() {
     location.href = 'https://toss.me/yangban/5000'
+  }
+
+  function handleSpeakCashLuckyBox() {
+    location.href =
+      'https://speakcash-luckybox-event.nmax.team/?code=lxyi69&channel=gt'
   }
 
   // let consult = document.createElement('button')
