@@ -10,6 +10,49 @@
 @import 'media.css';
 @import 'faceAnalysis.css';
 
+.modal {
+  display: none; /* 기본적으로 숨김 처리 */
+  position: fixed; /* 스크롤해도 같은 위치에 유지 */
+  z-index: 1; /* 모든 것 위에 */
+  left: 0;
+  top: 0;
+  width: 100%; /* 전체 너비 */
+  height: 100%; /* 전체 높이 */
+  overflow: auto; /* 필요시 스크롤바 추가 */
+  background-color: rgb(0, 0, 0); /* 흑색 배경 */
+  background-color: rgba(0, 0, 0, 0.8); /* 어둡게 */
+}
+
+/* 모달 컨텐츠 */
+.modal-content {
+  background-color: #fefefe;
+  margin: 15% auto; /* 페이지 중앙에 위치 */
+  padding: 20px;
+  margin-top: 220px;
+  border: 1px solid #888;
+  /* width: 80%; 너비 설정 */
+  border-radius: 20px;
+}
+
+.modal-content img {
+  width: 100%;
+}
+
+/* 닫기 버튼 */
+.close {
+  color: #343434;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
+
 #scrollToTopButton {
   background-color: #fbd500;
   color: #333;
