@@ -32,28 +32,28 @@ if (countNum) {
 //   } ${hour < 10 ? `0${hour}` : hour}:00 기준)`
 // }
 
-// 모달을 가져옵니다
-var modal = document.getElementById('myModal')
+// // 모달을 가져옵니다
+// var modal = document.getElementById('myModal')
 
-// 모달을 여는 버튼을 가져옵니다
-var btn = document.getElementById('openModal')
+// // 모달을 여는 버튼을 가져옵니다
+// var btn = document.getElementById('openModal')
 
-// 모달을 닫는 <span> 요소를 가져옵니다
-var span = document.getElementsByClassName('close')[0]
+// // 모달을 닫는 <span> 요소를 가져옵니다
+// var span = document.getElementsByClassName('close')[0]
 
-// 사용자가 버튼을 클릭하면 모달을 엽니다
-btn.onclick = function () {
-  modal.style.display = 'block'
-}
+// // 사용자가 버튼을 클릭하면 모달을 엽니다
+// btn.onclick = function () {
+//   modal.style.display = 'block'
+// }
 
-// 사용자가 <span> (x)를 클릭하면 모달을 닫습니다
-span.onclick = function () {
-  modal.style.display = 'none'
-}
+// // 사용자가 <span> (x)를 클릭하면 모달을 닫습니다
+// span.onclick = function () {
+//   modal.style.display = 'none'
+// }
 
-// 사용자가 모달 외부를 클릭하면 모달을 닫습니다
-window.onclick = function (event) {
-  if (event.target == modal) {
-    modal.style.display = 'none'
-  }
-}
+// // 사용자가 모달 외부를 클릭하면 모달을 닫습니다
+// window.onclick = function (event) {
+//   if (event.target == modal) {
+//     modal.style.display = 'none'
+//   }
+// }
