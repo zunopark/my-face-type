@@ -408,7 +408,7 @@ async function predict() {
   }
 
   let share = document.createElement('button')
-  share.innerHTML = '영어 3초 듣고 기프티콘 받기'
+  share.innerHTML = '영어 한문장 듣고 천원 받기'
   share.classList.add('share__btn')
   // share.onclick = function () {
   //   gtag('event', '공유하기', {
