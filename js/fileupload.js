@@ -407,18 +407,18 @@ async function predict() {
     location.href = '/onemore'
   }
 
-  let share = document.createElement('button')
-  share.innerHTML = '영어 한문장 듣고 천원 받기'
-  share.classList.add('share__btn')
+  // let share = document.createElement('button')
+  // share.innerHTML = '영어 한문장 듣고 천원 받기'
+  // share.classList.add('share__btn')
   // share.onclick = function () {
   //   gtag('event', '공유하기', {
   //     event_category: '공유하기',
   //     event_label: '공유 버튼',
   //   })
   // }
-  labelContainer.appendChild(share)
+  // labelContainer.appendChild(share)
 
-  share.addEventListener('click', handleSpeakCashLuckyBox)
+  // share.addEventListener('click', handleSpeakCashLuckyBox)
 
   function handleTossSend5000() {
     location.href = 'https://toss.me/yangban/5000'
