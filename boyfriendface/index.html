@@ -198,17 +198,7 @@
         </div>
 
         <div id="label-container" class="result"></div>
-        <div class="ad_box8">
-          <a
-            id="randomImageAlink"
-            style="cursor: pointer;"
-            class="main_upper_content_wrap"
-            onclick="gtag('event', '스픽볼 다운로드 메인 배너')"
-            target="_blank"
-          >
-            <img id="randomImage" src="" alt="스픽볼 배너" />
-          </a>
-        </div>
+
         <div class="ad_box3">
           <ins
             class="adsbygoogle"
@@ -229,59 +219,6 @@
     <script src="js/livetime.js"></script>
     <script src="js/ad.js"></script>
     <script src="js/fileupload.js"></script>
-
-    <script>
-      const imageRandomFunc = () => {
-        var images = [
-          // 'https://i.ibb.co/GnW0PTR/Group-1198.png', // 이미지 1의 경로
-          // 'https://i.ibb.co/12vLjCL/Group-1199.png', // 이미지 2의 경로
-          // 'https://i.ibb.co/Tk79bLc/Group-1200.png', // 이미지 3의 경로
-          // 'https://i.ibb.co/9cwsBTd/Group-1201.png', // 이미지 4의 경로
-          // 'https://i.ibb.co/P6kKpLW/Group-1206.png',
-          // 'https://i.ibb.co/W3ygjmC/Group-1208.png',
-          // 'https://i.ibb.co/2hThHty/Group-1209.png',
-          // 'https://i.ibb.co/Ws4ZJDK/Group-1210.png',
-          'https://i.ibb.co/gmdkJ1x/Group-1210.png',
-        ]
-
-        var randomIndex = Math.floor(Math.random() * images.length)
-        var selectedImage = images[randomIndex]
-
-        let randomIndexGtag = '스픽볼 배너 이미지 선택 ' + randomIndex
-
-        document.getElementById('randomImage').src = selectedImage
-        document
-          .getElementById('randomImageAlink')
-          .addEventListener('click', checkMobile)
-
-        function checkMobile() {
-          const mobileType = navigator.userAgent.toLowerCase()
-
-          if (mobileType.indexOf('android') > -1) {
-            return window.open(
-              'https://play.google.com/store/apps/details?id=com.nmax.cashball',
-              '_blank',
-            )
-          } else if (
-            mobileType.indexOf('iphone') > -1 ||
-            mobileType.indexOf('ipad') > -1 ||
-            mobileType.indexOf('ipod') > -1
-          ) {
-            return window.open(
-              'https://apps.apple.com/kr/app/%EC%8A%A4%ED%94%BD%EB%B3%BC-%EB%8F%88-%EB%B2%84%EB%8A%94-%EC%98%81%EC%96%B4-%ED%9A%8C%ED%99%94-%EC%95%B1-%EC%8A%A4%ED%94%BC%ED%82%B9-%EB%A6%AC%EC%8A%A4%EB%8B%9D/id6457251682',
-              '_blank',
-            )
-          } else {
-            return window.open(
-              'https://play.google.com/store/apps/details?id=com.nmax.cashball',
-              '_blank',
-            )
-          }
-        }
-      }
-
-      imageRandomFunc()
-    </script>
 
     <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@1.3.1/dist/tf.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@teachablemachine/image@0.8/dist/teachablemachine-image.min.js"></script>
