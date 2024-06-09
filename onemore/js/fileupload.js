@@ -383,7 +383,7 @@ async function predict() {
   }
 
   let share = document.createElement('button')
-  share.innerHTML = '무료 관상 가족에게 알려주기 [3초]'
+  share.innerHTML = '매일 아침 카톡으로 날씨 받기'
   share.classList.add('share__btn')
   // share.onclick = function () {
   //   gtag('event', '공유하기', {
@@ -393,8 +393,14 @@ async function predict() {
   // }
   labelContainer.appendChild(share)
 
-  share.addEventListener('click', kakaoShare)
+  share.addEventListener('click', handleTodayWeather)
 
+  function handleTodayWeather() {
+    // location.reload(true)
+    // location.href = location.href
+    // history.go(0)
+    location.href = 'http://pf.kakao.com/_uGQJK'
+  }
   // let consult = document.createElement('button')
   // consult.innerHTML = `
   // <span>관상 더 자세히 알아보기</span>`
