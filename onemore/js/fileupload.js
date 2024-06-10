@@ -383,7 +383,7 @@ async function predict() {
   }
 
   let share = document.createElement('button')
-  share.innerHTML = '매일 아침 카톡으로 날씨 받기'
+  share.innerHTML = '가족에게 공유하세요! (무료 관상)'
   share.classList.add('share__btn')
   // share.onclick = function () {
   //   gtag('event', '공유하기', {
@@ -393,7 +393,7 @@ async function predict() {
   // }
   labelContainer.appendChild(share)
 
-  share.addEventListener('click', handleTodayWeather)
+  share.addEventListener('click', kakaoShare)
 
   function handleTodayWeather() {
     // location.reload(true)

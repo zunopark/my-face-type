@@ -429,25 +429,25 @@ async function predict() {
       'https://speakcash-luckybox-event.nmax.team/?code=lxyi69&channel=gt'
   }
 
-  let share = document.createElement('button')
-  share.innerHTML = '매일 아침 카톡으로 날씨 받기'
-  share.classList.add('share__btn')
-  // share.onclick = function () {
-  //   gtag('event', '공유하기', {
-  //     event_category: '공유하기',
-  //     event_label: '공유 버튼',
-  //   })
+  // let share = document.createElement('button')
+  // share.innerHTML = '매일 아침 카톡으로 날씨 받기'
+  // share.classList.add('share__btn')
+  // // share.onclick = function () {
+  // //   gtag('event', '공유하기', {
+  // //     event_category: '공유하기',
+  // //     event_label: '공유 버튼',
+  // //   })
+  // // }
+  // labelContainer.appendChild(share)
+
+  // share.addEventListener('click', handleTodayWeather)
+
+  // function handleTodayWeather() {
+  //   // location.reload(true)
+  //   // location.href = location.href
+  //   // history.go(0)
+  //   location.href = 'http://pf.kakao.com/_uGQJK'
   // }
-  labelContainer.appendChild(share)
-
-  share.addEventListener('click', handleTodayWeather)
-
-  function handleTodayWeather() {
-    // location.reload(true)
-    // location.href = location.href
-    // history.go(0)
-    location.href = 'http://pf.kakao.com/_uGQJK'
-  }
 
   // let consult = document.createElement('button')
   // consult.innerHTML = `
