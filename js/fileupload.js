@@ -373,7 +373,7 @@ async function predict() {
   labelContainer.appendChild(result2)
 
   let desc = document.createElement('p')
-  desc.classList.add('main__result__content__p', 'coupang_effect')
+  desc.classList.add('main__result__content__p')
   desc.innerHTML = `${description[answer][0]}`
   labelContainer.appendChild(desc)
 
@@ -391,7 +391,7 @@ async function predict() {
 
   let reset = document.createElement('button')
   reset.innerHTML = `
-  <span>쿠팡 방문하고 관상 자세히보기</span>`
+  <span>쿠팡 방문하고 관상 자세히보기 (무제한)</span>`
   reset.classList.add('reset__btn')
   reset.onclick = function () {
     gtag('event', '한번 더 클릭')
@@ -404,11 +404,11 @@ async function predict() {
     // location.reload(true)
     // location.href = location.href
     // history.go(0)
-    // location.href = '/onemore'
+    location.href = '/onemore'
 
-    const url = 'https://link.coupang.com/a/bNHGIZ'
-    window.open(url, '_blank')
-    desc.classList.remove('coupang_effect')
+    // const url = 'https://link.coupang.com/a/bNHGIZ'
+    // window.open(url, '_blank')
+    // desc.classList.remove('coupang_effect')
   }
 
   // let share = document.createElement('button')
