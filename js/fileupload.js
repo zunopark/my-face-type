@@ -413,7 +413,7 @@ async function predict() {
 
   function handleFirstClick() {
     // 버튼 이름 변경
-    reset.innerHTML = `<span>다른 사진으로 관상 또 보기</span>`
+    reset.innerHTML = `<span>다른 사진으로 해보기</span>`
     const url = 'https://link.coupang.com/a/bNHGIZ'
     window.open(url, '_blank')
 
