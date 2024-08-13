@@ -391,7 +391,7 @@ async function predict() {
 
   let reset = document.createElement('button')
   reset.innerHTML = `
-  <span>쿠팡 방문하고 관상 자세히보기 (무제한)</span>`
+  <span>AI 관상 한 번 더 보기</span>`
   reset.classList.add('reset__btn')
   reset.onclick = function () {
     gtag('event', '한번 더 클릭')
