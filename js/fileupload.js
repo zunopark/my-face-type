@@ -373,7 +373,7 @@ async function predict() {
   labelContainer.appendChild(result2)
 
   let desc = document.createElement('p')
-  desc.classList.add('main__result__content__p')
+  desc.classList.add('main__result__content__p', 'coupang_effect')
   desc.innerHTML = `${description[answer][0]}`
   labelContainer.appendChild(desc)
 
@@ -391,25 +391,51 @@ async function predict() {
 
   let reset = document.createElement('button')
   reset.innerHTML = `
-  <span>AI 관상 한 번 더 보기</span>`
-  reset.classList.add('reset__btn')
+  <span>쿠팡 방문하고 관상 자세히 보기 (무료)</span>`
+  reset.classList.add('reset__btn_coupang')
   reset.onclick = function () {
     gtag('event', '한번 더 클릭')
   }
   labelContainer.appendChild(reset)
 
-  reset.addEventListener('click', handleReset)
+  // reset.addEventListener('click', handleReset)
 
-  function handleReset() {
-    // location.reload(true)
-    // location.href = location.href
-    // history.go(0)
-    location.href = '/onemore'
+  // function handleReset() {
+  //   // location.reload(true)
+  //   // location.href = location.href
+  //   // history.go(0)
+  //   location.href = '/onemore'
 
-    // const url = 'https://link.coupang.com/a/bNHGIZ'
-    // window.open(url, '_blank')
-    // desc.classList.remove('coupang_effect')
+  //   // const url = 'https://link.coupang.com/a/bNHGIZ'
+  //   // window.open(url, '_blank')
+  //   // desc.classList.remove('coupang_effect')
+  // }
+
+  function handleFirstClick() {
+    // 버튼 이름 변경
+    reset.innerHTML = `<span>관상 한번 더 보기</span>`
+    const url = 'https://link.coupang.com/a/bNHGIZ'
+    window.open(url, '_blank')
+
+    desc.classList.remove('coupang_effect')
+    reset.classList.remove('reset__btn_coupang')
+    reset.classList.add('reset__btn')
+
+    // 첫 번째 클릭 이벤트 로깅
+    gtag('event', '한번 더 클릭')
+
+    // 두 번째 클릭을 위한 이벤트 리스너 등록
+    reset.removeEventListener('click', handleFirstClick)
+    reset.addEventListener('click', handleCoupangVisit)
   }
+
+  // 두 번째 클릭 핸들러
+  function handleCoupangVisit() {
+    location.href = '/onemore'
+  }
+
+  // 첫 번째 클릭 이벤트 핸들러 추가
+  reset.addEventListener('click', handleFirstClick)
 
   // let share = document.createElement('button')
   // share.innerHTML = '영어 한문장 듣고 천원 받기'
