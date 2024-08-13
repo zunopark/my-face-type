@@ -10,6 +10,15 @@
 @import 'media.css';
 @import 'faceAnalysis.css';
 
+.coupang_effect_blur {
+  background-color: red;
+  filter: blur(3px);
+}
+
+.coupang_effect {
+  filter: blur(4px);
+}
+
 .modal {
   display: none; /* 기본적으로 숨김 처리 */
   position: fixed; /* 스크롤해도 같은 위치에 유지 */
