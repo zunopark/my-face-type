@@ -389,6 +389,9 @@ async function predict() {
   }
   getResultGtag()
 
+  const noStore = document.querySelector(`.nostore`)
+  noStore.classList.add('none')
+
   let reset = document.createElement('button')
   reset.innerHTML = `
   <span>쿠팡 방문하고 관상 자세히 보기 (무료)</span>`

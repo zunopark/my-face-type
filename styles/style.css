@@ -10,6 +10,12 @@
 @import 'media.css';
 @import 'faceAnalysis.css';
 
+.nostore {
+  color: rgb(203, 203, 203);
+  margin-top: 12px;
+  font-size: 12px;
+}
+
 .coupang_effect_blur {
   background-color: red;
   filter: blur(3px);
