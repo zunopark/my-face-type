@@ -422,7 +422,7 @@ async function predict() {
     reset.classList.add('reset__btn')
 
     // 첫 번째 클릭 이벤트 로깅
-    gtag('event', '한번 더 클릭')
+    gtag('event', '쿠팡 방문 클릭')
 
     // 두 번째 클릭을 위한 이벤트 리스너 등록
     reset.removeEventListener('click', handleFirstClick)
@@ -432,6 +432,7 @@ async function predict() {
   // 두 번째 클릭 핸들러
   function handleCoupangVisit() {
     location.href = '/onemore'
+    gtag('event', '한번 더 클릭')
   }
 
   // 첫 번째 클릭 이벤트 핸들러 추가
