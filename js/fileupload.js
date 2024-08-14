@@ -373,7 +373,7 @@ async function predict() {
   labelContainer.appendChild(result2)
 
   let desc = document.createElement('p')
-  desc.classList.add('main__result__content__p', 'coupang_effect')
+  desc.classList.add('main__result__content__p')
   desc.innerHTML = `${description[answer][0]}`
   labelContainer.appendChild(desc)
 
@@ -394,8 +394,8 @@ async function predict() {
 
   let reset = document.createElement('button')
   reset.innerHTML = `
-  <span>쿠팡 방문하고 관상 자세히 보기 (무료)</span>`
-  reset.classList.add('reset__btn_coupang')
+  <span>다른 사진으로 해보기</span>`
+  reset.classList.add('reset__btn')
   reset.onclick = function () {
     gtag('event', '한번 더 클릭')
   }
@@ -439,7 +439,7 @@ async function predict() {
   }
 
   // 첫 번째 클릭 이벤트 핸들러 추가
-  reset.addEventListener('click', handleFirstClick)
+  reset.addEventListener('click', handleCoupangVisit)
 
   // let share = document.createElement('button')
   // share.innerHTML = '영어 한문장 듣고 천원 받기'
