@@ -434,7 +434,7 @@ async function predict() {
 
   // 두 번째 클릭 핸들러
   function handleCoupangVisit() {
-    location.href = '/onemore'
+    location.href = '/'
     gtag('event', '한번 더 클릭')
   }
 
