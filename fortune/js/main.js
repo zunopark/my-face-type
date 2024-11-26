@@ -64,7 +64,9 @@ const start = async () => {
   spinnerAppear('loader')
   document.querySelector(`.fortune_start_btn_wrap`).style.display = 'none'
 
-  userMessages.push('나의 오늘의 운세를 알려줘!')
+  userMessages.push(
+    '나의 오늘의 운세를 알려줘!, 대답같은건 하지말고 바로 그냥 오늘의 운세만 알려줘. 그리고 강조표시는 안해도 돼',
+  )
 
   const fortuneResultGtag = () => {
     gtag('event', '오늘의 운세 User', {
