@@ -65,7 +65,7 @@ const start = async () => {
   document.querySelector(`.fortune_start_btn_wrap`).style.display = 'none'
 
   userMessages.push(
-    '나의 오늘의 운세를 알려줘!, 대답같은건 하지말고 바로 그냥 오늘의 운세만 알려줘. 그리고 강조표시는 안해도 돼',
+    '나의 오늘의 운세를 알려줘!, 대답같은건 하지말고 바로 그냥 오늘의 운세만 알려줘. 그리고 강조표시는 안해도 돼. 그리고 애정운 등 상세한 운은 따로 물어볼테니깐 총운만 알려줘.',
   )
 
   const fortuneResultGtag = () => {
