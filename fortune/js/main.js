@@ -76,7 +76,7 @@ const start = async () => {
   fortuneResultGtag()
 
   const response = await fetch(
-    'https://fkfucds3e9.execute-api.ap-northeast-2.amazonaws.com/prod/fortuneTell',
+    'https://fkfucds3e9.execute-api.ap-northeast-2.amazonaws.com/prod/fortuneTell2',
     {
       method: 'POST',
       headers: {
