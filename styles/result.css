@@ -7,13 +7,13 @@
 
 .main_result_content_img_div {
   text-align: center;
-  width: 200px;
-  height: 240px;
+  width: 240px;
+  height: 280px;
   margin-bottom: 20px;
 }
 
 .main_result_content_img {
-  border-radius: 30px;
+  border-radius: 10px;
   width: 100%;
   height: 100%;
   /* opacity: 0.3; */
@@ -32,29 +32,40 @@
 }
 
 .result .main_result_description {
-  font-size: 24px;
+  font-size: 22px;
   font-family: 'KimjungchulMyungjo-Bold';
-  color: #fbd500;
+  color: #ff8548;
   text-align: center;
   margin-bottom: 10px;
-  /* color: #e74c3c; */
   line-height: 32px;
 }
 
 .result .celebrity {
   font-family: 'KimjungchulMyungjo-Bold';
   text-align: center;
-  margin-bottom: 10px;
-  color: #fbf7dd;
-  font-size: 20px;
+  margin-bottom: 20px;
+  color: #ffd39b;
+  font-size: 18px;
 }
 
 .result p {
-  font-size: 20px;
   text-align: justify;
-  color: #fbf7dd;
   line-height: 32px;
   font-weight: 400;
+}
+
+.result .main__result__content__p {
+  color: #e1e1e1;
+  font-size: 20px;
+margin-bottom: 12px;
+}
+
+.result .main__result__content__p2 {
+  margin-top: 40px;
+  font-family: 'KimjungchulMyungjo-Bold';
+  color: #a3f7ff;
+  font-size: 16px;
+
 }
 
 .result .reset__btn_coupang {
