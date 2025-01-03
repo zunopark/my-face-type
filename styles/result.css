@@ -50,14 +50,17 @@
 
 .result p {
   text-align: justify;
-  line-height: 32px;
-  font-weight: 400;
 }
 
 .result .main__result__content__p {
   color: #e1e1e1;
-  font-size: 20px;
+  font-size: 18px;
 margin-bottom: 12px;
+font-family: 'MapoBackpacking';
+line-height: 28px;
+font-weight: 400;
+
+
 }
 
 .result .main__result__content__p2 {
@@ -65,6 +68,7 @@ margin-bottom: 12px;
   font-family: 'KimjungchulMyungjo-Bold';
   color: #a3f7ff;
   font-size: 16px;
+  line-height: 24px;
 
 }
 

@@ -131,11 +131,11 @@
 }
 
 .main__ai__title .subtitle {
-  font-size: 24px;
+  font-size: 48px;
   font-weight: 700;
   margin-top: 6px;
   text-align: center;
-  line-height: 32px;
+  line-height: 40px;
 }
 
 #container {
