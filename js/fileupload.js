@@ -433,10 +433,10 @@ async function predict() {
   desc.innerHTML = `${description[answer][0]}`;
   labelContainer.appendChild(desc);
 
-  let otherResult = document.createElement("div");
-  otherResult.classList.add("other__result");
-  otherResult.innerHTML = `${starsListImg}`;
-  labelContainer.appendChild(otherResult);
+  // let otherResult = document.createElement("div");
+  // otherResult.classList.add("other__result");
+  // otherResult.innerHTML = `${starsListImg}`;
+  // labelContainer.appendChild(otherResult);
 
   let desc2 = document.createElement("p");
   desc2.classList.add("main__result__content__p2");
