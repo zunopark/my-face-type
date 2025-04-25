@@ -52,8 +52,8 @@ const start = async () => {
     relationship: userInfo.relationship,
     gender: userInfo.gender,
     dateType: userInfo.dateType,
-    date: userInfo.date,
-    time: userInfo.time,
+    birthday: userInfo.date,
+    birthday_time: userInfo.time,
   });
 
   document.querySelector(`.fortune_user_name`).innerHTML = userInfo.name
@@ -142,6 +142,16 @@ const result = async (type) => {
   } else if (type === 'study') {
     userMessageContent = '오늘 나의 학업운을 알려줘'
   }
+
+  mixpanel.track(`${type} 운세 추가 요청`, {
+    type,
+    name: userInfo.name,
+    relationship: userInfo.relationship,
+    gender: userInfo.gender,
+    dateType: userInfo.dateType,
+    birthday: userInfo.date,
+    birthday_time: userInfo.time,
+  });
 
   userMessages.push(userMessageContent)
 
