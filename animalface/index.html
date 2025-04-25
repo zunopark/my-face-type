@@ -300,11 +300,26 @@
     </div>
 
     <script>
-      mixpanel.init("d7d8d6afc10a92f911ea59901164605b", { debug: true });
-    </script>
-
-    <script>
-      mixpanel.track("동뭉상 페이지 방문", {
+      // 고유 사용자 ID를 localStorage에서 불러오거나 새로 생성
+      let distinctId = localStorage.getItem("mixpanel_distinct_id");
+      if (!distinctId) {
+        distinctId = crypto.randomUUID(); // 브라우저 내장 UUID 생성
+        localStorage.setItem("mixpanel_distinct_id", distinctId);
+      }
+    
+      // Mixpanel 초기화 및 ID 지정
+      mixpanel.init("d7d8d6afc10a92f911ea59901164605b", {
+        debug: true,
+        // optional: identify 자동 호출 안 되게 하고, 아래에서 수동으로 identify
+        autotrack: true,
+        persistence: 'localStorage'
+      });
+    
+      // 사용자 ID를 명시적으로 identify
+      mixpanel.identify(distinctId);
+    
+      // 추적 예시
+      mixpanel.track("동물상 페이지 방문", {
         url: window.location.href,
         userAgent: navigator.userAgent,
         timestamp: new Date().toISOString()
