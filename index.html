@@ -373,10 +373,16 @@
       <footer class="footer"></footer>
     </div>
 
-
-    <script src="https://cdn.jsdelivr.net/npm/mixpanel-browser@2.52.0/build/mixpanel.min.js"></script>
     <script>
       mixpanel.init("d7d8d6afc10a92f911ea59901164605b", { debug: true });
+    </script>
+
+    <script>
+      mixpanel.track("페이지 방문", {
+        url: window.location.href,
+        userAgent: navigator.userAgent,
+        timestamp: new Date().toISOString()
+      });
     </script>
 
     <script src="js/footer.js"></script>
