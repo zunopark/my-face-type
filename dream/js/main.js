@@ -46,6 +46,10 @@ const start = async () => {
     return
   }
 
+  mixpanel.track("꿈 해몽 요청", {
+    dreamContent: dreamContent,
+  });
+
   // display: none
   spinnerAppear('loader')
   document.querySelector(`.dream_start_btn_wrap`).style.display = 'none'

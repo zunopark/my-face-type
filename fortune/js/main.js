@@ -47,6 +47,15 @@ const start = async () => {
     time,
   }
 
+  mixpanel.track("운세 요청", {
+    name: userInfo.name,
+    relationship: userInfo.relationship,
+    gender: userInfo.gender,
+    dateType: userInfo.dateType,
+    date: userInfo.date,
+    time: userInfo.time,
+  });
+
   document.querySelector(`.fortune_user_name`).innerHTML = userInfo.name
   document.querySelector(`.fortune_user_relationship`).innerHTML =
     userInfo.relationship
@@ -116,6 +125,8 @@ const result = async (type) => {
     `.fortune_result_` + `${type}`,
   )
   let userMessageContent = ''
+
+ 
 
   spinnerAppear(`loader_` + `${type}`)
   document.querySelector('.result_' + `${type}` + '_btn').style.display = 'none'
