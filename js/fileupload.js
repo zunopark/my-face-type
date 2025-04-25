@@ -17,6 +17,11 @@ async function readURL(input) {
     // const faceImageTitle = document.querySelector(`#face-image-text`)
     // faceImageTitle.classList.remove('none')
 
+    mixpanel.track("사진 업로드", {
+      filename: input.files[0].name,
+      timestamp: new Date().toISOString(),
+    });
+
     await reader.readAsDataURL(input.files[0]);
 
     await init();
@@ -388,6 +393,13 @@ async function predict() {
       </div>
         `;
     }
+
+    mixpanel.track("관상 결과 도출", {
+      result: answer, // 예: 강민경
+      top5: resultArray.slice(0, 5).map(r => `${r.key} (${r.value}%)`).join(", "),
+      timestamp: new Date().toISOString(),
+    });
+    
   }
 
   const fileUploadImg = document.querySelector(`.file-upload-image`);
@@ -445,6 +457,7 @@ async function predict() {
   reset.classList.add("reset__btn");
   reset.onclick = function () {
     gtag("event", "한번 더 클릭");
+    mixpanel.track("다른 사진으로 재시도");
   };
   labelContainer.appendChild(reset);
 

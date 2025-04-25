@@ -103,6 +103,8 @@
       src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4478069136800837"
       crossorigin="anonymous"
     ></script>
+    <!-- google ad manager reward sdk  -->
+    <script async src="https://securepubads.g.doubleclick.net/tag/js/gpt.js"></script>
 
     <script type="text/javascript">
       if (typeof history.pushState == 'function') {
@@ -117,6 +119,13 @@
       Kakao.init('4ff46443835291514c5a215357a6c4c1')
       Kakao.isInitialized()
     </script>
+
+    <!-- Mixpanel SDK -->
+    <script type="text/javascript" src="https://cdn.mxpnl.com/libs/mixpanel-2-latest.min.js"></script>
+    <script type="text/javascript">
+      mixpanel.init("c1d40078fe1052e941b8d2ea14dc8ea7", {debug: true});
+    </script>
+
   </head>
   <body>
     <div class="main_body_wrap">
@@ -302,6 +311,16 @@
 
       <footer class="footer"></footer>
     </div>
+
+    <script>
+      window.onload = function () {
+        mixpanel.track("페이지 방문", {
+          url: window.location.href,
+          userAgent: navigator.userAgent,
+          timestamp: new Date().toISOString()
+        });
+      };
+    </script>
 
     <script src="js/footer.js"></script>
     <script src="js/header.js"></script>
