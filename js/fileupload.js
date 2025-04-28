@@ -438,10 +438,10 @@ async function predict() {
   // otherResult.innerHTML = `${starsListImg}`;
   // labelContainer.appendChild(otherResult);
 
-  let desc2 = document.createElement("p");
-  desc2.classList.add("main__result__content__p2");
-  desc2.innerHTML = `${description[answer][3]}`;
-  labelContainer.appendChild(desc2);
+  // let desc2 = document.createElement("p");
+  // desc2.classList.add("main__result__content__p2");
+  // desc2.innerHTML = `${description[answer][3]}`;
+  // labelContainer.appendChild(desc2);
 
   function getResultGtag() {
     gtag("event", `관상 결과`, {
