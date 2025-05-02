@@ -59,7 +59,6 @@
 
 .ad_box_custom {
   width: 320px;
-  height: 160px;
   margin: 0 outo;
   margin-top: 10px;
   margin-bottom: 10px;
@@ -161,4 +160,68 @@
 .banner_wrap img {
   width: 100%;
   border-radius: 12px;
+}
+
+.ad_box_custom {
+  background-color: #222;
+  padding: 16px;
+  border-radius: 8px;
+  color: #fff;
+  font-family: 'Apple SD Gothic Neo', sans-serif;
+  width: fit-content;
+  width: 320px;
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+}
+
+.ad_top_text {
+  font-size: 14px;
+  background: transparent;
+  color: transparent;
+  background-image: linear-gradient(to right, #ffd700, #ffa500);
+  -webkit-background-clip: text;
+  background-clip: text;
+  font-family: 'KimjungchulMyungjo-Bold'; /* 네가 쓰던 폰트 그대로 적용 */
+  margin-bottom: 8px;
+}
+
+.ad_title {
+  font-size: 20px;
+  background: transparent;
+  color: transparent;
+  background-image: linear-gradient(to right, #ffd700, #ffa500);
+  -webkit-background-clip: text;
+  background-clip: text;
+  font-family: 'KimjungchulMyungjo-Bold'; /* 네가 쓰던 폰트 그대로 적용 */
+  margin-bottom: 12px;
+}
+
+.ad_subtitle {
+  font-size: 13px;
+  color: #e1e1e1;
+  margin-bottom: 12px;
+}
+
+.ad_footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.ad_count {
+  font-size: 13px;
+  color: #ff6f6f;
+  font-weight: bold;
+}
+
+.ad_button {
+  font-size: 13px;
+  background-color: #ffc107;
+  color: #000;
+  padding: 4px 10px;
+  border-radius: 4px;
+  text-decoration: none;
+  font-weight: bold;
 }

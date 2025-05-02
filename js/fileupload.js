@@ -456,9 +456,15 @@ async function predict() {
 
   let share = document.createElement('button')
   share.innerHTML = `
-  <div class="ad_box_custom">
-    <img src="https://i.ibb.co/v4T8ph14/gwansagg.png" alt="관상 재물 분석 이미지" />
+<div class="ad_box_custom">
+  <div class="ad_top_text">관상 심층 분석 + 나의 평생 재물운</div>
+  <div class="ad_title">내 관상은 평생 몇 억을 모을까?</div>
+  <div class="ad_subtitle">AI 관상가 양반 공식 서비스</div>
+  <div class="ad_footer">
+    <div class="ad_count">현재 누적 신청 : 2,387명</div>
+    <a href="/premium" class="ad_button">10,000자 레포트</a>
   </div>
+</div>
 `;
   share.classList.add('share__btn')
   share.onclick = function () {
