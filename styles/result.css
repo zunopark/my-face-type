@@ -88,8 +88,8 @@ font-weight: 400;
 .result .reset__btn {
   background-color: #efca0c;
   border-radius: 12px;
-  margin-top: 24px;
-  margin-bottom: 12px;
+  margin-top: 12px;
+  margin-bottom: 24px;
   width: 320px;
   padding: 12px 0px;
   color: #302f32;
@@ -134,16 +134,25 @@ font-weight: 400;
 }
 
 .share__btn {
-  background-color: #00a1e7;
+  background-color: #3f3f3f;
   border-radius: 12px;
-  margin-bottom: 12px;
+  margin-top: 12px;
   width: 320px;
   padding: 12px 0px;
-  color: white;
   font-size: 16px;
   font-family: 'KimjungchulMyungjo-Bold';
   outline: none;
   border: none;
+}
+
+.share__btn span {
+  font-size: 16px;
+  background: transparent;
+  color: transparent;
+  background-image: linear-gradient(to right, #ffd700, #ffa500);
+  -webkit-background-clip: text;
+  background-clip: text;
+  font-family: 'KimjungchulMyungjo-Bold';
 }
 
 .result .reset__btn2 {

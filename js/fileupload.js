@@ -453,6 +453,19 @@ async function predict() {
   const noStore = document.querySelector(`.nostore`);
   noStore.classList.add("none");
 
+
+  let share = document.createElement('button')
+  share.innerHTML = '<span>관상 분석 + 재물 분석 받기</span>'
+  share.classList.add('share__btn')
+  share.onclick = function () {
+    gtag('event', '관상 분석', {
+      event_category: '관상 분석',
+      event_label: '관상 분석',
+    })
+    mixpanel.track("관상 분석 + 재물 분석 받기");
+  }
+  labelContainer.appendChild(share)
+
   let reset = document.createElement("button");
   reset.innerHTML = `
   <span>다른 사진으로 해보기</span>`;
@@ -503,18 +516,8 @@ async function predict() {
   // 첫 번째 클릭 이벤트 핸들러 추가
   reset.addEventListener("click", handleCoupangVisit);
 
-  // let share = document.createElement('button')
-  // share.innerHTML = '영어 한문장 듣고 천원 받기'
-  // share.classList.add('share__btn')
-  // share.onclick = function () {
-  //   gtag('event', '공유하기', {
-  //     event_category: '공유하기',
-  //     event_label: '공유 버튼',
-  //   })
-  // }
-  // labelContainer.appendChild(share)
 
-  // share.addEventListener('click', handleSpeakCashLuckyBox)
+  share.addEventListener('click', handleSpeakCashLuckyBox)
 
   function handleTossSend5000() {
     location.href = "https://toss.me/yangban/5000";
@@ -522,7 +525,7 @@ async function predict() {
 
   function handleSpeakCashLuckyBox() {
     location.href =
-      "https://speakcash-luckybox-event.nmax.team/?code=lxyi69&channel=gt";
+      "/premium";
   }
 
   // let share = document.createElement('button')

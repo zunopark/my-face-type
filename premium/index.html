@@ -85,6 +85,7 @@
       crossorigin="anonymous"
     ></script>
 
+
     <script type="text/javascript">
       if (typeof history.pushState == 'function') {
         var CatagoryURL = location.href
@@ -98,6 +99,72 @@
       Kakao.init('4ff46443835291514c5a215357a6c4c1')
       Kakao.isInitialized()
     </script>
+
+<script type="text/javascript">
+  (function (f, b) {
+    if (!b.__SV) {
+      var e, g, i, h;
+      window.mixpanel = b;
+      b._i = [];
+      b.init = function (e, f, c) {
+        function g(a, d) {
+          var b = d.split(".");
+          2 == b.length && ((a = a[b[0]]), (d = b[1]));
+          a[d] = function () {
+            a.push([d].concat(Array.prototype.slice.call(arguments, 0)));
+          };
+        }
+        var a = b;
+        "undefined" !== typeof c ? (a = b[c] = []) : (c = "mixpanel");
+        a.people = a.people || [];
+        a.toString = function (a) {
+          var d = "mixpanel";
+          "mixpanel" !== c && (d += "." + c);
+          a || (d += " (stub)");
+          return d;
+        };
+        a.people.toString = function () {
+          return a.toString(1) + ".people (stub)";
+        };
+        i = "disable time_event track track_pageview track_links track_forms track_with_groups add_group set_group remove_group register register_once alias unregister identify name_tag set_config reset opt_in_tracking opt_out_tracking has_opted_in_tracking has_opted_out_tracking clear_opt_in_out_tracking start_batch_senders people.set people.set_once people.unset people.increment people.append people.union people.track_charge people.clear_charges people.delete_user people.remove".split(" ");
+        for (h = 0; h < i.length; h++) g(a, i[h]);
+        var j = "set set_once union unset remove delete".split(" ");
+        a.get_group = function () {
+          function b(c) {
+            d[c] = function () {
+              call2_args = arguments;
+              call2 = [c].concat(Array.prototype.slice.call(call2_args, 0));
+              a.push([e, call2]);
+            };
+          }
+          for (
+            var d = {},
+              e = ["get_group"].concat(Array.prototype.slice.call(arguments, 0)),
+              c = 0;
+            c < j.length;
+            c++
+          )
+            b(j[c]);
+          return d;
+        };
+        b._i.push([e, f, c]);
+      };
+      b.__SV = 1.2;
+      e = f.createElement("script");
+      e.type = "text/javascript";
+      e.async = !0;
+      e.src =
+        "undefined" !== typeof MIXPANEL_CUSTOM_LIB_URL
+          ? MIXPANEL_CUSTOM_LIB_URL
+          : "file:" === f.location.protocol &&
+            "//cdn.mxpnl.com/libs/mixpanel-2-latest.min.js".match(/^\/\//)
+          ? "https://cdn.mxpnl.com/libs/mixpanel-2-latest.min.js"
+          : "//cdn.mxpnl.com/libs/mixpanel-2-latest.min.js";
+      g = f.getElementsByTagName("script")[0];
+      g.parentNode.insertBefore(e, g);
+    }
+  })(document, window.mixpanel || []);
+</script>
   </head>
   <body>
     <div class="main_body_wrap">
@@ -107,11 +174,11 @@
           <a class="header_chat_title" href="/">
             관상
           </a>
-          <a class="header_chat_title header_selected" href="/premium">
-            프리미엄
-          </a>
           <a class="header_chat_title" href="/animalface">
             동물상
+          </a>
+          <a class="header_chat_title header_selected" href="/premium">
+            재물 관상
           </a>
         </div>
       </header>
@@ -132,7 +199,7 @@
               </span>
             </div>
             <div class="first_contents_1">
-              관상가 양반
+              관상 분석과 나의 평생 재물운
             </div>
           </div>
         </div>
@@ -143,49 +210,23 @@
               <span style="color: #f1ce81;">1,500만명 이상</span>
               이
               <br />
-              관상가 양반을 통해 관상을 알아갔습니다.
+              관상과 재물운을 알아갔습니다.
             </div>
 
-            <div style="margin-bottom: 30px;" class="third_contents_2">
+            <div class="third_contents_2">
               평균 10,000 자 이상의 레포트를 받아보세요.
             </div>
 
             <div class="third_contents_3">
               <div class="third_contents_3_column">
-                <iframe
-                  width="320"
-                  height="180"
-                  src="https://www.youtube.com/embed/KgJ9G04XYMo"
-                  title="YouTube video player"
-                  frameborder="0"
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                  allowfullscreen
-                ></iframe>
-                <div class="third_contents_2">472만 뷰, 공중파 방송 출연</div>
-              </div>
-              <div class="third_contents_3_column">
-                <iframe
-                  width="320"
-                  height="180"
-                  src="https://www.youtube.com/embed/0luMXvDrOf8"
-                  title="YouTube video player"
-                  frameborder="0"
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                  allowfullscreen
-                ></iframe>
-                <div class="third_contents_2">83만 뷰, 대운 상담</div>
-              </div>
-              <div class="third_contents_3_column">
-                <iframe
-                  width="320"
-                  height="180"
-                  src="https://www.youtube.com/embed/YxPtpxe-i2M"
-                  title="YouTube video player"
-                  frameborder="0"
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                  allowfullscreen
-                ></iframe>
-                <div class="third_contents_2">34만 뷰, 말년운 상담</div>
+                <div class="second_contents_3">
+                  <div class="second_contents_3_img">
+                    <img
+                      src="https://i.ibb.co/3m7X2H8c/2025-05-02-3-04-07.png"
+                    />
+                  </div>
+                </div>
+                <div class="third_contents_2">타고난 부와 평생 모을 재산 중 일부</div>
               </div>
             </div>
           </div>
@@ -193,7 +234,7 @@
         <div class="second_display scroll">
           <div class="second_contents_1">
             <span style="font-weight: 700; font-size: 20px;">
-              관상가 양반을 소개해드립니다.
+              궁금증을 다 해결해주는 관상 레포트<br />(10,000자 이상)
             </span>
           </div>
 
@@ -204,7 +245,7 @@
                 class="fa-sharp fa-solid fa-circle-check"
               ></i>
               <div>
-                32년 경력, 20만명의 운명을 읽어낸 관상가
+                1. 자세한 관상 분석 (3,000자)
               </div>
             </div>
             <div class="second_contents_2_column">
@@ -213,8 +254,7 @@
                 class="fa-sharp fa-solid fa-circle-check"
               ></i>
               <div>
-                국내 유명인, 정치인, 방송인, 사업가 등 많은 분들이 정기적으로
-                찾는 관상가
+                2. 타고난 부와 평생 모을 재산
               </div>
             </div>
             <div class="second_contents_2_column">
@@ -223,7 +263,7 @@
                 class="fa-sharp fa-solid fa-circle-check"
               ></i>
               <div>
-                MBC, SBS, KBS 포함 유명 방송 수십회 출연 관상가
+                3. 타고난 성향과 내 재물운 장단점
               </div>
             </div>
             <div class="second_contents_2_column">
@@ -232,7 +272,7 @@
                 class="fa-sharp fa-solid fa-circle-check"
               ></i>
               <div>
-                역술인협회 수석 부이사장 및 명인
+                4. 돈이 되는 적성 풀이
               </div>
             </div>
             <div class="second_contents_2_column">
@@ -241,60 +281,64 @@
                 class="fa-sharp fa-solid fa-circle-check"
               ></i>
               <div>
-                대한민국 대표 관상가
+                5. 돈복 터지는 시기와 재산 승부 시기
               </div>
             </div>
-          </div>
-
-          <div class="second_contents_3">
-            <div class="second_contents_3_img">
-              <img
-                src="https://i.ibb.co/82DzNQ5/2023-07-22-5-38-37.png"
-                alt=""
-              />
+            <div class="second_contents_2_column">
+              <i
+                style="color: #f1ce81;"
+                class="fa-sharp fa-solid fa-circle-check"
+              ></i>
+              <div>
+                6. 위기/조심해야할 점은?
+              </div>
             </div>
-            <div class="second_contents_3_title">
-              라이프 힐러,
-              <br />
-              김민정 관상가
+            <div class="second_contents_2_column">
+              <i
+                style="color: #f1ce81;"
+                class="fa-sharp fa-solid fa-circle-check"
+              ></i>
+              <div>
+                7. 재산이 늘어나는 맞춤 관상 개선법
+              </div>
             </div>
           </div>
         </div>
 
         <div class="forth_display scroll">
           <div class="forth_contents_1">
-            상담은 예약이 필수이며
+            타고난 부 200% 활용법
             <br />
-            선입금 확인 후 예약이 확정됩니다.
+            재산을 늘리는 현명한 방법을
+            <br />
+            지금 바로 확인해보세요!
           </div>
 
           <div class="forth_contents_3">
             <div class="forth_contents_3_column">
               <div class="forth_contents_3_title">
-                상담
+                관상 분석
               </div>
               <div class="forth_contents_3_des">
                 관상학적으로 나의 인생 대박운, 말년운은 어떤지 알아가보세요.
                 건강운, 재물운, 직업운, 애정운은 기본으로 관상을 넘어 인생의
-                고민을 김민정 관상가와 함께 해결해나가보세요.
+                고민을 관상가 양반과 함께 해결해나가보세요.
               </div>
             </div>
             <div class="forth_contents_3_column">
               <div class="forth_contents_3_title">
-                친필 사인 도서 [운의 창조]
+                관상학적 타고난 부
               </div>
               <div class="forth_contents_3_des">
-                김민정 관상가가 직접 쓴 운의 창조 실물 도서에 행운 가득 편지와
-                친필 사인을 직접 해서 드려요.
+                타고난 부의 크기를 관상 분석을 통해 밝혀내고, 평생 동안 모을 수 있는 재산의 금액을 예측합니다. 이를 통해 자신의 재물운의 경향성과 잠재력을 이해해보세요.
               </div>
             </div>
             <div class="forth_contents_3_column">
               <div class="forth_contents_3_title">
-                예약 상담 최우선 순위
+                맞춤 관상 개선법
               </div>
               <div class="forth_contents_3_des">
-                예약잡기 어려움을 넘어서 불가능한 1:1 상담을 가능한 가장 빠른
-                날로 바로 받을 수 있어요.
+                타고난 부의 크기가 원하는 것보다 작더라도 걱정하지 마세요. 가장 적합한 개운법을 통해 재물운 자체를 증진시키는 방법을 알아보세요.
               </div>
             </div>
           </div>
@@ -307,184 +351,100 @@
             class="forth_contents_3_des"
           >
             <del></del>
-            <span class="gradient_gold">상담 예약이 가능합니다.</span>
+            <span class="gradient_gold">자세한 관상 풀이가 가능합니다.</span>
           </div>
         </div>
         <div class="fifth__display scroll">
           <div class="main__fifth__title">
-            상담 종류 및 요금 안내
-          </div>
-          <div class="main__fifth__content__column">
-            <div class="fifth__content__upper">
-              <div class="fifth__upper__left">•</div>
-              <div class="fifth__upper__right">
-                사주, 관상, 개인 상담
-              </div>
-            </div>
-            <div class="fifth__content__lower">
-              <div class="fifth__lower__left"></div>
-              <div class="fifth__lower__right">
-                20만원
-                <br />
-                1인 추가시 10만원 추가 / 4인 가족 상담시 (선입금/30만원)
-              </div>
-            </div>
-          </div>
-          <div class="main__fifth__content__column">
-            <div class="fifth__content__upper">
-              <div class="fifth__upper__left">•</div>
-              <div class="fifth__upper__right">
-                개인 사업자
-              </div>
-            </div>
-            <div class="fifth__content__lower">
-              <div class="fifth__lower__left"></div>
-              <div class="fifth__lower__right">
-                [5인 이하] 30만원
-                <br />
-                [5인 이상] 50만원
-                <br />
-                타인추가시 10만원 추가
-              </div>
-            </div>
-          </div>
-
-          <div class="main__fifth__content__column">
-            <div class="fifth__content__upper">
-              <div class="fifth__upper__left">•</div>
-              <div class="fifth__upper__right">
-                법인 사업자
-              </div>
-            </div>
-            <div class="fifth__content__lower">
-              <div class="fifth__lower__left"></div>
-              <div class="fifth__lower__right">
-                [20인 이하] 300만원
-                <br />
-                [50인 이하] 500만원~
-                <br />
-                [50인 이상] 별도문의
-                <br />
-                그외 기타 사업자는 별도 문의 바랍니다
-              </div>
-            </div>
-          </div>
-          <div class="main__fifth__content__column">
-            <div class="fifth__content__upper">
-              <div class="fifth__upper__left">•</div>
-              <div class="fifth__upper__right">
-                전문인 상담
-              </div>
-            </div>
-            <div class="fifth__content__lower">
-              <div class="fifth__lower__left"></div>
-              <div class="fifth__lower__right">
-                30만원
-                <br />
-                영업/보험fc/연예인/법조인/부동산/공무원/스포츠인/유투버/방송인
-                의료인/각종 전문직/모든영업자 등
-              </div>
-            </div>
-          </div>
-          <div class="main__fifth__content__column">
-            <div class="fifth__content__upper">
-              <div class="fifth__upper__left">•</div>
-              <div class="fifth__upper__right">
-                1년 VIP상담
-              </div>
-            </div>
-            <div class="fifth__content__lower">
-              <div class="fifth__lower__left"></div>
-              <div class="fifth__lower__right">
-                300만원 / 500만원 / 1천만원 / 3천만원
-                <br />
-                한 해의 상담을 횟수제한없이 전화,온락인,방문상담하는 사례
-                <br />
-                본인에 한해서만 적용되며, 개인이나 사업에 필요한 타인 상담시
-                추가비용 별도
-                <br />
-                작명 및 상호/부적 차감가능 / 풍수 인테리어는 별도 문의
-              </div>
-            </div>
-          </div>
-          <div class="main__fifth__content__column">
-            <div class="fifth__content__upper">
-              <div class="fifth__upper__left">•</div>
-              <div class="fifth__upper__right">
-                주식, 부동산
-              </div>
-            </div>
-            <div class="fifth__content__lower">
-              <div class="fifth__lower__left"></div>
-              <div class="fifth__lower__right">
-                기본상담 30만원 / 물건지 안밖 사진, 주소 필참
-                <br />
-                [10억 이하 땅/주택/상가/오피스텔 ] 100만원
-                <br />
-                [20억 이하 땅/주택/상가/오피스텔 ] 200만원
-                <br />
-                [30억 이상 꼬마빌딩 및 빌딩매매 ] 500만원~
-              </div>
-            </div>
-          </div>
-          <div class="main__fifth__content__column">
-            <div class="fifth__content__upper">
-              <div class="fifth__upper__left">•</div>
-              <div class="fifth__upper__right">
-                관상 성형 및 이미지 메이킹
-              </div>
-            </div>
-            <div class="fifth__content__lower">
-              <div class="fifth__lower__left"></div>
-              <div class="fifth__lower__right">
-                별도 문의 바랍니다
-                <br />
-                상담 후 성형수술 택일(시술자와의 궁합 포함)
-                <br />
-                외형구축,내적구축을 위한 역학이미지 구성
-                <br />
-                헤어,메이크업,코디등 예약 및 금액은 개별적으로 진행하시면 됩니다
-              </div>
-            </div>
-          </div>
-          <div class="main__fifth__content__column">
-            <div class="fifth__content__upper">
-              <div class="fifth__upper__left">•</div>
-              <div class="fifth__upper__right">
-                작명, 부적
-              </div>
-            </div>
-            <div class="fifth__content__lower">
-              <div class="fifth__lower__left"></div>
-              <div class="fifth__lower__right">
-                개인마다 운세가 다르고 필요 유,무에 따라 상담후 안내가
-                가능합니다
-              </div>
-            </div>
+            상담 가격 안내
+            <br />
+            (출시 할인 5/10까지, 단 7일간)
           </div>
           <div class="fifth_contents_1">
-            *예약 신청은 비용이 청구되지 않습니다.
+            *상담 신청은 비용이 청구되지 않습니다.
           </div>
+          <div class="main__fifth__content__column">
+            <div class="fifth__content__upper">
+              <div class="fifth__upper__left">•</div>
+              <div class="fifth__upper__right">
+                관상 풀이만 (3,000자)
+              </div>
+            </div>
+            <div class="fifth__content__lower">
+              <div class="fifth__lower__left"></div>
+              <div class="fifth__lower__right">
+                <span style="text-decoration: line-through; color: gray;">9,900원</span>
+                <span style="margin: 0 5px;">4,900원</span>
+                <span style="color: rgb(255, 225, 0); padding-left: 0px 2px;">51% 할인</span>
+              </div>
+            </div>
+          </div>
+          <div class="main__fifth__content__column">
+            <div class="fifth__content__upper">
+              <div class="fifth__upper__left">•</div>
+              <div class="fifth__upper__right">
+                관상 풀이 + 재물 분석 (10,000자 이상)
+              </div>
+            </div>
+            <div class="fifth__content__lower">
+              <div class="fifth__lower__left"></div>
+              <div class="fifth__lower__right">
+                <span style="text-decoration: line-through; color: gray;">39,900원</span>
+                <span style="margin: 0 5px;">16,900원</span>
+                <span style="color: rgb(255, 225, 0); padding-left: 0px 2px;">58% 할인</span>
+              </div>
+            </div>
+          </div>
+          
         </div>
-        <div class="sixth_display scroll">
+        <!-- <div class="sixth_display scroll">
           <div class="sixth_contents_2">
             846-910105-35307
             <br />
             하나은행 김민정
           </div>
-        </div>
+        </div> -->
       </div>
       <div class="footer-button">
-        <div id="timer">예약 자리가 많지 않아요. 서두르세요!</div>
-        <button class="consultBtn">
+        <div id="timer">
+          내 관상으로 평생 모을 수 있는 재산은?
+        </div>
+        <button class="consultBtn" onclick="mixpanel.track('관상 분석 상담 신청 버튼 클릭')">
           <span>
-            상담 예약하기
+            상담 신청하기
           </span>
         </button>
       </div>
 
       <footer class="footer"></footer>
     </div>
+
+    <script>
+      // 고유 사용자 ID를 localStorage에서 불러오거나 새로 생성
+      let distinctId = localStorage.getItem("mixpanel_distinct_id");
+      if (!distinctId) {
+        distinctId = crypto.randomUUID(); // 브라우저 내장 UUID 생성
+        localStorage.setItem("mixpanel_distinct_id", distinctId);
+      }
+    
+      // Mixpanel 초기화 및 ID 지정
+      mixpanel.init("d7d8d6afc10a92f911ea59901164605b", {
+        debug: true,
+        // optional: identify 자동 호출 안 되게 하고, 아래에서 수동으로 identify
+        autotrack: true,
+        persistence: 'localStorage'
+      });
+    
+      // 사용자 ID를 명시적으로 identify
+      mixpanel.identify(distinctId);
+    
+      // 추적 예시
+      mixpanel.track("관상 분석 재물 분석 페이지 방문", {
+        url: window.location.href,
+        userAgent: navigator.userAgent,
+        timestamp: new Date().toISOString()
+      });
+    </script>
 
     <script src="js/footer.js"></script>
     <script src="js/kmj.js"></script>
