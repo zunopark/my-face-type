@@ -455,7 +455,11 @@ async function predict() {
 
 
   let share = document.createElement('button')
-  share.innerHTML = '<span>관상 분석 + 재물 분석 받기</span>'
+  share.innerHTML = `
+  <div class="ad_box_custom">
+    <img src="https://i.ibb.co/v4T8ph14/gwansagg.png" alt="관상 재물 분석 이미지" />
+  </div>
+`;
   share.classList.add('share__btn')
   share.onclick = function () {
     gtag('event', '관상 분석', {
