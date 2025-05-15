@@ -4,22 +4,22 @@ const headerForAd = document.querySelector(`.header`)
 const appVersion = '0.504'
 
 function init() {
-  const scrollToTopButton = document.getElementById('scrollToTopButton')
+  // const scrollToTopButton = document.getElementById('scrollToTopButton')
 
-  window.onscroll = function () {
-    if (
-      document.body.scrollTop > 1000 ||
-      document.documentElement.scrollTop > 1000
-    ) {
-      scrollToTopButton.style.display = 'block'
-    } else {
-      scrollToTopButton.style.display = 'none'
-    }
-  }
+  // window.onscroll = function () {
+  //   if (
+  //     document.body.scrollTop > 1000 ||
+  //     document.documentElement.scrollTop > 1000
+  //   ) {
+  //     scrollToTopButton.style.display = 'block'
+  //   } else {
+  //     scrollToTopButton.style.display = 'none'
+  //   }
+  // }
 
-  scrollToTopButton.onclick = function () {
-    window.scrollTo({ top: 0, behavior: 'smooth' })
-  }
+  // scrollToTopButton.onclick = function () {
+  //   window.scrollTo({ top: 0, behavior: 'smooth' })
+  // }
 
   footer.innerHTML = ` <div class="contact">
   <a href="mailto:dydtjq94@yonsei.ac.kr" class="contact_me">

@@ -186,6 +186,7 @@
   })(document, window.mixpanel || []);
 </script>
 
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 
   </head>
   <body>
@@ -210,43 +211,17 @@
       </header>
       <div class="main_content_wrap">
         <div class="main__ai__title">
-          <h1 class="subtitle">
-            관상가 양반<br/>
-            <span style="font-size: 16px; color: #66deff">
-              [2025 푸른 뱀의 해 AI 관상 업데이트]
-          </span>
-          <h2
-            class="number"
-            style="
-              font-size: 16px;
-              color: rgb(219, 219, 219);
-              margin-top: 8px;
-              font-weight: 300;
-            "
-          >
-            <span class="count__num" style="color: #66deff;"></span>
-            명이 관상을 봤어요.
-          </h2>
-        </div>
 
-        <!-- <div id="container">
-      <div class="inner-container">
-        <div class="toggle">
-          <p>남</p>
+          <div class="subtitle" style="margin-top: 32px;">
+              관상가 양반<br/>
+              <span style="font-size: 16px; color: #66deff">[2025 푸른 뱀의 해 AI 관상 업데이트]</span>
+          </div>
+
+          <div class="number">
+            <span class="count__num" style="color: #66deff;"></span> 명이 관상을 봤어요.
+          </div>
+
         </div>
-        <div class="toggle">
-          <p>여</p>
-        </div>
-      </div>
-      <div class="inner-container" id="toggle-container">
-        <div class="toggle">
-          <p>남</p>
-        </div>
-        <div class="toggle">
-          <p>여</p>
-        </div>
-      </div>
-    </div> -->
 
         <div class="ad_box" id="container2">
           <ins
@@ -318,42 +293,17 @@
             ;(adsbygoogle = window.adsbygoogle || []).push({})
           </script>
         </div>
-
-        <!-- <div class="ad_box_custom">
-          <a
-            id="randomImageAlink"
-            style="cursor: pointer;"
-            class="main_upper_content_wrap"
-            onclick="gtag('event', '스픽볼 다운로드 메인 배너')"
-            target="_blank"
-          >
-            <img id="randomImage2" src="" alt="스픽볼 배너" />
-          </a>
-        </div> -->
-
-        <!-- <div class="ad_box_coupang">
-          <script src="https://ads-partners.coupang.com/g.js"></script>
-<script>
-	new PartnersCoupang.G({"id":775405,"template":"carousel","trackingCode":"AF9541604","width":"320","height":"320","tsource":""});
-</script>
-        </div> -->
        
         <div class="ad_box10">
-         
-     <ins class="adsbygoogle"
-          style="display:inline-block;width:320px;height:180px"
-          data-ad-client="ca-pub-4478069136800837"
-          data-ad-slot="8828552831"></ins>
-     <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
-     </script>
+          <ins class="adsbygoogle"
+                style="display:inline-block;width:320px;height:180px"
+                data-ad-client="ca-pub-4478069136800837"
+                data-ad-slot="8828552831"></ins>
+          <script>
+                (adsbygoogle = window.adsbygoogle || []).push({});
+          </script>
         </div>
-        
-     
-       
-    
       </div>
-      <button id="scrollToTopButton" style="display: none; position: fixed; bottom: 120px; right: 40px;">맨 위로</button>
 
 
 
@@ -401,7 +351,8 @@
     <script src="js/header.js"></script>
     <script src="js/livetime.js"></script>
     <script src="js/ad.js"></script>
-    <script src="js/fileupload.js"></script>
+    <script src="js/result.js"></script>
+    <!-- <script src="js/fileupload.js"></script> -->
     <!-- <script src="js/chat.js"></script> -->
     <!-- <script>
       const imageRandomFunc = () => {

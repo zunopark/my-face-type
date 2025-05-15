@@ -75,7 +75,7 @@
 }
 
 .image-title-wrap {
-  padding: 0 15px 15px 15px;
+  padding: 0 15px 32px 15px;
   color: #222;
 }
 
@@ -114,10 +114,10 @@
 }
 
 .file-upload-image {
-  max-height: 200px;
-  max-width: 200px;
+  max-width: 260px;
   margin: auto;
-  padding: 20px;
+  padding: 12px;
+  padding-top: 32px;
   background-size: cover;
 }
 
