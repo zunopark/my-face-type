@@ -225,3 +225,22 @@ function closePaymentModal() {
     document.getElementById("agreement").innerHTML = "";
   }
   
+
+  
+  // 👇 .ai 텍스트 자동 변경
+  const aiTexts = [
+    "관상가가 당신의 얼굴을 찬찬히 살펴보고 있어요..",
+    "고요히 관상을 풀어내는 중입니다..",
+    "맑은 기운을 따라 인상을 읽고 있어요..",
+    "당신의 모습을 천천히 비춰보고 있어요..",
+    "인공지능이 옛 지혜를 빌려 관상을 해석 중입니다..",
+    "마음으로 당신의 기운을 들여다보고 있어요.."
+  ];
+  
+  let aiIndex = 0;
+  setInterval(() => {
+    const aiEl = document.querySelector(".ai");
+    if (!aiEl) return;
+    aiEl.textContent = aiTexts[aiIndex % aiTexts.length];
+    aiIndex++;
+  }, 4000); // 2초마다 교체
