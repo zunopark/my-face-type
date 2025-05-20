@@ -100,21 +100,19 @@ async function analyzeFaceImage(file, imageBase64) {
       timestamp: new Date().toISOString(),
     };
 
+    mixpanel.track("GEMINI 관상 결과", {
+        timestamp: new Date().toISOString(),
+      });
+
     console.log(`\(id: ${result.id}, timestamp: ${result.timestamp})`);
 
     await saveToIndexedDB(result);
-    console.log("3")
     renderResult(result);
-    console.log("5")
 
   } catch (error) {
     console.error("❌ 관상 분석 실패:", error);
     resultContainer.innerHTML = `<p style='color: red;'>분석 중 오류가 발생했습니다. 다시 시도해주세요.</p>`;
   }
-
-  mixpanel.track("GEMINI 관상 결과", {
-    timestamp: new Date().toISOString(),
-  });
 }
 
 // 6. Base64 변환
