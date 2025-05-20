@@ -308,14 +308,26 @@
 
 
 
-<div id="myModal" class="modal">
-  <div class="modal-content">
-    <span class="close">&times;</span>
-    <a href="https://speakcash-luckybox-event.nmax.team/?code=lxyi69&channel=gt">
-      <img id="randomImage" src="" alt="스픽볼 배너" />
-    </a>
-  </div>
-</div>
+      <div id="myModal" class="modal">
+        <div class="modal-content">
+          <span class="close">&times;</span>
+          <a href="https://speakcash-luckybox-event.nmax.team/?code=lxyi69&channel=gt">
+            <img id="randomImage" src="" alt="스픽볼 배너" />
+          </a>
+        </div>
+      </div>
+
+      <!-- ✅ Toss 결제 모달 -->
+      <div id="paymentModal" class="modal" style="display:none;">
+        <div class="modal-content">
+          <span class="close" onclick="closePaymentModal()" style="position:absolute; top:10px; right:10px; cursor:pointer;">✕</span>
+          <h3 style="margin-top:0;">관상 상세 분석</h3>
+          <div id="payment-method"></div>
+          <div id="agreement" style="margin-top: 16px;"></div>
+          <button id="payment-button" style="margin-top: 16px; width: 100%; padding: 12px; background-color: #3182ce; color: white; border: none; border-radius: 6px;">결제하기</button>
+        </div>
+      </div>
+
 
       <footer class="footer"></footer>
     </div>
@@ -347,12 +359,15 @@
       });
     </script>
 
+
+    <script src="https://js.tosspayments.com/v1/payment-widget"></script>
+
     <script src="js/footer.js"></script>
     <script src="js/header.js"></script>
     <script src="js/livetime.js"></script>
     <script src="js/ad.js"></script>
-    <!-- <script src="js/result.js"></script> -->
-    <script src="js/fileupload.js"></script>
+    <script src="js/result.js"></script>
+    <!-- <script src="js/fileupload.js"></script> -->
     <!-- <script src="js/chat.js"></script> -->
     <!-- <script>
       const imageRandomFunc = () => {
@@ -417,29 +432,18 @@
       type="text/javascript"
       src="https://cdn.rawgit.com/dwyl/html-form-send-email-via-google-script-without-server/master/form-submission-handler.js"
     ></script>
-    <!-- <script>
-      function googleTranslateElementInit() {
-        new google.translate.TranslateElement(
-          {
-            pageLanguage: 'ko',
-            includedLanguages: 'en,ja,ko,zh-CN,zh-TW',
-            layout: google.translate.TranslateElement.InlineLayout.none, // none or HORIZONTAL, SIMPLE
-          },
-          'google_translate_element',
-        )
-      }
-    </script>
-    <script src="http://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script> -->
+
+
   </body>
-  <!-- 
-Copyright (c) 2020 by Aaron Vanston (https://codepen.io/aaronvanston/pen/yNYOXR)
-Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
-The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
- -->
-  <!-- Copyright (c) 2020 by Lasse Diercks (https://codepen.io/lassediercks/pen/ZXezQJ)
-Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
-The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
- -->
+    <!-- 
+    Copyright (c) 2020 by Aaron Vanston (https://codepen.io/aaronvanston/pen/yNYOXR)
+    Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+    The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+    -->
+      <!-- Copyright (c) 2020 by Lasse Diercks (https://codepen.io/lassediercks/pen/ZXezQJ)
+    Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+    The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+    -->
 </html>

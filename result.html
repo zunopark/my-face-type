@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <title>관상 분석 결과</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      padding: 40px;
+    }
+  </style>
+</head>
+<body>
+  <h2>👤 관상 분석 결과</h2>
+  <div id="label-container">결과를 불러오는 중입니다...</div>
+
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <script>
+    let db;
+
+    // 1. IndexedDB 초기화
+    function initDB() {
+      return new Promise((resolve, reject) => {
+        const request = indexedDB.open("FaceAnalysisDB", 1);
+
+        request.onupgradeneeded = function (event) {
+          db = event.target.result;
+          if (!db.objectStoreNames.contains("results")) {
+            const store = db.createObjectStore("results", { keyPath: "id" });
+            store.createIndex("timestamp", "timestamp", { unique: false });
+          }
+        };
+
+        request.onsuccess = function (event) {
+          db = event.target.result;
+          resolve();
+        };
+
+        request.onerror = function (event) {
+          reject("❌ IndexedDB 초기화 실패");
+        };
+      });
+    }
+
+    // 2. 특정 ID로 결과 가져오기
+    function getResultById(id) {
+      return new Promise((resolve, reject) => {
+        const transaction = db.transaction(["results"], "readonly");
+        const store = transaction.objectStore("results");
+        const request = store.get(id);
+
+        request.onsuccess = () => resolve(request.result);
+        request.onerror = () => reject("❌ 결과 조회 실패");
+      });
+    }
+
+    // 3. 화면 렌더링
+    function renderResult(data) {
+      const container = document.getElementById("label-container");
+
+      if (!data) {
+        container.innerHTML = "<p style='color: red;'>결과를 찾을 수 없습니다.</p>";
+        return;
+      }
+
+      container.innerHTML = `
+        <div class="face-summary-section">
+          <div class="face-summary">${marked.parse(data.summary)}</div>
+        </div>
+        <div class="face-full-section-wrapper">
+          <div class="face-full-report">${marked.parse(data.detail)}</div>
+          ${data.paid ? "" : `
+          <div class="result-mask">
+            <div class="blur-overlay"></div>
+            <div class="mask-text">
+              <div class="mask-text-top">더 자세한 내용을 보시려면 결제를 완료해주세요.</div>
+            </div>
+          </div>`}
+        </div>
+      `;
+    }
+
+    // 4. 실행
+    window.addEventListener("DOMContentLoaded", async () => {
+      const urlParams = new URLSearchParams(window.location.search);
+      const id = urlParams.get("id");
+
+      if (!id) {
+        document.getElementById("label-container").innerHTML = "<p style='color: red;'>결과 ID가 없습니다.</p>";
+        return;
+      }
+
+      try {
+        await initDB();
+        const result = await getResultById(id);
+        renderResult(result);
+      } catch (err) {
+        document.getElementById("label-container").innerHTML = "<p style='color: red;'>결과 로드 실패</p>";
+        console.error(err);
+      }
+    });
+  </script>
+</body>
+</html>
