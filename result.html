@@ -1,78 +1,83 @@
 <!DOCTYPE html>
 <html lang="ko">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>관상 분석 결과</title>
-  <link rel="stylesheet" href="styles/style.css" />
-</head>
-<body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>관상 분석 결과</title>
+    <link rel="stylesheet" href="styles/style.css" />
+  </head>
+  <body>
     <div class="main_body_wrap">
-        <header class="header_chat">
-            <div class="header_chat_wrap">
-              <a class="header_chat_title header_selected" href="/">
-                관상
-              </a>
-              <a class="header_chat_title" href="/animalface">
-                동물상
-              </a>
-              <a class="header_chat_title" href="/premium">
-                재물 관상
-              </a>
+      <header class="header_chat">
+        <div class="header_chat_wrap">
+          <a class="header_chat_title header_selected" href="/"> 관상 </a>
+          <a class="header_chat_title" href="/animalface"> 동물상 </a>
+          <a class="header_chat_title" href="/premium"> 재물 관상 </a>
 
-              <a href="/history.html" class="header_chat_title header_chat_right">지난 관상</a>
-            </div>
-        </header>
-        <div class="main_content_wrap" style="padding-top: 48px;">
-            <div class="border"></div>
-            <div id="label-container" style="padding: 0 32px;">결과를 불러오는 중입니다...</div>
+          <a href="/history.html" class="header_chat_title header_chat_right"
+            >지난 관상</a
+          >
         </div>
-        <footer class="footer"></footer>
+      </header>
+      <div class="main_content_wrap" style="padding-top: 48px">
+        <div class="border"></div>
+        <div id="label-container" style="padding: 0 32px">
+          결과를 불러오는 중입니다...
+        </div>
+      </div>
+      <footer class="footer"></footer>
     </div>
     <script src="js/footer.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-  <script>
-  let db;
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script>
+      let db;
 
-  async function initDB() {
-    return new Promise((resolve, reject) => {
-      const request = indexedDB.open("FaceAnalysisDB", 1);
-      request.onsuccess = function (event) {
-        db = event.target.result;
-        resolve();
-      };
-      request.onerror = function () {
-        reject("DB open error");
-      };
-    });
-  }
+      async function initDB() {
+        const request = indexedDB.open("FaceAnalysisDB", 1);
 
-  function getResultById(id) {
-    return new Promise((resolve, reject) => {
-      const tx = db.transaction(["results"], "readonly");
-      const store = tx.objectStore("results");
-      const request = store.get(id);
-      request.onsuccess = () => resolve(request.result);
-      request.onerror = () => reject("result not found");
-    });
-  }
+        request.onupgradeneeded = function (event) {
+          db = event.target.result;
+          if (!db.objectStoreNames.contains("results")) {
+            const store = db.createObjectStore("results", { keyPath: "id" });
+            store.createIndex("timestamp", "timestamp", { unique: false });
+          }
+        };
 
-  async function renderResultPage() {
-    const urlParams = new URLSearchParams(window.location.search);
-    const id = urlParams.get("id");
-    if (!id) return;
+        request.onsuccess = function (event) {
+          db = event.target.result;
+          console.log("✅ IndexedDB 초기화 완료");
+        };
 
-    await initDB();
-    const data = await getResultById(id);
-    if (!data) return;
+        request.onerror = function (event) {
+          console.error("❌ IndexedDB 오류", event);
+        };
+      }
 
-    // 이미지 삽입
+      function getResultById(id) {
+        return new Promise((resolve, reject) => {
+          const tx = db.transaction(["results"], "readonly");
+          const store = tx.objectStore("results");
+          const request = store.get(id);
+          request.onsuccess = () => resolve(request.result);
+          request.onerror = () => reject("result not found");
+        });
+      }
 
+      async function renderResultPage() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const id = urlParams.get("id");
+        if (!id) return;
 
-    // 결과 삽입
-    const resultContainer = document.getElementById("label-container");
-    const borderContainer = document.querySelector(".border");
-    borderContainer.innerHTML = `
+        await initDB();
+        const data = await getResultById(id);
+        if (!data) return;
+
+        // 이미지 삽입
+
+        // 결과 삽입
+        const resultContainer = document.getElementById("label-container");
+        const borderContainer = document.querySelector(".border");
+        borderContainer.innerHTML = `
         <div class="frame">
             <div class="image">
                 <div class="file-upload">
@@ -89,13 +94,16 @@
         </div>
     `;
 
-    resultContainer.innerHTML = `
+        resultContainer.innerHTML = `
       <div class="face-summary-section">
         <div class="face-summary">${marked.parse(data.summary)}</div>
       </div>
       <div class="face-full-section-wrapper">
         <div class="face-full-report">${marked.parse(data.detail)}</div>
-        ${data.paid ? "" : `
+        ${
+          data.paid
+            ? ""
+            : `
         <div class="result-mask">
           <div class="blur-overlay"></div>
           <div class="mask-text">
@@ -106,13 +114,13 @@
               </div>
               <div class="mask-text-btn-sub">결제 후에는 환불이 불가능합니다.</div>
           </div>
-        </div>`}
+        </div>`
+        }
       </div>
     `;
-  }
+      }
 
-  document.addEventListener("DOMContentLoaded", renderResultPage);
-</script>
-
-</body>
+      document.addEventListener("DOMContentLoaded", renderResultPage);
+    </script>
+  </body>
 </html>
