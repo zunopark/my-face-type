@@ -33,25 +33,18 @@
       const body = { paymentKey, orderId, amount };
 
       // ✅ IndexedDB 초기화
-      async function initDB() {
-        const request = indexedDB.open("FaceAnalysisDB", 1);
+      function initDB() {
+        return new Promise((resolve) => {
+          const request = indexedDB.open("FaceAnalysisDB", 1);
 
-        request.onupgradeneeded = function (event) {
-          db = event.target.result;
-          if (!db.objectStoreNames.contains("results")) {
-            const store = db.createObjectStore("results", { keyPath: "id" });
-            store.createIndex("timestamp", "timestamp", { unique: false });
-          }
-        };
+          request.onsuccess = function (event) {
+            resolve(event.target.result);
+          };
 
-        request.onsuccess = function (event) {
-          db = event.target.result;
-          console.log("✅ IndexedDB 초기화 완료");
-        };
-
-        request.onerror = function (event) {
-          console.error("❌ IndexedDB 오류", event);
-        };
+          request.onerror = function (event) {
+            console.error("❌ IndexedDB 오류", event);
+          };
+        });
       }
 
       // ✅ 특정 ID의 paid를 true로 변경

@@ -33,24 +33,16 @@
       let db;
 
       async function initDB() {
-        const request = indexedDB.open("FaceAnalysisDB", 1);
-
-        request.onupgradeneeded = function (event) {
-          db = event.target.result;
-          if (!db.objectStoreNames.contains("results")) {
-            const store = db.createObjectStore("results", { keyPath: "id" });
-            store.createIndex("timestamp", "timestamp", { unique: false });
-          }
-        };
-
-        request.onsuccess = function (event) {
-          db = event.target.result;
-          console.log("✅ IndexedDB 초기화 완료");
-        };
-
-        request.onerror = function (event) {
-          console.error("❌ IndexedDB 오류", event);
-        };
+        return new Promise((resolve, reject) => {
+          const request = indexedDB.open("FaceAnalysisDB", 1);
+          request.onsuccess = function (event) {
+            db = event.target.result;
+            resolve();
+          };
+          request.onerror = function () {
+            reject("DB open error");
+          };
+        });
       }
 
       function getResultById(id) {
