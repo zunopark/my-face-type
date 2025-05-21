@@ -141,7 +141,7 @@ function renderResult(data) {
           <div class="blur-overlay"></div>
           <div class="mask-text">
               <div class="mask-text-top">더 자세한 내용이 궁금하신가요?</div>
-              <div class="mask-text-sub">얼굴형, 이마, 눈 등 세부 관상 + 운명과 인생 경로 + 대인관계와 인연 + 종합 결론 (최소 3,000자 이상)</div>
+              <div class="mask-text-sub">얼굴형, 이마, 눈, 코, 턱 등 부위별 세분 관상 + 운명과 인생 경로 + 대인관계와 인연 + 종합 결론 (최소 3,000자 이상)</div>
               <div class="mask-text-btn-wrap">
                   <div class="mask-text-btn" onclick="trackAndStartPayment('${data.id}')">전체 결과 보기</div>
               </div>
