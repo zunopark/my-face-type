@@ -13,18 +13,16 @@
               <a class="header_chat_title header_selected" href="/">
                 관상
               </a>
-              <!-- <a class="header_chat_title" href="/premium">
-                프리미엄
-              </a> -->
               <a class="header_chat_title" href="/animalface">
                 동물상
               </a>
-             
               <a class="header_chat_title" href="/premium">
                 재물 관상
               </a>
+
+              <a href="/history.html" class="header_chat_title header_chat_right">지난 관상</a>
             </div>
-          </header>
+        </header>
         <div class="main_content_wrap" style="padding-top: 48px;">
             <div class="border"></div>
             <div id="label-container" style="padding: 0 32px;">결과를 불러오는 중입니다...</div>
@@ -78,12 +76,14 @@
         <div class="frame">
             <div class="image">
                 <div class="file-upload">
+                    <div class="image-square-frame">
                     <img
                         class="file-upload-image"
                         id="face-image"
                         src="${data.imageBase64}"
                         alt="your image"
                     />
+                    </div>
                 </div>
             </div>
         </div>
@@ -96,7 +96,17 @@
       <div class="face-full-section-wrapper">
         <div class="face-full-report">${marked.parse(data.detail)}</div>
         ${data.paid ? "" : `
-        `}
+        <div class="result-mask">
+          <div class="blur-overlay"></div>
+          <div class="mask-text">
+              <div class="mask-text-top">더 자세한 내용이 궁금하신가요?</div>
+              <div class="mask-text-sub">얼굴형, 이마, 눈 등 세부 관상 + 운명과 인생 경로 + 대인관계와 인연 + 종합 결론 (최소 3,000자 이상)</div>
+              <div class="mask-text-btn-wrap">
+                  <div class="mask-text-btn" onclick="trackAndStartPayment('${data.id}')">전체 결과 보기</div>
+              </div>
+              <div class="mask-text-btn-sub">결제 후에는 환불이 불가능합니다.</div>
+          </div>
+        </div>`}
       </div>
     `;
   }

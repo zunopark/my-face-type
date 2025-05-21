@@ -4,12 +4,12 @@
   z-index: 999;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
   font-family: 'MapoBackpacking';
+  width: 100%;
 }
 
 .header_chat_wrap {
   width: 100%;
   display: flex;
-  justify-content: flex-start;
   align-items: center;
   padding: 20px;
   background-color: #2f2f32;
@@ -29,6 +29,10 @@
   font-size: 20px;
   text-decoration: none;
   margin-right: 16px;
+}
+
+.header_chat_right {
+  margin-left: auto;
 }
 
 .header_selected {

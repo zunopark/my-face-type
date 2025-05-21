@@ -23,13 +23,47 @@
     const orderId = params.get("orderId");
     const amount = Number(params.get("amount"));
     const resultId = params.get("id");
-
-    const body = {
-      paymentKey,
-      orderId,
-      amount
-    };
-
+  
+    const body = { paymentKey, orderId, amount };
+  
+    // ✅ IndexedDB 초기화
+    function initDB() {
+      return new Promise((resolve) => {
+        const request = indexedDB.open("FaceAnalysisDB", 1);
+  
+        request.onsuccess = function (event) {
+          resolve(event.target.result);
+        };
+  
+        request.onerror = function (event) {
+          console.error("❌ IndexedDB 오류", event);
+        };
+      });
+    }
+  
+    // ✅ 특정 ID의 paid를 true로 변경
+    async function markPaid(db, id) {
+      return new Promise((resolve, reject) => {
+        const transaction = db.transaction(["results"], "readwrite");
+        const store = transaction.objectStore("results");
+        const getRequest = store.get(id);
+  
+        getRequest.onsuccess = () => {
+          const data = getRequest.result;
+          if (data) {
+            data.paid = true;
+            const putRequest = store.put(data);
+            putRequest.onsuccess = () => resolve(true);
+            putRequest.onerror = reject;
+          } else {
+            reject("❌ 해당 ID의 결과 없음");
+          }
+        };
+  
+        getRequest.onerror = reject;
+      });
+    }
+  
     fetch("https://port-0-momzzi-fastapi-m7ynssht4601229b.sel4.cloudtype.app/payment/confirm", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -39,29 +73,30 @@
       if (!res.ok) throw new Error("서버 검증 실패");
       return res.json();
     })
-    .then(data => {
+    .then(async data => {
       console.log("✅ 결제 확인 완료", data);
       document.getElementById("status").textContent = "✅ 결제가 완료되었습니다!";
       document.getElementById("status").className = "success";
-
-      localStorage.setItem("paymentComplete", "true");
-      
+  
       if (resultId) {
-        localStorage.setItem("paidResultId", resultId);
-        setTimeout(() => {
-          window.location.href = `/result.html?id=${resultId}`;
-        }, 2000);
-      } else {
-        setTimeout(() => {
-          window.location.href = "/";
-        }, 2000);
+        try {
+          const db = await initDB();
+          await markPaid(db, resultId);
+          console.log("✅ IndexedDB 결제 상태 업데이트 완료");
+        } catch (e) {
+          console.error("❌ IndexedDB 업데이트 실패:", e);
+        }
       }
+  
+      setTimeout(() => {
+        window.location.href = resultId ? `/result.html?id=${resultId}` : "/";
+      }, 2000);
     })
     .catch(err => {
       console.error("❌ 결제 확인 실패", err);
       document.getElementById("status").textContent = "❌ 결제 확인에 실패했습니다.";
       document.getElementById("status").className = "fail";
-
+  
       setTimeout(() => {
         window.location.href = "/fail.html";
       }, 3000);

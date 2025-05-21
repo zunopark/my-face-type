@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="UTF-8" />
+    <title>관상 분석 기록</title>
+    <link rel="stylesheet" href="styles/style.css" />
+  </head>
+  <body>
+    <div class="main_body_wrap">
+      <header id="face" class="header"></header>
+      <header class="header_chat">
+        <div class="header_chat_wrap">
+          <a class="header_chat_title" href="/"> 관상 </a>
+          <!-- <a class="header_chat_title" href="/premium">
+            프리미엄
+          </a> -->
+          <a class="header_chat_title" href="/animalface"> 동물상 </a>
+
+          <a class="header_chat_title" href="/premium"> 재물 관상 </a>
+          <a
+            href="/history.html"
+            class="header_chat_title header_chat_right header_selected"
+            >지난 관상</a
+          >
+        </div>
+      </header>
+      <div class="resultHistory_wrap">
+        <div class="resultHistory_title">
+          관상 분석 히스토리 <span id="history-count"></span>
+        </div>
+        <div id="history"></div>
+      </div>
+    </div>
+
+    <script>
+      let db;
+
+      function initDB() {
+        return new Promise((resolve, reject) => {
+          const request = indexedDB.open("FaceAnalysisDB", 1);
+          request.onsuccess = function (event) {
+            db = event.target.result;
+            resolve();
+          };
+          request.onerror = function (event) {
+            reject("❌ IndexedDB 오류: " + event);
+          };
+        });
+      }
+
+      function getAllResults() {
+        return new Promise((resolve, reject) => {
+          const transaction = db.transaction(["results"], "readonly");
+          const store = transaction.objectStore("results");
+          const request = store.getAll();
+
+          request.onsuccess = () => resolve(request.result);
+          request.onerror = reject;
+        });
+      }
+
+      function renderHistory(results) {
+        const container = document.getElementById("history");
+        if (results.length === 0) {
+          container.innerHTML = "<p>아직 분석한 관상이 없습니다.</p>";
+          return;
+        }
+
+        document.getElementById(
+          "history-count"
+        ).textContent = `(${results.length}개)`;
+
+        results.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+
+        results.forEach((r) => {
+          const div = document.createElement("div");
+          div.className = "resultHistory " + (r.paid ? "paid" : "unpaid");
+          div.innerHTML = `
+            <a href="/result.html?id=${r.id}">
+                <div class="resultHistory_paid">${
+                  r.paid ? "✅ 결제 완료" : "🔒 미결제"
+                }</div>
+
+                <div class="resultHistory_summary">${r.summary}</div>
+                <div class="resultHistory_bottom">👉 상세 보기</div>
+                <div class="resultHistory_date">${new Date(
+                  r.timestamp
+                ).toLocaleString()}</div>
+            </a>
+        `;
+          container.appendChild(div);
+        });
+      }
+
+      (async () => {
+        await initDB();
+        const results = await getAllResults();
+        renderHistory(results);
+      })();
+    </script>
+  </body>
+</html>
