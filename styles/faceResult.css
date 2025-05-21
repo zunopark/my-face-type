@@ -146,11 +146,11 @@
   font-size: 20px;
   font-weight: 700;
   color: white;
-  margin: 12px 16px;
+  padding: 12px 16px;
 }
 
 #resultHistory {
-  margin: 0px 16px;
+  padding: 0px 16px;
 }
 
 .resultHistory {
