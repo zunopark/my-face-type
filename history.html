@@ -96,15 +96,27 @@
           const div = document.createElement("div");
           div.className = "resultHistory " + (r.paid ? "paid" : "unpaid");
           div.innerHTML = `
-      <a href="/result.html?id=${r.id}">
-        <div class="resultHistory_paid">${
-          r.paid ? "✅ 결제 완료" : "🔒 미결제"
-        }</div>
-        <div class="resultHistory_summary">${r.summary}</div>
-        <div class="resultHistory_bottom">👉 상세 보기</div>
-        <div class="resultHistory_date">${new Date(
-          r.timestamp
-        ).toLocaleString()}</div>
+            <a href="/result.html?id=${r.id}">
+        
+
+            <div class="resultHistory_paid">${
+              r.paid ? "✅ 결제 완료" : "🔒 상세 분석 미결제"
+            }</div>
+            <div class="resultHistory_image_wrap">
+                <div class="image_square_frame2">
+                    <img
+                        class="resultHistory_image"
+                        src="${r.imageBase64}"
+                        alt="AI 관상 분석 결과"
+                    />
+                </div>
+                <div class="resultHistory_summary">${r.summary}</div>
+            </div>
+          
+            <div class="resultHistory_bottom">👉 상세 보기</div>
+            <div class="resultHistory_date">${new Date(
+              r.timestamp
+            ).toLocaleString()}</div>
       </a>
     `;
           container.appendChild(div);
