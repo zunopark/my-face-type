@@ -185,6 +185,14 @@
             "✅ 결제가 완료되었습니다!";
           document.getElementById("status").className = "success";
 
+          mixpanel.track("관상 결제 성공", {
+            orderId,
+            amount,
+            paymentKey,
+            resultId,
+            timestamp: new Date().toISOString(),
+          });
+
           if (resultId) {
             try {
               const db = await initDB();
@@ -206,6 +214,16 @@
           document.getElementById("status").textContent =
             "❌ 결제 확인에 실패했습니다.";
           document.getElementById("status").className = "fail";
+
+          // ✅ 믹스패널: 결제 실패 추적
+          mixpanel.track("관상 결제 실패", {
+            error: err.message,
+            orderId,
+            amount,
+            paymentKey,
+            resultId,
+            timestamp: new Date().toISOString(),
+          });
 
           setTimeout(() => {
             window.location.href = "/fail.html";
