@@ -140,10 +140,10 @@ function renderResult(data) {
         <div class="result-mask">
           <div class="blur-overlay"></div>
           <div class="mask-text">
-              <div class="mask-text-top">더 자세한 내용이 궁금하신가요?</div>
-              <div class="mask-text-sub">얼굴형, 이마, 눈, 코, 턱 등 부위별 세분 관상 + 운명과 인생 경로 + 대인관계와 인연 + 종합 결론 (최소 3,000자 이상)</div>
+              <div class="mask-text-top">관상학 기반 심층 분석</div>
+              <div class="mask-text-sub">얼굴형, 이마, 눈, 코, 입술 등 부위별 세부 관상<br/><br/><보너스 분석><br/>운명과 인생 경로<br/>대인 관계와 인연<br/>관상학적 인생 종합 결론<br/><br/>(최소 3,000자 이상)</div>
               <div class="mask-text-btn-wrap">
-                  <div class="mask-text-btn" onclick="trackAndStartPayment('${data.id}')">전체 결과 보기</div>
+                  <div class="mask-text-btn" onclick="trackAndStartPayment('${data.id}')">전체 분석 결과 확인하기</div>
               </div>
               <div class="mask-text-btn-sub">결제 후에는 환불이 불가능합니다.</div>
           </div>

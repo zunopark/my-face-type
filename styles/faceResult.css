@@ -4,7 +4,6 @@
 .face-summary-section {
   margin-bottom: 12px;
   padding: 0 10px;
-  /* background-color: #1b1b1b; */
   border-radius: 10px;
 }
 
@@ -54,7 +53,7 @@
   position: absolute;
   top: 480px;
   width: 300px;
-  background: rgba(0, 0, 0, 0.8);
+  background: rgb(23, 23, 23);
   padding: 24px 20px;
   border-radius: 10px;
   pointer-events: auto;
@@ -68,22 +67,22 @@
 }
 
 .mask-text-top {
-  font-size: 20px;
+  font-size: 24px;
   font-weight: bold;
   color: rgb(225, 225, 225);
-  margin-bottom: 2px;
+  margin-bottom: 8px;
 }
 
 .mask-text-sub {
   font-size: 14px;
   text-align: center;
-  color: rgb(185, 185, 185);
+  color: rgb(199, 199, 199);
   margin-bottom: 8px;
 }
 
 .mask-text-btn-wrap {
   width: 100%;
-  margin: 12px 0;
+  margin: 0 0 12px 0;
   padding: 8px 16px;
   border: 1px solid #ffbe0a;
   background-color: #ffbe0a;
@@ -91,11 +90,11 @@
 }
 
 .mask-text-btn {
-  font-size: 14px;
+  font-size: 16px;
   text-align: center;
-  color: rgb(0, 0, 0);
+  color: rgb(18, 18, 18);
   padding-top: 2px;
-  font-weight: bold;
+  font-weight: 700;
 }
 
 .mask-text-btn-sub {
