@@ -51,7 +51,7 @@
 /* 텍스트는 블러 영향 X */
 .mask-text {
   position: absolute;
-  top: 480px;
+  top: 400px;
   width: 300px;
   background: rgb(23, 23, 23);
   padding: 24px 20px;
