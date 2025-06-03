@@ -145,16 +145,14 @@ function renderResult(data) {
       ${data.paid ? "" : `
       <div class="result-mask">
         <div class="blur-overlay"></div>
-        <div class="mask-text">
-          <div class="mask-text-top">관상학 기반 심층 분석</div>
- <div class="mask-text-sub">얼굴형, 이마, 눈, 코, 입술 등 부위별 세부 관상<br/>+<br/>운명과 인생 경로 + 대인 관계와 인연 + 관상학적 인생 종합 결론<br/><br/>(최소 3,000자 이상)</div>
-          <div class="mask-text-btn-wrap">
-            <div class="mask-text-btn" onclick="trackAndStartPayment('${data.id}')">
-              전체 분석 결과 확인하기
-            </div>
+          <div class="mask-text">
+              <div class="mask-text-top">관상학 기반 심층 분석</div>
+              <div class="mask-text-sub">얼굴형, 이마, 눈 등 부위별 세부 관상 분석 + 운명과 인생 경로 + 대인 관계와 인연 + 관상학적 인생 종합 결론<br/><br/>(최소 3,000자 이상)</div>
+              <div class="mask-text-btn-wrap">
+                  <div class="mask-text-btn" onclick="trackAndStartPayment('${data.id}')">전체 분석 결과 확인하기</div>
+              </div>
+              <div class="mask-text-btn-sub">대통령 선거 특별 할인 적용됨</div>
           </div>
-          <div class="mask-text-btn-sub">21대 대통령 선거 할인 적용됨</div>
-        </div>
       </div>`}
     </div>
   `;

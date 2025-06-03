@@ -42,8 +42,8 @@
   -webkit-backdrop-filter: blur(10px);
 
   /* 상단 10%부터 점점 블러 강하게 보이게 */
-  mask-image: linear-gradient(to bottom, transparent 0%, transparent 8%, #b6ad00 10%, #b6ad00 100%);
-  -webkit-mask-image: linear-gradient(to bottom, transparent 0%, transparent 8%, #b6ad00 10%, #b6ad00 100%);
+  mask-image: linear-gradient(to bottom, transparent 0%, transparent 0%, #b6ad00 12%, #b6ad00 100%);
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0%, transparent 0%, #b6ad00 12%, #b6ad00 100%);
   
   pointer-events: none;
 }
@@ -51,10 +51,10 @@
 /* 텍스트는 블러 영향 X */
 .mask-text {
   position: absolute;
-  top: 600px;
+  top: 320px;
   width: 320px;
-  background: rgb(23, 23, 23);
-  padding: 24px 20px;
+  background: rgb(23, 23, 23, 0.8);
+  padding: 16px 20px;
   border-radius: 10px;
   pointer-events: auto;
   cursor: pointer;
@@ -69,14 +69,14 @@
 .mask-text-top {
   font-size: 24px;
   font-weight: bold;
-  color: rgb(225, 225, 225);
+  color: rgb(238, 238, 238);
   margin-bottom: 8px;
 }
 
 .mask-text-sub {
-  font-size: 14px;
+  font-size: 16px;
   text-align: center;
-  color: rgb(199, 199, 199);
+  color: rgb(255, 206, 31);
   margin-bottom: 8px;
 }
 
@@ -100,7 +100,7 @@
 .mask-text-btn-sub {
   font-size: 12px;
   text-align: center;
-  color: #ffbe0a;
+  color: #b9b9b9;
 }
 
 .modal {
