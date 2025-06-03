@@ -128,29 +128,41 @@ function toBase64(file) {
 
 // 7. 분석 결과 렌더링
 function renderResult(data) {
-    const resultContainer = document.getElementById("label-container");
-  
-    resultContainer.innerHTML = `
-      <div class="face-summary-section">
-        <div class="face-summary">${marked.parse(data.summary)}</div>
-      </div>
-      <div class="face-full-section-wrapper">
-        <div class="face-full-report">${marked.parse(data.detail)}</div>
-        ${data.paid ? "" : `
-        <div class="result-mask">
-          <div class="blur-overlay"></div>
-          <div class="mask-text">
-              <div class="mask-text-top">관상학 기반 심층 분석</div>
-              <div class="mask-text-sub">얼굴형, 이마, 눈, 코, 입술 등 부위별 세부 관상<br/><br/><보너스 분석><br/>운명과 인생 경로<br/>대인 관계와 인연<br/>관상학적 인생 종합 결론<br/><br/>(최소 3,000자 이상)</div>
-              <div class="mask-text-btn-wrap">
-                  <div class="mask-text-btn" onclick="trackAndStartPayment('${data.id}')">전체 분석 결과 확인하기</div>
-              </div>
-              <div class="mask-text-btn-sub">6월 이벤트 적용됨</div>
+  // 📅 오늘 날짜(한국 시간) "6월 3일" 식으로 만들기
+  const today    = new Date();
+  const monthStr = today.getMonth() + 1; // 1~12
+  const dayStr   = today.getDate();      // 1~31
+  const todayStr = `${monthStr}월 ${dayStr}일`;  // "6월 3일"
+
+  const resultContainer = document.getElementById("label-container");
+
+  resultContainer.innerHTML = `
+    <div class="face-summary-section">
+      <div class="face-summary">${marked.parse(data.summary)}</div>
+    </div>
+    <div class="face-full-section-wrapper">
+      <div class="face-full-report">${marked.parse(data.detail)}</div>
+      ${data.paid ? "" : `
+      <div class="result-mask">
+        <div class="blur-overlay"></div>
+        <div class="mask-text">
+          <div class="mask-text-top">관상학 기반 심층 분석</div>
+          <div class="mask-text-sub">
+            얼굴형, 이마, 눈, 코, 입술 등 부위별 세부 관상<br/><br/>
+            <보너스 분석><br/>운명과 인생 경로<br/>대인 관계와 인연<br/>
+            관상학적 인생 종합 결론<br/><br/>(최소 3,000자 이상)
           </div>
-        </div>`}
-      </div>
-    `;
-  }
+          <div class="mask-text-btn-wrap">
+            <div class="mask-text-btn" onclick="trackAndStartPayment('${data.id}')">
+              전체 분석 결과 확인하기
+            </div>
+          </div>
+          <div class="mask-text-btn-sub">${todayStr} 한정 이벤트 적용됨</div>
+        </div>
+      </div>`}
+    </div>
+  `;
+}
 
   function trackAndStartPayment(resultId) {
     mixpanel.track("관상 결제 버튼 클릭", {
