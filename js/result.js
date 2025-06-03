@@ -157,7 +157,7 @@ function renderResult(data) {
               전체 분석 결과 확인하기
             </div>
           </div>
-          <div class="mask-text-btn-sub">${todayStr} 한정 이벤트 적용됨</div>
+          <div class="mask-text-btn-sub">21대 대통령 선거 이벤트 적용됨</div>
         </div>
       </div>`}
     </div>
