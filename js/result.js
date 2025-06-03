@@ -202,7 +202,7 @@ async function startTossPayment(resultId) {
 
   try {
     const paymentWidget = PaymentWidget(clientKey, customerKey);
-    const paymentMethodWidget = paymentWidget.renderPaymentMethods("#payment-method", { value: 990 });
+    const paymentMethodWidget = paymentWidget.renderPaymentMethods("#payment-method", { value: 1990 });
     paymentWidget.renderAgreement("#agreement");
 
     document.getElementById("payment-button").onclick = async () => {
