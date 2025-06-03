@@ -147,17 +147,30 @@
           <div id="payment-method"></div>
           <div id="agreement"></div>
           <div id="payment-amount" style="font-size: 14px; text-align: center">
+            <span style="color: #a9a9a9; font-weight: 700"
+              >6월 이벤트 할인가</span
+            >
+            <br />
             <span
               style="
                 text-decoration: line-through;
                 color: #a9a9a9;
                 font-weight: 400;
+                margin-right: 2px;
               "
               >6,900원</span
             >
-            <br />
-            <span style="color: #382f00; font-weight: 700"
-              >6월 이벤트 할인가: 1,990원</span
+            <span
+              style="
+                color: #ffbe0a;
+                font-size: 18px;
+                font-weight: 700;
+                margin-right: 2px;
+              "
+              >62%</span
+            >
+            <span style="color: #382f00; font-size: 18px; font-weight: 700"
+              >1,990원</span
             >
           </div>
           <button
@@ -166,11 +179,12 @@
               margin-top: 16px;
               width: 100%;
               padding: 12px;
-              background-color: #3182ce;
-              color: white;
+              background-color: #ffbe0a;
+              color: rgb(13, 13, 13);
+              font-weight: 700;
               border: none;
               border-radius: 6px;
-              font-size: 16px;
+              font-size: 14px;
             "
           >
             결제하기
@@ -289,7 +303,7 @@
               <div class="mask-text-btn-wrap">
                   <div class="mask-text-btn" onclick="trackAndStartPayment('${data.id}')">전체 분석 결과 확인하기</div>
               </div>
-              <div class="mask-text-btn-sub">대통령 선거 특별 할인 적용됨</div>
+              <div class="mask-text-btn-sub">대통령 선거일 특별 할인 적용됨</div>
           </div>
         </div>`
         }
