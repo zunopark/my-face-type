@@ -42,8 +42,8 @@
   -webkit-backdrop-filter: blur(10px);
 
   /* 상단 10%부터 점점 블러 강하게 보이게 */
-  mask-image: linear-gradient(to bottom, transparent 0%, transparent 10%, #b6ad00 12%, #b6ad00 100%);
-  -webkit-mask-image: linear-gradient(to bottom, transparent 0%, transparent 10%, #b6ad00 12%, #b6ad00 100%);
+  mask-image: linear-gradient(to bottom, transparent 0%, transparent 8%, #b6ad00 10%, #b6ad00 100%);
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0%, transparent 8%, #b6ad00 10%, #b6ad00 100%);
   
   pointer-events: none;
 }
@@ -129,10 +129,16 @@
 
 #payment-method {
   width: 100%;
+  margin-top: -20px;
 }
 
 #agreement {
   width: 100%;
+  margin-top: -40px;
+}
+
+#payment-button {
+  margin-bottom: 10px;
 }
 
 .resultHistory_wrap {
