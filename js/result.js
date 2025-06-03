@@ -145,7 +145,6 @@ function renderResult(data) {
               <div class="mask-text-btn-wrap">
                   <div class="mask-text-btn" onclick="trackAndStartPayment('${data.id}')">전체 분석 결과 확인하기</div>
               </div>
-              <div class="mask-text-btn-sub">결제 후에는 환불이 불가능합니다.</div>
           </div>
         </div>`}
       </div>
