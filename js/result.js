@@ -151,7 +151,7 @@ function renderResult(data) {
               <div class="mask-text-btn-wrap">
                   <div class="mask-text-btn" onclick="trackAndStartPayment('${data.id}')">전체 분석 결과 확인하기</div>
               </div>
-              <div class="mask-text-btn-sub">출시 기념 6월 이벤트 할인 적용됨</div>
+              <div class="mask-text-btn-sub">출시 기념 6월 이벤트 적용됨</div>
           </div>
       </div>`}
     </div>
