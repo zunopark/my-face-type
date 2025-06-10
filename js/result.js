@@ -172,6 +172,7 @@ function renderResult(data) {
               “가족 사주도 봤지만, 이 리포트가 훨씬 실전 팁이 많아서 유익했어요!”
             </div>
         </div>
+      </div>
     <div class="face-full-section-wrapper">
       <div class="face-full-report">${marked.parse(data.detail)}</div>
       ${data.paid ? "" : `
@@ -180,7 +181,7 @@ function renderResult(data) {
           <div class="mask-text-wrap">
             <div class="mask-text">
                 <div class="mask-text-top">관상학 기반 심층 분석</div>
-                <div class="mask-text-sub">얼굴형, 이마, 눈 등 부위별 세부 관상 분석 + 운명과 인생 경로 + 대인 관계와 인연 + 관상학적 인생 종합 결론<br/><br/>(최소 3,000자 이상)</div>
+                <div class="mask-text-sub">얼굴형, 이마, 눈 등 부위별 세부 관상 분석 + 운명과 인생 경로 + 대인 관계와 인연 + 관상학적 인생 종합 결론<br/><br/></div>
                 <div class="mask-text-btn-wrap">
                     <div class="mask-text-btn" onclick="trackAndStartPayment('${data.id}')">전체 분석 결과 확인하기</div>
                 </div>
@@ -201,7 +202,6 @@ function renderResult(data) {
                 <div class="stat-label">글자 수</div>
                 <div class="stat-value">3,000+자</div>
               </div>
-            </div>
           </div>
       </div>`}
     </div>

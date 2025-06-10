@@ -122,13 +122,13 @@
 
 /* === 개별 리뷰 카드 === */
 .review-card {
-  flex: 0 0 168px;           /* 고정 너비(원하면 조정) */
+  flex: 0 0 200px;           /* 고정 너비(원하면 조정) */
   min-height: 120px;
   background: #3e3e3e;
   border: 1px solid #ffbe0a;
   border-radius: 12px;
   box-shadow: 0 4px 8px rgba(159, 159, 159, 0.04);
-  padding: 16px 4px;
+  padding: 12px;
   font-size: 14px;
   line-height: 1.4;
   word-break: keep-all;
