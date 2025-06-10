@@ -155,15 +155,15 @@ function renderResult(data) {
             </div>
 
             <div class="review-card">
-              ⭐️⭐️⭐️⭐️☆<br/>
-              <span class="review-meta">37세 · 교사 이○○</span>
-              “세세한 조언 덕분에 현실적인 방향을 잡았어요. 재방문 의사 200%!”
-            </div>
-
-            <div class="review-card">
               ⭐️⭐️⭐️⭐️⭐️<br/>
               <span class="review-meta">32세 · 자영업 박○○</span>
               “좋은 말뿐일 줄 알았는데 장단점까지 솔직히 짚어줘서 믿음이 가네요.”
+            </div>
+
+            <div class="review-card">
+              ⭐️⭐️⭐️⭐️☆<br/>
+              <span class="review-meta">37세 · 교사 이○○</span>
+              “세세한 조언 덕분에 현실적인 방향을 잡았어요.”
             </div>
 
             <div class="review-card">
