@@ -231,6 +231,8 @@
   font-weight: 700;
   color: white;
   padding: 12px 16px;
+  display: flex;
+  justify-content: space-around;
 }
 
 #resultHistory {
@@ -318,3 +320,17 @@
 .view-face-button:hover {
   background-color: #d4b81a;
 }
+
+
+/* 우측 상단 버튼 */
+.clear-btn {
+  margin-left: auto;     /* 남은 공간 모두 ⇒ 버튼 왼쪽 여백 */
+  padding: 6px 10px;
+  font-size: 13px;
+  color: #fff;
+  background: #eb5757;          /* 빨간색 강조 */
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+.clear-btn:hover { opacity: .85; }

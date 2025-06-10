@@ -27,7 +27,10 @@
       </header>
       <div class="resultHistory_wrap">
         <div class="resultHistory_title">
-          관상 분석 히스토리 <span id="history-count"></span>
+          <div>관상 분석 히스토리 <span id="history-count"></span></div>
+          <button id="clear-unpaid" class="clear-btn">
+            미결제 히스토리 삭제
+          </button>
         </div>
         <div id="resultHistory"></div>
       </div>
@@ -128,6 +131,42 @@
         const results = await getAllResults();
         renderHistory(results);
       })();
+
+      /* === 미결제 히스토리 일괄 삭제 === */
+      async function deleteUnpaidResults() {
+        if (!confirm("결제하지 않은 히스토리를 모두 삭제할까요?")) return;
+
+        // 1) IndexedDB 트랜잭션(쓰기)
+        const tx = db.transaction(["results"], "readwrite");
+        const store = tx.objectStore("results");
+
+        // 2) 전체 순회하면서 unpaid만 삭제
+        const getAllReq = store.getAll();
+        getAllReq.onsuccess = () => {
+          getAllReq.result.forEach((item) => {
+            if (!item.paid) store.delete(item.id);
+          });
+        };
+
+        // 3) 완료되면 화면 갱신
+        tx.oncomplete = async () => {
+          // Container 비우고 다시 그리기
+          document.getElementById("resultHistory").innerHTML = "";
+          const refreshed = await getAllResults();
+          renderHistory(refreshed);
+          alert("미결제 히스토리가 삭제되었습니다 ✅");
+        };
+
+        tx.onerror = (e) => {
+          console.error("❌ 삭제 중 오류", e);
+          alert("오류가 발생했습니다. 다시 시도해 주세요.");
+        };
+      }
+
+      /* 버튼 클릭 이벤트 */
+      document
+        .getElementById("clear-unpaid")
+        .addEventListener("click", deleteUnpaidResults);
     </script>
   </body>
 </html>
