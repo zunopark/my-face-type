@@ -22,7 +22,9 @@
 
   .border,
   .result,
-  .modal-content {
+  .modal-content,
+  .review-section,
+  .label-container {
     width: 350px;
   }
 
@@ -63,7 +65,9 @@
   .border,
   .test__upper,
   .submitForm,
-  .result {
+  .result,
+  .review-section,
+  .label-container {
     width: 320px;
   }
 
@@ -72,7 +76,7 @@
   }
 
   .label-container p {
-    width: 80%;
+    width: 100%;
   }
 
   .ad__upper,

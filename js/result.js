@@ -140,18 +140,68 @@ function renderResult(data) {
     <div class="face-summary-section">
       <div class="face-summary">${marked.parse(data.summary)}</div>
     </div>
+    <div class="review-section">
+        <div class="review-scroll">
+            <div class="review-card">
+              ⭐️⭐️⭐️⭐️⭐️<br/>
+              <span class="review-meta">34세 · 워킹맘 윤○○</span>
+              “와… 완전 딱 맞아요! 사주보다 더 정확하다는 느낌이 들어요.”
+            </div>
+
+            <div class="review-card">
+              ⭐️⭐️⭐️⭐️⭐️<br/>
+              <span class="review-meta">39세 · 마케터 김○○</span>
+              “관상이 궁금하기만 했는데, 이렇게 깊이 분석될 줄은 몰랐어요. 깜짝!”
+            </div>
+
+            <div class="review-card">
+              ⭐️⭐️⭐️⭐️☆<br/>
+              <span class="review-meta">37세 · 교사 이○○</span>
+              “세세한 조언 덕분에 현실적인 방향을 잡았어요. 재방문 의사 200%!”
+            </div>
+
+            <div class="review-card">
+              ⭐️⭐️⭐️⭐️⭐️<br/>
+              <span class="review-meta">32세 · 자영업 박○○</span>
+              “좋은 말뿐일 줄 알았는데 장단점까지 솔직히 짚어줘서 믿음이 가네요.”
+            </div>
+
+            <div class="review-card">
+              ⭐️⭐️⭐️⭐️⭐️<br/>
+              <span class="review-meta">41세 · 프리랜서 최○○</span>
+              “가족 사주도 봤지만, 이 리포트가 훨씬 실전 팁이 많아서 유익했어요!”
+            </div>
+        </div>
     <div class="face-full-section-wrapper">
       <div class="face-full-report">${marked.parse(data.detail)}</div>
       ${data.paid ? "" : `
       <div class="result-mask">
         <div class="blur-overlay"></div>
-          <div class="mask-text">
-              <div class="mask-text-top">관상학 기반 심층 분석</div>
-              <div class="mask-text-sub">얼굴형, 이마, 눈 등 부위별 세부 관상 분석 + 운명과 인생 경로 + 대인 관계와 인연 + 관상학적 인생 종합 결론<br/><br/>(최소 3,000자 이상)</div>
-              <div class="mask-text-btn-wrap">
-                  <div class="mask-text-btn" onclick="trackAndStartPayment('${data.id}')">전체 분석 결과 확인하기</div>
+          <div class="mask-text-wrap">
+            <div class="mask-text">
+                <div class="mask-text-top">관상학 기반 심층 분석</div>
+                <div class="mask-text-sub">얼굴형, 이마, 눈 등 부위별 세부 관상 분석 + 운명과 인생 경로 + 대인 관계와 인연 + 관상학적 인생 종합 결론<br/><br/>(최소 3,000자 이상)</div>
+                <div class="mask-text-btn-wrap">
+                    <div class="mask-text-btn" onclick="trackAndStartPayment('${data.id}')">전체 분석 결과 확인하기</div>
+                </div>
+                <div class="mask-text-btn-sub">출시 기념 6월 이벤트 적용됨</div>
+            </div>
+            <div class="service-stats">
+              <div class="stat-item">
+                <div class="stat-label">구매</div>
+                <div class="stat-value">721건</div>
               </div>
-              <div class="mask-text-btn-sub">출시 기념 6월 이벤트 적용됨</div>
+
+              <div class="stat-item">
+                <div class="stat-label">만족해요</div>
+                <div class="stat-value">94.8%</div>
+              </div>
+
+              <div class="stat-item">
+                <div class="stat-label">글자 수</div>
+                <div class="stat-value">3,000+자</div>
+              </div>
+            </div>
           </div>
       </div>`}
     </div>
@@ -202,7 +252,7 @@ async function startTossPayment(resultId) {
 
   try {
     const paymentWidget = PaymentWidget(clientKey, customerKey);
-    const paymentMethodWidget = paymentWidget.renderPaymentMethods("#payment-method", { value: 1900 });
+    const paymentMethodWidget = paymentWidget.renderPaymentMethods("#payment-method", { value: 2900 });
     paymentWidget.renderAgreement("#agreement");
 
     document.getElementById("payment-button").onclick = async () => {
