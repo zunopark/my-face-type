@@ -42,15 +42,15 @@
   -webkit-backdrop-filter: blur(10px);
 
   /* 상단 10%부터 점점 블러 강하게 보이게 */
-  mask-image: linear-gradient(to bottom, transparent 0%, transparent 0%, #b6ad00 12%, #b6ad00 100%);
-  -webkit-mask-image: linear-gradient(to bottom, transparent 0%, transparent 0%, #b6ad00 12%, #b6ad00 100%);
+  mask-image: linear-gradient(to bottom, transparent 0%, transparent 10%, #b6ad00 15%, #b6ad00 100%);
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0%, transparent 10%, #b6ad00 15%, #b6ad00 100%);
   
   pointer-events: none;
 }
 
 .mask-text-wrap {
   position: absolute;
-  top: 160px; /*결제 모달 위치*/
+  top: 520px; /*결제 모달 위치*/
   z-index: 10;
   display: flex;
   flex-direction: column;
