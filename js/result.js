@@ -185,30 +185,6 @@ function renderResult(data) {
                     그냥 궁금해서 해봤는데, 생각보다 훨씬 깊고 정확했어요.
                   </div>
 
-                  <div class="review-card">
-                    ⭐️⭐️⭐️⭐️⭐️<br/>
-                    <span class="review-meta">박○○</span>
-                    좋은 말만 하는 줄 알았는데, 날카롭게 짚어줘서 신뢰감 생겼어요.
-                  </div>
-
-                  <div class="review-card">
-                    ⭐️⭐️⭐️⭐️☆<br/>
-                    <span class="review-meta">이○○</span>
-                    요즘 고민 많았는데 방향 잡는 데 진짜 도움 됐어요.
-                  </div>
-
-                  <div class="review-card">
-                    ⭐️⭐️⭐️⭐️⭐️<br/>
-                    <span class="review-meta">최○○</span>
-                    사주도 봤는데… 이게 더 실전적이에요. 구체적으로 뭐 해야 할지 알겠어요.
-                  </div>
-
-                  <div class="review-card">
-                    ⭐️⭐️⭐️⭐️⭐️<br/>
-                    <span class="review-meta">장○○</span>
-                    솔직히 기대 안 했는데… 위로받았어요. 그냥 고마워요.
-                  </div>
-
               </div>
             </div>
           </div>`}
