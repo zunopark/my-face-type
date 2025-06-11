@@ -50,7 +50,7 @@
 
 .mask-text-wrap {
   position: absolute;
-  top: 380px;
+  top: 160px;
   z-index: 10;
   display: flex;
   flex-direction: column;
