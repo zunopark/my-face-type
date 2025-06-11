@@ -140,39 +140,6 @@ function renderResult(data) {
     <div class="face-summary-section">
       <div class="face-summary">${marked.parse(data.summary)}</div>
     </div>
-    <div class="review-section">
-        <div class="review-scroll">
-            <div class="review-card">
-              ⭐️⭐️⭐️⭐️⭐️<br/>
-              <span class="review-meta">34세 · 워킹맘 윤○○</span>
-              “와… 완전 딱 맞아요! 사주보다 더 정확하다는 느낌이 들어요.”
-            </div>
-
-            <div class="review-card">
-              ⭐️⭐️⭐️⭐️⭐️<br/>
-              <span class="review-meta">39세 · 마케터 김○○</span>
-              “관상이 궁금하기만 했는데, 이렇게 깊이 분석될 줄은 몰랐어요. 깜짝!”
-            </div>
-
-            <div class="review-card">
-              ⭐️⭐️⭐️⭐️⭐️<br/>
-              <span class="review-meta">32세 · 자영업 박○○</span>
-              “좋은 말뿐일 줄 알았는데 장단점까지 솔직히 짚어줘서 믿음이 가네요.”
-            </div>
-
-            <div class="review-card">
-              ⭐️⭐️⭐️⭐️☆<br/>
-              <span class="review-meta">37세 · 교사 이○○</span>
-              “세세한 조언 덕분에 현실적인 방향을 잡았어요.”
-            </div>
-
-            <div class="review-card">
-              ⭐️⭐️⭐️⭐️⭐️<br/>
-              <span class="review-meta">41세 · 프리랜서 최○○</span>
-              “가족 사주도 봤지만, 이 리포트가 훨씬 실전 팁이 많아서 유익했어요!”
-            </div>
-        </div>
-      </div>
     <div class="face-full-section-wrapper">
       <div class="face-full-report">${marked.parse(data.detail)}</div>
       ${data.paid ? "" : `
