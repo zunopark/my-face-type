@@ -169,8 +169,48 @@ function renderResult(data) {
                 <div class="stat-label">글자 수</div>
                 <div class="stat-value">3,000+자</div>
               </div>
-          </div>
-      </div>`}
+            </div>
+            <div class="review-section">
+              <div class="review-scroll">
+                  <div class="review-card">
+                    ⭐️⭐️⭐️⭐️⭐️<br/>
+                    <span class="review-meta">34세 · 워킹맘 윤○○</span>
+                    와… 진짜 이거 보고 소름. 저보다 저를 더 잘 아는 느낌?
+                  </div>
+
+                  <div class="review-card">
+                    ⭐️⭐️⭐️⭐️⭐️<br/>
+                    <span class="review-meta">39세 · 마케터 김○○</span>
+                    그냥 궁금해서 해봤는데, 생각보다 훨씬 깊고 정확했어요.
+                  </div>
+
+                  <div class="review-card">
+                    ⭐️⭐️⭐️⭐️⭐️<br/>
+                    <span class="review-meta">32세 · 자영업 박○○</span>
+                    좋은 말만 하는 줄 알았는데, 날카롭게 짚어줘서 신뢰감 생겼어요.
+                  </div>
+
+                  <div class="review-card">
+                    ⭐️⭐️⭐️⭐️☆<br/>
+                    <span class="review-meta">37세 · 교사 이○○</span>
+                    요즘 고민 많았는데 방향 잡는 데 진짜 도움 됐어요.
+                  </div>
+
+                  <div class="review-card">
+                    ⭐️⭐️⭐️⭐️⭐️<br/>
+                    <span class="review-meta">41세 · 프리랜서 최○○</span>
+                    사주도 봤는데… 이게 더 실전적이에요. 구체적으로 뭐 해야 할지 알겠어요.
+                  </div>
+
+                  <div class="review-card">
+                    ⭐️⭐️⭐️⭐️⭐️<br/>
+                    <span class="review-meta">36세 · 육아맘 장○○</span>
+                    솔직히 기대 안 했는데… 위로받았어요. 그냥 고마워요.
+                  </div>
+
+              </div>
+            </div>
+          </div>`}
     </div>
   `;
 }

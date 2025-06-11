@@ -50,7 +50,7 @@
 
 .mask-text-wrap {
   position: absolute;
-  top: 240px;
+  top: 380px;
   z-index: 10;
   display: flex;
   flex-direction: column;
@@ -107,51 +107,49 @@
   text-align: center;
   color: #b9b9b9;
 }
-/* === 리뷰 가로 스크롤 레이아웃 === */
+
 .review-section {
-  overflow-x: auto;           /* 가로 스크롤 활성화 */
-  -webkit-overflow-scrolling: touch;
-  scroll-snap-type: x mandatory; /* 스냅 */
+  width: 320px;
 }
 
 .review-scroll {
-  display: flex;
-  gap: 12px;                 /* 카드 사이 간격 */
-  padding: 4px 0 12px 4px;   /* 좌측 여백 + 아래 여백 */
+  display: grid;
+  grid-template-columns: 1fr 1fr; /* 2열 */
+  gap: 12px;
+  width: 100%;
 }
 
-/* === 개별 리뷰 카드 === */
+
 .review-card {
-  flex: 0 0 200px;           /* 고정 너비(원하면 조정) */
   min-height: 120px;
   background: #3e3e3e;
   border: 1px solid #ffbe0a;
   border-radius: 12px;
   box-shadow: 0 4px 8px rgba(159, 159, 159, 0.04);
-  padding: 12px;
-  font-size: 14px;
+  padding: 12px 4px;
+  font-size: 13px;
   line-height: 1.4;
   word-break: keep-all;
-  scroll-snap-align: center; /* 스크롤 스냅 지점 */
+  text-align: center;
+  color: white;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
-  text-align: center;
-  color: white
 }
+
 
 /* 스크롤바 감추기 (선택) */
 .review-section::-webkit-scrollbar { height: 0; }
 .review-section { scrollbar-width: none; } /* Firefox */
 
-.review-meta { font-size: 12px; color: #888; }
+.review-meta { font-size: 12px; color: #9c9c9c; padding-top: 2px; padding-bottom: 8px;}
 
 /* ===== 서비스 지표 박스 ===== */
 .service-stats {
   width: 320px;
   margin: 12px 0 12px 0;
-  padding: 20px 8px 4px 8px;
+  padding: 16px 8px 12px 8px;
   background: #1a1a1a;          /* 연회색 박스 */
   border-radius: 12px;
   display: flex;
