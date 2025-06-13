@@ -60,7 +60,7 @@
 /* 텍스트는 블러 영향 X */
 .mask-text {
   width: 320px;
-  background: rgb(23, 23, 23, 0.9);
+  background: rgba(23, 23, 23, 0.9);
   padding: 16px 20px;
   border-radius: 10px;
   pointer-events: auto;
@@ -122,7 +122,7 @@
 
 .review-card {
   min-height: 120px;
-  background: #3e3e3e;
+  background: rgba(62, 62, 62, 0.9);
   border: 1px solid #ffbe0a;
   border-radius: 12px;
   box-shadow: 0 4px 8px rgba(159, 159, 159, 0.04);
@@ -150,7 +150,7 @@
   width: 320px;
   margin: 12px 0 12px 0;
   padding: 16px 8px 12px 8px;
-  background: #1a1a1a;          /* 연회색 박스 */
+  background: rgba(23, 23, 23, 0.9);
   border-radius: 12px;
   display: flex;
   text-align: center;
