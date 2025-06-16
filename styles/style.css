@@ -10,6 +10,7 @@
 @import 'ad.css';
 @import 'media.css';
 @import 'faceAnalysis.css';
+@import 'faceProduct.css';
 
 .nostore {
   color: rgb(203, 203, 203);
