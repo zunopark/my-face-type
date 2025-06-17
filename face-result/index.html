@@ -411,25 +411,19 @@
     `;
       }
 
-      // 🔵 실행 흐름 - 완전히 안전하게!
       window.onload = async () => {
         try {
-          await initFeatureDB(); // IndexedDB가 반드시 준비될 때까지 기다림
+          await initFeatureDB();
           const id = getIdFromUrl();
-          if (!id) {
-            document.getElementById(
-              "label-container"
-            ).innerHTML = `<p style="color:red;">ID 파라미터가 없습니다.</p>`;
-            return;
-          }
+          console.log("id:", id);
           const result = await getFeatureById(id);
+          console.log("result:", result);
           if (!result) {
             document.getElementById(
               "label-container"
             ).innerHTML = `<p style="color:red;">분석 결과를 찾을 수 없습니다.</p>`;
             return;
           }
-          // 이미지와 결과 렌더링
           renderImage(result.imageBase64);
           renderFeatureResult(result);
         } catch (err) {
