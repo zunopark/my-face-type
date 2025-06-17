@@ -313,7 +313,7 @@
       }
 
       // 🔵 상품 카드 렌더링
-      function renderFeatureResult() {
+      function renderFeatureResult(data) {
         const products = [
           {
             key: "base",
@@ -379,7 +379,7 @@
             (product) => `
         <div class="product-card" onclick="location.href='/report/${
           product.key
-        }/" style="cursor: pointer;">
+        }/?id=${data.id}'" style="cursor: pointer;">
 
         <div class="product-image">
           <img src="/img/${product.key}.png" alt="${
@@ -413,23 +413,29 @@
 
       window.onload = async () => {
         try {
-          renderFeatureResult(data);
           await initFeatureDB();
           const id = getIdFromUrl();
-          console.log("id:", id);
+          if (!id) {
+            document.getElementById(
+              "label-container"
+            ).innerHTML = `<p style="color:red;">URL 파라미터(id)가 없습니다.</p>`;
+            return;
+          }
           const result = await getFeatureById(id);
-          console.log("result:", result);
           if (!result) {
             document.getElementById(
               "label-container"
-            ).innerHTML = `<p style="color:red;">분석 결과를 찾을 수 없습니다.</p>`;
+            ).innerHTML = `<p style="color:red;">분석 결과를 찾을 수 없습니다. (id=${id})</p>`;
             return;
           }
           renderImage(result.imageBase64);
+          renderFeatureResult(result);
         } catch (err) {
           document.getElementById(
             "label-container"
-          ).innerHTML = `<p style="color:red;">DB 연결/로드 오류: ${err.message}</p>`;
+          ).innerHTML = `<p style="color:red;">DB 연결/로드 오류: ${
+            err && err.message ? err.message : err
+          }</p>`;
         }
       };
     </script>
