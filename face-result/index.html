@@ -436,38 +436,31 @@
         ];
 
         const productCards = products
-          .map((product) => (
-            <div
-              class="product-card"
-              onclick="location.href='/report/${
+          .map(
+            (product) => `
+        <div class="product-card" onclick="location.href='/report/${
           product.key
-        }/?id=${data.id}'"
-              style="cursor: pointer;"
-            >
-              <div class="product-image">
-                <img
-                  src="/img/${product.key}.png"
-                  alt="${
+        }/?id=${data.id}'" style="cursor: pointer;">
+
+        <div class="product-image">
+          <img src="/img/${product.key}.png" alt="${
               product.key
-            }"
-                  class="square-image"
-                />
-              </div>
-              <div class="product-info">
-                <div class="product-title">${product.title}</div>
-                <div class="product-meta">
-                  <div class="product-stats">총 ${product.desc}</div>
-                  <div class="product-meta-price">
-                    <div class="product-original-price">
-                      ${product.original_price.toLocaleString()}원
-                    </div>
-                    <div class="discount">${product.discount}%</div>
-                    <div class="product-price">${product.price}</div>
-                  </div>
-                </div>
-              </div>
+            }" class="square-image" />
+        </div>
+        <div class="product-info">
+          <div class="product-title">${product.title}</div>
+          <div class="product-meta">
+            <div class="product-stats">총 ${product.desc}</div>
+            <div class="product-meta-price">
+              <div class="product-original-price">${product.original_price.toLocaleString()}원</div>
+              <div class="discount">${product.discount}%</div>
+              <div class="product-price">${product.price}</div>
             </div>
-          ))
+          </div>
+        </div>
+      </div>
+    `
+          )
           .join("");
 
         document.getElementById("label-container").innerHTML = `
@@ -475,7 +468,8 @@
         <h3 style="font-size:22px;font-weight:700;">관상 분석이 완료됐습니다!</h3>
         <div class="ai-expect-sub" style="margin-bottom: 12px;">아래 항목에서 궁금한 분석을 선택해보세요.</div>
       </div>
-      <div class="face-product-section">${productCards}</div>`;
+      <div class="face-product-section">${productCards}</div>
+    `;
       }
 
       // 시작
