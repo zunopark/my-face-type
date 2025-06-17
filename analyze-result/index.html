@@ -351,69 +351,117 @@
       }
 
       window.onload = async () => {
-        await initFeatureDB();
-        const { id, type } = getIdAndTypeFromUrl();
-        if (!id || !type) {
-          document.querySelector(".result").innerHTML =
-            "<span style='color:red'>잘못된 접근</span>";
-          return;
+        const resultBox = document.querySelector(".result");
+        function show(msg) {
+          resultBox.innerHTML = `<span style="color:red;white-space:pre-line">${msg}</span>`;
         }
-        const data = await getFeatureById(id);
-        if (!data || !data.features) {
-          document.querySelector(".result").innerHTML =
-            "<span style='color:red'>분석 데이터 없음</span>";
-          return;
-        }
-
-        // ⬇️ 여기가 반드시 필요!
-        if (data.imageBase64) {
-          renderImage(data.imageBase64); // 이미지 그려줌!
-        }
-
-        // 이미 리포트가 저장돼 있으면 바로 표시 (네트워크 불필요)
-        if (data.reports && data.reports.base && data.reports.base.paid) {
-          renderResult({
-            summary: data.reports.base.summary,
-            detail: data.reports.base.detail,
-          });
-          return;
-        }
-
-        // 그렇지 않으면 생성중 메시지 + 서버 호출
-        document.querySelector(
-          ".result"
-        ).innerHTML = `<div class="result-waiting" style="font-size:20px;padding:32px 0;text-align:center;">
-    <span>리포트를 생성중입니다.<br/>잠시만 기다려주세요...</span>
-    <div style="margin-top:20px;font-size:34px;">⏳</div>
-  </div>`;
 
         try {
-          const report = await fetchFaceReport(data.features);
-          console.log("서버 응답 report:", report);
+          resultBox.innerHTML = "⏳ 데이터 로딩 중...";
 
-          // summary/detail이 비면 에러 안내 후 return (저장 X)
-          if (!report.summary || !report.detail) {
-            document.querySelector(".result").innerHTML =
-              "<span style='color:red'>리포트 생성 실패: 서버에서 빈 값을 반환했습니다.</span>";
+          // ✅ 1. DB 열기 (with objectStore 존재 확인)
+          await new Promise((resolve, reject) => {
+            const request = indexedDB.open("FaceFeatureDB", 1);
+            request.onsuccess = (e) => {
+              featureDb = e.target.result;
+              if (!featureDb.objectStoreNames.contains("features")) {
+                show("❌ IndexedDB에 'features' 스토어가 없습니다.");
+                reject(new Error("Object store missing"));
+              } else {
+                resolve();
+              }
+            };
+            request.onerror = () => {
+              show("❌ IndexedDB 열기에 실패했습니다.");
+              reject(request.error);
+            };
+          });
+
+          // ✅ 2. URL 파라미터에서 id/type 추출
+          const params = new URLSearchParams(location.search);
+          const id = params.get("id");
+          const type = params.get("type");
+          if (!id || !type) {
+            show("❌ URL에서 id 또는 type을 찾을 수 없습니다.");
             return;
           }
 
-          renderResult(report);
+          // ✅ 3. 여러 번 시도해서 getFeatureById 실행
+          const data = await (async () => {
+            for (let i = 0; i < 10; i++) {
+              try {
+                const tx = featureDb.transaction(["features"], "readonly");
+                const store = tx.objectStore("features");
+                const req = store.get(id);
 
-          // OK면 IndexedDB 저장
-          data.reports = data.reports || {};
-          data.reports.base = {
-            paid: true,
-            detail: report.detail,
-            summary: report.summary,
-            purchasedAt: new Date().toISOString(),
-          };
-          await saveFeatureToDB(data);
+                const data = await new Promise((res, rej) => {
+                  req.onsuccess = () => res(req.result);
+                  req.onerror = () => rej(req.error);
+                });
+
+                if (data) return data;
+              } catch (e) {
+                console.warn(`🟡 get 실패 시도 ${i + 1}:`, e);
+              }
+              await new Promise((r) => setTimeout(r, 300));
+            }
+            return null;
+          })();
+
+          if (!data) {
+            show(`❌ 해당 ID로 분석 데이터를 찾을 수 없습니다.\n(id=${id})`);
+            return;
+          }
+
+          if (!data.features) {
+            show(
+              "❌ features 필드가 없습니다. 분석에 실패한 데이터일 수 있습니다."
+            );
+            return;
+          }
+
+          if (data.imageBase64) {
+            renderImage(data.imageBase64);
+          }
+
+          if (data.reports?.base?.paid) {
+            renderResult({
+              summary: data.reports.base.summary,
+              detail: data.reports.base.detail,
+            });
+            return;
+          }
+
+          // ✅ 4. 결과 생성 요청
+          resultBox.innerHTML = `<div class="result-waiting" style="font-size:20px;padding:32px 0;text-align:center;">
+      <span>리포트를 생성중입니다.<br/>잠시만 기다려주세요...</span>
+      <div style="margin-top:20px;font-size:34px;">⏳</div>
+    </div>`;
+
+          try {
+            const report = await fetchFaceReport(data.features);
+
+            if (!report.summary || !report.detail) {
+              show("❌ 서버에서 비어있는 summary/detail을 반환했습니다.");
+              return;
+            }
+
+            renderResult(report);
+
+            data.reports = data.reports || {};
+            data.reports.base = {
+              paid: true,
+              detail: report.detail,
+              summary: report.summary,
+              purchasedAt: new Date().toISOString(),
+            };
+
+            await saveFeatureToDB(data);
+          } catch (err) {
+            show("❌ 리포트 생성 중 오류 발생: " + err.message);
+          }
         } catch (err) {
-          document.querySelector(".result").innerHTML =
-            "<span style='color:red'>리포트 생성 오류: " +
-            err.message +
-            "</span>";
+          show("❌ 전체 실행 중 오류 발생: " + (err.message || err));
         }
       };
 
