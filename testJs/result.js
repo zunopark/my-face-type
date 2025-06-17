@@ -78,7 +78,14 @@ async function analyzeFaceFeatureOnly(file, imageBase64) {
       id: crypto.randomUUID(),
       imageBase64,
       features,
-      timestamp: new Date().toISOString()
+      timestamp: new Date().toISOString(),
+      reports: {
+        base:     { paid: false, detail: null, purchasedAt: null },   // 기본 관상 풀이
+        marriage: { paid: false, detail: null, purchasedAt: null },   // 결혼운
+        wealth:   { paid: false, detail: null, purchasedAt: null },   // 금전운
+        job:      { paid: false, detail: null, purchasedAt: null },   // 직업운
+        love:     { paid: false, detail: null, purchasedAt: null }    // 연애운
+      }
     };
 
     mixpanel.track("얼굴 특징 분석 저장", {
@@ -99,50 +106,78 @@ async function analyzeFaceFeatureOnly(file, imageBase64) {
 function renderFeatureResult(data) {
   const products = [
     {
+      key: "base",
       emoji: "🐍",
-      title: "2025년 하반기 운세 보고서",
-      desc: "올해 주목할 핵심 운세를 AI가 콕 집어드립니다.",
+      title: "처음 보는 내 관상, 이렇게까지 자세히? 궁금해요? 궁금하면 500원",
+      desc: "3,000+자 리포트",
+      rating: 4.9,
+      views: "4,500+",
+      discount: 90,
+      price: "500원",
+      original_price: 4900
+    },
+    {
+      key: "marriage",
+      emoji: "💍",
+      title: "[매우 중요] 언제, 누구와 결혼할지 얼굴에 다 나와 있다면?",
+      desc: "8,000+자 리포트",
       rating: 4.8,
-      views: "3,000+",
-      discount: 14,
-      price: 27000,
-      key: "overall"
+      views: "2,300+",
+      discount: 42,
+      price: "9,900원",
+      original_price: 16900
     },
     {
+      key: "wealth",
       emoji: "💸",
-      title: "2025년 재물운 집중 분석",
-      desc: "관상 기반 재물/부의 흐름, 자산운 해설",
+      title: "타고난 부: 내 관상 재물운과 평생 모을 재산은?",
+      desc: "10,000+자 리포트",
       rating: 4.9,
-      views: "1만+",
-      discount: 35,
-      price: 11700,
-      key: "wealth"
+      views: "10,000+",
+      discount: 23,
+      price: "16,900원",
+      original_price: 21900
     },
     {
+      key: "job",
+      emoji: "💼",
+      title: "관상으로 보는 직업: 사실 난 이런 직업을 가졌어야 했다면...?",
+      desc: "6,000+자 리포트",
+      rating: 4.7,
+      views: "1,900+",
+      discount: 45,
+      price: "4,900원",
+      original_price: 8900
+    },
+    {
+      key: "love",
       emoji: "💖",
-      title: "2025년 솔로 탈출 시기 분석",
-      desc: "관상 기반 인연, 결혼/연애 성향, 만남 시기 해설",
+      title: "연애 관상: 나는 어떤 사람을 만나야 할까?",
+      desc: "6,000+자 리포트",
       rating: 4.9,
-      views: "3천+",
-      discount: 3,
-      price: 23250,
-      key: "marriage"
+      views: "2,800+",
+      discount: 31,
+      price: "6,900원",
+      original_price: 9900
     }
   ];
+  
 
   const productCards = products.map(product => `
-    <div class="product-card">
-      <div class="product-emoji" style="font-size: 28px">${product.emoji}</div>
+    <div class="product-card" onclick="location.href='/report/${product.key}'" style="cursor: pointer;">
+      <div class="product-image">
+        <img src="img/${product.key}.png" alt="${product.key}" class="square-image" />
+      </div>
       <div class="product-info">
         <div class="product-title">${product.title}</div>
-        <div class="product-desc">${product.desc}</div>
         <div class="product-meta">
-          <span class="rating">⭐️${product.rating}</span>
-          <span class="views">조회수 ${product.views}</span>
-          <span class="discount" style="color:#ff5121">${product.discount}%</span>
+          <div class="product-stats">총 ${product.desc}</div>
+          <div class="product-meta-price">
+            <div class="product-original-price">${product.original_price.toLocaleString()}원</div>
+            <div class="discount">${product.discount}%</div>
+            <div class="product-price">${product.price}</div>
+          </div>
         </div>
-        <div class="product-price" style="font-weight:700;font-size:18px;margin:10px 0;">${product.price.toLocaleString()}원</div>
-        <button class="product-btn" onclick="startPurchase('${data.id}', '${product.key}')">리포트 보기</button>
       </div>
     </div>
   `).join("");
@@ -150,10 +185,10 @@ function renderFeatureResult(data) {
   const container = document.getElementById("label-container");
   container.innerHTML = `
     <div class="ai-expect-title">
-      <h3 style="font-size:22px;font-weight:700;">AI 관상가가 얼굴을 꼼꼼히 분석했어요!</h3>
-      <div class="ai-expect-sub" style="color:#3ba1d8; margin-bottom: 12px;">아래 항목에서 원하는 분석 리포트를 선택해보세요.</div>
+      <h3 style="font-size:22px;font-weight:700;">얼굴 분석을 완료했어요!</h3>
+      <div class="ai-expect-sub" style="margin-bottom: 12px;">아래 항목에서 원하는 분석 리포트를 선택해보세요.</div>
     </div>
-    <div class="face-product-section" style="display:grid;gap:16px;">
+    <div class="face-product-section">
       ${productCards}
     </div>
   `;
