@@ -291,18 +291,21 @@
         return params.get("id");
       }
 
-      function getFeatureById(id) {
-        return new Promise((resolve, reject) => {
-          if (!featureDb) {
-            reject(new Error("IndexedDB 연결 전 getFeatureById 호출됨!"));
-            return;
+      // 최대 5번까지, 300ms 간격으로 재시도
+      async function getFeatureByIdWithRetry(id, maxRetries = 5, delay = 300) {
+        for (let i = 0; i < maxRetries; i++) {
+          try {
+            const result = await getFeatureById(id);
+            if (result) return result;
+            // 만약 result가 undefined라면 (DB는 열렸는데 값이 아직 없음)
+            await new Promise((res) => setTimeout(res, delay));
+          } catch (e) {
+            // DB가 아직 완전히 open되지 않은 상태 등에서 발생
+            await new Promise((res) => setTimeout(res, delay));
           }
-          const tx = featureDb.transaction(["features"], "readonly");
-          const store = tx.objectStore("features");
-          const request = store.get(id);
-          request.onsuccess = () => resolve(request.result);
-          request.onerror = reject;
-        });
+        }
+        // 여러 번 시도 후에도 실패하면 null 반환
+        return null;
       }
 
       // 🔵 사진 영역 렌더링
@@ -414,6 +417,7 @@
       window.onload = async () => {
         try {
           await initFeatureDB();
+
           const id = getIdFromUrl();
           if (!id) {
             document.getElementById(
@@ -421,7 +425,10 @@
             ).innerHTML = `<p style="color:red;">URL 파라미터(id)가 없습니다.</p>`;
             return;
           }
-          const result = await getFeatureById(id);
+
+          // 기존 getFeatureById 대신 retry 함수 사용
+          const result = await getFeatureByIdWithRetry(id, 10, 300); // 최대 10번, 300ms 간격
+
           if (!result) {
             document.getElementById(
               "label-container"
