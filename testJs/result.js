@@ -94,7 +94,7 @@ async function analyzeFaceFeatureOnly(file, imageBase64) {
 
     await saveFeatureToDB(result);
 
-    renderFeatureResult(result);
+    location.href = `/face-result/?id=${result.id}`;
 
   } catch (error) {
     console.error("❌ 얼굴 특징 분석 실패:", error);

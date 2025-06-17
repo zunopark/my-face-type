@@ -7,7 +7,7 @@
     width: 500px;
   }
 
-  .main__result__content__p {
+  .main__result__content__p,.main__result__content__p2 {
     width: 300px;
   }
 
@@ -21,7 +21,9 @@
   }
 
   .border,
-  .result {
+  .result,
+  .modal-content,
+  .label-container {
     width: 350px;
   }
 
@@ -29,8 +31,8 @@
     width: 500px;
   }
 
-  .apologize,.footer-button,.payment-overlay {
-    width: 500px;
+  .apologize {
+    width: 320px;
   }
 
   .header {
@@ -52,21 +54,18 @@
   .header_chat {
     width: 500px;
   }
-  .main_upper_content_wrap {
-    width: 468px;
-  }
 }
 @media screen and (max-width: 499px) {
   .main_body_wrap,
-  .header_chat,
-  .main_upper_contetn_wrap {
+  .header_chat {
     width: 100%;
   }
 
   .border,
   .test__upper,
   .submitForm,
-  .result {
+  .result,
+  .label-container {
     width: 320px;
   }
 
@@ -75,7 +74,7 @@
   }
 
   .label-container p {
-    width: 80%;
+    width: 100%;
   }
 
   .ad__upper,
@@ -86,6 +85,10 @@
   .lower__comment,
   .bottom_nav {
     width: 100%;
+  }
+
+  .modal-content {
+    width: 80%;
   }
 
   .border__hair {

@@ -29,8 +29,8 @@
     width: 500px;
   }
 
-  .apologize {
-    width: 320px;
+  .apologize,.footer-button,.payment-overlay {
+    width: 500px;
   }
 
   .header {

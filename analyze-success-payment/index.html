@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>관상 결제 완료 리포트</title>
+    <style>
+      body {
+        font-family: "Pretendard", sans-serif;
+        background: #f8f9fc;
+        margin: 0;
+      }
+      .result-box {
+        max-width: 400px;
+        margin: 100px auto 0 auto;
+        padding: 32px 28px;
+        background: #fff;
+        border-radius: 16px;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.07);
+        text-align: center;
+      }
+      .result-box h2 {
+        font-size: 1.5em;
+        margin-bottom: 24px;
+      }
+      .result-id,
+      .result-type {
+        margin: 18px 0;
+        font-size: 1.13em;
+        color: #156aff;
+        font-weight: 500;
+        word-break: break-all;
+      }
+      .success-emoji {
+        font-size: 42px;
+        margin-bottom: 14px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="result-box">
+      <div class="success-emoji">🎉</div>
+      <h2>결제 성공!</h2>
+      <div class="result-id">id: <span id="result-id"></span></div>
+      <div class="result-type">type: <span id="result-type"></span></div>
+    </div>
+    <script>
+      // 1. URL에서 id, type, paymentKey, orderId, amount 추출
+      const params = new URLSearchParams(window.location.search);
+      document.getElementById("result-id").textContent =
+        params.get("id") || "(없음)";
+      document.getElementById("result-type").textContent =
+        params.get("type") || "(없음)";
+
+      const paymentKey = params.get("paymentKey");
+      const orderId = params.get("orderId");
+      const amount = params.get("amount");
+
+      // 2. Toss 결제 컨펌을 서버로 전송 (실제 돈 빠져나감!)
+      async function confirmTossPayment() {
+        if (!paymentKey || !orderId || !amount) {
+          alert(
+            "결제 정보가 누락되었습니다.\n실결제가 발생하지 않았으니, 문의 부탁드립니다."
+          );
+          return;
+        }
+        try {
+          const res = await fetch(
+            "https://port-0-momzzi-fastapi-m7ynssht4601229b.sel4.cloudtype.app/payment/confirm",
+            {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
+                paymentKey,
+                orderId,
+                amount: Number(amount),
+              }),
+            }
+          );
+          if (!res.ok) {
+            const msg = await res.text();
+            alert("결제 컨펌 실패: " + msg);
+            return;
+          }
+          const data = await res.json();
+          // ✅ 여기서 analyze-result로 id, type과 함께 이동!
+          const id = params.get("id");
+          const type = params.get("type");
+          window.location.href = `/analyze-result/?id=${id}&type=${type}`;
+        } catch (err) {
+          alert("결제 컨펌 에러: " + err.message);
+        }
+      }
+
+      // 3. 페이지 진입시 자동으로 Toss 컨펌 요청
+      confirmTossPayment();
+    </script>
+  </body>
+</html>
