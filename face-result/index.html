@@ -280,7 +280,7 @@
           const request = indexedDB.open("FaceFeatureDB", 1);
           request.onsuccess = (event) => {
             featureDb = event.target.result;
-            resolve();
+            resolve(); // 반드시 이때만 resolve
           };
           request.onerror = reject;
         });
@@ -293,6 +293,10 @@
 
       function getFeatureById(id) {
         return new Promise((resolve, reject) => {
+          if (!featureDb) {
+            reject(new Error("IndexedDB 연결 전 getFeatureById 호출됨!"));
+            return;
+          }
           const tx = featureDb.transaction(["features"], "readonly");
           const store = tx.objectStore("features");
           const request = store.get(id);
@@ -407,20 +411,32 @@
     `;
       }
 
-      // 🔵 실행 흐름
+      // 🔵 실행 흐름 - 완전히 안전하게!
       window.onload = async () => {
-        await initFeatureDB();
-        const id = getIdFromUrl();
-        const result = await getFeatureById(id);
-        if (!result) {
+        try {
+          await initFeatureDB(); // IndexedDB가 반드시 준비될 때까지 기다림
+          const id = getIdFromUrl();
+          if (!id) {
+            document.getElementById(
+              "label-container"
+            ).innerHTML = `<p style="color:red;">ID 파라미터가 없습니다.</p>`;
+            return;
+          }
+          const result = await getFeatureById(id);
+          if (!result) {
+            document.getElementById(
+              "label-container"
+            ).innerHTML = `<p style="color:red;">분석 결과를 찾을 수 없습니다.</p>`;
+            return;
+          }
+          // 이미지와 결과 렌더링
+          renderImage(result.imageBase64);
+          renderFeatureResult(result);
+        } catch (err) {
           document.getElementById(
             "label-container"
-          ).innerHTML = `<p style="color:red;">분석 결과를 찾을 수 없습니다.</p>`;
-          return;
+          ).innerHTML = `<p style="color:red;">DB 연결/로드 오류: ${err.message}</p>`;
         }
-
-        renderImage(result.imageBase64); // 상단 사진
-        renderFeatureResult(result); // 하단 리포트 카드들
       };
     </script>
   </body>
