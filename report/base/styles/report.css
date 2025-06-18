@@ -415,7 +415,7 @@
   background-color: #2f2f2f;
   color: #fff;
   text-align: center;
-  padding-bottom: 20px;
+  padding: 10px 0;
 }
 
 /* footer css */
@@ -431,7 +431,6 @@
   cursor: pointer;
   background-color: #3f3f3f;
   border-radius: 32px;
-  margin-top: 10px;
 }
 
 .consultBtn span {
