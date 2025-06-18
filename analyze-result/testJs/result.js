@@ -44,18 +44,36 @@ function renderImage(base64) {
 
 function renderResult({ summary, detail }) {
   document.getElementById("label-container").innerHTML = `
-    <div class="result-summary" style="margin-bottom:16px">${marked.parse(summary)}</div>
+    <div class="result-summary" style="margin-bottom:16px">${marked.parse(
+      summary
+    )}</div>
     <div class="result-detail">${marked.parse(detail)}</div>
   `;
 }
 
+let fakeProgress = 0;
+let progressInterval = null;
+
 function renderLoading() {
-  document.getElementById("label-container").innerHTML = `
-    <div style="text-align:center; font-size:18px; padding:40px;">
+  const container = document.getElementById("label-container");
+  container.innerHTML = `
+    <div class="loading-title"; style="text-align:center; font-size:18px; padding:40px;">
       리포트를 생성 중입니다. 잠시만 기다려주세요...<br/><br/>
-      <div style="font-size:40px;">⏳</div>
+      <div class="progress-bar-container">
+        <div id="progress-bar" class="progress-bar-fill" style="width: 0%;"></div>
+      </div>
     </div>
   `;
+
+  const bar = document.getElementById("progress-bar");
+  fakeProgress = 0;
+
+  progressInterval = setInterval(() => {
+    if (fakeProgress < 94) {
+      fakeProgress += Math.random() * 2; // 자연스러운 증가
+      bar.style.width = `${Math.min(fakeProgress, 94)}%`;
+    }
+  }, 120);
 }
 
 function showError(msg) {
@@ -102,14 +120,13 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     if (result.imageBase64) renderImage(result.imageBase64);
 
-    const summary = result.summary?.trim();
-    const detail = result.detail?.trim();
-
-    if (summary && detail) {
-      renderResult({ summary, detail });
+    // ✅ analyzed가 true면 바로 렌더
+    if (result.analyzed === true) {
+      renderResult({ summary: result.summary, detail: result.detail });
       return;
     }
 
+    // ✅ features 없으면 분석 못 함
     if (!result.features) {
       showError("❌ features 필드가 없습니다.");
       return;
@@ -117,14 +134,22 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     renderLoading();
 
-    const { summary: newSummary, detail: newDetail } = await requestReportFromServer(type, result.features);
+    // ✅ 서버에 리포트 요청
+    const { summary: newSummary, detail: newDetail } =
+      await requestReportFromServer(type, result.features);
 
     result.summary = newSummary;
     result.detail = newDetail;
+    result.analyzed = true; // ✅ 분석 완료 처리
 
     await saveResultToDB(result);
-    renderResult({ summary: newSummary, detail: newDetail });
+    clearInterval(progressInterval);
+    document.getElementById("progress-bar").style.width = "100%";
 
+    // 0.4초 후 결과 표시 (꽉 찬 느낌 주기)
+    setTimeout(() => {
+      renderResult({ summary: newSummary, detail: newDetail });
+    }, 400);
   } catch (err) {
     showError("❌ 실행 중 오류: " + (err.message || err));
   }

@@ -179,7 +179,13 @@
       <header id="face" class="header"></header>
       <header class="header_chat">
         <div class="header_chat_wrap">
-          <a class="header_chat_title" href="/test.html"> ← 뒤로가기 </a>
+          <a
+            onclick="goBackToFaceResult()"
+            class="header_chat_title"
+            style="cursor: pointer"
+          >
+            ← 뒤로가기
+          </a>
         </div>
       </header>
       <div class="main_content_wrap">
@@ -257,6 +263,19 @@
         userAgent: navigator.userAgent,
         timestamp: new Date().toISOString(),
       });
+    </script>
+
+    <script>
+      function goBackToFaceResult() {
+        const params = new URLSearchParams(window.location.search);
+        const id = params.get("id");
+        if (id) {
+          // 쿼리로 id 전달
+          location.href = `/face-result/?id=${encodeURIComponent(id)}`;
+        } else {
+          alert("❌ id 파라미터가 없습니다.");
+        }
+      }
     </script>
 
     <script src="testJs/footer.js"></script>

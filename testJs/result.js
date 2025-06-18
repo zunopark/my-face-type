@@ -94,13 +94,16 @@ async function analyzeFaceFeatureOnly(file, imageBase64) {
     const result = {
       id: crypto.randomUUID(),
       imageBase64,
-      features,
-      summary: "",
-      detail: "",
-      type: "",
+      features,             // 얼굴 특징
+      summary: "",          // 요약 리포트
+      detail: "",           // 전체 리포트
+      type: "base",         // 리포트 타입 (예: base, wealth 등)
       paid: false,
       purchasedAt: null,
       timestamp: new Date().toISOString(),
+    
+      // ✅ Gemini 분석 완료 여부
+      analyzed: false       // ← 이 필드만 있으면 끝!
     };
 
     mixpanel.track("얼굴 특징 분석 저장", {

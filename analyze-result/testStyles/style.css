@@ -11,6 +11,7 @@
 @import 'media.css';
 @import 'faceAnalysis.css';
 @import 'faceProduct.css';
+@import 'onlyThisFile.css';
 
 .nostore {
   color: rgb(203, 203, 203);
