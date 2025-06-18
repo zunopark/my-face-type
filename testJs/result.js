@@ -108,6 +108,7 @@ async function analyzeFaceFeatureOnly(file, imageBase64) {
     });
 
     await saveResultToDB(result);
+    renderFeatureResult(result);
 
     const url = `/face-result/?id=${encodeURIComponent(result.id)}&type=base`;
     window.location.href = url;
