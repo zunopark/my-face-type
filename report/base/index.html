@@ -518,6 +518,26 @@
         }
       }
     </script>
+    <script>
+      // 모달 외부 클릭 시 닫기
+      document.addEventListener("click", function (event) {
+        const overlay = document.getElementById("paymentOverlay");
+        const modal = document.querySelector(".modal-content");
+
+        // 모달이 열려 있고, 클릭한 대상이 모달 바깥이면 닫기
+        if (
+          overlay.style.display !== "none" &&
+          overlay.contains(event.target) &&
+          !modal.contains(event.target)
+        ) {
+          closePayment();
+        }
+      });
+
+      function closePayment() {
+        document.getElementById("paymentOverlay").style.display = "none";
+      }
+    </script>
     <script src="https://gcore.jsdelivr.net/npm/@tensorflow/tfjs@1.3.1/dist/tf.min.js"></script>
     <script src="https://gcore.jsdelivr.net/npm/@teachablemachine/image@0.8/dist/teachablemachine-image.min.js"></script>
     <script
