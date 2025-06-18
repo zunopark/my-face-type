@@ -167,7 +167,7 @@ function renderFeatureResult(data) {
 
   const productCards = products.map(product => `
      <a class="product-card"
-       href="/report/${p.key}/?id=${resultId}&type=${p.key}"
+       href="/report/${product.key}/?id=${resultId}&type=${product.key}"
        style="cursor:pointer;text-decoration:none;">
       <div class="product-image">
         <img src="img/${product.key}.png" alt="${product.key}" class="square-image" />
