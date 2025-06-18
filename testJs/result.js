@@ -104,6 +104,8 @@ async function analyzeFaceFeatureOnly(file, imageBase64) {
 
 // 5. 분석 결과 + 상품 UI 렌더링
 function renderFeatureResult(data) {
+  const resultId = data.id;        // 💡 쉽게 쓰려고 변수에 저장
+
   const products = [
     {
       key: "base",
@@ -164,7 +166,9 @@ function renderFeatureResult(data) {
   
 
   const productCards = products.map(product => `
-    <div class="product-card" onclick="location.href='/report/${product.key}'" style="cursor: pointer;">
+     <a class="product-card"
+       href="/report/${p.key}/?id=${resultId}&type=${p.key}"
+       style="cursor:pointer;text-decoration:none;">
       <div class="product-image">
         <img src="img/${product.key}.png" alt="${product.key}" class="square-image" />
       </div>
@@ -179,7 +183,7 @@ function renderFeatureResult(data) {
           </div>
         </div>
       </div>
-    </div>
+    </a>
   `).join("");
 
   const container = document.getElementById("label-container");

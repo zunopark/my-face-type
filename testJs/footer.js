@@ -1,7 +1,7 @@
 const footer = document.querySelector(`.footer`)
 const headerForAd = document.querySelector(`.header`)
 
-const appVersion = '1.003'
+const appVersion = '1.004'
 
 function init() {
 
