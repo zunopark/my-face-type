@@ -3,42 +3,38 @@
 let featureDb = null;
 
 // 1. IndexedDB 초기화
-function initFeatureDB() {
-  return new Promise((resolve, reject) => {
-    const request = indexedDB.open("FaceFeatureDB", 1);
+async function initFeatureDB() {
+  const request = indexedDB.open("FaceFeatureDB", 1);
 
-    request.onupgradeneeded = (e) => {
-      const db = e.target.result;
-      if (!db.objectStoreNames.contains("features")) {
-        const store = db.createObjectStore("features", { keyPath: "id" });
-        store.createIndex("timestamp", "timestamp");
-      }
-    };
+  request.onupgradeneeded = function (event) {
+    featureDb = event.target.result;
+    if (!featureDb.objectStoreNames.contains("features")) {
+      const store = featureDb.createObjectStore("features", { keyPath: "id" });
+      store.createIndex("timestamp", "timestamp", { unique: false });
+    }
+  };
 
-    request.onsuccess = (e) => {
-      featureDb = e.target.result;
-      console.log("✅ FaceFeatureDB 초기화 완료");
-      resolve();                               // ⭐️ 준비 완료 신호
-    };
+  request.onsuccess = function (event) {
+    featureDb = event.target.result;
+    console.log("✅ FaceFeatureDB 초기화 완료");
+  };
 
-    request.onerror = (e) => {
-      console.error("❌ FaceFeatureDB 오류", e);
-      reject(e);
-    };
-  });
+  request.onerror = function (event) {
+    console.error("❌ FaceFeatureDB 오류", event);
+  };
 }
 
-const dbReady = initFeatureDB();    
+initFeatureDB();
 
 // 2. 저장 함수
 async function saveFeatureToDB(data) {
   return new Promise((resolve, reject) => {
-    const tx    = featureDb.transaction(["features"], "readwrite");
-    const store = tx.objectStore("features");
-    store.put(data);
+    const transaction = featureDb.transaction(["features"], "readwrite");
+    const store = transaction.objectStore("features");
+    const request = store.put(data);
 
-    tx.oncomplete = () => resolve();           // ✅ 진짜로 디스크에 flush 끝
-    tx.onerror    = (e) => reject(e);
+    request.onsuccess = () => resolve();
+    request.onerror = (e) => reject(e);
   });
 }
 
@@ -65,15 +61,18 @@ async function analyzeFaceFeatureOnly(file, imageBase64) {
       method: "POST",
       body: formData,
     });
+
     if (!response.ok) throw new Error("서버 응답 오류");
-    const { features } = await response.json();
-    if (!features)      throw new Error("features 없음");
+    const data = await response.json();
 
     const imageTitleWrap = document.querySelector(".ai");
     imageTitleWrap.classList.add("disblock");
 
     const noStore = document.querySelector(".nostore");
     noStore.classList.add("none");
+
+    const { features } = data;
+    if (!features) throw new Error("features 없음");
 
     const result = {
       id: crypto.randomUUID(),
@@ -93,19 +92,15 @@ async function analyzeFaceFeatureOnly(file, imageBase64) {
       timestamp: result.timestamp,
     });
 
-    await dbReady;                 // 🟢 DB가 완전히 열린 뒤
-    await saveFeatureToDB(result); // 🟢 트랜잭션 완료까지 대기
+    await saveFeatureToDB(result);
 
-    location.href = `/face-result/?id=${result.id}`; // 이제야 이동
+    renderFeatureResult(result);
 
-  } catch (err) {
-    console.error("❌ 얼굴 특징 분석 실패:", err);
-    resultContainer.innerHTML =
-      "<p style='color:red;'>분석 중 오류가 발생했습니다. 다시 시도해주세요.</p>";
+  } catch (error) {
+    console.error("❌ 얼굴 특징 분석 실패:", error);
+    resultContainer.innerHTML = `<p style='color: red;'>분석 중 오류가 발생했습니다. 다시 시도해주세요.</p>`;
   }
 }
-
-
 
 // 5. 분석 결과 + 상품 UI 렌더링
 function renderFeatureResult(data) {
