@@ -273,77 +273,36 @@
     ></script>
 
     <script>
-      let featureDb = null;
+      let analysisDb = null;
 
-      function sleep(ms) {
-        return new Promise((res) => setTimeout(res, ms));
-      }
-
-      // DB 초기화
-      function initFeatureDB() {
+      function initAnalysisDB() {
         return new Promise((resolve, reject) => {
-          const request = indexedDB.open("FaceFeatureDB", 1);
-
-          request.onsuccess = (event) => {
-            featureDb = event.target.result;
-            console.log("✅ DB opened:", featureDb);
+          const req = indexedDB.open("FaceAnalysisDB", 1);
+          req.onsuccess = () => {
+            analysisDb = req.result;
             resolve();
           };
-
-          request.onerror = (event) => {
-            console.error("❌ IndexedDB open failed:", event);
-            reject(event);
-          };
-
-          request.onupgradeneeded = (event) => {
-            console.warn(
-              "⚠️ onupgradeneeded fired. Possibly new DB structure."
-            );
-            featureDb = event.target.result;
-          };
+          req.onerror = () => reject(req.error);
         });
       }
 
-      // URL에서 ID 추출
-      function getIdFromUrl() {
-        const params = new URLSearchParams(window.location.search);
-        return params.get("id");
-      }
-
-      // 하나하나 디버깅 메시지 추가한 get 함수
-      function getFeatureById(id) {
+      function getResultById(id) {
         return new Promise((resolve, reject) => {
-          if (!featureDb) {
-            console.error("❌ DB not initialized");
-            reject(new Error("DB not initialized"));
-            return;
-          }
-
-          if (!featureDb.objectStoreNames.contains("features")) {
-            console.error("❌ ObjectStore 'features' not found in DB");
-            reject(new Error("ObjectStore 'features' not found"));
-            return;
-          }
-
-          try {
-            const tx = featureDb.transaction(["features"], "readonly");
-            const store = tx.objectStore("features");
-            const request = store.get(id);
-
-            request.onsuccess = () => {
-              console.log("🎯 store.get result:", request.result);
-              resolve(request.result);
-            };
-
-            request.onerror = (e) => {
-              console.error("❌ store.get failed:", e);
-              reject(e);
-            };
-          } catch (err) {
-            console.error("❌ Unexpected transaction error:", err);
-            reject(err);
-          }
+          const tx = analysisDb.transaction(["results"], "readonly");
+          const store = tx.objectStore("results");
+          const req = store.get(id);
+          req.onsuccess = () => resolve(req.result);
+          req.onerror = (e) => reject(e);
         });
+      }
+
+      async function getResultByIdWithRetry(id, max = 10, delay = 300) {
+        for (let i = 0; i < max; i++) {
+          const res = await getResultById(id);
+          if (res) return res;
+          await new Promise((r) => setTimeout(r, delay));
+        }
+        return null;
       }
 
       // 재시도 포함된 get
@@ -472,41 +431,28 @@
     `;
       }
 
+      function getIdFromUrl() {
+        const params = new URLSearchParams(window.location.search);
+        return params.get("id");
+      }
+
       // 시작
       window.onload = async () => {
-        try {
-          showMessage("⏳ 데이터 로딩 중...");
-
-          await initFeatureDB();
-
-          const id = getIdFromUrl();
-          if (!id) {
-            showMessage("❌ URL 파라미터에서 ID를 찾을 수 없습니다.");
-            return;
-          }
-
-          console.log("🔍 ID from URL:", id);
-
-          const result = await getFeatureByIdWithRetry(id, 10, 300);
-
-          if (!result) {
-            showMessage(`❌ 분석 결과를 찾을 수 없습니다. (id=${id})\n\n- 이유 가능성:
-      - IndexedDB 구조 오류
-      - 다른 브라우저/기기에서 저장됨
-      - 타입 mismatch (예: "123" vs 123)
-      - 저장 시 id가 빠졌거나 keyPath 미지정
-      - 트랜잭션 오류\n
-      🛠 콘솔 로그를 확인해주세요.`);
-            return;
-          }
-
-          // 성공
-          renderImage(result.imageBase64);
-          renderFeatureResult(result);
-        } catch (err) {
-          console.error("❌ 전체 오류:", err);
-          showMessage(`❌ 예외 발생: ${err?.message || err}`, "red");
+        const id = getIdFromUrl();
+        if (!id) {
+          showMessage("❌ id가 URL에 없습니다.");
+          return;
         }
+
+        await initAnalysisDB();
+        const result = await getResultByIdWithRetry(id);
+        if (!result) {
+          showMessage("❌ 해당 ID로 결과를 찾을 수 없습니다.");
+          return;
+        }
+
+        renderImage(result.imageBase64);
+        renderFeatureResult(result);
       };
     </script>
   </body>

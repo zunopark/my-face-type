@@ -165,13 +165,10 @@
   </head>
   <body>
     <div class="main_body_wrap">
-      <header id="face" class="header"></header>
       <header class="header_chat">
         <div class="header_chat_wrap">
-          <a class="header_chat_title" href="/"> 관상 </a>
-          <a class="header_chat_title" href="/animalface"> 동물상 </a>
-          <a class="header_chat_title header_selected" href="/premium">
-            재물 관상
+          <a onclick="goBackToFaceResult()" class="header_chat_title">
+            ← 뒤로가기
           </a>
         </div>
       </header>
@@ -470,6 +467,19 @@
         userAgent: navigator.userAgent,
         timestamp: new Date().toISOString(),
       });
+    </script>
+
+    <script>
+      function goBackToFaceResult() {
+        const params = new URLSearchParams(window.location.search);
+        const id = params.get("id");
+        if (id) {
+          // 쿼리로 id 전달
+          location.href = `/face-result/?id=${encodeURIComponent(id)}`;
+        } else {
+          alert("❌ id 파라미터가 없습니다.");
+        }
+      }
     </script>
 
     <script src="js/scroll.js"></script>

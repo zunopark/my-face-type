@@ -6,6 +6,10 @@
   font-family: 'MapoBackpacking';
 }
 
+.header_chat:hover {
+  cursor: pointer;
+}
+
 .header_chat_wrap {
   width: 100%;
   display: flex;

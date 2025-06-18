@@ -1,36 +1,34 @@
-// ✅ faceFeature.js - 얼굴 특징 전용 IndexedDB + 분석/저장/렌더링 all-in-one
-
-let featureDb = null;
+let analysisDb = null;
 
 // 1. IndexedDB 초기화
-async function initFeatureDB() {
-  const request = indexedDB.open("FaceFeatureDB", 1);
+async function initAnalysisDB() {
+  const request = indexedDB.open("FaceAnalysisDB", 1);
 
   request.onupgradeneeded = function (event) {
-    featureDb = event.target.result;
-    if (!featureDb.objectStoreNames.contains("features")) {
-      const store = featureDb.createObjectStore("features", { keyPath: "id" });
+    analysisDb = event.target.result;
+    if (!analysisDb.objectStoreNames.contains("results")) {
+      const store = analysisDb.createObjectStore("results", { keyPath: "id" });
       store.createIndex("timestamp", "timestamp", { unique: false });
     }
   };
 
   request.onsuccess = function (event) {
-    featureDb = event.target.result;
-    console.log("✅ FaceFeatureDB 초기화 완료");
+    analysisDb = event.target.result;
+    console.log("✅ FaceAnalysisDB 초기화 완료");
   };
 
   request.onerror = function (event) {
-    console.error("❌ FaceFeatureDB 오류", event);
+    console.error("❌ FaceAnalysisDB 오류", event);
   };
 }
 
-initFeatureDB();
+initAnalysisDB();
 
 // 2. 저장 함수
-async function saveFeatureToDB(data) {
+async function saveResultToDB(data) {
   return new Promise((resolve, reject) => {
-    const transaction = featureDb.transaction(["features"], "readwrite");
-    const store = transaction.objectStore("features");
+    const transaction = analysisDb.transaction(["results"], "readwrite");
+    const store = transaction.objectStore("results");
     const request = store.put(data);
 
     request.onsuccess = () => resolve();
@@ -39,10 +37,10 @@ async function saveFeatureToDB(data) {
 }
 
 // 3. 전체 불러오기
-async function getAllFeatures() {
+async function getAllResults() {
   return new Promise((resolve, reject) => {
-    const transaction = featureDb.transaction(["features"], "readonly");
-    const store = transaction.objectStore("features");
+    const transaction = analysisDb.transaction(["results"], "readonly");
+    const store = transaction.objectStore("results");
     const request = store.getAll();
 
     request.onsuccess = () => resolve(request.result);
@@ -50,7 +48,7 @@ async function getAllFeatures() {
   });
 }
 
-// 4. 얼굴 특징 분석 및 저장
+// 4. 얼굴 특징 분석 및 저장 (📌 reports 없이 features만)
 async function analyzeFaceFeatureOnly(file, imageBase64) {
   const formData = new FormData();
   formData.append("file", file);
@@ -63,7 +61,10 @@ async function analyzeFaceFeatureOnly(file, imageBase64) {
     });
 
     if (!response.ok) throw new Error("서버 응답 오류");
+
     const data = await response.json();
+    const { features } = data;
+    if (!features) throw new Error("features 없음");
 
     const imageTitleWrap = document.querySelector(".ai");
     imageTitleWrap.classList.add("disblock");
@@ -71,29 +72,23 @@ async function analyzeFaceFeatureOnly(file, imageBase64) {
     const noStore = document.querySelector(".nostore");
     noStore.classList.add("none");
 
-    const { features } = data;
-    if (!features) throw new Error("features 없음");
-
     const result = {
       id: crypto.randomUUID(),
       imageBase64,
       features,
+      summary: "",              // 아직 없음
+      detail: "",               // 아직 없음
+      type: "",                 // 아직 없음
+      paid: false,
+      purchasedAt: null,
       timestamp: new Date().toISOString(),
-      reports: {
-        base:     { paid: false, detail: null, purchasedAt: null },   // 기본 관상 풀이
-        marriage: { paid: false, detail: null, purchasedAt: null },   // 결혼운
-        wealth:   { paid: false, detail: null, purchasedAt: null },   // 금전운
-        job:      { paid: false, detail: null, purchasedAt: null },   // 직업운
-        love:     { paid: false, detail: null, purchasedAt: null }    // 연애운
-      }
     };
 
     mixpanel.track("얼굴 특징 분석 저장", {
       timestamp: result.timestamp,
     });
 
-    await saveFeatureToDB(result);
-
+    await saveResultToDB(result);
     renderFeatureResult(result);
 
   } catch (error) {
@@ -102,9 +97,9 @@ async function analyzeFaceFeatureOnly(file, imageBase64) {
   }
 }
 
-// 5. 분석 결과 + 상품 UI 렌더링
+// 5. 분석 결과 + 리포트 상품 UI 렌더링
 function renderFeatureResult(data) {
-  const resultId = data.id;        // 💡 쉽게 쓰려고 변수에 저장
+  const resultId = data.id;
 
   const products = [
     {
@@ -163,7 +158,6 @@ function renderFeatureResult(data) {
       original_price: 9900
     }
   ];
-  
 
   const productCards = products.map(product => `
      <a class="product-card"
@@ -219,7 +213,7 @@ function readURL(input) {
   }
 }
 
-// 7. Base64 변환(유지, 필요 시 사용)
+// 7. Base64 변환
 function toBase64(file) {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
