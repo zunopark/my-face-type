@@ -3,7 +3,7 @@
   top: 0px;
   z-index: 999;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
-  font-family: 'MapoBackpacking';
+  font-family: "MapoBackpacking";
 }
 
 .header_chat:hover {
@@ -15,7 +15,7 @@
   display: flex;
   justify-content: flex-start;
   align-items: center;
-  padding: 20px;
+  padding: 10px 16px;
   background-color: #101010;
 }
 
@@ -41,7 +41,7 @@
   background-image: linear-gradient(to right, #ffd700, #ffa500);
   -webkit-background-clip: text;
   background-clip: text;
-  font-family: 'KimjungchulMyungjo-Bold';
+  font-family: "KimjungchulMyungjo-Bold";
   font-weight: 700;
 }
 
@@ -67,7 +67,7 @@
 
 .header__title {
   display: flex;
-  font-family: 'Yeon Sung', cursive;
+  font-family: "Yeon Sung", cursive;
   align-items: flex-end;
 }
 
