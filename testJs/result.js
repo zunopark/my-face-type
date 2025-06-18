@@ -72,13 +72,32 @@ async function analyzeFaceFeatureOnly(file, imageBase64) {
     const noStore = document.querySelector(".nostore");
     noStore.classList.add("none");
 
+    // ⛔️ 얼굴 인식 실패 시 화면 하단에 메시지 출력하고 중단
+    if (features.trim().toLowerCase() === "again") {
+      resultContainer.innerHTML = `
+        <div style="padding: 24px; text-align: center; font-size: 16px; color: red; font-weight: bold;">
+          얼굴을 인식할 수 없습니다.<br/>다른 사진을 업로드해 주세요.
+        </div>
+        <div style="text-align: center; margin-top: 16px;">
+          <button onclick="retryUpload()" style="padding: 10px 20px; font-size: 15px; background-color: #007bff; color: white; border: none; border-radius: 8px; cursor: pointer;">
+            다른 사진 올리기
+          </button>
+        </div>
+      `;
+      mixpanel.track("얼굴 인식 실패", {
+        reason: "features = again",
+        timestamp: new Date().toISOString(),
+      });
+      return;
+    }
+
     const result = {
       id: crypto.randomUUID(),
       imageBase64,
       features,
-      summary: "",              // 아직 없음
-      detail: "",               // 아직 없음
-      type: "",                 // 아직 없음
+      summary: "",
+      detail: "",
+      type: "",
       paid: false,
       purchasedAt: null,
       timestamp: new Date().toISOString(),
@@ -89,7 +108,9 @@ async function analyzeFaceFeatureOnly(file, imageBase64) {
     });
 
     await saveResultToDB(result);
-    renderFeatureResult(result);
+
+    const url = `/face-result/?id=${encodeURIComponent(result.id)}&type=base`;
+    window.location.href = url;
 
   } catch (error) {
     console.error("❌ 얼굴 특징 분석 실패:", error);
@@ -191,6 +212,11 @@ function renderFeatureResult(data) {
     </div>
   `;
 }
+
+function retryUpload() {
+  location.reload();
+}
+
 
 // 6. 사진 업로드 → 얼굴 특징 분석 → 저장
 function readURL(input) {

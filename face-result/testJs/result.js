@@ -151,7 +151,7 @@ function renderFeatureResult(data) {
 
   document.getElementById("label-container").innerHTML = `
 <div class="ai-expect-title">
-  <h3 style="font-size:22px;font-weight:700;">관상 분석이 완료됐습니다!</h3>
+  <h3 style="font-size:22px;font-weight:700;">얼굴 특징 분석이 완료됐습니다!</h3>
   <div class="ai-expect-sub" style="margin-bottom: 12px;">아래 항목에서 궁금한 분석을 선택해보세요.</div>
 </div>
 <div class="face-product-section">${productCards}</div>
