@@ -1,19 +1,30 @@
-document.getElementById("payment-button").addEventListener("click", requestPayment);
+document
+  .getElementById("payment-button")
+  .addEventListener("click", requestPayment);
 
 const clientKey = "live_gck_yZqmkKeP8gBaRKPg1WwdrbQRxB9l";
 const customerKey = "customer_" + new Date().getTime();
 
 const paymentWidget = PaymentWidget(clientKey, customerKey);
-paymentWidget.renderPaymentMethods("#payment-method", { value: 10 });
+paymentWidget.renderPaymentMethods("#payment-method", { value: 1 });
 paymentWidget.renderAgreement("#agreement");
+let isRendered = false;
 
 function openPayment() {
-  const overlay = document.getElementById("paymentOverlay");
-  overlay.style.display = "block";
+  document.getElementById("paymentOverlay").style.display = "block";
+
+  // 항상 다시 위젯을 mount, 버튼 핸들러도 중복 방지!
+  if (!isRendered) {
+    paymentWidget.renderPaymentMethods("#payment-method", { value: 1 });
+    paymentWidget.renderAgreement("#agreement");
+    isRendered = true;
+  }
 }
 
 function closePayment() {
   document.getElementById("paymentOverlay").style.display = "none";
+  // 다음 열기를 위해 다시 그릴 수 있도록 플래그 off
+  isRendered = false;
 }
 
 // [수정] type, id를 주소에서 추출!
@@ -38,7 +49,7 @@ async function requestPayment() {
       orderId: `${type}_${id}_${Date.now()}`,
       orderName: "프리미엄 관상 분석",
       successUrl: `${window.location.origin}/analyze-success-payment/?id=${id}&type=${type}`,
-      failUrl: `${window.location.origin}/fail.html`,
+      failUrl: `${window.location.origin}/fail.html?id=${id}&type=${type}`,
       customerName: "고객",
     });
   } catch (err) {
@@ -48,7 +59,15 @@ async function requestPayment() {
 
 // 버튼 연결
 document.querySelector(".consultBtn").addEventListener("click", () => {
-  mixpanel.track("상담 시작 클릭");
+  const { type, id } = getTypeAndIdFromUrl();
+
+  mixpanel.track("Click Start Consultation", {
+    reportType: type, // e.g., "wealth", "base"
+    reportId: id, // unique report ID
+    page: window.location.pathname,
+    timestamp: new Date().toISOString(),
+  });
+
   openPayment();
 });
 

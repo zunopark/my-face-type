@@ -3,33 +3,14 @@
   .test__upper,
   .submitForm,
   .today__weather__wrap,
-  .lower__comment {
+  .lower__comment,
+  .review-section,
+  .modal-content {
     width: 500px;
   }
 
-  .main__result__content__p {
-    width: 300px;
-  }
-
-  .habitown__banner {
-    width: 400px;
-  }
-
-  .dang__ad {
-    width: 320px;
-    margin-bottom: 30px;
-  }
-
-  .border,
-  .result {
-    width: 350px;
-  }
-
-  .border__hair {
-    width: 500px;
-  }
-
-  .apologize,.footer-button,.payment-overlay {
+  .footer-button,
+  .payment-overlay {
     width: 500px;
   }
 
@@ -56,10 +37,15 @@
     width: 468px;
   }
 }
+
 @media screen and (max-width: 499px) {
   .main_body_wrap,
   .header_chat,
-  .main_upper_contetn_wrap {
+  .main_upper_contetn_wrap,
+  .review-section,
+  .modal-content,
+  .footer-button,
+  .payment-overlay {
     width: 100%;
   }
 
