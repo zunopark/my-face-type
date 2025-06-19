@@ -1,0 +1,83 @@
+@media screen and (min-width: 500px) {
+  .footer,
+  .test__upper,
+  .submitForm,
+  .today__weather__wrap,
+  .lower__comment,
+  .review-section,
+  .modal-content {
+    width: 500px;
+  }
+
+  .footer-button,
+  .payment-overlay {
+    width: 500px;
+  }
+
+  .header {
+    width: 500px;
+  }
+
+  .header_fixed {
+    width: 500px;
+  }
+
+  .footer,
+  .bottom_nav {
+    width: 500px;
+  }
+  .bottom_ad {
+    width: 500px;
+  }
+  .main_body_wrap,
+  .header_chat {
+    width: 500px;
+  }
+  .main_upper_content_wrap {
+    width: 468px;
+  }
+}
+
+@media screen and (max-width: 499px) {
+  .main_body_wrap,
+  .header_chat,
+  .main_upper_contetn_wrap,
+  .review-section,
+  .modal-content,
+  .footer-button,
+  .payment-overlay {
+    width: 100%;
+  }
+
+  .border,
+  .test__upper,
+  .submitForm,
+  .result {
+    width: 320px;
+  }
+
+  .habitown__banner {
+    width: 360px;
+  }
+
+  .label-container p {
+    width: 80%;
+  }
+
+  .ad__upper,
+  .header,
+  .footer,
+  .today__weather__wrap,
+  .today__weather,
+  .lower__comment,
+  .bottom_nav {
+    width: 100%;
+  }
+
+  .border__hair {
+    width: 70%;
+  }
+  .apologize {
+    width: 320px;
+  }
+}

@@ -1,0 +1,77 @@
+.face_analysis_title {
+  width: 320px;
+  font-size: 32px;
+  font-weight: bold;
+  font-family: 'Yeon Sung', cursive;
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+}
+.face_analysis_title2 {
+  width: 320px;
+  font-size: 32px;
+  font-weight: bold;
+  font-family: 'Yeon Sung', cursive;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  display: flex;
+  justify-content: flex-start;
+}
+
+.face_analysis_description {
+  margin-top: 12px;
+  font-family: 'Yeon Sung', cursive;
+  font-size: 20px;
+  width: 320px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.face_analysis_description2 {
+  margin-top: 12px;
+  width: 320px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.face_analysis_desciption_division {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  line-height: 24px;
+  text-align: justify;
+}
+
+.face_analysis_desciption_division h1 {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.face_analysis_desciption_division span {
+  font-size: 18px;
+  margin: 6px 0;
+  font-weight: bold;
+}
+
+.face_analysis_contents_wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.face_analysis_contents {
+  display: flex;
+  justify-content: space-between;
+  width: 320px;
+  margin-top: 20px;
+  padding: 20px;
+  font-family: 'Yeon Sung', cursive;
+  text-decoration: none;
+  color: black;
+  background-color: white;
+  font-size: 20px;
+  border: 1px solid black;
+  border-radius: 10px;
+}

@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>관상 분석 결과</title>
+    <link rel="stylesheet" href="styles/style.css" />
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=East+Sea+Dokdo&display=swap");
+      @import url("https://fonts.googleapis.com/css2?family=Yeon+Sung&display=swap");
+      @font-face {
+        font-family: "KimjungchulMyungjo-Bold";
+        src: url("https://gcore.jsdelivr.net/gh/projectnoonnu/noonfonts_2302_01@1.0/KimjungchulMyungjo-Bold.woff2")
+          format("woff2");
+        font-style: normal;
+      }
+    </style>
+    <script
+      async
+      src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4478069136800837"
+      crossorigin="anonymous"
+    ></script>
+    <script type="text/javascript">
+      (function (f, b) {
+        if (!b.__SV) {
+          var e, g, i, h;
+          window.mixpanel = b;
+          b._i = [];
+          b.init = function (e, f, c) {
+            function g(a, d) {
+              var b = d.split(".");
+              2 == b.length && ((a = a[b[0]]), (d = b[1]));
+              a[d] = function () {
+                a.push([d].concat(Array.prototype.slice.call(arguments, 0)));
+              };
+            }
+            var a = b;
+            "undefined" !== typeof c ? (a = b[c] = []) : (c = "mixpanel");
+            a.people = a.people || [];
+            a.toString = function (a) {
+              var d = "mixpanel";
+              "mixpanel" !== c && (d += "." + c);
+              a || (d += " (stub)");
+              return d;
+            };
+            a.people.toString = function () {
+              return a.toString(1) + ".people (stub)";
+            };
+            i =
+              "disable time_event track track_pageview track_links track_forms track_with_groups add_group set_group remove_group register register_once alias unregister identify name_tag set_config reset opt_in_tracking opt_out_tracking has_opted_in_tracking has_opted_out_tracking clear_opt_in_out_tracking start_batch_senders people.set people.set_once people.unset people.increment people.append people.union people.track_charge people.clear_charges people.delete_user people.remove".split(
+                " "
+              );
+            for (h = 0; h < i.length; h++) g(a, i[h]);
+            var j = "set set_once union unset remove delete".split(" ");
+            a.get_group = function () {
+              function b(c) {
+                d[c] = function () {
+                  call2_args = arguments;
+                  call2 = [c].concat(Array.prototype.slice.call(call2_args, 0));
+                  a.push([e, call2]);
+                };
+              }
+              for (
+                var d = {},
+                  e = ["get_group"].concat(
+                    Array.prototype.slice.call(arguments, 0)
+                  ),
+                  c = 0;
+                c < j.length;
+                c++
+              )
+                b(j[c]);
+              return d;
+            };
+            b._i.push([e, f, c]);
+          };
+          b.__SV = 1.2;
+          e = f.createElement("script");
+          e.type = "text/javascript";
+          e.async = !0;
+          e.src =
+            "undefined" !== typeof MIXPANEL_CUSTOM_LIB_URL
+              ? MIXPANEL_CUSTOM_LIB_URL
+              : "file:" === f.location.protocol &&
+                "//cdn.mxpnl.com/libs/mixpanel-2-latest.min.js".match(/^\/\//)
+              ? "https://cdn.mxpnl.com/libs/mixpanel-2-latest.min.js"
+              : "//cdn.mxpnl.com/libs/mixpanel-2-latest.min.js";
+          g = f.getElementsByTagName("script")[0];
+          g.parentNode.insertBefore(e, g);
+        }
+      })(document, window.mixpanel || []);
+    </script>
+  </head>
+  <body>
+    <div class="main_body_wrap">
+      <header class="header_chat">
+        <div class="header_chat_wrap">
+          <a class="header_chat_title header_selected" href="/"> 관상 </a>
+          <a class="header_chat_title" href="/animalface"> 동물상 </a>
+          <a class="header_chat_title" href="/premium"> 재물 관상 </a>
+
+          <a href="/history.html" class="header_chat_title header_chat_right"
+            >지난 관상</a
+          >
+        </div>
+      </header>
+      <div class="main_content_wrap">
+        <div class="main__ai__title">
+          <div class="subtitle" style="margin-top: 32px">
+            관상가 양반<br />
+            <span style="font-size: 16px; color: #66deff"
+              >[2025 푸른 뱀의 해 AI 관상 업데이트]</span
+            >
+          </div>
+
+          <div class="number">
+            <span class="count__num" style="color: #66deff"></span> 명이 관상을
+            봤어요.
+          </div>
+        </div>
+        <div class="ad_box" id="container2">
+          <ins
+            class="adsbygoogle"
+            style="display: inline-block; width: 320px; height: 50px"
+            data-ad-client="ca-pub-4478069136800837"
+            data-ad-slot="4097923844"
+          ></ins>
+          <script>
+            (adsbygoogle = window.adsbygoogle || []).push({});
+          </script>
+        </div>
+        <div class="border"></div>
+        <div class="label-container">결과를 불러오는 중입니다...</div>
+      </div>
+      <!-- ✅ Toss 결제 모달 -->
+      <div id="paymentModal" class="modal" style="display: none">
+        <div class="modal-content">
+          <span
+            class="close"
+            onclick="closePaymentModal()"
+            style="position: absolute; top: 10px; right: 10px; cursor: pointer"
+            >✕</span
+          >
+          <h3 style="margin-top: 0">3,000자 이상 관상 분석 리포트</h3>
+          <div id="payment-method"></div>
+          <div id="agreement"></div>
+          <div id="payment-amount" style="font-size: 14px; text-align: center">
+            <span style="color: #a9a9a9; font-weight: 700"
+              >6월 이벤트 할인가</span
+            >
+            <br />
+            <span
+              style="
+                text-decoration: line-through;
+                color: #a9a9a9;
+                font-weight: 400;
+                margin-right: 2px;
+              "
+              >6,900원</span
+            >
+            <span
+              style="
+                color: #ffbe0a;
+                font-size: 18px;
+                font-weight: 700;
+                margin-right: 2px;
+              "
+              >58%</span
+            >
+            <span style="color: #382f00; font-size: 18px; font-weight: 700"
+              >2,900원</span
+            >
+          </div>
+          <button
+            id="payment-button"
+            style="
+              margin-top: 16px;
+              width: 100%;
+              padding: 12px;
+              background-color: #ffbe0a;
+              color: rgb(13, 13, 13);
+              font-weight: 700;
+              border: none;
+              border-radius: 6px;
+              font-size: 14px;
+            "
+          >
+            결제하기
+          </button>
+        </div>
+      </div>
+      <footer class="footer"></footer>
+    </div>
+    <script>
+      // 고유 사용자 ID를 localStorage에서 불러오거나 새로 생성
+      let distinctId = localStorage.getItem("mixpanel_distinct_id");
+      if (!distinctId) {
+        distinctId = crypto.randomUUID(); // 브라우저 내장 UUID 생성
+        localStorage.setItem("mixpanel_distinct_id", distinctId);
+      }
+
+      // Mixpanel 초기화 및 ID 지정
+      mixpanel.init("d7d8d6afc10a92f911ea59901164605b", {
+        debug: true,
+        // optional: identify 자동 호출 안 되게 하고, 아래에서 수동으로 identify
+        autotrack: true,
+        persistence: "localStorage",
+      });
+
+      // 사용자 ID를 명시적으로 identify
+      mixpanel.identify(distinctId);
+
+      // 추적 예시
+      mixpanel.track("관상 결과 페이지", {
+        url: window.location.href,
+        userAgent: navigator.userAgent,
+        timestamp: new Date().toISOString(),
+      });
+    </script>
+    <script src="js/footer.js"></script>
+    <script src="js/livetime.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="https://js.tosspayments.com/v1/payment-widget"></script>
+    <script>
+      let db;
+
+      async function initDB() {
+        return new Promise((resolve, reject) => {
+          const request = indexedDB.open("FaceAnalysisDB", 1);
+          request.onsuccess = function (event) {
+            db = event.target.result;
+            resolve();
+          };
+          request.onerror = function () {
+            reject("DB open error");
+          };
+        });
+      }
+
+      function getResultById(id) {
+        return new Promise((resolve, reject) => {
+          const tx = db.transaction(["results"], "readonly");
+          const store = tx.objectStore("results");
+          const request = store.get(id);
+          request.onsuccess = () => resolve(request.result);
+          request.onerror = () => reject("result not found");
+        });
+      }
+
+      async function renderResultPage() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const id = urlParams.get("id");
+        if (!id) return;
+
+        await initDB();
+        const data = await getResultById(id);
+        if (!data) return;
+
+        // 이미지 삽입
+
+        // 결과 삽입
+        const resultContainer = document.querySelector(".label-container");
+        const borderContainer = document.querySelector(".border");
+        borderContainer.innerHTML = `
+        <div class="frame">
+            <div class="image">
+                <div class="file-upload">
+                    <div class="image-square-frame">
+                    <img
+                        class="file-upload-image"
+                        id="face-image"
+                        src="${data.imageBase64}"
+                        alt="your image"
+                    />
+                    </div>
+                </div>
+            </div>
+        </div>
+    `;
+
+        const today = new Date();
+        const monthStr = today.getMonth() + 1; // 1~12
+        const dayStr = today.getDate(); // 1~31
+        const todayStr = `${monthStr}월 ${dayStr}일`; // "6월 3일"
+
+        resultContainer.innerHTML = `
+      <div class="face-summary-section">
+        <div class="face-summary">${marked.parse(data.summary)}</div>
+      </div>
+      <div class="face-full-section-wrapper">
+        <div class="face-full-report">${marked.parse(data.detail)}</div>
+        ${
+          data.paid
+            ? ""
+            : `
+        <div class="result-mask">
+          <div class="blur-overlay"></div>
+          <div class="mask-text-wrap">
+            <div class="mask-text">
+                <div class="mask-text-top">관상학 기반 심층 분석</div>
+                <div class="mask-text-sub">얼굴형, 이마, 눈 등 부위별 세부 관상 분석 + 운명과 인생 경로 + 대인 관계와 인연 + 관상학적 인생 종합 결론<br/><br/></div>
+                <div class="mask-text-btn-wrap">
+                    <div class="mask-text-btn" onclick="trackAndStartPayment('${data.id}')">전체 분석 결과 확인하기</div>
+                </div>
+                <div class="mask-text-btn-sub">출시 기념 6월 할인 - 지금이 가장 저렴해요</div>
+            </div>
+            <div class="service-stats">
+              <div class="stat-item">
+                <div class="stat-label">분석 구매</div>
+                <div class="stat-value">1,947건</div>
+              </div>
+
+              <div class="stat-item">
+                <div class="stat-label">만족해요</div>
+                <div class="stat-value">94.8%</div>
+              </div>
+
+              <div class="stat-item">
+                <div class="stat-label">글자 수</div>
+                <div class="stat-value">3,000+자</div>
+              </div>
+            </div>
+            <div class="review-section">
+              <div class="review-scroll">
+                   <div class="review-card">
+                    ⭐️⭐️⭐️⭐️⭐️<br/>
+                    <span class="review-meta">윤○○</span>
+                    와… 진짜 이거 보고 소름. 저보다 저를 더 잘 아는 느낌?
+                  </div>
+
+                  <div class="review-card">
+                    ⭐️⭐️⭐️⭐️⭐️<br/>
+                    <span class="review-meta">김○○</span>
+                    그냥 궁금해서 해봤는데, 생각보다 훨씬 깊고 정확했어요.
+                  </div>
+
+                  <div class="review-card">
+                    ⭐️⭐️⭐️⭐️⭐️<br/>
+                    <span class="review-meta">박○○</span>
+                    좋은 말만 하는 줄 알았는데, 날카롭게 짚어줘서 신뢰감 생겼어요.
+                  </div>
+
+                  <div class="review-card">
+                    ⭐️⭐️⭐️⭐️☆<br/>
+                    <span class="review-meta">이○○</span>
+                    요즘 고민 많았는데 방향 잡는 데 진짜 도움 됐어요.
+                  </div>
+
+                  <div class="review-card">
+                    ⭐️⭐️⭐️⭐️⭐️<br/>
+                    <span class="review-meta">최○○</span>
+                    사주도 봤는데… 이게 더 실전적이에요. 구체적으로 뭐 해야 할지 알겠어요.
+                  </div>
+
+                  <div class="review-card">
+                    ⭐️⭐️⭐️⭐️⭐️<br/>
+                    <span class="review-meta">장○○</span>
+                    솔직히 기대 안 했는데… 위로받았어요. 그냥 고마워요.
+                  </div>
+
+              </div>
+            </div>
+          </div>
+        </div>`
+        }
+      </div>
+    `;
+      }
+
+      document.addEventListener("DOMContentLoaded", renderResultPage);
+
+      function trackAndStartPayment(resultId) {
+        mixpanel.track("히스토리에서 관상 결제 버튼 클릭", {
+          resultId: resultId,
+          timestamp: new Date().toISOString(),
+        });
+
+        startTossPayment(resultId);
+      }
+
+      async function startTossPayment(resultId) {
+        const clientKey = "live_gck_yZqmkKeP8gBaRKPg1WwdrbQRxB9l"; // 테스트 키
+        const customerKey = "customer_" + new Date().getTime();
+
+        // 모달 열기
+        document.getElementById("paymentModal").style.display = "block";
+
+        try {
+          const paymentWidget = PaymentWidget(clientKey, customerKey);
+          const paymentMethodWidget = paymentWidget.renderPaymentMethods(
+            "#payment-method",
+            { value: 2900 }
+          );
+          paymentWidget.renderAgreement("#agreement");
+
+          document.getElementById("payment-button").onclick = async () => {
+            try {
+              await paymentWidget.requestPayment({
+                orderId: `order_${Date.now()}`,
+                orderName: "관상 상세 분석 서비스",
+                customerName: "고객",
+                successUrl: `${window.location.origin}/success.html?id=${resultId}`,
+                failUrl: `${window.location.origin}/fail.html`,
+              });
+            } catch (err) {
+              alert("❌ 결제 실패: " + err.message);
+            }
+          };
+        } catch (e) {
+          alert("❌ 위젯 로드 실패: " + e.message);
+        }
+      }
+
+      function closePaymentModal() {
+        document.getElementById("paymentModal").style.display = "none";
+        document.getElementById("payment-method").innerHTML = "";
+        document.getElementById("agreement").innerHTML = "";
+      }
+    </script>
+  </body>
+</html>
