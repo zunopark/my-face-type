@@ -1,5 +1,3 @@
-
-
 let analysisDb = null;
 
 function initAnalysisDB() {
@@ -65,8 +63,7 @@ function renderFeatureResult(data) {
     {
       key: "base",
       emoji: "🐍",
-      title:
-        "처음 보는 내 관상, 이렇게까지 자세히? 궁금해요? 궁금하면 500원",
+      title: "처음 보는 내 관상, 이렇게까지 자세히? 궁금해요? 궁금하면 500원",
       desc: "3,000+자 리포트",
       rating: 4.9,
       views: "4,500+",
@@ -74,59 +71,64 @@ function renderFeatureResult(data) {
       price: "500원",
       original_price: 4900,
     },
-    {
-      key: "marriage",
-      emoji: "💍",
-      title: "[매우 중요] 언제, 누구와 결혼할지 얼굴에 다 나와 있다면?",
-      desc: "8,000+자 리포트",
-      rating: 4.8,
-      views: "2,300+",
-      discount: 42,
-      price: "9,900원",
-      original_price: 16900,
-    },
-    {
-      key: "wealth",
-      emoji: "💸",
-      title: "타고난 부: 내 관상 재물운과 평생 모을 재산은?",
-      desc: "10,000+자 리포트",
-      rating: 4.9,
-      views: "10,000+",
-      discount: 23,
-      price: "16,900원",
-      original_price: 21900,
-    },
-    {
-      key: "job",
-      emoji: "💼",
-      title:
-        "관상으로 보는 직업: 사실 난 이런 직업을 가졌어야 했다면...?",
-      desc: "6,000+자 리포트",
-      rating: 4.7,
-      views: "1,900+",
-      discount: 45,
-      price: "4,900원",
-      original_price: 8900,
-    },
-    {
-      key: "love",
-      emoji: "💖",
-      title: "연애 관상: 나는 어떤 사람을 만나야 할까?",
-      desc: "6,000+자 리포트",
-      rating: 4.9,
-      views: "2,800+",
-      discount: 31,
-      price: "6,900원",
-      original_price: 9900,
-    },
+    // {
+    //   key: "marriage",
+    //   emoji: "💍",
+    //   title: "[매우 중요] 언제, 누구와 결혼할지 얼굴에 다 나와 있다면?",
+    //   desc: "8,000+자 리포트",
+    //   rating: 4.8,
+    //   views: "2,300+",
+    //   discount: 42,
+    //   price: "9,900원",
+    //   original_price: 16900,
+    // },
+    // {
+    //   key: "wealth",
+    //   emoji: "💸",
+    //   title: "타고난 부: 내 관상 재물운과 평생 모을 재산은?",
+    //   desc: "10,000+자 리포트",
+    //   rating: 4.9,
+    //   views: "10,000+",
+    //   discount: 23,
+    //   price: "16,900원",
+    //   original_price: 21900,
+    // },
+    // {
+    //   key: "job",
+    //   emoji: "💼",
+    //   title: "관상으로 보는 직업: 사실 난 이런 직업을 가졌어야 했다면...?",
+    //   desc: "6,000+자 리포트",
+    //   rating: 4.7,
+    //   views: "1,900+",
+    //   discount: 45,
+    //   price: "4,900원",
+    //   original_price: 8900,
+    // },
+    // {
+    //   key: "love",
+    //   emoji: "💖",
+    //   title: "연애 관상: 나는 어떤 사람을 만나야 할까?",
+    //   desc: "6,000+자 리포트",
+    //   rating: 4.9,
+    //   views: "2,800+",
+    //   discount: 31,
+    //   price: "6,900원",
+    //   original_price: 9900,
+    // },
   ];
 
   const productCards = products
     .map(
       (product) => `
-  <div class="product-card" onclick="location.href='/report/${
-    product.key
-  }/?id=${data.id}'" style="cursor: pointer;">
+  <div class="product-card" onclick="
+        mixpanel.track('report_product_clicked', {
+        id: '${data.id}',
+        product_key: '${product.key}',
+        product_title: '${product.title}'
+      });
+  location.href='/report/${product.key}/?id=${
+        data.id
+      }'" style="cursor: pointer;">
 
   <div class="product-image">
     <img src="/img/${product.key}.png" alt="${
@@ -180,4 +182,10 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   renderImage(result.imageBase64);
   renderFeatureResult(result);
+
+  // ✅ Mixpanel: 결과 로드 성공
+  mixpanel.track("face_result_loaded", {
+    id: result.id,
+    timestamp: new Date().toISOString(),
+  });
 });

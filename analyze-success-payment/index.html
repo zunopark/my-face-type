@@ -3,39 +3,8 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="styles/style.css" />
     <title>관상 결제 완료 리포트</title>
-    <style>
-      body {
-        font-family: "Pretendard", sans-serif;
-        background: #f8f9fc;
-        margin: 0;
-      }
-      .result-box {
-        max-width: 400px;
-        margin: 100px auto 0 auto;
-        padding: 32px 28px;
-        background: #fff;
-        border-radius: 16px;
-        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.07);
-        text-align: center;
-      }
-      .result-box h2 {
-        font-size: 1.5em;
-        margin-bottom: 24px;
-      }
-      .result-id,
-      .result-type {
-        margin: 18px 0;
-        font-size: 1.13em;
-        color: #156aff;
-        font-weight: 500;
-        word-break: break-all;
-      }
-      .success-emoji {
-        font-size: 42px;
-        margin-bottom: 14px;
-      }
-    </style>
     <script type="text/javascript">
       (function (f, b) {
         if (!b.__SV) {
@@ -108,12 +77,18 @@
     </script>
   </head>
   <body>
-    <div class="result-box">
-      <div class="success-emoji">🎉</div>
-      <h2>결제 성공!</h2>
-      <div class="result-id">id: <span id="result-id"></span></div>
-      <div class="result-type">type: <span id="result-type"></span></div>
+    <div class="result-box dark-mode">
+      <div class="loading-emoji">💳</div>
+      <h2 class="payment-status-text">토스 페이먼츠와 통신 중입니다...</h2>
+      <p class="sub-message">
+        결제 완료 후 보고서 결과 페이지로 자동 이동됩니다.
+      </p>
+      <div class="result-meta">
+        <div class="result-id">ID: <span id="result-id"></span></div>
+        <div class="result-type">TYPE: <span id="result-type"></span></div>
+      </div>
     </div>
+
     <script src="js/payment-success.js"></script>
   </body>
 </html>
