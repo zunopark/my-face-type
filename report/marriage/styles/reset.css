@@ -1,3 +1,5 @@
+/* reset.css - markdown 관련 요소 보호 */
+
 html,
 body,
 div,
@@ -5,25 +7,14 @@ span,
 applet,
 object,
 iframe,
-h1,
-h2,
-h3,
-h4,
-h5,
-h6,
-p,
-blockquote,
-pre,
 a,
 abbr,
 acronym,
 address,
 big,
 cite,
-code,
 del,
 dfn,
-em,
 img,
 ins,
 kbd,
@@ -32,7 +23,6 @@ s,
 samp,
 small,
 strike,
-strong,
 sub,
 sup,
 tt,
@@ -44,21 +34,10 @@ center,
 dl,
 dt,
 dd,
-ol,
-ul,
-li,
 fieldset,
 form,
 label,
 legend,
-table,
-caption,
-tbody,
-tfoot,
-thead,
-tr,
-th,
-td,
 article,
 aside,
 canvas,
@@ -82,45 +61,49 @@ video {
   margin: 0;
   padding: 0;
   border: 0;
-  font-size: 100%;
   font: inherit;
   vertical-align: baseline;
 }
-/* HTML5 display-role reset for older browsers */
-article,
-aside,
-details,
-figcaption,
-figure,
-footer,
-header,
-hgroup,
-menu,
-nav,
-section {
-  display: block;
-}
+
+/* ✅ 마크다운에 중요한 요소는 리셋에서 제외 */
 body {
-  line-height: 1;
+  line-height: 1.6;
 }
+
+/* ✅ list-style만 초기화 해제 */
 ol,
 ul {
-  list-style: none;
+  /* list-style: none; */  /* ❌ 마크다운에 영향 */
 }
+
+/* ✅ blockquote 인용부호 보존 */
 blockquote,
 q {
-  quotes: none;
+  /* quotes: none; */       /* ❌ 제거하면 > 인용 스타일 깨짐 */
+  margin-left: 1rem;
+  padding-left: 1rem;
+  border-left: 3px solid #ccc;
+  color: #555;
+  font-style: italic;
 }
-blockquote:before,
-blockquote:after,
-q:before,
-q:after {
-  content: '';
-  content: none;
+
+/* ✅ pre/code 기본 스타일 보존 */
+pre, code {
+  font-family: monospace;
+  background: #f5f5f5;
+  padding: 0.5rem;
+  border-radius: 4px;
+  overflow-x: auto;
 }
+
+/* ✅ table 스타일 최소 유지 */
 table {
   border-collapse: collapse;
-  border-spacing: 0;
+  margin: 1rem 0;
+}
+th, td {
+  border: 1px solid #ddd;
+  padding: 8px;
 }
 
 img {

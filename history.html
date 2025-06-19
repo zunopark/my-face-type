@@ -99,7 +99,7 @@
           const div = document.createElement("div");
           div.className = "resultHistory " + (r.paid ? "paid" : "unpaid");
           div.innerHTML = `
-            <a href="/result.html?id=${r.id}">
+            <a href="/analyze-result/?id=${r.id}&type=${r.type}">
         
 
             <div class="resultHistory_paid">${

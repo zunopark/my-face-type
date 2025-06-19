@@ -100,7 +100,7 @@ async function analyzeFaceFeatureOnly(file, imageBase64) {
       features, // 얼굴 특징
       summary: "", // 요약 리포트
       detail: "", // 전체 리포트
-      type: "base", // 리포트 타입 (예: base, wealth 등)
+      type: "", // 리포트 타입 (예: base, wealth 등)
       paid: false,
       purchasedAt: null,
       timestamp: new Date().toISOString(),
@@ -127,7 +127,6 @@ async function analyzeFaceFeatureOnly(file, imageBase64) {
 // 5. 분석 결과 + 리포트 상품 UI 렌더링
 function renderFeatureResult(data) {
   const resultId = data.id;
-
   const products = [
     {
       key: "base",
@@ -139,29 +138,32 @@ function renderFeatureResult(data) {
       discount: 90,
       price: "500원",
       original_price: 4900,
+      thumbnail: "https://i.ibb.co/1fF6gNtk/base.png",
     },
-    // {
-    //   key: "marriage",
-    //   emoji: "💍",
-    //   title: "[매우 중요] 언제, 누구와 결혼할지 얼굴에 다 나와 있다면?",
-    //   desc: "8,000+자 리포트",
-    //   rating: 4.8,
-    //   views: "2,300+",
-    //   discount: 42,
-    //   price: "9,900원",
-    //   original_price: 16900
-    // },
-    // {
-    //   key: "wealth",
-    //   emoji: "💸",
-    //   title: "타고난 부: 내 관상 재물운과 평생 모을 재산은?",
-    //   desc: "10,000+자 리포트",
-    //   rating: 4.9,
-    //   views: "10,000+",
-    //   discount: 23,
-    //   price: "16,900원",
-    //   original_price: 21900
-    // },
+    {
+      key: "marriage",
+      emoji: "💍",
+      title: "[매우 중요] 언제, 누구와 결혼할지 얼굴에 다 나와 있다면?",
+      desc: "8,000+자 리포트",
+      rating: 4.8,
+      views: "2,300+",
+      discount: 42,
+      price: "9,900원",
+      original_price: 16900,
+      thumbnail: "https://i.ibb.co/N2xLXt92/marriage.png",
+    },
+    {
+      key: "wealth",
+      emoji: "💸",
+      title: "타고난 부: 내 관상 재물운과 평생 모을 재산은?",
+      desc: "10,000+자 리포트",
+      rating: 4.9,
+      views: "10,000+",
+      discount: 52,
+      price: "16,900원",
+      original_price: 34900,
+      thumbnail: "https://i.ibb.co/zHTZCdM3/wealth.png",
+    },
     // {
     //   key: "job",
     //   emoji: "💼",
@@ -171,19 +173,21 @@ function renderFeatureResult(data) {
     //   views: "1,900+",
     //   discount: 45,
     //   price: "4,900원",
-    //   original_price: 8900
+    //   original_price: 8900,
+    //   thumbnail: "https://i.ibb.co/DHrj7YpX/job.png",
     // },
-    // {
-    //   key: "love",
-    //   emoji: "💖",
-    //   title: "연애 관상: 나는 어떤 사람을 만나야 할까?",
-    //   desc: "6,000+자 리포트",
-    //   rating: 4.9,
-    //   views: "2,800+",
-    //   discount: 31,
-    //   price: "6,900원",
-    //   original_price: 9900
-    // }
+    {
+      key: "love",
+      emoji: "💖",
+      title: "연애 관상: 총 연애 횟수, 내 운명은 어디에?",
+      desc: "6,000+자 리포트",
+      rating: 4.9,
+      views: "2,800+",
+      discount: 31,
+      price: "6,900원",
+      original_price: 9900,
+      thumbnail: "https://i.ibb.co/6RgZwqfG/love.png",
+    },
   ];
 
   const productCards = products
@@ -193,7 +197,7 @@ function renderFeatureResult(data) {
        href="/report/${product.key}/?id=${resultId}&type=${product.key}"
        style="cursor:pointer;text-decoration:none;">
       <div class="product-image">
-        <img src="img/${product.key}.png" alt="${
+        <img src="${product.thumbnail}" alt="${
         product.key
       }" class="square-image" />
       </div>

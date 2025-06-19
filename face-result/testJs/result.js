@@ -70,6 +70,7 @@ function renderFeatureResult(data) {
       discount: 90,
       price: "500원",
       original_price: 4900,
+      thumbnail: "https://i.ibb.co/1fF6gNtk/base.png",
     },
     {
       key: "marriage",
@@ -81,6 +82,7 @@ function renderFeatureResult(data) {
       discount: 42,
       price: "9,900원",
       original_price: 16900,
+      thumbnail: "https://i.ibb.co/N2xLXt92/marriage.png",
     },
     {
       key: "wealth",
@@ -89,31 +91,34 @@ function renderFeatureResult(data) {
       desc: "10,000+자 리포트",
       rating: 4.9,
       views: "10,000+",
-      discount: 23,
+      discount: 52,
       price: "16,900원",
-      original_price: 21900,
+      original_price: 34900,
+      thumbnail: "https://i.ibb.co/zHTZCdM3/wealth.png",
     },
-    {
-      key: "job",
-      emoji: "💼",
-      title: "관상으로 보는 직업: 사실 난 이런 직업을 가졌어야 했다면...?",
-      desc: "6,000+자 리포트",
-      rating: 4.7,
-      views: "1,900+",
-      discount: 45,
-      price: "4,900원",
-      original_price: 8900,
-    },
+    // {
+    //   key: "job",
+    //   emoji: "💼",
+    //   title: "관상으로 보는 직업: 사실 난 이런 직업을 가졌어야 했다면...?",
+    //   desc: "6,000+자 리포트",
+    //   rating: 4.7,
+    //   views: "1,900+",
+    //   discount: 45,
+    //   price: "4,900원",
+    //   original_price: 8900,
+    //   thumbnail: "https://i.ibb.co/DHrj7YpX/job.png",
+    // },
     {
       key: "love",
       emoji: "💖",
-      title: "연애 관상: 나는 어떤 사람을 만나야 할까?",
+      title: "연애 관상: 총 연애 횟수, 내 운명은 어디에?",
       desc: "6,000+자 리포트",
       rating: 4.9,
       views: "2,800+",
       discount: 31,
       price: "6,900원",
       original_price: 9900,
+      thumbnail: "https://i.ibb.co/6RgZwqfG/love.png",
     },
   ];
 
@@ -131,9 +136,7 @@ function renderFeatureResult(data) {
       }'" style="cursor: pointer;">
 
   <div class="product-image">
-    <img src="/img/${product.key}.png" alt="${
-        product.key
-      }" class="square-image" />
+    <img src="${product.thumbnail}" alt="${product.key}" class="square-image" />
   </div>
   <div class="product-info">
     <div class="product-title">${product.title}</div>

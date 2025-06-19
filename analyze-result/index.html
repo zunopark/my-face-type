@@ -184,7 +184,7 @@
             class="header_chat_title"
             style="cursor: pointer"
           >
-            ← 다른 관상 보고서
+            ← 다른 사진 또는 보고서
           </a>
         </div>
       </header>
@@ -271,7 +271,7 @@
         const id = params.get("id");
         if (id) {
           // 쿼리로 id 전달
-          location.href = `/face-result/?id=${encodeURIComponent(id)}`;
+          location.href = `/`;
         } else {
           alert("❌ id 파라미터가 없습니다.");
         }
