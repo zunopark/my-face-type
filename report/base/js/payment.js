@@ -59,7 +59,15 @@ async function requestPayment() {
 
 // 버튼 연결
 document.querySelector(".consultBtn").addEventListener("click", () => {
-  mixpanel.track("상담 시작 클릭");
+  const { type, id } = getTypeAndIdFromUrl();
+
+  mixpanel.track("Click Start Consultation", {
+    reportType: type, // e.g., "wealth", "base"
+    reportId: id, // unique report ID
+    page: window.location.pathname,
+    timestamp: new Date().toISOString(),
+  });
+
   openPayment();
 });
 
