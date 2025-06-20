@@ -328,16 +328,6 @@
 
           // ✅ fallback: 이미지 띄우기
           const reader = new FileReader();
-          reader.onloadend = () => {
-            document.body.innerHTML = `
-              <div style="padding:20px; text-align:center; color:white; background:#2f2f32;">
-                <p style="font-size:16px; margin-bottom:12px;">📷 이미지를 꾹 눌러 사진첩에 저장하세요</p>
-                <img src="${reader.result}" style="width:100%; border-radius:8px;" />
-              </div>
-            `;
-          };
-          reader.readAsDataURL(blob);
-          return;
         }
 
         // ✅ PC: 자동 다운로드
