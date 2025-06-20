@@ -284,7 +284,7 @@ function readURL(input) {
       document.querySelector(".file-upload-content").style.display = "block";
       document.querySelector(".image-upload-wrap").style.display = "none";
 
-      mixpanel.track("main-face-upload", {
+      mixpanel.track("얼굴 이미지 등록", {
         filename: input.files[0].name,
         timestamp: new Date().toISOString(),
       });
