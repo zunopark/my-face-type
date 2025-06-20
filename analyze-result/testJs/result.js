@@ -358,82 +358,82 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 });
 
-const test = () => {
-  setTimeout(async () => {
-    if (sessionStorage.getItem("manualReportSaved") === "true") {
-      return;
-    }
-    const confirmed = confirm(
-      "AI 관상가 양반은 개인정보 보호를 위해\n어떠한 회원님의 사진도 저장하지 않습니다.\n\n🧾 분석 보고서를 이미지로 보관하시겠습니까?"
-    );
-    sessionStorage.setItem("reportSavePromptShown", "true");
+// const test = () => {
+//   setTimeout(async () => {
+//     if (sessionStorage.getItem("manualReportSaved") === "true") {
+//       return;
+//     }
+//     const confirmed = confirm(
+//       "AI 관상가 양반은 개인정보 보호를 위해\n어떠한 회원님의 사진도 저장하지 않습니다.\n\n🧾 분석 보고서를 이미지로 보관하시겠습니까?"
+//     );
+//     sessionStorage.setItem("reportSavePromptShown", "true");
 
-    if (confirmed) {
-      if (!confirmed) return;
+//     if (confirmed) {
+//       if (!confirmed) return;
 
-      const target = document.querySelector(".main_content_wrap");
+//       const target = document.querySelector(".main_content_wrap");
 
-      // 캡처
-      const originalCanvas = await html2canvas(target, {
-        backgroundColor: "#2f2f32",
-        scale: 2,
-        useCORS: true,
-      });
+//       // 캡처
+//       const originalCanvas = await html2canvas(target, {
+//         backgroundColor: "#2f2f32",
+//         scale: 2,
+//         useCORS: true,
+//       });
 
-      // 패딩 추가
-      const padding = 100;
-      const paddedCanvas = document.createElement("canvas");
-      paddedCanvas.width = originalCanvas.width + padding * 2;
-      paddedCanvas.height = originalCanvas.height;
+//       // 패딩 추가
+//       const padding = 100;
+//       const paddedCanvas = document.createElement("canvas");
+//       paddedCanvas.width = originalCanvas.width + padding * 2;
+//       paddedCanvas.height = originalCanvas.height;
 
-      const ctx = paddedCanvas.getContext("2d");
-      ctx.fillStyle = "#2f2f32";
-      ctx.fillRect(0, 0, paddedCanvas.width, paddedCanvas.height);
-      ctx.drawImage(originalCanvas, padding, 0);
+//       const ctx = paddedCanvas.getContext("2d");
+//       ctx.fillStyle = "#2f2f32";
+//       ctx.fillRect(0, 0, paddedCanvas.width, paddedCanvas.height);
+//       ctx.drawImage(originalCanvas, padding, 0);
 
-      // 파일명 추출
-      const qs = new URLSearchParams(location.search);
-      const type = qs.get("type");
-      const typeNameMap = {
-        base: "프리미엄 관상 심층 분석 보고서",
-        wealth: "관상 재물 심층 분석 보고서",
-        marriage: "관상 결혼 심층 분석 보고서",
-        love: "관상 연애 심층 분석 보고서",
-      };
-      const fileName = typeNameMap[type] || "관상 분석 보고서";
+//       // 파일명 추출
+//       const qs = new URLSearchParams(location.search);
+//       const type = qs.get("type");
+//       const typeNameMap = {
+//         base: "프리미엄 관상 심층 분석 보고서",
+//         wealth: "관상 재물 심층 분석 보고서",
+//         marriage: "관상 결혼 심층 분석 보고서",
+//         love: "관상 연애 심층 분석 보고서",
+//       };
+//       const fileName = typeNameMap[type] || "관상 분석 보고서";
 
-      // 저장 처리
-      paddedCanvas.toBlob(async (blob) => {
-        const file = new File([blob], `${fileName}.png`, { type: "image/png" });
+//       // 저장 처리
+//       paddedCanvas.toBlob(async (blob) => {
+//         const file = new File([blob], `${fileName}.png`, { type: "image/png" });
 
-        // 모바일 Web Share API
-        if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
-          if (navigator.canShare && navigator.canShare({ files: [file] })) {
-            try {
-              await navigator.share({
-                title: fileName,
-                text: "AI 관상가 양반 분석 리포트",
-                files: [file],
-              });
-              sessionStorage.setItem("manualReportSaved", "true");
-              return;
-            } catch (err) {
-              console.log("Web Share 실패 또는 취소", err);
-            }
-          }
-        }
+//         // 모바일 Web Share API
+//         if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
+//           if (navigator.canShare && navigator.canShare({ files: [file] })) {
+//             try {
+//               await navigator.share({
+//                 title: fileName,
+//                 text: "AI 관상가 양반 분석 리포트",
+//                 files: [file],
+//               });
+//               sessionStorage.setItem("manualReportSaved", "true");
+//               return;
+//             } catch (err) {
+//               console.log("Web Share 실패 또는 취소", err);
+//             }
+//           }
+//         }
 
-        // fallback or PC: 다운로드
-        const link = document.createElement("a");
-        link.href = URL.createObjectURL(blob);
-        link.download = `${fileName}.png`;
-        link.click();
-        URL.revokeObjectURL(link.href);
+//         // fallback or PC: 다운로드
+//         const link = document.createElement("a");
+//         link.href = URL.createObjectURL(blob);
+//         link.download = `${fileName}.png`;
+//         link.click();
+//         URL.revokeObjectURL(link.href);
 
-        sessionStorage.setItem("manualReportSaved", "true");
-      }, "image/png");
-    }
-  }, 600); // UI 렌더 후 약간의 여유 (0.6초)
-};
+//         sessionStorage.setItem("manualReportSaved", "true");
+//       }, "image/png");
+//     }
+//   }, 600); // UI 렌더 후 약간의 여유 (0.6초)
+// };
 
-test();
+// test();
