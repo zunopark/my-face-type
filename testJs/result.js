@@ -15,10 +15,51 @@ async function initAnalysisDB() {
   request.onsuccess = function (event) {
     analysisDb = event.target.result;
     console.log("✅ FaceAnalysisDB 초기화 완료");
+    validateAndMaybeResetDB(); // 💥 여기서 자동 구조 검사 실행
   };
 
   request.onerror = function (event) {
     console.error("❌ FaceAnalysisDB 오류", event);
+  };
+}
+
+// 1-2. 자동 구조 점검 및 초기화
+async function validateAndMaybeResetDB() {
+  try {
+    const results = await getAllResults();
+
+    const corrupted = results.some((r) => {
+      return (
+        !r ||
+        typeof r.id !== "string" ||
+        typeof r.timestamp !== "string" ||
+        typeof r.features !== "string" ||
+        typeof r.imageBase64 !== "string"
+      );
+    });
+
+    if (corrupted) {
+      console.warn("⚠️ DB 데이터 중 필수값 누락 발견 → 자동 초기화");
+      await resetAnalysisDB(true);
+    } else {
+      console.log("✅ DB 구조 및 값 점검 통과");
+    }
+  } catch (e) {
+    console.error("❌ DB 점검 중 오류", e);
+    await resetAnalysisDB(true);
+  }
+}
+
+// 1-3. DB 초기화
+function resetAnalysisDB(silent = false) {
+  const req = indexedDB.deleteDatabase("FaceAnalysisDB");
+  req.onsuccess = () => {
+    console.log("✅ DB 초기화 완료");
+    if (!silent) alert("DB가 초기화되었습니다. 새로고침 해주세요.");
+  };
+  req.onerror = (event) => {
+    console.error("❌ DB 초기화 실패", event);
+    if (!silent) alert("DB 초기화 실패");
   };
 }
 
@@ -104,9 +145,7 @@ async function analyzeFaceFeatureOnly(file, imageBase64) {
       paid: false,
       purchasedAt: null,
       timestamp: new Date().toISOString(),
-
-      // ✅ Gemini 분석 완료 여부
-      analyzed: false, // ← 이 필드만 있으면 끝!
+      analyzed: false,
     };
 
     mixpanel.track("얼굴 특징 분석 저장", {
