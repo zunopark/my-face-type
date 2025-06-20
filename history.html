@@ -4,7 +4,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta charset="UTF-8" />
     <title>관상 분석 기록</title>
-    <link rel="stylesheet" href="styles/style.css" />
+    <link rel="stylesheet" href="testStyles/style.css" />
   </head>
   <body>
     <div class="main_body_wrap">
@@ -12,12 +12,8 @@
       <header class="header_chat">
         <div class="header_chat_wrap">
           <a class="header_chat_title" href="/"> 관상 </a>
-          <!-- <a class="header_chat_title" href="/premium">
-            프리미엄
-          </a> -->
           <a class="header_chat_title" href="/animalface"> 동물상 </a>
 
-          <a class="header_chat_title" href="/premium"> 재물 관상 </a>
           <a
             href="/history.html"
             class="header_chat_title header_chat_right header_selected"
@@ -78,48 +74,60 @@
       function renderHistory(results) {
         const container = document.getElementById("resultHistory");
 
-        if (results.length === 0) {
+        // ✅ 결제된 항목만 필터링
+        const paidResults = results.filter((r) => r.paid);
+
+        if (paidResults.length === 0) {
           container.innerHTML = `
       <div class="no-results">
-        <p>아직 분석한 관상이 없습니다.</p>
+        <p>결제한 분석 결과가 아직 없습니다.</p>
         <a href="/" class="view-face-button">AI 관상 보러 가기</a>
       </div>
     `;
           return;
         }
 
-        // 결과 수 표시
+        // ✅ 결과 수 표시
         document.getElementById(
           "history-count"
-        ).textContent = `(${results.length}개)`;
+        ).textContent = `(${paidResults.length}개)`;
 
-        results.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+        // ✅ 최신순 정렬
+        paidResults.sort(
+          (a, b) => new Date(b.timestamp) - new Date(a.timestamp)
+        );
 
-        results.forEach((r) => {
+        // ✅ 한글 타입명 매핑
+        const typeMap = {
+          base: "프리미엄 관상 심층 분석 보고서",
+          wealth: "재물 관상 심층 분석 보고서",
+          marriage: "결혼 관상 심층 분석 보고서",
+          love: "연애 관상 심층 분석 보고서",
+          job: "직업 관상 심층 분석 보고서",
+        };
+
+        // ✅ 렌더링
+        paidResults.forEach((r) => {
           const div = document.createElement("div");
-          div.className = "resultHistory " + (r.paid ? "paid" : "unpaid");
+          div.className = "resultHistory paid";
           div.innerHTML = `
-            <a href="/analyze-result/?id=${r.id}&type=${r.type}">
-        
-
-            <div class="resultHistory_paid">${
-              r.paid ? "✅ 결제 완료" : "🔒 상세 분석 미결제"
-            }</div>
-            <div class="resultHistory_image_wrap">
-                <div class="image_square_frame2">
-                    <img
-                        class="resultHistory_image"
-                        src="${r.imageBase64}"
-                        alt="AI 관상 분석 결과"
-                    />
-                </div>
-                <div class="resultHistory_summary">${r.summary}</div>
-            </div>
-          
-            <div class="resultHistory_bottom">👉 상세 보기</div>
-            <div class="resultHistory_date">${new Date(
-              r.timestamp
-            ).toLocaleString()}</div>
+      <a href="/analyze-result/?id=${r.id}&type=${r.type}">
+        <div class="resultHistory_paid">✅ 결제 완료</div>
+        <div class="resultHistory_image_wrap">
+          <div class="image_square_frame2">
+            <img
+              class="resultHistory_image"
+              src="${r.imageBase64}"
+              alt="AI 관상 분석 결과"
+            />
+          </div>
+          <div class="resultHistory_summary">${
+            typeMap[r.type] || "관상 분석"
+          }</div>
+        </div>
+        <div class="resultHistory_date">${new Date(
+          r.timestamp
+        ).toLocaleString()}</div>
       </a>
     `;
           container.appendChild(div);

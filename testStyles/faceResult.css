@@ -24,8 +24,10 @@
 }
 .result-mask {
   position: absolute;
-  top: 0; left: 0;
-  width: 100%; height: 100%;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
   pointer-events: none;
   overflow: hidden;
   display: flex;
@@ -36,15 +38,29 @@
 /* 블러 마스크 배경 */
 .blur-overlay {
   position: absolute;
-  top: 0; left: 0;
-  width: 100%; height: 100%;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
 
   /* 상단 10%부터 점점 블러 강하게 보이게 */
-  mask-image: linear-gradient(to bottom, transparent 0%, transparent 10%, #b6ad00 15%, #b6ad00 100%);
-  -webkit-mask-image: linear-gradient(to bottom, transparent 0%, transparent 10%, #b6ad00 15%, #b6ad00 100%);
-  
+  mask-image: linear-gradient(
+    to bottom,
+    transparent 0%,
+    transparent 10%,
+    #b6ad00 15%,
+    #b6ad00 100%
+  );
+  -webkit-mask-image: linear-gradient(
+    to bottom,
+    transparent 0%,
+    transparent 10%,
+    #b6ad00 15%,
+    #b6ad00 100%
+  );
+
   pointer-events: none;
 }
 
@@ -139,10 +155,19 @@
 }
 
 /* 스크롤바 감추기 (선택) */
-.review-section::-webkit-scrollbar { height: 0; }
-.review-section { scrollbar-width: none; } /* Firefox */
+.review-section::-webkit-scrollbar {
+  height: 0;
+}
+.review-section {
+  scrollbar-width: none;
+} /* Firefox */
 
-.review-meta { font-size: 12px; color: #9c9c9c; padding-top: 2px; padding-bottom: 8px;}
+.review-meta {
+  font-size: 12px;
+  color: #9c9c9c;
+  padding-top: 2px;
+  padding-bottom: 8px;
+}
 
 /* ===== 서비스 지표 박스 ===== */
 .service-stats {
@@ -176,17 +201,22 @@
 
 /* 작은 화면에서 두 줄로 자동 줄바꿈 */
 @media (max-width: 480px) {
-  .service-stats { flex-wrap: wrap; }
-  .stat-item  { margin-bottom: 12px; }
+  .service-stats {
+    flex-wrap: wrap;
+  }
+  .stat-item {
+    margin-bottom: 12px;
+  }
 }
-
 
 .modal {
   position: fixed;
   z-index: 1000;
-  left: 0; top: 0;
-  width: 100%; height: 100%;
-  background-color: rgba(0,0,0,0.6);
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -250,6 +280,7 @@
 .resultHistory_image_wrap {
   width: 100%;
   display: flex;
+  align-items: center;
   margin-right: auto;
 }
 
@@ -261,7 +292,7 @@
   margin-right: 12px;
 }
 
-.resultHistory_image { 
+.resultHistory_image {
   width: 100%;
   height: 100%;
   object-fit: cover; /* ✅ 프레임을 채우며 비율 맞추고 자르기 */
@@ -280,12 +311,10 @@
 }
 
 .resultHistory_summary {
-  display: -webkit-box;
-  -webkit-line-clamp: 2; /* 최대 2줄 */
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-  text-overflow: ellipsis; /* 줄임표(...) 추가 */
-  width: 90%;
+  color: whitesmoke;
+  margin-top: 2px;
+  font-weight: 700;
+  font-size: 20px;
 }
 
 .resultHistory_bottom {
@@ -318,16 +347,17 @@
   background-color: #d4b81a;
 }
 
-
 /* 우측 상단 버튼 */
 .clear-btn {
-  margin-left: auto;     /* 남은 공간 모두 ⇒ 버튼 왼쪽 여백 */
+  margin-left: auto; /* 남은 공간 모두 ⇒ 버튼 왼쪽 여백 */
   padding: 6px 10px;
   font-size: 13px;
   color: #fff;
-  background: #eb5757;          /* 빨간색 강조 */
+  background: #eb5757; /* 빨간색 강조 */
   border: none;
   border-radius: 6px;
   cursor: pointer;
 }
-.clear-btn:hover { opacity: .85; }
+.clear-btn:hover {
+  opacity: 0.85;
+}
