@@ -280,14 +280,3 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
   }
 });
-
-function test() {
-  setTimeout(() => {
-    alert(
-      "AI 관상가 양반은 개인정보 보호를 위해\n사진과 리포트 내용을 일절 저장하지 않습니다.\n\n🧾 오른쪽 상단 [보고서 저장] 버튼을 눌러\n보고서를 회원님 기기에 보관해 두시길 바랍니다."
-    );
-    sessionStorage.setItem("reportSavePromptShown", "true");
-  }, 600); // 결과 렌더링 후 약간의 여유
-}
-
-test();
