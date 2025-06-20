@@ -126,7 +126,7 @@ function renderFeatureResult(data) {
     .map(
       (product) => `
   <div class="product-card" onclick="
-        mixpanel.track('report_product_clicked', {
+        mixpanel.track('보고서 상품 클릭', {
         id: '${data.id}',
         product_key: '${product.key}',
         product_title: '${product.title}'
@@ -187,7 +187,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   renderFeatureResult(result);
 
   // ✅ Mixpanel: 결과 로드 성공
-  mixpanel.track("face_result_loaded", {
+  mixpanel.track("얼굴 분석 결과 로드 성공", {
     id: result.id,
     timestamp: new Date().toISOString(),
   });

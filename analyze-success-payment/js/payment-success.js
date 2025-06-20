@@ -57,7 +57,7 @@ async function confirmTossPayment() {
     // ✅ DB 업데이트
     await updateFaceAnalysisDB(id, type);
 
-    mixpanel.track("리포트 결제 성공", {
+    mixpanel.track("보고서 결제 최종 성공", {
       id,
       type,
       product_key: type,

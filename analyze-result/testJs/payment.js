@@ -6,7 +6,7 @@ const clientKey = "live_gck_yZqmkKeP8gBaRKPg1WwdrbQRxB9l";
 const customerKey = "customer_" + new Date().getTime();
 
 const paymentWidget = PaymentWidget(clientKey, customerKey);
-paymentWidget.renderPaymentMethods("#payment-method", { value: 16900 });
+paymentWidget.renderPaymentMethods("#payment-method", { value: 500 });
 paymentWidget.renderAgreement("#agreement");
 let isRendered = false;
 
@@ -15,7 +15,7 @@ function openPayment() {
 
   // 항상 다시 위젯을 mount, 버튼 핸들러도 중복 방지!
   if (!isRendered) {
-    paymentWidget.renderPaymentMethods("#payment-method", { value: 16900 });
+    paymentWidget.renderPaymentMethods("#payment-method", { value: 500 });
     paymentWidget.renderAgreement("#agreement");
     isRendered = true;
   }
@@ -47,7 +47,7 @@ async function requestPayment() {
   try {
     await paymentWidget.requestPayment({
       orderId: `${type}_${id}_${Date.now()}`,
-      orderName: "재물운 심층 분석 보고서",
+      orderName: "프리미엄 관상 심층 분석 보고서",
       successUrl: `${window.location.origin}/analyze-success-payment/?id=${id}&type=${type}`,
       failUrl: `${window.location.origin}/fail.html?id=${id}&type=${type}`,
       customerName: "고객",
@@ -60,6 +60,13 @@ async function requestPayment() {
 // 버튼 연결
 document.querySelector(".consultBtn").addEventListener("click", () => {
   const { type, id } = getTypeAndIdFromUrl();
+
+  mixpanel.track("상담 신청 버튼 클릭", {
+    reportType: type, // e.g., "wealth", "base"
+    reportId: id, // unique report ID
+    page: window.location.pathname,
+    timestamp: new Date().toISOString(),
+  });
 
   openPayment();
 });

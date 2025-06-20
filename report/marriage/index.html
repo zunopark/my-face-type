@@ -478,7 +478,7 @@
       mixpanel.identify(distinctId);
 
       // 추적 예시
-      mixpanel.track("premium_base_report_page_viewed", {
+      mixpanel.track("결혼운 보고서 랜딩 페이지 방문", {
         url: window.location.href,
         userAgent: navigator.userAgent,
         timestamp: new Date().toISOString(),
@@ -497,7 +497,7 @@
         }
       }
       function trackCTA() {
-        mixpanel.track("premium_report_cta_clicked", {
+        mixpanel.track("보고서 보기 버튼 클릭", {
           product_key: "base",
           price: 9900,
           discount: 42,
@@ -506,11 +506,6 @@
 
         // 결제 모달 열기
         document.getElementById("paymentOverlay").style.display = "block";
-
-        mixpanel.track("payment_modal_opened", {
-          product_name: "결혼 심층 분석 보고서",
-          price: 9900,
-        });
       }
     </script>
     <script>
@@ -532,10 +527,9 @@
       document
         .getElementById("payment-button")
         .addEventListener("click", () => {
-          mixpanel.track("payment_attempted", {
-            product: "처음 보는 내 관상",
+          mixpanel.track("보고서 결제 버튼 클릭", {
+            product: "결혼운 관상",
             method: "TossPayments", // 필요시 실제 연동 시점에 변경 가능
-            amount: 500,
           });
         });
 

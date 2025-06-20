@@ -248,6 +248,7 @@
       }
 
       async function renderResultPage() {
+        // ───────────────── URL 파라미터 & DB 로드 ─────────────────
         const urlParams = new URLSearchParams(window.location.search);
         const id = urlParams.get("id");
         if (!id) return;
@@ -256,9 +257,24 @@
         const data = await getResultById(id);
         if (!data) return;
 
-        // 이미지 삽입
+        /* ---------- 1. 마크다운 원본 선택 ---------- */
+        // 상세 본문: detail → normalized.detail 순으로 찾기
+        const detailMd =
+          (data.detail && data.detail.trim()) ||
+          (data.normalized && data.normalized.detail) ||
+          "";
 
-        // 결과 삽입
+        const summaryMd =
+          (data.summary && data.summary.trim()) ||
+          (data.normalized && data.normalized.summary) ||
+          "";
+
+        // 특징 리스트(눈·코·입·…): 줄바꿈을 2개로 치환해 마크다운 단락 유지
+        const featuresMd = data.features
+          ? data.features.replace(/\n/g, "\n\n")
+          : "";
+
+        /* ---------- 2. 뷰에 삽입할 HTML ---------- */
         const resultContainer = document.querySelector(".label-container");
         const borderContainer = document.querySelector(".border");
         borderContainer.innerHTML = `
@@ -284,13 +300,18 @@
         const todayStr = `${monthStr}월 ${dayStr}일`; // "6월 3일"
 
         resultContainer.innerHTML = `
-      <div class="face-summary-section">
-        <div class="face-summary">${marked.parse(data.summary)}</div>
-      </div>
-      <div class="face-full-section-wrapper">
-        <div class="face-full-report">${marked.parse(data.detail)}</div>
+            <div class="face-summary-section">
         ${
-          data.paid
+          summaryMd
+            ? `<div class="face-summary">${marked.parse(summaryMd)}</div>`
+            : ""
+        }
+      </div>
+
+      <div class="face-full-section-wrapper">
+        <div class="face-full-report">${marked.parse(detailMd)}</div>
+        ${
+          !data.paid
             ? ""
             : `
         <div class="result-mask">
@@ -303,22 +324,6 @@
                     <div class="mask-text-btn" onclick="trackAndStartPayment('${data.id}')">전체 분석 결과 확인하기</div>
                 </div>
                 <div class="mask-text-btn-sub">출시 기념 6월 할인 - 지금이 가장 저렴해요</div>
-            </div>
-            <div class="service-stats">
-              <div class="stat-item">
-                <div class="stat-label">분석 구매</div>
-                <div class="stat-value">1,947건</div>
-              </div>
-
-              <div class="stat-item">
-                <div class="stat-label">만족해요</div>
-                <div class="stat-value">94.8%</div>
-              </div>
-
-              <div class="stat-item">
-                <div class="stat-label">글자 수</div>
-                <div class="stat-value">3,000+자</div>
-              </div>
             </div>
             <div class="review-section">
               <div class="review-scroll">

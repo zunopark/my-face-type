@@ -61,13 +61,6 @@ async function requestPayment() {
 document.querySelector(".consultBtn").addEventListener("click", () => {
   const { type, id } = getTypeAndIdFromUrl();
 
-  mixpanel.track("Click Start Consultation", {
-    reportType: type, // e.g., "wealth", "base"
-    reportId: id, // unique report ID
-    page: window.location.pathname,
-    timestamp: new Date().toISOString(),
-  });
-
   openPayment();
 });
 

@@ -213,7 +213,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     /* ── 5-1. 이미 분석 완료된 경우 ────────────────────────────── */
     if (result.analyzed && result.normalized) {
       renderResultNormalized(result.normalized, type);
-      mixpanel.track("report_result_loaded_from_db", {
+      mixpanel.track("db에서 관상 분석 보고서 로드 완료", {
         id,
         type,
         source: "indexeddb",
@@ -233,7 +233,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 
     renderLoading();
-    mixpanel.track("report_result_requested_from_server", {
+    mixpanel.track("서버로부터 관상 응답 받기 완료", {
       id,
       type,
       has_features: true,
@@ -254,7 +254,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     setTimeout(() => {
       renderResultNormalized(normalized, type);
 
-      mixpanel.track("report_result_generated", {
+      mixpanel.track("관상 보고서 생성 완료", {
         id,
         type,
         analyzed: true,

@@ -1,17 +1,18 @@
-@import 'reset.css';
-@import 'faceResult.css';
-@import 'common.css';
-@import 'gender.css';
-@import 'fileupload.css';
-@import 'picture.css';
-@import 'header.css';
-@import 'result.css';
-@import 'footer.css';
-@import 'ad.css';
-@import 'media.css';
-@import 'faceAnalysis.css';
-@import 'faceProduct.css';
-@import 'onlyThisFile.css';
+@import "reset.css";
+@import "faceResult.css";
+@import "common.css";
+@import "gender.css";
+@import "fileupload.css";
+@import "picture.css";
+@import "header.css";
+@import "result.css";
+@import "footer.css";
+@import "ad.css";
+@import "media.css";
+@import "faceAnalysis.css";
+@import "faceProduct.css";
+@import "onlyThisFile.css";
+@import "payment.css";
 
 .nostore {
   color: rgb(203, 203, 203);
@@ -97,11 +98,10 @@
   filter: blur(4px);
 }
 
-
 @font-face {
-  font-family: 'MapoBackpacking';
-  src: url('https://gcore.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/MapoBackpackingA.woff')
-    format('woff');
+  font-family: "MapoBackpacking";
+  src: url("https://gcore.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/MapoBackpackingA.woff")
+    format("woff");
   font-weight: normal;
   font-style: normal;
 }
@@ -123,12 +123,12 @@
   /* padding-top: 30px; */
   margin-bottom: 10px;
   color: #ffffff;
-  font-family: 'KimjungchulMyungjo-Bold';
+  font-family: "KimjungchulMyungjo-Bold";
 }
 
 .main__ai__title .title {
   font-size: 32px;
-  font-family: 'KimjungchulMyungjo-Bold';
+  font-family: "KimjungchulMyungjo-Bold";
   margin-bottom: 6px;
 }
 
@@ -243,7 +243,7 @@
 }
 
 .star__list__img {
-  font-family: 'Yeon Sung', cursive;
+  font-family: "Yeon Sung", cursive;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -328,47 +328,38 @@
 
 .onetwo {
   color: rgb(241, 241, 241);
-
 }
 
 .twothree {
   color: rgb(241, 241, 241);
-
 }
 
 .threefour {
   color: rgb(241, 241, 241);
-
 }
 
 .fourfive {
   color: rgb(241, 241, 241);
-
 }
 
 .fivesix {
   color: rgb(241, 241, 241);
-
 }
 
 .sixseven {
   color: rgb(241, 241, 241);
-
 }
 
 .seveneight {
   color: rgb(241, 241, 241);
-
 }
 
 .eightnine {
   color: rgb(241, 241, 241);
-
 }
 
 .nineten {
   color: rgb(241, 241, 241);
-
 }
 
 .bold {
@@ -386,7 +377,7 @@
   width: 320px;
   margin-top: 20px;
   padding: 20px;
-  font-family: 'Yeon Sung', cursive;
+  font-family: "Yeon Sung", cursive;
   text-decoration: none;
   color: black;
   background-color: white;
