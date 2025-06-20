@@ -312,7 +312,7 @@
         const file = new File([blob], `${fileName}.png`, { type: "image/png" });
 
         if (isMobile()) {
-          // ✅ 모바일: Web Share API → fallback
+          // ✅ 모바일: Web Share만 시도하고 실패 시 아무 것도 하지 않음
           if (navigator.canShare && navigator.canShare({ files: [file] })) {
             try {
               await navigator.share({
@@ -320,14 +320,14 @@
                 text: "AI 관상가 양반 분석 리포트",
                 files: [file],
               });
-              return;
             } catch (err) {
-              console.log("공유 취소 또는 실패", err);
+              console.log("📱 모바일 공유 취소됨 또는 실패:", err);
+              // ❌ fallback 삭제! 아무 것도 하지 않음
             }
+          } else {
+            alert("⚠️ 이 브라우저는 이미지 공유를 지원하지 않습니다.");
           }
-
-          // ✅ fallback: 이미지 띄우기
-          const reader = new FileReader();
+          return;
         }
 
         // ✅ PC: 자동 다운로드
@@ -337,7 +337,6 @@
         link.click();
         URL.revokeObjectURL(link.href);
       }
-
       document
         .getElementById("save-page-btn")
         .addEventListener("click", async () => {
