@@ -301,30 +301,77 @@
 
     <!-- 저장 기능 -->
     <script>
+      function isMobile() {
+        return /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+      }
+
+      async function saveReportCanvas(canvas, fileName) {
+        const blob = await new Promise((resolve) =>
+          canvas.toBlob(resolve, "image/png")
+        );
+        const file = new File([blob], `${fileName}.png`, { type: "image/png" });
+
+        if (isMobile()) {
+          // ✅ 모바일: Web Share API → fallback
+          if (navigator.canShare && navigator.canShare({ files: [file] })) {
+            try {
+              await navigator.share({
+                title: fileName,
+                text: "AI 관상가 양반 분석 리포트",
+                files: [file],
+              });
+              return;
+            } catch (err) {
+              console.log("공유 취소 또는 실패", err);
+            }
+          }
+
+          // ✅ fallback: 이미지 띄우기
+          const reader = new FileReader();
+          reader.onloadend = () => {
+            document.body.innerHTML = `
+              <div style="padding:20px; text-align:center; color:white; background:#2f2f32;">
+                <p style="font-size:16px; margin-bottom:12px;">📷 이미지를 꾹 눌러 사진첩에 저장하세요</p>
+                <img src="${reader.result}" style="width:100%; border-radius:8px;" />
+              </div>
+            `;
+          };
+          reader.readAsDataURL(blob);
+          return;
+        }
+
+        // ✅ PC: 자동 다운로드
+        const link = document.createElement("a");
+        link.href = URL.createObjectURL(blob);
+        link.download = `${fileName}.png`;
+        link.click();
+        URL.revokeObjectURL(link.href);
+      }
+
       document
         .getElementById("save-page-btn")
         .addEventListener("click", async () => {
           const target = document.querySelector(".main_content_wrap");
 
-          // html2canvas로 캡처
+          // 캡처
           const originalCanvas = await html2canvas(target, {
             backgroundColor: "#2f2f32",
             scale: 2,
             useCORS: true,
           });
 
-          // 패딩 값 설정
+          // 패딩 추가
           const padding = 100;
           const paddedCanvas = document.createElement("canvas");
           paddedCanvas.width = originalCanvas.width + padding * 2;
           paddedCanvas.height = originalCanvas.height;
 
           const ctx = paddedCanvas.getContext("2d");
-          ctx.fillStyle = "#2f2f32"; // 배경색
+          ctx.fillStyle = "#2f2f32";
           ctx.fillRect(0, 0, paddedCanvas.width, paddedCanvas.height);
           ctx.drawImage(originalCanvas, padding, 0);
 
-          // URL에서 type 추출 후 이름 매핑
+          // 파일명 설정
           const qs = new URLSearchParams(location.search);
           const type = qs.get("type");
           const typeNameMap = {
@@ -335,14 +382,8 @@
           };
           const fileName = typeNameMap[type] || "관상 분석 보고서";
 
-          // 저장
-          paddedCanvas.toBlob((blob) => {
-            const link = document.createElement("a");
-            link.href = URL.createObjectURL(blob);
-            link.download = `${fileName}.png`;
-            link.click();
-            URL.revokeObjectURL(link.href);
-          }, "image/png");
+          // 상황별 저장 처리
+          await saveReportCanvas(paddedCanvas, fileName);
         });
     </script>
   </body>
