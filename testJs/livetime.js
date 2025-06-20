@@ -1,19 +1,21 @@
 // 실시간 js
-const countNum = document.querySelector(`.count__num`)
+const countNum = document.querySelector(`.count__num`);
 
 if (countNum) {
   function handleCountNum() {
-    let countNumber = 15
+    let countNumber = 15;
+    let countNumber2 = 2;
     function countUp() {
-      if (countNumber < 897) {
-        countNumber = countNumber + 3
-        countNum.innerHTML = `6,211만 2,${countNumber}`
+      if (countNumber < 427) {
+        countNumber = countNumber + 2;
+        countNumber2 = countNumber2 + 3;
+        countNum.innerHTML = `6,${countNumber2}만 5,${countNumber}`;
       }
     }
-    setInterval(countUp, 1)
+    setInterval(countUp, 1);
   }
 
-  handleCountNum()
+  handleCountNum();
 }
 
 // getTime()
