@@ -63,14 +63,14 @@ function renderFeatureResult(data) {
     {
       key: "base",
       emoji: "🐍",
-      title: "부위별 관상 심층 분석 - 어찌 내가 왕이 될 상인가?",
+      title: "처음 보는 내 관상: 부위별 관상 심층 분석 보고서",
       desc: "3,000+자 리포트",
       rating: 4.9,
       views: "4,500+",
       discount: 90,
       price: "500원",
       original_price: 4900,
-      thumbnail: "https://i.ibb.co/1fF6gNtk/base.png",
+      thumbnail: "/img/base.png",
     },
     {
       key: "marriage",
@@ -82,7 +82,7 @@ function renderFeatureResult(data) {
       discount: 42,
       price: "9,900원",
       original_price: 16900,
-      thumbnail: "https://i.ibb.co/N2xLXt92/marriage.png",
+      thumbnail: "/img/marriage.png",
     },
     {
       key: "wealth",
@@ -94,7 +94,7 @@ function renderFeatureResult(data) {
       discount: 52,
       price: "16,900원",
       original_price: 34900,
-      thumbnail: "https://i.ibb.co/zHTZCdM3/wealth.png",
+      thumbnail: "/img/wealth.png",
     },
     // {
     //   key: "job",
@@ -118,7 +118,7 @@ function renderFeatureResult(data) {
       discount: 31,
       price: "6,900원",
       original_price: 9900,
-      thumbnail: "https://i.ibb.co/6RgZwqfG/love.png",
+      thumbnail: "/img/love.png",
     },
   ];
 
