@@ -31,7 +31,7 @@ function closePayment() {
 function getTypeAndIdFromUrl() {
   // /report/{type}/?id=xxx
   const pathSegments = window.location.pathname.split("/");
-  const type = pathSegments[2]; // wealth, base, marriage, ...
+  const type = pathSegments[3]; // wealth, base, marriage, ...
   const params = new URLSearchParams(window.location.search);
   const id = params.get("id");
   return { type, id };
