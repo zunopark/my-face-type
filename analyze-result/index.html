@@ -186,6 +186,13 @@
           >
             ← 다른 사진 또는 보고서
           </a>
+          <a
+            id="save-page-btn"
+            style="cursor: pointer; margin-right: -2px"
+            class="header_chat_title header_chat_right"
+          >
+            보고서 사진으로 저장</a
+          >
         </div>
       </header>
       <div class="main_content_wrap">
@@ -289,5 +296,54 @@
       type="text/javascript"
       src="https://cdn.rawgit.com/dwyl/html-form-send-email-via-google-script-without-server/master/form-submission-handler.js"
     ></script>
+    <!-- html2canvas 라이브러리 로딩 -->
+    <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+
+    <!-- 저장 기능 -->
+    <script>
+      document
+        .getElementById("save-page-btn")
+        .addEventListener("click", async () => {
+          const target = document.querySelector(".main_content_wrap");
+
+          // html2canvas로 캡처
+          const originalCanvas = await html2canvas(target, {
+            backgroundColor: "#2f2f32",
+            scale: 2,
+            useCORS: true,
+          });
+
+          // 패딩 값 설정
+          const padding = 100;
+          const paddedCanvas = document.createElement("canvas");
+          paddedCanvas.width = originalCanvas.width + padding * 2;
+          paddedCanvas.height = originalCanvas.height;
+
+          const ctx = paddedCanvas.getContext("2d");
+          ctx.fillStyle = "#2f2f32"; // 배경색
+          ctx.fillRect(0, 0, paddedCanvas.width, paddedCanvas.height);
+          ctx.drawImage(originalCanvas, padding, 0);
+
+          // URL에서 type 추출 후 이름 매핑
+          const qs = new URLSearchParams(location.search);
+          const type = qs.get("type");
+          const typeNameMap = {
+            base: "프리미엄 관상 심층 분석 보고서",
+            wealth: "관상 재물 심층 분석 보고서",
+            marriage: "관상 결혼 심층 분석 보고서",
+            love: "관상 연애 심층 분석 보고서",
+          };
+          const fileName = typeNameMap[type] || "관상 분석 보고서";
+
+          // 저장
+          paddedCanvas.toBlob((blob) => {
+            const link = document.createElement("a");
+            link.href = URL.createObjectURL(blob);
+            link.download = `${fileName}.png`;
+            link.click();
+            URL.revokeObjectURL(link.href);
+          }, "image/png");
+        });
+    </script>
   </body>
 </html>

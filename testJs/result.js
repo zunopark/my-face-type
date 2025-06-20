@@ -15,7 +15,9 @@ async function initAnalysisDB() {
   request.onsuccess = function (event) {
     analysisDb = event.target.result;
     console.log("✅ FaceAnalysisDB 초기화 완료");
-    validateAndMaybeResetDB(); // 💥 여기서 자동 구조 검사 실행
+    setTimeout(() => {
+      validateAndMaybeResetDB();
+    }, 100);
   };
 
   request.onerror = function (event) {
