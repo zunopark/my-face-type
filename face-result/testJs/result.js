@@ -91,7 +91,7 @@ function renderFeatureResult(data) {
       key: "wealth",
       url: (id) => `/report/wealth/?id=${encodeURIComponent(id)}&type=wealth`,
       emoji: "💸",
-      title: "타고난 부: 내 관상 재물운과 평생 모을 재산은?",
+      title: "[가장 인기] 타고난 부: 내 관상 재물운과 평생 모을 재산은?",
       desc: "10,000+자 리포트",
       rating: 4.9,
       views: "10,000+",
@@ -134,11 +134,7 @@ function renderFeatureResult(data) {
     <div class="product-title">${product.title}</div>
     <div class="product-meta">
       <div class="product-stats">총 ${product.desc}</div>
-      <div class="product-meta-price">
-        <div class="product-original-price">${product.original_price.toLocaleString()}원</div>
-        <div class="discount">${product.discount}%</div>
-        <div class="product-price">${product.price}</div>
-      </div>
+ 
     </div>
   </div>
 </div>
@@ -148,8 +144,8 @@ function renderFeatureResult(data) {
 
   document.getElementById("label-container").innerHTML = `
 <div class="ai-expect-title">
-  <h3 style="font-size:22px;font-weight:700;">얼굴 특징 분석이 완료됐습니다!</h3>
-  <div class="ai-expect-sub" style="margin-bottom: 12px;">아래 항목에서 궁금한 분석을 선택해보세요.</div>
+  <h3 style="font-size:22px;font-weight:700;">얼굴 분석을 완료했습니다!</h3>
+  <div class="ai-expect-sub" style="margin-bottom: 12px;">아래 항목에서 원하는 보고서를 선택하세요.</div>
 </div>
 <div class="face-product-section">${productCards}</div>
 `;

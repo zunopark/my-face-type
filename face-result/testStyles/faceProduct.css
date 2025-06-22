@@ -14,7 +14,7 @@
 
 .ai-expect-sub {
   font-size: 15px;
-  color: #66deff;
+  color: #ffc721;
   font-weight: 700;
 }
 
@@ -84,7 +84,7 @@
 }
 
 .product-title {
-  font-size: 15px;
+  font-size: 16px;
   font-weight: 600;
   color: #f6f6f6;
 }
@@ -96,8 +96,10 @@
 }
 
 .product-stats {
-  color: #7c8ba0;
-  font-size: 12px;
+  color: #66deff;
+  font-size: 16px;
+  margin-bottom: 8px;
+  font-weight: 700;
 }
 
 .product-meta-price {

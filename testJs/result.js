@@ -262,7 +262,7 @@ function renderFeatureResult(data) {
   container.innerHTML = `
     <div class="ai-expect-title">
       <h3 style="font-size:22px;font-weight:700;">얼굴 분석을 완료했어요!</h3>
-      <div class="ai-expect-sub" style="margin-bottom: 12px;">아래 항목에서 원하는 분석 리포트를 선택해보세요.</div>
+      <div class="ai-expect-sub" style="margin-bottom: 12px;">아래 항목에서 원하는 보고서를 선택하세요.</div>
     </div>
     <div class="face-product-section">
       ${productCards}
