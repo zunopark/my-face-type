@@ -111,17 +111,18 @@
   margin-right: 8px;
   text-decoration: line-through;
   padding-bottom: 3px;
+  font-size: 16px;
 }
 
 .product-meta .discount {
   color: #ff5121;
   font-weight: 700;
-  font-size: 20px;
-  margin-right: 4px;
+  font-size: 18px;
+  margin-right: 8px;
 }
 
 .product-price {
-  font-size: 20px;
+  font-size: 18px;
   color: #fdfdfd;
   font-weight: 700;
 }

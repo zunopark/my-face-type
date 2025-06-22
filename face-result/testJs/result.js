@@ -65,11 +65,11 @@ function renderFeatureResult(data) {
       url: (id) => `/base-free.html?id=${encodeURIComponent(id)}&type=base`,
       emoji: "🐍",
       title: "처음 보는 내 관상: 부위별 관상 심층 분석 보고서",
-      desc: "3,000+자 리포트",
+      desc: "3,000+ 글자",
       rating: 4.9,
       views: "4,500+",
       discount: 87,
-      price: "일부 무료",
+      price: "기본 무료",
       original_price: 6900,
       thumbnail: "/img/base.png",
     },
@@ -78,12 +78,12 @@ function renderFeatureResult(data) {
       url: (id) =>
         `/report/marriage/?id=${encodeURIComponent(id)}&type=marriage`,
       emoji: "💍",
-      title: "[매우 중요] 언제, 누구와 결혼할지 얼굴에 다 나와 있다면?",
-      desc: "8,000+자 리포트",
+      title: "결혼운: 언제, 누구와 결혼할지 얼굴에 다 나와 있다면?",
+      desc: "8,000+ 글자",
       rating: 4.8,
       views: "2,300+",
-      discount: 42,
-      price: "9,900원",
+      discount: 72,
+      price: "4,900원",
       original_price: 16900,
       thumbnail: "/img/marriage.png",
     },
@@ -91,12 +91,12 @@ function renderFeatureResult(data) {
       key: "wealth",
       url: (id) => `/report/wealth/?id=${encodeURIComponent(id)}&type=wealth`,
       emoji: "💸",
-      title: "[가장 인기] 타고난 부: 내 관상 재물운과 평생 모을 재산은?",
-      desc: "10,000+ 자 리포트",
+      title: "[가장 인기] 타고난 부: 10억, 100억 내가 평생 모을 재산은?",
+      desc: "10,000+ 글자",
       rating: 4.9,
       views: "10,000+",
-      discount: 52,
-      price: "16,900원",
+      discount: 86,
+      price: "4,900원",
       original_price: 34900,
       thumbnail: "/img/wealth.png",
     },
@@ -105,11 +105,11 @@ function renderFeatureResult(data) {
       url: (id) => `/report/love/?id=${encodeURIComponent(id)}&type=love`,
       emoji: "💖",
       title: "연애 관상: 총 연애 횟수, 내 운명은 어디에?",
-      desc: "6,000+자 리포트",
+      desc: "6,000+ 글자",
       rating: 4.9,
       views: "2,800+",
-      discount: 31,
-      price: "6,900원",
+      discount: 51,
+      price: "4,900원",
       original_price: 9900,
       thumbnail: "/img/love.png",
     },
@@ -149,7 +149,7 @@ function renderFeatureResult(data) {
   document.getElementById("label-container").innerHTML = `
 <div class="ai-expect-title">
   <h3 style="font-size:22px;font-weight:700;">얼굴 분석을 완료했습니다!</h3>
-  <div class="ai-expect-sub" style="margin-bottom: 12px;">아래 항목에서 원하는 보고서를 선택하세요.</div>
+  <div class="ai-expect-sub" style="margin-bottom: 12px;">프리미엄 관상 보고서 출시 기념 (다음주까지)<br/>모든 보고서 - 4,900원</div>
 </div>
 <div class="face-product-section">${productCards}</div>
 `;
