@@ -3,11 +3,14 @@
   .test__upper,
   .submitForm,
   .today__weather__wrap,
-  .lower__comment {
+  .lower__comment,
+  .modal-content,
+  .payment-overlay {
     width: 500px;
   }
 
-  .main__result__content__p,.main__result__content__p2 {
+  .main__result__content__p,
+  .main__result__content__p2 {
     width: 300px;
   }
 
@@ -57,7 +60,9 @@
 }
 @media screen and (max-width: 499px) {
   .main_body_wrap,
-  .header_chat {
+  .header_chat,
+  .modal-content,
+  .payment-overlay {
     width: 100%;
   }
 

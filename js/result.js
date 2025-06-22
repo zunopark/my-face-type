@@ -59,29 +59,33 @@ async function markPaid(id) {
     if (data) {
       data.paid = true;
       data.purchasedAt = new Date().toISOString();
+      if (data.normalized) data.normalized.paid = true;
       store.put(data);
       renderResult(data);
     }
   };
 }
 
+const qs = new URLSearchParams(location.search);
+const pageId = (qs.get("id") || "").trim(); // 사진·결과 ID
+const pageType = (qs.get("type") || "base").trim(); // base | wealth …
+
 // 5. 분석 및 저장 실행 (type: "base" 전용)
-async function analyzeFaceImage(file, imageBase64) {
+async function analyzeFaceImage(file, imageBase64, forceId = null) {
+  renderLoading();
+
   const formData = new FormData();
   formData.append("file", file);
   const resultContainer = document.getElementById("label-container");
 
   try {
-    const response = await fetch("https://port-0-momzzi-fastapi-m7ynssht4601229b.sel4.cloudtype.app/analyze/", {
-      method: "POST",
-      body: formData,
-    });
-
-    const imageTitleWrap = document.querySelector(".ai");
-    imageTitleWrap.classList.add("disblock");
-
-    const noStore = document.querySelector(".nostore");
-    noStore.classList.add("none");
+    const response = await fetch(
+      "https://port-0-momzzi-fastapi-m7ynssht4601229b.sel4.cloudtype.app/analyze/",
+      {
+        method: "POST",
+        body: formData,
+      }
+    );
 
     if (!response.ok) throw new Error("서버 응답 오류");
     const data = await response.json();
@@ -89,8 +93,10 @@ async function analyzeFaceImage(file, imageBase64) {
     const { summary, detail, features } = data;
     if (!summary || !detail) throw new Error("summary/detail 없음");
 
+    const normalized = { isMulti: false, summary, detail };
+
     const result = {
-      id: crypto.randomUUID(),
+      id: forceId ?? crypto.randomUUID(),
       imageBase64,
       features,
       summary,
@@ -99,6 +105,8 @@ async function analyzeFaceImage(file, imageBase64) {
       paid: false,
       purchasedAt: null,
       timestamp: new Date().toISOString(),
+      analyzed: true, // ← 새 필드
+      normalized, // ← 새 필드
     };
 
     mixpanel.track("GEMINI 관상 결과", {
@@ -106,11 +114,21 @@ async function analyzeFaceImage(file, imageBase64) {
     });
 
     await saveToIndexedDB(result);
-    renderResult(result);
 
+    finishLoading();
+    setTimeout(() => {
+      renderResultNormalized(
+        { ...normalized, paid: result.paid, id: result.id },
+        pageType
+      );
+    }, 300);
+
+    renderResult(result);
   } catch (error) {
     console.error("❌ 관상 분석 실패:", error);
     resultContainer.innerHTML = `<p style='color: red;'>분석 중 오류가 발생했습니다. 다시 시도해주세요.</p>`;
+    console.error("❌ 관상 분석 실패:", error);
+    showError("분석 중 오류가 발생했습니다. 다시 시도해주세요.");
   }
 }
 
@@ -126,48 +144,84 @@ function toBase64(file) {
 
 // 7. 분석 결과 렌더링
 function renderResult(data) {
-  const today = new Date();
-  const todayStr = `${today.getMonth() + 1}월 ${today.getDate()}일`;
+  // safety guard
+  if (!data.normalized) {
+    console.error("normalized 데이터가 없습니다:", data);
+    return;
+  }
+  // normalized 내부에도 paid·id 가 필요하면 복사
+  const norm = {
+    ...data.normalized,
+    paid: data.paid ?? false,
+    id: data.id ?? "",
+  };
+  renderResultNormalized(norm, data.type || "base");
+}
 
-  const resultContainer = document.getElementById("label-container");
+/* ─────────── Loading UI (progress bar + 문구) ─────────── */
+let fakeProgress = 0,
+  progressInterval = null,
+  messageInterval = null;
 
-  resultContainer.innerHTML = `
-    <div class="face-summary-section">
-      <div class="face-summary">${marked.parse(data.summary)}</div>
-    </div>
-    <div class="face-full-section-wrapper">
-      <div class="face-full-report">${marked.parse(data.detail)}</div>
-      ${data.paid ? "" : `
-      <div class="result-mask">
-        <div class="blur-overlay"></div>
-        <div class="mask-text-wrap">
-          <div class="mask-text">
-              <div class="mask-text-top">관상학 기반 심층 분석</div>
-              <div class="mask-text-sub">얼굴형, 이마, 눈 등 부위별 세부 관상 분석 + 운명과 인생 경로 + 대인 관계와 인연 + 관상학적 인생 종합 결론<br/><br/></div>
-              <div class="mask-text-btn-wrap">
-                  <div class="mask-text-btn" onclick="trackAndStartPayment('${data.id}')">전체 분석 결과 확인하기</div>
-              </div>
-              <div class="mask-text-btn-sub">출시 기념 6월 할인 이벤트</div>
-          </div>
-          <div class="review-section">
-            <div class="review-scroll">
-              <div class="review-card">⭐️⭐️⭐️⭐️⭐️<br/><span class="review-meta">윤○○</span>와… 진짜 이거 보고 소름. 저보다 저를 더 잘 아는 느낌?</div>
-              <div class="review-card">⭐️⭐️⭐️⭐️⭐️<br/><span class="review-meta">김○○</span>그냥 궁금해서 해봤는데, 생각보다 훨씬 깊고 정확했어요.</div>
-              <div class="review-card">⭐️⭐️⭐️⭐️⭐️<br/><span class="review-meta">박○○</span>좋은 말만 하는 줄 알았는데, 날카롭게 짚어줘서 신뢰감 생겼어요.</div>
-              <div class="review-card">⭐️⭐️⭐️⭐️☆<br/><span class="review-meta">이○○</span>요즘 고민 많았는데 방향 잡는 데 진짜 도움 됐어요.</div>
-              <div class="review-card">⭐️⭐️⭐️⭐️⭐️<br/><span class="review-meta">최○○</span>사주도 봤는데… 이게 더 실전적이에요. 구체적으로 뭐 해야 할지 알겠어요.</div>
-              <div class="review-card">⭐️⭐️⭐️⭐️⭐️<br/><span class="review-meta">장○○</span>솔직히 기대 안 했는데… 위로받았어요. 그냥 고마워요.</div>
-            </div>
-          </div>
-        </div>
-      </div>`}
-    </div>
-  `;
+const loadingMessages = [
+  "얼굴을 분석하는 중입니다...",
+  "전통 관상 데이터를 불러오는 중...",
+  "당신의 운세를 조심스레 살펴보는 중...",
+  "관상 결과 데이터를 참고해 정확도를 높이는 중...",
+  "관상학 고서를 인공지능이 참조하는 중...",
+  "보고서 문장을 정리하는 중입니다...",
+  "조금만 기다려 주세요, 마무리 중입니다...",
+];
+
+function renderLoading() {
+  document.getElementById("label-container").innerHTML = `
+    <div class="loading-box dark-mode">
+      <div id="loading-message" class="loading-text">보고서를 생성 중입니다...</div>
+      <div class="progress-bar-container">
+        <div id="progress-bar" class="progress-bar-fill" style="width:0%"></div>
+      </div>
+    </div>`;
+  const bar = document.getElementById("progress-bar");
+  const msg = document.getElementById("loading-message");
+
+  fakeProgress = 0;
+  clearInterval(progressInterval);
+  progressInterval = setInterval(() => {
+    if (fakeProgress < 94) {
+      fakeProgress += Math.random() * 2.6;
+      bar.style.width = `${Math.min(fakeProgress, 94)}%`;
+    }
+  }, 300);
+
+  let idx = 0;
+  clearInterval(messageInterval);
+  messageInterval = setInterval(() => {
+    idx = (idx + 1) % loadingMessages.length;
+    msg.textContent = loadingMessages[idx];
+  }, 3000);
+  mixpanel.track("기본 분석 보고서 시작", { id: pageId, type: pageType }); // ← 추가
+}
+
+function finishLoading() {
+  clearInterval(progressInterval);
+  clearInterval(messageInterval);
+  const bar = document.getElementById("progress-bar");
+  if (bar) bar.style.width = "100%";
+  mixpanel.track("기본 분석 보고서 완료", { id: pageId, type: pageType }); // ← 추가
+}
+
+function showError(msg) {
+  clearInterval(progressInterval);
+  clearInterval(messageInterval);
+  document.getElementById(
+    "label-container"
+  ).innerHTML = `<div style="color:red; padding:24px; white-space:pre-line;">${msg}</div>`;
+  mixpanel.track("기본 분석 보고서 오류", { id: pageId, error: msg }); // ← 추가
 }
 
 // 8. 결제 유도 트리거
 function trackAndStartPayment(resultId) {
-  mixpanel.track("관상 결제 버튼 클릭", {
+  mixpanel.track("기분 관상 분석 보고서 결제 버튼 클릭", {
     resultId: resultId,
     timestamp: new Date().toISOString(),
   });
@@ -204,11 +258,14 @@ async function startTossPayment(resultId) {
   const clientKey = "live_gck_yZqmkKeP8gBaRKPg1WwdrbQRxB9l"; // 테스트 키
   const customerKey = "customer_" + new Date().getTime();
 
-  document.getElementById("paymentModal").style.display = "block";
+  document.getElementById("paymentOverlay").style.display = "block";
 
   try {
     const paymentWidget = PaymentWidget(clientKey, customerKey);
-    const paymentMethodWidget = paymentWidget.renderPaymentMethods("#payment-method", { value: 1900 });
+    const paymentMethodWidget = paymentWidget.renderPaymentMethods(
+      "#payment-method",
+      { value: 2900 }
+    );
     paymentWidget.renderAgreement("#agreement");
 
     document.getElementById("payment-button").onclick = async () => {
@@ -217,9 +274,19 @@ async function startTossPayment(resultId) {
           orderId: `order_${Date.now()}`,
           orderName: "관상 상세 분석 서비스",
           customerName: "고객",
-          successUrl: `${window.location.origin}/success.html?id=${resultId}`,
-          failUrl: `${window.location.origin}/fail.html`,
+          successUrl: `${
+            window.location.origin
+          }/success.html?id=${encodeURIComponent(
+            resultId
+          )}&type=${encodeURIComponent(pageType)}`,
+          failUrl: `${window.location.origin}/fail.html?id=${encodeURIComponent(
+            resultId
+          )}&type=${encodeURIComponent(pageType)}`,
         });
+        mixpanel.track("기본 분석 보고서 결제 요청 시도", {
+          id: resultId,
+          price: 2900,
+        }); // ← 추가
       } catch (err) {
         alert("❌ 결제 실패: " + err.message);
       }
@@ -229,25 +296,152 @@ async function startTossPayment(resultId) {
   }
 }
 
-function closePaymentModal() {
-  document.getElementById("paymentModal").style.display = "none";
+function closePayment() {
+  document.getElementById("paymentOverlay").style.display = "none";
   document.getElementById("payment-method").innerHTML = "";
   document.getElementById("agreement").innerHTML = "";
 }
 
-// 11. 분석 진행 텍스트 애니메이션
-const aiTexts = [
-  "관상가가 당신의 관상을 분석중..",
-  "당신의 관상을 풀어내는 중입니다..",
-  "조금만 기다려주세요..",
-  "지금 관상 보는 사람이 많아요..",
-  "관상 분석이 진행중이에요.."
-];
+// IndexedDB 준비될 때까지 기다리는 Promise
+function waitForDB() {
+  return new Promise((resolve) => {
+    if (db) return resolve();
+    const timer = setInterval(() => {
+      if (db) {
+        clearInterval(timer);
+        resolve();
+      }
+    }, 100);
+  });
+}
 
-let aiIndex = 0;
-setInterval(() => {
-  const aiEl = document.querySelector(".ai");
-  if (!aiEl) return;
-  aiEl.textContent = aiTexts[aiIndex % aiTexts.length];
-  aiIndex++;
-}, 4000);
+function renderResultNormalized(obj, reportType = "base") {
+  const wrap = document.getElementById("label-container");
+
+  /* ── 멀티 섹션(wealth·marriage·job·love) ── */
+  if (obj.isMulti) {
+    const titles = titleMap[reportType] || [];
+    const html = obj.details
+      .map((sec, i) => {
+        const h = titles[i] ? `📙 ${titles[i]}` : `📙 제${i + 1}장`;
+        return `<h2 style="margin-top:24px">${h}</h2>\n${marked.parse(sec)}`;
+      })
+      .join("<hr/>");
+    wrap.innerHTML = `<div class="result-detail">${html}</div>`;
+    return;
+  }
+
+  /* ── 단일형(base) = 당신이 넣고 싶은 마스킹 UI ── */
+  const paidFlag =
+    obj.paid !== undefined ? obj.paid : window.currentPaid ?? false;
+  const resultId = obj.id ?? ""; // 결제 버튼에서 사용
+
+  wrap.innerHTML = `
+    <div class="face-summary-section">
+      <div class="face-summary">${marked.parse(obj.summary)}</div>
+    </div>
+    <div class="face-full-section-wrapper">
+      <div class="face-full-report">${marked.parse(obj.detail)}</div>
+      ${
+        paidFlag
+          ? ""
+          : `
+      <div class="result-mask">
+        <div class="blur-overlay"></div>
+        <div class="mask-text-wrap">
+          <div class="mask-text">
+            <div class="mask-text-top">관상학 기반 심층 분석</div>
+            <div class="mask-text-sub">
+              얼굴형, 이마, 눈 등 부위별 세부 관상 분석 + 운명과 인생 경로 + 대인 관계와 인연 + 관상학적 인생 종합 결론<br/><br/>
+            </div>
+            <div class="mask-text-btn-wrap">
+              <div class="mask-text-btn" onclick="trackAndStartPayment('${resultId}')">
+                전체 분석 결과 확인하기
+              </div>
+            </div>
+            <div class="mask-text-btn-sub">출시 기념 6월 할인 이벤트</div>
+          </div>
+          <div class="review-section">
+            <div class="review-scroll">
+              <div class="review-card">⭐️⭐️⭐️⭐️⭐️<br/><span class="review-meta">윤○○</span>와… 진짜 이거 보고 소름. 저보다 저를 더 잘 아는 느낌?</div>
+              <div class="review-card">⭐️⭐️⭐️⭐️⭐️<br/><span class="review-meta">김○○</span>그냥 궁금해서 해봤는데, 생각보다 훨씬 깊고 정확했어요.</div>
+              <div class="review-card">⭐️⭐️⭐️⭐️⭐️<br/><span class="review-meta">박○○</span>좋은 말만 하는 줄 알았는데, 날카롭게 짚어줘서 신뢰감 생겼어요.</div>
+              <div class="review-card">⭐️⭐️⭐️⭐️☆<br/><span class="review-meta">이○○</span>요즘 고민 많았는데 방향 잡는 데 진짜 도움 됐어요.</div>
+              <div class="review-card">⭐️⭐️⭐️⭐️⭐️<br/><span class="review-meta">최○○</span>사주도 봤는데… 이게 더 실전적이에요. 구체적으로 뭐 해야 할지 알겠어요.</div>
+              <div class="review-card">⭐️⭐️⭐️⭐️⭐️<br/><span class="review-meta">장○○</span>솔직히 기대 안 했는데… 위로받았어요. 그냥 고마워요.</div>
+            </div>
+          </div>
+        </div>
+      </div>`
+      }
+    </div>
+  `;
+}
+
+function renderImage(base64) {
+  document.getElementById("face-image").src = base64;
+  document.querySelector(".file-upload-content").style.display = "block";
+  document.querySelector(".image-upload-wrap").style.display = "none";
+}
+
+// base64 → File
+async function dataURLtoFile(dataURL, filename = "face.jpg") {
+  const res = await fetch(dataURL);
+  const blob = await res.blob();
+  return new File([blob], filename, { type: blob.type || "image/jpeg" });
+}
+
+async function autoAnalyzeFromUrl(delayMs = 200) {
+  await waitForDB(); // ① DB 준비 대기
+
+  /* ② URL 파라미터 추출 */
+  const params = new URLSearchParams(location.search);
+  const id = (params.get("id") || "").trim();
+  if (!id) return; // id 없으면 종료
+
+  /* ③ IndexedDB 조회 */
+  const tx = db.transaction(["results"], "readonly");
+  const getR = tx.objectStore("results").get(id);
+
+  getR.onsuccess = async () => {
+    const saved = getR.result;
+
+    /* (a) 레코드 자체가 없으면 그냥 리턴하거나,  */
+    /*     서버 재요청 등을 시도하게끔 분기             */
+    if (!saved) {
+      console.warn("❗ IndexedDB에 해당 id 없음:", id);
+      return;
+    }
+
+    /* (b) 이미지가 있으면 즉시 UI에 표시 */
+    if (saved.imageBase64) renderImage(saved.imageBase64);
+
+    /* (c) 이미 분석 + 정규화 되어 있으면 바로 렌더 후 종료 */
+    if (saved.analyzed && saved.normalized) {
+      const norm = {
+        // paid·id를 주입
+        ...saved.normalized,
+        paid: saved.paid ?? false,
+        id: saved.id,
+      };
+      renderResultNormalized(norm, saved.type || "base");
+      return; // 🛑 여기서 끝
+    }
+
+    /* (d) 아직 분석 전이라면 일정 시간 뒤 재분석 진행 */
+    setTimeout(async () => {
+      const file = await dataURLtoFile(saved.imageBase64, `${id}.jpg`);
+      analyzeFaceImage(file, saved.imageBase64, id); // 기존 함수 재사용
+    }, delayMs);
+  };
+
+  getR.onerror = (e) => {
+    console.error("❌ IndexedDB get 실패:", e);
+  };
+}
+
+// 페이지 진입 시 바로 실행
+document.addEventListener("DOMContentLoaded", () => {
+  mixpanel.track("기본 관상 결과 페이지 진입", { ts: Date.now() }); // ← 추가
+  autoAnalyzeFromUrl(500); // 1.5초 후 자동 업로드
+});

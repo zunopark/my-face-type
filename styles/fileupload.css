@@ -79,8 +79,6 @@
   color: #222;
 }
 
-
-
 .drag-text {
   height: 100%;
   display: flex;
@@ -102,7 +100,7 @@
   font-weight: 700;
   text-transform: uppercase;
   color: white;
-  font-family: 'Yeon Sung', cursive;
+  /* font-family: 'Yeon Sung', cursive; */
 
   font-size: 15px;
 }
@@ -112,7 +110,7 @@
   font-size: 18px;
   text-transform: uppercase;
   color: white;
-  font-family: 'Yeon Sung', cursive;
+  font-family: "Yeon Sung", cursive;
 }
 
 .image-square-frame {

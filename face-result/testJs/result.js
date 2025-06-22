@@ -62,18 +62,21 @@ function renderFeatureResult(data) {
   const products = [
     {
       key: "base",
+      url: (id) => `/base-free.html?id=${encodeURIComponent(id)}&type=base`,
       emoji: "🐍",
       title: "처음 보는 내 관상: 부위별 관상 심층 분석 보고서",
       desc: "3,000+자 리포트",
       rating: 4.9,
       views: "4,500+",
-      discount: 90,
-      price: "500원",
-      original_price: 4900,
+      discount: 58,
+      price: "일부 무료",
+      original_price: 6900,
       thumbnail: "/img/base.png",
     },
     {
       key: "marriage",
+      url: (id) =>
+        `/report/marriage/?id=${encodeURIComponent(id)}&type=marriage`,
       emoji: "💍",
       title: "[매우 중요] 언제, 누구와 결혼할지 얼굴에 다 나와 있다면?",
       desc: "8,000+자 리포트",
@@ -86,6 +89,7 @@ function renderFeatureResult(data) {
     },
     {
       key: "wealth",
+      url: (id) => `/report/wealth/?id=${encodeURIComponent(id)}&type=wealth`,
       emoji: "💸",
       title: "타고난 부: 내 관상 재물운과 평생 모을 재산은?",
       desc: "10,000+자 리포트",
@@ -96,20 +100,9 @@ function renderFeatureResult(data) {
       original_price: 34900,
       thumbnail: "/img/wealth.png",
     },
-    // {
-    //   key: "job",
-    //   emoji: "💼",
-    //   title: "관상으로 보는 직업: 사실 난 이런 직업을 가졌어야 했다면...?",
-    //   desc: "6,000+자 리포트",
-    //   rating: 4.7,
-    //   views: "1,900+",
-    //   discount: 45,
-    //   price: "4,900원",
-    //   original_price: 8900,
-    //   thumbnail: "https://i.ibb.co/DHrj7YpX/job.png",
-    // },
     {
       key: "love",
+      url: (id) => `/report/love/?id=${encodeURIComponent(id)}&type=love`,
       emoji: "💖",
       title: "연애 관상: 총 연애 횟수, 내 운명은 어디에?",
       desc: "6,000+자 리포트",
@@ -125,15 +118,14 @@ function renderFeatureResult(data) {
   const productCards = products
     .map(
       (product) => `
-  <div class="product-card" onclick="
+ <div class="product-card" onclick="
         mixpanel.track('보고서 상품 클릭', {
-        id: '${data.id}',
-        product_key: '${product.key}',
-        product_title: '${product.title}'
-      });
-  location.href='/report/${product.key}/?id=${
-        data.id
-      }'" style="cursor: pointer;">
+          id: '${data.id}',
+          product_key: '${product.key}',
+          product_title: '${product.title}'
+        });
+        location.href='${product.url(data.id)}';
+  " style="cursor: pointer;">
 
   <div class="product-image">
     <img src="${product.thumbnail}" alt="${product.key}" class="square-image" />

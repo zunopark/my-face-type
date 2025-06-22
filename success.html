@@ -126,6 +126,7 @@
       const orderId = params.get("orderId");
       const amount = Number(params.get("amount"));
       const resultId = params.get("id");
+      const reportType = params.get("type"); // ① 추가 ─ type 쿼리 추출
 
       const body = { paymentKey, orderId, amount };
 
@@ -185,7 +186,7 @@
             "✅ 결제가 완료되었습니다!";
           document.getElementById("status").className = "success";
 
-          mixpanel.track("관상 결제 성공", {
+          mixpanel.track("프리미엄 기본 관상 결제 성공", {
             orderId,
             amount,
             paymentKey,
@@ -205,7 +206,9 @@
 
           setTimeout(() => {
             window.location.href = resultId
-              ? `/result.html?id=${resultId}`
+              ? `/analyze-result/?id=${encodeURIComponent(
+                  resultId
+                )}&type=${encodeURIComponent(reportType || "base")}`
               : "/";
           }, 2000);
         })

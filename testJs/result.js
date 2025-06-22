@@ -176,10 +176,10 @@ function renderFeatureResult(data) {
       desc: "3,000+자 리포트",
       rating: 4.9,
       views: "4,500+",
-      discount: 90,
-      price: "500원",
-      original_price: 4900,
-      thumbnail: "https://i.ibb.co/1fF6gNtk/base.png",
+      discount: 58,
+      price: "일부 무료",
+      original_price: 6900,
+      thumbnail: "/img/base.png",
     },
     {
       key: "marriage",
@@ -191,7 +191,7 @@ function renderFeatureResult(data) {
       discount: 42,
       price: "9,900원",
       original_price: 16900,
-      thumbnail: "https://i.ibb.co/N2xLXt92/marriage.png",
+      thumbnail: "/img/marriage.png",
     },
     {
       key: "wealth",
@@ -203,7 +203,7 @@ function renderFeatureResult(data) {
       discount: 52,
       price: "16,900원",
       original_price: 34900,
-      thumbnail: "https://i.ibb.co/zHTZCdM3/wealth.png",
+      thumbnail: "/img/wealth.png",
     },
     // {
     //   key: "job",
@@ -227,7 +227,7 @@ function renderFeatureResult(data) {
       discount: 31,
       price: "6,900원",
       original_price: 9900,
-      thumbnail: "https://i.ibb.co/6RgZwqfG/love.png",
+      thumbnail: "/img/love.png",
     },
   ];
 

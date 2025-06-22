@@ -9,8 +9,8 @@
 @import "ad.css";
 @import "media.css";
 @import "faceAnalysis.css";
-@import "faceProduct.css";
 @import "faceResult.css";
+@import "payment.css";
 
 .nostore {
   color: rgb(203, 203, 203);

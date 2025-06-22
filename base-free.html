@@ -182,16 +182,13 @@
       <header id="face" class="header"></header>
       <header class="header_chat">
         <div class="header_chat_wrap">
-          <a class="header_chat_title header_selected" href="/"> 관상 </a>
-          <!-- <a class="header_chat_title" href="/premium">
-            프리미엄
-          </a> -->
-          <a class="header_chat_title" href="/animalface"> 동물상 </a>
-
-          <a class="header_chat_title" href="/premium"> 재물 관상 </a>
-          <a href="/history.html" class="header_chat_title header_chat_right"
-            >지난 관상</a
+          <a
+            onclick="goBackToFaceResult()"
+            class="header_chat_title"
+            style="cursor: pointer"
           >
+            ← 다른 사진 또는 보고서
+          </a>
         </div>
       </header>
       <div class="main_content_wrap">
@@ -252,7 +249,7 @@
         <div id="paymentFull" class="payment-fullscreen">
           <div class="modal-content">
             <div class="payment-header">
-              <div class="payment-title">처음 보는 내 관상 - 3000자 보고서</div>
+              <div class="payment-title">프리미엄 관상 심층 분석 보고서</div>
               <div class="payment-close" onclick="closePayment()">✕</div>
             </div>
 
@@ -269,7 +266,7 @@
                   font-weight: 400;
                   margin-right: 2px;
                 "
-                >4,900원</span
+                >6,900원</span
               >
               <span
                 style="
@@ -278,10 +275,10 @@
                   font-weight: 700;
                   margin-right: 2px;
                 "
-                >90%</span
+                >52%</span
               >
               <span style="color: #171717; font-size: 18px; font-weight: 700"
-                >500원</span
+                >2,900원</span
               >
             </div>
             <button
@@ -331,6 +328,18 @@
         userAgent: navigator.userAgent,
         timestamp: new Date().toISOString(),
       });
+    </script>
+    <script>
+      function goBackToFaceResult() {
+        const params = new URLSearchParams(window.location.search);
+        const id = params.get("id");
+        if (id) {
+          // 쿼리로 id 전달
+          location.href = `/`;
+        } else {
+          alert("❌ id 파라미터가 없습니다.");
+        }
+      }
     </script>
 
     <script src="https://js.tosspayments.com/v1/payment-widget"></script>
