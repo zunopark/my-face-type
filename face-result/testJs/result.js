@@ -69,7 +69,7 @@ function renderFeatureResult(data) {
       rating: 4.9,
       views: "4,500+",
       discount: 87,
-      price: "기본 무료",
+      price: "일부 무료",
       original_price: 6900,
       thumbnail: "/img/base.png",
     },
@@ -82,8 +82,8 @@ function renderFeatureResult(data) {
       desc: "8,000+ 글자",
       rating: 4.8,
       views: "2,300+",
-      discount: 72,
-      price: "4,900원",
+      discount: 42,
+      price: "9,900원",
       original_price: 16900,
       thumbnail: "/img/marriage.png",
     },
@@ -95,8 +95,8 @@ function renderFeatureResult(data) {
       desc: "10,000+ 글자",
       rating: 4.9,
       views: "10,000+",
-      discount: 86,
-      price: "4,900원",
+      discount: 72,
+      price: "9,900원",
       original_price: 34900,
       thumbnail: "/img/wealth.png",
     },
@@ -108,9 +108,9 @@ function renderFeatureResult(data) {
       desc: "6,000+ 글자",
       rating: 4.9,
       views: "2,800+",
-      discount: 51,
-      price: "4,900원",
-      original_price: 9900,
+      discount: 34,
+      price: "9,900원",
+      original_price: 14900,
       thumbnail: "/img/love.png",
     },
   ];
@@ -149,7 +149,7 @@ function renderFeatureResult(data) {
   document.getElementById("label-container").innerHTML = `
 <div class="ai-expect-title">
   <h3 style="font-size:22px;font-weight:700;">얼굴 분석을 완료했습니다!</h3>
-  <div class="ai-expect-sub" style="margin-bottom: 20px;">프리미엄 관상 보고서 출시 기념<br/>다음 주까지 모든 보고서 - 4,900원 (커피값)</div>
+  <div class="ai-expect-sub" style="margin-bottom: 20px;"><출시 기념 - 9,900원 이벤트><br/>모든 프리미엄 관상 심층 분석 보고서<br/>서두르세요. 다음주까지만!</div>
 </div>
 <div class="face-product-section">${productCards}</div>
 `;
