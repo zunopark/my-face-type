@@ -451,3 +451,21 @@
   border-bottom: 1px solid rgb(75, 75, 75);
   border-top: 1px solid rgb(75, 75, 75);
 }
+
+.preview_title_wrap {
+  font-size: 20px;
+  color: whitesmoke;
+  font-weight: 700;
+  margin-bottom: 20px;
+}
+
+.preview_title {
+}
+.preview_img_wrap {
+  width: 360px;
+}
+.preview_img {
+  width: 100%;
+  margin-bottom: 4px;
+  border-radius: 2px;
+}
