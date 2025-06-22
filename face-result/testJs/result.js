@@ -68,7 +68,7 @@ function renderFeatureResult(data) {
       desc: "3,000+자 리포트",
       rating: 4.9,
       views: "4,500+",
-      discount: 58,
+      discount: 52,
       price: "일부 무료",
       original_price: 6900,
       thumbnail: "/img/base.png",
