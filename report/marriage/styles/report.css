@@ -452,6 +452,15 @@
   border-top: 1px solid rgb(75, 75, 75);
 }
 
+.preview_display {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 40px;
+  margin-bottom: 40px;
+}
+
 .preview_title_wrap {
   font-size: 20px;
   color: whitesmoke;
