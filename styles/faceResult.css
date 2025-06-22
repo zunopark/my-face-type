@@ -49,15 +49,15 @@
   mask-image: linear-gradient(
     to bottom,
     transparent 0%,
-    transparent 15%,
-    #b6ad00 18%,
+    transparent 3%,
+    #b6ad00 8%,
     #b6ad00 100%
   );
   -webkit-mask-image: linear-gradient(
     to bottom,
     transparent 0%,
-    transparent 15%,
-    #b6ad00 18%,
+    transparent 3%,
+    #b6ad00 8%,
     #b6ad00 100%
   );
 
@@ -66,7 +66,7 @@
 
 .mask-text-wrap {
   position: absolute;
-  top: 900px; /*결제 모달 위치*/
+  top: 480px; /*결제 모달 위치*/
   z-index: 10;
   display: flex;
   flex-direction: column;
