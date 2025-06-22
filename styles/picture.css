@@ -1,7 +1,7 @@
 .border {
   box-sizing: border-box;
   position: relative;
-  background: #62550c;
+  background: #272727;
   background-image: linear-gradient(top right, #5d5d5b, #383838);
   /* padding: 7px; */
   box-shadow: -1px 1px 2px 1px rgba(0, 0, 0, 0.1),
@@ -18,7 +18,7 @@
     -16px 16px 2px 1px rgba(0, 0, 0, 0.01);
 }
 .border:before {
-  content: '';
+  content: "";
   display: block;
   padding-bottom: 125%;
 }
