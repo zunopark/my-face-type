@@ -148,7 +148,7 @@ function renderFeatureResult(data) {
 
   document.getElementById("label-container").innerHTML = `
 <div class="ai-expect-title">
-  <h3 style="font-size:22px;font-weight:700;">얼굴 분석을 완료했습니다!</h3>
+  <h3 style="font-size:22px;font-weight:700;">얼굴 특징 분석이 완료됐어요!</h3>
   <div class="ai-expect-sub" style="margin-bottom: 20px;"><관상 테스트 1,500만명 돌파 기념 - 9,900원 이벤트><br/>재물, 결혼, 연애 관상 심층 분석 보고서<br/>서두르세요. 다음주까지만!</div>
 </div>
 <div class="face-product-section">${productCards}</div>
