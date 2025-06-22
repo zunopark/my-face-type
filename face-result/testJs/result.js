@@ -149,7 +149,7 @@ function renderFeatureResult(data) {
   document.getElementById("label-container").innerHTML = `
 <div class="ai-expect-title">
   <h3 style="font-size:22px;font-weight:700;">얼굴 분석을 완료했습니다!</h3>
-  <div class="ai-expect-sub" style="margin-bottom: 12px;">프리미엄 관상 보고서 출시 기념 (다음주까지)<br/>모든 보고서 - 4,900원</div>
+  <div class="ai-expect-sub" style="margin-bottom: 20px;">프리미엄 관상 보고서 출시 기념<br/>다음 주까지 모든 보고서 - 4,900원 (커피값)</div>
 </div>
 <div class="face-product-section">${productCards}</div>
 `;
