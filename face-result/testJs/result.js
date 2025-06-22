@@ -68,7 +68,7 @@ function renderFeatureResult(data) {
       desc: "3,000+자 리포트",
       rating: 4.9,
       views: "4,500+",
-      discount: 52,
+      discount: 87,
       price: "일부 무료",
       original_price: 6900,
       thumbnail: "/img/base.png",
@@ -92,7 +92,7 @@ function renderFeatureResult(data) {
       url: (id) => `/report/wealth/?id=${encodeURIComponent(id)}&type=wealth`,
       emoji: "💸",
       title: "[가장 인기] 타고난 부: 내 관상 재물운과 평생 모을 재산은?",
-      desc: "10,000+자 리포트",
+      desc: "10,000+ 자 리포트",
       rating: 4.9,
       views: "10,000+",
       discount: 52,
@@ -132,10 +132,14 @@ function renderFeatureResult(data) {
   </div>
   <div class="product-info">
     <div class="product-title">${product.title}</div>
-    <div class="product-meta">
-      <div class="product-stats">총 ${product.desc}</div>
- 
-    </div>
+        <div class="product-meta">
+        <div class="product-stats">총 ${product.desc}</div>
+          <div class="product-meta-price">
+            <div class="product-original-price">${product.original_price.toLocaleString()}원</div>
+            <div class="discount">${product.discount}%</div>
+            <div class="product-price">${product.price}</div>
+          </div>
+        </div>
   </div>
 </div>
 `
