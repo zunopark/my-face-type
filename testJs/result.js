@@ -157,7 +157,8 @@ async function analyzeFaceFeatureOnly(file, imageBase64) {
     await saveResultToDB(result);
     renderFeatureResult(result);
 
-    const url = `/face-result/?id=${encodeURIComponent(result.id)}&type=base`;
+    // const url = `/face-result/?id=${encodeURIComponent(result.id)}&type=base`;
+    const url = `/base-free.html?id=${encodeURIComponent(result.id)}`;
     window.location.href = url;
   } catch (error) {
     console.error("❌ 얼굴 특징 분석 실패:", error);
