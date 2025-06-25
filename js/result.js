@@ -263,7 +263,7 @@ async function startTossPayment(resultId) {
     const paymentWidget = PaymentWidget(clientKey, customerKey);
     const paymentMethodWidget = paymentWidget.renderPaymentMethods(
       "#payment-method",
-      { value: 900 }
+      { value: 1900 }
     );
     paymentWidget.renderAgreement("#agreement");
 
@@ -284,7 +284,7 @@ async function startTossPayment(resultId) {
         });
         mixpanel.track("기본 분석 보고서 결제 요청 시도", {
           id: resultId,
-          price: 900,
+          price: 1900,
         }); // ← 추가
       } catch (err) {
         alert("❌ 결제 실패: " + err.message);
@@ -358,7 +358,7 @@ function renderResultNormalized(obj, reportType = "base") {
                 전체 분석 결과 확인하기
               </div>
             </div>
-            <div class="mask-text-btn-sub">출시 기념 6월 할인 이벤트</div>
+            <div class="mask-text-btn-sub">관상가 양반 - 프리미엄 AI 관상</div>
           </div>
           <div class="review-section">
             <div class="review-scroll">
