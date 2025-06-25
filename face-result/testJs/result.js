@@ -64,7 +64,7 @@ function renderFeatureResult(data) {
       key: "base",
       url: (id) => `/base-free.html?id=${encodeURIComponent(id)}&type=base`,
       emoji: "🐍",
-      title: "[1,500만명 돌파] 부위별 관상 심층 분석 보고서",
+      title: "[1,500만명 돌파] 처음 보는 내 관상: 생각 이상으로 자세하네?",
       desc: "3,000+ 글자",
       rating: 4.9,
       views: "4,500+",
