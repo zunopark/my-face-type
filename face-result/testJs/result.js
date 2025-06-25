@@ -68,9 +68,9 @@ function renderFeatureResult(data) {
       desc: "3,000+ 글자",
       rating: 4.9,
       views: "4,500+",
-      discount: 90,
-      price: "900원",
-      original_price: 9900,
+      discount: 58,
+      price: "일부 무료",
+      original_price: 6900,
       thumbnail: "/img/base.png",
     },
     {
@@ -81,8 +81,8 @@ function renderFeatureResult(data) {
       desc: "10,000+ 글자",
       rating: 4.9,
       views: "10,000+",
-      discount: 81,
-      price: "6,900원",
+      discount: 58,
+      price: "14,900원",
       original_price: 34900,
       thumbnail: "/img/wealth.png",
     },
@@ -108,8 +108,8 @@ function renderFeatureResult(data) {
       desc: "6,000+ 글자",
       rating: 4.9,
       views: "2,800+",
-      discount: 34,
-      price: "9,900원",
+      discount: 54,
+      price: "6,900원",
       original_price: 14900,
       thumbnail: "/img/love.png",
     },
@@ -149,7 +149,7 @@ function renderFeatureResult(data) {
   document.getElementById("label-container").innerHTML = `
 <div class="ai-expect-title">
   <h3 style="font-size:22px;font-weight:700;">얼굴 특징 분석이 완료됐어요!</h3>
-  <div class="ai-expect-sub" style="margin-bottom: 20px;"><관상 테스트 1,500만명 돌파 기념 할인 이벤트><br/>관상 재물운 심층 분석 보고서 [81% 할인]<br/>서두르세요. 다음주까지만!</div>
+  <div class="ai-expect-sub" style="margin-bottom: 20px;"><관상 테스트 1,500만명 돌파 기념 이벤트><br/>재물운, 결혼운, 애정운 프리미엄 관상 분석 보고서 할인<br/>서두르세요. 다음주까지만!</div>
 </div>
 <div class="face-product-section">${productCards}</div>
 `;

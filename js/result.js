@@ -263,7 +263,7 @@ async function startTossPayment(resultId) {
     const paymentWidget = PaymentWidget(clientKey, customerKey);
     const paymentMethodWidget = paymentWidget.renderPaymentMethods(
       "#payment-method",
-      { value: 1900 }
+      { value: 2900 }
     );
     paymentWidget.renderAgreement("#agreement");
 
@@ -284,7 +284,7 @@ async function startTossPayment(resultId) {
         });
         mixpanel.track("기본 분석 보고서 결제 요청 시도", {
           id: resultId,
-          price: 1900,
+          price: 2900,
         }); // ← 추가
       } catch (err) {
         alert("❌ 결제 실패: " + err.message);
