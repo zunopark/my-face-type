@@ -69,7 +69,7 @@ function renderFeatureResult(data) {
       rating: 4.9,
       views: "4,500+",
       discount: 90,
-      price: "900",
+      price: "900원",
       original_price: 9900,
       thumbnail: "/img/base.png",
     },
@@ -91,7 +91,7 @@ function renderFeatureResult(data) {
       key: "wealth",
       url: (id) => `/report/wealth/?id=${encodeURIComponent(id)}&type=wealth`,
       emoji: "💸",
-      title: "[가장 인기] 타고난 부: 10억, 100억 내가 평생 모을 재산은?",
+      title: "[지금 인기] 타고난 부: 10억, 100억 내가 평생 모을 재산은?",
       desc: "10,000+ 글자",
       rating: 4.9,
       views: "10,000+",
@@ -149,7 +149,7 @@ function renderFeatureResult(data) {
   document.getElementById("label-container").innerHTML = `
 <div class="ai-expect-title">
   <h3 style="font-size:22px;font-weight:700;">얼굴 특징 분석이 완료됐어요!</h3>
-  <div class="ai-expect-sub" style="margin-bottom: 20px;"><관상 테스트 1,500만명 돌파 기념 - 9,900원 이벤트><br/>재물, 결혼, 연애 관상 심층 분석 보고서<br/>서두르세요. 다음주까지만!</div>
+  <div class="ai-expect-sub" style="margin-bottom: 20px;"><관상 테스트 1,500만명 돌파 기념 할인 이벤트><br/>관상 재물운 심층 분석 보고서 [81% 할인]<br/>서두르세요. 다음주까지만!</div>
 </div>
 <div class="face-product-section">${productCards}</div>
 `;
