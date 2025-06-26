@@ -69,7 +69,7 @@ function renderFeatureResult(data) {
       rating: 4.9,
       views: "4,500+",
       discount: 86,
-      price: "990",
+      price: "990원",
       original_price: 6900,
       thumbnail: "/img/base.png",
     },
