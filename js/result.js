@@ -300,6 +300,12 @@ function closePayment() {
   document.getElementById("payment-method").innerHTML = "";
   document.getElementById("agreement").innerHTML = "";
 
+  mixpanel.track("기본 결제창 닫힘", {
+    id: pageId,
+    type: pageType,
+    timestamp: new Date().toISOString(),
+  });
+
   setTimeout(() => {
     startDiscountedPayment(); // ↓ 아래에서 정의
   }, 1000); // 자연스러운 전환을 위해 약간의 지연
@@ -310,6 +316,12 @@ async function startDiscountedPayment() {
   const customerKey = "customer_" + new Date().getTime();
 
   document.getElementById("discountOverlay").style.display = "block";
+
+  mixpanel.track("할인 결제창 열림", {
+    id: pageId,
+    type: pageType,
+    timestamp: new Date().toISOString(),
+  });
 
   try {
     const widget = PaymentWidget(clientKey, customerKey);
@@ -335,6 +347,7 @@ async function startDiscountedPayment() {
         mixpanel.track("할인 결제 시도", {
           id: pageId,
           price: 900,
+          timestamp: new Date().toISOString(),
         });
       } catch (err) {
         alert("❌ 할인 결제 실패: " + err.message);
@@ -349,6 +362,11 @@ function closeDiscount() {
   document.getElementById("discountOverlay").style.display = "none";
   document.getElementById("discount-method").innerHTML = "";
   document.getElementById("discount-agreement").innerHTML = "";
+  mixpanel.track("할인 결제창 닫힘", {
+    id: pageId,
+    type: pageType,
+    timestamp: new Date().toISOString(),
+  });
 }
 
 // IndexedDB 준비될 때까지 기다리는 Promise
