@@ -3,16 +3,16 @@
   top: 0px;
   z-index: 999;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
-  font-family: "MapoBackpacking";
+  font-family: 'MapoBackpacking';
+  width: 100%;
 }
 
 .header_chat_wrap {
   width: 100%;
   display: flex;
-  justify-content: flex-start;
   align-items: center;
   padding: 20px;
-  background-color: #59371e;
+  background-color: #2f2f32;
 }
 
 .header_chat_back {
@@ -25,7 +25,7 @@
 }
 
 .header_chat_title {
-  color: #a5947d;
+  color: rgb(133, 133, 133);
   font-size: 20px;
   text-decoration: none;
   margin-right: 16px;
@@ -36,7 +36,7 @@
 }
 
 .header_selected {
-  color: white;
+  color: #fbd500;
   font-weight: 700;
 }
 
@@ -62,7 +62,7 @@
 
 .header__title {
   display: flex;
-  font-family: "Yeon Sung", cursive;
+  font-family: 'Yeon Sung', cursive;
   align-items: flex-end;
 }
 

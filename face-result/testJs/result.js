@@ -60,19 +60,19 @@ function renderImage(imageBase64) {
 // 🔵 상품 카드 렌더링
 function renderFeatureResult(data) {
   const products = [
-    {
-      key: "base",
-      url: (id) => `/base-free.html?id=${encodeURIComponent(id)}&type=base`,
-      emoji: "🐍",
-      title: "[1,500만명 돌파] 처음 보는 내 관상: 생각 이상으로 자세하네?",
-      desc: "3,000+ 글자",
-      rating: 4.9,
-      views: "4,500+",
-      discount: 86,
-      price: "990원",
-      original_price: 6900,
-      thumbnail: "/img/base.png",
-    },
+    // {
+    //   key: "base",
+    //   url: (id) => `/base-free.html?id=${encodeURIComponent(id)}&type=base`,
+    //   emoji: "🐍",
+    //   title: "[1,500만명 돌파] 처음 보는 내 관상: 생각 이상으로 자세하네?",
+    //   desc: "3,000+ 글자",
+    //   rating: 4.9,
+    //   views: "4,500+",
+    //   discount: 86,
+    //   price: "990원",
+    //   original_price: 6900,
+    //   thumbnail: "/img/base.png",
+    // },
     {
       key: "wealth",
       url: (id) => `/report/wealth/?id=${encodeURIComponent(id)}&type=wealth`,
@@ -81,10 +81,23 @@ function renderFeatureResult(data) {
       desc: "10,000+ 글자",
       rating: 4.9,
       views: "10,000+",
-      discount: 98,
-      price: "990원",
+      discount: 52,
+      price: "16,900원",
       original_price: 34900,
       thumbnail: "/img/wealth.png",
+    },
+    {
+      key: "love",
+      url: (id) => `/report/love/?id=${encodeURIComponent(id)}&type=love`,
+      emoji: "💖",
+      title: "연애 관상: 총 연애 횟수, 내 운명은 어디에?",
+      desc: "6,000+ 글자",
+      rating: 4.9,
+      views: "2,800+",
+      discount: 54,
+      price: "6,900원",
+      original_price: 14900,
+      thumbnail: "/img/love.png",
     },
     {
       key: "marriage",
@@ -95,23 +108,10 @@ function renderFeatureResult(data) {
       desc: "8,000+ 글자",
       rating: 4.8,
       views: "2,300+",
-      discount: 95,
-      price: "990원",
+      discount: 42,
+      price: "9,900원",
       original_price: 16900,
       thumbnail: "/img/marriage.png",
-    },
-    {
-      key: "love",
-      url: (id) => `/report/love/?id=${encodeURIComponent(id)}&type=love`,
-      emoji: "💖",
-      title: "연애 관상: 총 연애 횟수, 내 운명은 어디에?",
-      desc: "6,000+ 글자",
-      rating: 4.9,
-      views: "2,800+",
-      discount: 94,
-      price: "990원",
-      original_price: 14900,
-      thumbnail: "/img/love.png",
     },
   ];
 
@@ -149,7 +149,7 @@ function renderFeatureResult(data) {
   document.getElementById("label-container").innerHTML = `
 <div class="ai-expect-title">
   <h3 style="font-size:22px;font-weight:700;">얼굴 특징 분석이 완료됐어요!</h3>
-  <div class="ai-expect-sub" style="margin-bottom: 20px;"><관상 테스트 1,500만명 돌파 기념 이벤트><br/>프리미엄 관상 분석 보고서 - 990원<br/>서두르세요. 다음주까지만!</div>
+  <div class="ai-expect-sub" style="margin-bottom: 20px;"><관상 테스트 1,500만명 돌파 기념 이벤트><br/>프리미엄 관상 분석 보고서 출시</div>
 </div>
 <div class="face-product-section">${productCards}</div>
 `;

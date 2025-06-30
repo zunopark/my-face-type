@@ -6,7 +6,7 @@ const clientKey = "live_gck_yZqmkKeP8gBaRKPg1WwdrbQRxB9l";
 const customerKey = "customer_" + new Date().getTime();
 
 const paymentWidget = PaymentWidget(clientKey, customerKey);
-paymentWidget.renderPaymentMethods("#payment-method", { value: 990 });
+paymentWidget.renderPaymentMethods("#payment-method", { value: 9900 });
 paymentWidget.renderAgreement("#agreement");
 let isRendered = false;
 
@@ -15,7 +15,7 @@ function openPayment() {
 
   // 항상 다시 위젯을 mount, 버튼 핸들러도 중복 방지!
   if (!isRendered) {
-    paymentWidget.renderPaymentMethods("#payment-method", { value: 990 });
+    paymentWidget.renderPaymentMethods("#payment-method", { value: 9900 });
     paymentWidget.renderAgreement("#agreement");
     isRendered = true;
   }
