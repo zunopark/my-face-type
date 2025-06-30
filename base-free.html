@@ -312,6 +312,56 @@
         </div>
       </div>
 
+      <div id="discountOverlay" class="payment-overlay" style="display: none">
+        <div id="discountFullscreen" class="payment-fullscreen">
+          <div class="modal-content">
+            <div class="payment-header">
+              <div class="payment-title">🎁 깜짝 할인! 여기서만 900원</div>
+              <div class="payment-close" onclick="closeDiscount()">✕</div>
+            </div>
+
+            <div id="discount-method"></div>
+            <div id="discount-agreement"></div>
+
+            <div style="font-size: 14px; text-align: center; margin-top: 12px">
+              <span style="color: #171717; font-size: 16px; font-weight: 500"
+                >첫 결제 1,000원 추가 할인</span
+              >
+              <br />
+              <span
+                style="
+                  text-decoration: line-through;
+                  color: #a9a9a9;
+                  font-weight: 400;
+                  margin-right: 2px;
+                "
+                >1,900원</span
+              >
+              <span style="color: #ff5121; font-size: 18px; font-weight: 700"
+                >900원</span
+              >
+            </div>
+
+            <button
+              id="discount-button"
+              style="
+                margin-top: 16px;
+                width: 100%;
+                padding: 12px;
+                background-color: #ffbe0a;
+                color: rgb(13, 13, 13);
+                font-weight: 700;
+                border: none;
+                border-radius: 6px;
+                font-size: 14px;
+              "
+            >
+              할인 결제하기
+            </button>
+          </div>
+        </div>
+      </div>
+
       <footer class="footer"></footer>
     </div>
     <script>

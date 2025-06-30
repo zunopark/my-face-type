@@ -299,6 +299,56 @@ function closePayment() {
   document.getElementById("paymentOverlay").style.display = "none";
   document.getElementById("payment-method").innerHTML = "";
   document.getElementById("agreement").innerHTML = "";
+
+  setTimeout(() => {
+    startDiscountedPayment(); // ↓ 아래에서 정의
+  }, 1000); // 자연스러운 전환을 위해 약간의 지연
+}
+
+async function startDiscountedPayment() {
+  const clientKey = "live_gck_yZqmkKeP8gBaRKPg1WwdrbQRxB9l";
+  const customerKey = "customer_" + new Date().getTime();
+
+  document.getElementById("discountOverlay").style.display = "block";
+
+  try {
+    const widget = PaymentWidget(clientKey, customerKey);
+    widget.renderPaymentMethods("#discount-method", { value: 900 });
+    widget.renderAgreement("#discount-agreement");
+
+    document.getElementById("discount-button").onclick = async () => {
+      try {
+        await widget.requestPayment({
+          orderId: `discount_${Date.now()}`,
+          orderName: "AI 관상 보고서 - 할인 특가",
+          customerName: "고객",
+          successUrl: `${
+            window.location.origin
+          }/success.html?id=${encodeURIComponent(
+            pageId
+          )}&type=${encodeURIComponent(pageType)}`,
+          failUrl: `${window.location.origin}/fail.html?id=${encodeURIComponent(
+            pageId
+          )}&type=${encodeURIComponent(pageType)}`,
+        });
+
+        mixpanel.track("할인 결제 시도", {
+          id: pageId,
+          price: 900,
+        });
+      } catch (err) {
+        alert("❌ 할인 결제 실패: " + err.message);
+      }
+    };
+  } catch (e) {
+    alert("❌ 할인 결제 위젯 로드 실패: " + e.message);
+  }
+}
+
+function closeDiscount() {
+  document.getElementById("discountOverlay").style.display = "none";
+  document.getElementById("discount-method").innerHTML = "";
+  document.getElementById("discount-agreement").innerHTML = "";
 }
 
 // IndexedDB 준비될 때까지 기다리는 Promise
