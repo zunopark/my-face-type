@@ -1,0 +1,11 @@
+@import "../../../commonStyle/common.css";
+@import "../../../commonStyle/reset.css";
+@import "../../../commonStyle/header.css";
+@import "../../../commonStyle/footer.css";
+@import "../../../commonStyle/media.css";
+
+@import "faceResult.css";
+@import "main.css";
+@import "fileupload.css";
+@import "picture.css";
+@import "result.css";
