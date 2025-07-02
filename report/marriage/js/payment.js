@@ -29,10 +29,8 @@ function closePayment() {
 
 // [수정] type, id를 주소에서 추출!
 function getTypeAndIdFromUrl() {
-  // /report/{type}/?id=xxx
-  const pathSegments = window.location.pathname.split("/");
-  const type = pathSegments[2]; // wealth, base, marriage, ...
   const params = new URLSearchParams(window.location.search);
+  const type = params.get("type");
   const id = params.get("id");
   return { type, id };
 }
@@ -47,7 +45,7 @@ async function requestPayment() {
   try {
     await paymentWidget.requestPayment({
       orderId: `${type}_${id}_${Date.now()}`,
-      orderName: "결혼 심층 분석 보고서",
+      orderName: "결혼운 심층 분석 보고서",
       successUrl: `${window.location.origin}/analyze-success-payment/?id=${id}&type=${type}`,
       failUrl: `${window.location.origin}/fail.html?id=${id}&type=${type}`,
       customerName: "고객",

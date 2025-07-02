@@ -29,10 +29,8 @@ function closePayment() {
 
 // [수정] type, id를 주소에서 추출!
 function getTypeAndIdFromUrl() {
-  // /report/{type}/?id=xxx
-  const pathSegments = window.location.pathname.split("/");
-  const type = pathSegments[2]; // wealth, base, marriage, ...
   const params = new URLSearchParams(window.location.search);
+  const type = params.get("type");
   const id = params.get("id");
   return { type, id };
 }

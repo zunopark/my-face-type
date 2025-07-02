@@ -18,7 +18,8 @@ function init() {
     </div>
  
     <div style="margin-top: 12px;">
-      <a href="mailto:dydtjq94@yonsei.ac.kr" class="contact_me">문의하기</a>
+      <a href="mailto:dydtjq94@yonsei.ac.kr" class="contact_me">고객센터</a>
+      <a href="mailto:dydtjq94@yonsei.ac.kr" class="contact_me">API 또는 협업 문의</a>
       <a href="/refund.html" class="contact_me">환불 정책 보기</a>
     </div>
 

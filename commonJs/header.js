@@ -8,10 +8,15 @@ const headerContent = () => {
       </div>`;
   } else if (headerMain.id === "base") {
     headerMain.innerHTML = ` 
-      <a href="/new-version2/" id="header_back" class="header_chat header_fixed">
-        <i class="fa-solid fa-arrow-left header_chat_icon" id="back-button"></i>
-        <div class="header_chat_title">전체 보기</div>
-      </a>`;
+      <div id="header_back" class="header_chat header_fixed">
+        <a href="/">
+          <i class="fa-solid fa-arrow-left header_chat_icon" id="back-button"></i>
+        </a>
+        <a href="/">
+          <div class="header_chat_title">전체 보기</div>
+        </a>
+        
+      </div>`;
   }
 };
 

@@ -29,12 +29,7 @@
     />
     <link rel="canonical" href="https://keen-poitras-075b07.netlify.app" />
     <link rel="stylesheet" href="styles/style.css" />
-    <link
-      rel="stylesheet"
-      href="https://use.fontawesome.com/releases/v5.5.0/css/all.css"
-      integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU"
-      crossorigin="anonymous"
-    />
+
     <style>
       @import url("https://fonts.googleapis.com/css2?family=East+Sea+Dokdo&display=swap");
       @import url("https://fonts.googleapis.com/css2?family=Yeon+Sung&display=swap");
@@ -171,37 +166,14 @@
   </head>
   <body>
     <div class="main_body_wrap">
-      <header id="face" class="header"></header>
-      <header class="header_chat">
-        <div class="header_chat_wrap">
-          <a class="header_chat_title" href="/"> 관상 </a>
-          <a class="header_chat_title" href="/premium-face">
-            재물•연애•결혼상
-          </a>
-          <a class="header_chat_title header_selected" href="/animalface">
-            동물상
-          </a>
-          <a href="/history.html" class="header_chat_title header_chat_right"
-            >기록</a
-          >
-        </div>
-      </header>
+      <header id="base" class="header_chat_wrap"></header>
       <div class="main_content_wrap">
         <div class="main__ai__title">
-          <h1 class="subtitle">동물상 테스트</h1>
-          <h2
-            class="number"
-            style="
-              font-size: 20px;
-              color: rgb(196, 196, 196);
-              margin-top: 16px;
-              font-weight: 300;
-            "
-          >
-            <span class="count__num" style="color: white">
-              AI가 알려주는 나와 닮은 동물
-            </span>
-          </h2>
+          <div class="subtitle">동물상 테스트</div>
+
+          <div class="count__num" style="color: white">
+            AI가 알려주는 나와 닮은 동물
+          </div>
         </div>
 
         <div id="container">
@@ -331,9 +303,13 @@
       });
     </script>
 
+    <script
+      src="https://kit.fontawesome.com/47e166f8b9.js"
+      crossorigin="anonymous"
+    ></script>
+
     <script src="js/footer.js"></script>
     <script src="js/header.js"></script>
-    <script src="js/livetime.js"></script>
     <script src="js/ad.js"></script>
     <script src="js/fileupload.js"></script>
 
@@ -344,19 +320,6 @@
       type="text/javascript"
       src="https://cdn.rawgit.com/dwyl/html-form-send-email-via-google-script-without-server/master/form-submission-handler.js"
     ></script>
-    <!-- <script>
-      function googleTranslateElementInit() {
-        new google.translate.TranslateElement(
-          {
-            pageLanguage: 'ko',
-            includedLanguages: 'en,ja,ko,zh-CN,zh-TW',
-            layout: google.translate.TranslateElement.InlineLayout.none, // none or HORIZONTAL, SIMPLE
-          },
-          'google_translate_element',
-        )
-      }
-    </script>
-    <script src="http://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script> -->
   </body>
   <!-- 
 Copyright (c) 2020 by Aaron Vanston (https://codepen.io/aaronvanston/pen/yNYOXR)

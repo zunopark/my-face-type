@@ -1,20 +1,25 @@
-@import 'reset.css';
-@import 'common.css';
-@import 'gender.css';
-@import 'fileupload.css';
-@import 'picture.css';
-@import 'header.css';
-@import 'result.css';
-@import 'footer.css';
-@import 'ad.css';
-@import 'media.css';
+@import "reset.css";
+@import "common.css";
+@import "gender.css";
+@import "fileupload.css";
+@import "picture.css";
+@import "header.css";
+@import "result.css";
+@import "footer.css";
+@import "ad.css";
+@import "media.css";
+@import "../../commonStyles/common.css";
+@import "../../commonStyles/reset.css";
+@import "../../commonStyles/footer.css";
+@import "../../commonStyles/media.css";
+@import "../../commonStyles/nav.css";
 
-@import url('https://fonts.googleapis.com/css?family=Asap:400,500,700');
+@import url("https://fonts.googleapis.com/css?family=Asap:400,500,700");
 
 @font-face {
-  font-family: 'MapoBackpacking';
-  src: url('https://gcore.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/MapoBackpackingA.woff')
-    format('woff');
+  font-family: "MapoBackpacking";
+  src: url("https://gcore.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/MapoBackpackingA.woff")
+    format("woff");
   font-weight: normal;
   font-style: normal;
 }
@@ -33,22 +38,21 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  /* padding-top: 30px; */
   margin-bottom: 10px;
   color: white;
-  font-family: 'MapoBackpacking';
+  font-family: "MapoBackpacking";
 }
 
 .main__ai__title .title {
   font-size: 32px;
-  font-family: 'MapoBackpacking';
+  font-family: "MapoBackpacking";
   margin-bottom: 6px;
 }
 
 .main__ai__title .subtitle {
-  font-size: 28px;
+  font-size: 40px;
   font-weight: 700;
-  margin-top: 6px;
+  margin-top: 24px;
 }
 
 #container {
@@ -111,6 +115,7 @@
 
 .count__num {
   font-weight: 700;
+  font-size: 20px;
 }
 
 .timer {
@@ -156,7 +161,7 @@
 }
 
 .star__list__img {
-  font-family: 'Yeon Sung', cursive;
+  font-family: "Yeon Sung", cursive;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -290,7 +295,7 @@
   width: 320px;
   margin-top: 20px;
   padding: 20px;
-  font-family: 'Yeon Sung', cursive;
+  font-family: "Yeon Sung", cursive;
   text-decoration: none;
   color: black;
   background-color: white;
