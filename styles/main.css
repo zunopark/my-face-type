@@ -158,15 +158,18 @@ body {
   border-top-left-radius: 18px;
   border-top-right-radius: 18px;
   box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.15);
-  padding: 24px 16px 48px;
+  padding: 60px 16px 48px;
   font-family: "Noto Sans KR", sans-serif;
   width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .modal-sheet-title {
   width: 100%;
   text-align: center;
-  padding-bottom: 24px;
+  padding-bottom: 12px;
 }
 
 /* ───── 열렸을 때 토글 클래스 ───── */

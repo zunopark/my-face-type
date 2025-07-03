@@ -212,18 +212,56 @@
       <div id="uploadBackdrop"></div>
       <div id="uploadModal" class="hidden">
         <div class="modal-sheet">
-          <h3 class="modal-sheet-title" style="margin-bottom: 12px">
-            사진을 올려 주세요
-          </h3>
-          <!-- 실제 파일 인풋은 숨김 -->
-          <input type="file" accept="image/*" id="photoInput" hidden />
+          <div class="border">
+            <div class="frame">
+              <div class="image">
+                <script
+                  class="jsbin"
+                  src="https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"
+                ></script>
+                <div class="file-upload">
+                  <div class="image-upload-wrap">
+                    <input
+                      id="photoInput"
+                      class="file-upload-input"
+                      type="file"
+                      onchange="readURL(this);"
+                      accept="image/*"
+                    />
+                    <div class="drag-text">
+                      <i class="far fa-image"></i>
+                      <h2 style="font-family: KimjungchulMyungjo-Bold">
+                        (사진 첨부)
+                      </h2>
+                      <h3 style="font-family: KimjungchulMyungjo-Bold">
+                        관상? 얼굴 한번 봅시다
+                      </h3>
+                    </div>
+                  </div>
+                  <div class="file-upload-content">
+                    <div class="image-square-frame">
+                      <img
+                        class="file-upload-image"
+                        id="face-image"
+                        src="#"
+                        alt="your image"
+                      />
+                    </div>
+                    <div class="image-title-wrap">
+                      <div class="ai">관상가가 당신의 관상을 분석중..</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="nostore">
+            *걱정마세요! 사진은 절대로 저장되지 않습니다.
+          </div>
 
           <!-- 커스텀 액션 버튼 영역 -->
           <div class="modal-actions">
             <button id="modalClose" type="button" class="btn">닫기</button>
-            <button id="selectPhoto" type="button" class="btn primary">
-              사진 올리기
-            </button>
           </div>
         </div>
       </div>

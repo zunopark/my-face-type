@@ -143,6 +143,7 @@ function bindPremiumCardEvents() {
 }
 
 function openUploadModal() {
+  resetPhotoInput();
   const modal = document.getElementById("uploadModal");
   modal.classList.remove("hidden"); // display:block
   /* reflow 후에 show 추가 → transition 발동 */
@@ -186,11 +187,6 @@ document
   .getElementById("uploadBackdrop")
   .addEventListener("click", closeUploadModal);
 
-/* 숨겨둔 input을 버튼으로 트리거 */
-document.getElementById("selectPhoto").addEventListener("click", () => {
-  document.getElementById("photoInput").click();
-});
-
 /* 이미 쓰시던 닫기 로직 그대로 */
 document
   .getElementById("modalClose")
@@ -205,6 +201,25 @@ document.getElementById("photoInput").addEventListener("change", async (e) => {
   const b64 = await toBase64(file);
   await analyzeFaceFeatureOnly(file, b64, selectedReportType);
 });
+
+function resetPhotoInput() {
+  const input = document.getElementById("photoInput");
+  if (input) input.value = ""; // ① 파일 값 비우기
+
+  /* ② 미리보기 영역/텍스트 상태 복구 */
+  const wrap = document.querySelector(".image-upload-wrap");
+  const cont = document.querySelector(".file-upload-content");
+  if (wrap) wrap.style.display = "block";
+  if (cont) cont.style.display = "none";
+
+  const img = document.getElementById("face-image");
+  if (img) img.src = "#";
+
+  const aiTxt = document.querySelector(".ai");
+  if (aiTxt) aiTxt.classList.remove("disblock"); // ‘분석중..’ 숨김
+  const noStore = document.querySelector(".nostore");
+  if (noStore) noStore.classList.remove("none");
+}
 
 /* ───────── 5. IndexedDB 초기화 (기존 코드) ───────── */
 async function initAnalysisDB() {
