@@ -158,7 +158,7 @@ body {
   border-top-left-radius: 18px;
   border-top-right-radius: 18px;
   box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.15);
-  padding: 60px 16px 48px;
+  padding: 32px 16px 48px;
   font-family: "Noto Sans KR", sans-serif;
   width: 100%;
   display: flex;
@@ -252,4 +252,10 @@ body {
 
 .no-results {
   color: black;
+}
+
+.upload_title {
+  font-family: "KimjungchulMyungjo-Bold";
+  font-size: 24px;
+  margin-bottom: 24px;
 }
