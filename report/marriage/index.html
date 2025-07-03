@@ -162,9 +162,11 @@
             </div>
           </div>
           <div class="report_upper_price_wrap">
-            <div class="report_upper_original_price">16,900원</div>
-            <div class="report_upper_sale">42%</div>
-            <div class="report_upper_price">9,900원</div>
+            <div id="price-original" class="report_upper_original_price">
+              16,900원
+            </div>
+            <div id="price-discount" class="report_upper_sale">42%</div>
+            <div id="price-final" class="report_upper_price">9,900원</div>
           </div>
         </div>
         <div class="report_upper_reveiw_wrap">
@@ -345,14 +347,17 @@
             <div class="fifth__content__lower">
               <div class="fifth__lower__left"></div>
               <div class="fifth__lower__right">
-                <span style="text-decoration: line-through; color: gray"
+                <span
+                  id="price-original"
+                  style="text-decoration: line-through; color: gray"
                   >16,900원</span
                 >
                 <span
+                  id="price-discount"
                   style="color: #ff5121; padding-left: 0px 2px; margin: 0 4px"
                   >42%</span
                 >
-                <span style="font-weight: 700">9,900원</span>
+                <span id="price-final" style="font-weight: 700">9,900원</span>
               </div>
             </div>
           </div>
@@ -417,6 +422,7 @@
               style="font-size: 14px; text-align: center"
             >
               <span
+                id="price-original"
                 style="
                   text-decoration: line-through;
                   color: #a9a9a9;
@@ -426,6 +432,7 @@
                 >16,900원</span
               >
               <span
+                id="price-discount"
                 style="
                   color: #ff5121;
                   font-size: 18px;
@@ -434,7 +441,9 @@
                 "
                 >42%</span
               >
-              <span style="color: #171717; font-size: 18px; font-weight: 700"
+              <span
+                id="price-final"
+                style="color: #171717; font-size: 18px; font-weight: 700"
                 >9,900원</span
               >
             </div>
@@ -537,6 +546,24 @@
       function closePayment() {
         document.getElementById("paymentOverlay").style.display = "none";
       }
+    </script>
+    <script>
+      const ORIGINAL_PRICE = 5900; // 원가 (숫자만!)
+      const DISCOUNT_PERCENT = 51; // 할인율 (정수 %)
+      const FINAL_PRICE = "2,900원";
+
+      const fmt = (n) => n.toLocaleString("ko-KR");
+
+      /* 같은 클래스를 가진 모든 요소에 일괄 주입 */
+      document
+        .querySelectorAll("#price-original")
+        .forEach((el) => (el.textContent = fmt(ORIGINAL_PRICE)));
+      document
+        .querySelectorAll("#price-discount")
+        .forEach((el) => (el.textContent = DISCOUNT_PERCENT + "%"));
+      document
+        .querySelectorAll("#price-final")
+        .forEach((el) => (el.textContent = fmt(FINAL_PRICE)));
     </script>
   </body>
 </html>
