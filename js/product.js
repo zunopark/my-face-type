@@ -57,13 +57,23 @@ function renderPremiumFeatureResult() {
     },
   ];
 
-  const cards = products
+  /* 2) 다른 스크립트(예: 결제·업로드 로직)에서도 접근할 수 있도록 전역에 보관 */
+  window.premiumProducts = products;
+
+  /* 3) 카드 HTML 생성 ― data-* 속성으로 추적용 메타데이터 심기 */
+  const cardsHtml = products
     .map(
-      (p) => `
-    <div class="product-card" data-type="${p.key}" style="cursor:pointer;">
-      <div class="product-image"><img src="${p.thumbnail}" alt="${
-        p.key
-      }" class="square-image"></div>
+      (p, idx) => `
+    <div class="product-card"
+         data-key="${p.key}"
+         data-title="${p.title}"
+         data-price="${p.price}"
+         data-discount="${p.discount}"
+         data-index="${idx + 1}"
+         style="cursor:pointer;">
+      <div class="product-image">
+        <img src="${p.thumbnail}" alt="${p.key}" class="square-image">
+      </div>
       <div class="product-info">
         <div class="product-title">${p.title}</div>
         <div class="product-meta">
@@ -79,11 +89,13 @@ function renderPremiumFeatureResult() {
     )
     .join("");
 
+  /* 4) DOM 삽입 */
   document.querySelector(
     ".premium_face_product"
-  ).innerHTML = `<div class="face-product-section">${cards}</div>`;
+  ).innerHTML = `<div class="face-product-section">${cardsHtml}</div>`;
 
-  bindPremiumCardEvents(); // 클릭 바인딩
+  /* 5) 클릭 이벤트 바인딩 + Mixpanel 트래킹 (bindPremiumCardEvents 내부) */
+  bindPremiumCardEvents();
 }
 
 // 무료(base) 카드 – 기존 이동 그대로 유지
@@ -137,7 +149,17 @@ function bindPremiumCardEvents() {
     .querySelectorAll(".premium_face_product .product-card")
     .forEach((card) => {
       card.addEventListener("click", () => {
-        selectedReportType = card.dataset.type; // wealth/love/marriage
+        selectedReportType = card.dataset.key; // wealth / love / …
+        /* Mixpanel 이벤트 */
+        mixpanel.track(`상품 선택 ${card.dataset.key}`, {
+          category: "premium",
+          report_type: selectedReportType,
+          title: card.dataset.title,
+          price_label: card.dataset.price,
+          discount_pct: Number(card.dataset.discount),
+          position: [...card.parentElement.children].indexOf(card) + 1,
+          timestamp: new Date().toISOString(),
+        });
         openUploadModal();
       });
     });
@@ -197,6 +219,15 @@ document
 document.getElementById("photoInput").addEventListener("change", async (e) => {
   const file = e.target.files[0];
   if (!file) return;
+
+  /* Mixpanel 이벤트 */
+  mixpanel.track("사진 업로드", {
+    report_type: selectedReportType ?? "unknown",
+    file_size: file.size,
+    file_type: file.type,
+    timestamp: new Date().toISOString(),
+  });
+
   closeUploadModal();
   showLoader();
   const b64 = await toBase64(file);
