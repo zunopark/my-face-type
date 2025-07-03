@@ -242,3 +242,11 @@ body {
     transform: rotate(360deg);
   }
 }
+
+.resultHistory_title div {
+  color: black;
+}
+
+.no-results {
+  color: black;
+}
