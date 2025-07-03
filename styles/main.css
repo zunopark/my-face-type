@@ -186,6 +186,7 @@ body {
   border-radius: 8px;
   font-size: 15px;
   cursor: pointer;
+  font-weight: 700;
 }
 .btn.primary {
   background: #007bff;
@@ -258,4 +259,8 @@ body {
   font-family: "KimjungchulMyungjo-Bold";
   font-size: 24px;
   margin-bottom: 24px;
+}
+
+.modalClose {
+  font-weight: 700;
 }
