@@ -1,0 +1,138 @@
+/* 유저 정보 css */
+.fortune_user_info_wrap {
+  width: 320px;
+  margin-top: 20px;
+}
+
+.fortune_user_info {
+  width: 100%;
+  background-color: #444444;
+  border-radius: 16px;
+  padding: 20px;
+}
+
+.fortune_user_info_upper {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  margin-bottom: 10px;
+  font-weight: 700;
+}
+
+.fortune_user_name {
+  font-size: 16px;
+  color: white;
+  padding-right: 12px;
+  padding-top: 2px;
+  letter-spacing: 2px;
+}
+
+.fortune_user_relationship {
+  font-size: 16px;
+  padding-left: 12px;
+  padding-top: 2px;
+  border-left: 1px solid rgba(255, 255, 255, 0.5);
+  color: rgb(255, 214, 32);
+}
+.fortune_user_gender {
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.8);
+  margin-bottom: 10px;
+}
+.fortune_user_info_lower {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.8);
+}
+.fortune_user_date {
+  margin-right: 4px;
+}
+.fortune_user_birth_type {
+  margin-right: 4px;
+}
+.fortune_user_time {
+}
+
+.fortune_user_change_btn {
+  width: 320px;
+}
+
+.fortune_user_change {
+  background-color: #444444;
+  border-radius: 12px;
+  margin-top: 12px;
+  margin-bottom: 12px;
+  width: 100%;
+  padding: 12px 0px;
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 16px;
+  font-family: 'KimjungchulMyungjo-Bold';
+  outline: none;
+  border: none;
+}
+
+/* 운세 결과 css */
+.fortune_result_wrap {
+  width: 320px;
+  margin-top: 20px;
+}
+
+.fortune_result {
+  margin-bottom: 32px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.fortune_result button {
+  background-color: #444444;
+  border-radius: 12px;
+  margin-top: 12px;
+  margin-bottom: 12px;
+  width: 100%;
+  padding: 12px 0px;
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 16px;
+  font-family: 'KimjungchulMyungjo-Bold';
+  outline: none;
+  border: none;
+}
+
+.fortune_result_title {
+  font-family: 'KimjungchulMyungjo-Bold';
+  color: white;
+  padding-left: 10px;
+  font-size: 20px;
+  border-left: 2px solid white;
+  margin-bottom: 24px;
+}
+
+.fortune_result_content {
+  font-family: 'KimjungchulMyungjo-Bold';
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 16px;
+  line-height: 32px;
+  text-align: justify;
+}
+
+/* 로딩 스피너 css */
+.loader {
+  color: #ffd620;
+  font-size: 20px;
+  align-self: center;
+}
+
+.loader_wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.spinner_comment {
+  color: rgba(255, 255, 255, 0.9);
+  font-family: 'KimjungchulMyungjo-Bold';
+  font-size: 16px;
+  margin-top: 12px;
+}

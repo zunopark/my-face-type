@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>관상가 양반 블로그 | 개발 블로그</title>
+    <meta name="description" content="관상가 양반 서비스의 IT 개발 블로그" />
+    <meta
+      name="keywords"
+      content="프로그래밍, 코딩, 인공지능, 개발, 개발자, 컴퓨터, 페이스북, 인스타그램"
+    />
+    <meta name="author" content="용섭 준호" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="관상가 양반 블로그" />
+    <meta property="og:description" content="관상가 양반 개발자의 블로그" />
+    <meta property="og:image" content="https://ifh.cc/g/TwYS6J.jpg" />
+    <link rel="canonical" href="https://yourface.ga/blog" />
+    <link rel="stylesheet" href="../styles//post.css" />
+    <link
+      rel="stylesheet"
+      href="https://use.fontawesome.com/releases/v5.5.0/css/all.css"
+      integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU"
+      crossorigin="anonymous"
+    />
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=East+Sea+Dokdo&display=swap');
+      @import url('https://fonts.googleapis.com/css2?family=Yeon+Sung&display=swap');
+    </style>
+    <meta
+      name="naver-site-verification"
+      content="388bb9c4a4d15bff6005df99c9b9effe5f73f54e"
+    />
+    <link
+      rel="shortcut icon"
+      href="https://keen-poitras-075b07.netlify.app/favicon.ico"
+      type="image/x-icon"
+    />
+    <link
+      rel="icon"
+      href="https://yourface.ga/favicon.ico"
+      type="image/x-icon"
+    />
+    <meta
+      name="naver-site-verification"
+      content="7024ffc62a3071ba280488657627fc78d3cd7dfd"
+    />
+  </head>
+  <body>
+    <div id="container">
+      <header>
+        <h1 class="sitename">Code Quality in Programming</h1>
+      </header>
+      <section>
+        <article>
+          <time>05 Feb 2021</time>
+          <p>
+            Guideline Always prefer straightforward implementation. Do not
+            complicate algorithms and calculations more than they should be.
+            Motivation There is more than one way to implement a certain piece
+            of logic. In fact, there are probably infinite ways. We sometimes
+            feel a need to be creative when implementing some requirements,
+            which could be a good thing in general. However, there are cases
+            that being too creative will harm the quality of the code.
+            Introducing implementations that are more complicated than they
+            should be can have several impacts on the quality of the code (and,
+            of course, the quality product). The first issue is the readability
+            of the code. When some piece of logic is not implemented in a
+            straight forward manner, it is harder to understand. In particular,
+            it is not trivial to read literally. This means a developer
+            supporting the code will have to dedicate more time to understand
+            the logic behind the implementation. Needless to say that a straight
+            forward implementation is the easiest to understand, simply because
+            it is the implementation the reader expects. The second effect of
+            complicating the implementation is the possibility of introducing
+            new defects into the code. The more complex the implementation is,
+            the more chances it will be flawed. If that's not enough, finding
+            the defects would be much harder than it should. Applicability This
+            guideline is applicable mainly to a body of a method. In some sense,
+            it could also be applied to the entire design, although in that
+            arena there might be other considerations that will promote some
+            less straightforward solution. Examples The following example is
+            very simple and with a very small scope. Yet, I believe it
+            demonstrates the problem to its full extent. When you read it, try
+            to imagine it in a larger scope, with more lines of code and with a
+            more meaningful problem. Let’s look at the following code snippets
+            (try to read it a single line at a time):
+          </p>
+          <img src="https://i.ibb.co/N9qRW44/2021-02-07-10-22-35.png" />
+          <p>
+            01 private void printVectorVector vector) { 02 03 // ... 04 05
+            Enumeration curr = vector.elements(); 06 07 while (true) { 08 09 if
+            (curr.hasMoreElements()) { 10 break; 11 } 12 13 Object obj =
+            curr.nextElement();; 14 // Printing sequence 15 } 16 17 // ... 18 19
+            } As you can probably guess, this method should enumerate the Vector
+            elements and apply some printing sequence to them. While this
+            implementation is correct, it is far from being a trivial and
+            straightforward implementation. When you first read line 7 you
+            understand that by default the code to follow will be executed in an
+            infinite loop. This is the semantic of a while (true) statement.
+            Yet, when you continue to read the code you understand that when the
+            Enumeration does not have any more elements, the algorithm is
+            stopped. This simple example is powerful because the reader has to
+            read analyze the while statement, the if statement, and the next
+            element statement in order to fully understand and verify this
+            allegedly simple algorithm. Compare this to the straight forward
+            implementation: 01 private void printVector(Vector vector) { 02 03
+            // ... 04 05 Enumeration curr = vector.elements(); 06 07 while
+            (curr.hasMoreElements()) { 08 Object obj = curr.nextElement();; 09
+            // Printing sequence 10 } 11 12 // ... 13 14 } To start with, this
+            version is shorter although it does exactly the same. When reading
+            this version you gain a full understanding of the logic of the while
+            loop tight after reading line 7. It is now obvious that this loop is
+            for enumerating the Vectors elements. There is simply no question
+            about it. The chances of an error in implementation are also
+            dramatically reduced. In such a simple implementation there is
+            almost no place for an error. Compare that to the things that can go
+            wrong in the original version of this method (for example, placing
+            the if statement after the core logic of the loop). After reading
+            this simplified (yet very real) example, try to imagine a more
+            convoluted algorithm with such a redundant complexity which makes it
+            harder to understand than it should be.
+          </p>
+        </article>
+      </section>
+    </div>
+  </body>
+</html>

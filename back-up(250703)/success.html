@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <title>결제 성공</title>
+    <style>
+      body {
+        font-family: sans-serif;
+        text-align: center;
+        padding: 40px;
+      }
+      .success {
+        font-size: 20px;
+        color: green;
+      }
+      .fail {
+        font-size: 20px;
+        color: red;
+      }
+    </style>
+    <script type="text/javascript">
+      (function (f, b) {
+        if (!b.__SV) {
+          var e, g, i, h;
+          window.mixpanel = b;
+          b._i = [];
+          b.init = function (e, f, c) {
+            function g(a, d) {
+              var b = d.split(".");
+              2 == b.length && ((a = a[b[0]]), (d = b[1]));
+              a[d] = function () {
+                a.push([d].concat(Array.prototype.slice.call(arguments, 0)));
+              };
+            }
+            var a = b;
+            "undefined" !== typeof c ? (a = b[c] = []) : (c = "mixpanel");
+            a.people = a.people || [];
+            a.toString = function (a) {
+              var d = "mixpanel";
+              "mixpanel" !== c && (d += "." + c);
+              a || (d += " (stub)");
+              return d;
+            };
+            a.people.toString = function () {
+              return a.toString(1) + ".people (stub)";
+            };
+            i =
+              "disable time_event track track_pageview track_links track_forms track_with_groups add_group set_group remove_group register register_once alias unregister identify name_tag set_config reset opt_in_tracking opt_out_tracking has_opted_in_tracking has_opted_out_tracking clear_opt_in_out_tracking start_batch_senders people.set people.set_once people.unset people.increment people.append people.union people.track_charge people.clear_charges people.delete_user people.remove".split(
+                " "
+              );
+            for (h = 0; h < i.length; h++) g(a, i[h]);
+            var j = "set set_once union unset remove delete".split(" ");
+            a.get_group = function () {
+              function b(c) {
+                d[c] = function () {
+                  call2_args = arguments;
+                  call2 = [c].concat(Array.prototype.slice.call(call2_args, 0));
+                  a.push([e, call2]);
+                };
+              }
+              for (
+                var d = {},
+                  e = ["get_group"].concat(
+                    Array.prototype.slice.call(arguments, 0)
+                  ),
+                  c = 0;
+                c < j.length;
+                c++
+              )
+                b(j[c]);
+              return d;
+            };
+            b._i.push([e, f, c]);
+          };
+          b.__SV = 1.2;
+          e = f.createElement("script");
+          e.type = "text/javascript";
+          e.async = !0;
+          e.src =
+            "undefined" !== typeof MIXPANEL_CUSTOM_LIB_URL
+              ? MIXPANEL_CUSTOM_LIB_URL
+              : "file:" === f.location.protocol &&
+                "//cdn.mxpnl.com/libs/mixpanel-2-latest.min.js".match(/^\/\//)
+              ? "https://cdn.mxpnl.com/libs/mixpanel-2-latest.min.js"
+              : "//cdn.mxpnl.com/libs/mixpanel-2-latest.min.js";
+          g = f.getElementsByTagName("script")[0];
+          g.parentNode.insertBefore(e, g);
+        }
+      })(document, window.mixpanel || []);
+    </script>
+  </head>
+  <body>
+    <h2 id="status">🔄 결제 확인 중...</h2>
+    <p>잠시만 기다려주세요.</p>
+
+    <script>
+      // 고유 사용자 ID를 localStorage에서 불러오거나 새로 생성
+      let distinctId = localStorage.getItem("mixpanel_distinct_id");
+      if (!distinctId) {
+        distinctId = crypto.randomUUID(); // 브라우저 내장 UUID 생성
+        localStorage.setItem("mixpanel_distinct_id", distinctId);
+      }
+
+      // Mixpanel 초기화 및 ID 지정
+      mixpanel.init("d7d8d6afc10a92f911ea59901164605b", {
+        debug: true,
+        // optional: identify 자동 호출 안 되게 하고, 아래에서 수동으로 identify
+        autotrack: true,
+        persistence: "localStorage",
+      });
+
+      // 사용자 ID를 명시적으로 identify
+      mixpanel.identify(distinctId);
+
+      // 추적 예시
+      mixpanel.track("관상 결제 성공 페이지 진입", {
+        url: window.location.href,
+        userAgent: navigator.userAgent,
+        timestamp: new Date().toISOString(),
+      });
+    </script>
+
+    <script>
+      const params = new URLSearchParams(window.location.search);
+      const paymentKey = params.get("paymentKey");
+      const orderId = params.get("orderId");
+      const amount = Number(params.get("amount"));
+      const resultId = params.get("id");
+      const reportType = params.get("type"); // ① 추가 ─ type 쿼리 추출
+
+      const body = { paymentKey, orderId, amount };
+
+      // ✅ IndexedDB 초기화
+      function initDB() {
+        return new Promise((resolve) => {
+          const request = indexedDB.open("FaceAnalysisDB", 1);
+
+          request.onsuccess = function (event) {
+            resolve(event.target.result);
+          };
+
+          request.onerror = function (event) {
+            console.error("❌ IndexedDB 오류", event);
+          };
+        });
+      }
+
+      // ✅ 특정 ID의 paid를 true로 변경
+      async function markPaid(db, id) {
+        return new Promise((resolve, reject) => {
+          const transaction = db.transaction(["results"], "readwrite");
+          const store = transaction.objectStore("results");
+          const getRequest = store.get(id);
+
+          getRequest.onsuccess = () => {
+            const data = getRequest.result;
+            if (data) {
+              data.paid = true;
+              const putRequest = store.put(data);
+              putRequest.onsuccess = () => resolve(true);
+              putRequest.onerror = reject;
+            } else {
+              reject("❌ 해당 ID의 결과 없음");
+            }
+          };
+
+          getRequest.onerror = reject;
+        });
+      }
+
+      fetch(
+        "https://port-0-momzzi-fastapi-m7ynssht4601229b.sel4.cloudtype.app/payment/confirm",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(body),
+        }
+      )
+        .then((res) => {
+          if (!res.ok) throw new Error("서버 검증 실패");
+          return res.json();
+        })
+        .then(async (data) => {
+          console.log("✅ 결제 확인 완료", data);
+          document.getElementById("status").textContent =
+            "✅ 결제가 완료되었습니다!";
+          document.getElementById("status").className = "success";
+
+          mixpanel.track("프리미엄 기본 관상 결제 성공", {
+            orderId,
+            amount,
+            paymentKey,
+            resultId,
+            timestamp: new Date().toISOString(),
+          });
+
+          if (resultId) {
+            try {
+              const db = await initDB();
+              await markPaid(db, resultId);
+              console.log("✅ IndexedDB 결제 상태 업데이트 완료");
+            } catch (e) {
+              console.error("❌ IndexedDB 업데이트 실패:", e);
+            }
+          }
+
+          setTimeout(() => {
+            window.location.href = resultId
+              ? `/analyze-result/?id=${encodeURIComponent(
+                  resultId
+                )}&type=${encodeURIComponent(reportType || "base")}`
+              : "/";
+          }, 2000);
+        })
+        .catch((err) => {
+          console.error("❌ 결제 확인 실패", err);
+          document.getElementById("status").textContent =
+            "❌ 결제 확인에 실패했습니다.";
+          document.getElementById("status").className = "fail";
+
+          // ✅ 믹스패널: 결제 실패 추적
+          mixpanel.track("관상 결제 실패", {
+            error: err.message,
+            orderId,
+            amount,
+            paymentKey,
+            resultId,
+            timestamp: new Date().toISOString(),
+          });
+
+          setTimeout(() => {
+            window.location.href = "/fail.html";
+          }, 3000);
+        });
+    </script>
+  </body>
+</html>

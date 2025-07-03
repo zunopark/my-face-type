@@ -1,0 +1,152 @@
+/* 해몽 결과 css */
+.dream_result {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.dream_result button {
+  width: 100%;
+  background-color: #444444;
+  border-radius: 12px;
+  margin-top: 12px;
+  margin-bottom: 12px;
+  padding: 12px 0px;
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 16px;
+  font-family: 'KimjungchulMyungjo-Bold';
+  outline: none;
+  border: none;
+}
+
+.dream_result_upper {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-image: url('https://i.ibb.co/hCz0425/moon-1.png');
+  background-size: cover;
+  height: 240px;
+  position: relative;
+  padding-left: 30px;
+  padding-right: 30px;
+  margin-bottom: 60px;
+}
+
+.dream_result_summary {
+  font-family: 'KimjungchulMyungjo-Bold';
+  font-size: 20px;
+  text-align: center;
+  color: white;
+  line-height: 36px;
+}
+
+.dream_result_date {
+  position: absolute;
+  color: rgba(255, 255, 255, 0.3);
+  bottom: 30px;
+  font-weight: 300;
+  font-family: 'KimjungchulMyungjo-Bold';
+  font-size: 14px;
+}
+
+.dream_result_middle {
+  width: 320px;
+  margin-bottom: 40px;
+}
+
+.dream_result_mydream {
+  color: white;
+  font-weight: 300;
+  font-size: 16px;
+  text-align: justify;
+  line-height: 32px;
+}
+
+.dream_result_lower {
+  width: 320px;
+}
+
+.dream_result_total {
+  color: white;
+  text-align: justify;
+  font-size: 20px;
+  line-height: 40px;
+}
+
+.dream_result_category {
+  font-family: 'KimjungchulMyungjo-Bold';
+  color: white;
+  padding-left: 10px;
+  font-size: 20px;
+  border-left: 2px solid white;
+  margin-bottom: 24px;
+}
+
+.dream_result_content {
+  font-family: 'KimjungchulMyungjo-Bold';
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 16px;
+  line-height: 32px;
+  text-align: justify;
+}
+
+.dream_result_bottom {
+  width: 320px;
+  background-color: #ffe924;
+  border-radius: 12px;
+  margin-top: 40px;
+  padding: 8px 0px;
+  color: rgb(54, 54, 54);
+  font-size: 20px;
+  font-family: 'KimjungchulMyungjo-Bold';
+  outline: none;
+  border: none;
+  text-decoration: none;
+  text-align: center;
+  margin-bottom: 12px;
+}
+
+/* 로딩 스피너 css */
+.loader {
+  margin-bottom: 40px;
+}
+
+.loader_wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 80px;
+}
+
+.dream_loader_title {
+  font-size: 36px;
+  color: white;
+  font-family: 'KimjungchulMyungjo-Bold';
+  margin-bottom: 20px;
+}
+
+.dream_loader_description {
+  font-size: 20px;
+  width: 240px;
+  color: #666666;
+  font-family: 'KimjungchulMyungjo-Bold';
+  font-weight: 300;
+  line-height: 32px;
+}
+
+.spinner_comment {
+  color: rgba(255, 255, 255, 0.9);
+  font-family: 'KimjungchulMyungjo-Bold';
+  font-size: 16px;
+  margin-top: 12px;
+}
+
+.spinner {
+  color: rgb(255, 214, 32);
+  font-size: 32px;
+  margin-top: 32px;
+}

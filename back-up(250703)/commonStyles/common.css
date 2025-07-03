@@ -1,0 +1,13 @@
+@import url("https://fonts.googleapis.com/css?family=Asap:400,500,700");
+
+@font-face {
+  font-family: "MapoBackpacking";
+  src: url("https://gcore.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/MapoBackpackingA.woff")
+    format("woff");
+  font-weight: normal;
+  font-style: normal;
+}
+
+* {
+  box-sizing: border-box;
+}

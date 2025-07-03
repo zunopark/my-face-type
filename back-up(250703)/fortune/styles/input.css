@@ -1,0 +1,177 @@
+/* select {
+  appearance: none;
+  border: 2px solid #ccc;
+  border-radius: 4px;
+  padding: 8px;
+  font-size: 16px;
+  background-color: #fff;
+  background-image: linear-gradient(to bottom, #fff, #f2f2f2);
+  background-repeat: no-repeat;
+  background-position: center right;
+}
+
+select:focus {
+  outline: none;
+  border-color: #6ab4ff;
+  box-shadow: 0 0 4px rgba(106, 180, 255, 0.5);
+}
+
+select option {
+  font-size: 16px;
+} */
+
+.fortune_input_wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.fortune_input_wrap input {
+  border: none;
+  outline: none;
+  background-color: transparent;
+}
+
+.fortune_input_wrap select {
+  border: none;
+  outline: none;
+}
+
+.fortune_input_upper {
+  display: flex;
+  justify-content: space-between;
+  width: 320px;
+  margin-bottom: 20px;
+}
+
+.fortune_name_wrap {
+  border-bottom: 1px solid white;
+  width: 210px;
+}
+
+.fortune_name {
+  width: 100%;
+  text-align: center;
+  padding-bottom: 8px;
+  caret-color: white;
+  color: white;
+  font-size: 20px;
+  letter-spacing: 4px;
+}
+
+.fortune_name::placeholder {
+  letter-spacing: 0;
+}
+
+.fortune_relationship_wrap {
+  border-bottom: 1px solid white;
+}
+.fortune_relationship {
+  padding: 6px 12px;
+  border-radius: 6px;
+  background-color: transparent;
+  color: white;
+}
+
+.fortune_input_middle {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 320px;
+  margin-bottom: 20px;
+}
+
+.fortune_gender_wrap {
+  border-bottom: 1px solid white;
+}
+
+.fortune_gender {
+  padding: 6px 12px;
+  border-radius: 6px;
+  background-color: transparent;
+  color: white;
+}
+
+.fortune_birth_type_wrap {
+  border-bottom: 1px solid white;
+}
+
+.fortune_birth_type {
+  padding: 6px 12px;
+  border-radius: 6px;
+  background-color: transparent;
+  color: white;
+}
+
+.fortune_time_wrap {
+  border-bottom: 1px solid white;
+}
+
+.fortune_time {
+  padding: 6px 12px;
+  border-radius: 6px;
+  background-color: transparent;
+  color: white;
+}
+
+.fortune_input_lower {
+  display: flex;
+  justify-content: center;
+  width: 320px;
+  margin-bottom: 40px;
+}
+
+.fortune_date_wrap {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  text-align: center;
+  border-bottom: 1px solid white;
+  color: white;
+}
+
+.fortune_date {
+  padding: 6px 10px;
+  border-radius: 6px;
+  color: white;
+  font-size: 16px;
+}
+
+.fortune_date::-webkit-inner-spin-button,
+.fortune_date::-webkit-calendar-picker-indicator {
+  display: none;
+  -webkit-appearance: none;
+}
+
+.fortune_start_btn_wrap {
+  width: 320px;
+}
+
+.fortune_start_btn {
+  background-color: #ffd620;
+  border-radius: 12px;
+  margin-top: 12px;
+  margin-bottom: 12px;
+  width: 100%;
+  padding: 12px 0px;
+  color: #2f2f2f;
+  font-size: 20px;
+  font-family: 'KimjungchulMyungjo-Bold';
+  outline: none;
+  border: none;
+}
+/* .fortune_start_btn {
+  background-color: #444444;
+  border-radius: 12px;
+  margin-top: 12px;
+  margin-bottom: 12px;
+  width: 100%;
+  padding: 12px 0px;
+  color: white;
+  font-size: 16px;
+  font-family: 'KimjungchulMyungjo-Bold';
+  outline: none;
+  border: none;
+} */

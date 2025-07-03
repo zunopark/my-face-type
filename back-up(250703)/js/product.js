@@ -7,18 +7,6 @@ let analysisDb = null; // IndexedDB 핸들
 function renderPremiumFeatureResult() {
   const products = [
     {
-      key: "base",
-      emoji: "🐍",
-      title: "[1,500만명 참여] 관상 테스트 : 처음 보는 내 관상",
-      desc: "3,000+ 글자",
-      rating: 4.9,
-      views: "4,500+",
-      discount: 72,
-      price: "일부 무료",
-      original_price: 6900,
-      thumbnail: "/img/base.png",
-    },
-    {
       key: "wealth",
       emoji: "💸",
       title: "타고난 부: 10억, 100억 내가 평생 모을 재산은?",
@@ -90,10 +78,23 @@ function renderFreeFeatureResult() {
   const products = [
     {
       key: "base",
+      url: () => `/base/`,
+      emoji: "🐍",
+      title: "[1,500만명 참여] 관상 테스트 : 처음 보는 내 관상",
+      desc: "3,000+ 글자",
+      rating: 4.9,
+      views: "4,500+",
+      discount: 100,
+      price: "무료",
+      original_price: 6900,
+      thumbnail: "/img/base.png",
+    },
+    {
+      key: "base",
       url: () => `/animalface/`,
       emoji: "🐍",
       title: "동물상 테스트 : 난 어떤 동물과 닮았을까?",
-      desc: "200+ 글자",
+      desc: "300+ 글자",
       rating: 4.9,
       views: "4,500+",
       discount: 100,
@@ -268,7 +269,7 @@ async function analyzeFaceFeatureOnly(file, imageBase64, reportType = "base") {
 
     const redirect =
       reportType === "base"
-        ? `/base-report/?id=${encodeURIComponent(result.id)}&type=base`
+        ? `/face-result/?id=${encodeURIComponent(result.id)}&type=base`
         : `/report/${reportType}/?id=${encodeURIComponent(
             result.id
           )}&type=${reportType}`;

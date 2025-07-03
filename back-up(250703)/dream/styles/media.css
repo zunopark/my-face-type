@@ -1,0 +1,20 @@
+/* 500px 이상 */
+@media screen and (min-width: 500px) {
+  .dream_input_wrap,
+  .dream_user_info_wrap,
+  .main_content_wrap,
+  .dream_result_wrap {
+    width: 500px;
+  }
+}
+/* 500px 미만 */
+@media screen and (max-width: 499px) {
+  .dream_input_wrap,
+  .dream_user_info_wrap {
+    width: 320px;
+  }
+  .main_content_wrap,
+  .dream_result_wrap {
+    width: 100%;
+  }
+}

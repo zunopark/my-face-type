@@ -1,0 +1,83 @@
+/* select {
+  appearance: none;
+  border: 2px solid #ccc;
+  border-radius: 4px;
+  padding: 8px;
+  font-size: 16px;
+  background-color: #fff;
+  background-image: linear-gradient(to bottom, #fff, #f2f2f2);
+  background-repeat: no-repeat;
+  background-position: center right;
+}
+
+select:focus {
+  outline: none;
+  border-color: #6ab4ff;
+  box-shadow: 0 0 4px rgba(106, 180, 255, 0.5);
+}
+
+select option {
+  font-size: 16px;
+} */
+
+.dream_input_wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.dream_input_wrap input {
+  border: none;
+  outline: none;
+  background-color: transparent;
+}
+
+.dream_input_wrap select {
+  border: none;
+  outline: none;
+}
+
+.dream_main_wrap {
+  width: 320px;
+}
+
+.dream_main {
+  width: 100%;
+  text-align: justify;
+  padding: 16px;
+  color: white;
+  font-size: 20px;
+  background-color: #444444;
+  height: 200px;
+  border: none;
+  border-radius: 10px;
+  resize: none;
+}
+
+.dream_main:focus {
+  outline: none;
+}
+
+.dream_main::placeholder {
+  letter-spacing: 0;
+  color: rgb(147, 147, 147);
+}
+
+.dream_start_btn_wrap {
+  width: 320px;
+}
+
+.dream_start_btn {
+  background-color: #ffd620;
+  border-radius: 12px;
+  margin-top: 12px;
+  margin-bottom: 12px;
+  width: 100%;
+  padding: 12px 0px;
+  color: #2f2f2f;
+  font-size: 20px;
+  font-family: 'KimjungchulMyungjo-Bold';
+  outline: none;
+  border: none;
+}

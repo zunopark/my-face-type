@@ -19,6 +19,7 @@
       content="AI 관상가 양반이 알려주는 당신의 관상 | 관상 테스트 | 관상가 양반"
     />
     <meta property="og:image" content="https://i.ibb.co/nPD5mmK/face.png" />
+
     <meta
       name="google-site-verification"
       content="5jMrJKVs7H177f1geuB5P3ich8NWoORj_j7ihOOSarQ"
@@ -29,6 +30,12 @@
     />
     <link rel="canonical" href="https://keen-poitras-075b07.netlify.app" />
     <link rel="stylesheet" href="styles/style.css" />
+    <link
+      rel="stylesheet"
+      href="https://use.fontawesome.com/releases/v5.5.0/css/all.css"
+      integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU"
+      crossorigin="anonymous"
+    />
     <style>
       @import url("https://fonts.googleapis.com/css2?family=East+Sea+Dokdo&display=swap");
       @import url("https://fonts.googleapis.com/css2?family=Yeon+Sung&display=swap");
@@ -72,7 +79,6 @@
       gtag("config", "G-5TZETSPG3B");
     </script>
 
-    <!-- google ad manager reward sdk  -->
     <script
       async
       src="https://securepubads.g.doubleclick.net/tag/js/gpt.js"
@@ -85,7 +91,12 @@
         history.pushState(null, null, CatagoryURL);
       }
     </script>
-
+    <!-- 카카오 공유 링크  -->
+    <script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
+    <script>
+      Kakao.init("4ff46443835291514c5a215357a6c4c1");
+      Kakao.isInitialized();
+    </script>
     <!-- Paste this right before your closing </head> tag -->
     <script type="text/javascript">
       (function (f, b) {
@@ -173,66 +184,166 @@
   </head>
   <body>
     <div class="main_body_wrap">
-      <header id="main" class="header_chat_wrap"></header>
+      <header id="base" class="header_chat_wrap"></header>
 
       <div class="main_content_wrap">
-        <a href="/base/" class="upper_img_wrap">
-          <img
-            src="https://i.ibb.co/3yB1S3W2/aaa.png"
-            class="upper_img"
-            alt="관상 테스트 | AI 관상가 양반"
-          />
-        </a>
-        <div class="face_test_wrap">
-          <div class="face_test_title">관상 심층 보고서</div>
-          <div class="face_test_product_wrap">
-            <div class="premium_face_product"></div>
+        <div class="main_title_wrap">
+          <div class="main_title">인공지능이 알려주는 관상 테스트</div>
+          <div class="main_subtitle">대한민국 1등 AI 관상 서비스</div>
+        </div>
+
+        <div class="border">
+          <div class="frame">
+            <div class="image">
+              <script
+                class="jsbin"
+                src="https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"
+              ></script>
+              <div class="file-upload">
+                <div class="image-upload-wrap">
+                  <input
+                    class="file-upload-input"
+                    type="file"
+                    onchange="readURL(this);"
+                    accept="image/*"
+                  />
+                  <div class="drag-text">
+                    <i class="far fa-image"></i>
+                    <h2 style="font-family: KimjungchulMyungjo-Bold">
+                      (사진 첨부)
+                    </h2>
+                    <h3 style="font-family: KimjungchulMyungjo-Bold">
+                      관상? 얼굴 한번 봅시다
+                    </h3>
+                  </div>
+                </div>
+                <div class="file-upload-content">
+                  <div class="image-square-frame">
+                    <img
+                      class="file-upload-image"
+                      id="face-image"
+                      src="#"
+                      alt="your image"
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
-        <div class="face_test_wrap">
-          <div class="face_test_title">무료 테스트</div>
-          <div class="face_test_product_wrap">
-            <div class="free_face_product"></div>
+      </div>
+
+      <div id="label-container" class="result"></div>
+
+      <!-- ✅ Toss 결제 모달 -->
+      <div id="paymentOverlay" class="payment-overlay" style="display: none">
+        <div id="paymentFull" class="payment-fullscreen">
+          <div class="modal-content">
+            <div class="payment-header">
+              <div class="payment-title">프리미엄 관상 심층 분석 보고서</div>
+              <div class="payment-close" onclick="closePayment()">✕</div>
+            </div>
+
+            <div id="payment-method"></div>
+            <div id="agreement"></div>
+            <div
+              id="payment-amount"
+              style="font-size: 14px; text-align: center"
+            >
+              <span
+                style="
+                  text-decoration: line-through;
+                  color: #a9a9a9;
+                  font-weight: 400;
+                  margin-right: 2px;
+                "
+                >6,900원</span
+              >
+              <span
+                style="
+                  color: #ff5121;
+                  font-size: 18px;
+                  font-weight: 700;
+                  margin-right: 2px;
+                "
+                >72%</span
+              >
+              <span style="color: #171717; font-size: 18px; font-weight: 700"
+                >1,900원</span
+              >
+            </div>
+            <button
+              id="payment-button"
+              style="
+                margin-top: 16px;
+                width: 100%;
+                padding: 12px;
+                background-color: #ffbe0a;
+                color: rgb(13, 13, 13);
+                font-weight: 700;
+                border: none;
+                border-radius: 6px;
+                font-size: 14px;
+              "
+            >
+              결제하기
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div id="discountOverlay" class="payment-overlay" style="display: none">
+        <div id="discountFullscreen" class="payment-fullscreen">
+          <div class="modal-content">
+            <div class="payment-header">
+              <div class="payment-title">🎁 깜짝 할인! 여기서만 900원</div>
+              <div class="payment-close" onclick="closeDiscount()">✕</div>
+            </div>
+
+            <div id="discount-method"></div>
+            <div id="discount-agreement"></div>
+
+            <div style="font-size: 14px; text-align: center; margin-top: 12px">
+              <span style="color: #171717; font-size: 16px; font-weight: 500"
+                >첫 결제 1,000원 추가 할인</span
+              >
+              <br />
+              <span
+                style="
+                  text-decoration: line-through;
+                  color: #a9a9a9;
+                  font-weight: 400;
+                  margin-right: 2px;
+                "
+                >1,900원</span
+              >
+              <span style="color: #ff5121; font-size: 18px; font-weight: 700"
+                >900원</span
+              >
+            </div>
+
+            <button
+              id="discount-button"
+              style="
+                margin-top: 16px;
+                width: 100%;
+                padding: 12px;
+                background-color: #ffbe0a;
+                color: rgb(13, 13, 13);
+                font-weight: 700;
+                border: none;
+                border-radius: 6px;
+                font-size: 14px;
+              "
+            >
+              할인 결제하기
+            </button>
           </div>
         </div>
       </div>
 
       <footer class="footer"></footer>
-
-      <div class="nav_wrap">
-        <a href="/" class="nav_content nav_seleted">
-          <i class="fa-solid fa-house nav_icon"></i>
-          <div class="nav_title">전체 보기</div>
-        </a>
-        <a href="/history/" class="nav_content">
-          <i class="fa-solid fa-user nav_icon"></i>
-          <div class="nav_title">마이 페이지</div>
-        </a>
-      </div>
-      <div id="uploadBackdrop"></div>
-      <div id="uploadModal" class="hidden">
-        <div class="modal-sheet">
-          <h3 class="modal-sheet-title" style="margin-bottom: 12px">
-            사진을 올려 주세요
-          </h3>
-          <!-- 실제 파일 인풋은 숨김 -->
-          <input type="file" accept="image/*" id="photoInput" hidden />
-
-          <!-- 커스텀 액션 버튼 영역 -->
-          <div class="modal-actions">
-            <button id="modalClose" type="button" class="btn">닫기</button>
-            <button id="selectPhoto" type="button" class="btn primary">
-              사진 올리기
-            </button>
-          </div>
-        </div>
-      </div>
-      <div id="loadingOverlay" class="hidden">
-        <div class="spinner"></div>
-        <div class="loading-text">잠시만 기다려주세요</div>
-      </div>
     </div>
-
     <script>
       // 고유 사용자 ID를 localStorage에서 불러오거나 새로 생성
       let distinctId = localStorage.getItem("mixpanel_distinct_id");
@@ -244,6 +355,7 @@
       // Mixpanel 초기화 및 ID 지정
       mixpanel.init("d7d8d6afc10a92f911ea59901164605b", {
         debug: true,
+        // optional: identify 자동 호출 안 되게 하고, 아래에서 수동으로 identify
         autotrack: true,
         persistence: "localStorage",
       });
@@ -252,20 +364,22 @@
       mixpanel.identify(distinctId);
 
       // 추적 예시
-      mixpanel.track("관상 홈 방문", {
+      mixpanel.track("관상 페이지 방문", {
         url: window.location.href,
         userAgent: navigator.userAgent,
         timestamp: new Date().toISOString(),
       });
     </script>
 
+    <script src="https://js.tosspayments.com/v1/payment-widget"></script>
+
     <script
       src="https://kit.fontawesome.com/47e166f8b9.js"
       crossorigin="anonymous"
     ></script>
 
-    <script src="commonJs/footer.js"></script>
-    <script src="commonJs/header.js"></script>
-    <script src="js/product.js"></script>
+    <script src="../commonJs/footer.js"></script>
+    <script src="../commonJs/header.js"></script>
+    <script src="js/result.js"></script>
   </body>
 </html>
