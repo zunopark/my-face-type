@@ -6,7 +6,7 @@ const headerContent = () => {
       <div class="header_chat header_fixed" style ="">
 
             <a href="/" style="margin-right: 12px; text-decoration: none;">
-          <div class="header_chat_title" style="color: rgb(130, 130, 130);;">관상</div>
+          <div class="header_chat_title" style="color: rgb(130, 130, 130);">관상</div>
         </a>
             <a href="/animalface/" style="margin-right: 12px; text-decoration: none;">
           <div class="header_chat_title" >동물상</div>
