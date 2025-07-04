@@ -3,13 +3,16 @@ const headerContent = () => {
 
   if (headerMain.id === "main") {
     headerMain.innerHTML = ` 
-      <div class="header_chat header_fixed" style ="">
+      <div class="header_chat header_fixed">
 
             <a href="/" style="margin-right: 12px; text-decoration: none;">
           <div class="header_chat_title" style="color: rgb(130, 130, 130);">관상</div>
         </a>
             <a href="/animalface/" style="margin-right: 12px; text-decoration: none;">
           <div class="header_chat_title" >동물상</div>
+        </a>
+            <a href="/history/" style="margin-right: 12px; text-decoration: none;">
+          <div class="header_chat_title" style="color: rgb(130, 130, 130); margin-left: auto;" >기록</div>
         </a>
       </div>`;
   } else if (headerMain.id === "base") {
