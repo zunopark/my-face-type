@@ -7,260 +7,174 @@ body {
 }
 
 .main_body_wrap {
-  background: rgb(255, 255, 255);
+  background: white;
   display: flex;
   flex-direction: column;
+  align-items: center;
 }
 
 .main_content_wrap {
   display: flex;
   flex-direction: column;
-  margin-top: 70px;
-}
-
-.upper_img_wrap {
-  padding: 0 16px;
-  margin-bottom: 20px;
-}
-
-.upper_img {
-  width: 100%;
-  border-radius: 10px;
-}
-
-.face_test_wrap {
-  padding: 0 16px;
-}
-
-.face_test_title {
-  font-family: "KimjungchulMyungjo-Bold";
-  font-size: 20px;
-  margin-bottom: 12px;
-  color: #0f0f0f;
-}
-
-.face_test_product_wrap {
-}
-
-.face-product-section {
-  display: flex;
-  flex-direction: column;
-}
-
-.product-card {
-  display: flex;
-  align-items: flex-start;
-  background: transparent;
-  border-radius: 14px;
-  position: relative;
-  margin-bottom: 16px;
-}
-
-.product-image {
-  width: 100px;
-  height: 100px;
-  flex-shrink: 0;
-  margin-right: 10px;
-}
-
-.square-image {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  border-radius: 8px;
-}
-
-.product-info {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  height: 110px;
-}
-
-.product-title {
-  font-size: 16px;
-  font-weight: 600;
-  color: #0f0f0f;
-  text-align: justify;
-}
-
-.product-meta {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-}
-
-.product-stats {
-  color: #ff9d00;
-  font-size: 12px;
-}
-
-.product-meta-price {
-  display: flex;
-  align-items: flex-end;
-}
-
-.product-original-price {
-  color: #b7b7b7;
-  margin-right: 8px;
-  text-decoration: line-through;
-  padding-bottom: 3px;
-}
-
-.product-meta .discount {
-  color: #ff5121;
-  font-weight: 700;
-  font-size: 20px;
-  margin-right: 4px;
-}
-
-.product-price {
-  font-size: 20px;
-  color: #0f0f0f;
-  font-weight: 900;
-}
-
-.hidden {
-  display: none;
-}
-
-/* ───── 모달 배경(딤) ───── */
-#uploadBackdrop {
-  position: fixed;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.45); /* 살짝 어두운 배경 */
-  backdrop-filter: blur(2px); /* 배경 블러 */
-  opacity: 0; /* 처음엔 투명 */
-  pointer-events: none; /* 숨긴 상태에서 클릭 막기 */
-  transition: opacity 0.3s ease;
-  z-index: 9998;
-}
-
-/* ───── 모달 시트 ───── */
-#uploadModal {
-  position: fixed;
-
-  bottom: 0;
-  z-index: 9999;
-  /* 처음엔 화면 아래에 숨어 있음 */
-  transform: translateY(100%);
-  transition: transform 0.35s cubic-bezier(0.35, 1.04, 0.58, 1);
-}
-
-/* 열릴 때 붙일 클래스 */
-#uploadModal.show {
-  transform: translateY(0); /* 위로 슬라이드 */
-}
-
-/* 실제 시트 내용 꾸미기(선택) */
-#uploadModal .modal-sheet {
-  background: #fff;
-  border-top-left-radius: 18px;
-  border-top-right-radius: 18px;
-  box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.15);
-  padding: 32px 16px 48px;
-  font-family: "Noto Sans KR", sans-serif;
-  width: 100%;
-  display: flex;
-  flex-direction: column;
   align-items: center;
+  margin-top: 60px;
 }
 
-.modal-sheet-title {
+.main_title_wrap {
   width: 100%;
-  text-align: center;
-  padding-bottom: 12px;
-}
-
-/* ───── 열렸을 때 토글 클래스 ───── */
-#uploadBackdrop.show {
-  opacity: 1;
-  pointer-events: auto;
-}
-
-/* 버튼 공통 */
-.btn {
-  flex: 1; /* 가로로 1:1 비율 */
-  padding: 10px 0;
-  border: none;
-  border-radius: 8px;
-  font-size: 15px;
-  cursor: pointer;
-  font-weight: 700;
-}
-.btn.primary {
-  background: #007bff;
-  color: #fff;
-}
-.btn:not(.primary) {
-  background: #eee;
-  color: #333;
-}
-
-/* 버튼 배치 */
-.modal-actions {
-  display: flex;
-  gap: 12px; /* 버튼 사이 간격 */
-  margin-top: 16px;
-  width: 100%;
-}
-
-/* 오버레이 */
-#loadingOverlay {
-  position: fixed;
-  inset: 0;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  background: rgba(0, 0, 0, 0.45);
-  backdrop-filter: blur(2px);
-  opacity: 0;
-  transition: opacity 0.25s ease;
-  pointer-events: none; /* 숨겼을 때 클릭 통과 */
-  z-index: 10000;
-}
-#loadingOverlay.show {
-  opacity: 1;
-  pointer-events: auto; /* 보일 땐 클릭 막음 */
-}
-
-/* 스피너 */
-.spinner {
-  width: 48px;
-  height: 48px;
-  border: 5px solid #fff; /* 흰색 원 */
-  border-top-color: transparent; /* 빈틈 */
-  border-radius: 50%;
-  animation: spin 1s linear infinite;
-}
-/* 텍스트 */
-.loading-text {
-  margin-top: 12px;
-  color: #fff;
-  font-size: 15px;
-  letter-spacing: 0.5px;
-}
-@keyframes spin {
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-.resultHistory_title div {
-  color: black;
-}
-
-.no-results {
-  color: black;
-}
-
-.upload_title {
+  margin-bottom: 10px;
+  color: #171717;
   font-family: "KimjungchulMyungjo-Bold";
-  font-size: 24px;
-  margin-bottom: 24px;
+  margin-top: 40px;
+  margin-bottom: 20px;
 }
 
-.modalClose {
+.main_title {
+  font-size: 24px;
   font-weight: 700;
+  text-align: center;
+  line-height: 40px;
+}
+
+.main_subtitle {
+  font-size: 16px;
+  color: #2b2b2b;
+}
+
+.file-upload {
+  background-color: #fffae3;
+  width: 100%;
+  margin: 0 auto;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.file-upload-btn {
+  width: 100%;
+  margin: 0;
+  color: #fff;
+  background: #1fb264;
+  border: none;
+  padding: 10px;
+  border-radius: 4px;
+  border-bottom: 4px solid #15824b;
+  transition: all 0.2s ease;
+  outline: none;
+  text-transform: uppercase;
+  font-weight: 700;
+}
+
+.file-upload-btn:hover {
+  background: #1aa059;
+  color: #ffffff;
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.file-upload-btn:active {
+  border: 0;
+  transition: all 0.2s ease;
+}
+
+.file-upload-content {
+  display: none;
+  text-align: center;
+  line-height: 100%;
+}
+
+.file-upload-content img {
+  vertical-align: middle;
+}
+
+.file-upload-input {
+  position: absolute;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  outline: none;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.image-upload-wrap {
+  position: relative;
+  height: 80%;
+  width: 80%;
+  background: linear-gradient(
+      to bottom,
+      rgba(44, 44, 44, 0.5) 0%,
+      rgba(44, 44, 44, 0.5) 100%
+    ),
+    url(https://i.ibb.co/B2kj8Pk/man.png);
+  background-size: cover;
+}
+
+.image-dropping,
+.image-upload-wrap:hover {
+  opacity: 0.7;
+}
+
+.image-title-wrap {
+  color: #222;
+}
+
+.drag-text {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  font-size: 10px;
+  font-family: KimjungchulMyungjo-Bold;
+}
+
+.drag-text i {
+  font-size: 40px;
+  color: white;
+  margin-bottom: 10px;
+}
+
+.drag-text h2 {
+  margin-top: 3px;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: white;
+  font-size: 15px;
+}
+.drag-text h3 {
+  margin-top: 10px;
+  font-weight: 700;
+  font-size: 18px;
+  text-transform: uppercase;
+  color: white;
+}
+
+.image-square-frame {
+  width: 240px;
+  height: 280px; /* ✅ 정사각형 */
+  overflow: hidden;
+  margin: 0 auto;
+  position: relative;
+}
+
+.file-upload-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* ✅ 프레임을 채우며 비율 맞추고 자르기 */
+  object-position: center; /* ✅ 중앙 기준 자르기 */
+  display: block;
+}
+
+.nostore {
+  color: rgb(117, 117, 117);
+  margin-top: 12px;
+  font-size: 12px;
 }

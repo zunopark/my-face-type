@@ -1,5 +1,6 @@
 .border {
   box-sizing: border-box;
+  margin-bottom: 16px;
   position: relative;
   background: #272727;
   background-image: linear-gradient(top right, #5d5d5b, #383838);
@@ -18,7 +19,7 @@
     -16px 16px 2px 1px rgba(0, 0, 0, 0.01);
 }
 .border:before {
-  content: '';
+  content: "";
   display: block;
   padding-bottom: 125%;
 }
@@ -43,4 +44,10 @@
   width: 100%;
   background-size: cover;
   background-position: center center;
+}
+
+.nostore {
+  font-size: 14px;
+  margin-bottom: 24px;
+  color: #868686;
 }

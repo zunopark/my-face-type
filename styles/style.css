@@ -1,11 +1,9 @@
-@import "../commonStyles/common.css";
-@import "../commonStyles/reset.css";
-@import "../commonStyles/footer.css";
-@import "../commonStyles/media.css";
-@import "../commonStyles/header.css";
-@import "../commonStyles/nav.css";
+@import "../../commonStyles/common.css";
+@import "../../commonStyles/reset.css";
+@import "../../commonStyles/header.css";
+@import "../../commonStyles/footer.css";
+@import "../../commonStyles/media.css";
 
 @import "main.css";
-@import "history.css";
 @import "picture.css";
-@import "fileupload.css";
+@import "result.css";

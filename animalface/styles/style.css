@@ -81,6 +81,7 @@
 .inner-container:first-child {
   background: transparent;
   color: #a9a9a9;
+  text-decoration: none;
 }
 
 .inner-container:nth-child(2) {
