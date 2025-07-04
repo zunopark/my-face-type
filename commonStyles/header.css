@@ -8,6 +8,7 @@
   padding: 12px 20px;
   background-color: #ffffff;
   text-decoration: none;
+  box-shadow: 0 1px 20px rgba(54, 54, 54, 0.1);
 }
 
 .header_fixed {

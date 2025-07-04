@@ -13,7 +13,7 @@ const headerContent = () => {
           <i class="fa-solid fa-arrow-left header_chat_icon" id="back-button"></i>
         </a>
         <a href="/">
-          <div class="header_chat_title">전체 보기</div>
+          <div class="header_chat_title">다른 사진</div>
         </a>
         
       </div>`;
