@@ -6,6 +6,11 @@ let partnerFile = null; // 남자 사진
 function readURL(input, who) {
   if (!input.files || !input.files[0]) return;
 
+  /* 📊 Mixpanel: 사진 선택 */
+  mixpanel.track("커플 - 사진 선택", {
+    역할: who === "self" ? "여자" : "남자",
+  });
+
   const reader = new FileReader();
   reader.onload = (e) => {
     document.querySelector(
@@ -18,7 +23,11 @@ function readURL(input, who) {
   else partnerFile = input.files[0];
 
   // 두 장 모두 선택되면 버튼 활성화
-  document.getElementById("analyzeBtn").disabled = !(selfFile && partnerFile);
+  const ready = selfFile && partnerFile;
+  document.getElementById("analyzeBtn").disabled = !ready;
+
+  /* 📊 Mixpanel: 두 사진 모두 준비 */
+  if (ready) mixpanel.track("커플 - 두 사진 준비");
 }
 
 /* --------------- 분석 요청 --------------- */
@@ -27,6 +36,8 @@ async function startAnalysis() {
   analyzeBtn.classList.add("none");
   const resultBox = document.getElementById("result");
   resultBox.innerHTML = `<span class="loading">❤️ 잠시만요, 우리 커플 케미 분석 중! ❤️</span>`;
+
+  mixpanel.track("커플 - 분석 요청");
 
   // 1) 두 파일 FormData로 묶기
   const formData = new FormData();
@@ -52,6 +63,10 @@ async function startAnalysis() {
 
     const { line_summary, detail } = JSON.parse(clean);
 
+    mixpanel.track("커플 - 분석 완료", {
+      요약: line_summary.slice(0, 120), // 120자까지 기록
+    });
+
     const noStore = document.querySelector(".nostore");
     noStore.classList.add("none");
 
@@ -68,11 +83,19 @@ async function startAnalysis() {
         다른 사진으로 또 보기
       </a>
     `;
+
+    /* 📊 Mixpanel: 다시 보기 클릭 */
+    document.getElementById("retryBtn")?.addEventListener("click", () => {
+      mixpanel.track("커플 - 다시 보기 클릭");
+    });
   } catch (e) {
     console.error(e);
     analyzeBtn.classList.remove("none");
     resultBox.classList.remove("none");
     resultBox.innerHTML =
       "❌ 분석 중 오류가 발생했습니다.<br>다시 시도해 주세요.";
+    mixpanel.track("커플 - 분석 오류", {
+      오류메시지: e.message || "unknown",
+    });
   }
 }
