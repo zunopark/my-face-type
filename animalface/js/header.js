@@ -11,8 +11,8 @@ const headerContent = () => {
             <a href="/animalface/" style="margin-right: 12px; text-decoration: none;">
           <div class="header_chat_title" >동물상</div>
         </a>
-            <a href="/history/" style="margin-right: 12px; text-decoration: none;">
-          <div class="header_chat_title" style="color: rgb(130, 130, 130); margin-left: auto;" >기록</div>
+            <a href="/couple/" style="margin-right: 12px; text-decoration: none;">
+          <div class="header_chat_title" style="color: rgb(130, 130, 130); margin-left: auto;" >궁합</div>
         </a>
       </div>`;
   } else if (headerMain.id === "base") {

@@ -11,8 +11,8 @@ const headerContent = () => {
             <a href="/animalface/" style="margin-right: 12px; text-decoration: none;">
           <div class="header_chat_title" style="color: rgb(130, 130, 130);" >동물상</div>
         </a>
-         <a href="/history/" style="margin-right: 12px; text-decoration: none;">
-          <div class="header_chat_title" style="color: rgb(130, 130, 130); margin-left: auto;" >기록</div>
+         <a href="/couple/" style="margin-right: 12px; text-decoration: none;">
+          <div class="header_chat_title" style="color: rgb(130, 130, 130); margin-left: auto;" >궁합</div>
         </a>
       </div>`;
   } else if (headerMain.id === "history") {
@@ -25,8 +25,22 @@ const headerContent = () => {
             <a href="/animalface/" style="margin-right: 12px; text-decoration: none;">
           <div class="header_chat_title" style="color: rgb(130, 130, 130);" >동물상</div>
         </a>
-         <a href="/history/" style="margin-right: 12px; text-decoration: none;">
-          <div class="header_chat_title" style="margin-left: auto;" >기록</div>
+         <a href="/couple/" style="margin-right: 12px; text-decoration: none;">
+          <div class="header_chat_title" style="margin-left: auto;" >궁합</div>
+        </a>
+      </div>`;
+  } else if (headerMain.id === "couple") {
+    headerMain.innerHTML = ` 
+      <div class="header_chat header_fixed" style ="">
+
+            <a href="/" style="margin-right: 12px; text-decoration: none;">
+          <div class="header_chat_title" style="color: rgb(130, 130, 130);" >관상</div>
+        </a>
+            <a href="/animalface/" style="margin-right: 12px; text-decoration: none;">
+          <div class="header_chat_title" style="color: rgb(130, 130, 130);" >동물상</div>
+        </a>
+         <a href="/couple/" style="margin-right: 12px; text-decoration: none;">
+          <div class="header_chat_title" style="margin-left: auto;" >궁합</div>
         </a>
       </div>`;
   } else if (headerMain.id === "base") {

@@ -1,24 +1,35 @@
 @import url("https://fonts.googleapis.com/css2?family=Yeon+Sung&display=swap");
 
 body {
-  margin: 0;
-  font-family: "Yeon Sung", sans-serif;
-  background: #faf9f7;
+  background: whitesmoke;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+.main_body_wrap {
+  background: rgb(255, 255, 255);
+  display: flex;
+  flex-direction: column;
 }
 
 .main_content_wrap {
-  padding: 24px;
+  padding: 80px 16px 60px 16px;
   text-align: center;
 }
 
 .main_title {
   font-size: 28px;
   margin: 12px 0 4px;
+  font-family: "KimjungchulMyungjo-Bold";
 }
+
 .main_subtitle {
   font-size: 16px;
   color: #666;
   margin-bottom: 24px;
+  font-family: "KimjungchulMyungjo-Bold";
 }
 
 .upload_container {
@@ -29,10 +40,20 @@ body {
   margin-bottom: 24px;
 }
 
-.card {
+.woman-card {
   width: 150px;
   height: 150px;
-  border: 2px dashed #ccc;
+  background-color: rgba(208, 163, 173, 0.2);
+  border-radius: 12px;
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.man-card {
+  width: 150px;
+  height: 150px;
+  background-color: rgba(163, 177, 208, 0.2);
   border-radius: 12px;
   position: relative;
   overflow: hidden;
@@ -54,7 +75,6 @@ body {
   align-items: center;
   justify-content: center;
   font-size: 14px;
-  color: #999;
 }
 
 .image-preview img {
@@ -80,11 +100,39 @@ body {
 }
 
 .result {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   margin-top: 24px;
   font-size: 15px;
 }
+
+.result .summary {
+  font-family: "Yeon Sung", cursive;
+  font-size: 20px;
+  width: 330px;
+  margin-bottom: 20px;
+}
+
+.result .detail {
+  font-size: 16px;
+  width: 340px;
+  text-align: justify;
+  margin-bottom: 32px;
+}
+
 .nostore {
   font-size: 12px;
   color: #777;
-  margin-top: 6px;
+  margin-bottom: 24px;
+}
+
+.none {
+  display: none;
+}
+
+.retry_btn {
+  font-size: 16px;
+  color: gray;
 }
