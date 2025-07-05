@@ -23,6 +23,8 @@ function readURL(input, who) {
 
 /* --------------- 분석 요청 --------------- */
 async function startAnalysis() {
+  const analyzeBtn = document.querySelector(`#analyzeBtn`);
+  analyzeBtn.classList.add("none");
   const resultBox = document.getElementById("result");
   resultBox.innerHTML = `<span class="loading">❤️ 잠시만요, 우리 커플 케미 분석 중! ❤️</span>`;
 
