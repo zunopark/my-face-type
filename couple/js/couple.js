@@ -70,6 +70,8 @@ async function startAnalysis() {
     `;
   } catch (e) {
     console.error(e);
+    analyzeBtn.classList.remove("none");
+    resultBox.classList.remove("none");
     resultBox.innerHTML =
       "❌ 분석 중 오류가 발생했습니다.<br>다시 시도해 주세요.";
   }
