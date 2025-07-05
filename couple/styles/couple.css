@@ -121,13 +121,15 @@ body {
   font-size: 20px;
   width: 330px;
   margin-bottom: 20px;
+  color: rgb(255, 102, 0);
 }
 
 .result .detail {
-  font-size: 16px;
+  font-size: 18px;
   width: 340px;
   text-align: justify;
   margin-bottom: 32px;
+  font-family: "Yeon Sung", cursive;
 }
 
 .nostore {
@@ -143,4 +145,9 @@ body {
 .retry_btn {
   font-size: 16px;
   color: gray;
+}
+
+.loading {
+  font-family: "Yeon Sung", cursive;
+  font-size: 14px;
 }

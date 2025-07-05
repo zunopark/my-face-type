@@ -24,7 +24,7 @@ function readURL(input, who) {
 /* --------------- 분석 요청 --------------- */
 async function startAnalysis() {
   const resultBox = document.getElementById("result");
-  resultBox.innerHTML = "⏳ 우리 커플 케미 분석 중…";
+  resultBox.innerHTML = `<span class="loading">❤️ 잠시만요, 우리 커플 케미 분석 중! ❤️</span>`;
 
   // 1) 두 파일 FormData로 묶기
   const formData = new FormData();
