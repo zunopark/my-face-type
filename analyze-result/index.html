@@ -171,19 +171,6 @@
         }
       })(document, window.mixpanel || []);
     </script>
-
-    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-    <script>
-      if (window.marked) {
-        marked.setOptions({
-          gfm: true, // -, *, 번호 목록 등 GitHub-식 마크다운
-          breaks: true, // 줄바꿈 → <br> 변환
-          mangle: false, // 5.x 이후 링크 자동 난독화 off
-          headerIds: false, // h1/h2… id 자동부여 off (충돌 방지)
-          smartypants: true, // “” ‘ ’ 등 스마트 따옴표
-        });
-      }
-    </script>
   </head>
   <body>
     <div class="main_body_wrap">

@@ -458,9 +458,9 @@ function renderResultNormalized(obj, reportType = "base") {
       .replace(/(<\/ol>\s*)<ol>/g, ""); // 인접 <ol> 병합
 
     // 9) 남은 개행을 <br>로
-    src = src
-      .replace(/\n{2,}/g, "</p><p>") // 단락
-      .replace(/\n/g, "<br>");
+    // src = src
+    //   .replace(/\n{2,}/g, "</p><p>")
+    //   .replace(/\n/g, "<br>");
 
     return `<p>${src}</p>`;
   }
