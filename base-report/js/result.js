@@ -87,6 +87,8 @@ async function analyzeFaceImage(file, imageBase64, forceId = null) {
       }
     );
 
+    console.log("analyzeFaceImage");
+
     if (!response.ok) throw new Error("서버 응답 오류");
     const data = await response.json();
 
@@ -419,8 +421,26 @@ function renderResultNormalized(obj, reportType = "base") {
           <div class="mask-text">
             <div class="mask-text-top">관상학 기반 심층 분석</div>
             <div class="mask-text-sub">
-              얼굴형, 이마, 눈 등 부위별 세부 관상 분석 + 운명과 인생 경로 + 대인 관계와 인연 + 관상학적 인생 종합 결론<br/><br/>
-            </div>
+                1. [코와 콧대] <span class="mask-text-span">통장이 최고점 찍을 해</span><br/>
+
+                2. [이마와 눈썹] <span class="mask-text-span">첫 대박 터질 나이</span><br/>
+
+                3. [눈과 눈매] <span class="mask-text-span">끌리는 이상형 본능 코드</span><br/>
+
+                4. [입과 입술] <span class="mask-text-span">거절 못 할 설득 타율</span><br/>
+
+                5. [턱과 광대] <span class="mask-text-span">은퇴 후 반격 모먼트</span><br/>
+
+                6. [얼굴형] <span class="mask-text-span">인생 그래프 상승 각도</span><br/>
+
+                7. [전체 인상·기운] <span class="mask-text-span">로또급 깜짝 행운 지수</span><br/>
+
+                8. [운명·경로] <span class="mask-text-span">인생 반전 버튼 작동 시점</span><br/>
+
+                9. [대인 관계·인연] <span class="mask-text-span">귀인 만날 달력 표시</span><br/>
+
+                10. [종합 결론] <span class="mask-text-span">길·흉 총합 승부수 한줄</span><br/>
+                  </div>
             <div class="mask-text-btn-wrap">
               <div class="mask-text-btn" onclick="trackAndStartPayment('${resultId}')">
                 전체 분석 결과 확인하기
