@@ -405,12 +405,87 @@ function renderResultNormalized(obj, reportType = "base") {
     obj.paid !== undefined ? obj.paid : window.currentPaid ?? false;
   const resultId = obj.id ?? ""; // 결제 버튼에서 사용
 
+  function simpleMD(src = "") {
+    // 1) 코드블록 – 먼저 보존
+    src = src.replace(
+      /```([\s\S]*?)```/g,
+      (_, c) => `<pre><code>${escapeHTML(c)}</code></pre>`
+    );
+
+    // 2) 인라인 코드 보존
+    src = src.replace(/`([^`]+?)`/g, (_, c) => `<code>${escapeHTML(c)}</code>`);
+
+    // 3) 헤딩
+    src = src
+      .replace(/^###### (.*$)/gim, "<h6>$1</h6>")
+      .replace(/^##### (.*$)/gim, "<h5>$1</h5>")
+      .replace(/^#### (.*$)/gim, "<h4>$1</h4>")
+      .replace(/^### (.*$)/gim, "<h3>$1</h3>")
+      .replace(/^## (.*$)/gim, "<h2>$1</h2>")
+      .replace(/^# (.*$)/gim, "<h1>$1</h1>");
+
+    // 4) 굵게 / 이탤릭 / 취소선
+    src = src
+      .replace(/\*\*\*(.+?)\*\*\*/g, "<strong><em>$1</em></strong>")
+      .replace(/___(.+?)___/g, "<strong><em>$1</em></strong>")
+      .replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>")
+      .replace(/__(.+?)__/g, "<strong>$1</strong>")
+      .replace(/\*(.+?)\*/g, "<em>$1</em>")
+      .replace(/_(.+?)_/g, "<em>$1</em>")
+      .replace(/~~(.+?)~~/g, "<del>$1</del>");
+
+    // 5) 링크 / 이미지
+    src = src
+      .replace(/!\[([^\]]*?)\]\((.*?)\)/g, '<img src="$2" alt="$1">')
+      .replace(
+        /\[([^\]]+?)\]\((.*?)\)/g,
+        '<a href="$2" target="_blank" rel="noopener">$1</a>'
+      );
+
+    // 6) 가로줄
+    src = src.replace(/^\s*(\*\s*\*\s*\*|-{3,}|_{3,})\s*$/gm, "<hr>");
+
+    // 7) 블록인용
+    src = src.replace(/^>\s+(.*)$/gm, "<blockquote>$1</blockquote>");
+
+    // 8) 리스트 (단순 1-level)
+    //    * item / - item / + item
+    src = src
+      .replace(/^\s*[*+-]\s+(.+)$/gm, "<ul><li>$1</li></ul>")
+      .replace(/(<\/ul>\s*)<ul>/g, "") // 인접 <ul> 병합
+      // 1. item
+      .replace(/^\s*\d+\.\s+(.+)$/gm, "<ol><li>$1</li></ol>")
+      .replace(/(<\/ol>\s*)<ol>/g, ""); // 인접 <ol> 병합
+
+    // 9) 남은 개행을 <br>로
+    src = src
+      .replace(/\n{2,}/g, "</p><p>") // 단락
+      .replace(/\n/g, "<br>");
+
+    return `<p>${src}</p>`;
+  }
+
+  /* HTML Escape for code block / inline code */
+  function escapeHTML(str) {
+    return str.replace(
+      /[&<>"']/g,
+      (m) =>
+        ({
+          "&": "&amp;",
+          "<": "&lt;",
+          ">": "&gt;",
+          '"': "&quot;",
+          "'": "&#39;",
+        }[m])
+    );
+  }
+
   wrap.innerHTML = `
     <div class="face-summary-section">
-      <div class="face-summary">${marked.parse(obj.summary)}</div>
+      <div class="face-summary">${simpleMD(obj.summary)}</div>
     </div>
     <div class="face-full-section-wrapper">
-      <div class="face-full-report">${marked.parse(obj.detail)}</div>
+      <div class="face-full-report">${simpleMD(obj.detail)}</div>
       ${
         paidFlag
           ? ""

@@ -175,19 +175,6 @@
         }
       })(document, window.mixpanel || []);
     </script>
-
-    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-    <script>
-      if (window.marked) {
-        marked.setOptions({
-          gfm: true, // -, *, 번호 목록 등 GitHub-식 마크다운
-          breaks: true, // 줄바꿈 → <br> 변환
-          mangle: false, // 5.x 이후 링크 자동 난독화 off
-          headerIds: false, // h1/h2… id 자동부여 off (충돌 방지)
-          smartypants: true, // “” ‘ ’ 등 스마트 따옴표
-        });
-      }
-    </script>
   </head>
   <body>
     <div class="main_body_wrap">
@@ -401,6 +388,38 @@
       src="https://kit.fontawesome.com/47e166f8b9.js"
       crossorigin="anonymous"
     ></script>
+    <!-- 1) marked 한 번만 로드 -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+
+    <!-- 2) del 토큰 끄는 전용 확장 -->
+    <script>
+      /*  취소선(del) 토크나이저를 무시해서 ~~ 가 그대로 보이도록 */
+      marked.use({
+        extensions: [
+          {
+            name: "noDel",
+            level: "inline",
+
+            /* “~~”가 처음 보이는 위치를 알려주면 파싱 속도가 빨라집니다 */
+            start(src) {
+              return src.indexOf("~~");
+            },
+
+            /* del 토큰을 건너뛰고 그냥 텍스트로 반환 */
+            tokenizer(src) {
+              const match = /^~~([\s\S]+?)~~/.exec(src);
+              if (!match) return; // 매칭 없으면 패스
+
+              return {
+                type: "text", // ← 핵심: del 이 아니라 text
+                raw: match[0], // 원본 그대로
+                text: match[0], // “~~내용~~” 그대로 출력
+              };
+            },
+          },
+        ],
+      });
+    </script>
 
     <script src="../commonJs/footer.js"></script>
     <script src="../commonJs/header.js"></script>
