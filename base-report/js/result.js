@@ -495,6 +495,7 @@ function renderResultNormalized(obj, reportType = "base") {
         <div class="mask-text-wrap">
           <div class="mask-text">
             <div class="mask-text-top">관상학 기반 심층 분석</div>
+            <div class="mask-text-top-sub">총 5,000자 이상</div>
             <div class="mask-text-sub">
                 1. [코와 콧대] <span class="mask-text-span">통장이 최고점 찍을 해</span><br/>
 

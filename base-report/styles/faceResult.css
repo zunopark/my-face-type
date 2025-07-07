@@ -94,7 +94,13 @@
   font-size: 24px;
   font-weight: bold;
   color: rgb(238, 238, 238);
-  margin-bottom: 8px;
+  font-family: "KimjungchulMyungjo-Bold";
+  margin-bottom: 2px;
+}
+
+.mask-text-top-sub {
+  margin-bottom: 12px;
+  color: rgb(228, 228, 228);
 }
 
 .mask-text-sub {
@@ -123,6 +129,7 @@
   color: rgb(18, 18, 18);
   padding-top: 2px;
   font-weight: 700;
+  font-family: "KimjungchulMyungjo-Bold";
 }
 
 .mask-text-btn-sub {
