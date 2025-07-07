@@ -1,6 +1,6 @@
 const footer = document.querySelector(`.footer`);
 
-const appVersion = "2.1";
+const appVersion = "2.12";
 
 function init() {
   footer.innerHTML = ` 
