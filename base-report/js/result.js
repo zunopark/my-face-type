@@ -1,163 +1,140 @@
 let db;
 
-// 1. IndexedDB 초기화
+/* ───────── 1. IndexedDB 초기화 ───────── */
 async function initDB() {
-  const request = indexedDB.open("FaceAnalysisDB", 1);
+  const req = indexedDB.open("FaceAnalysisDB", 1);
 
-  request.onupgradeneeded = function (event) {
-    db = event.target.result;
+  req.onupgradeneeded = (e) => {
+    db = e.target.result;
     if (!db.objectStoreNames.contains("results")) {
       const store = db.createObjectStore("results", { keyPath: "id" });
-      store.createIndex("timestamp", "timestamp", { unique: false });
+      store.createIndex("timestamp", "timestamp");
     }
   };
-
-  request.onsuccess = function (event) {
-    db = event.target.result;
-    console.log("✅ IndexedDB 초기화 완료");
+  req.onsuccess = (e) => {
+    db = e.target.result;
+    console.log("✅ DB ready");
   };
-
-  request.onerror = function (event) {
-    console.error("❌ IndexedDB 오류", event);
-  };
+  req.onerror = (e) => console.error("❌ DB error", e);
 }
-
 initDB();
 
-// 2. 저장
-async function saveToIndexedDB(data) {
-  return new Promise((resolve, reject) => {
-    const transaction = db.transaction(["results"], "readwrite");
-    const store = transaction.objectStore("results");
-    const request = store.put(data);
+/* ───────── 2. 공통 유틸 ───────── */
+const ALL_TYPES = ["base", "wealth", "love", "marriage"];
 
-    request.onsuccess = () => resolve();
-    request.onerror = (e) => reject(e);
-  });
+/* 스켈레톤 생성 */
+function makeSkeleton(normalized, paid = false) {
+  const reports = {};
+  for (const t of ALL_TYPES) {
+    reports[t] = { paid: false, data: null };
+  }
+  reports.base = { paid, data: normalized }; // base 보고서만 즉시 채운다
+  return reports;
 }
 
-// 3. 전체 불러오기
-async function getAllResults() {
-  return new Promise((resolve, reject) => {
-    const transaction = db.transaction(["results"], "readonly");
-    const store = transaction.objectStore("results");
-    const request = store.getAll();
-
-    request.onsuccess = () => resolve(request.result);
-    request.onerror = (e) => reject(e);
+/* DB put/get 래퍼 */
+const saveToIndexedDB = (data) =>
+  new Promise((res, rej) => {
+    const tx = db.transaction(["results"], "readwrite");
+    tx.objectStore("results").put(data).onsuccess = res;
+    tx.onerror = (e) => rej(e);
   });
-}
 
-// 4. 결제 완료 처리
-async function markPaid(id) {
-  const transaction = db.transaction(["results"], "readwrite");
-  const store = transaction.objectStore("results");
-  const getReq = store.get(id);
+const getAllResults = () =>
+  new Promise((res, rej) => {
+    const tx = db.transaction(["results"], "readonly");
+    const req = tx.objectStore("results").getAll();
+    req.onsuccess = () => res(req.result);
+    req.onerror = (e) => rej(e);
+  });
 
-  getReq.onsuccess = () => {
-    const data = getReq.result;
-    if (data) {
-      data.paid = true;
-      data.purchasedAt = new Date().toISOString();
-      if (data.normalized) data.normalized.paid = true;
-      store.put(data);
-      renderResult(data);
-    }
+/* 결제 성공 → paid 토글 */
+async function markPaid(id, reportType = "base") {
+  const tx = db.transaction(["results"], "readwrite");
+  const store = tx.objectStore("results");
+  const r = store.get(id);
+  r.onsuccess = () => {
+    const rec = r.result;
+    if (!rec) return;
+    rec.reports[reportType].paid = true; // 핵심
+    rec.reports[reportType].purchasedAt = new Date().toISOString();
+    rec.paid = true; // 레거시 필드도 유지
+    store.put(rec);
+    renderResult(rec);
   };
 }
 
+/* ───────── 3. URL 파라미터 ───────── */
 const qs = new URLSearchParams(location.search);
-const pageId = (qs.get("id") || "").trim(); // 사진·결과 ID
-const pageType = (qs.get("type") || "base").trim(); // base | wealth …
+const pageId = (qs.get("id") || "").trim();
+const pageType = (qs.get("type") || "base").trim(); // 기본은 base
 
-// 5. 분석 및 저장 실행 (type: "base" 전용)
+/* ───────── 4. 얼굴 분석 + 저장 ───────── */
 async function analyzeFaceImage(file, imageBase64, forceId = null) {
   renderLoading();
 
   const formData = new FormData();
   formData.append("file", file);
-  const resultContainer = document.getElementById("label-container");
 
   try {
-    const response = await fetch(
+    const resp = await fetch(
       "https://port-0-momzzi-fastapi-m7ynssht4601229b.sel4.cloudtype.app/analyze/",
-      {
-        method: "POST",
-        body: formData,
-      }
+      { method: "POST", body: formData }
     );
-
-    console.log("analyzeFaceImage");
-
-    if (!response.ok) throw new Error("서버 응답 오류");
-    const data = await response.json();
-
-    const { summary, detail, features } = data;
+    if (!resp.ok) throw new Error("서버 응답 오류");
+    const { summary, detail, features } = await resp.json();
     if (!summary || !detail) throw new Error("summary/detail 없음");
 
+    /* (1) normalize */
     const normalized = { isMulti: false, summary, detail };
 
+    /* (2) 스켈레톤 + 결과 객체 */
     const result = {
       id: forceId ?? crypto.randomUUID(),
       imageBase64,
       features,
-      summary,
-      detail,
+      summary, // 레거시 필드
+      detail, // 레거시 필드
       type: "base",
-      paid: false,
+      paid: false, // 레거시
       purchasedAt: null,
       timestamp: new Date().toISOString(),
-      analyzed: true, // ← 새 필드
-      normalized, // ← 새 필드
+      reports: makeSkeleton(normalized, false), // ★ 스켈레톤 핵심
     };
-
-    mixpanel.track("GEMINI 관상 결과", {
-      timestamp: new Date().toISOString(),
-    });
 
     await saveToIndexedDB(result);
 
     finishLoading();
     setTimeout(() => {
-      renderResultNormalized(
-        { ...normalized, paid: result.paid, id: result.id },
-        pageType
-      );
+      renderResult(result);
     }, 300);
-
-    renderResult(result);
-  } catch (error) {
-    console.error("❌ 관상 분석 실패:", error);
-    resultContainer.innerHTML = `<p style='color: red;'>분석 중 오류가 발생했습니다. 다시 시도해주세요.</p>`;
-    console.error("❌ 관상 분석 실패:", error);
+  } catch (err) {
+    console.error("❌ 분석 실패:", err);
     showError("분석 중 오류가 발생했습니다. 다시 시도해주세요.");
   }
 }
 
-// 6. Base64 변환
-function toBase64(file) {
-  return new Promise((resolve, reject) => {
+/* ───────── 5. Base64 변환 유틸 ───────── */
+const toBase64 = (file) =>
+  new Promise((res, rej) => {
     const reader = new FileReader();
-    reader.onload = () => resolve(reader.result);
-    reader.onerror = reject;
+    reader.onload = () => res(reader.result);
+    reader.onerror = rej;
     reader.readAsDataURL(file);
   });
-}
 
-// 7. 분석 결과 렌더링
+/* ───────── 6. 결과 렌더러 ───────── */
 function renderResult(data) {
-  // safety guard
-  if (!data.normalized) {
-    console.error("normalized 데이터가 없습니다:", data);
+  if (!data.reports || !data.reports.base.data) {
+    console.error("normalized 없음:", data);
     return;
   }
-  // normalized 내부에도 paid·id 가 필요하면 복사
   const norm = {
-    ...data.normalized,
-    paid: data.paid ?? false,
-    id: data.id ?? "",
+    ...data.reports.base.data,
+    paid: data.reports.base.paid,
+    id: data.id,
   };
-  renderResultNormalized(norm, data.type || "base");
+  renderResultNormalized(norm, "base");
 }
 
 /* ─────────── Loading UI (progress bar + 문구) ─────────── */
@@ -371,17 +348,113 @@ function closeDiscount() {
   });
 }
 
+async function startWealthTossPayment(resultId) {
+  const clientKey = "live_gck_yZqmkKeP8gBaRKPg1WwdrbQRxB9l"; // 테스트 키
+  const customerKey = "customer_" + new Date().getTime();
+
+  document.getElementById("wealthPaymentOverlay").style.display = "block";
+
+  try {
+    const paymentWidget = PaymentWidget(clientKey, customerKey);
+    const paymentMethodWidget = paymentWidget.renderPaymentMethods(
+      "#wealth-method",
+      { value: 16900 }
+    );
+    paymentWidget.renderAgreement("#wealth-agreement");
+
+    document.getElementById("wealth-button").onclick = async () => {
+      try {
+        await paymentWidget.requestPayment({
+          orderId: `order_${Date.now()}`,
+          orderName: "관상 재물운 상세 분석 보고서",
+          customerName: "고객",
+          successUrl: `${
+            window.location.origin
+          }/success.html?id=${encodeURIComponent(resultId)}&type=wealth`,
+          failUrl: `${window.location.origin}/fail.html?id=${encodeURIComponent(
+            resultId
+          )}&type=wealth`,
+        });
+        mixpanel.track("재물운 분석 보고서 결제 요청 시도", {
+          id: resultId,
+          price: 16900,
+        }); // ← 추가
+      } catch (err) {
+        alert("❌ 결제 실패: " + err.message);
+      }
+    };
+  } catch (e) {
+    alert("❌ 위젯 로드 실패: " + e.message);
+  }
+}
+
+function closeWealthPayment() {
+  document.getElementById("wealthPaymentOverlay").style.display = "none";
+  document.getElementById("wealth-method").innerHTML = "";
+  document.getElementById("wealth-agreement").innerHTML = "";
+
+  mixpanel.track("재물운 결제창 닫힘", {
+    id: pageId,
+    type: pageType,
+    timestamp: new Date().toISOString(),
+  });
+}
+
 // IndexedDB 준비될 때까지 기다리는 Promise
-function waitForDB() {
-  return new Promise((resolve) => {
-    if (db) return resolve();
-    const timer = setInterval(() => {
+const waitForDB = () =>
+  new Promise((r) => {
+    if (db) return r();
+    const t = setInterval(() => {
       if (db) {
-        clearInterval(timer);
-        resolve();
+        clearInterval(t);
+        r();
       }
     }, 100);
   });
+
+/* ───────── 11. URL로 자동 렌더 ───────── */
+async function autoRenderFromDB() {
+  await waitForDB();
+  if (!pageId) return;
+
+  const rec = await new Promise((res) => {
+    const tx = db.transaction(["results"], "readonly");
+    tx.objectStore("results").get(pageId).onsuccess = (e) =>
+      res(e.target.result);
+  });
+  if (!rec) return;
+
+  /* (1) 이미지 즉시 표시 */
+  if (rec.imageBase64) renderImage(rec.imageBase64);
+
+  /* (2) base 보고서가 이미 저장돼 있으면 바로 렌더 */
+  if (rec.reports?.base?.data) {
+    renderResult(rec);
+    return;
+  }
+
+  /* (3) legacy summary/detail 만 있는 경우 → 스켈레톤 생성하여 저장 후 렌더 */
+  if (rec.summary && rec.detail) {
+    const normalized = {
+      isMulti: false,
+      summary: rec.summary,
+      detail: rec.detail,
+    };
+    rec.reports = makeSkeleton(normalized, rec.paid ?? false);
+    await saveToIndexedDB(rec);
+    renderResult(rec);
+    return;
+  }
+
+  /* (4) 아무것도 없다면 최초 분석 요청 */
+  if (rec.imageBase64 && rec.features) {
+    const file = await (await fetch(rec.imageBase64)).blob();
+    analyzeFaceImage(
+      new File([file], `${rec.id}.jpg`),
+      rec.imageBase64,
+      rec.id
+    );
+  }
 }
 
 function renderResultNormalized(obj, reportType = "base") {
@@ -487,10 +560,7 @@ function renderResultNormalized(obj, reportType = "base") {
     
     <div class="face-full-section-wrapper">
       <div class="face-full-report">${simpleMD(obj.detail)}</div>
-      ${
-        paidFlag
-          ? ""
-          : `
+  
       <div class="result-mask">
         <div class="blur-overlay"></div>
         <div class="mask-text-wrap">
@@ -526,9 +596,31 @@ function renderResultNormalized(obj, reportType = "base") {
             <div class="mask-text-btn-sub">관상가 양반 - 프리미엄 AI 관상</div>
           </div>
         </div>
-      </div>`
-      }
+      </div>
+      
     </div>
+    <div class="mask-text-wrap-worth">
+          <div class="mask-text-worth">
+            <div class="mask-text-top-worth">재물 관상: 나의 타고난 부</div>
+            <div class="mask-text-top-sub-worth">총 15,000자 이상</div>
+              <div class="mask-text-sub-worth">
+                1. [부위별 심층 관상] <span class="mask-text-span-worth">5,000자 보고서 포함</span><br/>
+                2. [타고난 부와 평생 모을 재산] <span class="mask-text-span-worth"> 내 평생 자산 규모</span><br/>
+                3. [성향과 재물운의 강·약점] <span class="mask-text-span-worth"> 돈과 만나는 지점</span><br/>
+                4. [돈이 붙는 적성과 환경] <span class="mask-text-span-worth"> 부를 위한 일·사람·장소</span><br/>
+                5. [자산을 키울 골든타임] <span class="mask-text-span-worth"> 시기별 기회 포착 전략</span><br/>
+                6. [위기 징조와 예방책] <span class="mask-text-span-worth"> 손재·투자 리스크 대비</span><br/>
+                7. [관상 개선 실천법] <span class="mask-text-span-worth"> 작은 습관으로 기운 트이기</span><br/>
+                8. [관상가 양반의 인생 조언] <span class="mask-text-span-worth"> 돈 그 이상 삶의 태도</span><br/>
+              </div>
+              <div class="mask-text-btn-wrap-worth">
+                <div class="mask-text-btn-worth" onclick="startWealthTossPayment('${resultId}')">
+                  나의 재물 관상 확인하기
+                </div>
+              </div>
+            <div class="mask-text-btn-sub-worth">관상가 양반 - 프리미엄 AI 관상</div>
+          </div>
+        </div>
   `;
 }
 
@@ -538,64 +630,8 @@ function renderImage(base64) {
   document.querySelector(".image-upload-wrap").style.display = "none";
 }
 
-// base64 → File
-async function dataURLtoFile(dataURL, filename = "face.jpg") {
-  const res = await fetch(dataURL);
-  const blob = await res.blob();
-  return new File([blob], filename, { type: blob.type || "image/jpeg" });
-}
-
-async function autoAnalyzeFromUrl(delayMs = 200) {
-  await waitForDB(); // ① DB 준비 대기
-
-  /* ② URL 파라미터 추출 */
-  const params = new URLSearchParams(location.search);
-  const id = (params.get("id") || "").trim();
-  if (!id) return; // id 없으면 종료
-
-  /* ③ IndexedDB 조회 */
-  const tx = db.transaction(["results"], "readonly");
-  const getR = tx.objectStore("results").get(id);
-
-  getR.onsuccess = async () => {
-    const saved = getR.result;
-
-    /* (a) 레코드 자체가 없으면 그냥 리턴하거나,  */
-    /*     서버 재요청 등을 시도하게끔 분기             */
-    if (!saved) {
-      console.warn("❗ IndexedDB에 해당 id 없음:", id);
-      return;
-    }
-
-    /* (b) 이미지가 있으면 즉시 UI에 표시 */
-    if (saved.imageBase64) renderImage(saved.imageBase64);
-
-    /* (c) 이미 분석 + 정규화 되어 있으면 바로 렌더 후 종료 */
-    if (saved.analyzed && saved.normalized) {
-      const norm = {
-        // paid·id를 주입
-        ...saved.normalized,
-        paid: saved.paid ?? false,
-        id: saved.id,
-      };
-      renderResultNormalized(norm, saved.type || "base");
-      return; // 🛑 여기서 끝
-    }
-
-    /* (d) 아직 분석 전이라면 일정 시간 뒤 재분석 진행 */
-    setTimeout(async () => {
-      const file = await dataURLtoFile(saved.imageBase64, `${id}.jpg`);
-      analyzeFaceImage(file, saved.imageBase64, id); // 기존 함수 재사용
-    }, delayMs);
-  };
-
-  getR.onerror = (e) => {
-    console.error("❌ IndexedDB get 실패:", e);
-  };
-}
-
 // 페이지 진입 시 바로 실행
 document.addEventListener("DOMContentLoaded", () => {
   mixpanel.track("기본 관상 결과 페이지 진입", { ts: Date.now() }); // ← 추가
-  autoAnalyzeFromUrl(500); // 1.5초 후 자동 업로드
+  autoRenderFromDB(500); // 1.5초 후 자동 업로드
 });

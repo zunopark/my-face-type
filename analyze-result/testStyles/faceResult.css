@@ -1,6 +1,23 @@
+.result-detail pre,
+.result-summary pre {
+}
+
+.codeblock {
+  background: #161616;
+  color: #eeeeee !important;
+  font-family: Menlo, Consolas, "Courier New", monospace;
+  font-size: 14px;
+  line-height: 1.45;
+  padding: 12px 16px 32px 16px;
+  border-radius: 6px;
+  white-space: pre-wrap;
+  overflow: auto;
+}
+
 .face-result {
   color: rgb(239, 239, 239);
 }
+
 .face-summary-section {
   margin-bottom: 12px;
   padding: 0 10px;

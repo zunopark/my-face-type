@@ -73,13 +73,13 @@ body {
 /* ✅ list-style만 초기화 해제 */
 ol,
 ul {
-  /* list-style: none; */  /* ❌ 마크다운에 영향 */
+  /* list-style: none; */ /* ❌ 마크다운에 영향 */
 }
 
 /* ✅ blockquote 인용부호 보존 */
 blockquote,
 q {
-  /* quotes: none; */       /* ❌ 제거하면 > 인용 스타일 깨짐 */
+  /* quotes: none; */ /* ❌ 제거하면 > 인용 스타일 깨짐 */
   margin-left: 1rem;
   padding-left: 1rem;
   border-left: 3px solid #ccc;
@@ -87,21 +87,13 @@ q {
   font-style: italic;
 }
 
-/* ✅ pre/code 기본 스타일 보존 */
-pre, code {
-  font-family: monospace;
-  background: #f5f5f5;
-  padding: 0.5rem;
-  border-radius: 4px;
-  overflow-x: auto;
-}
-
 /* ✅ table 스타일 최소 유지 */
 table {
   border-collapse: collapse;
   margin: 1rem 0;
 }
-th, td {
+th,
+td {
   border: 1px solid #ddd;
   padding: 8px;
 }

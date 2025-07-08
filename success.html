@@ -18,6 +18,8 @@
         color: red;
       }
     </style>
+
+    <!-- ───── Mixpanel JS Stub (공식) ───── -->
     <script type="text/javascript">
       (function (f, b) {
         if (!b.__SV) {
@@ -93,123 +95,118 @@
     <h2 id="status">🔄 결제 확인 중...</h2>
     <p>잠시만 기다려주세요.</p>
 
+    <!-- ───── Mixpanel 초기화 & 첫 이벤트 ───── -->
     <script>
-      // 고유 사용자 ID를 localStorage에서 불러오거나 새로 생성
+      /* 고유 사용자 ID */
       let distinctId = localStorage.getItem("mixpanel_distinct_id");
       if (!distinctId) {
-        distinctId = crypto.randomUUID(); // 브라우저 내장 UUID 생성
+        distinctId = crypto.randomUUID();
         localStorage.setItem("mixpanel_distinct_id", distinctId);
       }
 
-      // Mixpanel 초기화 및 ID 지정
       mixpanel.init("d7d8d6afc10a92f911ea59901164605b", {
         debug: true,
-        // optional: identify 자동 호출 안 되게 하고, 아래에서 수동으로 identify
         autotrack: true,
         persistence: "localStorage",
       });
-
-      // 사용자 ID를 명시적으로 identify
       mixpanel.identify(distinctId);
 
-      // 추적 예시
       mixpanel.track("관상 결제 성공 페이지 진입", {
-        url: window.location.href,
-        userAgent: navigator.userAgent,
-        timestamp: new Date().toISOString(),
+        url: location.href,
+        ua: navigator.userAgent,
+        ts: new Date().toISOString(),
       });
     </script>
 
+    <!-- ───── 결제 검증 & IndexedDB 업데이트 ───── -->
     <script>
-      const params = new URLSearchParams(window.location.search);
-      const paymentKey = params.get("paymentKey");
-      const orderId = params.get("orderId");
-      const amount = Number(params.get("amount"));
-      const resultId = params.get("id");
-      const reportType = params.get("type"); // ① 추가 ─ type 쿼리 추출
+      /* 0. URL 파라미터 */
+      const qs = new URLSearchParams(location.search);
+      const paymentKey = qs.get("paymentKey");
+      const orderId = qs.get("orderId");
+      const amount = Number(qs.get("amount"));
+      const resultId = qs.get("id");
+      const reportType = (qs.get("type") || "base").trim();
 
-      const body = { paymentKey, orderId, amount };
-
-      // ✅ IndexedDB 초기화
-      function initDB() {
-        return new Promise((resolve) => {
-          const request = indexedDB.open("FaceAnalysisDB", 1);
-
-          request.onsuccess = function (event) {
-            resolve(event.target.result);
-          };
-
-          request.onerror = function (event) {
-            console.error("❌ IndexedDB 오류", event);
-          };
+      /* 1. IndexedDB 유틸 */
+      function openDB() {
+        return new Promise((res) => {
+          const r = indexedDB.open("FaceAnalysisDB", 1);
+          r.onsuccess = (e) => res(e.target.result);
         });
       }
+      const ALL_TYPES = ["base", "wealth", "love", "marriage"];
+      function ensureSkeleton(rec) {
+        if (!rec.reports) rec.reports = {};
+        for (const t of ALL_TYPES)
+          if (!rec.reports[t]) rec.reports[t] = { paid: false, data: null };
+      }
 
-      // ✅ 특정 ID의 paid를 true로 변경
-      async function markPaid(db, id) {
+      /* 2. paid = true 토글 */
+      function markPaid(db, id, type = "base") {
         return new Promise((resolve, reject) => {
-          const transaction = db.transaction(["results"], "readwrite");
-          const store = transaction.objectStore("results");
-          const getRequest = store.get(id);
-
-          getRequest.onsuccess = () => {
-            const data = getRequest.result;
-            if (data) {
-              data.paid = true;
-              const putRequest = store.put(data);
-              putRequest.onsuccess = () => resolve(true);
-              putRequest.onerror = reject;
-            } else {
-              reject("❌ 해당 ID의 결과 없음");
+          const tx = db.transaction("results", "readwrite");
+          const st = tx.objectStore("results");
+          const g = st.get(id);
+          g.onerror = reject;
+          g.onsuccess = () => {
+            const rec = g.result;
+            if (!rec) {
+              reject("ID not found");
+              return;
             }
+            ensureSkeleton(rec);
+            rec.reports[type].paid = true;
+            rec.reports[type].purchasedAt = new Date().toISOString();
+            st.put(rec);
           };
-
-          getRequest.onerror = reject;
+          tx.oncomplete = () => resolve(true); /* commit 완료 */
+          tx.onerror = reject;
         });
       }
 
+      /* 3. 서버 검증 */
       fetch(
         "https://port-0-momzzi-fastapi-m7ynssht4601229b.sel4.cloudtype.app/payment/confirm",
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(body),
+          body: JSON.stringify({ paymentKey, orderId, amount }),
         }
       )
-        .then((res) => {
-          if (!res.ok) throw new Error("서버 검증 실패");
-          return res.json();
+        .then((r) => {
+          if (!r.ok) throw new Error("서버 검증 실패");
+          return r.json();
         })
-        .then(async (data) => {
-          console.log("✅ 결제 확인 완료", data);
+        .then(async () => {
           document.getElementById("status").textContent =
             "✅ 결제가 완료되었습니다!";
           document.getElementById("status").className = "success";
 
-          mixpanel.track("프리미엄 기본 관상 결제 성공", {
+          mixpanel.track("관상 결제 성공", {
             orderId,
             amount,
             paymentKey,
             resultId,
-            timestamp: new Date().toISOString(),
+            reportType,
+            ts: new Date().toISOString(),
           });
 
           if (resultId) {
             try {
-              const db = await initDB();
-              await markPaid(db, resultId);
-              console.log("✅ IndexedDB 결제 상태 업데이트 완료");
+              const db = await openDB();
+              await markPaid(db, resultId, reportType); /* commit 보장 */
+              console.log("✅ reports.%s.paid = true 저장", reportType);
             } catch (e) {
-              console.error("❌ IndexedDB 업데이트 실패:", e);
+              console.error("IndexedDB 업데이트 실패:", e);
             }
           }
 
           setTimeout(() => {
-            window.location.href = resultId
-              ? `/analyze-result/?id=${encodeURIComponent(
-                  resultId
-                )}&type=${encodeURIComponent(reportType || "base")}`
-              : "/";
+            // ★ 여기!
+            location.href = `/analyze-result/?id=${encodeURIComponent(
+              resultId
+            )}&type=${encodeURIComponent(reportType)}`;
           }, 2000);
         })
         .catch((err) => {
@@ -217,20 +214,15 @@
           document.getElementById("status").textContent =
             "❌ 결제 확인에 실패했습니다.";
           document.getElementById("status").className = "fail";
-
-          // ✅ 믹스패널: 결제 실패 추적
           mixpanel.track("관상 결제 실패", {
             error: err.message,
             orderId,
             amount,
             paymentKey,
             resultId,
-            timestamp: new Date().toISOString(),
+            ts: new Date().toISOString(),
           });
-
-          setTimeout(() => {
-            window.location.href = "/fail.html";
-          }, 3000);
+          setTimeout(() => (location.href = "/fail.html"), 2500);
         });
     </script>
   </body>

@@ -139,6 +139,75 @@
   color: #b9b9b9;
 }
 
+.mask-text-wrap-worth {
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* 텍스트는 블러 영향 X */
+.mask-text-worth {
+  width: 320px;
+  background: rgba(23, 23, 23, 0.9);
+  padding: 16px 20px;
+  border-radius: 10px;
+  pointer-events: auto;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border: 1px solid #ff700a;
+}
+
+.mask-text-top-worth {
+  font-size: 24px;
+  font-weight: bold;
+  color: rgb(238, 238, 238);
+  font-family: "KimjungchulMyungjo-Bold";
+  margin-bottom: 2px;
+}
+
+.mask-text-top-sub-worth {
+  margin-bottom: 12px;
+  color: rgb(228, 228, 228);
+}
+
+.mask-text-sub-worth {
+  font-size: 14px;
+  text-align: left;
+  color: #ffa15e;
+  margin-bottom: 8px;
+}
+
+.mask-text-span-worth {
+  color: #ffcba6;
+}
+
+.mask-text-btn-wrap-worth {
+  width: 100%;
+  margin: 8px 0 12px 0;
+  padding: 8px 16px;
+  border: 1px solid #ffa15e;
+  background-color: #ffa15e;
+  border-radius: 12px;
+}
+
+.mask-text-btn-worth {
+  font-size: 16px;
+  text-align: center;
+  color: rgb(18, 18, 18);
+  padding-top: 2px;
+  font-weight: 700;
+  font-family: "KimjungchulMyungjo-Bold";
+}
+
+.mask-text-btn-sub-worth {
+  font-size: 12px;
+  text-align: center;
+  color: #b9b9b9;
+}
+
 .review-section {
   width: 320px;
   padding-top: 16px;

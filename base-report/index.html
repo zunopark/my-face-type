@@ -249,38 +249,34 @@
               <div class="payment-title">프리미엄 관상 심층 분석 보고서</div>
               <div class="payment-close" onclick="closePayment()">✕</div>
             </div>
+            <div class="payment-header">
+              <div class="payment-subtitle">
+                1,500만명이 감탄한 20년 경력 관상가 보고서
+              </div>
+            </div>
+            <div class="payment-price-wrap">
+              <div class="payment-original-price-title">보고서 금액</div>
+              <div class="payment-original-price">6,900원</div>
+            </div>
+            <div class="payment-coupon-wrap">
+              <div class="payment-coupon">쿠폰 할인 💸</div>
+            </div>
+            <div class="payment-coupon-price-wrap">
+              <div class="payment-coupon-title">2025 특별 할인</div>
+              <div class="payment-coupon-price">-4,000원</div>
+            </div>
 
             <div id="payment-method"></div>
             <div id="agreement"></div>
-            <div
-              id="payment-amount"
-              style="font-size: 14px; text-align: center"
-            >
-              <span
-                id="price-original"
-                style="
-                  text-decoration: line-through;
-                  color: #a9a9a9;
-                  font-weight: 400;
-                  margin-right: 2px;
-                "
-                >6,900원</span
-              >
-              <span
-                id="price-discount"
-                style="
-                  color: #ff5121;
-                  font-size: 18px;
-                  font-weight: 700;
-                  margin-right: 2px;
-                "
-                >58%</span
-              >
-              <span
-                id="price-final"
-                style="color: #171717; font-size: 18px; font-weight: 700"
-                >2,900원</span
-              >
+            <div class="payment-final-price-wrap">
+              <div class="payment-final-price-title">최종 결제 금액</div>
+              <div class="payment-final-price-price-wrap">
+                <div class="payment-originam-price2">6,900원</div>
+                <div class="payment-final-price">
+                  <div class="payment-final-price-discount">58%</div>
+                  <div class="payment-final-price-num">2,900원</div>
+                </div>
+              </div>
             </div>
             <button
               id="payment-button"
@@ -306,31 +302,38 @@
         <div id="discountFullscreen" class="payment-fullscreen">
           <div class="modal-content">
             <div class="payment-header">
-              <div class="payment-title">🎁 깜짝 할인! 여기서만 1,900원</div>
+              <div class="payment-title">🎁 깜짝 선물! 1,000원 추가 할인</div>
               <div class="payment-close" onclick="closeDiscount()">✕</div>
+            </div>
+            <div class="payment-header">
+              <div class="payment-subtitle">
+                1,500만명이 감탄한 20년 경력 관상가 보고서
+              </div>
+            </div>
+            <div class="payment-price-wrap">
+              <div class="payment-original-price-title">보고서 금액</div>
+              <div class="payment-original-price">6,900원</div>
+            </div>
+            <div class="payment-coupon-wrap">
+              <div class="payment-coupon">쿠폰 할인 💸</div>
+            </div>
+            <div class="payment-coupon-price-wrap">
+              <div class="payment-coupon-title">2025 특별 할인 + 추가 할인</div>
+              <div class="payment-coupon-price">-5,000원</div>
             </div>
 
             <div id="discount-method"></div>
             <div id="discount-agreement"></div>
 
-            <div style="font-size: 14px; text-align: center; margin-top: 12px">
-              <span style="color: #171717; font-size: 16px; font-weight: 500"
-                >첫 결제 1,000원 추가 할인</span
-              >
-              <br />
-              <span
-                id="price-original"
-                style="
-                  text-decoration: line-through;
-                  color: #a9a9a9;
-                  font-weight: 400;
-                  margin-right: 2px;
-                "
-                >2,900원</span
-              >
-              <span style="color: #ff5121; font-size: 18px; font-weight: 700"
-                >1,900원</span
-              >
+            <div class="payment-final-price-wrap">
+              <div class="payment-final-price-title">최종 결제 금액</div>
+              <div class="payment-final-price-price-wrap">
+                <div class="payment-originam-price2">6,900원</div>
+                <div class="payment-final-price">
+                  <div class="payment-final-price-discount">73%</div>
+                  <div class="payment-final-price-num">1,900원</div>
+                </div>
+              </div>
             </div>
 
             <button
@@ -348,6 +351,68 @@
               "
             >
               할인 결제하기
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div
+        id="wealthPaymentOverlay"
+        class="payment-overlay"
+        style="display: none"
+      >
+        <div id="wealthFull" class="payment-fullscreen">
+          <div class="modal-content">
+            <div class="payment-header">
+              <div class="payment-title">재물 관상 보고서: 나의 타고난 부</div>
+              <div class="payment-close" onclick="closeWealthPayment()">✕</div>
+            </div>
+            <div class="payment-header">
+              <div class="payment-subtitle">
+                1,500만명이 감탄한 20년 경력 관상가 보고서
+              </div>
+            </div>
+            <div class="payment-price-wrap">
+              <div class="payment-original-price-title">보고서 금액</div>
+              <div class="payment-original-price">34,900원</div>
+            </div>
+            <div class="payment-coupon-wrap">
+              <div class="payment-coupon">쿠폰 할인 💸</div>
+            </div>
+            <div class="payment-coupon-price-wrap">
+              <div class="payment-coupon-title">
+                재물 보고서 런칭 특별 할인 (~07.10)
+              </div>
+              <div class="payment-coupon-price">-18,000원</div>
+            </div>
+
+            <div id="wealth-method" style="padding: 0px; margin: 0px"></div>
+            <div id="wealth-agreement"></div>
+            <div class="payment-final-price-wrap">
+              <div class="payment-final-price-title">최종 결제 금액</div>
+              <div class="payment-final-price-price-wrap">
+                <div class="payment-originam-price2">34,900원</div>
+                <div class="payment-final-price">
+                  <div class="payment-final-price-discount">52%</div>
+                  <div class="payment-final-price-num">16,900원</div>
+                </div>
+              </div>
+            </div>
+            <button
+              id="wealth-button"
+              style="
+                margin-top: 16px;
+                width: 100%;
+                padding: 12px;
+                background-color: #ffbe0a;
+                color: rgb(13, 13, 13);
+                font-weight: 700;
+                border: none;
+                border-radius: 6px;
+                font-size: 14px;
+              "
+            >
+              보고서 확인하기
             </button>
           </div>
         </div>
@@ -375,7 +440,7 @@
       mixpanel.identify(distinctId);
 
       // 추적 예시
-      mixpanel.track("관상 페이지 방문", {
+      mixpanel.track("얼굴 분석 결과 페이지 방문", {
         url: window.location.href,
         userAgent: navigator.userAgent,
         timestamp: new Date().toISOString(),

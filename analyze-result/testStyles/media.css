@@ -28,7 +28,8 @@
   .border,
   .result,
   .modal-content,
-  .label-container {
+  .label-container,
+  .result-detail {
     width: 350px;
   }
 
@@ -75,7 +76,8 @@
   .test__upper,
   .submitForm,
   .result,
-  .label-container {
+  .label-container,
+  .result-detail {
     width: 320px;
   }
 

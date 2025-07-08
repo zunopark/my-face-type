@@ -29,11 +29,12 @@
   flex-direction: column;
   align-items: center;
   margin-top: 15px;
+  text-align: justify;
 }
 
 .result .main_result_description {
   font-size: 22px;
-  font-family: 'KimjungchulMyungjo-Bold';
+  font-family: "KimjungchulMyungjo-Bold";
   color: #ff8548;
   text-align: center;
   margin-bottom: 10px;
@@ -41,7 +42,7 @@
 }
 
 .result .celebrity {
-  font-family: 'KimjungchulMyungjo-Bold';
+  font-family: "KimjungchulMyungjo-Bold";
   text-align: center;
   margin-bottom: 20px;
   color: #ffd39b;
@@ -55,21 +56,18 @@
 .result .main__result__content__p {
   color: #e1e1e1;
   font-size: 18px;
-margin-bottom: 12px;
-font-family: 'MapoBackpacking';
-line-height: 28px;
-font-weight: 400;
-
-
+  margin-bottom: 12px;
+  font-family: "MapoBackpacking";
+  line-height: 28px;
+  font-weight: 400;
 }
 
 .result .main__result__content__p2 {
   margin-top: 16px;
-  font-family: 'KimjungchulMyungjo-Bold';
+  font-family: "KimjungchulMyungjo-Bold";
   color: #a3f7ff;
   font-size: 16px;
   line-height: 24px;
-
 }
 
 .result .reset__btn_coupang {
@@ -81,7 +79,7 @@ font-weight: 400;
   padding: 12px 0px;
   color: white;
   font-size: 16px;
-  font-family: 'KimjungchulMyungjo-Bold';
+  font-family: "KimjungchulMyungjo-Bold";
   outline: none;
 }
 
@@ -94,7 +92,7 @@ font-weight: 400;
   padding: 12px 0px;
   color: #302f32;
   font-size: 16px;
-  font-family: 'KimjungchulMyungjo-Bold';
+  font-family: "KimjungchulMyungjo-Bold";
   outline: none;
 }
 
@@ -106,7 +104,7 @@ font-weight: 400;
   padding: 12px 0px;
   color: white;
   font-size: 16px;
-  font-family: 'KimjungchulMyungjo-Bold';
+  font-family: "KimjungchulMyungjo-Bold";
   outline: none;
   border: none;
 }
@@ -128,7 +126,7 @@ font-weight: 400;
   color: rgb(54, 54, 54);
 
   font-size: 16px;
-  font-family: 'KimjungchulMyungjo-Bold';
+  font-family: "KimjungchulMyungjo-Bold";
   outline: none;
   border: none;
 }
@@ -152,7 +150,7 @@ font-weight: 400;
   background-image: linear-gradient(to right, #ffd700, #ffa500);
   -webkit-background-clip: text;
   background-clip: text;
-  font-family: 'KimjungchulMyungjo-Bold';
+  font-family: "KimjungchulMyungjo-Bold";
 }
 
 .result .reset__btn2 {
@@ -163,7 +161,7 @@ font-weight: 400;
   padding: 10px 10px;
   color: #ecf0f1;
   font-size: 15px;
-  font-family: 'Yeon Sung', cursive;
+  font-family: "Yeon Sung", cursive;
   outline: none;
   border: none;
 }
@@ -173,7 +171,7 @@ font-weight: 400;
 }
 
 .ai {
-  font-family: 'Yeon Sung', cursive;
+  font-family: "Yeon Sung", cursive;
   margin-top: 24px;
   animation: aiAnim 0.7s linear infinite;
 }
