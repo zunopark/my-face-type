@@ -199,7 +199,7 @@ function showError(msg) {
 
 // 8. 결제 유도 트리거
 function trackAndStartPayment(resultId) {
-  mixpanel.track("관상 분석 보고서 결제 버튼 클릭", {
+  mixpanel.track("유료 관상 분석 보고서 버튼 클릭", {
     resultId: resultId,
     timestamp: new Date().toISOString(),
     type: "기본",
@@ -208,7 +208,7 @@ function trackAndStartPayment(resultId) {
 }
 
 function trackAndStartWealthPayment(resultId) {
-  mixpanel.track("관상 분석 보고서 결제 버튼 클릭", {
+  mixpanel.track("유료 관상 분석 보고서 버튼 클릭", {
     resultId: resultId,
     timestamp: new Date().toISOString(),
     type: "재물",
