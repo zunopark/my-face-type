@@ -484,6 +484,7 @@ function renderResultNormalized(obj, reportType = "base") {
     <div class="face-summary-section">
       <div class="face-summary">${simpleMD(obj.summary)}</div>
     </div>
+    
     <div class="face-full-section-wrapper">
       <div class="face-full-report">${simpleMD(obj.detail)}</div>
       ${
@@ -494,9 +495,9 @@ function renderResultNormalized(obj, reportType = "base") {
         <div class="blur-overlay"></div>
         <div class="mask-text-wrap">
           <div class="mask-text">
-            <div class="mask-text-top">관상학 기반 심층 분석</div>
+            <div class="mask-text-top">부위별 심층 관상 보고서</div>
             <div class="mask-text-top-sub">총 5,000자 이상</div>
-            <div class="mask-text-sub">
+              <div class="mask-text-sub">
                 1. [코와 콧대] <span class="mask-text-span">통장이 최고점 찍을 해</span><br/>
 
                 2. [이마와 눈썹] <span class="mask-text-span">첫 대박 터질 나이</span><br/>
@@ -516,12 +517,12 @@ function renderResultNormalized(obj, reportType = "base") {
                 9. [대인 관계·인연] <span class="mask-text-span">귀인 만날 달력 표시</span><br/>
 
                 10. [종합 결론] <span class="mask-text-span">길·흉 총합 승부수 한줄</span><br/>
-                  </div>
-            <div class="mask-text-btn-wrap">
-              <div class="mask-text-btn" onclick="trackAndStartPayment('${resultId}')">
-                전체 분석 결과 확인하기
               </div>
-            </div>
+              <div class="mask-text-btn-wrap">
+                <div class="mask-text-btn" onclick="trackAndStartPayment('${resultId}')">
+                  전체 분석 결과 확인하기
+                </div>
+              </div>
             <div class="mask-text-btn-sub">관상가 양반 - 프리미엄 AI 관상</div>
           </div>
         </div>
