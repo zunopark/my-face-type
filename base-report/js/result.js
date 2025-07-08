@@ -199,11 +199,21 @@ function showError(msg) {
 
 // 8. 결제 유도 트리거
 function trackAndStartPayment(resultId) {
-  mixpanel.track("기분 관상 분석 보고서 결제 버튼 클릭", {
+  mixpanel.track("관상 분석 보고서 결제 버튼 클릭", {
     resultId: resultId,
     timestamp: new Date().toISOString(),
+    type: "기본",
   });
   startTossPayment(resultId);
+}
+
+function trackAndStartWealthPayment(resultId) {
+  mixpanel.track("관상 분석 보고서 결제 버튼 클릭", {
+    resultId: resultId,
+    timestamp: new Date().toISOString(),
+    type: "재물",
+  });
+  startWealthTossPayment(resultId);
 }
 
 // 9. 이미지 업로드 처리
@@ -614,7 +624,7 @@ function renderResultNormalized(obj, reportType = "base") {
                 8. [관상가 양반의 인생 조언] <span class="mask-text-span-worth"> 돈 그 이상 삶의 태도</span><br/>
               </div>
               <div class="mask-text-btn-wrap-worth">
-                <div class="mask-text-btn-worth" onclick="startWealthTossPayment('${resultId}')">
+                <div class="mask-text-btn-worth" onclick="trackAndStartWealthPayment('${resultId}')">
                   나의 재물 관상 확인하기
                 </div>
               </div>
