@@ -208,6 +208,148 @@
   color: #b9b9b9;
 }
 
+.mask-text-wrap-love {
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 16px;
+}
+
+/* 텍스트는 블러 영향 X */
+.mask-text-love {
+  width: 320px;
+  background: rgba(23, 23, 23, 0.9);
+  padding: 16px 20px;
+  border-radius: 10px;
+  pointer-events: auto;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border: 1px solid #ff0af3;
+}
+
+.mask-text-top-love {
+  font-size: 24px;
+  font-weight: bold;
+  color: rgb(238, 238, 238);
+  font-family: "KimjungchulMyungjo-Bold";
+  margin-bottom: 2px;
+  text-align: center;
+}
+
+.mask-text-top-sub-love {
+  margin-bottom: 12px;
+  color: rgb(228, 228, 228);
+}
+
+.mask-text-sub-love {
+  font-size: 14px;
+  text-align: left;
+  color: #fdbcff;
+  margin-bottom: 8px;
+}
+
+.mask-text-span-love {
+  color: #fee3ff;
+}
+
+.mask-text-btn-wrap-love {
+  width: 100%;
+  margin: 8px 0 12px 0;
+  padding: 8px 16px;
+  border: 1px solid #fdbcff;
+  background-color: #fdbcff;
+  border-radius: 12px;
+}
+
+.mask-text-btn-love {
+  font-size: 16px;
+  text-align: center;
+  color: rgb(18, 18, 18);
+  padding-top: 2px;
+  font-weight: 700;
+  font-family: "KimjungchulMyungjo-Bold";
+}
+
+.mask-text-btn-sub-love {
+  font-size: 12px;
+  text-align: center;
+  color: #b9b9b9;
+}
+
+.mask-text-wrap-marriage {
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 16px;
+}
+
+/* 텍스트는 블러 영향 X */
+.mask-text-marriage {
+  width: 320px;
+  background: rgba(23, 23, 23, 0.9);
+  padding: 16px 20px;
+  border-radius: 10px;
+  pointer-events: auto;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border: 1px solid #9df5ff;
+}
+
+.mask-text-top-marriage {
+  font-size: 24px;
+  font-weight: bold;
+  color: rgb(238, 238, 238);
+  font-family: "KimjungchulMyungjo-Bold";
+  margin-bottom: 2px;
+  text-align: center;
+}
+
+.mask-text-top-sub-marriage {
+  margin-bottom: 12px;
+  color: rgb(228, 228, 228);
+}
+
+.mask-text-sub-marriage {
+  font-size: 14px;
+  text-align: left;
+  color: #9df5ff;
+  margin-bottom: 8px;
+}
+
+.mask-text-span-marriage {
+  color: #e0fcff;
+}
+
+.mask-text-btn-wrap-marriage {
+  width: 100%;
+  margin: 8px 0 12px 0;
+  padding: 8px 16px;
+  border: 1px solid #9df5ff;
+  background-color: #9df5ff;
+  border-radius: 12px;
+}
+
+.mask-text-btn-marriage {
+  font-size: 16px;
+  text-align: center;
+  color: rgb(18, 18, 18);
+  padding-top: 2px;
+  font-weight: 700;
+  font-family: "KimjungchulMyungjo-Bold";
+}
+
+.mask-text-btn-sub-marriage {
+  font-size: 12px;
+  text-align: center;
+  color: #b9b9b9;
+}
+
 .review-section {
   width: 320px;
   padding-top: 16px;

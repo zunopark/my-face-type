@@ -197,25 +197,6 @@ function showError(msg) {
   mixpanel.track("기본 분석 보고서 오류", { id: pageId, error: msg }); // ← 추가
 }
 
-// 8. 결제 유도 트리거
-function trackAndStartPayment(resultId) {
-  mixpanel.track("유료 관상 분석 보고서 버튼 클릭", {
-    resultId: resultId,
-    timestamp: new Date().toISOString(),
-    type: "기본",
-  });
-  startTossPayment(resultId);
-}
-
-function trackAndStartWealthPayment(resultId) {
-  mixpanel.track("유료 관상 분석 보고서 버튼 클릭", {
-    resultId: resultId,
-    timestamp: new Date().toISOString(),
-    type: "재물",
-  });
-  startWealthTossPayment(resultId);
-}
-
 // 9. 이미지 업로드 처리
 function readURL(input) {
   if (input.files && input.files[0]) {
@@ -240,6 +221,15 @@ function readURL(input) {
 // 10. 결제 처리
 function goToPurchase(id) {
   markPaid(id);
+}
+
+function trackAndStartPayment(resultId) {
+  mixpanel.track("유료 관상 분석 보고서 버튼 클릭", {
+    resultId: resultId,
+    timestamp: new Date().toISOString(),
+    type: "기본",
+  });
+  startTossPayment(resultId);
 }
 
 async function startTossPayment(resultId) {
@@ -358,6 +348,15 @@ function closeDiscount() {
   });
 }
 
+function trackAndStartWealthPayment(resultId) {
+  mixpanel.track("유료 관상 분석 보고서 버튼 클릭", {
+    resultId: resultId,
+    timestamp: new Date().toISOString(),
+    type: "재물",
+  });
+  startWealthTossPayment(resultId);
+}
+
 async function startWealthTossPayment(resultId) {
   const clientKey = "live_gck_yZqmkKeP8gBaRKPg1WwdrbQRxB9l"; // 테스트 키
   const customerKey = "customer_" + new Date().getTime();
@@ -404,6 +403,128 @@ function closeWealthPayment() {
   document.getElementById("wealth-agreement").innerHTML = "";
 
   mixpanel.track("재물운 결제창 닫힘", {
+    id: pageId,
+    type: pageType,
+    timestamp: new Date().toISOString(),
+  });
+}
+
+function trackAndStartLovePayment(resultId) {
+  mixpanel.track("유료 관상 분석 보고서 버튼 클릭", {
+    resultId: resultId,
+    timestamp: new Date().toISOString(),
+    type: "연애",
+  });
+  startLoveTossPayment(resultId);
+}
+
+async function startLoveTossPayment(resultId) {
+  const clientKey = "live_gck_yZqmkKeP8gBaRKPg1WwdrbQRxB9l"; // 테스트 키
+  const customerKey = "customer_" + new Date().getTime();
+
+  document.getElementById("lovePaymentOverlay").style.display = "block";
+
+  try {
+    const paymentWidget = PaymentWidget(clientKey, customerKey);
+    const paymentMethodWidget = paymentWidget.renderPaymentMethods(
+      "#love-method",
+      { value: 8900 }
+    );
+    paymentWidget.renderAgreement("#love-agreement");
+
+    document.getElementById("love-button").onclick = async () => {
+      try {
+        await paymentWidget.requestPayment({
+          orderId: `order_${Date.now()}`,
+          orderName: "관상 연애운 상세 분석 보고서",
+          customerName: "고객",
+          successUrl: `${
+            window.location.origin
+          }/success.html?id=${encodeURIComponent(resultId)}&type=love`,
+          failUrl: `${window.location.origin}/fail.html?id=${encodeURIComponent(
+            resultId
+          )}&type=love`,
+        });
+        mixpanel.track("연애운 분석 보고서 결제 요청 시도", {
+          id: resultId,
+          price: 8900,
+        }); // ← 추가
+      } catch (err) {
+        alert("❌ 결제 실패: " + err.message);
+      }
+    };
+  } catch (e) {
+    alert("❌ 위젯 로드 실패: " + e.message);
+  }
+}
+
+function closeLovePayment() {
+  document.getElementById("lovePaymentOverlay").style.display = "none";
+  document.getElementById("love-method").innerHTML = "";
+  document.getElementById("love-agreement").innerHTML = "";
+
+  mixpanel.track("연애운 결제창 닫힘", {
+    id: pageId,
+    type: pageType,
+    timestamp: new Date().toISOString(),
+  });
+}
+
+function trackAndStartMarriagePayment(resultId) {
+  mixpanel.track("유료 관상 분석 보고서 버튼 클릭", {
+    resultId: resultId,
+    timestamp: new Date().toISOString(),
+    type: "결혼",
+  });
+  startMarriageTossPayment(resultId);
+}
+
+async function startMarriageTossPayment(resultId) {
+  const clientKey = "live_gck_yZqmkKeP8gBaRKPg1WwdrbQRxB9l"; // 테스트 키
+  const customerKey = "customer_" + new Date().getTime();
+
+  document.getElementById("marriagePaymentOverlay").style.display = "block";
+
+  try {
+    const paymentWidget = PaymentWidget(clientKey, customerKey);
+    const paymentMethodWidget = paymentWidget.renderPaymentMethods(
+      "#marriage-method",
+      { value: 11900 }
+    );
+    paymentWidget.renderAgreement("#marriage-agreement");
+
+    document.getElementById("marriage-button").onclick = async () => {
+      try {
+        await paymentWidget.requestPayment({
+          orderId: `order_${Date.now()}`,
+          orderName: "관상 결혼운 상세 분석 보고서",
+          customerName: "고객",
+          successUrl: `${
+            window.location.origin
+          }/success.html?id=${encodeURIComponent(resultId)}&type=marriage`,
+          failUrl: `${window.location.origin}/fail.html?id=${encodeURIComponent(
+            resultId
+          )}&type=marriage`,
+        });
+        mixpanel.track("결혼운 분석 보고서 결제 요청 시도", {
+          id: resultId,
+          price: 11900,
+        }); // ← 추가
+      } catch (err) {
+        alert("❌ 결제 실패: " + err.message);
+      }
+    };
+  } catch (e) {
+    alert("❌ 위젯 로드 실패: " + e.message);
+  }
+}
+
+function closeMarriagePayment() {
+  document.getElementById("marriagePaymentOverlay").style.display = "none";
+  document.getElementById("marriage-method").innerHTML = "";
+  document.getElementById("marriage-agreement").innerHTML = "";
+
+  mixpanel.track("결혼운 결제창 닫힘", {
     id: pageId,
     type: pageType,
     timestamp: new Date().toISOString(),
@@ -611,7 +732,7 @@ function renderResultNormalized(obj, reportType = "base") {
     </div>
     <div class="mask-text-wrap-worth">
           <div class="mask-text-worth">
-            <div class="mask-text-top-worth">재물 관상: 나의 타고난 부</div>
+            <div class="mask-text-top-worth">재물 심층 관상 보고서</div>
             <div class="mask-text-top-sub-worth">총 15,000자 이상</div>
               <div class="mask-text-sub-worth">
                 1. [부위별 심층 관상] <span class="mask-text-span-worth">5,000자 보고서 포함</span><br/>
@@ -629,6 +750,49 @@ function renderResultNormalized(obj, reportType = "base") {
                 </div>
               </div>
             <div class="mask-text-btn-sub-worth">관상가 양반 - 프리미엄 AI 관상</div>
+          </div>
+        </div>
+           <div class="mask-text-wrap-love">
+          <div class="mask-text-love">
+            <div class="mask-text-top-love">연애 심층 관상 보고서</div>
+            <div class="mask-text-top-sub-love">총 10,000자 이상</div>
+                  <div class="mask-text-sub-love">
+                  1. [부위별 심층 관상] <span class="mask-text-span-love">5,000자 보고서 포함</span><br/>
+                2. [타고난 인연] <span class="mask-text-span-love">총 연애 횟수 & 사랑 사이클</span><br/>
+                3. [운명 상대 지도] <span class="mask-text-span-love">시·구 단위 위치 예측</span><br/>
+                4. [만남 오픈 타이밍] <span class="mask-text-span-love">계절·장소 & 개운 행동</span><br/>
+                5. [이상적 상대] <span class="mask-text-span-love">끌어당김 전략</span><br/>
+                6. [연애 성향 분석] <span class="mask-text-span-love">강·약점 & 보완법</span><br/>
+                7. [지속력 업그레이드] <span class="mask-text-span-love">오래 가는 사랑 비결</span><br/>
+                8. [개운 체크리스트] <span class="mask-text-span-love">연애 운 상승 실천표</span><br/>
+              </div>
+              <div class="mask-text-btn-wrap-love">
+                <div class="mask-text-btn-love" onclick="trackAndStartLovePayment('${resultId}')">
+                  나의 연애 관상 확인하기
+                </div>
+              </div>
+            <div class="mask-text-btn-sub-love">관상가 양반 - 프리미엄 AI 관상</div>
+          </div>
+        </div>
+        <div class="mask-text-wrap-marriage">
+          <div class="mask-text-marriage">
+            <div class="mask-text-top-marriage">결혼 심층 관상 보고서
+</div>
+            <div class="mask-text-top-sub-marriage">총 12,000자 이상</div>
+<div class="mask-text-sub-marriage">
+  1. [부위별 심층 관상] <span class="mask-text-span-marriage">5,000자 보고서 포함</span><br/>
+  2. [연애 성향·결혼관] <span class="mask-text-span-marriage">애정 표현‧가치관 분석</span><br/>
+  3. [골든타임] <span class="mask-text-span-marriage">만남 시기·장소·개운법</span><br/>
+  4. [이상적 배우자] <span class="mask-text-span-marriage">외모·성격·첫 대화 오프너</span><br/>
+  5. [결혼 생활 시뮬] <span class="mask-text-span-marriage">경제·소통·자녀 운</span><br/>
+  6. [개운 체크리스트] <span class="mask-text-span-marriage">인연 부르는 데일리 루틴</span><br/>
+</div>
+              <div class="mask-text-btn-wrap-marriage">
+                <div class="mask-text-btn-marriage" onclick="trackAndStartMarriagePayment('${resultId}')">
+                  나의 결혼 관상 확인하기
+                </div>
+              </div>
+            <div class="mask-text-btn-sub-marriage">관상가 양반 - 프리미엄 AI 관상</div>
           </div>
         </div>
   `;
