@@ -690,27 +690,33 @@ function renderResultNormalized(obj, reportType = "base") {
     </div>
     
     <div class="face-full-section-wrapper">
-     
-      <span class="face-full-section-sub"><1% 관상가가 참여한 관상 AI><br/>어디서도 볼 수 없는 가장 정확하고 상세한 관상 분석 보고서로 내 인생의 방향을 잡아보세요</span>
-       <span class="material-icons">
-        keyboard_double_arrow_down 
-      </span>
-      <br/>
-    </div>
-     <div class="mask-text-wrap">
+      <div class="face-full-report">${simpleMD(obj.detail)}</div>
+  
+      <div class="result-mask">
+        <div class="blur-overlay"></div>
+        <div class="mask-text-wrap">
           <div class="mask-text">
-            <div class="mask-text-top">부위별 관상 심층 보고서</div>
+            <div class="mask-text-top">부위별 심층 관상 보고서</div>
             <div class="mask-text-top-sub">총 5,000자 이상</div>
               <div class="mask-text-sub">
                 1. [코와 콧대] <span class="mask-text-span">통장이 최고점 찍을 해</span><br/>
+
                 2. [이마와 눈썹] <span class="mask-text-span">첫 대박 터질 나이</span><br/>
+
                 3. [눈과 눈매] <span class="mask-text-span">끌리는 이상형 본능 코드</span><br/>
+
                 4. [입과 입술] <span class="mask-text-span">거절 못 할 설득 타율</span><br/>
+
                 5. [턱과 광대] <span class="mask-text-span">은퇴 후 반격 모먼트</span><br/>
+
                 6. [얼굴형] <span class="mask-text-span">인생 그래프 상승 각도</span><br/>
+
                 7. [전체 인상·기운] <span class="mask-text-span">로또급 깜짝 행운 지수</span><br/>
+
                 8. [운명·경로] <span class="mask-text-span">인생 반전 버튼 작동 시점</span><br/>
+
                 9. [대인 관계·인연] <span class="mask-text-span">귀인 만날 달력 표시</span><br/>
+
                 10. [종합 결론] <span class="mask-text-span">길·흉 총합 승부수 한줄</span><br/>
               </div>
               <div class="mask-text-btn-wrap">
@@ -721,18 +727,22 @@ function renderResultNormalized(obj, reportType = "base") {
             <div class="mask-text-btn-sub">관상가 양반 - 프리미엄 AI 관상</div>
           </div>
         </div>
+      </div>
+      
+    </div>
     <div class="mask-text-wrap-worth">
           <div class="mask-text-worth">
-            <div class="mask-text-top-worth">재물 관상 심층 보고서</div>
-            <div class="mask-text-top-sub-worth">총 10,000자 이상</div>
+            <div class="mask-text-top-worth">재물 심층 관상 보고서</div>
+            <div class="mask-text-top-sub-worth">총 15,000자 이상</div>
               <div class="mask-text-sub-worth">
-                1. [타고난 부와 평생 모을 재산] <span class="mask-text-span-worth"> 내 평생 자산 규모</span><br/>
-                2. [성향과 재물운의 강·약점] <span class="mask-text-span-worth"> 돈과 만나는 지점</span><br/>
-                3. [돈이 붙는 적성과 환경] <span class="mask-text-span-worth"> 부를 위한 일·사람·장소</span><br/>
-                4. [자산을 키울 골든타임] <span class="mask-text-span-worth"> 시기별 기회 포착 전략</span><br/>
-                5. [위기 징조와 예방책] <span class="mask-text-span-worth"> 손재·투자 리스크 대비</span><br/>
-                6. [관상 개선 실천법] <span class="mask-text-span-worth"> 작은 습관으로 기운 트이기</span><br/>
-                7. [관상가 양반의 인생 조언] <span class="mask-text-span-worth"> 돈 그 이상 삶의 태도</span><br/>
+                1. [부위별 심층 관상] <span class="mask-text-span-worth">5,000자 보고서 포함</span><br/>
+                2. [타고난 부와 평생 모을 재산] <span class="mask-text-span-worth"> 내 평생 자산 규모</span><br/>
+                3. [성향과 재물운의 강·약점] <span class="mask-text-span-worth"> 돈과 만나는 지점</span><br/>
+                4. [돈이 붙는 적성과 환경] <span class="mask-text-span-worth"> 부를 위한 일·사람·장소</span><br/>
+                5. [자산을 키울 골든타임] <span class="mask-text-span-worth"> 시기별 기회 포착 전략</span><br/>
+                6. [위기 징조와 예방책] <span class="mask-text-span-worth"> 손재·투자 리스크 대비</span><br/>
+                7. [관상 개선 실천법] <span class="mask-text-span-worth"> 작은 습관으로 기운 트이기</span><br/>
+                8. [관상가 양반의 인생 조언] <span class="mask-text-span-worth"> 돈 그 이상 삶의 태도</span><br/>
               </div>
               <div class="mask-text-btn-wrap-worth">
                 <div class="mask-text-btn-worth" onclick="trackAndStartWealthPayment('${resultId}')">
@@ -744,16 +754,17 @@ function renderResultNormalized(obj, reportType = "base") {
         </div>
            <div class="mask-text-wrap-love">
           <div class="mask-text-love">
-            <div class="mask-text-top-love">연애 관상 심층 보고서</div>
-            <div class="mask-text-top-sub-love">총 8,000자 이상</div>
+            <div class="mask-text-top-love">연애 심층 관상 보고서</div>
+            <div class="mask-text-top-sub-love">총 10,000자 이상</div>
                   <div class="mask-text-sub-love">
-                1. [타고난 인연] <span class="mask-text-span-love">총 연애 횟수 & 사랑 사이클</span><br/>
-                2. [운명 상대 지도] <span class="mask-text-span-love">시·구 단위 위치 예측</span><br/>
-                3. [만남 오픈 타이밍] <span class="mask-text-span-love">계절·장소 & 개운 행동</span><br/>
-                4. [이상적 상대] <span class="mask-text-span-love">끌어당김 전략</span><br/>
-                5. [연애 성향 분석] <span class="mask-text-span-love">강·약점 & 보완법</span><br/>
-                6. [지속력 업그레이드] <span class="mask-text-span-love">오래 가는 사랑 비결</span><br/>
-                7. [개운 체크리스트] <span class="mask-text-span-love">연애 운 상승 실천표</span><br/>
+                  1. [부위별 심층 관상] <span class="mask-text-span-love">5,000자 보고서 포함</span><br/>
+                2. [타고난 인연] <span class="mask-text-span-love">총 연애 횟수 & 사랑 사이클</span><br/>
+                3. [운명 상대 지도] <span class="mask-text-span-love">시·구 단위 위치 예측</span><br/>
+                4. [만남 오픈 타이밍] <span class="mask-text-span-love">계절·장소 & 개운 행동</span><br/>
+                5. [이상적 상대] <span class="mask-text-span-love">끌어당김 전략</span><br/>
+                6. [연애 성향 분석] <span class="mask-text-span-love">강·약점 & 보완법</span><br/>
+                7. [지속력 업그레이드] <span class="mask-text-span-love">오래 가는 사랑 비결</span><br/>
+                8. [개운 체크리스트] <span class="mask-text-span-love">연애 운 상승 실천표</span><br/>
               </div>
               <div class="mask-text-btn-wrap-love">
                 <div class="mask-text-btn-love" onclick="trackAndStartLovePayment('${resultId}')">
@@ -765,16 +776,17 @@ function renderResultNormalized(obj, reportType = "base") {
         </div>
         <div class="mask-text-wrap-marriage">
           <div class="mask-text-marriage">
-            <div class="mask-text-top-marriage">결혼 관상 심층 보고서
+            <div class="mask-text-top-marriage">결혼 심층 관상 보고서
 </div>
-            <div class="mask-text-top-sub-marriage">총 6,000자 이상</div>
-                <div class="mask-text-sub-marriage">
-                  1. [연애 성향·결혼관] <span class="mask-text-span-marriage">애정 표현‧가치관 분석</span><br/>
-                  2. [골든타임] <span class="mask-text-span-marriage">만남 시기·장소·개운법</span><br/>
-                  3. [이상적 배우자] <span class="mask-text-span-marriage">외모·성격·첫 대화 오프너</span><br/>
-                  4. [결혼 생활 시뮬] <span class="mask-text-span-marriage">경제·소통·자녀 운</span><br/>
-                  5. [개운 체크리스트] <span class="mask-text-span-marriage">인연 부르는 데일리 루틴</span><br/>
-                </div>
+            <div class="mask-text-top-sub-marriage">총 12,000자 이상</div>
+<div class="mask-text-sub-marriage">
+  1. [부위별 심층 관상] <span class="mask-text-span-marriage">5,000자 보고서 포함</span><br/>
+  2. [연애 성향·결혼관] <span class="mask-text-span-marriage">애정 표현‧가치관 분석</span><br/>
+  3. [골든타임] <span class="mask-text-span-marriage">만남 시기·장소·개운법</span><br/>
+  4. [이상적 배우자] <span class="mask-text-span-marriage">외모·성격·첫 대화 오프너</span><br/>
+  5. [결혼 생활 시뮬] <span class="mask-text-span-marriage">경제·소통·자녀 운</span><br/>
+  6. [개운 체크리스트] <span class="mask-text-span-marriage">인연 부르는 데일리 루틴</span><br/>
+</div>
               <div class="mask-text-btn-wrap-marriage">
                 <div class="mask-text-btn-marriage" onclick="trackAndStartMarriagePayment('${resultId}')">
                   나의 결혼 관상 확인하기
@@ -789,6 +801,7 @@ function renderResultNormalized(obj, reportType = "base") {
 function renderImage(base64) {
   document.getElementById("face-image").src = base64;
   document.querySelector(".file-upload-content").style.display = "block";
+  document.querySelector(".image-upload-wrap").style.display = "none";
 }
 
 // 페이지 진입 시 바로 실행

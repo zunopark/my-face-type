@@ -38,38 +38,9 @@
 }
 
 .image {
+  box-shadow: inset 0 0 1px 0 rgba(0, 0, 0, 0.2);
   height: 100%;
   width: 100%;
   background-size: cover;
-}
-
-.file-upload {
-  width: 100%;
-  height: 100%;
-  margin: 0 auto;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.image-square-frame {
-  width: 200px;
-  height: 240px; /* ✅ 정사각형 */
-  overflow: hidden;
-  margin: 0 auto;
-  position: relative;
-}
-
-.file-upload-image {
-  width: 100%;
-  height: 100%;
-  object-fit: cover; /* ✅ 프레임을 채우며 비율 맞추고 자르기 */
-  object-position: center; /* ✅ 중앙 기준 자르기 */
-  display: block;
-}
-
-.nostore {
-  color: rgb(117, 117, 117);
-  margin-top: 12px;
-  font-size: 12px;
+  background-position: center center;
 }
