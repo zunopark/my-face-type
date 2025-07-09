@@ -21,6 +21,7 @@
   align-items: center;
   font-family: "KimjungchulMyungjo-Bold";
   text-align: center;
+  color: #4c4c51;
 }
 
 .face-full-section-title {
@@ -31,7 +32,6 @@
 .face-full-section-sub {
   font-size: 14px;
   margin-bottom: 8px;
-  color: #4c4c51;
 }
 
 .face-full-report {
