@@ -692,7 +692,7 @@ function renderResultNormalized(obj, reportType = "base") {
     <div class="face-full-section-wrapper">
       <span class="face-full-section-title">당신의 얼굴에는 운명의 비밀이<br/>숨겨져 있습니다</span>
      
-      <span class="face-full-section-sub">📖 오관 · 삼정 · 오악 · 육부 · 십이궁 디테일한 관상 해석 보고서로 내 인생의 방향을 잡아보세요</span>
+      <span class="face-full-section-sub"><운세•사주 서비스 중 최초><br/>어디서도 볼 수 없는 디테일한 관상 해석 보고서로 내 인생의 방향을 잡아보세요</span>
        <span class="material-icons">
         keyboard_double_arrow_down 
       </span>
