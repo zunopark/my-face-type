@@ -79,105 +79,106 @@
         });
       }
 
-      function renderHistory(results) {
-        const container = document.getElementById("resultHistory");
+      const ALL_TYPES = ["base", "wealth", "marriage", "love", "job"];
+      const TYPE_LABEL = {
+        base: "프리미엄 관상 심층 분석 보고서",
+        wealth: "재물 관상 심층 분석 보고서",
+        marriage: "결혼 관상 심층 분석 보고서",
+        love: "연애 관상 심층 분석 보고서",
+        job: "직업 관상 심층 분석 보고서",
+      };
 
-        // ✅ 결제된 항목만 필터링
-        const paidResults = results.filter((r) => r.paid);
+      function renderHistory(dbResults) {
+        const $list = document.getElementById("resultHistory");
+        const $count = document.getElementById("history-count");
+        $list.innerHTML = ""; // 초기화
 
-        if (paidResults.length === 0) {
-          container.innerHTML = `
+        /* --- (1) ‘레코드 × 타입’으로 펼치면서 paid 검사 -------- */
+        const flattened = [];
+        dbResults.forEach((rec) => {
+          if (!rec.reports) return; // 방어
+          ALL_TYPES.forEach((t) => {
+            const rep = rec.reports[t];
+            if (rep && rep.paid) {
+              flattened.push({
+                id: rec.id,
+                type: t,
+                img: rec.imageBase64,
+                ts: rep.purchasedAt || rec.timestamp, // 구매시각 없으면 최초 ts
+              });
+            }
+          });
+        });
+
+        /* --- (2) paid 된 내역이 없으면 빈 화면 --- */
+        if (flattened.length === 0) {
+          $count.textContent = "(0개)";
+          $list.innerHTML = `
       <div class="no-results">
         <p>결제한 분석 결과가 아직 없습니다.</p>
         <a href="/" class="view-face-button">AI 관상 보러 가기</a>
-      </div>
-    `;
+      </div>`;
           return;
         }
 
-        // ✅ 결과 수 표시
-        document.getElementById(
-          "history-count"
-        ).textContent = `(${paidResults.length}개)`;
+        /* --- (3) 최신순 정렬 & 카운터 표시 -------------------- */
+        flattened.sort((a, b) => new Date(b.ts) - new Date(a.ts));
+        $count.textContent = `(${flattened.length}개)`;
 
-        // ✅ 최신순 정렬
-        paidResults.sort(
-          (a, b) => new Date(b.timestamp) - new Date(a.timestamp)
-        );
-
-        // ✅ 한글 타입명 매핑
-        const typeMap = {
-          base: "프리미엄 관상 심층 분석 보고서",
-          wealth: "재물 관상 심층 분석 보고서",
-          marriage: "결혼 관상 심층 분석 보고서",
-          love: "연애 관상 심층 분석 보고서",
-          job: "직업 관상 심층 분석 보고서",
-        };
-
-        // ✅ 렌더링
-        paidResults.forEach((r) => {
+        /* --- (4) DOM 생성 ------------------------------------ */
+        flattened.forEach((item) => {
           const div = document.createElement("div");
           div.className = "resultHistory paid";
           div.innerHTML = `
-      <a href="/analyze-result/?id=${r.id}&type=${r.type}">
+      <a href="/analyze-result/?id=${item.id}&type=${item.type}">
         <div class="resultHistory_paid">✅ 결제 완료</div>
         <div class="resultHistory_image_wrap">
           <div class="image_square_frame2">
-            <img
-              class="resultHistory_image"
-              src="${r.imageBase64}"
-              alt="AI 관상 분석 결과"
-            />
+            <img class="resultHistory_image"
+                 src="${item.img}" alt="AI 관상 분석 결과" />
           </div>
-          <div class="resultHistory_summary">${
-            typeMap[r.type] || "관상 분석"
-          }</div>
+          <div class="resultHistory_summary">
+            ${TYPE_LABEL[item.type] || "관상 분석"}
+          </div>
         </div>
-        <div class="resultHistory_date">${new Date(
-          r.timestamp
-        ).toLocaleString()}</div>
-      </a>
-    `;
-          container.appendChild(div);
+        <div class="resultHistory_date">
+          ${new Date(item.ts).toLocaleString()}
+        </div>
+      </a>`;
+          $list.appendChild(div);
         });
       }
 
+      /* =========================================================
+   4) ‘미결제 DB 삭제’ – 전 레코드 중 reports 내에
+      paid==false 만 남은 경우에만 지우도록 수정
+   ========================================================= */
+      async function deleteUnpaidResults() {
+        if (!confirm("결제하지 않은 히스토리를 모두 삭제할까요?")) return;
+
+        const tx = db.transaction("results", "readwrite");
+        const store = tx.objectStore("results");
+
+        const req = store.getAll();
+        req.onsuccess = () => {
+          req.result.forEach((rec) => {
+            const hasAnyPaid = ALL_TYPES.some((t) => rec.reports?.[t]?.paid);
+            if (!hasAnyPaid) store.delete(rec.id); // 전부 미결제면 삭제
+          });
+        };
+
+        tx.oncomplete = async () => {
+          const refreshed = await getAllResults();
+          renderHistory(refreshed);
+          alert("미결제 히스토리가 삭제되었습니다 ✅");
+        };
+        tx.onerror = () => alert("오류가 발생했습니다. 다시 시도해 주세요.");
+      }
       (async () => {
         await initDB();
         const results = await getAllResults();
         renderHistory(results);
       })();
-
-      /* === 미결제 히스토리 일괄 삭제 === */
-      async function deleteUnpaidResults() {
-        if (!confirm("결제하지 않은 히스토리를 모두 삭제할까요?")) return;
-
-        // 1) IndexedDB 트랜잭션(쓰기)
-        const tx = db.transaction(["results"], "readwrite");
-        const store = tx.objectStore("results");
-
-        // 2) 전체 순회하면서 unpaid만 삭제
-        const getAllReq = store.getAll();
-        getAllReq.onsuccess = () => {
-          getAllReq.result.forEach((item) => {
-            if (!item.paid) store.delete(item.id);
-          });
-        };
-
-        // 3) 완료되면 화면 갱신
-        tx.oncomplete = async () => {
-          // Container 비우고 다시 그리기
-          document.getElementById("resultHistory").innerHTML = "";
-          const refreshed = await getAllResults();
-          renderHistory(refreshed);
-          alert("미결제 히스토리가 삭제되었습니다 ✅");
-        };
-
-        tx.onerror = (e) => {
-          console.error("❌ 삭제 중 오류", e);
-          alert("오류가 발생했습니다. 다시 시도해 주세요.");
-        };
-      }
 
       /* 버튼 클릭 이벤트 */
       document

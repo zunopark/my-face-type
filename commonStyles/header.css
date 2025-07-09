@@ -19,10 +19,12 @@
 
 .header_chat_icon {
   color: #0f0f0f;
-  font-size: 16px;
   text-decoration: none;
-  margin-right: 8px;
   padding-top: 4px;
+}
+
+.material-icons {
+  font-size: 12px;
 }
 
 .header_chat_title {
@@ -33,4 +35,13 @@
 
 #header_back a {
   text-decoration: none;
+}
+
+.header_btn {
+  display: flex;
+  text-align: center;
+}
+
+.header_chat_right {
+  margin-left: auto;
 }

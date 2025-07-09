@@ -1,3 +1,50 @@
+body {
+  background: whitesmoke;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+.main_body_wrap {
+  background: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.main_content_wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 60px;
+}
+
+.main_title_wrap {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 10px;
+  color: #171717;
+  font-family: "KimjungchulMyungjo-Bold";
+  margin-top: 40px;
+  margin-bottom: 10px;
+}
+
+.main_title {
+  font-size: 24px;
+  font-weight: 700;
+  text-align: center;
+  line-height: 40px;
+}
+
+.main_subtitle {
+  font-size: 16px;
+  color: #2b2b2b;
+}
+
 .file-upload {
   background-color: #fffae3;
   width: 100%;
@@ -75,11 +122,8 @@
 }
 
 .image-title-wrap {
-  /* padding: 0 15px 32px 15px; */
   color: #222;
 }
-
-
 
 .drag-text {
   height: 100%;
@@ -89,6 +133,7 @@
   align-items: center;
   text-align: center;
   font-size: 10px;
+  font-family: KimjungchulMyungjo-Bold;
 }
 
 .drag-text i {
@@ -102,8 +147,6 @@
   font-weight: 700;
   text-transform: uppercase;
   color: white;
-  font-family: 'Yeon Sung', cursive;
-
   font-size: 15px;
 }
 .drag-text h3 {
@@ -112,7 +155,6 @@
   font-size: 18px;
   text-transform: uppercase;
   color: white;
-  font-family: 'Yeon Sung', cursive;
 }
 
 .image-square-frame {
@@ -131,29 +173,8 @@
   display: block;
 }
 
-.remove-image {
-  width: 100%;
-  margin: 0;
-  color: #fff;
-  background: #cd4535;
-  border: none;
-  padding: 10px;
-  border-radius: 4px;
-  border-bottom: 4px solid #b02818;
-  transition: all 0.2s ease;
-  outline: none;
-  text-transform: uppercase;
-  font-weight: 700;
-}
-
-.remove-image:hover {
-  background: #c13b2a;
-  color: #ffffff;
-  transition: all 0.2s ease;
-  cursor: pointer;
-}
-
-.remove-image:active {
-  border: 0;
-  transition: all 0.2s ease;
+.nostore {
+  color: rgb(117, 117, 117);
+  margin-top: 12px;
+  font-size: 12px;
 }

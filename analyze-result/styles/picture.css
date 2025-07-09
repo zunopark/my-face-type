@@ -18,7 +18,7 @@
     -16px 16px 2px 1px rgba(0, 0, 0, 0.01);
 }
 .border:before {
-  content: '';
+  content: "";
   display: block;
   padding-bottom: 125%;
 }

@@ -30,12 +30,7 @@
     />
     <link rel="canonical" href="https://keen-poitras-075b07.netlify.app" />
     <link rel="stylesheet" href="styles/style.css" />
-    <link
-      rel="stylesheet"
-      href="https://use.fontawesome.com/releases/v5.5.0/css/all.css"
-      integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU"
-      crossorigin="anonymous"
-    />
+
     <style>
       @import url("https://fonts.googleapis.com/css2?family=East+Sea+Dokdo&display=swap");
       @import url("https://fonts.googleapis.com/css2?family=Yeon+Sung&display=swap");
@@ -62,6 +57,11 @@
       rel="shortcut icon"
       href="https://keen-poitras-075b07.netlify.app/favicon.ico"
       type="image/x-icon"
+    />
+
+    <link
+      href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet"
     />
 
     <script
@@ -574,43 +574,6 @@
     </script>
 
     <script src="https://js.tosspayments.com/v1/payment-widget"></script>
-
-    <script
-      src="https://kit.fontawesome.com/47e166f8b9.js"
-      crossorigin="anonymous"
-    ></script>
-    <!-- 1) marked 한 번만 로드 -->
-    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-
-    <!-- 2) del 토큰 끄는 전용 확장 -->
-    <script>
-      /*  취소선(del) 토크나이저를 무시해서 ~~ 가 그대로 보이도록 */
-      marked.use({
-        extensions: [
-          {
-            name: "noDel",
-            level: "inline",
-
-            /* “~~”가 처음 보이는 위치를 알려주면 파싱 속도가 빨라집니다 */
-            start(src) {
-              return src.indexOf("~~");
-            },
-
-            /* del 토큰을 건너뛰고 그냥 텍스트로 반환 */
-            tokenizer(src) {
-              const match = /^~~([\s\S]+?)~~/.exec(src);
-              if (!match) return; // 매칭 없으면 패스
-
-              return {
-                type: "text", // ← 핵심: del 이 아니라 text
-                raw: match[0], // 원본 그대로
-                text: match[0], // “~~내용~~” 그대로 출력
-              };
-            },
-          },
-        ],
-      });
-    </script>
 
     <script src="../commonJs/footer.js"></script>
     <script src="../commonJs/header.js"></script>

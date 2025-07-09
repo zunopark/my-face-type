@@ -1,0 +1,191 @@
+.payment-overlay {
+  position: fixed;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.9);
+  z-index: 99999;
+  text-align: center;
+}
+
+.payment-fullscreen {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.modal-content {
+  height: 100vh;
+  background: #fff;
+  padding: 34px 22px 28px 22px;
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.19);
+  position: relative;
+}
+
+.payment-header {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.payment-title {
+  font-size: 20px;
+  font-weight: 700;
+  color: #343434;
+}
+
+.payment-close {
+  color: #343434;
+  font-size: 20px;
+  font-weight: bold;
+  cursor: pointer;
+  z-index: 10000;
+}
+
+.payment-subtitle {
+  color: #2f3846;
+  font-weight: 600;
+}
+
+.payment-price-wrap {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 8px;
+  font-weight: 600;
+  font-size: 14px;
+}
+.payment-original-price-title {
+}
+.payment-original-price {
+}
+.payment-coupon-wrap {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 20px;
+  font-weight: 600;
+  font-size: 16px;
+}
+.payment-coupon {
+}
+.payment-coupon-price-wrap {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 4px;
+  font-weight: 500;
+  font-size: 14px;
+}
+.payment-coupon-title {
+  color: #181818;
+}
+.payment-coupon-price {
+  color: #ff5121;
+}
+
+.payment-final-price-wrap {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-top: 4px;
+  font-weight: 500;
+}
+.payment-final-price-title {
+  text-align: left;
+  font-size: 14px;
+}
+.payment-final-price-price-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+.payment-originam-price2 {
+  color: #9d9d9d;
+  text-decoration: line-through;
+  font-size: 14px;
+}
+.payment-final-price {
+  display: flex;
+  justify-content: flex-end;
+  font-size: 18px;
+  font-weight: 700;
+}
+.payment-final-price-discount {
+  color: #ff5121;
+  margin-right: 8px;
+}
+.payment-final-price-num {
+  color: #181818;
+}
+
+#payment-method,
+#agreement {
+  width: 100%;
+  padding: 0;
+}
+
+#payment-button {
+  margin-top: 10px;
+  width: 100%;
+  padding: 15px 0;
+  background-color: #ffbe0a;
+  color: #181818;
+  font-weight: 700;
+  border: none;
+  border-radius: 8px;
+  font-size: 17px;
+  box-shadow: 0 1px 6px rgba(240, 180, 15, 0.09);
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.loading-box.dark-mode {
+  background-color: #1e1e1e;
+  color: #f0f0f0;
+  border-radius: 12px;
+  padding: 40px 24px;
+  text-align: center;
+  font-family: "Pretendard", sans-serif;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+  width: 320px; /* ✅ 고정 너비 */
+  margin: 20px auto; /* 중앙 정렬 */
+}
+
+.progress-bar-container {
+  width: 100%; /* 부모 기준 */
+  background-color: #2a2a2a;
+  height: 10px;
+  border-radius: 6px;
+  overflow: hidden;
+  margin-top: 12px;
+}
+
+.progress-bar-fill {
+  height: 100%;
+  background: linear-gradient(to right, #ffbe0a, #ff5121);
+  width: 0%;
+  transition: width 0.3s ease;
+  border-radius: 6px;
+}
+
+.loading-text {
+  font-size: 16px;
+  font-weight: 500;
+  min-height: 24px; /* ✅ 줄바꿈/길이 차이로 흔들리는 것 방지 */
+  margin-bottom: 20px;
+  transition: opacity 0.4s;
+}

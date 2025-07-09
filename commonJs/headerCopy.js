@@ -20,13 +20,13 @@ const headerContent = () => {
       <div class="header_chat header_fixed" style ="">
 
             <a href="/" style="margin-right: 12px; text-decoration: none;">
-          <div class="header_chat_title" style="color: rgb(130, 130, 130);" >관상</div>
+          <div class="header_chat_title"" >관상</div>
         </a>
             <a href="/animalface/" style="margin-right: 12px; text-decoration: none;">
           <div class="header_chat_title" style="color: rgb(130, 130, 130);" >동물상</div>
         </a>
          <a href="/couple/" style="margin-right: 12px; text-decoration: none;">
-          <div class="header_chat_title" style="margin-left: auto;" >궁합</div>
+          <div class="header_chat_title" style="color: rgb(130, 130, 130);" >궁합</div>
         </a>
       </div>`;
   } else if (headerMain.id === "couple") {
@@ -46,11 +46,10 @@ const headerContent = () => {
   } else if (headerMain.id === "base") {
     headerMain.innerHTML = ` 
       <div id="header_back" class="header_chat header_fixed">
-        <a href="/">
-          <i class="fa-solid fa-arrow-left header_chat_icon" id="back-button"></i>
-        </a>
-        <a href="/">
-          <div class="header_chat_title">뒤로 가기</div>
+           <a href="/" class="header_btn">
+          <span class="material-icons header_chat_icon">arrow_back_ios</span>
+         
+          <div class="header_chat_title">다른 사진</div>
         </a>
         
       </div>`;
