@@ -690,11 +690,15 @@ function renderResultNormalized(obj, reportType = "base") {
     </div>
     
     <div class="face-full-section-wrapper">
-      <div class="face-full-report">${simpleMD(obj.detail)}</div>
-  
-      <div class="result-mask">
-        <div class="blur-overlay"></div>
-        <div class="mask-text-wrap">
+      <span class="face-full-section-title">당신의 얼굴에는 운명의 비밀이<br/>숨겨져 있습니다</span>
+     
+      <span class="face-full-section-sub">📖 오관 · 삼정 · 오악 · 육부 · 십이궁 디테일한 관상 해석 보고서로 내 인생의 방향을 잡아보세요</span>
+       <span class="material-icons">
+        keyboard_double_arrow_down 
+      </span>
+      <br/>
+    </div>
+     <div class="mask-text-wrap">
           <div class="mask-text">
             <div class="mask-text-top">부위별 심층 관상 보고서</div>
             <div class="mask-text-top-sub">총 5,000자 이상</div>
@@ -727,9 +731,6 @@ function renderResultNormalized(obj, reportType = "base") {
             <div class="mask-text-btn-sub">관상가 양반 - 프리미엄 AI 관상</div>
           </div>
         </div>
-      </div>
-      
-    </div>
     <div class="mask-text-wrap-worth">
           <div class="mask-text-worth">
             <div class="mask-text-top-worth">재물 심층 관상 보고서</div>
