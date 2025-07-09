@@ -789,7 +789,6 @@ function renderResultNormalized(obj, reportType = "base") {
 function renderImage(base64) {
   document.getElementById("face-image").src = base64;
   document.querySelector(".file-upload-content").style.display = "block";
-  document.querySelector(".image-upload-wrap").style.display = "none";
 }
 
 // 페이지 진입 시 바로 실행
