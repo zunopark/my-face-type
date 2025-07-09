@@ -699,7 +699,7 @@ function renderResultNormalized(obj, reportType = "base") {
     </div>
      <div class="mask-text-wrap">
           <div class="mask-text">
-            <div class="mask-text-top">부위별 심층 관상 보고서</div>
+            <div class="mask-text-top">부위별 관상 심층 보고서</div>
             <div class="mask-text-top-sub">총 5,000자 이상</div>
               <div class="mask-text-sub">
                 1. [코와 콧대] <span class="mask-text-span">통장이 최고점 찍을 해</span><br/>
@@ -723,7 +723,7 @@ function renderResultNormalized(obj, reportType = "base") {
         </div>
     <div class="mask-text-wrap-worth">
           <div class="mask-text-worth">
-            <div class="mask-text-top-worth">재물 심층 관상 보고서</div>
+            <div class="mask-text-top-worth">재물 관상 심층 보고서</div>
             <div class="mask-text-top-sub-worth">총 10,000자 이상</div>
               <div class="mask-text-sub-worth">
                 1. [타고난 부와 평생 모을 재산] <span class="mask-text-span-worth"> 내 평생 자산 규모</span><br/>
@@ -744,7 +744,7 @@ function renderResultNormalized(obj, reportType = "base") {
         </div>
            <div class="mask-text-wrap-love">
           <div class="mask-text-love">
-            <div class="mask-text-top-love">연애 심층 관상 보고서</div>
+            <div class="mask-text-top-love">연애 관상 심층 보고서</div>
             <div class="mask-text-top-sub-love">총 8,000자 이상</div>
                   <div class="mask-text-sub-love">
                 1. [타고난 인연] <span class="mask-text-span-love">총 연애 횟수 & 사랑 사이클</span><br/>
@@ -765,7 +765,7 @@ function renderResultNormalized(obj, reportType = "base") {
         </div>
         <div class="mask-text-wrap-marriage">
           <div class="mask-text-marriage">
-            <div class="mask-text-top-marriage">결혼 심층 관상 보고서
+            <div class="mask-text-top-marriage">결혼 관상 심층 보고서
 </div>
             <div class="mask-text-top-sub-marriage">총 6,000자 이상</div>
                 <div class="mask-text-sub-marriage">
