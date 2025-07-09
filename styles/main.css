@@ -136,7 +136,7 @@ body {
   font-family: KimjungchulMyungjo-Bold;
 }
 
-.drag-text i {
+.drag-text span {
   font-size: 40px;
   color: white;
   margin-bottom: 10px;
