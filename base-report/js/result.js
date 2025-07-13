@@ -730,6 +730,28 @@ function renderResultNormalized(obj, reportType = "base") {
       </div>
       
     </div>
+     <div class="mask-text-wrap-love">
+          <div class="mask-text-love">
+            <div class="mask-text-top-love">연애 심층 관상 보고서</div>
+            <div class="mask-text-top-sub-love">총 10,000자 이상</div>
+                  <div class="mask-text-sub-love">
+                  1. [부위별 심층 관상] <span class="mask-text-span-love">5,000자 보고서 포함</span><br/>
+                2. [타고난 인연] <span class="mask-text-span-love">총 연애 횟수 & 사랑 사이클</span><br/>
+                3. [운명 상대 지도] <span class="mask-text-span-love">시·구 단위 위치 예측</span><br/>
+                4. [만남 오픈 타이밍] <span class="mask-text-span-love">계절·장소 & 개운 행동</span><br/>
+                5. [이상적 상대] <span class="mask-text-span-love">끌어당김 전략</span><br/>
+                6. [연애 성향 분석] <span class="mask-text-span-love">강·약점 & 보완법</span><br/>
+                7. [지속력 업그레이드] <span class="mask-text-span-love">오래 가는 사랑 비결</span><br/>
+                8. [개운 체크리스트] <span class="mask-text-span-love">연애 운 상승 실천표</span><br/>
+              </div>
+              <div class="mask-text-btn-wrap-love">
+                <div class="mask-text-btn-love" onclick="trackAndStartLovePayment('${resultId}')">
+                  나의 연애 관상 확인하기
+                </div>
+              </div>
+            <div class="mask-text-btn-sub-love">관상가 양반 - 프리미엄 AI 관상</div>
+          </div>
+        </div>
     <div class="mask-text-wrap-worth">
           <div class="mask-text-worth">
             <div class="mask-text-top-worth">재물 심층 관상 보고서</div>
@@ -752,28 +774,7 @@ function renderResultNormalized(obj, reportType = "base") {
             <div class="mask-text-btn-sub-worth">관상가 양반 - 프리미엄 AI 관상</div>
           </div>
         </div>
-           <div class="mask-text-wrap-love">
-          <div class="mask-text-love">
-            <div class="mask-text-top-love">연애 심층 관상 보고서</div>
-            <div class="mask-text-top-sub-love">총 10,000자 이상</div>
-                  <div class="mask-text-sub-love">
-                  1. [부위별 심층 관상] <span class="mask-text-span-love">5,000자 보고서 포함</span><br/>
-                2. [타고난 인연] <span class="mask-text-span-love">총 연애 횟수 & 사랑 사이클</span><br/>
-                3. [운명 상대 지도] <span class="mask-text-span-love">시·구 단위 위치 예측</span><br/>
-                4. [만남 오픈 타이밍] <span class="mask-text-span-love">계절·장소 & 개운 행동</span><br/>
-                5. [이상적 상대] <span class="mask-text-span-love">끌어당김 전략</span><br/>
-                6. [연애 성향 분석] <span class="mask-text-span-love">강·약점 & 보완법</span><br/>
-                7. [지속력 업그레이드] <span class="mask-text-span-love">오래 가는 사랑 비결</span><br/>
-                8. [개운 체크리스트] <span class="mask-text-span-love">연애 운 상승 실천표</span><br/>
-              </div>
-              <div class="mask-text-btn-wrap-love">
-                <div class="mask-text-btn-love" onclick="trackAndStartLovePayment('${resultId}')">
-                  나의 연애 관상 확인하기
-                </div>
-              </div>
-            <div class="mask-text-btn-sub-love">관상가 양반 - 프리미엄 AI 관상</div>
-          </div>
-        </div>
+          
         <div class="mask-text-wrap-marriage">
           <div class="mask-text-marriage">
             <div class="mask-text-top-marriage">결혼 심층 관상 보고서
