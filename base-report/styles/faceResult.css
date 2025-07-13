@@ -144,6 +144,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  margin-top: 16px;
 }
 
 /* 텍스트는 블러 영향 X */
