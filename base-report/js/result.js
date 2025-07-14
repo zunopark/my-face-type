@@ -531,6 +531,67 @@ function closeMarriagePayment() {
   });
 }
 
+function trackAndStartCareerPayment(resultId) {
+  mixpanel.track("유료 관상 분석 보고서 버튼 클릭", {
+    resultId: resultId,
+    timestamp: new Date().toISOString(),
+    type: "직업",
+  });
+  startCareerTossPayment(resultId);
+}
+
+async function startCareerTossPayment(resultId) {
+  const clientKey = "live_gck_yZqmkKeP8gBaRKPg1WwdrbQRxB9l"; // 테스트 키
+  const customerKey = "customer_" + new Date().getTime();
+
+  document.getElementById("careerPaymentOverlay").style.display = "block";
+
+  try {
+    const paymentWidget = PaymentWidget(clientKey, customerKey);
+    const paymentMethodWidget = paymentWidget.renderPaymentMethods(
+      "#career-method",
+      { value: 6900 }
+    );
+    paymentWidget.renderAgreement("#career-agreement");
+
+    document.getElementById("career-button").onclick = async () => {
+      try {
+        await paymentWidget.requestPayment({
+          orderId: `order_${Date.now()}`,
+          orderName: "관상 직업운 상세 분석 보고서",
+          customerName: "고객",
+          successUrl: `${
+            window.location.origin
+          }/success.html?id=${encodeURIComponent(resultId)}&type=career`,
+          failUrl: `${window.location.origin}/fail.html?id=${encodeURIComponent(
+            resultId
+          )}&type=career`,
+        });
+        mixpanel.track("직업운 분석 보고서 결제 요청 시도", {
+          id: resultId,
+          price: 6900,
+        }); // ← 추가
+      } catch (err) {
+        alert("❌ 결제 실패: " + err.message);
+      }
+    };
+  } catch (e) {
+    alert("❌ 위젯 로드 실패: " + e.message);
+  }
+}
+
+function closeCareerPayment() {
+  document.getElementById("careerPaymentOverlay").style.display = "none";
+  document.getElementById("career-method").innerHTML = "";
+  document.getElementById("career-agreement").innerHTML = "";
+
+  mixpanel.track("직업운 결제창 닫힘", {
+    id: pageId,
+    type: pageType,
+    timestamp: new Date().toISOString(),
+  });
+}
+
 // IndexedDB 준비될 때까지 기다리는 Promise
 const waitForDB = () =>
   new Promise((r) => {
@@ -796,6 +857,38 @@ function renderResultNormalized(obj, reportType = "base") {
             <div class="mask-text-btn-sub-marriage">관상가 양반 - 프리미엄 AI 관상</div>
           </div>
         </div>
+        <div class="mask-text-wrap-career">
+  <div class="mask-text-career">
+    <div class="mask-text-top-career">직업 심층 관상 보고서</div>
+    <div class="mask-text-top-sub-career">총 12,000자 이상</div>
+
+    <div class="mask-text-sub-career">
+      1. [부위별 심층 관상] <span class="mask-text-span-career">5,000자 보고서 포함</span><br/>
+
+      2. [적성과 장단점] <span class="mask-text-span-career">천직 찾는 DNA 분석</span><br/>
+
+      3. [직업 운 곡선] <span class="mask-text-span-career">커리어 꽃 피는 시기</span><br/>
+
+      4. [강점 극대화 전략] <span class="mask-text-span-career">성향별 일 잘하는 루틴</span><br/>
+
+      5. [직장 vs 창업] <span class="mask-text-span-career">성공 확률·적합도 비교</span><br/>
+
+      6. [행운의 업무 환경] <span class="mask-text-span-career">돈·사람·공간 기운 포인트</span><br/>
+
+      7. [위기 대비 체크] <span class="mask-text-span-career">번아웃·리스크 예방법</span><br/>
+
+      8. [관상 개선 실천법] <span class="mask-text-span-career">커리어 운 트이는 습관</span><br/>
+    </div>
+
+    <div class="mask-text-btn-wrap-career">
+      <div class="mask-text-btn-career" onclick="trackAndStartCareerPayment('${resultId}')">
+        나의 직업 관상 확인하기
+      </div>
+    </div>
+
+    <div class="mask-text-btn-sub-career">관상가 양반 - 프리미엄 AI 관상</div>
+  </div>
+</div>
   `;
 }
 
