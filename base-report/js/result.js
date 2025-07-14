@@ -20,7 +20,7 @@ async function initDB() {
 initDB();
 
 /* ───────── 2. 공통 유틸 ───────── */
-const ALL_TYPES = ["base", "wealth", "love", "marriage"];
+const ALL_TYPES = ["base", "wealth", "love", "marriage", "career"];
 
 /* 스켈레톤 생성 */
 function makeSkeleton(normalized, paid = false) {
@@ -796,7 +796,7 @@ function renderResultNormalized(obj, reportType = "base") {
             <div class="mask-text-top-love">연애 심층 관상 보고서</div>
             <div class="mask-text-top-sub-love">총 10,000자 이상</div>
                   <div class="mask-text-sub-love">
-                  1. [부위별 심층 관상] <span class="mask-text-span-love">5,000자 보고서 포함</span><br/>
+                1. [부위별 심층 관상] <span class="mask-text-span-love">5,000자 보고서 포함</span><br/>
                 2. [타고난 인연] <span class="mask-text-span-love">총 연애 횟수 & 사랑 사이클</span><br/>
                 3. [운명 상대 지도] <span class="mask-text-span-love">시·구 단위 위치 예측</span><br/>
                 4. [만남 오픈 타이밍] <span class="mask-text-span-love">계절·장소 & 개운 행동</span><br/>

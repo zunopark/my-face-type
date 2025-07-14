@@ -48,7 +48,7 @@ const saveResultToDB = (data) =>
   });
 
 /* ───────────── 2-A. skeleton & helpers ───────────── */
-const ALL_TYPES = ["base", "wealth", "love", "marriage"];
+const ALL_TYPES = ["base", "wealth", "love", "marriage", "career"];
 function ensureSkeleton(rec) {
   let changed = false;
   if (!rec.reports) {
