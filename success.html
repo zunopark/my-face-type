@@ -135,7 +135,7 @@
           r.onsuccess = (e) => res(e.target.result);
         });
       }
-      const ALL_TYPES = ["base", "wealth", "love", "marriage"];
+      const ALL_TYPES = ["base", "wealth", "love", "marriage", "career"];
       function ensureSkeleton(rec) {
         if (!rec.reports) rec.reports = {};
         for (const t of ALL_TYPES)
