@@ -1,0 +1,91 @@
+/* ───────── G마켓산스 ───────── */
+@font-face {
+  /* Light 300 */
+  font-family: "GmarketSans";
+  src: url("../fonts/GmarketSans/GmarketSansTTFLight.ttf") format("truetype");
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  /* Medium 500 */
+  font-family: "GmarketSans";
+  src: url("../fonts/GmarketSans/GmarketSansTTFMedium.ttf") format("truetype");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  /* Bold 700 */
+  font-family: "GmarketSans";
+  src: url("../fonts/GmarketSans/GmarketSansTTFBold.ttf") format("truetype");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* ───────── 나눔스퀘어 ───────── */
+@font-face {
+  /* Light 300 */
+  font-family: "NanumSquare";
+  src: url("../fonts/NanumSquare/NanumSquareL.ttf") format("truetype");
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  /* Regular 400 */
+  font-family: "NanumSquare";
+  src: url("../fonts/NanumSquare/NanumSquareR.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  /* Bold 700 */
+  font-family: "NanumSquare";
+  src: url("../fonts/NanumSquare/NanumSquareB.ttf") format("truetype");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  /* Extra-Bold 800 */
+  font-family: "NanumSquare";
+  src: url("../fonts/NanumSquare/NanumSquareEB.ttf") format("truetype");
+  font-weight: 800;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* ───────── Vitro ─────────
+       서로 다른 ‘서브패밀리’(Core・Inspire・Pride)를
+       한꺼번에 쓰고 싶다면 각기 다른 font-family 이름으로 */
+@font-face {
+  font-family: "VitroCore";
+  src: url("../fonts/Vitro/VITROCORETTF.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "VitroInspire";
+  src: url("../fonts/Vitro/VITROINSPIRETTF.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "VitroPride";
+  src: url("../fonts/Vitro/VITROPRIDETTF.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* ───────── 기본 글꼴 스택 적용 ───────── */
+html,
+body {
+  font-family: "NanumSquare", "GmarketSans", "VitroCore", "Apple SD Gothic Neo",
+    "Noto Sans KR", "Malgun Gothic", sans-serif;
+}

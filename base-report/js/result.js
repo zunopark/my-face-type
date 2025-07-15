@@ -746,10 +746,16 @@ function renderResultNormalized(obj, reportType = "base") {
   }
 
   wrap.innerHTML = `
-
+    <div class="face-summary-section">
+      <div class="face-summary">${simpleMD(obj.summary)}</div>
+    </div>
     
-    
-    <div class="mask-text-wrap">
+    <div class="face-full-section-wrapper">
+      <div class="face-full-report">${simpleMD(obj.detail)}</div>
+  
+      <div class="result-mask">
+        <div class="blur-overlay"></div>
+        <div class="mask-text-wrap">
           <div class="mask-text">
             <div class="mask-text-top">부위별 심층 관상 보고서</div>
             <div class="mask-text-top-sub">총 5,000자 이상</div>
@@ -782,6 +788,9 @@ function renderResultNormalized(obj, reportType = "base") {
             <div class="mask-text-btn-sub">관상가 양반 - 프리미엄 AI 관상</div>
           </div>
         </div>
+      </div>
+      
+    </div>
      <div class="mask-text-wrap-love">
           <div class="mask-text-love">
             <div class="mask-text-top-love">연애 심층 관상 보고서</div>
