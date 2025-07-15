@@ -55,8 +55,7 @@ summary,
 time,
 mark,
 audio,
-video,
-p {
+video {
   margin: 0;
   padding: 0;
   border: 0;
