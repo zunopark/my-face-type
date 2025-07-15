@@ -746,16 +746,10 @@ function renderResultNormalized(obj, reportType = "base") {
   }
 
   wrap.innerHTML = `
-    <div class="face-summary-section">
-      <div class="face-summary">${simpleMD(obj.summary)}</div>
-    </div>
+
     
-    <div class="face-full-section-wrapper">
-      <div class="face-full-report">${simpleMD(obj.detail)}</div>
-  
-      <div class="result-mask">
-        <div class="blur-overlay"></div>
-        <div class="mask-text-wrap">
+    
+    <div class="mask-text-wrap">
           <div class="mask-text">
             <div class="mask-text-top">부위별 심층 관상 보고서</div>
             <div class="mask-text-top-sub">총 5,000자 이상</div>
@@ -788,9 +782,6 @@ function renderResultNormalized(obj, reportType = "base") {
             <div class="mask-text-btn-sub">관상가 양반 - 프리미엄 AI 관상</div>
           </div>
         </div>
-      </div>
-      
-    </div>
      <div class="mask-text-wrap-love">
           <div class="mask-text-love">
             <div class="mask-text-top-love">연애 심층 관상 보고서</div>
@@ -901,5 +892,5 @@ function renderImage(base64) {
 // 페이지 진입 시 바로 실행
 document.addEventListener("DOMContentLoaded", () => {
   mixpanel.track("기본 관상 결과 페이지 진입", { ts: Date.now() }); // ← 추가
-  autoRenderFromDB(500); // 1.5초 후 자동 업로드
+  autoRenderFromDB(500);
 });
