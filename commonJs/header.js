@@ -17,12 +17,19 @@ const headerContent = () => {
         
       </div>`;
   } else if (headerMain.id === "analyze-result") {
+    const params = new URLSearchParams(window.location.search);
+    const reportId = params.get("id") || ""; // 없으면 빈문자
+
+    // ② /base-report 로 보낼 URL 구성
+    const saveHref = reportId
+      ? `/base-report/?id=${encodeURIComponent(reportId)}`
+      : "/"; // (fallback)
     headerMain.innerHTML = `
     <div id="header_back" class="header_chat header_fixed">
-        <a href="/" class="header_btn">
+        <a href="${saveHref}" class="header_btn">
           <span class="material-icons header_chat_icon">arrow_back_ios</span>
          
-          <div class="header_chat_title">다른 사진</div>
+          <div class="header_chat_title">다른 보고서</div>
         </a>
          <a
     id="save-page-btn"
