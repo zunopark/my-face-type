@@ -66,8 +66,8 @@
 }
 
 .image-square-frame {
-  width: 200px;
-  height: 200px; /* ✅ 정사각형 */
+  width: 120px;
+  height: 120px; /* ✅ 정사각형 */
   overflow: hidden;
   margin: 0 auto;
   position: relative;

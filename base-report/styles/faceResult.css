@@ -1,6 +1,20 @@
 .face-result {
   color: rgb(39, 39, 39);
 }
+
+.face-test-subtitle {
+  font-weight: 600;
+  font-size: 16px;
+  color: rgb(44, 44, 44);
+}
+
+.face-test-title {
+  font-family: "GmarketSans";
+  font-weight: 600;
+  font-size: 20px;
+  color: rgb(44, 44, 44);
+}
+
 .face-summary-section {
   margin-bottom: 12px;
   padding: 0 10px;
@@ -8,8 +22,9 @@
 }
 
 .face-summary {
+  margin-top: 12px;
+  margin-bottom: 48px;
   color: rgb(39, 39, 39);
-  line-height: 1.7;
   font-family: "KimjungchulMyungjo-Bold";
   text-align: center;
 }
@@ -69,12 +84,17 @@
 }
 
 .mask-text-wrap {
-  position: absolute;
+  /* position: absolute;
   top: 180px;
   z-index: 10;
   display: flex;
   flex-direction: column;
+  align-items: center; */
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
   align-items: center;
+  margin-top: 16px;
 }
 
 /* 텍스트는 블러 영향 X */

@@ -154,20 +154,18 @@
 }
 
 .loading-box.dark-mode {
-  background-color: #1e1e1e;
-  color: #f0f0f0;
+  color: #101010;
   border-radius: 12px;
   padding: 40px 24px;
   text-align: center;
   font-family: "Pretendard", sans-serif;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
   width: 320px; /* ✅ 고정 너비 */
   margin: 20px auto; /* 중앙 정렬 */
 }
 
 .progress-bar-container {
   width: 100%; /* 부모 기준 */
-  background-color: #2a2a2a;
+  background-color: #d3d3d3;
   height: 10px;
   border-radius: 6px;
   overflow: hidden;
