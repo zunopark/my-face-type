@@ -752,6 +752,8 @@ function renderResultNormalized(obj, reportType = "base") {
 
     <div class="face-test-subtitle">AI 관상가 양반</div>
     <div class="face-test-title">대한민국 1위 관상가의<br/>내 관상 심층 보고서</div>
+
+    <div class="face-test-hash">#연애 #재회 #궁합 #커리어 #재물</div>
     
   
     <div class="mask-text-wrap">
