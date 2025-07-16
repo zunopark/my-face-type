@@ -85,7 +85,7 @@
 /* 텍스트는 블러 영향 X */
 .mask-text {
   width: 320px;
-  background: rgba(23, 23, 23, 0.9);
+  background: rgb(36, 36, 36);
   padding: 16px 20px;
   border-radius: 10px;
   pointer-events: auto;
