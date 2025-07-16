@@ -229,6 +229,7 @@ function trackAndStartPayment(resultId) {
     timestamp: new Date().toISOString(),
     type: "기본",
   });
+  document.body.style.overflow = "hidden";
   startTossPayment(resultId);
 }
 
@@ -284,6 +285,8 @@ function closePayment() {
     type: pageType,
     timestamp: new Date().toISOString(),
   });
+
+  document.body.style.overflow = "";
 
   setTimeout(() => {
     startDiscountedPayment(); // ↓ 아래에서 정의
@@ -749,146 +752,97 @@ function renderResultNormalized(obj, reportType = "base") {
     <div class="face-summary-section">
       <div class="face-summary">${simpleMD(obj.summary)}</div>
     </div>
-    
-    <div class="face-full-section-wrapper">
-      <div class="face-full-report">${simpleMD(obj.detail)}</div>
-  
-      <div class="result-mask">
-        <div class="blur-overlay"></div>
-        <div class="mask-text-wrap">
-          <div class="mask-text">
+
+     <div class="mask-text-wrap">
+          <div class="mask-text base-color">
             <div class="mask-text-top">정통 심층 관상 보고서</div>
-            <div class="mask-text-top-sub">총 5,000자 이상</div>
-              <div class="mask-text-sub">
-                1. [코와 콧대] <span class="mask-text-span">통장이 최고점 찍을 해</span><br/>
-
-                2. [이마와 눈썹] <span class="mask-text-span">첫 대박 터질 나이</span><br/>
-
-                3. [눈과 눈매] <span class="mask-text-span">끌리는 이상형 본능 코드</span><br/>
-
-                4. [입과 입술] <span class="mask-text-span">거절 못 할 설득 타율</span><br/>
-
-                5. [턱과 광대] <span class="mask-text-span">은퇴 후 반격 모먼트</span><br/>
-
-                6. [얼굴형] <span class="mask-text-span">인생 그래프 상승 각도</span><br/>
-
-                7. [전체 인상·기운] <span class="mask-text-span">로또급 깜짝 행운 지수</span><br/>
-
-                8. [운명·경로] <span class="mask-text-span">인생 반전 버튼 작동 시점</span><br/>
-
-                9. [대인 관계·인연] <span class="mask-text-span">귀인 만날 달력 표시</span><br/>
-
-                10. [종합 결론] <span class="mask-text-span">길·흉 총합 승부수 한줄</span><br/>
+            <div class="mask-text-top-sub">
+              내 미래가 보이는 부위별 정통 관상<br /><br />+ 천기누설 +<br/>
+              팔자 고치는 성형 및 시술 부위 추천
+            </div>
+            <div class="mask-text-btn-wrap base-bgcolor">
+              <div
+                class="mask-text-btn "
+                onclick="trackAndStartPayment('${resultId}')"
+              >
+                내 정통 관상 확인하기
               </div>
-              <div class="mask-text-btn-wrap">
-                <div class="mask-text-btn" onclick="trackAndStartPayment('${resultId}')">
-                  전체 분석 결과 확인하기
-                </div>
-              </div>
-            <div class="mask-text-btn-sub">관상가 양반 - 프리미엄 AI 관상</div>
+            </div>
+            <div class="mask-text-btn-sub">총 5,000자 이상 보고서</div>
           </div>
         </div>
-      </div>
-      
-    </div>
-     <div class="mask-text-wrap-love">
-          <div class="mask-text-love">
-            <div class="mask-text-top-love">연애 심층 관상 보고서</div>
-            <div class="mask-text-top-sub-love">총 10,000자 이상</div>
-                  <div class="mask-text-sub-love">
-                1. [부위별 심층 관상] <span class="mask-text-span-love">5,000자 보고서 포함</span><br/>
-                2. [타고난 인연] <span class="mask-text-span-love">총 연애 횟수 & 사랑 사이클</span><br/>
-                3. [운명 상대 지도] <span class="mask-text-span-love">시·구 단위 위치 예측</span><br/>
-                4. [만남 오픈 타이밍] <span class="mask-text-span-love">계절·장소 & 개운 행동</span><br/>
-                5. [이상적 상대] <span class="mask-text-span-love">끌어당김 전략</span><br/>
-                6. [연애 성향 분석] <span class="mask-text-span-love">강·약점 & 보완법</span><br/>
-                7. [지속력 업그레이드] <span class="mask-text-span-love">오래 가는 사랑 비결</span><br/>
-                8. [개운 체크리스트] <span class="mask-text-span-love">연애 운 상승 실천표</span><br/>
+   
+     <div class="mask-text-wrap">
+          <div class="mask-text">
+            <div class="mask-text-top love-color">연애 심층 관상 보고서</div>
+            <div class="mask-text-top-sub"> 
+            
+        내 얼굴은 총 몇 번 연애를 할 수 있을까?<br /><br />
++ 천기누설 +<br />
+지금 내 인연을 만날 수 있는 시·구 위치 예측
               </div>
-              <div class="mask-text-btn-wrap-love">
-                <div class="mask-text-btn-love" onclick="trackAndStartLovePayment('${resultId}')">
+              <div class="mask-text-btn-wrap love-bgcolor">
+                <div class="mask-text-btn " onclick="trackAndStartLovePayment('${resultId}')">
                   나의 연애 관상 확인하기
                 </div>
               </div>
-            <div class="mask-text-btn-sub-love">관상가 양반 - 프리미엄 AI 관상</div>
+            <div class="mask-text-btn-sub">총 10,000자 이상</div>
           </div>
         </div>
-    <div class="mask-text-wrap-worth">
-          <div class="mask-text-worth">
-            <div class="mask-text-top-worth">재물 심층 관상 보고서</div>
-            <div class="mask-text-top-sub-worth">총 15,000자 이상</div>
-              <div class="mask-text-sub-worth">
-                1. [부위별 심층 관상] <span class="mask-text-span-worth">5,000자 보고서 포함</span><br/>
-                2. [타고난 부와 평생 모을 재산] <span class="mask-text-span-worth"> 내 평생 자산 규모</span><br/>
-                3. [성향과 재물운의 강·약점] <span class="mask-text-span-worth"> 돈과 만나는 지점</span><br/>
-                4. [돈이 붙는 적성과 환경] <span class="mask-text-span-worth"> 부를 위한 일·사람·장소</span><br/>
-                5. [자산을 키울 골든타임] <span class="mask-text-span-worth"> 시기별 기회 포착 전략</span><br/>
-                6. [위기 징조와 예방책] <span class="mask-text-span-worth"> 손재·투자 리스크 대비</span><br/>
-                7. [관상 개선 실천법] <span class="mask-text-span-worth"> 작은 습관으로 기운 트이기</span><br/>
-                8. [관상가 양반의 인생 조언] <span class="mask-text-span-worth"> 돈 그 이상 삶의 태도</span><br/>
+    <div class="mask-text-wrap">
+          <div class="mask-text">
+            <div class="mask-text-top wealth-color">재물 심층 관상 보고서</div>
+            <div class="mask-text-top-sub"> 
+            
+        내 얼굴은 평생 몇 억을 벌 수 있을까?<br /><br />
++ 천기누설 +<br />
+현금 폭탄 떨어질 타이밍 & 위치
               </div>
-              <div class="mask-text-btn-wrap-worth">
-                <div class="mask-text-btn-worth" onclick="trackAndStartWealthPayment('${resultId}')">
+              <div class="mask-text-btn-wrap wealth-bgcolor">
+                <div class="mask-text-btn " onclick="trackAndStartWealthPayment('${resultId}')">
                   나의 재물 관상 확인하기
                 </div>
               </div>
-            <div class="mask-text-btn-sub-worth">관상가 양반 - 프리미엄 AI 관상</div>
+            <div class="mask-text-btn-sub">총 15,000자 이상</div>
           </div>
         </div>
           
-        <div class="mask-text-wrap-marriage">
-          <div class="mask-text-marriage">
-            <div class="mask-text-top-marriage">결혼 심층 관상 보고서
+        <div class="mask-text-wrap">
+          <div class="mask-text">
+            <div class="mask-text-top marriage-color">결혼 심층 관상 보고서
 </div>
-            <div class="mask-text-top-sub-marriage">총 12,000자 이상</div>
-<div class="mask-text-sub-marriage">
-  1. [부위별 심층 관상] <span class="mask-text-span-marriage">5,000자 보고서 포함</span><br/>
-  2. [연애 성향·결혼관] <span class="mask-text-span-marriage">애정 표현‧가치관 분석</span><br/>
-  3. [골든타임] <span class="mask-text-span-marriage">만남 시기·장소·개운법</span><br/>
-  4. [이상적 배우자] <span class="mask-text-span-marriage">외모·성격·첫 대화 오프너</span><br/>
-  5. [결혼 생활 시뮬] <span class="mask-text-span-marriage">경제·소통·자녀 운</span><br/>
-  6. [개운 체크리스트] <span class="mask-text-span-marriage">인연 부르는 데일리 루틴</span><br/>
-</div>
-              <div class="mask-text-btn-wrap-marriage">
-                <div class="mask-text-btn-marriage" onclick="trackAndStartMarriagePayment('${resultId}')">
+            <div class="mask-text-top-sub"> 
+            
+      내 얼굴에서 보이는 운명의 결혼 상대는 어떻게 생겼을까?<br /><br />
++ 천기누설 +<br />
+웨딩운이 보이는 장소 & 골든타임              </div>
+
+              <div class="mask-text-btn-wrap marriage-bgcolor">
+                <div class="mask-text-btn " onclick="trackAndStartMarriagePayment('${resultId}')">
                   나의 결혼 관상 확인하기
                 </div>
               </div>
-            <div class="mask-text-btn-sub-marriage">관상가 양반 - 프리미엄 AI 관상</div>
+            <div class="mask-text-btn-sub">총 12,000자 이상</div>
           </div>
         </div>
-        <div class="mask-text-wrap-career">
-  <div class="mask-text-career">
-    <div class="mask-text-top-career">직업 심층 관상 보고서</div>
-    <div class="mask-text-top-sub-career">총 12,000자 이상</div>
+        <div class="mask-text-wrap">
+          <div class="mask-text">
+            <div class="mask-text-top career-color">직업 심층 관상 보고서</div>
+            <div class="mask-text-top-sub"> 
+            
+   내 얼굴에서 보이는 나의 직업 성향과 고점 시기<br /><br />
++ 천기누설 +<br />
+연봉 그래프 상한가 찍을 부서·업종 좌표
+              </div>
+            <div class="mask-text-btn-wrap career-bgcolor">
+              <div class="mask-text-btn " onclick="trackAndStartCareerPayment('${resultId}')">
+                나의 직업 관상 확인하기
+              </div>
+            </div>
 
-    <div class="mask-text-sub-career">
-      1. [부위별 심층 관상] <span class="mask-text-span-career">5,000자 보고서 포함</span><br/>
-
-      2. [적성과 장단점] <span class="mask-text-span-career">천직 찾는 DNA 분석</span><br/>
-
-      3. [직업 운 곡선] <span class="mask-text-span-career">커리어 꽃 피는 시기</span><br/>
-
-      4. [강점 극대화 전략] <span class="mask-text-span-career">성향별 일 잘하는 루틴</span><br/>
-
-      5. [직장 vs 창업] <span class="mask-text-span-career">성공 확률·적합도 비교</span><br/>
-
-      6. [행운의 업무 환경] <span class="mask-text-span-career">돈·사람·공간 기운 포인트</span><br/>
-
-      7. [위기 대비 체크] <span class="mask-text-span-career">번아웃·리스크 예방법</span><br/>
-
-      8. [관상 개선 실천법] <span class="mask-text-span-career">커리어 운 트이는 습관</span><br/>
-    </div>
-
-    <div class="mask-text-btn-wrap-career">
-      <div class="mask-text-btn-career" onclick="trackAndStartCareerPayment('${resultId}')">
-        나의 직업 관상 확인하기
-      </div>
-    </div>
-
-    <div class="mask-text-btn-sub-career">관상가 양반 - 프리미엄 AI 관상</div>
-  </div>
-</div>
+            <div class="mask-text-btn-sub">총 12,000자 이상</div>
+          </div>
+        </div>
   `;
 }
 

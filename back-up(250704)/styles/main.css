@@ -264,3 +264,80 @@ body {
 .modalClose {
   font-weight: 700;
 }
+
+.mask-text-wrap {
+  /* position: absolute;
+  top: 180px;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  align-items: center; */
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 16px;
+}
+
+/* 텍스트는 블러 영향 X */
+.mask-text {
+  width: 320px;
+  background: rgba(23, 23, 23, 0.9);
+  padding: 16px 20px;
+  border-radius: 10px;
+  pointer-events: auto;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border: 1px solid #ffbe0a;
+}
+
+.mask-text-top {
+  font-size: 24px;
+  font-weight: bold;
+  color: rgb(255, 206, 31);
+  font-family: "KimjungchulMyungjo-Bold";
+  margin-bottom: 12px;
+}
+
+.mask-text-top-sub {
+  margin-bottom: 12px;
+  color: rgb(228, 228, 228);
+  text-align: center;
+}
+
+.mask-text-sub {
+  font-size: 14px;
+  text-align: left;
+  color: rgb(255, 206, 31);
+  margin-bottom: 8px;
+}
+
+.mask-text-span {
+  color: rgb(255, 234, 160);
+}
+
+.mask-text-btn-wrap {
+  width: 100%;
+  margin: 8px 0 12px 0;
+  padding: 8px 16px;
+  border: 1px solid #ffbe0a;
+  background-color: #ffbe0a;
+  border-radius: 12px;
+}
+
+.mask-text-btn {
+  font-size: 16px;
+  text-align: center;
+  color: rgb(18, 18, 18);
+  padding-top: 2px;
+  font-weight: 700;
+  font-family: "KimjungchulMyungjo-Bold";
+}
+
+.mask-text-btn-sub {
+  font-size: 12px;
+  text-align: center;
+  color: #b9b9b9;
+}
