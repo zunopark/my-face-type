@@ -95,6 +95,14 @@
   color: #ff5121;
 }
 
+.report-title-wrap {
+  width: 100%;
+  display: flex;
+  justify-content: flex-start;
+  margin-bottom: 14px;
+  font-family: "GmarketSans";
+}
+
 .report-wrap {
   width: 100%;
   display: flex;
@@ -102,11 +110,13 @@
   justify-content: left;
   align-items: flex-start;
   margin-top: 20px;
+  font-size: 16px;
 }
 .report-title {
-  font-weight: 600;
-  font-size: 16px;
-  margin-bottom: 12px;
+}
+.report-num {
+  color: #ff6200;
+  margin-left: 6px;
 }
 .report-contents-wrap {
   width: 100%;
@@ -117,7 +127,7 @@
 }
 .report-contents {
   font-family: "GmarketSans";
-  margin-bottom: 8px;
+  margin-bottom: 12px;
   text-align: left;
 }
 .report-contents-num {

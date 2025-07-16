@@ -800,7 +800,7 @@ function renderResultNormalized(obj, reportType = "base") {
                   나의 연애 관상 확인하기
                 </div>
               </div>
-            <div class="mask-text-btn-sub">총 10,000자 이상</div>
+            <div class="mask-text-btn-sub">총 13,000자 이상</div>
           </div>
         </div>
     <div class="mask-text-wrap">
