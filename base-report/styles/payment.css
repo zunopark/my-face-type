@@ -56,8 +56,10 @@
   justify-content: space-between;
   align-items: center;
   margin-top: 8px;
+  padding-top: 16px;
   font-weight: 600;
   font-size: 14px;
+  border-top: 1px solid rgb(207, 207, 207);
 }
 .payment-original-price-title {
 }
@@ -82,6 +84,8 @@
   margin-top: 4px;
   font-weight: 500;
   font-size: 14px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid rgb(207, 207, 207);
 }
 .payment-coupon-title {
   text-align: left;
@@ -91,6 +95,36 @@
   color: #ff5121;
 }
 
+.report-wrap {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: left;
+  align-items: flex-start;
+  margin-top: 20px;
+}
+.report-title {
+  font-weight: 600;
+  font-size: 16px;
+  margin-bottom: 12px;
+}
+.report-contents-wrap {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  font-size: 14px;
+}
+.report-contents {
+  font-family: "GmarketSans";
+  margin-bottom: 8px;
+  text-align: left;
+}
+.report-contents-num {
+  text-align: right;
+  color: #555555;
+}
+
 .payment-final-price-wrap {
   width: 100%;
   display: flex;
@@ -98,6 +132,8 @@
   align-items: flex-start;
   margin-top: 4px;
   font-weight: 500;
+  border-top: 1px solid rgb(207, 207, 207);
+  padding-top: 24px;
 }
 .payment-final-price-title {
   text-align: left;

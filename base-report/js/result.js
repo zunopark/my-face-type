@@ -290,6 +290,7 @@ function closePayment() {
 
   setTimeout(() => {
     startDiscountedPayment(); // ↓ 아래에서 정의
+    document.body.style.overflow = "hidden";
   }, 1000); // 자연스러운 전환을 위해 약간의 지연
 }
 
@@ -349,6 +350,7 @@ function closeDiscount() {
     type: pageType,
     timestamp: new Date().toISOString(),
   });
+  document.body.style.overflow = "";
 }
 
 function trackAndStartWealthPayment(resultId) {
@@ -357,6 +359,8 @@ function trackAndStartWealthPayment(resultId) {
     timestamp: new Date().toISOString(),
     type: "재물",
   });
+  document.body.style.overflow = "hidden";
+
   startWealthTossPayment(resultId);
 }
 
@@ -410,6 +414,7 @@ function closeWealthPayment() {
     type: pageType,
     timestamp: new Date().toISOString(),
   });
+  document.body.style.overflow = "";
 }
 
 function trackAndStartLovePayment(resultId) {
@@ -418,6 +423,8 @@ function trackAndStartLovePayment(resultId) {
     timestamp: new Date().toISOString(),
     type: "연애",
   });
+  document.body.style.overflow = "hidden";
+
   startLoveTossPayment(resultId);
 }
 
@@ -471,6 +478,7 @@ function closeLovePayment() {
     type: pageType,
     timestamp: new Date().toISOString(),
   });
+  document.body.style.overflow = "";
 }
 
 function trackAndStartMarriagePayment(resultId) {
@@ -479,6 +487,8 @@ function trackAndStartMarriagePayment(resultId) {
     timestamp: new Date().toISOString(),
     type: "결혼",
   });
+  document.body.style.overflow = "hidden";
+
   startMarriageTossPayment(resultId);
 }
 
@@ -532,6 +542,7 @@ function closeMarriagePayment() {
     type: pageType,
     timestamp: new Date().toISOString(),
   });
+  document.body.style.overflow = "";
 }
 
 function trackAndStartCareerPayment(resultId) {
@@ -540,6 +551,8 @@ function trackAndStartCareerPayment(resultId) {
     timestamp: new Date().toISOString(),
     type: "직업",
   });
+  document.body.style.overflow = "hidden";
+
   startCareerTossPayment(resultId);
 }
 
@@ -593,6 +606,7 @@ function closeCareerPayment() {
     type: pageType,
     timestamp: new Date().toISOString(),
   });
+  document.body.style.overflow = "";
 }
 
 // IndexedDB 준비될 때까지 기다리는 Promise
