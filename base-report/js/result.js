@@ -810,7 +810,7 @@ function renderResultNormalized(obj, reportType = "base") {
             
         내 얼굴은 평생 몇 억을 벌 수 있을까?<br /><br />
 + 천기누설 +<br />
-현금 폭탄 떨어질 타이밍 & 위치
+현금 폭탄 떨어질 인생 타이밍 & 방법
               </div>
               <div class="mask-text-btn-wrap wealth-bgcolor">
                 <div class="mask-text-btn " onclick="trackAndStartWealthPayment('${resultId}')">
@@ -829,7 +829,7 @@ function renderResultNormalized(obj, reportType = "base") {
             
       셀카 한 장으로 알아보는 내 결혼 나이<br /><br />
 + 천기누설 +<br />
-웨딩운이 보이는 장소 & 골든타임              </div>
+웨딩운이 보이는 장소 & 놓치면 안 될 골든타임              </div>
 
               <div class="mask-text-btn-wrap marriage-bgcolor">
                 <div class="mask-text-btn " onclick="trackAndStartMarriagePayment('${resultId}')">
