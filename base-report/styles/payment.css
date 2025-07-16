@@ -28,13 +28,14 @@
   width: 100%;
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-start;
 }
 
 .payment-title {
   font-size: 20px;
   font-weight: 700;
   color: #343434;
+  text-align: left;
 }
 
 .payment-close {
@@ -43,6 +44,7 @@
   font-weight: bold;
   cursor: pointer;
   z-index: 10000;
+  margin-left: 12px;
 }
 
 .payment-subtitle {
