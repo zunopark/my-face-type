@@ -813,7 +813,7 @@ function renderResultNormalized(obj, reportType = "base") {
 </div>
             <div class="mask-text-top-sub"> 
             
-      내 얼굴에서 보이는 운명의 결혼 상대는 어떻게 생겼을까?<br /><br />
+      셀카 한 장으로 알아보는 내 결혼 나이<br /><br />
 + 천기누설 +<br />
 웨딩운이 보이는 장소 & 골든타임              </div>
 
