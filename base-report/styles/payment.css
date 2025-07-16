@@ -78,12 +78,13 @@
   width: 100%;
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: top;
   margin-top: 4px;
   font-weight: 500;
   font-size: 14px;
 }
 .payment-coupon-title {
+  text-align: left;
   color: #181818;
 }
 .payment-coupon-price {
