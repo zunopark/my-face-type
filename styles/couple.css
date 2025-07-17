@@ -1,0 +1,51 @@
+.couple-container {
+  display: flex;
+  justify-content: center;
+  gap: 24px;
+  flex-wrap: wrap;
+  margin-bottom: 24px;
+}
+
+.couple-card {
+  width: 150px;
+  height: 150px;
+  background-color: rgba(196, 152, 90, 0.15); /* 기본 톤 */
+  border-radius: 12px;
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+/* 필요하다면 첫 번째 카드만 색 변경 */
+.couple-card:first-child {
+  background-color: rgba(206, 206, 206, 0.15);
+}
+
+.couple-input {
+  position: absolute;
+  inset: 0; /* top/right/bottom/left 0 */
+  opacity: 0;
+  cursor: pointer;
+}
+
+.couple-preview {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  color: rgb(63, 63, 63);
+}
+
+.couple-preview img {
+  width: 152px;
+  height: 152px;
+  object-fit: cover;
+  margin-bottom: 2px;
+}
+
+.couple-icon {
+  margin-bottom: 8px;
+}

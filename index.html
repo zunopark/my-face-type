@@ -70,6 +70,8 @@
       async
       src="https://www.googletagmanager.com/gtag/js?id=UA-119161496-1"
     ></script>
+
+    <!-- GA -->
     <script>
       window.dataLayer = window.dataLayer || [];
       function gtag() {
@@ -88,28 +90,7 @@
       crossorigin="anonymous"
     ></script>
 
-    <!-- google ad manager reward sdk  -->
-    <script
-      async
-      src="https://securepubads.g.doubleclick.net/tag/js/gpt.js"
-    ></script>
-
-    <script type="text/javascript">
-      if (typeof history.pushState == "function") {
-        var CatagoryURL = location.href;
-        CatagoryURL = CatagoryURL.replace(/\?category=([0-9]+)/gi, "");
-        history.pushState(null, null, CatagoryURL);
-      }
-    </script>
-
-    <!-- 카카오 공유 링크  -->
-    <script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
-    <script>
-      Kakao.init("4ff46443835291514c5a215357a6c4c1");
-      Kakao.isInitialized();
-    </script>
-
-    <!-- Paste this right before your closing </head> tag -->
+    <!-- 믹스패널 -->
     <script type="text/javascript">
       (function (f, b) {
         if (!b.__SV) {
@@ -180,8 +161,6 @@
         }
       })(document, window.mixpanel || []);
     </script>
-
-    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
   </head>
   <body>
     <div class="main_body_wrap">
@@ -193,57 +172,90 @@
           <div class="main_subtitle">대한민국 1등 AI 관상 테스트</div>
         </div>
 
-        <div class="ad_box" id="container2">
-          <ins
-            class="adsbygoogle"
-            style="display: inline-block; width: 320px; height: 50px"
-            data-ad-client="ca-pub-4478069136800837"
-            data-ad-slot="4097923844"
-          ></ins>
-          <script>
-            (adsbygoogle = window.adsbygoogle || []).push({});
-          </script>
+        <div class="category_wrap">
+          <button class="category_btn active" data-target="face">관상</button>
+          <button class="category_btn" data-target="match">궁합/재회</button>
+          <button class="category_btn" data-target="saju">사주</button>
         </div>
-
-        <div class="border">
-          <div class="frame">
-            <div class="image">
-              <script
-                class="jsbin"
-                src="https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"
-              ></script>
-              <div class="file-upload">
-                <div class="image-upload-wrap">
-                  <input
-                    class="file-upload-input"
-                    type="file"
-                    onchange="readURL(this);"
-                    accept="image/*"
-                  />
-                  <div class="drag-text">
-                    <span class="material-icons"> add_photo_alternate </span>
-                    <h2>(사진 첨부)</h2>
-                    <h3>관상? 얼굴 한번 봅시다</h3>
-                  </div>
-                </div>
-                <div class="file-upload-content">
-                  <div class="image-square-frame">
-                    <img
-                      class="file-upload-image"
-                      id="face-image"
-                      src="#"
-                      alt="your image"
+        <div id="content-face" class="tab_content active">
+          <div class="border">
+            <div class="frame">
+              <div class="image">
+                <script
+                  class="jsbin"
+                  src="https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"
+                ></script>
+                <div class="file-upload">
+                  <div class="image-upload-wrap">
+                    <input
+                      class="file-upload-input"
+                      type="file"
+                      onchange="readURL(this);"
+                      accept="image/*"
                     />
+                    <div class="drag-text">
+                      <span class="material-icons"> add_photo_alternate </span>
+                      <h2>(사진 첨부)</h2>
+                      <h3>관상? 얼굴 한번 봅시다</h3>
+                    </div>
                   </div>
-                  <div class="image-title-wrap">
-                    <div class="ai">관상가가 당신의 얼굴을 분석중..</div>
+                  <div class="file-upload-content">
+                    <div class="image-square-frame">
+                      <img
+                        class="file-upload-image"
+                        id="face-image"
+                        src="#"
+                        alt="your image"
+                      />
+                    </div>
+                    <div class="image-title-wrap">
+                      <div class="ai">관상가가 당신의 얼굴을 분석중..</div>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
+          <div class="nostore">
+            *걱정마세요! 사진은 절대로 저장되지 않습니다.
+          </div>
         </div>
-        <div class="nostore">*걱정마세요! 사진은 절대로 저장되지 않습니다.</div>
+
+        <div id="content-match" class="tab_content">
+          <div class="couple-container">
+            <!-- 본인 사진 -->
+            <div class="file-upload couple-card">
+              <input
+                class="couple-input"
+                type="file"
+                accept="image/*"
+                onchange="readURL(this, 'coupleSelf')"
+              />
+              <div class="couple-preview" id="couple-preview-self">
+                <span class="material-icons couple-icon">add_a_photo</span>
+                <span>내 사진 선택</span>
+              </div>
+            </div>
+
+            <!-- 상대 사진 -->
+            <div class="file-upload couple-card">
+              <input
+                class="couple-input"
+                type="file"
+                accept="image/*"
+                onchange="readURL(this, 'couplePartner')"
+              />
+              <div class="couple-preview" id="couple-preview-partner">
+                <span class="material-icons couple-icon">add_a_photo</span>
+                <span>상대 사진 선택</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="nostore">
+            *걱정마세요! 사진은 절대로 저장되지 않습니다.
+          </div>
+        </div>
 
         <div id="label-container" class="result"></div>
         <div class="ad_box">
@@ -311,18 +323,9 @@
       });
     </script>
 
-    <script src="https://js.tosspayments.com/v1/payment-widget"></script>
-
     <script src="commonJs/footer.js"></script>
     <script src="commonJs/headerCopy.js"></script>
     <script src="js/result.js"></script>
-
-    <script src="https://gcore.jsdelivr.net/npm/@tensorflow/tfjs@1.3.1/dist/tf.min.js"></script>
-    <script src="https://gcore.jsdelivr.net/npm/@teachablemachine/image@0.8/dist/teachablemachine-image.min.js"></script>
-    <script
-      data-cfasync="false"
-      type="text/javascript"
-      src="https://cdn.rawgit.com/dwyl/html-form-send-email-via-google-script-without-server/master/form-submission-handler.js"
-    ></script>
+    <script src="js/main.js"></script>
   </body>
 </html>

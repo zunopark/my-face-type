@@ -28,9 +28,8 @@ body {
   align-items: center;
   margin-bottom: 10px;
   color: #171717;
-  font-family: "KimjungchulMyungjo-Bold";
+  font-family: "GmarketSans";
   margin-top: 40px;
-  margin-bottom: 10px;
 }
 
 .main_title {
@@ -177,4 +176,42 @@ body {
   color: rgb(117, 117, 117);
   margin-top: 12px;
   font-size: 12px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+/* 카테고리 바 */
+.category_wrap {
+  width: 100%;
+  display: flex; /* 버튼들을 가로로 */
+  justify-content: center; /* 가운데 정렬 */
+  gap: 12px; /* 버튼 간격 */
+  margin: 12px 0 24px 0; /* 위·아래 여백 */
+}
+
+/* 기본 버튼 스타일 */
+.category_btn {
+  padding: 8px 20px;
+  border: 1px solid #bababa;
+  border-radius: 9999px; /* pill 모양 */
+  background: #fff;
+  color: gray;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.2s, color 0.2s;
+}
+
+/* 선택된 버튼(활성) */
+.category_btn.active {
+  background: #222;
+  color: #fff;
+  border: 1px solid #222;
+}
+
+.tab_content {
+  display: none;
+} /* 기본 숨김 */
+.tab_content.active {
+  display: block;
 }

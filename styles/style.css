@@ -4,10 +4,12 @@
 @import "../../commonStyles/footer.css";
 @import "../../commonStyles/media.css";
 @import "../../commonStyles/nav.css";
+@import "../../commonStyles/styles.css";
 
 @import "main.css";
 @import "picture.css";
 @import "result.css";
+@import "couple.css";
 
 .resultHistory_wrap {
   width: 100%;
