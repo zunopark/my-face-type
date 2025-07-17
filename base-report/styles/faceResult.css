@@ -160,7 +160,9 @@
   text-align: center;
   color: #b9b9b9;
 }
-
+.base-bg {
+  background: url("/img/bgIMG.png") center / cover no-repeat;
+}
 .base-color {
   color: #ffce1f;
 }
