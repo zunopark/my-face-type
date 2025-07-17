@@ -782,7 +782,7 @@ function renderResultNormalized(obj, reportType = "base") {
                 내 정통 관상 확인하기
               </div>
             </div>
-            <div class="mask-text-btn-sub">총 5,000자 이상 보고서</div>
+            <div class="mask-text-btn-sub">총 5,000자 이상</div>
           </div>
         </div>
    
