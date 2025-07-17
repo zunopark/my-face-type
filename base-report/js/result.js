@@ -791,11 +791,8 @@ function renderResultNormalized(obj, reportType = "base") {
           </div>
         </div>
       </div> 
-    </div>
-    
-     
-   
-     <div class="mask-text-wrap">
+    </div> 
+    <div class="mask-text-wrap love-bg">
           <div class="mask-text">
             <div class="mask-text-top love-color">연애 심층 관상 보고서</div>
             <div class="mask-text-top-sub"> 
@@ -812,7 +809,7 @@ function renderResultNormalized(obj, reportType = "base") {
             <div class="mask-text-btn-sub">총 13,000자 이상</div>
           </div>
         </div>
-    <div class="mask-text-wrap">
+    <div class="mask-text-wrap wealth-bg">
           <div class="mask-text">
             <div class="mask-text-top wealth-color">재물 심층 관상 보고서</div>
             <div class="mask-text-top-sub"> 
@@ -830,7 +827,7 @@ function renderResultNormalized(obj, reportType = "base") {
           </div>
         </div>
           
-        <div class="mask-text-wrap">
+        <div class="mask-text-wrap marriage-bg">
           <div class="mask-text">
             <div class="mask-text-top marriage-color">결혼 심층 관상 보고서
 </div>
@@ -848,7 +845,7 @@ function renderResultNormalized(obj, reportType = "base") {
             <div class="mask-text-btn-sub">총 12,000자 이상</div>
           </div>
         </div>
-        <div class="mask-text-wrap">
+        <div class="mask-text-wrap career-bg">
           <div class="mask-text">
             <div class="mask-text-top career-color">직업 심층 관상 보고서</div>
             <div class="mask-text-top-sub"> 
