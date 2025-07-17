@@ -102,7 +102,7 @@
 /* 텍스트는 블러 영향 X */
 .mask-text {
   width: 320px;
-  background-color: rgba(0, 0, 0, 0.65);
+  background-color: rgba(0, 0, 0, 0.7);
 
   padding: 16px 20px;
   border-radius: 10px;
