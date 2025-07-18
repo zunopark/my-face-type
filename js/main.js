@@ -4,12 +4,12 @@ const TITLE_MAP = {
     subtitle: "#종합 #연애 #재물 #결혼 #직업",
   },
   match: {
-    title: "AI가 알려주는 우리 궁합",
-    subtitle: "두 얼굴로 보는 재회·궁합 테스트",
+    title: "우리 관상 궁합은 몇 점일까?",
+    subtitle: "#궁합 점수 #바람기 #애정운 #속궁합",
   },
   saju: {
-    title: "AI 사주 풀이",
-    subtitle: "오늘의 운세와 평생 사주 분석",
+    title: "관상으로 알아보는 재회 확률",
+    subtitle: "#상대 분석 #시기 #방법 #고민풀이",
   },
 };
 
