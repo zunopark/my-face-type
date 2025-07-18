@@ -1,7 +1,7 @@
 const TITLE_MAP = {
   face: {
     title: "인공지능이 알려주는 내 관상",
-    subtitle: "대한민국 1등 AI 관상 테스트",
+    subtitle: "#종합 #연애 #재물 #결혼 #직업",
   },
   match: {
     title: "AI가 알려주는 우리 궁합",
