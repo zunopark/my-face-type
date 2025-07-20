@@ -766,7 +766,13 @@ function renderResultNormalized(obj, reportType = "base") {
     <div class="face-summary-section">
       <div class="face-summary">${simpleMD(obj.summary)}</div>
     </div>
-    <div class="mask-text-wrap base-bg">
+
+    <div class="face-full-section-wrapper">
+      <div class="face-full-report">${simpleMD(obj.detail)}</div>
+
+      <div class="result-mask">
+        <div class="blur-overlay"></div>
+        <div class="mask-text-wrap-top base-bg">
           <div class="mask-text base-color">
             <div class="mask-text-top">정통 심층 관상 보고서</div>
             <div class="mask-text-top-sub">
@@ -778,12 +784,14 @@ function renderResultNormalized(obj, reportType = "base") {
                 class="mask-text-btn "
                 onclick="trackAndStartPayment('${resultId}')"
               >
-                 정통 관상 결과 확인하기
+                 전체 분석 결과 확인하기
               </div>
             </div>
             <div class="mask-text-btn-sub">총 5,000자 이상</div>
           </div>
         </div>
+      </div> 
+    </div> 
     <div class="mask-text-wrap love-bg">
           <div class="mask-text">
             <div class="mask-text-top love-color">연애 심층 관상 보고서</div>
