@@ -242,6 +242,7 @@
   border-radius: 40px;
   margin-bottom: 40px;
   margin-top: 12px;
+  color: rgb(22, 22, 22);
 }
 
 .couple_bold {
@@ -280,4 +281,5 @@
   border-radius: 40px;
 
   transition: opacity 0.3s;
+  color: rgb(22, 22, 22);
 }
