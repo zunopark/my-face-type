@@ -22,18 +22,29 @@ document.querySelectorAll(".category_btn").forEach((btn) => {
     btn.classList.add("active");
 
     /* --- (2) 콘텐츠 영역 토글 --- */
-    const target = btn.dataset.target; // face / match / saju …
+    const target = btn.dataset.target; // face / match …
     document
       .querySelectorAll(".tab_content")
       .forEach((c) => c.classList.remove("active"));
     const pane = document.getElementById(`content-${target}`);
     if (pane) pane.classList.add("active");
 
-    /* --- (3) 제목·부제목 교체 (⭐ 추가 부분) --- */
+    /* --- (3) 제목·부제목 교체 --- */
     const info = TITLE_MAP[target];
     if (info) {
       document.querySelector(".main_title").textContent = info.title;
       document.querySelector(".main_subtitle").textContent = info.subtitle;
     }
+
+    /* ⭐ (4) 마지막 탭 localStorage 저장 */
+    localStorage.setItem("last_selected_tab", target);
   });
+});
+
+window.addEventListener("DOMContentLoaded", () => {
+  const lastTab = localStorage.getItem("last_selected_tab") || "face";
+  const targetBtn = document.querySelector(
+    `.category_btn[data-target="${lastTab}"]`
+  );
+  if (targetBtn) targetBtn.click();
 });
