@@ -304,7 +304,7 @@ function renderLoading() {
 
   const progressInterval = setInterval(() => {
     if (fakeProgress < 98) {
-      fakeProgress += Math.random() * 1.2;
+      fakeProgress += Math.random() * 1.8;
       barEl.style.width = `${Math.min(fakeProgress, 98)}%`;
     }
   }, 300);
