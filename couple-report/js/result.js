@@ -312,7 +312,7 @@ function renderLoading() {
   const messageInterval = setInterval(() => {
     msgIdx = (msgIdx + 1) % messages.length;
     msgEl.textContent = messages[msgIdx];
-  }, 2500);
+  }, 4000);
 
   // 외부에서 loading 완료 시 호출
   window.finishLoading = () => {
