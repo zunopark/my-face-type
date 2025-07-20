@@ -160,6 +160,13 @@
     <div class="main_body_wrap">
       <header id="base" class="header_chat_wrap"></header>
 
+      <div class="main_title_wrap">
+        <div class="main_title">
+          대한민국 1등 관상가가 알려주는<br />우리 관상 궁합 보고서
+        </div>
+        <div class="main_subtitle">#궁합 점수 #바람기 #애정운 #속궁합</div>
+      </div>
+
       <div class="photo-pair">
         <img id="photo-self" alt="내 사진" />
         <span class="material-icons heart">favorite</span>
@@ -344,6 +351,33 @@
         </div>
       </div>
     </div>
+
+    <script>
+      // 고유 사용자 ID를 localStorage에서 불러오거나 새로 생성
+      let distinctId = localStorage.getItem("mixpanel_distinct_id");
+      if (!distinctId) {
+        distinctId = crypto.randomUUID(); // 브라우저 내장 UUID 생성
+        localStorage.setItem("mixpanel_distinct_id", distinctId);
+      }
+
+      // Mixpanel 초기화 및 ID 지정
+      mixpanel.init("d7d8d6afc10a92f911ea59901164605b", {
+        debug: true,
+        // optional: identify 자동 호출 안 되게 하고, 아래에서 수동으로 identify
+        autotrack: true,
+        persistence: "localStorage",
+      });
+
+      // 사용자 ID를 명시적으로 identify
+      mixpanel.identify(distinctId);
+
+      // 추적 예시
+      mixpanel.track("궁합 결과 페이지 방문", {
+        url: window.location.href,
+        userAgent: navigator.userAgent,
+        timestamp: new Date().toISOString(),
+      });
+    </script>
 
     <script src="https://js.tosspayments.com/v1/payment-widget"></script>
 

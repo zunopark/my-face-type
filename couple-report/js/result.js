@@ -271,7 +271,7 @@ window.addEventListener("scroll", () => {
   const btn = document.getElementById("viewFullBtn2");
   const scrollTop = document.documentElement.scrollTop || window.scrollY;
 
-  if (scrollTop > 1000) {
+  if (scrollTop > 1400) {
     btn.style.display = "block";
   } else {
     btn.style.display = "none";
