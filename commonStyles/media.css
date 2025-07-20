@@ -6,7 +6,8 @@
   .nav_wrap,
   .main_content_wrap,
   #uploadModal,
-  .payment-overlay {
+  .payment-overlay,
+  .bottom-sheet {
     width: 500px;
   }
 
@@ -25,7 +26,8 @@
   .nav_wrap,
   .main_content_wrap,
   #uploadModal,
-  .payment-overlay {
+  .payment-overlay,
+  .bottom-sheet {
     width: 100%;
   }
 

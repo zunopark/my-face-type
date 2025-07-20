@@ -120,7 +120,6 @@
 
     <!-- ───── 결제 검증 & IndexedDB 업데이트 ───── -->
     <script>
-      /* 0. URL 파라미터 */
       const qs = new URLSearchParams(location.search);
       const paymentKey = qs.get("paymentKey");
       const orderId = qs.get("orderId");
@@ -128,44 +127,53 @@
       const resultId = qs.get("id");
       const reportType = (qs.get("type") || "base").trim();
 
-      /* 1. IndexedDB 유틸 */
-      function openDB() {
+      // 1. DB 열기 (FaceAnalysisDB or CoupleAnalysisDB)
+      function openDB(dbName) {
         return new Promise((res) => {
-          const r = indexedDB.open("FaceAnalysisDB", 1);
+          const r = indexedDB.open(dbName, 1);
           r.onsuccess = (e) => res(e.target.result);
         });
       }
+
+      // 2. 스켈레톤 생성
       const ALL_TYPES = ["base", "wealth", "love", "marriage", "career"];
-      function ensureSkeleton(rec) {
+      function ensureSkeleton(rec, type) {
         if (!rec.reports) rec.reports = {};
-        for (const t of ALL_TYPES)
-          if (!rec.reports[t]) rec.reports[t] = { paid: false, data: null };
+        if (type === "couple") {
+          if (!rec.reports.couple)
+            rec.reports.couple = { paid: false, data: null };
+        } else {
+          for (const t of ALL_TYPES)
+            if (!rec.reports[t]) rec.reports[t] = { paid: false, data: null };
+        }
       }
 
-      /* 2. paid = true 토글 */
+      // 3. 결제 성공 시 paid = true 저장
       function markPaid(db, id, type = "base") {
         return new Promise((resolve, reject) => {
           const tx = db.transaction("results", "readwrite");
-          const st = tx.objectStore("results");
-          const g = st.get(id);
-          g.onerror = reject;
-          g.onsuccess = () => {
-            const rec = g.result;
-            if (!rec) {
-              reject("ID not found");
-              return;
+          const store = tx.objectStore("results");
+          const get = store.get(id);
+          get.onerror = reject;
+          get.onsuccess = () => {
+            const rec = get.result;
+            if (!rec) return reject("ID not found");
+            ensureSkeleton(rec, type);
+            if (type === "couple") {
+              rec.reports.couple.paid = true;
+              rec.reports.couple.purchasedAt = new Date().toISOString();
+            } else {
+              rec.reports[type].paid = true;
+              rec.reports[type].purchasedAt = new Date().toISOString();
             }
-            ensureSkeleton(rec);
-            rec.reports[type].paid = true;
-            rec.reports[type].purchasedAt = new Date().toISOString();
-            st.put(rec);
+            store.put(rec);
           };
-          tx.oncomplete = () => resolve(true); /* commit 완료 */
+          tx.oncomplete = () => resolve(true);
           tx.onerror = reject;
         });
       }
 
-      /* 3. 서버 검증 */
+      // 4. 서버 검증 후 로직 실행
       fetch(
         "https://port-0-momzzi-fastapi-m7ynssht4601229b.sel4.cloudtype.app/payment/confirm",
         {
@@ -194,19 +202,25 @@
 
           if (resultId) {
             try {
-              const db = await openDB();
-              await markPaid(db, resultId, reportType); /* commit 보장 */
-              console.log("✅ reports.%s.paid = true 저장", reportType);
+              const dbName =
+                reportType === "couple" ? "CoupleAnalysisDB" : "FaceAnalysisDB";
+              const db = await openDB(dbName);
+              await markPaid(db, resultId, reportType);
+              console.log("✅ %s.paid = true 저장 완료", reportType);
             } catch (e) {
-              console.error("IndexedDB 업데이트 실패:", e);
+              console.error("❌ IndexedDB 저장 실패:", e);
             }
           }
 
+          // ✅ 리다이렉트 분기 처리
           setTimeout(() => {
-            // ★ 여기!
-            location.href = `/analyze-result/?id=${encodeURIComponent(
-              resultId
-            )}&type=${encodeURIComponent(reportType)}`;
+            const url =
+              reportType === "couple"
+                ? `/couple-report/?id=${encodeURIComponent(resultId)}`
+                : `/analyze-result/?id=${encodeURIComponent(
+                    resultId
+                  )}&type=${encodeURIComponent(reportType)}`;
+            location.href = url;
           }, 2000);
         })
         .catch((err) => {

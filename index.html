@@ -171,7 +171,7 @@
           <div class="main_title">인공지능이 알려주는 내 관상</div>
           <div class="main_subtitle">#종합 #연애 #재물 #결혼 #직업</div>
         </div>
-        <div class="ad_box" id="container2">
+        <!-- <div class="ad_box" id="container2">
           <ins
             class="adsbygoogle"
             style="display: inline-block; width: 320px; height: 50px"
@@ -181,13 +181,13 @@
           <script>
             (adsbygoogle = window.adsbygoogle || []).push({});
           </script>
-        </div>
-        <!-- 
+        </div> -->
+
         <div class="category_wrap">
           <button class="category_btn active" data-target="face">정통</button>
           <button class="category_btn" data-target="match">궁합</button>
-          <button class="category_btn" data-target="saju">재회</button>
-        </div> -->
+          <!-- <button class="category_btn" data-target="saju">재회</button> -->
+        </div>
         <div id="content-face" class="tab_content active">
           <div class="border">
             <div class="frame">
@@ -240,7 +240,7 @@
                 class="couple-input"
                 type="file"
                 accept="image/*"
-                onchange="readURL(this, 'coupleSelf')"
+                onchange="readCoupleURL(this, 'coupleSelf')"
               />
               <div class="couple-preview" id="couple-preview-self">
                 <span class="material-icons couple-icon"
@@ -256,7 +256,7 @@
                 class="couple-input"
                 type="file"
                 accept="image/*"
-                onchange="readURL(this, 'couplePartner')"
+                onchange="readCoupleURL(this, 'couplePartner')"
               />
               <div class="couple-preview" id="couple-preview-partner">
                 <span class="material-icons couple-icon"
@@ -269,6 +269,11 @@
 
           <div class="nostore">
             *걱정마세요! 사진은 절대로 저장되지 않습니다.
+          </div>
+          <div class="couple-action">
+            <button id="openCoupleStart" class="btn-primary" disabled>
+              관상 궁합 보기
+            </button>
           </div>
         </div>
 
@@ -296,6 +301,33 @@
             (adsbygoogle = window.adsbygoogle || []).push({});
           </script>
         </div>
+      </div>
+
+      <div class="bottom-sheet" id="relationshipSheet">
+        <div class="sheet-inner">
+          <h3>현재 상대방과의 관계는 어떻나요?</h3>
+          <div class="relationship-options">
+            <div data-type="관심">👀 관심이 있어요</div>
+            <div data-type="짝사랑">🥺 짝사랑하고 있어요</div>
+            <div data-type="썸">💋 썸타는 중이에요</div>
+            <div data-type="연애">💌 연애중이에요</div>
+            <div data-type="결혼">💍 결혼생활 중이에요</div>
+          </div>
+
+          <div class="sheet-followup hidden" id="followupSheet">
+            <h4>당신의 마음은 어떤 상태인가요?</h4>
+            <div class="followup-options" id="followupOptions"></div>
+          </div>
+
+          <button id="startAnalyzeBtn" class="sheet-btn hidden">
+            분석 시작하기
+          </button>
+        </div>
+      </div>
+      <div class="bottom-analyze-overlay"></div>
+
+      <div class="analyze-overlay" id="analyzeOverlay">
+        <div class="analyze-text">AI가 얼굴 특징을 분석 중입니다...</div>
       </div>
 
       <footer class="footer"></footer>
@@ -341,6 +373,7 @@
     <script src="commonJs/footer.js"></script>
     <script src="commonJs/headerCopy.js"></script>
     <script src="js/result.js"></script>
+    <script src="js/couple.js"></script>
     <script src="js/main.js"></script>
   </body>
 </html>

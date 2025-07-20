@@ -1,136 +1,210 @@
-/* ---------- IndexedDB 초기화 ---------- */
-let db;
-const DB_NAME = "FaceAnalysisDB";
-const STORE = "coupleReports";
+let coupleImages = {
+  self: null,
+  partner: null,
+};
 
-function initDB() {
-  return new Promise((resolve, reject) => {
-    const req = indexedDB.open(DB_NAME, 2); // v2: coupleReports 추가
-    req.onupgradeneeded = (e) => {
-      db = e.target.result;
-      if (!db.objectStoreNames.contains(STORE)) {
-        db.createObjectStore(STORE, { keyPath: "id" });
-      }
-    };
-    req.onsuccess = (e) => {
-      db = e.target.result;
-      resolve();
-    };
-    req.onerror = () => reject(req.error);
-  });
-}
+let selectedRelation = null;
+let selectedFeeling = null;
 
-/* 👉 초기화가 끝나면 resolve 되는 전역 Promise */
-const dbReady = initDB();
-
-/* ---------- IndexedDB 저장 ---------- */
-async function saveToDB(obj) {
-  await dbReady; // **여기서 초기화 완료 보장**
-  return new Promise((resolve, reject) => {
-    const tx = db.transaction(STORE, "readwrite");
-    tx.objectStore(STORE).add(obj);
-    tx.oncomplete = () => resolve();
-    tx.onerror = () => reject(tx.error);
-  });
-}
-
-/* ---------- 전역 상태 ---------- */
-let selfFile = null;
-let partnerFile = null;
-
-/* ---------- 미리보기 ---------- */
-function readURL(input, who) {
-  if (!input.files || !input.files[0]) return;
-
-  mixpanel.track("커플 - 사진 선택", {
-    역할: who === "coupleSelf" ? "본인" : "상대",
-  });
-
-  const reader = new FileReader();
-  reader.onload = (e) => {
-    document.querySelector(
-      `#couple-preview-${who === "coupleSelf" ? "self" : "partner"}`
-    ).innerHTML = `<img src="${e.target.result}" alt="${who}" />`;
-  };
-  reader.readAsDataURL(input.files[0]);
-
-  if (who === "coupleSelf") selfFile = input.files[0];
-  else partnerFile = input.files[0];
-
-  const ready = selfFile && partnerFile;
-  document.getElementById("analyzeBtn").disabled = !ready;
-  if (ready) mixpanel.track("커플 - 두 사진 준비");
-}
-
-/* ---------- 결과 IndexedDB 저장 ---------- */
-function saveToDB(obj) {
-  return new Promise((resolve, reject) => {
-    const tx = db.transaction(STORE_NAME, "readwrite");
-    tx.objectStore(STORE_NAME).add(obj);
-    tx.oncomplete = () => resolve();
-    tx.onerror = () => reject(tx.error);
-  });
-}
-
-/* ---------- 분석 요청 ---------- */
-async function startAnalysis() {
-  const analyzeBtn = document.getElementById("analyzeBtn");
-  analyzeBtn.disabled = true;
-  const resultBox = document.getElementById("result");
-  resultBox.innerHTML =
-    "<span class='loading'>❤️ 잠시만요, 우리 커플 케미 분석 중! ❤️</span>";
-
-  mixpanel.track("커플 - 분석 요청");
-
-  const formData = new FormData();
-  formData.append("file1", selfFile);
-  formData.append("file2", partnerFile);
-
-  try {
-    const res = await fetch(
-      "https://port-0-momzzi-fastapi-m7ynssht4601229b.sel4.cloudtype.app/analyze/pair/compatibility/",
-      { method: "POST", body: formData }
-    );
-    if (!res.ok) throw new Error("서버 오류");
-    const data = await res.json();
-    if (data.error) throw new Error(data.error);
-
-    const clean = data.summary
-      .trim()
-      .replace(/^```(?:json)?\s*/i, "")
-      .replace(/\s*```$/, "");
-    const { line_summary, detail } = JSON.parse(clean);
-
-    const id = crypto.randomUUID();
-    await saveToDB({
-      id,
-      createdAt: Date.now(),
-      selfImg: await fileToBase64(selfFile),
-      partnerImg: await fileToBase64(partnerFile),
-      lineSummary: line_summary,
-      detail,
-    });
-
-    mixpanel.track("커플 - 분석 완료", { id });
-
-    location.href = `/couple-report.html?id=${id}`;
-  } catch (e) {
-    console.error(e);
-    analyzeBtn.disabled = false;
-    resultBox.innerHTML = "❌ 분석 중 오류가 발생했습니다. 다시 시도해 주세요.";
-    mixpanel.track("커플 - 분석 오류", { msg: e.message || "unknown" });
+// 1) 두 이미지 업로드 완료 시 → 바텀시트 열기
+function checkBothUploaded() {
+  if (coupleImages.self && coupleImages.partner) {
+    document.getElementById("relationshipSheet").classList.add("active");
   }
 }
 
-/* ---------- 유틸: File → Base64 ---------- */
-function fileToBase64(file) {
+// 2) 관계 선택
+document.querySelectorAll(".relationship-options div").forEach((el) =>
+  el.addEventListener("click", () => {
+    selectedRelation = el.dataset.type;
+
+    // 선택 효과
+    document
+      .querySelectorAll(".relationship-options div")
+      .forEach((item) => item.classList.remove("selected"));
+    el.classList.add("selected");
+
+    // 후속 감정 목록
+    const followups = {
+      연애: [
+        "💓 손만 잡아도 세상이 환해져요",
+        "💎 더 깊은 관계로 나아가고 싶어요",
+        "😮‍💨 지쳐요... 이별을 고민 중이에요",
+      ],
+      짝사랑: [
+        "👻 상대는 내 존재를 알까요...? (투명인간 탈출 희망!)",
+        "⏳ 고백 타이밍을 조심스레 살피고 있어요",
+        "💔 포기해야 할까요... 너무 힘들어요",
+      ],
+      썸: [
+        "🧠 상대의 속마음이 너무 궁금해요!",
+        "🔥 썸이 너무 느려요... 이젠 확신이 필요해요!",
+        "🎯 언제 고백하면 좋을까요? 타이밍을 잡고 있어요",
+      ],
+      결혼: [
+        "💍 꿀 떨어지는 결혼 생활 중이에요!",
+        "💬 변화가 필요한 시점인 것 같아요",
+        "😔 이혼까지 고민할 정도로 마음이 무거워요...",
+      ],
+      관심: [
+        "🤔 상대도 날 생각하고 있을까요?",
+        "🤗 살짝 더 다가가 보고 싶어요",
+        "💘 눈만 마주쳐도 심장이 두근두근해요!",
+      ],
+    };
+
+    const options = followups[selectedRelation] || ["❤️ 마음이 복잡해요"];
+    const followupEl = document.getElementById("followupOptions");
+    followupEl.innerHTML = options.map((f) => `<div>${f}</div>`).join("");
+    document.getElementById("followupSheet").classList.remove("hidden");
+    document.getElementById("startAnalyzeBtn").classList.add("hidden");
+
+    document.querySelectorAll("#followupOptions div").forEach((div) =>
+      div.addEventListener("click", () => {
+        selectedFeeling = div.textContent;
+        document
+          .querySelectorAll("#followupOptions div")
+          .forEach((el) => el.classList.remove("selected"));
+        div.classList.add("selected");
+        document.getElementById("startAnalyzeBtn").classList.remove("hidden");
+      })
+    );
+  })
+);
+
+// 3) 분석 시작 버튼 클릭
+document.getElementById("startAnalyzeBtn").addEventListener("click", () => {
+  document.getElementById("relationshipSheet").classList.remove("active");
+  document.getElementById("analyzeOverlay").classList.add("active");
+
+  analyzeCoupleFeatures(
+    coupleImages.self,
+    coupleImages.partner,
+    selectedRelation,
+    selectedFeeling
+  );
+});
+
+// 이미지 미리보기 및 Base64 저장
+function readCoupleURL(input, type) {
+  const previewId =
+    type === "coupleSelf" ? "couple-preview-self" : "couple-preview-partner";
+
+  if (input.files && input.files[0]) {
+    const reader = new FileReader();
+    reader.onload = function (e) {
+      const preview = document.getElementById(previewId);
+      preview.innerHTML = `<img src="${e.target.result}" class="couple-preview-image" alt="사진 미리보기"/>`;
+
+      coupleImages[type === "coupleSelf" ? "self" : "partner"] =
+        e.target.result;
+
+      // ✅ 두 장 다 업로드 완료 시 버튼 활성화
+      if (coupleImages.self && coupleImages.partner) {
+        document.getElementById("openCoupleStart").disabled = false;
+      }
+    };
+    reader.readAsDataURL(input.files[0]);
+  }
+}
+
+document.getElementById("openCoupleStart").addEventListener("click", () => {
+  document.getElementById("relationshipSheet").classList.add("active");
+  document.querySelector(".bottom-analyze-overlay").classList.add("active");
+});
+
+// Base64 → File 변환
+function dataURLtoFile(dataUrl, filename) {
+  const arr = dataUrl.split(",");
+  const mime = arr[0].match(/:(.*?);/)[1];
+  const bstr = atob(arr[1]);
+  let n = bstr.length;
+  const u8arr = new Uint8Array(n);
+  while (n--) {
+    u8arr[n] = bstr.charCodeAt(n);
+  }
+  return new File([u8arr], filename, { type: mime });
+}
+
+// IndexedDB 저장
+function saveCoupleFeaturesToDB(data) {
   return new Promise((resolve, reject) => {
-    const r = new FileReader();
-    r.onload = () => resolve(r.result);
-    r.onerror = () => reject(r.error);
-    r.readAsDataURL(file);
+    const request = indexedDB.open("CoupleAnalysisDB", 1);
+
+    request.onupgradeneeded = function (event) {
+      const db = event.target.result;
+      if (!db.objectStoreNames.contains("results")) {
+        db.createObjectStore("results", { keyPath: "id" }); // ❌ autoIncrement 제거!
+      }
+    };
+
+    request.onsuccess = function (event) {
+      const db = event.target.result;
+      const tx = db.transaction(["results"], "readwrite");
+      const store = tx.objectStore("results");
+      const putRequest = store.put(data); // ✅ put 사용
+
+      putRequest.onsuccess = function () {
+        resolve(data.id); // ✅ 내가 넣은 UUID 그대로 반환
+      };
+
+      putRequest.onerror = function () {
+        reject(putRequest.error);
+      };
+    };
+
+    request.onerror = function () {
+      reject(request.error);
+    };
   });
 }
 
-/* ---------- 시작 ---------- */
-initDB().catch((err) => console.error("IndexedDB 초기화 실패", err));
+async function analyzeCoupleFeatures(
+  image1Base64,
+  image2Base64,
+  relationshipType,
+  relationshipFeeling
+) {
+  const file1 = dataURLtoFile(image1Base64, "self.jpg");
+  const file2 = dataURLtoFile(image2Base64, "partner.jpg");
+
+  const formData = new FormData();
+  formData.append("file1", file1);
+  formData.append("file2", file2);
+
+  try {
+    const response = await fetch(
+      "https://port-0-momzzi-fastapi-m7ynssht4601229b.sel4.cloudtype.app/analyze/pair/features/",
+      { method: "POST", body: formData }
+    );
+
+    const result = await response.json();
+    if (result.error) return;
+
+    const savedId = await saveCoupleFeaturesToDB({
+      id: crypto.randomUUID(),
+      features1: result.features1,
+      features2: result.features2,
+      image1Base64,
+      image2Base64,
+      relationshipType, // ✅ 저장
+      relationshipFeeling, // ✅ 저장
+      createdAt: new Date().toISOString(),
+    });
+    document.getElementById("analyzeOverlay").classList.remove("active");
+    window.location.href = `/couple-report/?id=${savedId}`;
+  } catch (error) {
+    document.getElementById("analyzeOverlay").classList.remove("active");
+    console.error("분석 실패:", error);
+  }
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  const overlay = document.querySelector(".bottom-analyze-overlay");
+  if (overlay) {
+    overlay.addEventListener("click", () => {
+      document.getElementById("relationshipSheet").classList.remove("active");
+      overlay.classList.remove("active");
+    });
+  }
+});
