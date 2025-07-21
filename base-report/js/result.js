@@ -243,7 +243,7 @@ async function startTossPayment(resultId) {
     const paymentWidget = PaymentWidget(clientKey, customerKey);
     const paymentMethodWidget = paymentWidget.renderPaymentMethods(
       "#payment-method",
-      { value: 2900 }
+      { value: 4900 }
     );
     paymentWidget.renderAgreement("#agreement");
 
@@ -264,7 +264,7 @@ async function startTossPayment(resultId) {
         });
         mixpanel.track("기본 분석 보고서 결제 요청 시도", {
           id: resultId,
-          price: 2900,
+          price: 4900,
         }); // ← 추가
       } catch (err) {
         alert("❌ 결제 실패: " + err.message);
@@ -308,7 +308,7 @@ async function startDiscountedPayment() {
 
   try {
     const widget = PaymentWidget(clientKey, customerKey);
-    widget.renderPaymentMethods("#discount-method", { value: 1900 });
+    widget.renderPaymentMethods("#discount-method", { value: 3900 });
     widget.renderAgreement("#discount-agreement");
 
     document.getElementById("discount-button").onclick = async () => {
@@ -329,7 +329,7 @@ async function startDiscountedPayment() {
 
         mixpanel.track("할인 결제 시도", {
           id: pageId,
-          price: 1900,
+          price: 3900,
           timestamp: new Date().toISOString(),
         });
       } catch (err) {
@@ -374,7 +374,7 @@ async function startWealthTossPayment(resultId) {
     const paymentWidget = PaymentWidget(clientKey, customerKey);
     const paymentMethodWidget = paymentWidget.renderPaymentMethods(
       "#wealth-method",
-      { value: 9900 }
+      { value: 4900 }
     );
     paymentWidget.renderAgreement("#wealth-agreement");
 
@@ -393,7 +393,7 @@ async function startWealthTossPayment(resultId) {
         });
         mixpanel.track("재물운 분석 보고서 결제 요청 시도", {
           id: resultId,
-          price: 9900,
+          price: 4900,
         }); // ← 추가
       } catch (err) {
         alert("❌ 결제 실패: " + err.message);
@@ -438,7 +438,7 @@ async function startLoveTossPayment(resultId) {
     const paymentWidget = PaymentWidget(clientKey, customerKey);
     const paymentMethodWidget = paymentWidget.renderPaymentMethods(
       "#love-method",
-      { value: 7900 }
+      { value: 4900 }
     );
     paymentWidget.renderAgreement("#love-agreement");
 
@@ -457,7 +457,7 @@ async function startLoveTossPayment(resultId) {
         });
         mixpanel.track("연애운 분석 보고서 결제 요청 시도", {
           id: resultId,
-          price: 7900,
+          price: 4900,
         }); // ← 추가
       } catch (err) {
         alert("❌ 결제 실패: " + err.message);
@@ -502,7 +502,7 @@ async function startMarriageTossPayment(resultId) {
     const paymentWidget = PaymentWidget(clientKey, customerKey);
     const paymentMethodWidget = paymentWidget.renderPaymentMethods(
       "#marriage-method",
-      { value: 6900 }
+      { value: 4900 }
     );
     paymentWidget.renderAgreement("#marriage-agreement");
 
@@ -521,7 +521,7 @@ async function startMarriageTossPayment(resultId) {
         });
         mixpanel.track("결혼운 분석 보고서 결제 요청 시도", {
           id: resultId,
-          price: 6900,
+          price: 4900,
         }); // ← 추가
       } catch (err) {
         alert("❌ 결제 실패: " + err.message);
@@ -566,7 +566,7 @@ async function startCareerTossPayment(resultId) {
     const paymentWidget = PaymentWidget(clientKey, customerKey);
     const paymentMethodWidget = paymentWidget.renderPaymentMethods(
       "#career-method",
-      { value: 6900 }
+      { value: 4900 }
     );
     paymentWidget.renderAgreement("#career-agreement");
 
@@ -585,7 +585,7 @@ async function startCareerTossPayment(resultId) {
         });
         mixpanel.track("직업운 분석 보고서 결제 요청 시도", {
           id: resultId,
-          price: 6900,
+          price: 4900,
         }); // ← 추가
       } catch (err) {
         alert("❌ 결제 실패: " + err.message);

@@ -1,0 +1,10 @@
+@import "../../commonStyles/common.css";
+@import "../../commonStyles/reset.css";
+@import "../../commonStyles/header.css";
+@import "../../commonStyles/footer.css";
+@import "../../commonStyles/media.css";
+@import "../../commonStyles/styles.css";
+
+@import "payment.css";
+@import "main.css";
+@import "couple.css";

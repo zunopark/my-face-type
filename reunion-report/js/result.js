@@ -227,7 +227,7 @@ async function startCoupleTossPayment(resultId) {
 
   try {
     const paymentWidget = PaymentWidget(clientKey, customerKey);
-    paymentWidget.renderPaymentMethods("#love-method", { value: 9900 });
+    paymentWidget.renderPaymentMethods("#love-method", { value: 14900 });
     paymentWidget.renderAgreement("#love-agreement");
 
     document.getElementById("love-button").onclick = async () => {
