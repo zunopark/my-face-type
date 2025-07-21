@@ -7,7 +7,7 @@ const TITLE_MAP = {
     title: "우리 관상 궁합은 몇 점일까?",
     subtitle: "#궁합 점수 #바람기 #애정운 #속궁합",
   },
-  saju: {
+  reunion: {
     title: "관상으로 알아보는 재회 확률",
     subtitle: "#상대 분석 #시기 #방법 #고민풀이",
   },
