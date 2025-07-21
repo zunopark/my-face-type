@@ -265,6 +265,51 @@
           </div>
         </div>
 
+        <div id="content-reunion" class="tab_content">
+          <div class="reunion-container">
+            <!-- 본인 사진 -->
+            <div class="reunion-file-upload reunion-card">
+              <input
+                class="reunion-input"
+                type="file"
+                accept="image/*"
+                onchange="readReunionURL(this, 'reunionSelf')"
+              />
+              <div class="reunion-preview" id="reunion-preview-self">
+                <span class="material-icons reunion-icon"
+                  >add_photo_alternate</span
+                >
+                <span>내 사진 선택</span>
+              </div>
+            </div>
+
+            <!-- 상대 사진 -->
+            <div class="reunion-file-upload reunion-card">
+              <input
+                class="reunion-input"
+                type="file"
+                accept="image/*"
+                onchange="readReunionURL(this, 'reunionPartner')"
+              />
+              <div class="reunion-preview" id="reunion-preview-partner">
+                <span class="material-icons reunion-icon"
+                  >add_photo_alternate</span
+                >
+                <span>상대 사진 선택</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="nostore">
+            *걱정마세요! 사진은 절대로 저장되지 않습니다.
+          </div>
+          <div class="reunion-action">
+            <button id="openReunionStart" class="btn-primary" disabled>
+              관상 궁합 보기
+            </button>
+          </div>
+        </div>
+
         <div id="label-container" class="result"></div>
         <div class="ad_box">
           <ins
@@ -362,6 +407,7 @@
     <script src="commonJs/headerCopy.js"></script>
     <script src="js/result.js"></script>
     <script src="js/couple.js"></script>
+    <!-- <script src="js/reunion.js"></script> -->
     <script src="js/main.js"></script>
   </body>
 </html>
