@@ -77,6 +77,14 @@ document.getElementById("startAnalyzeBtn").addEventListener("click", () => {
   document.getElementById("relationshipSheet").classList.remove("active");
   document.getElementById("analyzeOverlay").classList.add("active");
 
+  // ✅ Mixpanel 이벤트 추가
+  mixpanel.track("궁합 분석 시작", {
+    type: "couple",
+    relationshipType: selectedRelation,
+    relationshipFeeling: selectedFeeling,
+    timestamp: new Date().toISOString(),
+  });
+
   analyzeCoupleFeatures(
     coupleImages.self,
     coupleImages.partner,

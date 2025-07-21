@@ -9,18 +9,20 @@ let selectedFeeling2 = null;
 // 1) 두 이미지 업로드 완료 시 → 바텀시트 열기
 function checkBothUploaded() {
   if (reunionImages.self && reunionImages.partner) {
-    document.getElementById("relationshipSheet").classList.add("active");
+    document
+      .getElementById("reunion-relationshipSheet")
+      .classList.add("active");
   }
 }
 
 // 2) 관계 선택
-document.querySelectorAll(".relationship-options div").forEach((el) =>
+document.querySelectorAll(".reunion-relationship-options div").forEach((el) =>
   el.addEventListener("click", () => {
     selectedRelation2 = el.dataset.type;
 
     // 선택 효과
     document
-      .querySelectorAll(".relationship-options div")
+      .querySelectorAll(".reunion-relationship-options div")
       .forEach((item) => item.classList.remove("selected"));
     el.classList.add("selected");
 
@@ -54,36 +56,42 @@ document.querySelectorAll(".relationship-options div").forEach((el) =>
     };
 
     const options = followups[selectedRelation2] || ["❤️ 마음이 복잡해요"];
-    const followupEl = document.getElementById("followupOptions");
+    const followupEl = document.getElementById("reunion-followupOptions");
     followupEl.innerHTML = options.map((f) => `<div>${f}</div>`).join("");
-    document.getElementById("followupSheet").classList.remove("hidden");
-    document.getElementById("startAnalyzeBtn").classList.add("hidden");
+    document.getElementById("reunion-followupSheet").classList.remove("hidden");
+    document.getElementById("reunion-startAnalyzeBtn").classList.add("hidden");
 
-    document.querySelectorAll("#followupOptions div").forEach((div) =>
+    document.querySelectorAll("#reunion-followupOptions div").forEach((div) =>
       div.addEventListener("click", () => {
         selectedFeeling2 = div.textContent;
         document
-          .querySelectorAll("#followupOptions div")
+          .querySelectorAll("#reunion-followupOptions div")
           .forEach((el) => el.classList.remove("selected"));
         div.classList.add("selected");
-        document.getElementById("startAnalyzeBtn").classList.remove("hidden");
+        document
+          .getElementById("reunion-startAnalyzeBtn")
+          .classList.remove("hidden");
       })
     );
   })
 );
 
 // 3) 분석 시작 버튼 클릭
-document.getElementById("startAnalyzeBtn").addEventListener("click", () => {
-  document.getElementById("relationshipSheet").classList.remove("active");
-  document.getElementById("analyzeOverlay").classList.add("active");
+document
+  .getElementById("reunion-startAnalyzeBtn")
+  .addEventListener("click", () => {
+    document
+      .getElementById("reunion-relationshipSheet")
+      .classList.remove("active");
+    document.getElementById("reunion-analyzeOverlay").classList.add("active");
 
-  analyzeReunionFeatures(
-    reunionImages.self,
-    reunionImages.partner,
-    selectedRelation,
-    selectedFeeling
-  );
-});
+    analyzeReunionFeatures(
+      reunionImages.self,
+      reunionImages.partner,
+      selectedRelation2,
+      selectedFeeling2
+    );
+  });
 
 // 이미지 미리보기 및 Base64 저장
 function readReunionURL(input, type) {
@@ -109,8 +117,10 @@ function readReunionURL(input, type) {
 }
 
 document.getElementById("openReunionStart").addEventListener("click", () => {
-  document.getElementById("relationshipSheet").classList.add("active");
-  document.querySelector(".bottom-analyze-overlay").classList.add("active");
+  document.getElementById("reunion-relationshipSheet").classList.add("active");
+  document
+    .querySelector(".reunion-bottom-analyze-overlay")
+    .classList.add("active");
 });
 
 // Base64 → File 변환
@@ -129,7 +139,7 @@ function dataURLtoFile2(dataUrl, filename) {
 // IndexedDB 저장
 function saveReunionFeaturesToDB(data) {
   return new Promise((resolve, reject) => {
-    const request = indexedDB.open("reunionAnalysisDB", 1);
+    const request = indexedDB.open("ReunionAnalysisDB", 1);
 
     request.onupgradeneeded = function (event) {
       const db = event.target.result;
@@ -191,19 +201,25 @@ async function analyzeReunionFeatures(
       relationshipFeeling, // ✅ 저장
       createdAt: new Date().toISOString(),
     });
-    document.getElementById("analyzeOverlay").classList.remove("active");
+    document
+      .getElementById("reunion-analyzeOverlay")
+      .classList.remove("active");
     window.location.href = `/reunion-report/?id=${savedId}`;
   } catch (error) {
-    document.getElementById("analyzeOverlay").classList.remove("active");
+    document
+      .getElementById("reunion-analyzeOverlay")
+      .classList.remove("active");
     console.error("분석 실패:", error);
   }
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-  const overlay = document.querySelector(".bottom-analyze-overlay");
+  const overlay = document.querySelector(".reunion-bottom-analyze-overlay");
   if (overlay) {
     overlay.addEventListener("click", () => {
-      document.getElementById("relationshipSheet").classList.remove("active");
+      document
+        .getElementById("reunion-relationshipSheet")
+        .classList.remove("active");
       overlay.classList.remove("active");
     });
   }

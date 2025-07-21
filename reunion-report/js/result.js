@@ -4,7 +4,7 @@ const coupleId = qs.get("id");
 
 // 1. IndexedDB 초기화
 function initCoupleDB() {
-  const request = indexedDB.open("CoupleAnalysisDB", 1);
+  const request = indexedDB.open("ReunionAnalysisDB", 1);
   request.onupgradeneeded = function (event) {
     db = event.target.result;
     if (!db.objectStoreNames.contains("results")) {

@@ -359,8 +359,37 @@
       </div>
       <div class="bottom-analyze-overlay"></div>
 
+      <div class="reunion-bottom-sheet" id="reunion-relationshipSheet">
+        <div class="reunion-sheet-inner">
+          <h3>현재 상대방과의 관계는 어떻나요?</h3>
+          <div class="reunion-relationship-options">
+            <div data-type="관심">👀 관심이 있어요</div>
+            <div data-type="짝사랑">🥺 짝사랑하고 있어요</div>
+            <div data-type="썸">💋 썸타는 중이에요</div>
+            <div data-type="연애">💌 연애중이에요</div>
+            <div data-type="결혼">💍 결혼생활 중이에요</div>
+          </div>
+
+          <div class="reunion-sheet-followup hidden" id="reunion-followupSheet">
+            <h4>당신의 마음은 어떤 상태인가요?</h4>
+            <div
+              class="reunion-followup-options"
+              id="reunion-followupOptions"
+            ></div>
+          </div>
+
+          <button id="reunion-startAnalyzeBtn" class="reunion-sheet-btn hidden">
+            분석 시작하기
+          </button>
+        </div>
+      </div>
+      <div class="reunion-bottom-analyze-overlay"></div>
+
       <div class="analyze-overlay" id="analyzeOverlay">
-        <div class="analyze-text">AI가 얼굴 특징을 분석 중입니다...</div>
+        <div class="analyze-text">얼굴 특징을 분석 중입니다...</div>
+      </div>
+      <div class="reunion-analyze-overlay" id="reunion-analyzeOverlay">
+        <div class="reunion-analyze-text">얼굴 특징을 분석 중입니다...</div>
       </div>
 
       <footer class="footer"></footer>
