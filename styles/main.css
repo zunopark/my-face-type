@@ -186,7 +186,7 @@ body {
   display: flex; /* 버튼들을 가로로 */
   justify-content: center; /* 가운데 정렬 */
   gap: 12px; /* 버튼 간격 */
-  margin-top: 120px;
+  margin-bottom: 20px;
 }
 
 /* 기본 버튼 스타일 */
