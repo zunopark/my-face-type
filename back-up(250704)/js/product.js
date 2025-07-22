@@ -9,50 +9,58 @@ function renderPremiumFeatureResult() {
     {
       key: "base",
       emoji: "🐍",
-      title: "[기본 무료] 관상 테스트 : 부위별 관상 풀이 및 종합 관상 풀이",
-      desc: "3,000+ 글자",
+      tag: ["🐍 정통 관상"],
+      title: "내 미래가 보이는 부위별 정통 관상",
+      desc: "+천기누설+",
       rating: 4.9,
       views: "4,500+",
-      discount: 35,
-      price: "1,900원",
-      original_price: 2900,
-      thumbnail: "/img/base.png",
-    },
-    {
-      key: "wealth",
-      emoji: "💸",
-      title: "관상으로 보는 타고난 부: 10억, 100억 내가 평생 모을 재산은?",
-      desc: "10,000+ 글자",
-      rating: 4.9,
-      views: "10,000+",
-      discount: 31,
-      price: "6,900원",
-      original_price: 9900,
-      thumbnail: "/img/wealth.png",
+      addDesc: "팔자 고치는 성형 및 시술 부위 추천",
+      thumbnail: "/img/bgIMG.png",
     },
     {
       key: "love",
       emoji: "💖",
-      title: "연애 관상: 총 연애 횟수, 내 운명은 어디에?",
-      desc: "6,000+ 글자",
+      tag: ["💖 연애운", "❤️‍🔥 19금 포함", "💋 색기"],
+      title: "내 솔로 탈출 시기와 다음 연애",
+      desc: "+천기누설+",
       rating: 4.9,
       views: "2,800+",
-      discount: 38,
-      price: "4,900원",
-      original_price: 7900,
-      thumbnail: "/img/love.png",
+      addDesc: "지금 내 인연을 만날 수 있는 시・구 예측",
+      thumbnail: "/img/loveBG.png",
     },
+    {
+      key: "wealth",
+      emoji: "💸",
+      tag: ["💸 재물운", "⏳ 인생 타이밍"],
+      title: "10억, 100억 평생 모을 재산은?",
+      desc: "+천기누설+",
+      rating: 4.9,
+      views: "10,000+",
+      addDesc: "현금 폭탄 떨어질 인생 타이밍 & 방법",
+      thumbnail: "/img/wealthBG.png",
+    },
+
     {
       key: "marriage",
       emoji: "💍",
-      title: "결혼운: 언제, 누구와 결혼할지 얼굴에 다 나와 있다면?",
-      desc: "8,000+ 글자",
+      tag: ["💍 결혼운", "🤝 배우자"],
+      title: "얼굴에 보이는 내 결혼 나이",
+      desc: "+천기누설+",
       rating: 4.8,
       views: "2,300+",
-      discount: 41,
-      price: "5,900원",
-      original_price: 9900,
-      thumbnail: "/img/marriage.png",
+      addDesc: "결혼운이 보이는 장소 & 놓치면 안될 시기",
+      thumbnail: "/img/marriageBG.png",
+    },
+    {
+      key: "career",
+      emoji: "💍",
+      tag: ["💼 직업운", "💭 진로고민", "💰 천직"],
+      title: "나의 직업 성형과 고점 시기",
+      desc: "+천기누설+",
+      rating: 4.8,
+      views: "2,300+",
+      addDesc: "연봉 그래프 상한가 찍을 부서・업종 안내",
+      thumbnail: "/img/careerBG.png",
     },
   ];
 
@@ -61,8 +69,12 @@ function renderPremiumFeatureResult() {
 
   /* 3) 카드 HTML 생성 ― data-* 속성으로 추적용 메타데이터 심기 */
   const cardsHtml = products
-    .map(
-      (p, idx) => `
+    .map((p, idx) => {
+      const tagsHtml = p.tag
+        .map((t) => `<span class="product-tag">${t}</span>`)
+        .join(" ");
+
+      return `
     <div class="product-card"
          data-key="${p.key}"
          data-title="${p.title}"
@@ -74,18 +86,17 @@ function renderPremiumFeatureResult() {
         <img src="${p.thumbnail}" alt="${p.key}" class="square-image">
       </div>
       <div class="product-info">
+        <div class="product-tags">${tagsHtml}</div>
         <div class="product-title">${p.title}</div>
         <div class="product-meta">
-          <div class="product-stats">총 ${p.desc}</div>
-          <div class="product-meta-price">
-            <div class="product-original-price">${p.original_price.toLocaleString()}원</div>
-            <div class="discount">${p.discount}%</div>
-            <div class="product-price">${p.price}</div>
+          <div class="product-stats">${p.desc}</div>
+          <div class="product-meta-addDesc">
+            <div class="product-addDesc">${p.addDesc}</div>
           </div>
         </div>
       </div>
-    </div>`
-    )
+    </div>`;
+    })
     .join("");
 
   /* 4) DOM 삽입 */
@@ -124,14 +135,7 @@ function renderFreeFeatureResult() {
       }" class="square-image"></div>
       <div class="product-info">
         <div class="product-title">${p.title}</div>
-        <div class="product-meta">
-          <div class="product-stats">총 ${p.desc}</div>
-          <div class="product-meta-price">
-            <div class="product-original-price">${p.original_price.toLocaleString()}원</div>
-            <div class="discount">${p.discount}%</div>
-            <div class="product-price">${p.price}</div>
-          </div>
-        </div>
+ 
       </div>
     </div>`
     )

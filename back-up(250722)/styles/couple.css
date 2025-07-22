@@ -1,4 +1,4 @@
-.reunion-container {
+.couple-container {
   display: flex;
   justify-content: center;
   gap: 24px;
@@ -6,7 +6,7 @@
   margin-bottom: 24px;
 }
 
-.reunion-card {
+.couple-card {
   width: 150px;
   height: 150px;
   background-color: rgba(196, 152, 90, 0.15); /* 기본 톤 */
@@ -17,18 +17,18 @@
 }
 
 /* 필요하다면 첫 번째 카드만 색 변경 */
-.reunion-card:first-child {
+.couple-card:first-child {
   background-color: rgba(206, 206, 206, 0.15);
 }
 
-.reunion-input {
+.couple-input {
   position: absolute;
   inset: 0; /* top/right/bottom/left 0 */
   opacity: 0;
   cursor: pointer;
 }
 
-.reunion-preview {
+.couple-preview {
   width: 100%;
   height: 100%;
   display: flex;
@@ -39,14 +39,14 @@
   color: rgb(63, 63, 63);
 }
 
-.reunion-preview img {
+.couple-preview img {
   width: 152px;
   height: 152px;
   object-fit: cover;
   margin-bottom: 2px;
 }
 
-.reunion-action {
+.couple-action {
   display: flex;
   justify-content: center;
   margin-top: 20px;
@@ -66,11 +66,11 @@
   opacity: 1;
 }
 
-.reunion-icon {
+.couple-icon {
   margin-bottom: 8px;
 }
 
-.reunion-bottom-sheet {
+.bottom-sheet {
   position: fixed;
   background-color: white;
   display: flex;
@@ -80,11 +80,11 @@
   z-index: 1000;
   border-radius: 16px 16px 0 0;
 }
-.reunion-bottom-sheet.active {
+.bottom-sheet.active {
   bottom: 0;
 }
 
-.reunion-bottom-analyze-overlay {
+.bottom-analyze-overlay {
   position: fixed;
   top: 0;
   left: 0;
@@ -100,16 +100,16 @@
   color: #333;
 }
 
-.reunion-bottom-analyze-overlay.active {
+.bottom-analyze-overlay.active {
   display: block;
 }
 
-.reunion-sheet-inner {
-  width: 100%;
+.sheet-inner {
+  width: 80%;
 }
 
-.reunion-relationship-options div,
-.reunion-followup-options div {
+.relationship-options div,
+.followup-options div {
   width: 100%;
   padding: 10px 18px;
   margin: 10px 0;
@@ -123,13 +123,13 @@
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
 }
 
-.reunion-relationship-options div:hover,
-.reunion-followup-options div:hover {
+.relationship-options div:hover,
+.followup-options div:hover {
   background-color: #ececec;
 }
 
-.reunion-relationship-options div.selected,
-.reunion-followup-options div.selected {
+.relationship-options div.selected,
+.followup-options div.selected {
   background-color: #c4965a;
   color: white;
   font-weight: 600;
@@ -137,7 +137,7 @@
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
 }
 
-.reunion-sheet-btn {
+.sheet-btn {
   width: 100%;
   margin-top: 20px;
   padding: 10px 20px;
@@ -152,19 +152,19 @@
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
 }
 
-.reunion-sheet-btn:hover {
+.sheet-btn:hover {
   background-color: #b1814e;
 }
 
-.reunion-sheet-btn:active {
+.sheet-btn:active {
   transform: scale(0.98);
 }
 
-.reunion-sheet-btn.hidden {
+.sheet-btn.hidden {
   display: none;
 }
 
-.reunion-analyze-overlay {
+.analyze-overlay {
   position: fixed;
   top: 0;
   left: 0;
@@ -180,11 +180,11 @@
   color: #333;
 }
 
-.reunion-analyze-overlay.active {
+.analyze-overlay.active {
   display: flex;
 }
 
-.reunion-analyze-text::after {
+.analyze-text::after {
   content: " ";
   animation: dots 1.5s infinite;
 }

@@ -17,7 +17,6 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-top: 60px;
 }
 
 .main_title_wrap {
@@ -29,7 +28,7 @@ body {
   margin-bottom: 10px;
   color: #171717;
   font-family: "GmarketSans";
-  margin-top: 40px;
+  margin-top: 100px;
 }
 
 .main_title {
@@ -187,7 +186,7 @@ body {
   display: flex; /* 버튼들을 가로로 */
   justify-content: center; /* 가운데 정렬 */
   gap: 12px; /* 버튼 간격 */
-  margin: 12px 0 24px 0; /* 위·아래 여백 */
+  margin-top: 120px;
 }
 
 /* 기본 버튼 스타일 */

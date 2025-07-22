@@ -1,6 +1,6 @@
 .result-summary {
   text-align: justify;
-  font-family: "KimjungchulMyungjo-Bold";
+  font-family: "GmarketSans";
 }
 
 .result-detail {
@@ -9,6 +9,7 @@
 
 .face-result {
   color: rgb(39, 39, 39);
+  font-family: "GmarketSans";
 }
 .face-summary-section {
   margin-bottom: 12px;
@@ -19,7 +20,8 @@
 .face-summary {
   color: rgb(39, 39, 39);
   line-height: 1.7;
-  font-family: "KimjungchulMyungjo-Bold";
+  font-family: "GmarketSans";
+
   text-align: justify;
 }
 
@@ -596,4 +598,69 @@
 }
 .clear-btn:hover {
   opacity: 0.85;
+}
+
+.report-section {
+  /* 바로 뒤 섹션에만 간격 */
+  border-top: 1px solid #ddd;
+  padding-top: 24px;
+  text-align: justify;
+}
+/* 잠긴 섹션 기본 설정 */
+.report-section.locked {
+  position: relative;
+}
+
+/* 블러 마스크 오버레이 */
+.blur-overlay {
+  position: absolute;
+  inset: 0; /* 섹션 전체 덮기 */
+  /* backdrop-filter: blur(10px); */
+  -webkit-backdrop-filter: blur(10px);
+
+  /* 0~10%는 투명, 그 아래부터 서서히 불투명 → 아래쪽만 흐림 */
+  mask-image: linear-gradient(
+    to bottom,
+    transparent 0%,
+    transparent 10%,
+    black 15%,
+    black 100%
+  );
+  -webkit-mask-image: linear-gradient(
+    to bottom,
+    transparent 0%,
+    transparent 10%,
+    black 15%,
+    black 100%
+  );
+
+  pointer-events: none; /* 블러층 자체는 클릭 막지 않음 */
+}
+
+/* 결제 CTA 버튼이 올라갈 오버레이 */
+.section-paywall {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 12px;
+  text-align: center;
+  color: #fff;
+  padding-top: 400px;
+}
+
+.section-paywall button {
+  padding: 10px 20px;
+  font-size: 15px;
+  border: none;
+  border-radius: 8px;
+  background: #4f46e5;
+  color: #fff;
+  cursor: pointer;
+}
+
+strong {
+  color: #ff9d00;
 }

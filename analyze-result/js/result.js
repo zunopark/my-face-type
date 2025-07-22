@@ -158,29 +158,40 @@ function renderResultNormalized(obj, reportType) {
       .replace(/^\s*[*+-]\s+(.+)$/gm, "<ul><li>$1</li></ul>")
       .replace(/(<\/ul>\s*)<ul>/g, "")
       .replace(/^\s*\d+\.\s+(.+)$/gm, "<ol><li>$1</li></ol>")
+      .replace(
+        /^(?!<h\d>|<ul>|<ol>|<li>|<pre>|<blockquote>|<img|<p>|<\/?ul>|<\/?ol>|<\/?li>|<\/?pre>|<\/?blockquote>|<\/?h\d>)(.+)$/gm,
+        "<p>$1</p>"
+      )
       .replace(/(<\/ol>\s*)<ol>/g, "");
     return `<p>${src}</p>`;
   }
 
   const wrap = document.getElementById("label-container");
 
+  /* ───────── isMulti = true: details 분리 렌더 ───────── */
   if (obj.isMulti) {
     const titles = titleMap[reportType] || [];
-    const html = obj.details
+    wrap.innerHTML = obj.details
       .map((sec, i) => {
-        const h = titles[i] ? `📙 ${titles[i]}` : `📙 제${i + 1}장`;
-        return `<h2 style="margin-top:24px">${h}</h2>\n${simpleMD(sec)}`;
+        const heading = titles[i] ? `📙 ${titles[i]}` : `📙 제${i + 1}장`;
+        return `
+          <section class="report-section" style="margin-top:24px">
+            <h2>${heading}</h2>
+            <div class="report-body">${simpleMD(sec)}</div>
+          </section>`;
       })
-      .join("<hr/>");
-    wrap.innerHTML = `<div class="result-detail">${simpleMD(html)}</div>`;
+      .join(""); // ← 합칠 때 <hr/> 필요 X
     return;
   }
 
+  /* ───────── isMulti = false: 기존 요약·본문 방식 ───────── */
   wrap.innerHTML = `
-    <div class="result-summary" style="margin-bottom:16px">${simpleMD(
-      obj.summary
-    )}</div>
-    <div class="result-detail">${simpleMD(obj.detail)}</div>`;
+    <div class="result-summary" style="margin-bottom:16px">
+      ${simpleMD(obj.summary)}
+    </div>
+    <div class="result-detail">
+      ${simpleMD(obj.detail)}
+    </div>`;
 }
 
 function renderPaywall() {
@@ -310,7 +321,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     /* 1) 이미 생성됨 */
     if (isGenerated(result, type)) {
-      if (isPaid(result, type))
+      if (!isPaid(result, type))
         renderResultNormalized(getReport(result, type), type);
       else renderPaywall();
       return;
