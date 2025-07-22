@@ -374,7 +374,7 @@ async function startWealthTossPayment(resultId) {
     const paymentWidget = PaymentWidget(clientKey, customerKey);
     const paymentMethodWidget = paymentWidget.renderPaymentMethods(
       "#wealth-method",
-      { value: 9900 }
+      { value: 1 }
     );
     paymentWidget.renderAgreement("#wealth-agreement");
 

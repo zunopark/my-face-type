@@ -1,9 +1,15 @@
+.result {
+  font-family: "GmarketSans";
+}
+
 .result-summary {
   text-align: justify;
   font-family: "GmarketSans";
 }
 
 .result-detail {
+  font-family: "GmarketSans";
+
   text-align: justify;
 }
 
