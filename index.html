@@ -175,7 +175,7 @@
         <div class="category_wrap">
           <button class="category_btn active" data-target="face">정통</button>
           <button class="category_btn" data-target="match">궁합</button>
-          <!-- <button class="category_btn" data-target="reunion">재회</button> -->
+          <button class="category_btn" data-target="reunion">재회</button>
         </div>
 
         <!-- <div class="ad_box" id="container2">
@@ -281,14 +281,13 @@
 
         <div id="content-reunion" class="tab_content">
           <div class="reunion-sheet-inner">
-            <h3>우리는 왜 멀어졌던 걸까요?</h3>
             <div class="reunion-relationship-options">
               <div data-type="interest">썸이 깨졌어요</div>
               <div data-type="crush">고백에 실패했어요</div>
-              <div data-type="fling">성격 차이와 잦은 다툼</div>
+              <div data-type="fling">성격 차이/잦은 다툼</div>
               <div data-type="dating">집착 및 이성 문제</div>
-              <div data-type="ghosting">상대방의 잠수이별 및 통보</div>
-              <div data-type="affair">상대방의 바람 및 외도</div>
+              <div data-type="ghosting">잠수이별 및 통보</div>
+              <div data-type="affair">바람 및 외도</div>
             </div>
 
             <div
@@ -358,6 +357,9 @@
       <div class="bottom-analyze-overlay"></div>
 
       <div class="reunion-bottom-sheet" id="reunion-relationshipSheet">
+        <div class="reunion-bottom-file-upload-title">
+          관상학 재회 상담을<br />위해 사진을 올려주세요!
+        </div>
         <div class="reunion-container">
           <!-- 본인 사진 -->
           <div class="reunion-file-upload reunion-card">
@@ -423,9 +425,24 @@
     </div>
     <script>
       // 고유 사용자 ID를 localStorage에서 불러오거나 새로 생성
+
+      function safeUUID() {
+        // 1) 지원되면 native API 사용
+        if (crypto.randomUUID) return crypto.randomUUID();
+
+        // 2) fallback – getRandomValues 기반 RFC 4122 v4
+        return ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, (c) =>
+          (
+            c ^
+            (crypto.getRandomValues(new Uint8Array(1))[0] & (15 >> (c / 4)))
+          ).toString(16)
+        );
+      }
+
+      /* ───────────── Mixpanel 설정 ───────────── */
       let distinctId = localStorage.getItem("mixpanel_distinct_id");
       if (!distinctId) {
-        distinctId = crypto.randomUUID(); // 브라우저 내장 UUID 생성
+        distinctId = safeUUID(); // ← 변경
         localStorage.setItem("mixpanel_distinct_id", distinctId);
       }
 

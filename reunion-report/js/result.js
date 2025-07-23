@@ -161,7 +161,7 @@ async function autoRenderCoupleReport() {
     // 리포트 생성
     try {
       const reportRes = await fetch(
-        "https://port-0-momzzi-fastapi-m7ynssht4601229b.sel4.cloudtype.app/analyze/couple/report",
+        "https://port-0-momzzi-fastapi-m7ynssht4601229b.sel4.cloudtype.app/analyze/reunion/report",
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -176,7 +176,7 @@ async function autoRenderCoupleReport() {
       const report = await reportRes.json();
 
       const scoreRes = await fetch(
-        "https://port-0-momzzi-fastapi-m7ynssht4601229b.sel4.cloudtype.app/analyze/couple/score",
+        "https://port-0-momzzi-fastapi-m7ynssht4601229b.sel4.cloudtype.app/analyze/reunion/chance",
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -189,8 +189,8 @@ async function autoRenderCoupleReport() {
         paid: false,
         purchasedAt: null,
         data: {
-          summary: score.score2,
-          score: score.score1,
+          summary: score.chance2,
+          score: score.chance1,
           details: [
             report.detail1,
             report.detail2,
@@ -227,14 +227,14 @@ async function startCoupleTossPayment(resultId) {
 
   try {
     const paymentWidget = PaymentWidget(clientKey, customerKey);
-    paymentWidget.renderPaymentMethods("#love-method", { value: 14900 });
+    paymentWidget.renderPaymentMethods("#love-method", { value: 16900 });
     paymentWidget.renderAgreement("#love-agreement");
 
     document.getElementById("love-button").onclick = async () => {
       try {
         await paymentWidget.requestPayment({
           orderId: `order_${Date.now()}`,
-          orderName: "AI 커플 궁합 관상 보고서",
+          orderName: "재회 상담 보고서",
           customerName: "고객",
           successUrl: `${window.location.origin}/success.html?id=${resultId}&type=couple`,
           failUrl: `${window.location.origin}/fail.html?id=${resultId}&type=couple`,
@@ -254,7 +254,7 @@ document.getElementById("viewFullBtn").addEventListener("click", () => {
   mixpanel.track("유료 관상 분석 보고서 버튼 클릭", {
     resultId: resultId,
     timestamp: new Date().toISOString(),
-    type: "궁합",
+    type: "재회",
   });
 });
 
@@ -263,7 +263,7 @@ document.getElementById("viewFullBtn2").addEventListener("click", () => {
   mixpanel.track("유료 관상 분석 보고서 버튼 클릭", {
     resultId: resultId,
     timestamp: new Date().toISOString(),
-    type: "궁합",
+    type: "재회",
   });
 });
 
@@ -284,14 +284,14 @@ function closeLovePayment() {
 
 let fakeProgress = 0;
 const messages = [
-  "두 사람의 관상을 확인하고 있어요...",
-  "눈빛과 인상 흐름을 해석 중입니다...",
-  "관상 속 궁합의 실마리를 찾는 중이에요...",
-  "이마와 코선의 조화를 분석하고 있어요...",
-  "입꼬리와 턱선의 에너지를 비교 중입니다...",
-  "감정선의 방향을 정밀하게 읽는 중이에요...",
-  "코와 눈매, 점을 통해 속궁합을 살펴보고 있어요...",
-  "마지막 조언을 정리하고 있어요...",
+  "두 사람의 관상에서 가능성을 파악하고 있어요...",
+  "눈빛을 해석하는 중입니다...",
+  "이마와 코선으로 읽고 있어요...",
+  "입꼬리와 턱선을 분석하고 있습니다...",
+  "감정선의 흐름을 따라 재회 실마리를 찾는 중이에요...",
+  "상대 마음의 문이 열릴 타이밍을 계산하고 있어요...",
+  "관상으로 상대방 마을을 열 전략을 정리 중입니다...",
+  "마지막 재회 조언을 완성하고 있어요...",
 ];
 
 function renderLoading() {

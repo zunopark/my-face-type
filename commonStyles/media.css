@@ -15,7 +15,8 @@
   .border,
   .result,
   .modal-content,
-  .label-container {
+  .label-container,
+  .reunion-sheet-inner {
     width: 350px;
   }
 }
@@ -37,7 +38,8 @@
   .test__upper,
   .submitForm,
   .result,
-  .label-container {
+  .label-container,
+  .reunion-sheet-inner {
     width: 320px;
   }
 }
