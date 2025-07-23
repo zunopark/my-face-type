@@ -374,7 +374,7 @@ async function startWealthTossPayment(resultId) {
     const paymentWidget = PaymentWidget(clientKey, customerKey);
     const paymentMethodWidget = paymentWidget.renderPaymentMethods(
       "#wealth-method",
-      { value: 1 }
+      { value: 9900 }
     );
     paymentWidget.renderAgreement("#wealth-agreement");
 
@@ -762,163 +762,114 @@ function renderResultNormalized(obj, reportType = "base") {
     );
   }
 
-  window.currentResultId = resultId; // ① 다른 함수에서 id 접근
-
   wrap.innerHTML = `
-    <!-- 1) 무료 요약 -->
     <div class="face-summary-section">
       <div class="face-summary">${simpleMD(obj.summary)}</div>
     </div>
-  
-    <!-- 2) 무료 detail + 흐림 마스크 -->
 
-  
-    <!-- 3) 프리미엄 보고서 카드가 들어갈 자리 -->
-    <h2 class="premium-title">대한민국 <span class="orange_bold">1% 관상가</span>의<br/>명쾌한 맞춤 관상 심층 보고서</h2>
-    <div class="premium_face_product"></div>
-  `;
+    <div class="face-full-section-wrapper">
+      <div class="face-full-report">${simpleMD(obj.detail)}</div>
 
-  /* 4) 카드 생성 & 이벤트 바인딩 */
-  renderPremiumFeatureResult(); // 카드 HTML 채우기
-  bindPremiumCardEvents(); // 클릭 → Toss 결제
-}
-
-function renderPremiumFeatureResult() {
-  const products = [
-    {
-      key: "base",
-      emoji: "🐍",
-      tag: ["🐍 정통 관상"],
-      title: "내 미래가 보이는 부위별 정통 관상",
-      desc: "+천기누설+",
-      rating: 4.9,
-      views: "4,500+",
-      addDesc: "팔자 고치는 성형 및 시술 부위 추천",
-      thumbnail: "/img/bgIMG.png",
-    },
-    {
-      key: "love",
-      emoji: "💖",
-      tag: ["💖 연애운", "❤️‍🔥 19금 포함"],
-      title: "내 솔로 탈출 시기와 다음 연애",
-      desc: "+천기누설+",
-      rating: 4.9,
-      views: "2,800+",
-      addDesc: "지금 내 인연을 만날 수 있는 시・구 예측",
-      thumbnail: "/img/loveBG.png",
-    },
-    {
-      key: "wealth",
-      emoji: "💸",
-      tag: ["💸 재물운", "⏳ 인생 타이밍"],
-      title: "10억, 100억 평생 모을 재산은?",
-      desc: "+천기누설+",
-      rating: 4.9,
-      views: "10,000+",
-      addDesc: "현금 폭탄 떨어질 인생 타이밍 & 방법",
-      thumbnail: "/img/wealthBG.png",
-    },
-
-    {
-      key: "marriage",
-      emoji: "💍",
-      tag: ["💍 결혼운", "🤝 배우자"],
-      title: "얼굴에 보이는 내 결혼 나이",
-      desc: "+천기누설+",
-      rating: 4.8,
-      views: "2,300+",
-      addDesc: "결혼운이 보이는 장소 & 놓치면 안될 시기",
-      thumbnail: "/img/marriageBG.png",
-    },
-    {
-      key: "career",
-      emoji: "💍",
-      tag: ["💼 직업운", "💰 천직"],
-      title: "나의 직업 성형과 고점 시기",
-      desc: "+천기누설+",
-      rating: 4.8,
-      views: "2,300+",
-      addDesc: "연봉 그래프 상한가 찍을 부서・업종 안내",
-      thumbnail: "/img/careerBG.png",
-    },
-  ];
-
-  /* 2) 다른 스크립트(예: 결제·업로드 로직)에서도 접근할 수 있도록 전역에 보관 */
-  window.premiumProducts = products;
-
-  /* 3) 카드 HTML 생성 ― data-* 속성으로 추적용 메타데이터 심기 */
-  const cardsHtml = products
-    .map((p, idx) => {
-      const tagsHtml = p.tag
-        .map((t) => `<span class="product-tag">${t}</span>`)
-        .join(" ");
-
-      return `
-    <div class="product-card"
-         data-key="${p.key}"
-         data-title="${p.title}"
-         data-price="${p.price}"
-         data-discount="${p.discount}"
-         data-index="${idx + 1}"
-         style="cursor:pointer;">
-      <div class="product-image">
-        <img src="${p.thumbnail}" alt="${p.key}" class="square-image">
-      </div>
-      <div class="product-info">
-        <div class="product-tags">${tagsHtml}</div>
-        <div class="product-title">${p.title}</div>
-        <div class="product-meta">
-          <div class="product-stats">${p.desc}</div>
-          <div class="product-meta-addDesc">
-            <div class="product-addDesc">${p.addDesc}</div>
+      <div class="result-mask">
+        <div class="blur-overlay"></div>
+        <div class="mask-text-wrap-top base-bg">
+          <div class="mask-text base-color">
+            <div class="mask-text-top">정통 심층 관상 보고서</div>
+            <div class="mask-text-top-sub">
+              내 미래가 보이는 부위별 정통 관상<br /><br />+ 천기누설 +<br/>
+              팔자 고치는 성형 및 시술 부위 추천
+            </div>
+            <div class="mask-text-btn-wrap base-bgcolor">
+              <div
+                class="mask-text-btn "
+                onclick="trackAndStartPayment('${resultId}')"
+              >
+                 전체 분석 결과 확인하기
+              </div>
+            </div>
+            <div class="mask-text-btn-sub">총 5,000자 이상</div>
           </div>
         </div>
-      </div>
-    </div>`;
-    })
-    .join("");
+      </div> 
+    </div> 
+    <div class="mask-text-wrap love-bg">
+          <div class="mask-text">
+            <div class="mask-text-top love-color">연애 심층 관상 보고서</div>
+            <div class="mask-text-top-sub"> 
+            
+        내 얼굴은 총 몇 번 연애를 할 수 있을까?<br /><br />
++ 천기누설 +<br />
+지금 내 인연을 만날 수 있는 시·구 위치 예측
+              </div>
+              <div class="mask-text-btn-wrap love-bgcolor">
+                <div class="mask-text-btn " onclick="trackAndStartLovePayment('${resultId}')">
+                  나의 연애 관상 확인하기
+                </div>
+              </div>
+            <div class="mask-text-btn-sub">총 13,000자 이상</div>
+          </div>
+        </div>
+    <div class="mask-text-wrap wealth-bg">
+          <div class="mask-text">
+            <div class="mask-text-top wealth-color">재물 심층 관상 보고서</div>
+            <div class="mask-text-top-sub"> 
+            
+        내 얼굴은 평생 몇 억을 벌 수 있을까?<br /><br />
++ 천기누설 +<br />
+현금 폭탄 떨어질 인생 타이밍 & 방법
+              </div>
+              <div class="mask-text-btn-wrap wealth-bgcolor">
+                <div class="mask-text-btn " onclick="trackAndStartWealthPayment('${resultId}')">
+                  나의 재물 관상 확인하기
+                </div>
+              </div>
+            <div class="mask-text-btn-sub">총 15,000자 이상</div>
+          </div>
+        </div>
+          
+        <div class="mask-text-wrap marriage-bg">
+          <div class="mask-text">
+            <div class="mask-text-top marriage-color">결혼 심층 관상 보고서
+</div>
+            <div class="mask-text-top-sub"> 
+            
+      셀카 한 장으로 알아보는 내 결혼 나이<br /><br />
++ 천기누설 +<br />
+웨딩운이 보이는 장소 & 놓치면 안 될 골든타임              </div>
 
-  /* 4) DOM 삽입 */
-  document.querySelector(
-    ".premium_face_product"
-  ).innerHTML = `<div class="face-product-section">${cardsHtml}</div>`;
+              <div class="mask-text-btn-wrap marriage-bgcolor">
+                <div class="mask-text-btn " onclick="trackAndStartMarriagePayment('${resultId}')">
+                  나의 결혼 관상 확인하기
+                </div>
+              </div>
+            <div class="mask-text-btn-sub">총 12,000자 이상</div>
+          </div>
+        </div>
+        <div class="mask-text-wrap career-bg">
+          <div class="mask-text">
+            <div class="mask-text-top career-color">직업 심층 관상 보고서</div>
+            <div class="mask-text-top-sub"> 
+            
+   내 얼굴에서 보이는 나의 직업 성향과 고점 시기<br /><br />
++ 천기누설 +<br />
+연봉 그래프 상한가 찍을 부서·업종 좌표
+              </div>
+            <div class="mask-text-btn-wrap career-bgcolor">
+              <div class="mask-text-btn " onclick="trackAndStartCareerPayment('${resultId}')">
+                나의 직업 관상 확인하기
+              </div>
+            </div>
 
-  /* 5) 클릭 이벤트 바인딩 + Mixpanel 트래킹 (bindPremiumCardEvents 내부) */
-  bindPremiumCardEvents();
+            <div class="mask-text-btn-sub">총 12,000자 이상</div>
+          </div>
+        </div>
+  `;
 }
 
 function renderImage(base64) {
   document.getElementById("face-image").src = base64;
   document.querySelector(".file-upload-content").style.display = "block";
   document.querySelector(".image-upload-wrap").style.display = "none";
-}
-
-function bindPremiumCardEvents() {
-  document.querySelectorAll(".product-card").forEach((card) => {
-    const key = card.dataset.key; // base / wealth / love …
-    card.addEventListener("click", () => {
-      /* Mixpanel 카드 클릭 추적 */
-      mixpanel.track("프리미엄 카드 클릭", {
-        product: key,
-        resultId: window.currentResultId,
-        ts: Date.now(),
-      });
-
-      /* 키 → 결제 함수 매핑 */
-      (
-        ({
-          base: trackAndStartPayment,
-          wealth: trackAndStartWealthPayment,
-          love: trackAndStartLovePayment,
-          marriage: trackAndStartMarriagePayment,
-          career: trackAndStartCareerPayment,
-        })[key] ||
-        (() => {
-          alert("결제 타입이 정의되지 않았습니다.");
-        })
-      )(window.currentResultId);
-    });
-  });
 }
 
 // 페이지 진입 시 바로 실행
