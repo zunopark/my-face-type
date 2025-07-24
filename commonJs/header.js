@@ -20,9 +20,9 @@ const headerContent = () => {
     const params = new URLSearchParams(window.location.search);
     const reportId = params.get("id") || ""; // 없으면 빈문자
 
-    // ② /base-report 로 보낼 URL 구성
+    // ② /select-report 로 보낼 URL 구성
     const saveHref = reportId
-      ? `/base-report/?id=${encodeURIComponent(reportId)}`
+      ? `/select-report/?id=${encodeURIComponent(reportId)}`
       : "/"; // (fallback)
     headerMain.innerHTML = `
     <div id="header_back" class="header_chat header_fixed">
@@ -38,6 +38,25 @@ const headerContent = () => {
   >
     보고서 저장</a
   >
+        
+      </div>
+
+    `;
+  } else if (headerMain.id === "report-result") {
+    const params = new URLSearchParams(window.location.search);
+    const reportId = params.get("id") || ""; // 없으면 빈문자
+
+    // ② /select-report 로 보낼 URL 구성
+    const saveHref = reportId
+      ? `/select-report/?id=${encodeURIComponent(reportId)}`
+      : "/"; // (fallback)
+    headerMain.innerHTML = `
+    <div id="header_back" class="header_chat header_fixed">
+        <a href="${saveHref}" class="header_btn">
+          <span class="material-icons header_chat_icon">arrow_back_ios</span>
+         
+          <div class="header_chat_title">다른 보고서</div>
+        </a>
         
       </div>
 

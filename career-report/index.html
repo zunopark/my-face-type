@@ -233,221 +233,106 @@
       <div id="label-container" class="result"></div>
 
       <!-- ✅ Toss 결제 모달 -->
-      <div id="paymentOverlay" class="payment-overlay" style="display: none">
-        <div id="paymentFull" class="payment-fullscreen">
+
+      <div
+        id="careerPaymentOverlay"
+        class="payment-overlay"
+        style="display: none"
+      >
+        <div id="careerFull" class="payment-fullscreen">
           <div class="modal-content">
             <div class="payment-header">
-              <div class="payment-title">프리미엄 관상 심층 분석 보고서</div>
-              <div class="payment-close" onclick="closePayment()">✕</div>
+              <div class="payment-title">
+                직업 관상 보고서 : 내 연봉 상한가 찍을 직업
+              </div>
+              <div class="payment-close" onclick="closeCareerPayment()">✕</div>
             </div>
             <div class="payment-header">
               <div class="payment-subtitle">
                 1,500만명이 감탄한 20년 경력 관상가 보고서
               </div>
             </div>
+
             <div class="report-wrap">
               <div class="report-title-wrap">
                 <div class="report-title">보고서 내용</div>
-                <div class="report-num">총 5,000자 심층 분석</div>
+                <div class="report-num">총 12,000자 심층 분석</div>
               </div>
               <div class="report-contents-wrap">
                 <div class="report-contents">
-                  1. [상정·초년] 이마·눈썹, 두뇌·가족·첫 사회운
+                  1. [정통 관상] 부위별 관상 분석 포함
                 </div>
               </div>
               <div class="report-contents-wrap">
                 <div class="report-contents">
-                  2. [중정·중년] 콧대·광대, 재물·권위·도약 시점
+                  2. [적성과 장단점] 천직 찾는 DNA 분석
                 </div>
               </div>
               <div class="report-contents-wrap">
                 <div class="report-contents">
-                  3. [하정·말년] 입·턱, 가정·건강·노후 복
+                  3. [직업 운 곡선] 커리어 꽃 피는 시기
                 </div>
               </div>
               <div class="report-contents-wrap">
                 <div class="report-contents">
-                  4. [명궁 총론] 미간, 인생 그래프와 전환점
+                  4. [강점 극대화 전략] 성향별 일 잘하는 루틴
                 </div>
               </div>
               <div class="report-contents-wrap">
                 <div class="report-contents">
-                  5. [재백궁] 콧방울·비익, 돈의 흐름과 투자 운
+                  5. [직장 vs 창업] 성공 확률·적합도 비교
                 </div>
               </div>
               <div class="report-contents-wrap">
                 <div class="report-contents">
-                  6. [관록궁] 이마 중앙 윤곽, 직업·승진·사업 복
+                  6. [행운의 업무 환경] 돈·사람·공간 기운 포인트
                 </div>
               </div>
               <div class="report-contents-wrap">
                 <div class="report-contents">
-                  7. [남녀궁] 눈꼬리, 연애·결혼·배우자 상
+                  7. [위기 대비 체크] 번아웃·리스크 예방법
                 </div>
               </div>
               <div class="report-contents-wrap">
                 <div class="report-contents">
-                  8. [자식궁] 인중 길이·깊이, 자녀 복과 가문의 빛
-                </div>
-              </div>
-              <div class="report-contents-wrap">
-                <div class="report-contents">
-                  9. [노복궁] 귀·귓볼, 건강·장수·말년 지수
-                </div>
-              </div>
-              <div class="report-contents-wrap">
-                <div class="report-contents">
-                  10. [12궁 종합지도] 인생 파노라마
-                </div>
-              </div>
-              <div class="report-contents-wrap">
-                <div class="report-contents">
-                  11. [천기 누설] 팔자 필 성형·관리 포인트 집중 처방
+                  8. [관상가의 인생 조언] 커리어 운 트이는 습관
                 </div>
               </div>
             </div>
 
             <div class="payment-price-wrap">
               <div class="payment-original-price-title">보고서 금액</div>
-              <div class="payment-original-price">6,900원</div>
+              <div class="payment-original-price">21,970원</div>
             </div>
-
             <div class="payment-coupon-wrap">
               <div class="payment-coupon">쿠폰 할인 💸</div>
             </div>
             <div class="payment-coupon-price-wrap">
-              <div class="payment-coupon-title">2025 특별 할인 적용 완료</div>
-              <div class="payment-coupon-price">-4,000원</div>
+              <div class="payment-coupon-title">
+                직업 관상 보고서 런칭 특별 할인<br />(~07.27 단 7일간)
+              </div>
+              <div class="payment-coupon-price">-15,070원</div>
             </div>
 
-            <div id="payment-method"></div>
-            <div id="agreement"></div>
-
+            <div id="career-method" style="padding: 0px; margin: 0px"></div>
+            <div id="career-agreement"></div>
             <div class="payment-final-price-wrap">
               <div class="payment-final-price-title">최종 결제 금액</div>
               <div class="payment-final-price-price-wrap">
-                <div class="payment-originam-price2">6,900원</div>
+                <div class="payment-originam-price2">21,970원</div>
                 <div class="payment-final-price">
-                  <div class="payment-final-price-discount">58%</div>
-                  <div class="payment-final-price-num">2,900원</div>
+                  <div class="payment-final-price-discount">69%</div>
+                  <div class="payment-final-price-num">6,900원</div>
                 </div>
               </div>
             </div>
-            <button id="payment-button" class="payment-final-btn">
+            <button id="career-button" class="payment-final-btn">
               보고서 확인하기
             </button>
             <div class="payment-empty"></div>
           </div>
         </div>
       </div>
-
-      <div id="discountOverlay" class="payment-overlay" style="display: none">
-        <div id="discountFullscreen" class="payment-fullscreen">
-          <div class="modal-content">
-            <div class="payment-header">
-              <div class="payment-title">🎁 깜짝 선물! 1,000원 추가 할인</div>
-              <div class="payment-close" onclick="closeDiscount()">✕</div>
-            </div>
-            <div class="payment-header">
-              <div class="payment-subtitle">
-                1,500만명이 감탄한 20년 경력 관상가 보고서
-              </div>
-            </div>
-            <div class="report-wrap">
-              <div class="report-title-wrap">
-                <div class="report-title">보고서 내용</div>
-                <div class="report-num">총 10,000자 심층 분석</div>
-              </div>
-              <div class="report-contents-wrap">
-                <div class="report-contents">
-                  1. [코와 콧대] 통장이 최고점 찍을 해
-                </div>
-              </div>
-              <div class="report-contents-wrap">
-                <div class="report-contents">
-                  2. [이마와 눈썹] 첫 대박 터질 나이
-                </div>
-              </div>
-              <div class="report-contents-wrap">
-                <div class="report-contents">
-                  3. [눈과 눈매] 끌리는 이상형 본능 코드
-                </div>
-              </div>
-              <div class="report-contents-wrap">
-                <div class="report-contents">
-                  4. [입과 입술] 거절 못 할 설득 타율
-                </div>
-              </div>
-              <div class="report-contents-wrap">
-                <div class="report-contents">
-                  5. [턱과 광대] 은퇴 후 반격 모먼트
-                </div>
-              </div>
-              <div class="report-contents-wrap">
-                <div class="report-contents">
-                  6. [얼굴형] 인생 그래프 상승 각도
-                </div>
-              </div>
-              <div class="report-contents-wrap">
-                <div class="report-contents">
-                  7. [전체 인상·기운] 로또급 깜짝 행운 지수
-                </div>
-              </div>
-              <div class="report-contents-wrap">
-                <div class="report-contents">
-                  8. [운명·경로] 인생 반전 버튼 작동 시점
-                </div>
-              </div>
-              <div class="report-contents-wrap">
-                <div class="report-contents">
-                  9. [대인 관계·인연] 귀인 만날 달력 표시
-                </div>
-              </div>
-              <div class="report-contents-wrap">
-                <div class="report-contents">
-                  10. [종합 결론] 길·흉 총합 승부수 한줄
-                </div>
-              </div>
-              <div class="report-contents-wrap">
-                <div class="report-contents">
-                  11. [천기 누설] 내 팔자 피게 해줄 성형 부위
-                </div>
-              </div>
-            </div>
-            <div class="payment-price-wrap">
-              <div class="payment-original-price-title">보고서 금액</div>
-              <div class="payment-original-price">6,900원</div>
-            </div>
-            <div class="payment-coupon-wrap">
-              <div class="payment-coupon">쿠폰 할인 💸</div>
-            </div>
-            <div class="payment-coupon-price-wrap">
-              <div class="payment-coupon-title">2025 특별 할인 + 추가 할인</div>
-              <div class="payment-coupon-price">-5,000원</div>
-            </div>
-
-            <div id="discount-method"></div>
-            <div id="discount-agreement"></div>
-
-            <div class="payment-final-price-wrap">
-              <div class="payment-final-price-title">최종 결제 금액</div>
-              <div class="payment-final-price-price-wrap">
-                <div class="payment-originam-price2">6,900원</div>
-                <div class="payment-final-price">
-                  <div class="payment-final-price-discount">73%</div>
-                  <div class="payment-final-price-num">1,900원</div>
-                </div>
-              </div>
-            </div>
-
-            <button id="discount-button" class="payment-final-btn">
-              보고서 확인하기
-            </button>
-            <div class="payment-empty"></div>
-          </div>
-        </div>
-      </div>
-
       <footer class="footer"></footer>
     </div>
     <script>

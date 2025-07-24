@@ -1,24 +1,13 @@
 .result {
-  font-family: "GmarketSans";
-}
-
-.result-summary {
-  text-align: justify;
-  font-family: "GmarketSans";
-}
-
-.result-detail {
-  font-family: "GmarketSans";
-
-  text-align: justify;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .face-result {
   color: rgb(39, 39, 39);
-  font-family: "GmarketSans";
 }
 .face-summary-section {
-  margin-bottom: 12px;
   padding: 0 10px;
   border-radius: 10px;
 }
@@ -32,6 +21,7 @@
 }
 
 .face-full-section-wrapper {
+  font-family: "GmarketSans";
   position: relative;
   overflow: hidden;
 }
@@ -41,7 +31,6 @@
   line-height: 1.7;
   padding: 0 12px;
   text-align: justify;
-  height: 600px;
 }
 .result-mask {
   position: absolute;
@@ -70,34 +59,51 @@
   mask-image: linear-gradient(
     to bottom,
     transparent 0%,
-    transparent 20%,
-    #b6ad00 30%,
+    transparent 5%,
+    #b6ad00 10%,
     #b6ad00 100%
   );
   -webkit-mask-image: linear-gradient(
     to bottom,
     transparent 0%,
-    transparent 20%,
-    #b6ad00 30%,
+    transparent 5%,
+    #b6ad00 10%,
     #b6ad00 100%
   );
 
   pointer-events: none;
 }
 
-.mask-text-wrap {
-  position: absolute;
-  top: 180px;
+.mask-text-wrap-top {
+  width: 320px;
+  position: fixed;
+  bottom: 100px;
   z-index: 10;
   display: flex;
   flex-direction: column;
   align-items: center;
+  border-radius: 10px;
+
+  /* ▼ 추가된 부분 ▼ */
+  background: url("/img/bgIMG.png") center / cover no-repeat;
+}
+
+.mask-text-wrap {
+  width: 320px;
+  border-radius: 10px;
+
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 16px;
 }
 
 /* 텍스트는 블러 영향 X */
 .mask-text {
   width: 320px;
-  background: rgba(23, 23, 23, 0.9);
+  background-color: rgba(0, 0, 0, 0.7);
+
   padding: 16px 20px;
   border-radius: 10px;
   pointer-events: auto;
@@ -105,26 +111,27 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  border: 1px solid #ffbe0a;
 }
 
 .mask-text-top {
   font-size: 24px;
   font-weight: bold;
-  color: rgb(238, 238, 238);
   font-family: "KimjungchulMyungjo-Bold";
-  margin-bottom: 2px;
+  margin-bottom: 12px;
 }
 
 .mask-text-top-sub {
   margin-bottom: 12px;
-  color: rgb(228, 228, 228);
+  color: rgb(246, 246, 246);
+  text-align: center;
+  font-size: 16px;
+  font-family: "GmarketSans";
+  font-weight: 400;
 }
 
 .mask-text-sub {
   font-size: 14px;
   text-align: left;
-  color: rgb(255, 206, 31);
   margin-bottom: 8px;
 }
 
@@ -136,8 +143,6 @@
   width: 100%;
   margin: 8px 0 12px 0;
   padding: 8px 16px;
-  border: 1px solid #ffbe0a;
-  background-color: #ffbe0a;
   border-radius: 12px;
 }
 
@@ -151,220 +156,62 @@
 }
 
 .mask-text-btn-sub {
-  font-size: 12px;
+  font-size: 14px;
   text-align: center;
   color: #b9b9b9;
 }
-
-.mask-text-wrap-worth {
-  z-index: 10;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+.base-bg {
+  background: url("/img/bgIMG.png") center / cover no-repeat;
 }
-
-/* 텍스트는 블러 영향 X */
-.mask-text-worth {
-  width: 320px;
-  background: rgba(23, 23, 23, 0.9);
-  padding: 16px 20px;
-  border-radius: 10px;
-  pointer-events: auto;
-  cursor: pointer;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  border: 1px solid #ff700a;
+.base-color {
+  color: #ffce1f;
 }
-
-.mask-text-top-worth {
-  font-size: 24px;
-  font-weight: bold;
-  color: rgb(238, 238, 238);
-  font-family: "KimjungchulMyungjo-Bold";
-  margin-bottom: 2px;
+.base-bgcolor {
+  border: 1px solid #ffbe0a;
+  background-color: #ffbe0a;
 }
-
-.mask-text-top-sub-worth {
-  margin-bottom: 12px;
-  color: rgb(228, 228, 228);
+.wealth-bg {
+  background: url("/img/loveBG.png") center / cover no-repeat;
 }
-
-.mask-text-sub-worth {
-  font-size: 14px;
-  text-align: left;
-  color: #ffa15e;
-  margin-bottom: 8px;
-}
-
-.mask-text-span-worth {
-  color: #ffcba6;
-}
-
-.mask-text-btn-wrap-worth {
-  width: 100%;
-  margin: 8px 0 12px 0;
-  padding: 8px 16px;
-  border: 1px solid #ffa15e;
-  background-color: #ffa15e;
-  border-radius: 12px;
-}
-
-.mask-text-btn-worth {
-  font-size: 16px;
-  text-align: center;
-  color: rgb(18, 18, 18);
-  padding-top: 2px;
-  font-weight: 700;
-  font-family: "KimjungchulMyungjo-Bold";
-}
-
-.mask-text-btn-sub-worth {
-  font-size: 12px;
-  text-align: center;
-  color: #b9b9b9;
-}
-
-.mask-text-wrap-love {
-  z-index: 10;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-top: 16px;
-}
-
-/* 텍스트는 블러 영향 X */
-.mask-text-love {
-  width: 320px;
-  background: rgba(23, 23, 23, 0.9);
-  padding: 16px 20px;
-  border-radius: 10px;
-  pointer-events: auto;
-  cursor: pointer;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  border: 1px solid #ff0af3;
-}
-
-.mask-text-top-love {
-  font-size: 24px;
-  font-weight: bold;
-  color: rgb(238, 238, 238);
-  font-family: "KimjungchulMyungjo-Bold";
-  margin-bottom: 2px;
-  text-align: center;
-}
-
-.mask-text-top-sub-love {
-  margin-bottom: 12px;
-  color: rgb(228, 228, 228);
-}
-
-.mask-text-sub-love {
-  font-size: 14px;
-  text-align: left;
+.love-color {
   color: #fdbcff;
-  margin-bottom: 8px;
 }
-
-.mask-text-span-love {
-  color: #fee3ff;
-}
-
-.mask-text-btn-wrap-love {
-  width: 100%;
-  margin: 8px 0 12px 0;
-  padding: 8px 16px;
+.love-bgcolor {
   border: 1px solid #fdbcff;
   background-color: #fdbcff;
-  border-radius: 12px;
+}
+.wealth-bg {
+  background: url("/img/wealthBG.png") center / cover no-repeat;
 }
 
-.mask-text-btn-love {
-  font-size: 16px;
-  text-align: center;
-  color: rgb(18, 18, 18);
-  padding-top: 2px;
-  font-weight: 700;
-  font-family: "KimjungchulMyungjo-Bold";
+.wealth-color {
+  color: #ff700a;
+}
+.wealth-bgcolor {
+  border: 1px solid #ff700a;
+  background-color: #ff700a;
+}
+.marriage-bg {
+  background: url("/img/marriageBG.png") center / cover no-repeat;
 }
 
-.mask-text-btn-sub-love {
-  font-size: 12px;
-  text-align: center;
-  color: #b9b9b9;
-}
-
-.mask-text-wrap-marriage {
-  z-index: 10;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-top: 16px;
-}
-
-/* 텍스트는 블러 영향 X */
-.mask-text-marriage {
-  width: 320px;
-  background: rgba(23, 23, 23, 0.9);
-  padding: 16px 20px;
-  border-radius: 10px;
-  pointer-events: auto;
-  cursor: pointer;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  border: 1px solid #9df5ff;
-}
-
-.mask-text-top-marriage {
-  font-size: 24px;
-  font-weight: bold;
-  color: rgb(238, 238, 238);
-  font-family: "KimjungchulMyungjo-Bold";
-  margin-bottom: 2px;
-  text-align: center;
-}
-
-.mask-text-top-sub-marriage {
-  margin-bottom: 12px;
-  color: rgb(228, 228, 228);
-}
-
-.mask-text-sub-marriage {
-  font-size: 14px;
-  text-align: left;
+.marriage-color {
   color: #9df5ff;
-  margin-bottom: 8px;
 }
-
-.mask-text-span-marriage {
-  color: #e0fcff;
-}
-
-.mask-text-btn-wrap-marriage {
-  width: 100%;
-  margin: 8px 0 12px 0;
-  padding: 8px 16px;
+.marriage-bgcolor {
   border: 1px solid #9df5ff;
   background-color: #9df5ff;
-  border-radius: 12px;
+}
+.career-bg {
+  background: url("/img/careerBG.png") center / cover no-repeat;
 }
 
-.mask-text-btn-marriage {
-  font-size: 16px;
-  text-align: center;
-  color: rgb(18, 18, 18);
-  padding-top: 2px;
-  font-weight: 700;
-  font-family: "KimjungchulMyungjo-Bold";
+.career-color {
+  color: #13eb16;
 }
-
-.mask-text-btn-sub-marriage {
-  font-size: 12px;
-  text-align: center;
-  color: #b9b9b9;
+.career-bgcolor {
+  border: 1px solid #13eb16;
+  background-color: #13eb16;
 }
 
 .review-section {
@@ -606,63 +453,29 @@
   opacity: 0.85;
 }
 
-.report-section {
-  /* 바로 뒤 섹션에만 간격 */
-  border-top: 1px solid #ddd;
-  padding-top: 24px;
+.marriage-sec {
+  position: relative;
+  margin-bottom: 32px;
+}
+
+.marriage-sec-content {
+  line-height: 1.55;
+  font-family: "GmarketSans";
   text-align: justify;
 }
-/* 잠긴 섹션 기본 설정 */
-.report-section.locked {
-  position: relative;
-}
 
-/* 블러 마스크 오버레이 */
-.blur-overlay {
+/* 하단 90 % 흐림, 상단 10 %는 그대로 */
+.marriage-sec-mask {
   position: absolute;
-  inset: 0; /* 섹션 전체 덮기 */
-  /* backdrop-filter: blur(10px); */
-  -webkit-backdrop-filter: blur(10px);
+  top: 20%; /* ⬅️ 상단 10 % 공개 */
+  left: 0;
+  width: 100%;
+  height: 80%;
+  pointer-events: none;
 
-  /* 0~10%는 투명, 그 아래부터 서서히 불투명 → 아래쪽만 흐림 */
-  mask-image: linear-gradient(
-    to bottom,
-    transparent 0%,
-    transparent 10%,
-    black 15%,
-    black 100%
-  );
-  -webkit-mask-image: linear-gradient(
-    to bottom,
-    transparent 0%,
-    transparent 10%,
-    black 15%,
-    black 100%
-  );
-
-  pointer-events: none; /* 블러층 자체는 클릭 막지 않음 */
-}
-
-/* 결제 CTA 버튼이 올라갈 오버레이 */
-.section-paywall {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: flex-start;
-  gap: 12px;
-  text-align: center;
-  color: #fff;
-  padding-top: 400px;
-}
-
-.section-paywall button {
-  padding: 10px 20px;
-  font-size: 15px;
-  border: none;
-  border-radius: 8px;
-  background: #4f46e5;
-  color: #fff;
-  cursor: pointer;
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  /* 원하는 경우 살짝 어둡게
+     background: rgba(255,255,255,0.0);
+  */
 }
