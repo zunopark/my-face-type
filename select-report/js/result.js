@@ -4,6 +4,9 @@ let db;
 function goToReport(type, id) {
   // e.g. /wealth-report/?id=xxxx
   window.location.href = `/${type}-report/?id=${encodeURIComponent(id)}`;
+  mixpanel.track("보고서 선택", {
+    type,
+  });
 }
 
 /* ───────── 1. IndexedDB 초기화 ───────── */

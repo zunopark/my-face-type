@@ -266,6 +266,9 @@ function trackAndStartLovePayment(id) {
   document.body.style.overflow = "hidden";
   document.getElementById("lovePaymentOverlay").style.display = "block";
   startLovePayment(id);
+  mixpanel.track("유료 관상 보고서 버튼 클릭", {
+    type: "love",
+  });
 }
 async function startLovePayment(id) {
   const clientKey = "live_gck_yZqmkKeP8gBaRKPg1WwdrbQRxB9l";

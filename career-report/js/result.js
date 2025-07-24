@@ -252,6 +252,9 @@ function trackAndStartCareerPayment(id) {
   document.body.style.overflow = "hidden";
   document.getElementById("careerPaymentOverlay").style.display = "block";
   startCareerPayment(id);
+  mixpanel.track("유료 관상 보고서 버튼 클릭", {
+    type: "career",
+  });
 }
 async function startCareerPayment(id) {
   const clientKey = "live_gck_yZqmkKeP8gBaRKPg1WwdrbQRxB9l";

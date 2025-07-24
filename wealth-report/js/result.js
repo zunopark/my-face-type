@@ -250,6 +250,9 @@ function trackAndStartWealthPayment(id) {
   document.body.style.overflow = "hidden";
   document.getElementById("wealthPaymentOverlay").style.display = "block";
   startWealthPayment(id);
+  mixpanel.track("유료 관상 보고서 버튼 클릭", {
+    type: "wealth",
+  });
 }
 async function startWealthPayment(id) {
   const clientKey = "live_gck_yZqmkKeP8gBaRKPg1WwdrbQRxB9l";
