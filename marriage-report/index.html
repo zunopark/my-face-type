@@ -347,10 +347,11 @@
       mixpanel.identify(distinctId);
 
       // 추적 예시
-      mixpanel.track("얼굴 분석 결과 페이지 방문", {
+      mixpanel.track("보고서 결과 페이지 방문", {
         url: window.location.href,
         userAgent: navigator.userAgent,
         timestamp: new Date().toISOString(),
+        type: "marriage",
       });
     </script>
 
