@@ -246,7 +246,7 @@ async function startTossPayment(resultId) {
     const paymentWidget = PaymentWidget(clientKey, customerKey);
     const paymentMethodWidget = paymentWidget.renderPaymentMethods(
       "#payment-method",
-      { value: 2900 }
+      { value: 6900 }
     );
     paymentWidget.renderAgreement("#agreement");
 
@@ -311,7 +311,7 @@ async function startDiscountedPayment() {
 
   try {
     const widget = PaymentWidget(clientKey, customerKey);
-    widget.renderPaymentMethods("#discount-method", { value: 1900 });
+    widget.renderPaymentMethods("#discount-method", { value: 3900 });
     widget.renderAgreement("#discount-agreement");
 
     document.getElementById("discount-button").onclick = async () => {
