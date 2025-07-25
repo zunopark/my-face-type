@@ -1,21 +1,16 @@
 .result {
-  font-family: "GmarketSans";
 }
 
 .result-summary {
   text-align: justify;
-  font-family: "GmarketSans";
 }
 
 .result-detail {
-  font-family: "GmarketSans";
-
   text-align: justify;
 }
 
 .face-result {
   color: rgb(39, 39, 39);
-  font-family: "GmarketSans";
 }
 .face-summary-section {
   margin-bottom: 12px;
@@ -26,7 +21,6 @@
 .face-summary {
   color: rgb(39, 39, 39);
   line-height: 1.7;
-  font-family: "GmarketSans";
 
   text-align: justify;
 }

@@ -103,7 +103,6 @@
   display: flex;
   justify-content: flex-start;
   margin-bottom: 14px;
-  font-family: "GmarketSans";
 }
 
 .report-wrap {
@@ -129,7 +128,6 @@
   font-size: 14px;
 }
 .report-contents {
-  font-family: "GmarketSans";
   margin-bottom: 12px;
   text-align: left;
 }

@@ -15,7 +15,6 @@
 .face-summary {
   color: rgb(39, 39, 39);
   line-height: 1.7;
-  font-family: "GmarketSans";
 
   text-align: justify;
 }
@@ -126,7 +125,7 @@
   color: rgb(246, 246, 246);
   text-align: center;
   font-size: 16px;
-  font-family: "GmarketSans";
+
   font-weight: 400;
 }
 

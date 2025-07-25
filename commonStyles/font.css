@@ -1,7 +1,7 @@
 /* ───────── G마켓산스 ───────── */
 @font-face {
   /* Light 300 */
-  font-family: "GmarketSans";
+
   src: url("../fonts/GmarketSans/GmarketSansTTFLight.ttf") format("truetype");
   font-weight: 300;
   font-style: normal;
@@ -9,7 +9,7 @@
 }
 @font-face {
   /* Medium 500 */
-  font-family: "GmarketSans";
+
   src: url("../fonts/GmarketSans/GmarketSansTTFMedium.ttf") format("truetype");
   font-weight: 500;
   font-style: normal;
@@ -17,7 +17,7 @@
 }
 @font-face {
   /* Bold 700 */
-  font-family: "GmarketSans";
+
   src: url("../fonts/GmarketSans/GmarketSansTTFBold.ttf") format("truetype");
   font-weight: 700;
   font-style: normal;

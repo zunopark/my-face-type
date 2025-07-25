@@ -39,13 +39,11 @@ body {
   font-weight: 700;
   text-align: center;
   line-height: 40px;
-  font-family: "GmarketSans";
 }
 
 .main_subtitle {
   font-size: 16px;
   color: #2b2b2b;
-  font-family: "GmarketSans";
 }
 
 .file-upload-btn {

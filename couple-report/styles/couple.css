@@ -21,7 +21,6 @@
   font-size: 18px;
   font-style: italic;
   margin-bottom: 24px;
-  font-family: "GmarketSans";
 }
 
 .loading {
@@ -60,7 +59,6 @@
 
 .section {
   margin-bottom: 40px;
-  font-family: "GmarketSans";
 }
 
 .section h2 {
@@ -84,7 +82,6 @@
   padding: 16px;
   border-radius: 8px;
   line-height: 1.6;
-  font-family: "GmarketSans";
 }
 
 .score-summary-title {
@@ -238,7 +235,7 @@
   padding: 20px 40px;
   font-size: 18px;
   font-weight: 700;
-  font-family: "GmarketSans";
+
   border-radius: 40px;
   margin-bottom: 40px;
   margin-top: 12px;
@@ -262,14 +259,12 @@
   padding: 20px 40px;
   font-size: 18px;
   font-weight: 700;
-  font-family: "GmarketSans";
+
   border-radius: 40px;
   z-index: 1000;
 }
 
 .view-full-always-btn {
-  font-family: "GmarketSans";
-
   position: fixed;
   bottom: 40px;
   /* transform: translateX(-50%); */
