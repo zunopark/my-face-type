@@ -105,7 +105,7 @@ function renderResultNormalized(obj) {
         </div>
         <div class="mask-text-btn-wrap base-bgcolor">
           <div class="mask-text-btn"
-               onclick="startTossPayment('${resultId}')">
+               onclick="trackAndStartPayment('${resultId}')">
             전체 분석 결과 확인하기
           </div>
         </div>
@@ -122,7 +122,7 @@ function renderResultNormalized(obj) {
         </div>
         <div class="mask-text-btn-wrap love-bgcolor">
           <div class="mask-text-btn"
-               onclick="startLoveTossPayment('${resultId}')">
+               onclick="trackAndStartLovePayment('${resultId}')">
             나의 연애 관상 확인하기
           </div>
         </div>
@@ -139,7 +139,7 @@ function renderResultNormalized(obj) {
         </div>
         <div class="mask-text-btn-wrap wealth-bgcolor">
           <div class="mask-text-btn"
-               onclick="startWealthTossPayment('${resultId}')">
+               onclick="trackAndStartWealthPayment('${resultId}')">
             나의 재물 관상 확인하기
           </div>
         </div>
@@ -156,7 +156,7 @@ function renderResultNormalized(obj) {
         </div>
         <div class="mask-text-btn-wrap marriage-bgcolor">
           <div class="mask-text-btn"
-               onclick="startMarriageTossPayment('${resultId}')">
+               onclick="trackAndStartMarriagePayment('${resultId}')">
             나의 결혼 관상 확인하기
           </div>
         </div>
@@ -173,7 +173,7 @@ function renderResultNormalized(obj) {
         </div>
         <div class="mask-text-btn-wrap career-bgcolor">
           <div class="mask-text-btn"
-               onclick="startCareerTossPayment('${resultId}')">
+               onclick="trackAndStartCareerPayment('${resultId}')">
             나의 직업 관상 확인하기
           </div>
         </div>
@@ -230,9 +230,7 @@ async function autoRender() {
 
 function trackAndStartPayment(resultId) {
   mixpanel.track("유료 관상 분석 보고서 버튼 클릭", {
-    resultId: resultId,
-    timestamp: new Date().toISOString(),
-    type: "기본",
+    type: pageType,
   });
   document.body.style.overflow = "hidden";
   startTossPayment(resultId);
@@ -360,9 +358,7 @@ function closeDiscount() {
 
 function trackAndStartWealthPayment(resultId) {
   mixpanel.track("유료 관상 분석 보고서 버튼 클릭", {
-    resultId: resultId,
-    timestamp: new Date().toISOString(),
-    type: "재물",
+    type: pageType,
   });
   document.body.style.overflow = "hidden";
 
@@ -424,9 +420,7 @@ function closeWealthPayment() {
 
 function trackAndStartLovePayment(resultId) {
   mixpanel.track("유료 관상 분석 보고서 버튼 클릭", {
-    resultId: resultId,
-    timestamp: new Date().toISOString(),
-    type: "연애",
+    type: pageType,
   });
   document.body.style.overflow = "hidden";
 
@@ -488,9 +482,7 @@ function closeLovePayment() {
 
 function trackAndStartMarriagePayment(resultId) {
   mixpanel.track("유료 관상 분석 보고서 버튼 클릭", {
-    resultId: resultId,
-    timestamp: new Date().toISOString(),
-    type: "결혼",
+    type: pageType,
   });
   document.body.style.overflow = "hidden";
 
@@ -552,9 +544,7 @@ function closeMarriagePayment() {
 
 function trackAndStartCareerPayment(resultId) {
   mixpanel.track("유료 관상 분석 보고서 버튼 클릭", {
-    resultId: resultId,
-    timestamp: new Date().toISOString(),
-    type: "직업",
+    type: pageType,
   });
   document.body.style.overflow = "hidden";
 
@@ -616,6 +606,5 @@ function closeCareerPayment() {
 
 // 페이지 진입 시 자동 호출
 document.addEventListener("DOMContentLoaded", () => {
-  mixpanel.track("기본 관상 결과 페이지 진입", { ts: Date.now() });
   autoRender();
 });
