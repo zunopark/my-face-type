@@ -230,7 +230,7 @@ async function autoRender() {
 
 function trackAndStartPayment(resultId) {
   mixpanel.track("유료 관상 분석 보고서 버튼 클릭", {
-    type: pageType,
+    type: "base",
   });
   document.body.style.overflow = "hidden";
   startTossPayment(resultId);
@@ -358,7 +358,7 @@ function closeDiscount() {
 
 function trackAndStartWealthPayment(resultId) {
   mixpanel.track("유료 관상 분석 보고서 버튼 클릭", {
-    type: pageType,
+    type: "wealth",
   });
   document.body.style.overflow = "hidden";
 
@@ -420,7 +420,7 @@ function closeWealthPayment() {
 
 function trackAndStartLovePayment(resultId) {
   mixpanel.track("유료 관상 분석 보고서 버튼 클릭", {
-    type: pageType,
+    type: "love",
   });
   document.body.style.overflow = "hidden";
 
@@ -482,7 +482,7 @@ function closeLovePayment() {
 
 function trackAndStartMarriagePayment(resultId) {
   mixpanel.track("유료 관상 분석 보고서 버튼 클릭", {
-    type: pageType,
+    type: "marriage",
   });
   document.body.style.overflow = "hidden";
 
@@ -544,7 +544,7 @@ function closeMarriagePayment() {
 
 function trackAndStartCareerPayment(resultId) {
   mixpanel.track("유료 관상 분석 보고서 버튼 클릭", {
-    type: pageType,
+    type: "career",
   });
   document.body.style.overflow = "hidden";
 
