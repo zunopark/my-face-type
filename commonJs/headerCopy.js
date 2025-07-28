@@ -8,30 +8,22 @@ const headerContent = () => {
             <a href="/" style="margin-right: 12px; text-decoration: none;">
           <div class="header_chat_title">관상</div>
         </a>
-        <a href="/couple/" style="margin-right: 12px; text-decoration: none;">
-          <div class="header_chat_title" style="color: rgb(130, 130, 130);" >궁합</div>
+            <a href="/animalface/" style="margin-right: 12px; text-decoration: none;">
+          <div class="header_chat_title" style="color: rgb(130, 130, 130);" >동물상</div>
         </a>
-        <a href="/reunion/" style="margin-right: 12px; text-decoration: none;">
-          <div class="header_chat_title" style="color: rgb(130, 130, 130);" >재회</div>
-        </a>
-       
-       
+      
       </div>`;
   } else if (headerMain.id === "history") {
     headerMain.innerHTML = ` 
       <div class="header_chat header_fixed" style ="">
 
             <a href="/" style="margin-right: 12px; text-decoration: none;">
-          <div class="header_chat_title">관상</div>
+          <div class="header_chat_title" style="color: rgb(130, 130, 130);" >관상</div>
         </a>
-         <a href="/couple/" style="margin-right: 12px; text-decoration: none;">
-          <div class="header_chat_title" style="color: rgb(130, 130, 130);" >궁합</div>
+            <a href="/animalface/" style="margin-right: 12px; text-decoration: none;">
+          <div class="header_chat_title" style="color: rgb(130, 130, 130);" >동물상</div>
         </a>
-        <a href="/reunion/" style="margin-right: 12px; text-decoration: none;">
-          <div class="header_chat_title" style="color: rgb(130, 130, 130);" >재회</div>
-        </a>
-       
-       
+         
       </div>`;
   } else if (headerMain.id === "couple") {
     headerMain.innerHTML = ` 
@@ -40,29 +32,20 @@ const headerContent = () => {
             <a href="/" style="margin-right: 12px; text-decoration: none;">
           <div class="header_chat_title" style="color: rgb(130, 130, 130);" >관상</div>
         </a>
-         <a href="/couple/" style="margin-right: 12px; text-decoration: none;">
-          <div class="header_chat_title">궁합</div>
+            <a href="/animalface/" style="margin-right: 12px; text-decoration: none;">
+          <div class="header_chat_title" style="color: rgb(130, 130, 130);" >동물상</div>
         </a>
-        <a href="/reunion/" style="margin-right: 12px; text-decoration: none;">
-          <div class="header_chat_title" style="color: rgb(130, 130, 130);" >재회</div>
-        </a>
-       
-        
+      
       </div>`;
-  } else if (headerMain.id === "reunion") {
+  } else if (headerMain.id === "base") {
     headerMain.innerHTML = ` 
-     <div class="header_chat header_fixed" style ="">
-
-            <a href="/" style="margin-right: 12px; text-decoration: none;">
-          <div class="header_chat_title" style="color: rgb(130, 130, 130);" >관상</div>
+      <div id="header_back" class="header_chat header_fixed">
+        <a href="/">
+          <i class="fa-solid fa-arrow-left header_chat_icon" id="back-button"></i>
         </a>
-         <a href="/couple/" style="margin-right: 12px; text-decoration: none;">
-          <div class="header_chat_title" style="color: rgb(130, 130, 130);" >궁합</div>
+        <a href="/">
+          <div class="header_chat_title">뒤로 가기</div>
         </a>
-        <a href="/reunion/" style="margin-right: 12px; text-decoration: none;">
-          <div class="header_chat_title">재회</div>
-        </a>
-       
         
       </div>`;
   }

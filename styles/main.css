@@ -32,6 +32,8 @@ body {
 }
 
 .main_title {
+  font-family: "KimjungchulMyungjo-Bold";
+
   font-size: 24px;
   font-weight: 700;
   text-align: center;
