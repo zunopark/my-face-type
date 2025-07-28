@@ -186,6 +186,10 @@ function renderResultNormalized(obj) {
 function renderImage(base64) {
   document.getElementById("face-image").src = base64;
   document.getElementById("final_face_contents_base").src = base64;
+  document.getElementById("final_face_contents_wealth").src = base64;
+  document.getElementById("final_face_contents_love").src = base64;
+  document.getElementById("final_face_contents_marriage").src = base64;
+  document.getElementById("final_face_contents_career").src = base64;
   document.querySelector(".file-upload-content").style.display = "block";
   document.querySelector(".image-upload-wrap").style.display = "none";
 }
@@ -247,7 +251,7 @@ async function startTossPayment(resultId) {
     const paymentWidget = PaymentWidget(clientKey, customerKey);
     const paymentMethodWidget = paymentWidget.renderPaymentMethods(
       "#payment-method",
-      { value: 4900 }
+      { value: 1 }
     );
     paymentWidget.renderAgreement("#agreement");
 
@@ -376,7 +380,7 @@ async function startWealthTossPayment(resultId) {
     const paymentWidget = PaymentWidget(clientKey, customerKey);
     const paymentMethodWidget = paymentWidget.renderPaymentMethods(
       "#wealth-method",
-      { value: 14900 }
+      { value: 1 }
     );
     paymentWidget.renderAgreement("#wealth-agreement");
 
@@ -438,7 +442,7 @@ async function startLoveTossPayment(resultId) {
     const paymentWidget = PaymentWidget(clientKey, customerKey);
     const paymentMethodWidget = paymentWidget.renderPaymentMethods(
       "#love-method",
-      { value: 9900 }
+      { value: 1 }
     );
     paymentWidget.renderAgreement("#love-agreement");
 
@@ -500,7 +504,7 @@ async function startMarriageTossPayment(resultId) {
     const paymentWidget = PaymentWidget(clientKey, customerKey);
     const paymentMethodWidget = paymentWidget.renderPaymentMethods(
       "#marriage-method",
-      { value: 6900 }
+      { value: 1 }
     );
     paymentWidget.renderAgreement("#marriage-agreement");
 
@@ -562,7 +566,7 @@ async function startCareerTossPayment(resultId) {
     const paymentWidget = PaymentWidget(clientKey, customerKey);
     const paymentMethodWidget = paymentWidget.renderPaymentMethods(
       "#career-method",
-      { value: 8900 }
+      { value: 1 }
     );
     paymentWidget.renderAgreement("#career-agreement");
 

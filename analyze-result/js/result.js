@@ -321,9 +321,13 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     /* 1) 이미 생성됨 */
     if (isGenerated(result, type)) {
-      if (!isPaid(result, type))
+      if (isPaid(result, type)) {
+        // ⬅️ 결제 완료 → 내용 노출
         renderResultNormalized(getReport(result, type), type);
-      else renderPaywall();
+      } else {
+        // ⬅️ 미결제 → Paywall
+        renderPaywall();
+      }
       return;
     }
 

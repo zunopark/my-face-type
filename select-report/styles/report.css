@@ -567,7 +567,11 @@
 }
 
 /* 2) 이미지는 박스에 꽉 채우고 가운데로 크롭 */
-#final_face_contents_base {
+#final_face_contents_base,
+#final_face_contents_love,
+#final_face_contents_wealth,
+#final_face_contents_marriage,
+#final_face_contents_career {
   width: 100%;
   height: 100%;
   object-fit: cover; /* 비율 유지 + 크롭 */
