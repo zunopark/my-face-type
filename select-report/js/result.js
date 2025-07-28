@@ -130,6 +130,23 @@ function renderResultNormalized(obj) {
       </div>
     </div>
 
+    <div class="mask-text-wrap career-bg">
+      <div class="mask-text">
+        <div class="mask-text-top career-color">직업 심층 관상 보고서</div>
+        <div class="mask-text-top-sub">
+          내 얼굴에서 보이는 직업 성향과 고점 시기<br /><br />
+          + 천기누설 +<br />연봉 그래프 상한가 찍을 부서·업종 좌표
+        </div>
+        <div class="mask-text-btn-wrap career-bgcolor">
+          <div class="mask-text-btn"
+               onclick="trackAndStartCareerPayment('${resultId}')">
+            나의 직업 관상 확인하기
+          </div>
+        </div>
+        <div class="mask-text-btn-sub">총 12,000자 이상</div>
+      </div>
+    </div>
+
     <div class="mask-text-wrap wealth-bg">
       <div class="mask-text">
         <div class="mask-text-top wealth-color">재물 심층 관상 보고서</div>
@@ -158,23 +175,6 @@ function renderResultNormalized(obj) {
           <div class="mask-text-btn"
                onclick="trackAndStartMarriagePayment('${resultId}')">
             나의 결혼 관상 확인하기
-          </div>
-        </div>
-        <div class="mask-text-btn-sub">총 12,000자 이상</div>
-      </div>
-    </div>
-
-    <div class="mask-text-wrap career-bg">
-      <div class="mask-text">
-        <div class="mask-text-top career-color">직업 심층 관상 보고서</div>
-        <div class="mask-text-top-sub">
-          내 얼굴에서 보이는 직업 성향과 고점 시기<br /><br />
-          + 천기누설 +<br />연봉 그래프 상한가 찍을 부서·업종 좌표
-        </div>
-        <div class="mask-text-btn-wrap career-bgcolor">
-          <div class="mask-text-btn"
-               onclick="trackAndStartCareerPayment('${resultId}')">
-            나의 직업 관상 확인하기
           </div>
         </div>
         <div class="mask-text-btn-sub">총 12,000자 이상</div>
