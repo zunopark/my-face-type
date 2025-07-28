@@ -246,7 +246,7 @@ async function startTossPayment(resultId) {
     const paymentWidget = PaymentWidget(clientKey, customerKey);
     const paymentMethodWidget = paymentWidget.renderPaymentMethods(
       "#payment-method",
-      { value: 4900 }
+      { value: 9900 }
     );
     paymentWidget.renderAgreement("#agreement");
 
@@ -267,7 +267,7 @@ async function startTossPayment(resultId) {
         });
         mixpanel.track("기본 분석 보고서 결제 요청 시도", {
           id: resultId,
-          price: 4900,
+          price: 9900,
         }); // ← 추가
       } catch (err) {
         alert("❌ 결제 실패: " + err.message);
@@ -311,7 +311,7 @@ async function startDiscountedPayment() {
 
   try {
     const widget = PaymentWidget(clientKey, customerKey);
-    widget.renderPaymentMethods("#discount-method", { value: 2900 });
+    widget.renderPaymentMethods("#discount-method", { value: 4900 });
     widget.renderAgreement("#discount-agreement");
 
     document.getElementById("discount-button").onclick = async () => {
@@ -332,7 +332,7 @@ async function startDiscountedPayment() {
 
         mixpanel.track("할인 결제 시도", {
           id: pageId,
-          price: 2900,
+          price: 4900,
           timestamp: new Date().toISOString(),
         });
       } catch (err) {

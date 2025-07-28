@@ -1,0 +1,512 @@
+.gradient_gold {
+  color: transparent;
+  background-image: linear-gradient(to right, #ffd700, #ffa500);
+  -webkit-background-clip: text;
+  background-clip: text;
+  font-family: "KimjungchulMyungjo-Bold";
+}
+
+.report_upper_wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 100%;
+  margin-top: 120px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid #c3c3c34d;
+}
+
+.report_upper_contents_img_wrap {
+  padding: 0 16px;
+  width: 160px;
+  align-self: center;
+  margin-bottom: 24px;
+}
+
+.first_contents_img {
+  width: 100%;
+  border-radius: 16px;
+}
+
+.report_upper_title_wrap {
+  padding: 0 16px;
+}
+
+.report_upper_hash {
+  font-size: 16px;
+  color: rgb(144, 144, 144);
+  padding-bottom: 4px;
+}
+
+.report_upper_title {
+  font-size: 20px;
+  color: whitesmoke;
+  font-weight: 700;
+}
+
+.report_upper_price_wrap {
+  margin-top: 20px;
+  padding: 0 16px;
+  display: flex;
+  align-items: flex-end;
+}
+
+.report_upper_original_price {
+  color: #b7b7b7;
+  margin-right: 8px;
+  text-decoration: line-through;
+  font-size: 14px;
+  margin-bottom: 2px;
+}
+
+.report_upper_sale {
+  color: #ff5121;
+  font-weight: 700;
+  font-size: 18px;
+  margin-right: 8px;
+}
+
+.report_upper_price {
+  font-size: 18px;
+  color: whitesmoke;
+  font-weight: 700;
+}
+
+.report_upper_reveiw_wrap {
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+  padding: 24px 12px;
+  border-bottom: 1px solid #c3c3c34d;
+  margin-top: 24px;
+}
+
+.report_upper_reveiw_contents {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100px;
+}
+
+.report_upper_reveiw_upper {
+  font-size: 18px;
+  color: rgb(32, 32, 32);
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+
+.report_upper_reveiw_lower {
+  font-size: 14px;
+  color: #8f8f8f;
+}
+
+.first_display {
+  width: 100%;
+  border-bottom: 1px solid #c3c3c34d;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 32px;
+}
+
+.first_img {
+  position: absolute;
+  width: 320px;
+  z-index: 0;
+  opacity: 0.6;
+  margin-top: 20px;
+}
+
+.first_contents {
+  padding-top: 120px;
+  padding-bottom: 160px;
+  display: flex;
+  flex-direction: column;
+  align-items: cneter;
+  width: 100%;
+  text-align: center;
+  z-index: 1;
+}
+
+.first_contents_img_wrap {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.first_contents_img {
+  width: 120px;
+  border-radius: 10px;
+}
+
+.first_contents_1 {
+  font-weight: 400;
+  color: #ebe0c6;
+  margin-top: 20px;
+}
+
+.first_contents_2 {
+  color: rgb(15, 15, 15);
+  /* font-family: 'Yeon Sung', cursive; */
+  font-family: "KimjungchulMyungjo-Bold";
+  font-size: 24px;
+  text-align: center;
+  line-height: 36px;
+}
+
+.second_display {
+  width: 100%;
+  border-bottom: 1px solid #c3c3c34d;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 40px 20px;
+}
+
+.second_contents_1 {
+  text-align: center;
+  color: rgb(32, 32, 32);
+
+  font-weight: 300;
+  line-height: 36px;
+  font-size: 20px;
+}
+
+.second_contents_2 {
+  margin-top: 20px;
+  margin-bottom: 30px;
+}
+
+.second_contents_2_column {
+  display: flex;
+  align-items: flex-start;
+  margin-top: 16px;
+  color: rgb(32, 32, 32);
+}
+
+.second_column_num {
+  width: 28px;
+  color: rgb(84, 84, 84);
+}
+
+.second_contents_2_column i {
+  margin-right: 10px;
+}
+
+.second_contents_2_column div {
+  font-weight: 400;
+  font-size: 16px;
+}
+
+.second_contents_3_img img {
+  width: 280px;
+}
+
+.second_contents_3_title {
+  text-align: center;
+  font-size: 24px;
+  line-height: 36px;
+  font-family: "KimjungchulMyungjo-Bold";
+  color: white;
+}
+
+.third_display {
+  width: 100%;
+  border-bottom: 1px solid #c3c3c34d;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 40px 20px;
+}
+
+.third_conents {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.third_contents_1 {
+  text-align: center;
+  color: rgb(32, 32, 32);
+
+  font-size: 20px;
+  line-height: 30px;
+}
+
+.third_contents_2 {
+  color: #ff5121;
+  line-height: 24px;
+  text-align: center;
+  margin-top: -24px;
+}
+
+.third_contents_3 {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.third_contents_3_column {
+  margin-bottom: 10px;
+}
+
+.forth_display {
+  width: 100%;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 40px 16px;
+}
+
+.forth_contents_1 {
+  color: rgb(32, 32, 32);
+
+  line-height: 24px;
+  text-align: left;
+  font-size: 20px;
+  line-height: 32px;
+  font-weight: 700;
+  margin-bottom: 10px;
+  width: 100%;
+}
+
+.forth_contents_2 {
+  text-align: center;
+  color: rgb(32, 32, 32);
+
+  font-size: 20px;
+}
+
+.forth_contents_3 {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin-top: 30px;
+}
+
+.forth_contents_3_column {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin-bottom: 30px;
+}
+
+.forth_contents_3_title {
+  color: #f1ce81;
+  font-size: 16px;
+  margin-bottom: 8px;
+  text-align: left;
+  text-decoration: underline;
+  font-weight: 700;
+}
+
+.forth_contents_3_des {
+  color: rgb(32, 32, 32);
+
+  opacity: 0.8;
+  text-align: justify;
+  line-height: 24px;
+  font-size: 16px;
+}
+
+.forth_contents_4 {
+  font-size: 24px;
+  color: #f1ce81;
+  margin-bottom: 30px;
+}
+
+.forth_contents_5 {
+  font-size: 32px;
+  background: transparent;
+  color: transparent;
+  -webkit-background-clip: text;
+  background-clip: text;
+  font-family: "KimjungchulMyungjo-Bold";
+  margin-bottom: 20px;
+  margin-top: 40px;
+}
+
+.fifth__display {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 60px 0 240px 0;
+  background-color: #2f2f2f;
+}
+
+.main__fifth__title {
+  font-size: 20px;
+  line-height: 32px;
+  font-weight: 700;
+  margin-bottom: 12px;
+  text-align: left;
+  color: #ebe0c6;
+  padding-left: 16px;
+}
+
+.fifth_contents_1 {
+  color: white;
+  opacity: 0.8;
+  font-weight: 300;
+  margin-bottom: 40px;
+  padding-left: 16px;
+}
+
+.main__fifth__button {
+  line-height: 24px;
+}
+
+.main__fifth__content__column {
+  width: 100%;
+}
+
+.fifth__content__upper {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  background-color: #686868;
+  color: white;
+  font-weight: 700;
+  padding: 12px 0;
+  padding-top: 16px;
+}
+.fifth__upper__left,
+.fifth__lower__left {
+  width: 16%;
+  text-align: center;
+}
+
+.fifth__upper__right {
+  width: 84%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.fifth__lower__right {
+  padding: 20px 0;
+  line-height: 22px;
+  text-align: justify;
+  padding-right: 20px;
+  width: 80%;
+  color: #ebe0c6;
+}
+
+.fifth__content__lower {
+  width: 100%;
+  display: flex;
+}
+
+.review-section {
+  margin-top: 40px;
+  padding: 0 10px;
+}
+
+.review-title {
+  font-size: 16px;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+.review-scroll {
+  display: flex;
+  overflow-x: auto;
+  gap: 12px;
+  padding-bottom: 8px;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+}
+
+.review-card {
+  flex: 0 0 auto;
+  width: 220px;
+  background: #393939;
+  border-radius: 12px;
+  padding: 14px;
+  font-size: 14px;
+  line-height: 1.4;
+  scroll-snap-align: start;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+  color: #ececec;
+  padding-bottom: 20px;
+}
+
+.review-meta {
+  margin-right: 12px;
+}
+
+.footer-button {
+  position: fixed;
+  bottom: -1px;
+  background-color: #2f2f2f;
+  color: #fff;
+  text-align: center;
+  padding: 10px 0;
+}
+
+/* footer css */
+.consultBtn {
+  width: 90%;
+  border: none;
+  padding: 16px 32px;
+  padding-bottom: 18px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  margin: 4px 2px;
+  cursor: pointer;
+  background-color: #3f3f3f;
+  border-radius: 10px;
+}
+
+.consultBtn span {
+  font-size: 16px;
+  background: transparent;
+  color: transparent;
+  background-image: linear-gradient(to right, #ffd700, #ffa500);
+  -webkit-background-clip: text;
+  background-clip: text;
+  font-family: "KimjungchulMyungjo-Bold";
+}
+
+#timer {
+  font-size: 16px;
+  background-color: #2f2f2f;
+  padding: 12px 0 10px 0;
+  border-bottom: 1px solid rgb(75, 75, 75);
+  border-top: 1px solid rgb(75, 75, 75);
+}
+
+.preview_display {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 40px;
+  margin-bottom: 40px;
+}
+
+.preview_title_wrap {
+  font-size: 20px;
+  color: whitesmoke;
+  font-weight: 700;
+  margin-bottom: 20px;
+}
+
+.preview_title {
+}
+.preview_img_wrap {
+  width: 360px;
+}
+.preview_img {
+  width: 100%;
+  margin-bottom: 4px;
+  border-radius: 2px;
+}
