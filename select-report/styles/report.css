@@ -23,6 +23,11 @@
   margin-bottom: 24px;
 }
 
+.first_contents_upper_title {
+  margin-bottom: 20px;
+  font-weight: 700;
+}
+
 .first_contents_img {
   width: 100%;
   border-radius: 16px;
@@ -119,14 +124,34 @@
 }
 
 .first_contents {
-  padding-top: 120px;
-  padding-bottom: 160px;
+  padding-top: 24px;
+  padding-bottom: 24px;
   display: flex;
   flex-direction: column;
   align-items: cneter;
   width: 100%;
   text-align: center;
   z-index: 1;
+}
+
+.first_contents_list_wrap {
+  width: 100%;
+  align-items: center;
+  margin-top: 60px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.first_contents_list_column {
+  width: 280px;
+  text-align: center;
+  padding: 10px 20px;
+  background-color: #ff5121;
+  margin-bottom: 10px;
+  color: white;
+  font-size: 16px;
+  font-weight: 700;
+  border-radius: 20px;
 }
 
 .first_contents_img_wrap {
@@ -164,15 +189,13 @@
   flex-direction: column;
   align-items: center;
   padding: 40px 20px;
+  background-color: #ff5121;
 }
 
 .second_contents_1 {
   text-align: center;
-  color: rgb(32, 32, 32);
-
-  font-weight: 300;
-  line-height: 36px;
-  font-size: 20px;
+  color: white;
+  line-height: 24px;
 }
 
 .second_contents_2 {
@@ -183,13 +206,16 @@
 .second_contents_2_column {
   display: flex;
   align-items: flex-start;
-  margin-top: 16px;
+  margin-top: 8px;
   color: rgb(32, 32, 32);
+  background-color: #ffdad0;
+  padding: 20px;
+  border-radius: 6px;
 }
 
 .second_column_num {
   width: 28px;
-  color: rgb(84, 84, 84);
+  color: #ff5121;
   text-align: left;
 }
 
@@ -198,8 +224,8 @@
 }
 
 .second_contents_2_column div {
-  font-weight: 400;
-  font-size: 16px;
+  font-weight: 700;
+  font-size: 14px;
   text-align: left;
 }
 
@@ -213,6 +239,12 @@
   line-height: 36px;
   font-family: "KimjungchulMyungjo-Bold";
   color: white;
+}
+
+.second_contents_bold {
+  font-size: 32px;
+  font-weight: 700;
+  line-height: 48px;
 }
 
 .third_display {
@@ -300,7 +332,7 @@
 }
 
 .forth_contents_3_title {
-  color: #f1ce81;
+  color: #ff5121;
   font-size: 16px;
   margin-bottom: 8px;
   text-align: left;
@@ -511,4 +543,8 @@
   width: 100%;
   margin-bottom: 4px;
   border-radius: 2px;
+}
+
+.font-color-red {
+  color: #ff5121;
 }
