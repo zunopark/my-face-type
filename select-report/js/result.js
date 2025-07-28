@@ -185,6 +185,7 @@ function renderResultNormalized(obj) {
 
 function renderImage(base64) {
   document.getElementById("face-image").src = base64;
+  document.getElementById("final_face_contents_base").src = base64;
   document.querySelector(".file-upload-content").style.display = "block";
   document.querySelector(".image-upload-wrap").style.display = "none";
 }

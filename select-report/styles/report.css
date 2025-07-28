@@ -208,7 +208,7 @@
   align-items: flex-start;
   margin-top: 8px;
   color: rgb(32, 32, 32);
-  background-color: #ffdad0;
+  background-color: #ffe8e1;
   padding: 20px;
   border-radius: 6px;
 }
@@ -547,4 +547,107 @@
 
 .font-color-red {
   color: #ff5121;
+}
+
+.final_face_display {
+  position: relative;
+  margin-bottom: 40px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.final_face_contents_img {
+  height: 320px; /* ✅ 정사각형 */
+  overflow: hidden;
+  margin: 0 auto;
+  position: relative;
+}
+.final_face_contents_base {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* ✅ 프레임을 채우며 비율 맞추고 자르기 */
+  object-position: center; /* ✅ 중앙 기준 자르기 */
+  display: block;
+}
+
+.final_face_contents_wrap {
+  width: 320px;
+  display: flex;
+  flex-direction: column;
+  align-content: flex-start;
+  justify-content: flex-start;
+}
+
+.final_face_contents_1 {
+  /* font-weight: 700;
+  font-size: 32px; */
+  text-align: left;
+}
+.final_face_contents_2 {
+  text-align: left;
+}
+.final_face_contents_345_wrap {
+  margin-top: 12px;
+}
+.final_face_contents_3 {
+  text-align: left;
+
+  /* font-weight: 700;
+  font-size: 28px;
+  margin-bottom: 20px; */
+}
+.final_face_contents_4 {
+  text-align: left;
+}
+.final_face_contents_5 {
+  text-align: justify;
+}
+
+.blur-overlay-text {
+  position: absolute;
+
+  bottom: 40px;
+  width: 320px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.blur-overlay-text-contents {
+  background-color: #ff5121;
+  padding: 12px 20px;
+  border-radius: 24px;
+  margin-bottom: 12px;
+  font-size: 18px;
+  color: white;
+  font-weight: 700;
+}
+/* 블러 마스크 배경 */
+.blur-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+
+  /* 상단 10%부터 점점 블러 강하게 보이게 */
+  mask-image: linear-gradient(
+    to bottom,
+    transparent 0%,
+    transparent 50%,
+    #b6ad00 65%,
+    #b6ad00 100%
+  );
+  -webkit-mask-image: linear-gradient(
+    to bottom,
+    transparent 0%,
+    transparent 50%,
+    #b6ad00 65%,
+    #b6ad00 100%
+  );
+
+  pointer-events: none;
 }
