@@ -251,7 +251,7 @@ async function startTossPayment(resultId) {
     const paymentWidget = PaymentWidget(clientKey, customerKey);
     const paymentMethodWidget = paymentWidget.renderPaymentMethods(
       "#payment-method",
-      { value: 1 }
+      { value: 4900 }
     );
     paymentWidget.renderAgreement("#agreement");
 
@@ -380,7 +380,7 @@ async function startWealthTossPayment(resultId) {
     const paymentWidget = PaymentWidget(clientKey, customerKey);
     const paymentMethodWidget = paymentWidget.renderPaymentMethods(
       "#wealth-method",
-      { value: 1 }
+      { value: 14900 }
     );
     paymentWidget.renderAgreement("#wealth-agreement");
 
@@ -442,7 +442,7 @@ async function startLoveTossPayment(resultId) {
     const paymentWidget = PaymentWidget(clientKey, customerKey);
     const paymentMethodWidget = paymentWidget.renderPaymentMethods(
       "#love-method",
-      { value: 1 }
+      { value: 9900 }
     );
     paymentWidget.renderAgreement("#love-agreement");
 
@@ -504,7 +504,7 @@ async function startMarriageTossPayment(resultId) {
     const paymentWidget = PaymentWidget(clientKey, customerKey);
     const paymentMethodWidget = paymentWidget.renderPaymentMethods(
       "#marriage-method",
-      { value: 1 }
+      { value: 6900 }
     );
     paymentWidget.renderAgreement("#marriage-agreement");
 
@@ -566,7 +566,7 @@ async function startCareerTossPayment(resultId) {
     const paymentWidget = PaymentWidget(clientKey, customerKey);
     const paymentMethodWidget = paymentWidget.renderPaymentMethods(
       "#career-method",
-      { value: 1 }
+      { value: 8900 }
     );
     paymentWidget.renderAgreement("#career-agreement");
 
