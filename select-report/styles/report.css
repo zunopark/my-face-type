@@ -190,6 +190,7 @@
 .second_column_num {
   width: 28px;
   color: rgb(84, 84, 84);
+  text-align: left;
 }
 
 .second_contents_2_column i {
