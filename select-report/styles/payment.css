@@ -179,6 +179,16 @@
   padding: 0;
 }
 
+.payment_bottom_fixed {
+  background-color: white;
+  width: 100%;
+  position: fixed;
+  bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
 #payment-button {
   margin-top: 10px;
   width: 100%;
