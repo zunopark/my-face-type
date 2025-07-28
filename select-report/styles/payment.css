@@ -10,7 +10,7 @@
 .modal-content {
   height: 100vh;
   background-color: white;
-  padding: 34px 22px 28px 22px;
+  padding: 0px 22px 28px 22px;
   box-shadow: 0 10px 28px rgba(0, 0, 0, 0.19);
   position: relative;
   max-height: 100vh; /* 화면을 넘기면 내부 스크롤 */
@@ -29,6 +29,18 @@
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
+}
+
+.payment-header-wrap {
+  background-color: white;
+  position: fixed;
+  z-index: 4;
+}
+
+.payment-header-wrap2 {
+  display: flex;
+  flex-direction: column;
+  padding: 20px 0;
 }
 
 .payment-title {

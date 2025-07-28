@@ -12,6 +12,10 @@
     width: 500px;
   }
 
+  .payment-header-wrap {
+    width: 456px;
+  }
+
   .border,
   .result,
   .modal-content,
@@ -30,7 +34,8 @@
   #uploadModal,
   .payment-overlay,
   .bottom-sheet,
-  .reunion-bottom-sheet {
+  .reunion-bottom-sheet,
+  .payment-header-wrap {
     width: 100%;
   }
 
