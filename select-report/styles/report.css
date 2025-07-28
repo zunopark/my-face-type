@@ -573,6 +573,7 @@
   object-fit: cover; /* 비율 유지 + 크롭 */
   object-position: center;
   display: block;
+  border-radius: 12px;
 }
 .final_face_contents_wrap {
   width: 320px;
