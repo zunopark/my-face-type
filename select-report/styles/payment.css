@@ -212,10 +212,11 @@
   border: none;
   border-radius: 6px;
   font-size: 14px;
-  margin-bottom: 60px;
+  margin-bottom: 120px;
 }
 
 .payment-empty {
+  height: 40px;
 }
 
 @keyframes fadeIn {
