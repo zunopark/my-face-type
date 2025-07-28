@@ -34,8 +34,7 @@
   #uploadModal,
   .payment-overlay,
   .bottom-sheet,
-  .reunion-bottom-sheet,
-  .payment-header-wrap {
+  .reunion-bottom-sheet {
     width: 100%;
   }
 
@@ -46,5 +45,9 @@
   .label-container,
   .reunion-sheet-inner {
     width: 320px;
+  }
+
+  .payment-header-wrap {
+    width: 90%;
   }
 }
