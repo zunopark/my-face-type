@@ -243,7 +243,7 @@ async function startTossPayment(resultId) {
     const paymentWidget = PaymentWidget(clientKey, customerKey);
     const paymentMethodWidget = paymentWidget.renderPaymentMethods(
       "#payment-method",
-      { value: 2900 }
+      { value: 4900 }
     );
     paymentWidget.renderAgreement("#agreement");
 
@@ -264,7 +264,7 @@ async function startTossPayment(resultId) {
         });
         mixpanel.track("기본 분석 보고서 결제 요청 시도", {
           id: resultId,
-          price: 2900,
+          price: 4900,
         }); // ← 추가
       } catch (err) {
         alert("❌ 결제 실패: " + err.message);
@@ -308,7 +308,7 @@ async function startDiscountedPayment() {
 
   try {
     const widget = PaymentWidget(clientKey, customerKey);
-    widget.renderPaymentMethods("#discount-method", { value: 1900 });
+    widget.renderPaymentMethods("#discount-method", { value: 2900 });
     widget.renderAgreement("#discount-agreement");
 
     document.getElementById("discount-button").onclick = async () => {
@@ -329,7 +329,7 @@ async function startDiscountedPayment() {
 
         mixpanel.track("할인 결제 시도", {
           id: pageId,
-          price: 1900,
+          price: 2900,
           timestamp: new Date().toISOString(),
         });
       } catch (err) {
@@ -346,6 +346,262 @@ function closeDiscount() {
   document.getElementById("discount-method").innerHTML = "";
   document.getElementById("discount-agreement").innerHTML = "";
   mixpanel.track("할인 결제창 닫힘", {
+    id: pageId,
+    type: pageType,
+    timestamp: new Date().toISOString(),
+  });
+  document.body.style.overflow = "";
+}
+
+function trackAndStartWealthPayment(resultId) {
+  mixpanel.track("유료 관상 분석 보고서 버튼 클릭", {
+    resultId: resultId,
+    timestamp: new Date().toISOString(),
+    type: "재물",
+  });
+  document.body.style.overflow = "hidden";
+
+  startWealthTossPayment(resultId);
+}
+
+async function startWealthTossPayment(resultId) {
+  const clientKey = "live_gck_yZqmkKeP8gBaRKPg1WwdrbQRxB9l"; // 테스트 키
+  const customerKey = "customer_" + new Date().getTime();
+
+  document.getElementById("wealthPaymentOverlay").style.display = "block";
+
+  try {
+    const paymentWidget = PaymentWidget(clientKey, customerKey);
+    const paymentMethodWidget = paymentWidget.renderPaymentMethods(
+      "#wealth-method",
+      { value: 9900 }
+    );
+    paymentWidget.renderAgreement("#wealth-agreement");
+
+    document.getElementById("wealth-button").onclick = async () => {
+      try {
+        await paymentWidget.requestPayment({
+          orderId: `order_${Date.now()}`,
+          orderName: "관상 재물운 상세 분석 보고서",
+          customerName: "고객",
+          successUrl: `${
+            window.location.origin
+          }/success.html?id=${encodeURIComponent(resultId)}&type=wealth`,
+          failUrl: `${window.location.origin}/fail.html?id=${encodeURIComponent(
+            resultId
+          )}&type=wealth`,
+        });
+        mixpanel.track("재물운 분석 보고서 결제 요청 시도", {
+          id: resultId,
+          price: 9900,
+        }); // ← 추가
+      } catch (err) {
+        alert("❌ 결제 실패: " + err.message);
+      }
+    };
+  } catch (e) {
+    alert("❌ 위젯 로드 실패: " + e.message);
+  }
+}
+
+function closeWealthPayment() {
+  document.getElementById("wealthPaymentOverlay").style.display = "none";
+  document.getElementById("wealth-method").innerHTML = "";
+  document.getElementById("wealth-agreement").innerHTML = "";
+
+  mixpanel.track("재물운 결제창 닫힘", {
+    id: pageId,
+    type: pageType,
+    timestamp: new Date().toISOString(),
+  });
+  document.body.style.overflow = "";
+}
+
+function trackAndStartLovePayment(resultId) {
+  mixpanel.track("유료 관상 분석 보고서 버튼 클릭", {
+    resultId: resultId,
+    timestamp: new Date().toISOString(),
+    type: "연애",
+  });
+  document.body.style.overflow = "hidden";
+
+  startLoveTossPayment(resultId);
+}
+
+async function startLoveTossPayment(resultId) {
+  const clientKey = "live_gck_yZqmkKeP8gBaRKPg1WwdrbQRxB9l"; // 테스트 키
+  const customerKey = "customer_" + new Date().getTime();
+
+  document.getElementById("lovePaymentOverlay").style.display = "block";
+
+  try {
+    const paymentWidget = PaymentWidget(clientKey, customerKey);
+    const paymentMethodWidget = paymentWidget.renderPaymentMethods(
+      "#love-method",
+      { value: 7900 }
+    );
+    paymentWidget.renderAgreement("#love-agreement");
+
+    document.getElementById("love-button").onclick = async () => {
+      try {
+        await paymentWidget.requestPayment({
+          orderId: `order_${Date.now()}`,
+          orderName: "관상 연애운 상세 분석 보고서",
+          customerName: "고객",
+          successUrl: `${
+            window.location.origin
+          }/success.html?id=${encodeURIComponent(resultId)}&type=love`,
+          failUrl: `${window.location.origin}/fail.html?id=${encodeURIComponent(
+            resultId
+          )}&type=love`,
+        });
+        mixpanel.track("연애운 분석 보고서 결제 요청 시도", {
+          id: resultId,
+          price: 7900,
+        }); // ← 추가
+      } catch (err) {
+        alert("❌ 결제 실패: " + err.message);
+      }
+    };
+  } catch (e) {
+    alert("❌ 위젯 로드 실패: " + e.message);
+  }
+}
+
+function closeLovePayment() {
+  document.getElementById("lovePaymentOverlay").style.display = "none";
+  document.getElementById("love-method").innerHTML = "";
+  document.getElementById("love-agreement").innerHTML = "";
+
+  mixpanel.track("연애운 결제창 닫힘", {
+    id: pageId,
+    type: pageType,
+    timestamp: new Date().toISOString(),
+  });
+  document.body.style.overflow = "";
+}
+
+function trackAndStartMarriagePayment(resultId) {
+  mixpanel.track("유료 관상 분석 보고서 버튼 클릭", {
+    resultId: resultId,
+    timestamp: new Date().toISOString(),
+    type: "결혼",
+  });
+  document.body.style.overflow = "hidden";
+
+  startMarriageTossPayment(resultId);
+}
+
+async function startMarriageTossPayment(resultId) {
+  const clientKey = "live_gck_yZqmkKeP8gBaRKPg1WwdrbQRxB9l"; // 테스트 키
+  const customerKey = "customer_" + new Date().getTime();
+
+  document.getElementById("marriagePaymentOverlay").style.display = "block";
+
+  try {
+    const paymentWidget = PaymentWidget(clientKey, customerKey);
+    const paymentMethodWidget = paymentWidget.renderPaymentMethods(
+      "#marriage-method",
+      { value: 6900 }
+    );
+    paymentWidget.renderAgreement("#marriage-agreement");
+
+    document.getElementById("marriage-button").onclick = async () => {
+      try {
+        await paymentWidget.requestPayment({
+          orderId: `order_${Date.now()}`,
+          orderName: "관상 결혼운 상세 분석 보고서",
+          customerName: "고객",
+          successUrl: `${
+            window.location.origin
+          }/success.html?id=${encodeURIComponent(resultId)}&type=marriage`,
+          failUrl: `${window.location.origin}/fail.html?id=${encodeURIComponent(
+            resultId
+          )}&type=marriage`,
+        });
+        mixpanel.track("결혼운 분석 보고서 결제 요청 시도", {
+          id: resultId,
+          price: 6900,
+        }); // ← 추가
+      } catch (err) {
+        alert("❌ 결제 실패: " + err.message);
+      }
+    };
+  } catch (e) {
+    alert("❌ 위젯 로드 실패: " + e.message);
+  }
+}
+
+function closeMarriagePayment() {
+  document.getElementById("marriagePaymentOverlay").style.display = "none";
+  document.getElementById("marriage-method").innerHTML = "";
+  document.getElementById("marriage-agreement").innerHTML = "";
+
+  mixpanel.track("결혼운 결제창 닫힘", {
+    id: pageId,
+    type: pageType,
+    timestamp: new Date().toISOString(),
+  });
+  document.body.style.overflow = "";
+}
+
+function trackAndStartCareerPayment(resultId) {
+  mixpanel.track("유료 관상 분석 보고서 버튼 클릭", {
+    resultId: resultId,
+    timestamp: new Date().toISOString(),
+    type: "직업",
+  });
+  document.body.style.overflow = "hidden";
+
+  startCareerTossPayment(resultId);
+}
+
+async function startCareerTossPayment(resultId) {
+  const clientKey = "live_gck_yZqmkKeP8gBaRKPg1WwdrbQRxB9l"; // 테스트 키
+  const customerKey = "customer_" + new Date().getTime();
+
+  document.getElementById("careerPaymentOverlay").style.display = "block";
+
+  try {
+    const paymentWidget = PaymentWidget(clientKey, customerKey);
+    const paymentMethodWidget = paymentWidget.renderPaymentMethods(
+      "#career-method",
+      { value: 6900 }
+    );
+    paymentWidget.renderAgreement("#career-agreement");
+
+    document.getElementById("career-button").onclick = async () => {
+      try {
+        await paymentWidget.requestPayment({
+          orderId: `order_${Date.now()}`,
+          orderName: "관상 직업운 상세 분석 보고서",
+          customerName: "고객",
+          successUrl: `${
+            window.location.origin
+          }/success.html?id=${encodeURIComponent(resultId)}&type=career`,
+          failUrl: `${window.location.origin}/fail.html?id=${encodeURIComponent(
+            resultId
+          )}&type=career`,
+        });
+        mixpanel.track("직업운 분석 보고서 결제 요청 시도", {
+          id: resultId,
+          price: 6900,
+        }); // ← 추가
+      } catch (err) {
+        alert("❌ 결제 실패: " + err.message);
+      }
+    };
+  } catch (e) {
+    alert("❌ 위젯 로드 실패: " + e.message);
+  }
+}
+
+function closeCareerPayment() {
+  document.getElementById("careerPaymentOverlay").style.display = "none";
+  document.getElementById("career-method").innerHTML = "";
+  document.getElementById("career-agreement").innerHTML = "";
+
+  mixpanel.track("직업운 결제창 닫힘", {
     id: pageId,
     type: pageType,
     timestamp: new Date().toISOString(),
@@ -536,7 +792,77 @@ function renderResultNormalized(obj, reportType = "base") {
         </div>
       </div> 
     </div> 
-    
+    <div class="mask-text-wrap love-bg">
+          <div class="mask-text">
+            <div class="mask-text-top love-color">연애 심층 관상 보고서</div>
+            <div class="mask-text-top-sub"> 
+            
+        내 얼굴은 총 몇 번 연애를 할 수 있을까?<br /><br />
++ 천기누설 +<br />
+지금 내 인연을 만날 수 있는 시·구 위치 예측
+              </div>
+              <div class="mask-text-btn-wrap love-bgcolor">
+                <div class="mask-text-btn " onclick="trackAndStartLovePayment('${resultId}')">
+                  나의 연애 관상 확인하기
+                </div>
+              </div>
+            <div class="mask-text-btn-sub">총 13,000자 이상</div>
+          </div>
+        </div>
+    <div class="mask-text-wrap wealth-bg">
+          <div class="mask-text">
+            <div class="mask-text-top wealth-color">재물 심층 관상 보고서</div>
+            <div class="mask-text-top-sub"> 
+            
+        내 얼굴은 평생 몇 억을 벌 수 있을까?<br /><br />
++ 천기누설 +<br />
+현금 폭탄 떨어질 인생 타이밍 & 방법
+              </div>
+              <div class="mask-text-btn-wrap wealth-bgcolor">
+                <div class="mask-text-btn " onclick="trackAndStartWealthPayment('${resultId}')">
+                  나의 재물 관상 확인하기
+                </div>
+              </div>
+            <div class="mask-text-btn-sub">총 15,000자 이상</div>
+          </div>
+        </div>
+          
+        <div class="mask-text-wrap marriage-bg">
+          <div class="mask-text">
+            <div class="mask-text-top marriage-color">결혼 심층 관상 보고서
+</div>
+            <div class="mask-text-top-sub"> 
+            
+      셀카 한 장으로 알아보는 내 결혼 나이<br /><br />
++ 천기누설 +<br />
+웨딩운이 보이는 장소 & 놓치면 안 될 골든타임              </div>
+
+              <div class="mask-text-btn-wrap marriage-bgcolor">
+                <div class="mask-text-btn " onclick="trackAndStartMarriagePayment('${resultId}')">
+                  나의 결혼 관상 확인하기
+                </div>
+              </div>
+            <div class="mask-text-btn-sub">총 12,000자 이상</div>
+          </div>
+        </div>
+        <div class="mask-text-wrap career-bg">
+          <div class="mask-text">
+            <div class="mask-text-top career-color">직업 심층 관상 보고서</div>
+            <div class="mask-text-top-sub"> 
+            
+   내 얼굴에서 보이는 나의 직업 성향과 고점 시기<br /><br />
++ 천기누설 +<br />
+연봉 그래프 상한가 찍을 부서·업종 좌표
+              </div>
+            <div class="mask-text-btn-wrap career-bgcolor">
+              <div class="mask-text-btn " onclick="trackAndStartCareerPayment('${resultId}')">
+                나의 직업 관상 확인하기
+              </div>
+            </div>
+
+            <div class="mask-text-btn-sub">총 12,000자 이상</div>
+          </div>
+        </div>
   `;
 }
 

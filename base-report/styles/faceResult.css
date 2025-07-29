@@ -15,6 +15,7 @@
 .face-summary {
   color: rgb(39, 39, 39);
   line-height: 1.7;
+  font-family: "GmarketSans";
 
   text-align: justify;
 }
@@ -29,7 +30,7 @@
   line-height: 1.7;
   padding: 0 12px;
   text-align: justify;
-  height: 720px;
+  height: 480px;
 }
 .result-mask {
   position: absolute;
@@ -125,7 +126,7 @@
   color: rgb(246, 246, 246);
   text-align: center;
   font-size: 16px;
-
+  font-family: "GmarketSans";
   font-weight: 400;
 }
 

@@ -179,7 +179,7 @@
   </head>
   <body>
     <div class="main_body_wrap">
-      <header id="report-result" class="header_chat_wrap"></header>
+      <header id="base" class="header_chat_wrap"></header>
 
       <div class="main_content_wrap">
         <div class="main_title_wrap">
@@ -309,7 +309,7 @@
 
             <div class="payment-price-wrap">
               <div class="payment-original-price-title">보고서 금액</div>
-              <div class="payment-original-price">6,900원</div>
+              <div class="payment-original-price">9,900원</div>
             </div>
 
             <div class="payment-coupon-wrap">
@@ -317,7 +317,7 @@
             </div>
             <div class="payment-coupon-price-wrap">
               <div class="payment-coupon-title">2025 특별 할인 적용 완료</div>
-              <div class="payment-coupon-price">-4,000원</div>
+              <div class="payment-coupon-price">-5,000원</div>
             </div>
 
             <div id="payment-method"></div>
@@ -326,10 +326,10 @@
             <div class="payment-final-price-wrap">
               <div class="payment-final-price-title">최종 결제 금액</div>
               <div class="payment-final-price-price-wrap">
-                <div class="payment-originam-price2">6,900원</div>
+                <div class="payment-originam-price2">9,900원</div>
                 <div class="payment-final-price">
-                  <div class="payment-final-price-discount">58%</div>
-                  <div class="payment-final-price-num">2,900원</div>
+                  <div class="payment-final-price-discount">51%</div>
+                  <div class="payment-final-price-num">4,900원</div>
                 </div>
               </div>
             </div>
@@ -345,7 +345,7 @@
         <div id="discountFullscreen" class="payment-fullscreen">
           <div class="modal-content">
             <div class="payment-header">
-              <div class="payment-title">🎁 깜짝 선물! 1,000원 추가 할인</div>
+              <div class="payment-title">🎁 깜짝 선물! 2,000원 추가 할인</div>
               <div class="payment-close" onclick="closeDiscount()">✕</div>
             </div>
             <div class="payment-header">
@@ -416,14 +416,16 @@
             </div>
             <div class="payment-price-wrap">
               <div class="payment-original-price-title">보고서 금액</div>
-              <div class="payment-original-price">6,900원</div>
+              <div class="payment-original-price">9,900원</div>
             </div>
             <div class="payment-coupon-wrap">
               <div class="payment-coupon">쿠폰 할인 💸</div>
             </div>
             <div class="payment-coupon-price-wrap">
-              <div class="payment-coupon-title">2025 특별 할인 + 추가 할인</div>
-              <div class="payment-coupon-price">-5,000원</div>
+              <div class="payment-coupon-title">
+                2025 특별 할인 + 추가 할인 2,000원
+              </div>
+              <div class="payment-coupon-price">-7,000원</div>
             </div>
 
             <div id="discount-method"></div>
@@ -432,15 +434,401 @@
             <div class="payment-final-price-wrap">
               <div class="payment-final-price-title">최종 결제 금액</div>
               <div class="payment-final-price-price-wrap">
-                <div class="payment-originam-price2">6,900원</div>
+                <div class="payment-originam-price2">9,900원</div>
                 <div class="payment-final-price">
-                  <div class="payment-final-price-discount">73%</div>
-                  <div class="payment-final-price-num">1,900원</div>
+                  <div class="payment-final-price-discount">71%</div>
+                  <div class="payment-final-price-num">2,900원</div>
                 </div>
               </div>
             </div>
 
             <button id="discount-button" class="payment-final-btn">
+              보고서 확인하기
+            </button>
+            <div class="payment-empty"></div>
+          </div>
+        </div>
+      </div>
+
+      <div
+        id="wealthPaymentOverlay"
+        class="payment-overlay"
+        style="display: none"
+      >
+        <div id="wealthFull" class="payment-fullscreen">
+          <div class="modal-content">
+            <div class="payment-header">
+              <div class="payment-title">재물 관상 보고서: 나의 타고난 부</div>
+              <div class="payment-close" onclick="closeWealthPayment()">✕</div>
+            </div>
+            <div class="payment-header">
+              <div class="payment-subtitle">
+                1,500만명이 감탄한 20년 경력 관상가 보고서
+              </div>
+            </div>
+            <div class="report-wrap">
+              <div class="report-title-wrap">
+                <div class="report-title">보고서 내용</div>
+                <div class="report-num">총 15,000자 심층 분석</div>
+              </div>
+              <div class="report-contents-wrap">
+                <div class="report-contents">
+                  1. [정통 관상] 부위별 관상 분석 포함
+                </div>
+              </div>
+              <div class="report-contents-wrap">
+                <div class="report-contents">
+                  2. [타고난 부와 평생 모을 재산] 내 평생 자산 규모
+                </div>
+              </div>
+              <div class="report-contents-wrap">
+                <div class="report-contents">
+                  3. [성향과 재물운의 강·약점] 돈과 만나는 지점
+                </div>
+              </div>
+              <div class="report-contents-wrap">
+                <div class="report-contents">
+                  4. [돈이 붙는 적성과 환경] 부를 위한 일·사람·장소
+                </div>
+              </div>
+              <div class="report-contents-wrap">
+                <div class="report-contents">
+                  5. [자산을 키울 골든타임] 시기별 기회 포착 전략
+                </div>
+              </div>
+              <div class="report-contents-wrap">
+                <div class="report-contents">
+                  6. [위기 징조와 예방책] 손재·투자 리스크 대비
+                </div>
+              </div>
+              <div class="report-contents-wrap">
+                <div class="report-contents">
+                  7. [관상 개선 실천법] 작은 습관으로 기운 트이기
+                </div>
+              </div>
+              <div class="report-contents-wrap">
+                <div class="report-contents">
+                  8. [관상가의 인생 조언] 돈 그 이상 삶의 태도
+                </div>
+              </div>
+            </div>
+            <div class="payment-price-wrap">
+              <div class="payment-original-price-title">보고서 금액</div>
+              <div class="payment-original-price">24,620원</div>
+            </div>
+            <div class="payment-coupon-wrap">
+              <div class="payment-coupon">쿠폰 할인 💸</div>
+            </div>
+            <div class="payment-coupon-price-wrap">
+              <div class="payment-coupon-title">
+                재물 관상 보고서 런칭 특별 할인<br />(~07.27 단 7일간)
+              </div>
+              <div class="payment-coupon-price">-14,720원</div>
+            </div>
+
+            <div id="wealth-method" style="padding: 0px; margin: 0px"></div>
+            <div id="wealth-agreement"></div>
+            <div class="payment-final-price-wrap">
+              <div class="payment-final-price-title">최종 결제 금액</div>
+              <div class="payment-final-price-price-wrap">
+                <div class="payment-originam-price2">24,620원</div>
+                <div class="payment-final-price">
+                  <div class="payment-final-price-discount">60%</div>
+                  <div class="payment-final-price-num">9,900원</div>
+                </div>
+              </div>
+            </div>
+            <button id="wealth-button" class="payment-final-btn">
+              보고서 확인하기
+            </button>
+            <div class="payment-empty"></div>
+          </div>
+        </div>
+      </div>
+
+      <div
+        id="lovePaymentOverlay"
+        class="payment-overlay"
+        style="display: none"
+      >
+        <div id="loveFull" class="payment-fullscreen">
+          <div class="modal-content">
+            <div class="payment-header">
+              <div class="payment-title">
+                연애 관상 보고서 : 내 총 연애 횟수 그리고 어디서 만나야 할까?
+              </div>
+              <div class="payment-close" onclick="closeLovePayment()">✕</div>
+            </div>
+            <div class="payment-header">
+              <div class="payment-subtitle">
+                1,500만명이 감탄한 20년 경력 관상가 보고서
+              </div>
+            </div>
+            <div class="report-wrap">
+              <div class="report-title-wrap">
+                <div class="report-title">보고서 내용</div>
+                <div class="report-num">총 13,000자 심층 분석</div>
+              </div>
+              <div class="report-contents-wrap">
+                <div class="report-contents">
+                  1. [정통 관상] 부위별 관상 분석 포함
+                </div>
+              </div>
+              <div class="report-contents-wrap">
+                <div class="report-contents">
+                  2. [타고난 인연] 총 연애 횟수 & 사랑 사이클
+                </div>
+              </div>
+              <div class="report-contents-wrap">
+                <div class="report-contents">
+                  3. [운명 상대 지도] 시·구 단위 위치 예측
+                </div>
+              </div>
+              <div class="report-contents-wrap">
+                <div class="report-contents">
+                  4. [만남 오픈 타이밍] 계절·장소 & 개운 행동
+                </div>
+              </div>
+              <div class="report-contents-wrap">
+                <div class="report-contents">
+                  5. [이상적 상대] 끌어당김 전략
+                </div>
+              </div>
+              <div class="report-contents-wrap">
+                <div class="report-contents">
+                  6. [연애 성향 분석] 강·약점 & 보완법
+                </div>
+              </div>
+              <div class="report-contents-wrap">
+                <div class="report-contents">
+                  7. [지속력 업그레이드] 오래 가는 사랑 비결
+                </div>
+              </div>
+              <div class="report-contents-wrap">
+                <div class="report-contents">
+                  8. [관상가의 인생 조언] 연애 운 상승 실천표
+                </div>
+              </div>
+            </div>
+            <div class="payment-price-wrap">
+              <div class="payment-original-price-title">보고서 금액</div>
+              <div class="payment-original-price">18,270원</div>
+            </div>
+            <div class="payment-coupon-wrap">
+              <div class="payment-coupon">쿠폰 할인 💸</div>
+            </div>
+            <div class="payment-coupon-price-wrap">
+              <div class="payment-coupon-title">
+                연애 관상 보고서 런칭 특별 할인<br />(~07.27 단 7일간)
+              </div>
+              <div class="payment-coupon-price">-10,370원</div>
+            </div>
+
+            <div id="love-method" style="padding: 0px; margin: 0px"></div>
+            <div id="love-agreement"></div>
+            <div class="payment-final-price-wrap">
+              <div class="payment-final-price-title">최종 결제 금액</div>
+              <div class="payment-final-price-price-wrap">
+                <div class="payment-originam-price2">18,270원</div>
+                <div class="payment-final-price">
+                  <div class="payment-final-price-discount">57%</div>
+                  <div class="payment-final-price-num">7,900원</div>
+                </div>
+              </div>
+            </div>
+            <button id="love-button" class="payment-final-btn">
+              보고서 확인하기
+            </button>
+            <div class="payment-empty"></div>
+          </div>
+        </div>
+      </div>
+
+      <div
+        id="marriagePaymentOverlay"
+        class="payment-overlay"
+        style="display: none"
+      >
+        <div id="marriageFull" class="payment-fullscreen">
+          <div class="modal-content">
+            <div class="payment-header">
+              <div class="payment-title">
+                결혼 관상 보고서 : 난 언제 결혼할까?
+              </div>
+              <div class="payment-close" onclick="closeMarriagePayment()">
+                ✕
+              </div>
+            </div>
+            <div class="payment-header">
+              <div class="payment-subtitle">
+                1,500만명이 감탄한 20년 경력 관상가 보고서
+              </div>
+            </div>
+
+            <div class="report-wrap">
+              <div class="report-title-wrap">
+                <div class="report-title">보고서 내용</div>
+                <div class="report-num">총 12,000자 심층 분석</div>
+              </div>
+              <div class="report-contents-wrap">
+                <div class="report-contents">
+                  1. [정통 관상] 부위별 관상 분석 포함
+                </div>
+              </div>
+              <div class="report-contents-wrap">
+                <div class="report-contents">
+                  2. [연애 성향·결혼관] 애정 표현‧가치관 분석
+                </div>
+              </div>
+              <div class="report-contents-wrap">
+                <div class="report-contents">
+                  3. [골든타임] 만남 시기·장소·개운법
+                </div>
+              </div>
+              <div class="report-contents-wrap">
+                <div class="report-contents">
+                  4. [이상적 배우자] 외모·성격·첫 대화 오프너
+                </div>
+              </div>
+              <div class="report-contents-wrap">
+                <div class="report-contents">
+                  5. [결혼 생활 시뮬] 경제·소통·자녀 운
+                </div>
+              </div>
+              <div class="report-contents-wrap">
+                <div class="report-contents">
+                  6. [관상가의 인생 조언] 인연 부르는 데일리 루틴
+                </div>
+              </div>
+            </div>
+
+            <div class="payment-price-wrap">
+              <div class="payment-original-price-title">보고서 금액</div>
+              <div class="payment-original-price">21,970원</div>
+            </div>
+            <div class="payment-coupon-wrap">
+              <div class="payment-coupon">쿠폰 할인 💸</div>
+            </div>
+            <div class="payment-coupon-price-wrap">
+              <div class="payment-coupon-title">
+                결혼 관상 보고서 런칭 특별 할인<br />(~07.27 단 7일간)
+              </div>
+              <div class="payment-coupon-price">-15,070원</div>
+            </div>
+
+            <div id="marriage-method" style="padding: 0px; margin: 0px"></div>
+            <div id="marriage-agreement"></div>
+            <div class="payment-final-price-wrap">
+              <div class="payment-final-price-title">최종 결제 금액</div>
+              <div class="payment-final-price-price-wrap">
+                <div class="payment-originam-price2">21,970원</div>
+                <div class="payment-final-price">
+                  <div class="payment-final-price-discount">69%</div>
+                  <div class="payment-final-price-num">6,900원</div>
+                </div>
+              </div>
+            </div>
+            <button id="marriage-button" class="payment-final-btn">
+              보고서 확인하기
+            </button>
+            <div class="payment-empty"></div>
+          </div>
+        </div>
+      </div>
+
+      <div
+        id="careerPaymentOverlay"
+        class="payment-overlay"
+        style="display: none"
+      >
+        <div id="careerFull" class="payment-fullscreen">
+          <div class="modal-content">
+            <div class="payment-header">
+              <div class="payment-title">
+                직업 관상 보고서 : 내 연봉 상한가 찍을 직업
+              </div>
+              <div class="payment-close" onclick="closeCareerPayment()">✕</div>
+            </div>
+            <div class="payment-header">
+              <div class="payment-subtitle">
+                1,500만명이 감탄한 20년 경력 관상가 보고서
+              </div>
+            </div>
+
+            <div class="report-wrap">
+              <div class="report-title-wrap">
+                <div class="report-title">보고서 내용</div>
+                <div class="report-num">총 12,000자 심층 분석</div>
+              </div>
+              <div class="report-contents-wrap">
+                <div class="report-contents">
+                  1. [정통 관상] 부위별 관상 분석 포함
+                </div>
+              </div>
+              <div class="report-contents-wrap">
+                <div class="report-contents">
+                  2. [적성과 장단점] 천직 찾는 DNA 분석
+                </div>
+              </div>
+              <div class="report-contents-wrap">
+                <div class="report-contents">
+                  3. [직업 운 곡선] 커리어 꽃 피는 시기
+                </div>
+              </div>
+              <div class="report-contents-wrap">
+                <div class="report-contents">
+                  4. [강점 극대화 전략] 성향별 일 잘하는 루틴
+                </div>
+              </div>
+              <div class="report-contents-wrap">
+                <div class="report-contents">
+                  5. [직장 vs 창업] 성공 확률·적합도 비교
+                </div>
+              </div>
+              <div class="report-contents-wrap">
+                <div class="report-contents">
+                  6. [행운의 업무 환경] 돈·사람·공간 기운 포인트
+                </div>
+              </div>
+              <div class="report-contents-wrap">
+                <div class="report-contents">
+                  7. [위기 대비 체크] 번아웃·리스크 예방법
+                </div>
+              </div>
+              <div class="report-contents-wrap">
+                <div class="report-contents">
+                  8. [관상가의 인생 조언] 커리어 운 트이는 습관
+                </div>
+              </div>
+            </div>
+
+            <div class="payment-price-wrap">
+              <div class="payment-original-price-title">보고서 금액</div>
+              <div class="payment-original-price">21,970원</div>
+            </div>
+            <div class="payment-coupon-wrap">
+              <div class="payment-coupon">쿠폰 할인 💸</div>
+            </div>
+            <div class="payment-coupon-price-wrap">
+              <div class="payment-coupon-title">
+                직업 관상 보고서 런칭 특별 할인<br />(~07.27 단 7일간)
+              </div>
+              <div class="payment-coupon-price">-15,070원</div>
+            </div>
+
+            <div id="career-method" style="padding: 0px; margin: 0px"></div>
+            <div id="career-agreement"></div>
+            <div class="payment-final-price-wrap">
+              <div class="payment-final-price-title">최종 결제 금액</div>
+              <div class="payment-final-price-price-wrap">
+                <div class="payment-originam-price2">21,970원</div>
+                <div class="payment-final-price">
+                  <div class="payment-final-price-discount">69%</div>
+                  <div class="payment-final-price-num">6,900원</div>
+                </div>
+              </div>
+            </div>
+            <button id="career-button" class="payment-final-btn">
               보고서 확인하기
             </button>
             <div class="payment-empty"></div>
@@ -470,11 +858,10 @@
       mixpanel.identify(distinctId);
 
       // 추적 예시
-      mixpanel.track("보고서 결과 페이지 방문", {
+      mixpanel.track("얼굴 분석 결과 페이지 방문", {
         url: window.location.href,
         userAgent: navigator.userAgent,
         timestamp: new Date().toISOString(),
-        type: "base",
       });
     </script>
 
