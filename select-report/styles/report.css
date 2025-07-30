@@ -217,9 +217,9 @@
 }
 
 .second_contents_2_column {
-  width: 280px;
+  width: 300px;
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   margin-top: 12px;
   color: rgb(32, 32, 32);
   background-color: #ffe8e1;
@@ -231,6 +231,11 @@
   width: 28px;
   color: #ff5121;
   text-align: left;
+  font-size: 14px;
+}
+
+.second_column_text {
+  font-size: 18px;
 }
 
 .second_contents_2_column i {
@@ -239,7 +244,6 @@
 
 .second_contents_2_column div {
   font-weight: 700;
-  font-size: 14px;
   text-align: left;
 }
 
@@ -565,6 +569,7 @@
 
 .final_face_display {
   position: relative;
+  margin-top: 40px;
   margin-bottom: 40px;
   width: 100%;
   display: flex;
