@@ -97,7 +97,7 @@ function renderResultNormalized(obj) {
 
   wrap.innerHTML = `
     <div class="result-title-wrap">
-      
+      <div class="result-title">삼정(三停)・십이궁(十二宮)・오관·기색<br/>관상 분석이 완료되었어요.
       <div class="result-title-sub">아래에서 알고 싶은 관상 풀이를 확인하세요.</div>
       <span class="material-icons"> keyboard_arrow_down</span>
    
