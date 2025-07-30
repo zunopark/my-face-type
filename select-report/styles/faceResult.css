@@ -129,6 +129,26 @@
   margin-top: 16px;
 }
 
+.mask-profile-wrap {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 12px;
+}
+.mask-profile-img {
+  width: 24px;
+  height: 24px;
+  border: 1px solid white;
+  border-radius: 50%;
+  margin-right: 8px;
+}
+.mask-profile-name {
+  padding-top: 6px;
+  font-size: 16px;
+  color: white;
+}
+
 /* 텍스트는 블러 영향 X */
 .mask-text {
   width: 320px;
@@ -147,7 +167,7 @@
   font-size: 24px;
   font-weight: bold;
   font-family: "KimjungchulMyungjo-Bold";
-  margin-bottom: 12px;
+  margin-bottom: 8px;
 }
 
 .mask-text-top-sub {

@@ -77,13 +77,26 @@
   font-weight: 700;
 }
 
+.report_upper_profile-wrap {
+  width: 100%;
+  padding-top: 40px;
+}
+.report_upper_profile {
+  width: 100%;
+}
+.report_upper_detail-wrap {
+  width: 100%;
+}
+.report_upper_detail {
+  width: 100%;
+}
+
 .report_upper_reveiw_wrap {
   width: 100%;
   display: flex;
   justify-content: space-around;
   padding: 24px 12px;
   border-bottom: 1px solid #c3c3c34d;
-  margin-top: 120px;
 }
 
 .report_upper_reveiw_contents {

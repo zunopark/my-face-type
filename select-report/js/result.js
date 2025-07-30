@@ -107,10 +107,19 @@ function renderResultNormalized(obj) {
 
     <div class="mask-text-wrap love-bg">
       <div class="mask-text">
+       <div class="mask-profile-wrap">
+          <img src="../img/love_yangban.png" class="mask-profile-img" alt="" />
+          <div class="mask-profile-name">연화무녀</div>
+        </div>
         <div class="mask-text-top love-color">연애운 관상 풀이</div>
+       
         <div class="mask-text-top-sub">
-          내 얼굴은 총 몇 번 연애를 할 수 있을까?<br /><br />
-          + 천기누설 +<br />지금 내 인연을 만날 수 있는 시·구 위치 예측
+          연애가 너무 어려우신가요?<br />관상에서 보이는 당신의 매력을 자세히 알려드리겠오.<br /><br />
+          # 관상 속 도화살 풀이<br />
+          # 도화살 심층 분석<br />
+          # 연애운 폭발 시기 예측<br />
+          # 도화살 맞춤 성형・시술 추천<br />
+          # 도화살 궁합<br />
         </div>
         <div class="mask-text-btn-wrap love-bgcolor">
           <div class="mask-text-btn"
