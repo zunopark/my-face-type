@@ -96,11 +96,18 @@ function renderResultNormalized(obj) {
   const resultId = obj.id ?? "";
 
   wrap.innerHTML = `
-
+    <div class="result-title-wrap">
+      <div class="result-title"> 
+        당신의 관상을 살펴보았소.
+      </div>
+      <div class="result-title-sub">말 못 할 고민이 있어 이곳까지 오셨구려.<br/>아래에서 알고 싶은 관상 풀이를 확인하시오.</div>
+      <span class="material-icons"> keyboard_arrow_down</span>
+   
+    </div>
 
     <div class="mask-text-wrap love-bg">
       <div class="mask-text">
-        <div class="mask-text-top love-color">연애 심층 관상 보고서</div>
+        <div class="mask-text-top love-color">연애 심층 관상 풀이</div>
         <div class="mask-text-top-sub">
           내 얼굴은 총 몇 번 연애를 할 수 있을까?<br /><br />
           + 천기누설 +<br />지금 내 인연을 만날 수 있는 시·구 위치 예측
@@ -108,7 +115,7 @@ function renderResultNormalized(obj) {
         <div class="mask-text-btn-wrap love-bgcolor">
           <div class="mask-text-btn"
                onclick="trackAndStartLovePayment('${resultId}')">
-            나의 연애 관상 확인하기
+            연애 관상 풀이 확인하기
           </div>
         </div>
         <div class="mask-text-btn-sub">총 13,000자 이상</div>
@@ -117,7 +124,7 @@ function renderResultNormalized(obj) {
 
     <div class="mask-text-wrap career-bg">
       <div class="mask-text">
-        <div class="mask-text-top career-color">직업 심층 관상 보고서</div>
+        <div class="mask-text-top career-color">직업 심층 관상 풀이</div>
         <div class="mask-text-top-sub">
           내 얼굴에서 보이는 직업 성향과 고점 시기<br /><br />
           + 천기누설 +<br />연봉 그래프 상한가 찍을 부서·업종 좌표
@@ -125,7 +132,7 @@ function renderResultNormalized(obj) {
         <div class="mask-text-btn-wrap career-bgcolor">
           <div class="mask-text-btn"
                onclick="trackAndStartCareerPayment('${resultId}')">
-            나의 직업 관상 확인하기
+            직업 관상 풀이 확인하기
           </div>
         </div>
         <div class="mask-text-btn-sub">총 12,000자 이상</div>
@@ -134,7 +141,7 @@ function renderResultNormalized(obj) {
 
     <div class="mask-text-wrap wealth-bg">
       <div class="mask-text">
-        <div class="mask-text-top wealth-color">재물 심층 관상 보고서</div>
+        <div class="mask-text-top wealth-color">금전 심층 관상 풀이</div>
         <div class="mask-text-top-sub">
           내 얼굴은 평생 몇 억을 벌 수 있을까?<br /><br />
           + 천기누설 +<br />현금 폭탄 떨어질 인생 타이밍 & 방법
@@ -142,7 +149,7 @@ function renderResultNormalized(obj) {
         <div class="mask-text-btn-wrap wealth-bgcolor">
           <div class="mask-text-btn"
                onclick="trackAndStartWealthPayment('${resultId}')">
-            나의 재물 관상 확인하기
+            금전 관상 풀이 확인하기
           </div>
         </div>
         <div class="mask-text-btn-sub">총 15,000자 이상</div>
@@ -151,7 +158,7 @@ function renderResultNormalized(obj) {
 
     <div class="mask-text-wrap marriage-bg">
       <div class="mask-text">
-        <div class="mask-text-top marriage-color">결혼 심층 관상 보고서</div>
+        <div class="mask-text-top marriage-color">결혼 심층 관상 풀이</div>
         <div class="mask-text-top-sub">
           셀카 한 장으로 알아보는 내 결혼 나이<br /><br />
           + 천기누설 +<br />웨딩운이 보이는 장소 & 놓치면 안 될 골든타임
@@ -159,7 +166,7 @@ function renderResultNormalized(obj) {
         <div class="mask-text-btn-wrap marriage-bgcolor">
           <div class="mask-text-btn"
                onclick="trackAndStartMarriagePayment('${resultId}')">
-            나의 결혼 관상 확인하기
+            결혼 관상 풀이 확인하기
           </div>
         </div>
         <div class="mask-text-btn-sub">총 12,000자 이상</div>
