@@ -97,9 +97,7 @@ function renderResultNormalized(obj) {
 
   wrap.innerHTML = `
     <div class="result-title-wrap">
-      <div class="result-title"> 
-        당신의 관상을 살펴보았소.
-      </div>
+      
       <div class="result-title-sub">말 못 할 고민이 있어 이곳까지 오셨구려.<br/>아래에서 알고 싶은 관상 풀이를 확인하시오.</div>
       <span class="material-icons"> keyboard_arrow_down</span>
    
@@ -114,7 +112,7 @@ function renderResultNormalized(obj) {
         <div class="mask-text-top love-color">연애운 관상 풀이</div>
        
         <div class="mask-text-top-sub">
-          연애가 너무 어려우신가요?<br />관상에서 보이는 당신의 매력을 자세히 알려드리겠오.<br /><br />
+          연애가 너무 어려우신가요?<br />관상에서 보이는 당신의 매력을 자세히 알려드립니다.<br /><br />
           # 관상 속 도화살 풀이<br />
           # 도화살 심층 분석<br />
           # 연애운 폭발 시기 예측<br />
