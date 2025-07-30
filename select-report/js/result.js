@@ -474,7 +474,7 @@ async function startLoveTossPayment(resultId) {
       /* 2) Mixpanel 트래킹 (사주 정보 포함) */
       mixpanel.track("연애운 분석 보고서 결제 요청 시도", {
         id: resultId,
-        price: 19900,
+        price: 9900,
         sajuName: sajuName || "(미입력)",
         sajuBirth: sajuBirth || "(미입력)",
         sajuTime: timeUnknown ? "모름" : timeSel || "(미선택)",
