@@ -462,7 +462,7 @@ async function startLoveTossPayment(resultId) {
 
   try {
     const paymentWidget = PaymentWidget(clientKey, customerKey);
-    paymentWidget.renderPaymentMethods("#love-method", { value: 9900 });
+    paymentWidget.renderPaymentMethods("#love-method", { value: 19900 });
     paymentWidget.renderAgreement("#love-agreement");
 
     /* ─── 클릭 핸들러 ─── */
@@ -476,7 +476,7 @@ async function startLoveTossPayment(resultId) {
       /* 2) Mixpanel 트래킹 (사주 정보 포함) */
       mixpanel.track("연애운 분석 보고서 결제 요청 시도", {
         id: resultId,
-        price: 9900,
+        price: 19900,
         sajuName: sajuName || "(미입력)",
         sajuBirth: sajuBirth || "(미입력)",
         sajuTime: timeUnknown ? "모름" : timeSel || "(미선택)",
