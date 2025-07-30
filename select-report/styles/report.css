@@ -217,6 +217,7 @@
 }
 
 .second_contents_2_column {
+  width: 280px;
   display: flex;
   align-items: flex-start;
   margin-top: 12px;
