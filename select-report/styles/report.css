@@ -627,7 +627,6 @@
 
 .blur-overlay-text {
   position: absolute;
-
   bottom: 40px;
   width: 320px;
   display: flex;
@@ -658,15 +657,15 @@
   mask-image: linear-gradient(
     to bottom,
     transparent 0%,
-    transparent 50%,
-    #b6ad00 65%,
+    transparent 0%,
+    #b6ad00 100%,
     #b6ad00 100%
   );
   -webkit-mask-image: linear-gradient(
     to bottom,
     transparent 0%,
-    transparent 50%,
-    #b6ad00 65%,
+    transparent 0%,
+    #b6ad00 100%,
     #b6ad00 100%
   );
 
