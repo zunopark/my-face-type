@@ -103,6 +103,25 @@ function renderResultNormalized(obj) {
    
     </div>
 
+    <div class="mask-text-wrap base-bg">
+          <div class="mask-text base-color">
+            <div class="mask-text-top">정통 심층 관상 보고서</div>
+            <div class="mask-text-top-sub">
+              내 미래가 보이는 부위별 정통 관상<br /><br />+ 천기누설 +<br/>
+              팔자 고치는 성형 및 시술 부위 추천
+            </div>
+            <div class="mask-text-btn-wrap base-bgcolor">
+              <div
+                class="mask-text-btn "
+                onclick="trackAndStartPayment('${resultId}')"
+              >
+                 전체 분석 결과 확인하기
+              </div>
+            </div>
+            <div class="mask-text-btn-sub">총 5,000자 이상</div>
+          </div>
+        </div>
+
     <div class="mask-text-wrap love-bg">
       <div class="mask-text">
        <div class="mask-profile-wrap">
