@@ -1099,7 +1099,53 @@
                 </div>
               </div>
             </div>
+            <!-- 기존 .final_face_display 끝부분 바로 위에 삽입 -->
+            <div class="saju_optional_wrap">
+              <h3 class="saju_optional_title">선택 입력 – 사주 정보</h3>
+              <p class="saju_optional_desc">
+                <strong>선택사항</strong>입니다. 이름·생년월일·시간을 입력하면
+                <u>사주 분석</u>이 추가되어 풀이가 더 자세해집니다.
+              </p>
 
+              <div class="saju_field">
+                <label for="sajuName">이름</label>
+                <input type="text" id="sajuName" placeholder="홍길동" />
+              </div>
+
+              <div class="saju_field">
+                <label for="sajuBirth">생년월일</label>
+                <input type="date" id="sajuBirth" />
+              </div>
+
+              <!-- 사주 선택 입력 → 시간 부분만 수정 -->
+              <!-- ───── 출생 시간 선택 (30분 오프셋 버전) ───── -->
+              <div class="saju_field">
+                <label for="sajuTime">출생 시간</label>
+
+                <!-- ① 12지지 드롭다운 (30분 오프셋) -->
+                <select id="sajuTime" disabled>
+                  <option value="">-- 선택 --</option>
+                  <option value="23:30">子시&nbsp;(23:30 ~ 01:29)</option>
+                  <option value="01:30">丑시&nbsp;(01:30 ~ 03:29)</option>
+                  <option value="03:30">寅시&nbsp;(03:30 ~ 05:29)</option>
+                  <option value="05:30">卯시&nbsp;(05:30 ~ 07:29)</option>
+                  <option value="07:30">辰시&nbsp;(07:30 ~ 09:29)</option>
+                  <option value="09:30">巳시&nbsp;(09:30 ~ 11:29)</option>
+                  <option value="11:30">午시&nbsp;(11:30 ~ 13:29)</option>
+                  <option value="13:30">未시&nbsp;(13:30 ~ 15:29)</option>
+                  <option value="15:30">申시&nbsp;(15:30 ~ 17:29)</option>
+                  <option value="17:30">酉시&nbsp;(17:30 ~ 19:29)</option>
+                  <option value="19:30">戌시&nbsp;(19:30 ~ 21:29)</option>
+                  <option value="21:30">亥시&nbsp;(21:30 ~ 23:29)</option>
+                </select>
+
+                <!-- ② ‘모름’ 체크박스 -->
+                <label class="saju_time_unknown">
+                  <input type="checkbox" id="sajuTimeUnknown" checked />
+                  모름
+                </label>
+              </div>
+            </div>
             <div class="payment-price-wrap">
               <div class="payment-original-price-title">보고서 금액</div>
               <div class="payment-original-price">18,270원</div>
@@ -1688,7 +1734,19 @@
     </script>
 
     <script src="https://js.tosspayments.com/v1/payment-widget"></script>
+    <script>
+      // 체크박스 상태에 따라 드롭다운 활성/비활성 전환
+      const timeSelect = document.getElementById("sajuTime");
+      const unknownChk = document.getElementById("sajuTimeUnknown");
 
+      function toggleTimeField() {
+        timeSelect.disabled = unknownChk.checked;
+        if (unknownChk.checked) timeSelect.value = "";
+      }
+      // 최초 상태 반영 + 이벤트 연결
+      toggleTimeField();
+      unknownChk.addEventListener("change", toggleTimeField);
+    </script>
     <script src="../commonJs/footer.js"></script>
     <script src="../commonJs/header.js"></script>
     <script src="js/result.js"></script>

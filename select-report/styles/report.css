@@ -672,3 +672,44 @@
 
   pointer-events: none;
 }
+
+/* 추가 스타일 (선택) */
+.saju_optional_wrap {
+  margin-top: 32px;
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background: #fafafa;
+}
+.saju_optional_title {
+  margin: 0 0 8px;
+  font-size: 18px;
+  font-weight: 600;
+}
+.saju_optional_desc {
+  margin: 0 0 16px;
+  font-size: 14px;
+  line-height: 1.4;
+  color: #555;
+}
+.saju_field {
+  display: flex;
+  align-items: center;
+  margin-bottom: 12px;
+  gap: 8px;
+}
+.saju_field input[type="text"],
+.saju_field input[type="date"],
+.saju_field input[type="time"] {
+  flex: 1 1 180px;
+  padding: 6px 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+.saju_time_unknown {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 13px;
+  color: #666;
+}

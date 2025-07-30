@@ -433,26 +433,42 @@ function trackAndStartLovePayment(resultId) {
   startLoveTossPayment(resultId);
 }
 
+/* ====== LOVE 결제 위젯 시작 함수 일부 수정 ====== */
 async function startLoveTossPayment(resultId) {
-  const clientKey = "live_gck_yZqmkKeP8gBaRKPg1WwdrbQRxB9l"; // 테스트 키
+  const clientKey = "live_gck_yZqmkKeP8gBaRKPg1WwdrbQRxB9l";
   const customerKey = "customer_" + new Date().getTime();
 
   document.getElementById("lovePaymentOverlay").style.display = "block";
 
   try {
     const paymentWidget = PaymentWidget(clientKey, customerKey);
-    const paymentMethodWidget = paymentWidget.renderPaymentMethods(
-      "#love-method",
-      { value: 9900 }
-    );
+    paymentWidget.renderPaymentMethods("#love-method", { value: 9900 });
     paymentWidget.renderAgreement("#love-agreement");
 
+    /* ─── 클릭 핸들러 ─── */
     document.getElementById("love-button").onclick = async () => {
+      /* 1) 사주 입력값 읽기 */
+      const sajuName = document.getElementById("sajuName")?.value?.trim() || "";
+      const sajuBirth = document.getElementById("sajuBirth")?.value || "";
+      const timeSel = document.getElementById("sajuTime")?.value || "";
+      const timeUnknown = document.getElementById("sajuTimeUnknown")?.checked;
+
+      /* 2) Mixpanel 트래킹 (사주 정보 포함) */
+      mixpanel.track("연애운 분석 보고서 결제 요청 시도", {
+        id: resultId,
+        price: 9900,
+        sajuName: sajuName || "(미입력)",
+        sajuBirth: sajuBirth || "(미입력)",
+        sajuTime: timeUnknown ? "모름" : timeSel || "(미선택)",
+        ts: new Date().toISOString(),
+      });
+
+      /* 3) TossPayments 결제 요청 */
       try {
         await paymentWidget.requestPayment({
           orderId: `order_${Date.now()}`,
           orderName: "관상 연애운 상세 분석 보고서",
-          customerName: "고객",
+          customerName: sajuName || "고객",
           successUrl: `${
             window.location.origin
           }/success.html?id=${encodeURIComponent(resultId)}&type=love`,
@@ -460,10 +476,6 @@ async function startLoveTossPayment(resultId) {
             resultId
           )}&type=love`,
         });
-        mixpanel.track("연애운 분석 보고서 결제 요청 시도", {
-          id: resultId,
-          price: 9900,
-        }); // ← 추가
       } catch (err) {
         alert("❌ 결제 실패: " + err.message);
       }
