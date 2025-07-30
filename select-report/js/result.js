@@ -98,7 +98,7 @@ function renderResultNormalized(obj) {
   wrap.innerHTML = `
     <div class="result-title-wrap">
       
-      <div class="result-title-sub">말 못 할 고민이 있어 이곳까지 오셨구려.<br/>아래에서 알고 싶은 관상 풀이를 확인하시오.</div>
+      <div class="result-title-sub">아래에서 알고 싶은 관상 풀이를 확인하세요.</div>
       <span class="material-icons"> keyboard_arrow_down</span>
    
     </div>
@@ -206,11 +206,9 @@ function renderResultNormalized(obj) {
 
 function renderImage(base64) {
   document.getElementById("face-image").src = base64;
-  document.getElementById("final_face_contents_base").src = base64;
-  document.getElementById("final_face_contents_wealth").src = base64;
+
   document.getElementById("final_face_contents_love").src = base64;
-  document.getElementById("final_face_contents_marriage").src = base64;
-  document.getElementById("final_face_contents_career").src = base64;
+
   document.querySelector(".file-upload-content").style.display = "block";
   document.querySelector(".image-upload-wrap").style.display = "none";
 }
@@ -401,7 +399,7 @@ async function startWealthTossPayment(resultId) {
     const paymentWidget = PaymentWidget(clientKey, customerKey);
     const paymentMethodWidget = paymentWidget.renderPaymentMethods(
       "#wealth-method",
-      { value: 14900 }
+      { value: 9900 }
     );
     paymentWidget.renderAgreement("#wealth-agreement");
 
@@ -420,7 +418,7 @@ async function startWealthTossPayment(resultId) {
         });
         mixpanel.track("재물운 분석 보고서 결제 요청 시도", {
           id: resultId,
-          price: 14900,
+          price: 9900,
         }); // ← 추가
       } catch (err) {
         alert("❌ 결제 실패: " + err.message);
