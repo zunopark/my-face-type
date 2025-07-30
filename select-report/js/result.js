@@ -134,7 +134,7 @@ function renderResultNormalized(obj) {
        
         <div class="mask-text-top-sub">
           연애가 너무 어려우신가요?<br />관상에서 보이는 당신의 매력을 자세히 알려드립니다.<br /><br />
-          # 총 여녀애 횟수 & 연애 주기<br />
+          # 총 연애 횟수 & 연애 주기<br />
           # 나의 운명의 상대 사는 곳<br />
           # 연애운이 강한 계절과 장소 추천<br />
           # 이상적인 상대의 관상 묘사<br />
