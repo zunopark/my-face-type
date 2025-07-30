@@ -124,11 +124,14 @@ function renderResultNormalized(obj) {
 
     <div class="mask-text-wrap love-bg">
       <div class="mask-text">
+      <div class="mask-profile-tag">
+        <span class="gradient_gold">프리미엄 보고서</span>
+      </div>
        <div class="mask-profile-wrap">
           <img src="../img/love_yangban.png" class="mask-profile-img" alt="" />
           <div class="mask-profile-name">연화무녀</div>
         </div>
-        <div class="mask-text-top love-color">연애운 관상 풀이</div>
+        <div class="mask-text-top love-color">연애운 심층 관상 풀이</div>
        
         <div class="mask-text-top-sub">
           연애가 너무 어려우신가요?<br />관상에서 보이는 당신의 매력을 자세히 알려드립니다.<br /><br />
