@@ -460,7 +460,7 @@ async function startLoveTossPayment(resultId) {
 
   try {
     const paymentWidget = PaymentWidget(clientKey, customerKey);
-    paymentWidget.renderPaymentMethods("#love-method", { value: 19900 });
+    paymentWidget.renderPaymentMethods("#love-method", { value: 9900 });
     paymentWidget.renderAgreement("#love-agreement");
 
     /* ─── 클릭 핸들러 ─── */
