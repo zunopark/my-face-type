@@ -134,11 +134,11 @@ function renderResultNormalized(obj) {
        
         <div class="mask-text-top-sub">
           연애가 너무 어려우신가요?<br />관상에서 보이는 당신의 매력을 자세히 알려드립니다.<br /><br />
-          # 관상 속 도화살 풀이<br />
-          # 도화살 심층 분석<br />
-          # 연애운 폭발 시기 예측<br />
-          # 도화살 맞춤 성형・시술 추천<br />
-          # 도화살 궁합<br />
+          # 총 여녀애 횟수 & 연애 주기<br />
+          # 나의 운명의 상대 사는 곳<br />
+          # 연애운이 강한 계절과 장소 추천<br />
+          # 이상적인 상대의 관상 묘사<br />
+          # 연애 성향 강,약점 분석<br />
         </div>
         <div class="mask-text-btn-wrap love-bgcolor">
           <div class="mask-text-btn"
