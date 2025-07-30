@@ -657,15 +657,15 @@
   mask-image: linear-gradient(
     to bottom,
     transparent 0%,
-    transparent 0%,
-    #b6ad00 100%,
+    transparent 35%,
+    #b6ad00 36%,
     #b6ad00 100%
   );
   -webkit-mask-image: linear-gradient(
     to bottom,
     transparent 0%,
-    transparent 0%,
-    #b6ad00 100%,
+    transparent 35%,
+    #b6ad00 36%,
     #b6ad00 100%
   );
 
