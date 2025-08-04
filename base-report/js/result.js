@@ -787,8 +787,7 @@ function renderResultNormalized(obj, reportType = "base") {
                  전체 분석 결과 확인하기
               </div>
             </div>
-        <div class="mask-event-tag">누적 판매 2,000건 돌파 특별 반값 할인</div>
-
+            <div class="mask-text-btn-sub">총 5,000자 이상</div>
           </div>
         </div>
       </div> 
