@@ -74,6 +74,19 @@
   pointer-events: none;
 }
 
+.mask-event-tag {
+  color: transparent;
+  background-image: linear-gradient(to right, #ffd700, #ffa500);
+  -webkit-background-clip: text;
+  background-clip: text;
+  font-family: "KimjungchulMyungjo-Bold";
+  font-size: 16px;
+  font-weight: 700;
+  font-family: "GmarketSans";
+  width: 100%;
+  text-align: center;
+}
+
 .mask-text-wrap-top {
   width: 320px;
 

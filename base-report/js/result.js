@@ -773,7 +773,7 @@ function renderResultNormalized(obj, reportType = "base") {
       <div class="result-mask">
         <div class="blur-overlay"></div>
         <div class="mask-text-wrap-top base-bg">
-          <div class="mask-text base-color">
+        <div class="mask-text base-color">
             <div class="mask-text-top">정통 심층 관상 보고서</div>
             <div class="mask-text-top-sub">
               내 미래가 보이는 부위별 정통 관상<br /><br />+ 천기누설 +<br/>
@@ -787,7 +787,8 @@ function renderResultNormalized(obj, reportType = "base") {
                  전체 분석 결과 확인하기
               </div>
             </div>
-            <div class="mask-text-btn-sub">총 5,000자 이상</div>
+        <div class="mask-event-tag">누적 판매 2,000건 돌파 특별 반값 할인</div>
+
           </div>
         </div>
       </div> 
