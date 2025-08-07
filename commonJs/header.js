@@ -19,7 +19,7 @@ const headerContent = () => {
   } else if (headerMain.id === "couple-report") {
     headerMain.innerHTML = ` 
       <div id="header_back" class="header_chat header_fixed">
-        <a href="/couple" class="header_btn">
+        <a href="/" class="header_btn">
           <span class="material-icons header_chat_icon">arrow_back_ios</span>
          
           <div class="header_chat_title">다른 사진</div>
