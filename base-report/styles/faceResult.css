@@ -2,6 +2,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  padding: 0 32px;
 }
 
 .face-result {
@@ -13,11 +14,12 @@
 }
 
 .face-summary {
+  font-size: 18px;
   color: rgb(39, 39, 39);
   line-height: 1.7;
-  font-family: "GmarketSans";
-
-  text-align: justify;
+  font-family: "KimjungchulMyungjo-Bold";
+  text-align: center;
+  margin-bottom: 48px;
 }
 
 .face-full-section-wrapper {
@@ -79,7 +81,6 @@
   background-image: linear-gradient(to right, #ffd700, #ffa500);
   -webkit-background-clip: text;
   background-clip: text;
-  font-family: "KimjungchulMyungjo-Bold";
   font-size: 16px;
   font-weight: 700;
   font-family: "GmarketSans";
@@ -465,4 +466,74 @@
 }
 .clear-btn:hover {
   opacity: 0.85;
+}
+
+.face_teller_wrap {
+  width: 100%;
+}
+
+.face_teller_img {
+  width: 100%;
+}
+
+.result_btn_wrap {
+  position: fixed;
+  bottom: 0;
+  padding: 20px;
+  background-color: white;
+}
+
+.result_btn_wrap {
+  /* display: flex; */
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+/* 버튼 기본(비활성)·완료(활성) */
+.result_btn {
+  width: 320px;
+  padding: 12px 26px;
+  font-size: 1rem;
+  font-weight: 600;
+  border: none;
+  border-radius: 8px;
+  background: #b9b9b9; /* idle·loading */
+  color: #fff;
+  cursor: not-allowed;
+}
+.result_btn_wrap[data-state="ready"] .result_btn {
+  background: #c68800;
+  cursor: pointer;
+}
+
+/* 상태 문구 */
+.result_btn_status {
+  font-size: 0.9rem;
+  color: #666;
+}
+.result_btn_wrap[data-state="loading"] .result_btn_status {
+  color: #c68800;
+}
+.result_btn_wrap[data-state="ready"] .result_btn_status {
+  font-weight: 700;
+  color: #c68800;
+}
+
+/* 로딩 바 */
+.result_btn_loading_wrap {
+  width: 300px;
+  height: 8px;
+  background: #e5e5e5;
+  border-radius: 4px;
+  overflow: hidden;
+}
+.result_btn_loading {
+  width: 0%;
+  height: 100%;
+  background: #c68800;
+  transition: width 0.3s linear;
+}
+.result_btn_wrap[data-state="ready"] .result_btn_loading_wrap {
+  display: none; /* 완료 시 바 숨김 */
 }

@@ -125,6 +125,7 @@
   justify-content: space-between;
   align-items: flex-start;
   font-size: 14px;
+  text-align: justify;
 }
 .report-contents {
   margin-bottom: 12px;

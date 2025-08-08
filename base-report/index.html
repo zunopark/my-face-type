@@ -184,9 +184,9 @@
       <div class="main_content_wrap">
         <div class="main_title_wrap">
           <div class="main_title">
-            대한민국 1등 관상가가 알려주는<br />내 관상 심층 보고서
+            대한민국 1등 관상가가 알려주는<br />관상 심층 분석
           </div>
-          <div class="main_subtitle">#종합 #연애 #재물 #결혼 #직업</div>
+          <div class="main_subtitle">#부위별 #연애 #직업 #재물 #건강</div>
         </div>
 
         <div class="border">
@@ -232,6 +232,19 @@
 
       <div id="label-container" class="result"></div>
 
+      <div class="result_btn_wrap" style="display: none" data-state="idle">
+        <div class="result_btn_loading_wrap">
+          <div class="result_btn_loading"></div>
+        </div>
+
+        <!-- 진행‧완료 문구 -->
+        <div class="result_btn_status">보고서 준비 대기 중...</div>
+
+        <button class="result_btn" disabled>
+          관상 전체 결과 바로 확인하기
+        </button>
+      </div>
+
       <!-- ✅ Toss 결제 모달 -->
       <div id="paymentOverlay" class="payment-overlay" style="display: none">
         <div id="paymentFull" class="payment-fullscreen">
@@ -248,68 +261,43 @@
             <div class="report-wrap">
               <div class="report-title-wrap">
                 <div class="report-title">보고서 내용</div>
-                <div class="report-num">총 5,000자 심층 분석</div>
+                <div class="report-num">총 20,000자 심층 분석</div>
               </div>
               <div class="report-contents-wrap">
                 <div class="report-contents">
-                  1. [상정·초년] 이마·눈썹, 두뇌·가족·첫 사회운
+                  1. 부위별 관상 심층 풀이 - 오관 분석 / 삼정 분석 / 12궁 분석 /
+                  천기누설
                 </div>
               </div>
               <div class="report-contents-wrap">
                 <div class="report-contents">
-                  2. [중정·중년] 콧대·광대, 재물·권위·도약 시점
+                  2. 연애운 심층 풀이 - 타고난 인연 / 만남 오픈 타이밍 / 매력
+                  풀이 / 이상적 상대 / 천기누설
                 </div>
               </div>
               <div class="report-contents-wrap">
                 <div class="report-contents">
-                  3. [하정·말년] 입·턱, 가정·건강·노후 복
+                  3. 직업운 심층 풀이 - 적성과 장단점 / 직업 운 곡선 / 직장 vs
+                  창업 / 천기누설
                 </div>
               </div>
               <div class="report-contents-wrap">
                 <div class="report-contents">
-                  4. [명궁 총론] 미간, 인생 그래프와 전환점
+                  4. 재물운 심층 풀이 - 평생 모을 재산 / 재물운 강약점 / 돈이
+                  붙는 환경 / 천기누설
                 </div>
               </div>
               <div class="report-contents-wrap">
                 <div class="report-contents">
-                  5. [재백궁] 콧방울·비익, 돈의 흐름과 투자 운
-                </div>
-              </div>
-              <div class="report-contents-wrap">
-                <div class="report-contents">
-                  6. [관록궁] 이마 중앙 윤곽, 직업·승진·사업 복
-                </div>
-              </div>
-              <div class="report-contents-wrap">
-                <div class="report-contents">
-                  7. [남녀궁] 눈꼬리, 연애·결혼·배우자 상
-                </div>
-              </div>
-              <div class="report-contents-wrap">
-                <div class="report-contents">
-                  8. [자식궁] 인중 길이·깊이, 자녀 복과 가문의 빛
-                </div>
-              </div>
-              <div class="report-contents-wrap">
-                <div class="report-contents">
-                  9. [노복궁] 귀·귓볼, 건강·장수·말년 지수
-                </div>
-              </div>
-              <div class="report-contents-wrap">
-                <div class="report-contents">
-                  10. [12궁 종합지도] 인생 파노라마
-                </div>
-              </div>
-              <div class="report-contents-wrap">
-                <div class="report-contents">
-                  11. [천기 누설] 팔자 필 성형·관리 포인트 집중 처방
+                  5. 건강운 심층 풀이 - 타고난 체질,약점 / 건강 곡선 & 위기 /
+                  천기누설
                 </div>
               </div>
             </div>
 
             <div class="payment-price-wrap">
               <div class="payment-original-price-title">보고서 금액</div>
-              <div class="payment-original-price">9,900원</div>
+              <div class="payment-original-price">29,900원</div>
             </div>
 
             <div class="payment-coupon-wrap">
@@ -317,9 +305,9 @@
             </div>
             <div class="payment-coupon-price-wrap">
               <div class="payment-coupon-title">
-                판매 1,000건 돌파 기념 할인
+                판매 3,000건 돌파 기념 할인
               </div>
-              <div class="payment-coupon-price">-5,000원</div>
+              <div class="payment-coupon-price">-20,000원</div>
             </div>
 
             <div id="payment-method"></div>
@@ -328,10 +316,10 @@
             <div class="payment-final-price-wrap">
               <div class="payment-final-price-title">최종 결제 금액</div>
               <div class="payment-final-price-price-wrap">
-                <div class="payment-originam-price2">9,900원</div>
+                <div class="payment-originam-price2">29,900원</div>
                 <div class="payment-final-price">
-                  <div class="payment-final-price-discount">51%</div>
-                  <div class="payment-final-price-num">4,900원</div>
+                  <div class="payment-final-price-discount">67%</div>
+                  <div class="payment-final-price-num">9,900원</div>
                 </div>
               </div>
             </div>
@@ -358,76 +346,51 @@
             <div class="report-wrap">
               <div class="report-title-wrap">
                 <div class="report-title">보고서 내용</div>
-                <div class="report-num">총 10,000자 심층 분석</div>
+                <div class="report-num">총 20,000자 심층 분석</div>
               </div>
               <div class="report-contents-wrap">
                 <div class="report-contents">
-                  1. [코와 콧대] 통장이 최고점 찍을 해
+                  1. 부위별 관상 심층 풀이 - 오관 분석 / 삼정 분석 / 12궁 분석 /
+                  천기누설
                 </div>
               </div>
               <div class="report-contents-wrap">
                 <div class="report-contents">
-                  2. [이마와 눈썹] 첫 대박 터질 나이
+                  2. 연애운 심층 풀이 - 타고난 인연 / 만남 오픈 타이밍 / 매력
+                  풀이 / 이상적 상대 / 천기누설
                 </div>
               </div>
               <div class="report-contents-wrap">
                 <div class="report-contents">
-                  3. [눈과 눈매] 끌리는 이상형 본능 코드
+                  3. 직업운 심층 풀이 - 적성과 장단점 / 직업 운 곡선 / 직장 vs
+                  창업 / 천기누설
                 </div>
               </div>
               <div class="report-contents-wrap">
                 <div class="report-contents">
-                  4. [입과 입술] 거절 못 할 설득 타율
+                  4. 재물운 심층 풀이 - 평생 모을 재산 / 재물운 강약점 / 돈이
+                  붙는 환경 / 천기누설
                 </div>
               </div>
               <div class="report-contents-wrap">
                 <div class="report-contents">
-                  5. [턱과 광대] 은퇴 후 반격 모먼트
-                </div>
-              </div>
-              <div class="report-contents-wrap">
-                <div class="report-contents">
-                  6. [얼굴형] 인생 그래프 상승 각도
-                </div>
-              </div>
-              <div class="report-contents-wrap">
-                <div class="report-contents">
-                  7. [전체 인상·기운] 로또급 깜짝 행운 지수
-                </div>
-              </div>
-              <div class="report-contents-wrap">
-                <div class="report-contents">
-                  8. [운명·경로] 인생 반전 버튼 작동 시점
-                </div>
-              </div>
-              <div class="report-contents-wrap">
-                <div class="report-contents">
-                  9. [대인 관계·인연] 귀인 만날 달력 표시
-                </div>
-              </div>
-              <div class="report-contents-wrap">
-                <div class="report-contents">
-                  10. [종합 결론] 길·흉 총합 승부수 한줄
-                </div>
-              </div>
-              <div class="report-contents-wrap">
-                <div class="report-contents">
-                  11. [천기 누설] 내 팔자 피게 해줄 성형 부위
+                  5. 건강운 심층 풀이 - 타고난 체질,약점 / 건강 곡선 & 위기 /
+                  천기누설
                 </div>
               </div>
             </div>
             <div class="payment-price-wrap">
               <div class="payment-original-price-title">보고서 금액</div>
-              <div class="payment-original-price">9,900원</div>
+              <div class="payment-original-price">29,900원</div>
             </div>
             <div class="payment-coupon-wrap">
               <div class="payment-coupon">쿠폰 할인 💸</div>
             </div>
             <div class="payment-coupon-price-wrap">
               <div class="payment-coupon-title">
-                판매 1,000건 돌파 + 추가 할인 2,000원
+                판매 3,000건 돌파 + 추가 할인 2,000원
               </div>
-              <div class="payment-coupon-price">-7,000원</div>
+              <div class="payment-coupon-price">-22,000원</div>
             </div>
 
             <div id="discount-method"></div>
@@ -436,10 +399,10 @@
             <div class="payment-final-price-wrap">
               <div class="payment-final-price-title">최종 결제 금액</div>
               <div class="payment-final-price-price-wrap">
-                <div class="payment-originam-price2">9,900원</div>
+                <div class="payment-originam-price2">29,900원</div>
                 <div class="payment-final-price">
-                  <div class="payment-final-price-discount">71%</div>
-                  <div class="payment-final-price-num">2,900원</div>
+                  <div class="payment-final-price-discount">74%</div>
+                  <div class="payment-final-price-num">7,900원</div>
                 </div>
               </div>
             </div>

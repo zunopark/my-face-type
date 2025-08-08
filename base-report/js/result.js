@@ -1,4 +1,5 @@
 let db;
+let currentResultId = null; // 전역 보관 용
 
 /* ───────── 1. IndexedDB 초기화 ───────── */
 async function initDB() {
@@ -78,7 +79,7 @@ async function analyzeFaceImage(file, imageBase64, forceId = null) {
 
   try {
     const resp = await fetch(
-      "https://port-0-momzzi-fastapi-m7ynssht4601229b.sel4.cloudtype.app/analyze/",
+      "https://port-0-momzzi-fastapi-m7ynssht4601229b.sel4.cloudtype.app/face-teller2/",
       { method: "POST", body: formData }
     );
     if (!resp.ok) throw new Error("서버 응답 오류");
@@ -137,6 +138,58 @@ function renderResult(data) {
   renderResultNormalized(norm, "base");
 }
 
+/* ================= 결과 버튼 로딩 컨트롤 ================ */
+function startResultBtnLoading() {
+  const wrap = document.querySelector(".result_btn_wrap");
+  const bar = document.querySelector(".result_btn_loading");
+  const status = document.querySelector(".result_btn_status");
+  const btn = document.querySelector(".result_btn");
+
+  if (!wrap) return;
+
+  wrap.dataset.state = "loading"; // 회색 + 미니바 노출
+  status.textContent = "관상 심층 보고서를 최종 정리 중입니다...";
+  btn.disabled = true;
+
+  // 0 → 100 % : 10 초
+  bar.style.width = "0%";
+  let p = 0;
+  const tid = setInterval(() => {
+    p += Math.random() * 6.2;
+    bar.style.width = Math.min(p, 100) + "%";
+    if (p >= 100) {
+      clearInterval(tid);
+      finishResultBtnLoading(); // 10 초 뒤 자동 완료
+    }
+  }, 320);
+}
+
+function finishResultBtnLoading() {
+  const wrap = document.querySelector(".result_btn_wrap");
+  const status = document.querySelector(".result_btn_status");
+  const btn = document.querySelector(".result_btn");
+
+  if (!wrap) return;
+
+  wrap.dataset.state = "ready"; // 초록 버튼
+  status.textContent = "관상 심층 보고서가 준비되었습니다!";
+  btn.disabled = false;
+}
+
+function finishResultBtnLoading() {
+  const wrap = document.querySelector(".result_btn_wrap");
+  const bar = document.querySelector(".result_btn_loading");
+  const status = document.querySelector(".result_btn_status");
+  const btn = document.querySelector(".result_btn");
+
+  if (!wrap) return;
+
+  bar.style.width = "100%";
+  wrap.dataset.state = "ready";
+  status.textContent = "관상 심층 보고서가 준비되었습니다!";
+  btn.disabled = false;
+}
+
 /* ─────────── Loading UI (progress bar + 문구) ─────────── */
 let fakeProgress = 0,
   progressInterval = null,
@@ -186,6 +239,8 @@ function finishLoading() {
   const bar = document.getElementById("progress-bar");
   if (bar) bar.style.width = "100%";
   mixpanel.track("기본 분석 보고서 완료", { id: pageId, type: pageType }); // ← 추가
+  startResultBtnLoading(); // ★ 버튼 로딩 시작
+  document.querySelector(".result_btn_wrap").style.display = "flex";
 }
 
 function showError(msg) {
@@ -195,6 +250,8 @@ function showError(msg) {
     "label-container"
   ).innerHTML = `<div style="color:red; padding:24px; white-space:pre-line;">${msg}</div>`;
   mixpanel.track("기본 분석 보고서 오류", { id: pageId, error: msg }); // ← 추가
+  const status = document.querySelector(".result_btn_status");
+  if (status) status.textContent = "보고서 생성에 실패했습니다.";
 }
 
 // 9. 이미지 업로드 처리
@@ -243,7 +300,7 @@ async function startTossPayment(resultId) {
     const paymentWidget = PaymentWidget(clientKey, customerKey);
     const paymentMethodWidget = paymentWidget.renderPaymentMethods(
       "#payment-method",
-      { value: 4900 }
+      { value: 9900 }
     );
     paymentWidget.renderAgreement("#agreement");
 
@@ -264,7 +321,7 @@ async function startTossPayment(resultId) {
         });
         mixpanel.track("기본 분석 보고서 결제 요청 시도", {
           id: resultId,
-          price: 4900,
+          price: 9900,
         }); // ← 추가
       } catch (err) {
         alert("❌ 결제 실패: " + err.message);
@@ -308,7 +365,7 @@ async function startDiscountedPayment() {
 
   try {
     const widget = PaymentWidget(clientKey, customerKey);
-    widget.renderPaymentMethods("#discount-method", { value: 2900 });
+    widget.renderPaymentMethods("#discount-method", { value: 7900 });
     widget.renderAgreement("#discount-agreement");
 
     document.getElementById("discount-button").onclick = async () => {
@@ -329,7 +386,7 @@ async function startDiscountedPayment() {
 
         mixpanel.track("할인 결제 시도", {
           id: pageId,
-          price: 2900,
+          price: 7900,
           timestamp: new Date().toISOString(),
         });
       } catch (err) {
@@ -685,7 +742,8 @@ function renderResultNormalized(obj, reportType = "base") {
   /* ── 단일형(base) = 당신이 넣고 싶은 마스킹 UI ── */
   const paidFlag =
     obj.paid !== undefined ? obj.paid : window.currentPaid ?? false;
-  const resultId = obj.id ?? ""; // 결제 버튼에서 사용
+  const resultId = obj.id ?? "";
+  currentResultId = resultId; // ★ 여기 한 줄만 추가
 
   function simpleMD(src = "") {
     // 1) 코드블록 – 먼저 보존
@@ -766,103 +824,9 @@ function renderResultNormalized(obj, reportType = "base") {
     <div class="face-summary-section">
       <div class="face-summary">${simpleMD(obj.summary)}</div>
     </div>
-
-    <div class="face-full-section-wrapper">
-      <div class="face-full-report">${simpleMD(obj.detail)}</div>
-
-      <div class="result-mask">
-        <div class="blur-overlay"></div>
-        <div class="mask-text-wrap-top base-bg">
-        <div class="mask-text base-color">
-            <div class="mask-text-top">정통 심층 관상 보고서</div>
-            <div class="mask-text-top-sub">
-              내 미래가 보이는 부위별 정통 관상<br /><br />+ 천기누설 +<br/>
-              팔자 고치는 성형 및 시술 부위 추천
-            </div>
-            <div class="mask-text-btn-wrap base-bgcolor">
-              <div
-                class="mask-text-btn "
-                onclick="trackAndStartPayment('${resultId}')"
-              >
-                 전체 분석 결과 확인하기
-              </div>
-            </div>
-            <div class="mask-text-btn-sub">총 5,000자 이상</div>
-          </div>
-        </div>
-      </div> 
-    </div> 
-    <div class="mask-text-wrap love-bg">
-          <div class="mask-text">
-            <div class="mask-text-top love-color">연애 심층 관상 보고서</div>
-            <div class="mask-text-top-sub"> 
-            
-        내 얼굴은 총 몇 번 연애를 할 수 있을까?<br /><br />
-+ 천기누설 +<br />
-지금 내 인연을 만날 수 있는 시·구 위치 예측
-              </div>
-              <div class="mask-text-btn-wrap love-bgcolor">
-                <div class="mask-text-btn " onclick="trackAndStartLovePayment('${resultId}')">
-                  나의 연애 관상 확인하기
-                </div>
-              </div>
-            <div class="mask-text-btn-sub">총 13,000자 이상</div>
-          </div>
-        </div>
-    <div class="mask-text-wrap wealth-bg">
-          <div class="mask-text">
-            <div class="mask-text-top wealth-color">재물 심층 관상 보고서</div>
-            <div class="mask-text-top-sub"> 
-            
-        내 얼굴은 평생 몇 억을 벌 수 있을까?<br /><br />
-+ 천기누설 +<br />
-현금 폭탄 떨어질 인생 타이밍 & 방법
-              </div>
-              <div class="mask-text-btn-wrap wealth-bgcolor">
-                <div class="mask-text-btn " onclick="trackAndStartWealthPayment('${resultId}')">
-                  나의 재물 관상 확인하기
-                </div>
-              </div>
-            <div class="mask-text-btn-sub">총 15,000자 이상</div>
-          </div>
-        </div>
-          
-        <div class="mask-text-wrap marriage-bg">
-          <div class="mask-text">
-            <div class="mask-text-top marriage-color">결혼 심층 관상 보고서
-</div>
-            <div class="mask-text-top-sub"> 
-            
-      셀카 한 장으로 알아보는 내 결혼 나이<br /><br />
-+ 천기누설 +<br />
-웨딩운이 보이는 장소 & 놓치면 안 될 골든타임              </div>
-
-              <div class="mask-text-btn-wrap marriage-bgcolor">
-                <div class="mask-text-btn " onclick="trackAndStartMarriagePayment('${resultId}')">
-                  나의 결혼 관상 확인하기
-                </div>
-              </div>
-            <div class="mask-text-btn-sub">총 12,000자 이상</div>
-          </div>
-        </div>
-        <div class="mask-text-wrap career-bg">
-          <div class="mask-text">
-            <div class="mask-text-top career-color">직업 심층 관상 보고서</div>
-            <div class="mask-text-top-sub"> 
-            
-   내 얼굴에서 보이는 나의 직업 성향과 고점 시기<br /><br />
-+ 천기누설 +<br />
-연봉 그래프 상한가 찍을 부서·업종 좌표
-              </div>
-            <div class="mask-text-btn-wrap career-bgcolor">
-              <div class="mask-text-btn " onclick="trackAndStartCareerPayment('${resultId}')">
-                나의 직업 관상 확인하기
-              </div>
-            </div>
-
-            <div class="mask-text-btn-sub">총 12,000자 이상</div>
-          </div>
-        </div>
+    <div class="face_teller_wrap">
+      <img src="../img/faceteller.png" alt="" class="face_teller_img" />
+    </div>
   `;
 }
 
@@ -874,6 +838,20 @@ function renderImage(base64) {
 
 // 페이지 진입 시 바로 실행
 document.addEventListener("DOMContentLoaded", () => {
-  mixpanel.track("기본 관상 결과 페이지 진입", { ts: Date.now() }); // ← 추가
+  const btn = document.querySelector(".result_btn");
+
+  btn.addEventListener("click", () => {
+    // ① 전역 변수에서
+    if (currentResultId) {
+      trackAndStartPayment(currentResultId);
+      return;
+    }
+
+    // ② 혹시 전역이 undefined 라면, dataset 에서
+    const id = btn.dataset.resultId;
+    if (id) trackAndStartPayment(id);
+  });
+
+  mixpanel.track("기본 관상 결과 페이지 진입", { ts: Date.now() });
   autoRenderFromDB(500);
 });
