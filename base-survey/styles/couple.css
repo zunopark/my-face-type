@@ -1,8 +1,6 @@
 .couple-container {
   display: flex;
   justify-content: center;
-  gap: 24px;
-  flex-wrap: wrap;
   margin-bottom: 24px;
 }
 
@@ -19,6 +17,7 @@
 /* 필요하다면 첫 번째 카드만 색 변경 */
 .couple-card:first-child {
   background-color: rgba(206, 206, 206, 0.15);
+  margin-right: 16px;
 }
 
 .couple-input {
