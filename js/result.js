@@ -90,6 +90,8 @@ function readURL(input) {
     document.querySelector(".file-upload-content").style.display = "block";
     document.querySelector(".image-upload-wrap").style.display = "none";
     analyzeFaceFeatureOnly(input.files[0], b64);
+    // document.querySelector(".bottom-sheet-face").classList.add("active");
+    // document.querySelector(".bottom-analyze-overlay").classList.add("active");
   };
   reader.readAsDataURL(input.files[0]);
 }

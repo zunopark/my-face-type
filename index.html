@@ -168,7 +168,7 @@
 
       <div class="main_content_wrap">
         <div class="main_title_wrap">
-          <div class="main_title">인공지능이 알려주는 내 관상</div>
+          <div class="main_title">AI 관상가 양반</div>
           <div class="main_subtitle">#종합 #연애 #재물 #결혼 #직업</div>
         </div>
 
@@ -198,7 +198,7 @@
                     />
                     <div class="drag-text">
                       <span class="material-icons"> add_photo_alternate </span>
-                      <h2>(사진 첨부)</h2>
+                      <h2>(정면 사진 첨부)</h2>
                       <h3>관상? 얼굴 한번 봅시다</h3>
                     </div>
                   </div>
@@ -298,6 +298,28 @@
         </div>
 
         <div id="label-container" class="result"></div>
+      </div>
+
+      <div class="bottom-sheet-face" id="relationshipSheet">
+        <div class="sheet-inner">
+          <h3>더 자세한 관상 분석을 원하시면 추가 사진을 올려주세요</h3>
+          <div class="relationship-options">
+            <div data-type="관심">👀 관심이 있어요</div>
+            <div data-type="짝사랑">🥺 짝사랑하고 있어요</div>
+            <div data-type="썸">💋 썸타는 중이에요</div>
+            <div data-type="연애">💌 연애중이에요</div>
+            <div data-type="결혼">💍 결혼생활 중이에요</div>
+          </div>
+
+          <div class="sheet-followup hidden" id="followupSheet">
+            <h4>당신의 마음은 어떤 상태인가요?</h4>
+            <div class="followup-options" id="followupOptions"></div>
+          </div>
+
+          <button id="startAnalyzeBtn" class="sheet-btn hidden">
+            분석 시작하기
+          </button>
+        </div>
       </div>
 
       <div class="bottom-sheet" id="relationshipSheet">
