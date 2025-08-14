@@ -6,41 +6,6 @@ let coupleImages = {
 let selectedRelation = null;
 let selectedFeeling = null;
 
-// === Mixpanel: 측면 사진 업로드 트래킹 유틸 ===
-function trackFaceSideUpload(side /* 'left' | 'right' */, file) {
-  if (!file) {
-    // 파일 선택 창 열었다가 취소한 케이스도 기록하고 싶다면 유지
-    mixpanel.track("측면 사진 업로드 취소", { side });
-    return;
-  }
-
-  const { name, size, type, lastModified } = file;
-  const url = URL.createObjectURL(file);
-  const img = new Image();
-  img.onload = () => {
-    mixpanel.track("측면 사진 업로드", {
-      side, // 'left' | 'right'
-      mime: type, // 예: "image/jpeg"
-      size_bytes: size, // 파일 크기
-      file_ext: (name.split(".").pop() || "").toLowerCase(),
-      lastModified, // 타임스탬프
-      width: img.naturalWidth, // 이미지 가로
-      height: img.naturalHeight, // 이미지 세로
-    });
-    URL.revokeObjectURL(url);
-  };
-  img.onerror = () => {
-    mixpanel.track("측면 사진 업로드 실패", {
-      side,
-      mime: type,
-      size_bytes: size,
-      file_ext: (name.split(".").pop() || "").toLowerCase(),
-    });
-    URL.revokeObjectURL(url);
-  };
-  img.src = url;
-}
-
 // 1) 두 이미지 업로드 완료 시 → 바텀시트 열기
 function checkBothUploaded() {
   if (coupleImages.self && coupleImages.partner) {
@@ -130,34 +95,25 @@ document.getElementById("startAnalyzeBtn").addEventListener("click", () => {
 
 // 이미지 미리보기 및 Base64 저장
 function readCoupleURL(input, type) {
-  const file = input?.files?.[0] || null; // ← file 안전 추출
   const previewId =
     type === "coupleSelf" ? "couple-preview-self" : "couple-preview-partner";
-  const side = type === "coupleSelf" ? "left" : "right"; // ← type으로 매핑
 
-  // Mixpanel 업로드 트래킹
-  trackFaceSideUpload(side, file);
-  if (!file) return; // 취소 케이스
+  if (input.files && input.files[0]) {
+    const reader = new FileReader();
+    reader.onload = function (e) {
+      const preview = document.getElementById(previewId);
+      preview.innerHTML = `<img src="${e.target.result}" class="couple-preview-image" alt="사진 미리보기"/>`;
 
-  const reader = new FileReader();
-  reader.onload = (e) => {
-    const preview = document.getElementById(previewId);
-    if (preview) {
-      preview.innerHTML = `<img src="${e.target.result}" class="couple-preview-image has-image" alt="사진 미리보기"/>`;
-      preview.classList.add("has-image");
-    }
+      coupleImages[type === "coupleSelf" ? "self" : "partner"] =
+        e.target.result;
 
-    // Base64 보관
-    coupleImages[type === "coupleSelf" ? "self" : "partner"] = e.target.result;
-
-    // 두 장 다 올라가면 바텀시트/버튼 활성화
-    checkBothUploaded();
-    const startBtn = document.getElementById("openCoupleStart");
-    if (startBtn) {
-      startBtn.disabled = !(coupleImages.self && coupleImages.partner);
-    }
-  };
-  reader.readAsDataURL(file);
+      // ✅ 두 장 다 업로드 완료 시 버튼 활성화
+      if (coupleImages.self && coupleImages.partner) {
+        document.getElementById("openCoupleStart").disabled = false;
+      }
+    };
+    reader.readAsDataURL(input.files[0]);
+  }
 }
 
 // document.getElementById("openCoupleStart").addEventListener("click", () => {
@@ -259,32 +215,4 @@ document.addEventListener("DOMContentLoaded", () => {
       overlay.classList.remove("active");
     });
   }
-});
-
-window.addEventListener("DOMContentLoaded", () => {
-  const btn = document.getElementById("startAnalyzeBtn");
-  const hasLeft = !!document.querySelector(
-    "#couple-preview-self img, #couple-preview-self .has-image"
-  );
-  const hasRight = !!document.querySelector(
-    "#couple-preview-partner img, #couple-preview-partner .has-image"
-  );
-
-  mixpanel.track("관상 분석 시작 클릭", {
-    side_left_added: hasLeft,
-    side_right_added: hasRight,
-  });
-  btn?.addEventListener("click", () => {
-    const id = new URLSearchParams(location.search).get("id");
-    if (!id) return alert("ID가 없습니다.");
-
-    // 1) 루트 기준 절대 경로 (가장 간단)
-    location.href = `/base-report/?id=${encodeURIComponent(id)}`;
-
-    // 또는 2) origin 기반 절대 URL
-    // location.href = `${location.origin}/base-report/?id=${encodeURIComponent(id)}`;
-
-    // 또는 3) URL 생성자 사용
-    // location.href = new URL(`/base-report/?id=${encodeURIComponent(id)}`, location.origin).toString();
-  });
 });

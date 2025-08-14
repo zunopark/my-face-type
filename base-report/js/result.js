@@ -172,7 +172,7 @@ function finishResultBtnLoading() {
   if (!wrap) return;
 
   wrap.dataset.state = "ready"; // 초록 버튼
-  status.textContent = "관상 심층 보고서가 준비되었습니다!";
+  status.textContent = "20,000자 관상 심층 보고서 준비 완료!";
   btn.disabled = false;
 }
 
@@ -186,7 +186,7 @@ function finishResultBtnLoading() {
 
   bar.style.width = "100%";
   wrap.dataset.state = "ready";
-  status.textContent = "관상 심층 보고서가 준비되었습니다!";
+  status.textContent = "20,000자 관상 심층 보고서 준비 완료!";
   btn.disabled = false;
 }
 
