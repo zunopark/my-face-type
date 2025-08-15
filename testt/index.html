@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8" />
+    <title>AI 사주 계산 (Table+Color)</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="dark light" />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <main class="container">
+      <h1>AI 사주 계산</h1>
+
+      <form id="sajuForm" class="card">
+        <div class="row">
+          <label>이름</label>
+          <input type="text" name="name" placeholder="홍길동" />
+        </div>
+        <div class="row">
+          <label>성별</label>
+          <label class="radio"
+            ><input type="radio" name="gender" value="male" checked /> 남</label
+          >
+          <label class="radio"
+            ><input type="radio" name="gender" value="female" /> 여</label
+          >
+        </div>
+        <div class="row">
+          <label>생년월일</label>
+          <input type="date" name="date" required />
+        </div>
+        <div class="row">
+          <label>출생시간(선택)</label>
+          <input type="time" name="time" />
+        </div>
+        <div class="row">
+          <label>달력</label>
+          <label class="radio"
+            ><input type="radio" name="calendar" value="solar" checked />
+            양력</label
+          >
+          <label class="radio"
+            ><input type="radio" name="calendar" value="lunar" /> 음력</label
+          >
+        </div>
+        <button type="submit" id="submitBtn">사주 계산</button>
+        <span id="loading" class="loading hidden">계산 중...</span>
+      </form>
+
+      <section id="result" class="hidden">
+        <div class="card card-head">
+          <div class="title" id="cardTitle">—</div>
+          <div class="subtitle" id="cardSubtitle">—</div>
+        </div>
+
+        <div class="card table-wrap">
+          <div class="table grid">
+            <div class="cell head stub"></div>
+            <div class="cell head">생시</div>
+            <div class="cell head">생일</div>
+            <div class="cell head">생월</div>
+            <div class="cell head">생년</div>
+
+            <div class="cell rowhead">십성<br /><small>十星</small></div>
+            <div class="cell" id="tgStem_hour">—</div>
+            <div class="cell" id="tgStem_day">—</div>
+            <div class="cell" id="tgStem_month">—</div>
+            <div class="cell" id="tgStem_year">—</div>
+
+            <div class="cell rowhead">천간<br /><small>天干</small></div>
+            <div class="cell big" id="stem_hour">—</div>
+            <div class="cell big" id="stem_day">—</div>
+            <div class="cell big" id="stem_month">—</div>
+            <div class="cell big" id="stem_year">—</div>
+
+            <div class="cell rowhead">지지<br /><small>地支</small></div>
+            <div class="cell big" id="branch_hour">—</div>
+            <div class="cell big" id="branch_day">—</div>
+            <div class="cell big" id="branch_month">—</div>
+            <div class="cell big" id="branch_year">—</div>
+
+            <div class="cell rowhead">십성<br /><small>十星</small></div>
+            <div class="cell" id="tgBranch_hour">—</div>
+            <div class="cell" id="tgBranch_day">—</div>
+            <div class="cell" id="tgBranch_month">—</div>
+            <div class="cell" id="tgBranch_year">—</div>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>오행 분포</h3>
+          <div id="feBars" class="bars"></div>
+          <div class="muted" id="feLabel"></div>
+        </div>
+
+        <div class="card">
+          <h3>대운</h3>
+          <div id="luckLine" class="muted"></div>
+        </div>
+
+        <p class="muted" id="notice"></p>
+      </section>
+
+      <section id="errorBox" class="error hidden"></section>
+    </main>
+
+    <script src="./script.js"></script>
+  </body>
+</html>

@@ -1,0 +1,245 @@
+:root {
+  --bg: #0b0c10;
+  --card: #111426;
+  --muted: #9fb0c7;
+  --txt: #eef3fb;
+  --pri: #6aa7ff;
+  --wood: #2aa86c;
+  --fire: #ff6a6a;
+  --earth: #caa46a;
+  --metal: #b8bec6;
+  --water: #6aa7ff;
+  --danger: #ff6b6b;
+  --ink: #0b1020;
+  --line: #1a2035;
+}
+* {
+  box-sizing: border-box;
+}
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+body {
+  background: linear-gradient(180deg, #091120, #0b1326 60%);
+  color: var(--txt);
+  font: 16px/1.5 system-ui, Segoe UI, Apple SD Gothic Neo, Malgun Gothic, Arial;
+}
+.container {
+  max-width: 980px;
+  margin: 36px auto;
+  padding: 0 16px;
+}
+.hidden {
+  display: none;
+}
+
+h1 {
+  font-size: 28px;
+  margin: 0 0 16px;
+}
+h2 {
+  margin: 24px 0 12px;
+}
+.card {
+  background: var(--card);
+  border-radius: 20px;
+  padding: 16px;
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.28);
+  border: 1px solid var(--line);
+}
+.card-head {
+  padding: 22px;
+}
+.card-head .title {
+  font-size: 20px;
+  color: #cfe1ff;
+}
+.card-head .subtitle {
+  margin-top: 6px;
+  font-size: 28px;
+  font-weight: 800;
+}
+
+.row {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  margin: 10px 0;
+  flex-wrap: wrap;
+}
+.row label {
+  min-width: 110px;
+  color: var(--muted);
+}
+.radio {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-right: 10px;
+}
+input[type="text"],
+input[type="date"],
+input[type="time"] {
+  flex: 1;
+  background: #0d1122;
+  border: 1px solid #222a41;
+  color: var(--txt);
+  border-radius: 12px;
+  padding: 10px;
+  min-width: 220px;
+}
+button {
+  background: var(--pri);
+  border: 0;
+  border-radius: 10px;
+  color: #02060f;
+  padding: 10px 14px;
+  font-weight: 700;
+  cursor: pointer;
+}
+button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+.loading {
+  margin-left: 10px;
+  color: var(--muted);
+  font-size: 14px;
+}
+
+.table-wrap {
+  padding: 10px;
+}
+.grid {
+  display: grid;
+  grid-template-columns: 140px repeat(4, 1fr);
+  gap: 8px;
+}
+.cell {
+  background: var(--ink);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 10px;
+  min-height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+.cell.head {
+  background: transparent;
+  border: 0;
+  font-weight: 700;
+  color: #bcd0ff;
+}
+.cell.head.stub {
+  opacity: 0;
+}
+.cell.rowhead {
+  background: transparent;
+  border: 0;
+  color: #a8b9d4;
+  font-weight: 700;
+}
+.cell.big {
+  font-size: 22px;
+  font-weight: 800;
+}
+.badge {
+  display: inline-block;
+  font-size: 12px;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: #213055;
+  color: #d6e2ff;
+  margin-top: 6px;
+}
+
+.tag {
+  display: inline-grid;
+  place-items: center;
+  border-radius: 12px;
+  padding: 8px 10px;
+  min-width: 84px;
+  color: #0d0f14;
+  font-weight: 800;
+}
+.tag .ko {
+  display: block;
+  font-size: 12px;
+  font-weight: 700;
+  opacity: 0.9;
+  margin-top: 2px;
+}
+.tag.invert {
+  color: #0d0f14;
+}
+.tag.white {
+  color: #0d0f14;
+}
+
+.bars {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 12px;
+  margin-top: 8px;
+}
+.bar {
+  height: 96px;
+  background: #0d1122;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  overflow: hidden;
+}
+.bar > div {
+  width: 100%;
+}
+.bar .label {
+  text-align: center;
+  padding: 6px 0;
+  color: var(--muted);
+  font-size: 12px;
+}
+.bar[data-el="wood"] > div {
+  background: var(--wood);
+}
+.bar[data-el="fire"] > div {
+  background: var(--fire);
+}
+.bar[data-el="earth"] > div {
+  background: var(--earth);
+}
+.bar[data-el="metal"] > div {
+  background: var(--metal);
+}
+.bar[data-el="water"] > div {
+  background: var(--water);
+}
+
+.error {
+  margin-top: 16px;
+  padding: 12px;
+  border-radius: 12px;
+  background: rgba(255, 107, 107, 0.1);
+  border: 1px solid rgba(255, 107, 107, 0.4);
+  color: var(--danger);
+}
+
+@media (max-width: 900px) {
+  .grid {
+    grid-template-columns: 110px repeat(4, 1fr);
+  }
+}
+@media (max-width: 560px) {
+  .grid {
+    grid-template-columns: 90px repeat(4, 1fr);
+  }
+  .cell.big {
+    font-size: 20px;
+  }
+}
