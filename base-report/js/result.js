@@ -148,6 +148,7 @@ async function analyzeFaceImage(file, imageBase64, forceId = null) {
     finishLoading();
     setTimeout(() => {
       renderResult(result);
+      document.querySelector(".result_btn_wrap").style.display = "flex";
     }, 300);
   } catch (err) {
     console.error("❌ 분석 실패:", err);
@@ -184,30 +185,6 @@ function renderResult(data) {
 }
 
 /* ================= 결과 버튼 로딩 컨트롤 ================ */
-function startResultBtnLoading() {
-  const wrap = document.querySelector(".result_btn_wrap");
-  const bar = document.querySelector(".result_btn_loading");
-  const status = document.querySelector(".result_btn_status");
-  const btn = document.querySelector(".result_btn");
-
-  if (!wrap) return;
-
-  wrap.dataset.state = "loading"; // 회색 + 미니바 노출
-  status.textContent = "관상 심층 보고서를 최종 정리 중입니다...";
-  btn.disabled = true;
-
-  // 0 → 100 % : 10 초
-  bar.style.width = "0%";
-  let p = 0;
-  const tid = setInterval(() => {
-    p += Math.random() * 6.2;
-    bar.style.width = Math.min(p, 100) + "%";
-    if (p >= 100) {
-      clearInterval(tid);
-      finishResultBtnLoading(); // 10 초 뒤 자동 완료
-    }
-  }, 320);
-}
 
 function finishResultBtnLoading() {
   const wrap = document.querySelector(".result_btn_wrap");
@@ -284,7 +261,6 @@ function finishLoading() {
   const bar = document.getElementById("progress-bar");
   if (bar) bar.style.width = "100%";
   mixpanel.track("기본 분석 보고서 완료", { id: pageId, type: pageType }); // ← 추가
-  startResultBtnLoading(); // ★ 버튼 로딩 시작
   document.querySelector(".result_btn_wrap").style.display = "flex";
 }
 
@@ -624,6 +600,8 @@ async function autoRenderFromDB() {
   /* (2) base 보고서가 이미 저장돼 있으면 바로 렌더 */
   if (rec.reports?.base?.data) {
     renderResult(rec);
+    document.querySelector(".result_btn_wrap").style.display = "flex";
+
     return;
   }
 

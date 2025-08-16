@@ -497,12 +497,12 @@
   font-weight: 600;
   border: none;
   border-radius: 8px;
-  background: #b9b9b9; /* idle·loading */
+  background: #eba100; /* idle·loading */
   color: #fff;
   cursor: not-allowed;
 }
 .result_btn_wrap[data-state="ready"] .result_btn {
-  background: #c68800;
+  background: #eba100;
   cursor: pointer;
 }
 
@@ -512,11 +512,11 @@
   color: #666;
 }
 .result_btn_wrap[data-state="loading"] .result_btn_status {
-  color: #c68800;
+  color: #eba100;
 }
 .result_btn_wrap[data-state="ready"] .result_btn_status {
   font-weight: 700;
-  color: #c68800;
+  color: #eba100;
 }
 
 /* 로딩 바 */
