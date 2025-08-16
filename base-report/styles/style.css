@@ -97,7 +97,7 @@
 .tag {
   display: inline-grid;
   place-items: center;
-  border-radius: 12px;
+  border-radius: 4px;
   padding: 8px 10px;
   font-weight: 800;
 }
