@@ -53,7 +53,10 @@
       name: (fd.get("name") || "").trim() || null,
       gender: fd.get("gender") || "male",
       date: fd.get("date"), // YYYY-MM-DD
-      time: fd.get("time") || null, // HH:MM or null
+      time:
+        fd.get("time") && fd.get("time_unknown") !== "true"
+          ? fd.get("time")
+          : null,
       calendar: fd.get("calendar") || "solar",
       timezone: TZ,
     };

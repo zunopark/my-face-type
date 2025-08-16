@@ -467,64 +467,135 @@ const waitForDB = () =>
     }, 100);
   });
 
+// === 색상 매핑 (오행 기본 팔레트) ===
+const SAJU_COLORS = {
+  wood: "#2aa86c",
+  fire: "#ff6a6a",
+  earth: "#caa46a",
+  metal: "#b8bec6",
+  water: "#6aa7ff",
+};
+
+// 안전한 텍스트 컬러(타일 배경 위 가독성)
+function pickTextColor(bg) {
+  // 단순 YIQ 기준
+  const c = (bg || "#000").replace("#", "");
+  const r = parseInt(c.substr(0, 2), 16),
+    g = parseInt(c.substr(2, 2), 16),
+    b = parseInt(c.substr(4, 2), 16);
+  const yiq = (r * 299 + g * 587 + b * 114) / 1000;
+  return yiq >= 150 ? "#0d0f14" : "#ffffff";
+}
+
+// 오행/색 추론 → 태그 HTML
+function makeSajuTag(item) {
+  if (!item) return "—";
+  const color =
+    item.color ||
+    SAJU_COLORS[item.element?.toLowerCase?.()] ||
+    SAJU_COLORS[item.fiveElement?.toLowerCase?.()] ||
+    "#213055";
+  const fg = pickTextColor(color);
+  const han = item.char || "—";
+  const ko = item.korean || item.name || "";
+  return `
+    <div class="tag" style="background:${color};color:${fg}">
+      <div class="han">${han}</div>
+      ${ko ? `<span class="ko">${ko}</span>` : ""}
+    </div>`;
+}
+
+// 상단 어딘가(함수 바깥 or renderSajuResult 맨 위)에 유틸 추가
+function formatDateYYYYMMDD(raw) {
+  if (!raw) return "";
+  const m = String(raw).match(/(\d{4})\D?(\d{1,2})\D?(\d{1,2})/);
+  if (!m) return String(raw);
+  const [, y, mo, da] = m;
+  return `${y}년 ${mo.padStart(2, "0")}월 ${da.padStart(2, "0")}일`;
+}
+function makeHourLabel(pillarsHour, input) {
+  if (pillarsHour?.branch?.char) return `${pillarsHour.branch.char}시`; // 지지 표기
+  if (input?.time) return input.time; // 사용자가 넣은 HH:MM
+  return ""; // 시간 모름
+}
+
 function renderSajuResult(data) {
+  const p = data.pillars || {};
+  const fe = data.fiveElements;
+  const luck = data.luck;
+  const dateLabel = formatDateYYYYMMDD(data.input?.date);
+  const hourLabel = makeHourLabel(p.hour, data.input);
+
   const container = document.createElement("div");
   container.className = "saju-section";
 
-  const p = data.pillars;
-  const fe = data.fiveElements;
-  const luck = data.luck;
-
   container.innerHTML = `
-    <h2 class="saju-title">🧧 당신의 사주 결과</h2>
+    <div class="card card-head">
+      <div class="title">${data.input?.name || "사용자"} 님의 사주</div>
+      <div class="subtitle">${[dateLabel, hourLabel]
+        .filter(Boolean)
+        .join(" ")}</div>
+    </div>  
 
-    <div class="saju-grid">
-      <!-- 십성 (천간 기준) -->
-      <div class="saju-row">
-        <div class="saju-head">십성<br><small>(천간)</small></div>
-        <div>${p.hour?.tenGodStem || "—"}</div>
-        <div>${p.day?.tenGodStem || "—"}</div>
-        <div>${p.month?.tenGodStem || "—"}</div>
-        <div>${p.year?.tenGodStem || "—"}</div>
-      </div>
+    <div class="card table-wrap">
+      <div class="table grid">
+        <div class="cell head stub"></div>
+        <div class="cell head">생시</div>
+        <div class="cell head">생일</div>
+        <div class="cell head">생월</div>
+        <div class="cell head">생년</div>
 
-      <!-- 천간 -->
-      <div class="saju-row">
-        <div class="saju-head">천간</div>
-        <div>${p.hour?.stem?.char || "—"}</div>
-        <div>${p.day?.stem?.char || "—"}</div>
-        <div>${p.month?.stem?.char || "—"}</div>
-        <div>${p.year?.stem?.char || "—"}</div>
-      </div>
+        <div class="cell rowhead">십성</div>
+        <div class="cell">${p.hour?.tenGodStem || "—"}</div>
+        <div class="cell">${p.day?.tenGodStem || "—"}</div>
+        <div class="cell">${p.month?.tenGodStem || "—"}</div>
+        <div class="cell">${p.year?.tenGodStem || "—"}</div>
 
-      <!-- 지지 -->
-      <div class="saju-row">
-        <div class="saju-head">지지</div>
-        <div>${p.hour?.branch?.char || "—"}</div>
-        <div>${p.day?.branch?.char || "—"}</div>
-        <div>${p.month?.branch?.char || "—"}</div>
-        <div>${p.year?.branch?.char || "—"}</div>
-      </div>
+        <div class="cell rowhead">천간</div>
+        <div class="cell big">${makeSajuTag(p.hour?.stem)}</div>
+        <div class="cell big">${makeSajuTag(p.day?.stem)}</div>
+        <div class="cell big">${makeSajuTag(p.month?.stem)}</div>
+        <div class="cell big">${makeSajuTag(p.year?.stem)}</div>
 
-      <!-- 십성 (지장간 주간 기준) -->
-      <div class="saju-row">
-        <div class="saju-head">십성<br><small>(지장간)</small></div>
-        <div>${p.hour?.tenGodBranchMain || "—"}</div>
-        <div>${p.day?.tenGodBranchMain || "—"}</div>
-        <div>${p.month?.tenGodBranchMain || "—"}</div>
-        <div>${p.year?.tenGodBranchMain || "—"}</div>
+        <div class="cell rowhead">지지</div>
+        <div class="cell big">${makeSajuTag(p.hour?.branch)}</div>
+        <div class="cell big">${makeSajuTag(p.day?.branch)}</div>
+        <div class="cell big">${makeSajuTag(p.month?.branch)}</div>
+        <div class="cell big">${makeSajuTag(p.year?.branch)}</div>
+
+        <div class="cell rowhead">십성</div>
+        <div class="cell">${p.hour?.tenGodBranchMain || "—"}</div>
+        <div class="cell">${p.day?.tenGodBranchMain || "—"}</div>
+        <div class="cell">${p.month?.tenGodBranchMain || "—"}</div>
+        <div class="cell">${p.year?.tenGodBranchMain || "—"}</div>
       </div>
     </div>
 
-    <div class="saju-elements">
-      <div>🌳 목: ${fe?.percent?.wood || 0}%</div>
-      <div>🔥 화: ${fe?.percent?.fire || 0}%</div>
-      <div>🪨 토: ${fe?.percent?.earth || 0}%</div>
-      <div>⚙️ 금: ${fe?.percent?.metal || 0}%</div>
-      <div>💧 수: ${fe?.percent?.water || 0}%</div>
-      <div>💪 신강도: ${fe?.strength} (score: ${fe?.strengthScore})</div>
-      <div>📈 대운 방향: ${luck?.direction || "—"}</div>
-    </div>
+
+<div class="card">
+  <div class="bars">
+    ${["wood", "fire", "earth", "metal", "water"]
+      .map((k) => {
+        const v = fe?.percent?.[k] ?? 0;
+
+        // 영어 → 한자 매핑
+        const hanjaMap = {
+          wood: "木",
+          fire: "火",
+          earth: "土",
+          metal: "金",
+          water: "水",
+        };
+
+        return `
+          <div class="bar" data-el="${k}">
+            <div style="height:${v}%"></div>
+            <div class="label">${hanjaMap[k]} ${v}%</div>
+          </div>`;
+      })
+      .join("")}
+  </div>
+</div>
   `;
 
   const labelWrap = document.getElementById("label-container");

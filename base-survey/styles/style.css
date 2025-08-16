@@ -12,49 +12,131 @@
 @import "couple.css";
 @import "main.css";
 
-/* === SAJU FORM minimal === */
-.saju-form {
-  display: grid;
-  gap: 12px;
-  margin: 12px 0 8px;
+/* ===== 타이틀 ===== */
+.sheet-inner h3 {
+  font-size: 28px;
+  margin-bottom: 24px;
+  color: #2d1c1c;
+  text-align: center;
+  padding-bottom: 12px;
 }
-.saju-form .row {
+
+.sheet-title {
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.sheet-sub {
+  margin-bottom: 12px;
+}
+
+/* ===== 폼 라벨 ===== */
+.saju-form label {
+  font-size: 16px;
+  font-weight: 600;
+  color: #4d3c3c;
+}
+
+/* ===== 각 입력 섹션 ===== */
+.row {
+  margin-bottom: 18px;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ===== 인풋 스타일 ===== */
+.saju-form input[type="text"],
+.saju-form input[type="date"],
+.saju-form input[type="time"] {
+  padding: 10px 12px;
+  border: 1px solid #d9cfc1;
+  border-radius: 8px;
+  background-color: #fffdf9;
+  font-size: 15px;
+}
+
+/* ===== 라디오 버튼 정렬 ===== */
+.radio {
+  margin-top: 6px;
+  font-size: 15px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* ===== 분석 버튼 ===== */
+.sheet-btn {
+  width: 100%;
+  background-color: #ffa200;
+  color: rgb(26, 26, 26);
+  font-weight: bold;
+  font-size: 20px;
+  padding: 16px;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+.sheet-btn:hover {
+  background-color: #5a3e2a;
+}
+
+.row-horizontal {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.input-pair {
   display: flex;
   align-items: center;
   gap: 12px;
   flex-wrap: wrap;
 }
-.saju-form label {
-  min-width: 84px;
-  color: #dfe7ff;
-  font-weight: 600;
+
+.input-pair input[type="date"],
+.input-pair input[type="time"] {
+  padding: 8px 12px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  background: white;
 }
-.saju-form input[type="text"],
-.saju-form input[type="date"],
-.saju-form input[type="time"] {
-  background: #0f1426;
-  color: #eaf1ff;
-  border: 1px solid #1b2540;
-  border-radius: 10px;
-  padding: 10px 12px;
-  outline: none;
-}
-.saju-form .radio {
-  display: inline-flex;
+
+.radio-inline {
+  font-size: 13px;
+  display: flex;
   align-items: center;
-  gap: 6px;
-  color: #c4d2f1;
+  gap: 4px;
 }
-.sheet-btn {
-  margin-top: 6px;
-  background: #4f6bed;
-  color: #fff;
+
+/* ===== 결과 컨테이너 ===== */
+#label-container {
+  font-size: 16px;
+  color: #3a2e2e;
+  line-height: 1.6;
+}
+
+/* ===== 로딩/결제 영역 ===== */
+.result_btn_wrap {
+  margin-top: 24px;
+  text-align: center;
+}
+.result_btn_status {
+  font-size: 14px;
+  color: #665544;
+  margin-bottom: 8px;
+}
+.result_btn {
+  padding: 10px 20px;
+  font-size: 15px;
+  background-color: #d6b48b;
   border: none;
-  border-radius: 12px;
-  padding: 12px 16px;
-  font-weight: 800;
+  border-radius: 10px;
+  color: white;
+  font-weight: bold;
   cursor: pointer;
 }
-.sheet-btn:hover {
-  filter: brightness(1.06);
+.result_btn:disabled {
+  background-color: #d3c5b6;
 }

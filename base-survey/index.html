@@ -181,34 +181,37 @@
     <div class="main_body_wrap">
       <header id="base-survey" class="header_chat_wrap"></header>
       <div class="sheet-inner">
-        <h3>사주 입력</h3>
+        <div class="sheet-title">사주 입력</div>
+        <div class="sheet-sub">명리학 기반으로 사주, 관상 풀이가 진행돼요</div>
 
         <!-- 사주 폼 -->
         <form id="sajuForm" class="saju-form">
           <div class="row">
             <label>이름</label>
-            <input type="text" name="name" placeholder="홍길동" />
+            <input type="text" name="name" placeholder="김유신" />
           </div>
 
           <div class="row">
             <label>성별</label>
             <label class="radio"
-              ><input type="radio" name="gender" value="male" checked />
-              남</label
+              ><input type="radio" name="gender" value="female" checked />
+              여</label
             >
             <label class="radio"
-              ><input type="radio" name="gender" value="female" /> 여</label
+              ><input type="radio" name="gender" value="male" /> 남</label
             >
           </div>
 
-          <div class="row">
-            <label>생년월일</label>
-            <input type="date" name="date" required />
-          </div>
-
-          <div class="row">
-            <label>출생시간(선택)</label>
-            <input type="time" name="time" />
+          <div class="row row-horizontal">
+            <label>생년월일 / 태어난 시간</label>
+            <div class="input-pair">
+              <input type="date" name="date" required />
+              <input type="time" name="time" required />
+              <label class="radio-inline">
+                <input type="checkbox" name="time_unknown" id="timeUnknown" />
+                시간 모름
+              </label>
+            </div>
           </div>
 
           <div class="row">
@@ -266,7 +269,7 @@
       mixpanel.identify(distinctId);
 
       // 추적 예시
-      mixpanel.track("얼굴 분석 추가 페이지 방문", {
+      mixpanel.track("사주 추가 페이지 방문", {
         url: window.location.href,
         userAgent: navigator.userAgent,
         timestamp: new Date().toISOString(),
@@ -278,6 +281,5 @@
     <!-- <script src="../commonJs/footer.js"></script> -->
     <script src="../commonJs/header.js"></script>
     <script src="js/result.js"></script>
-    <script src="js/couple.js"></script>
   </body>
 </html>
