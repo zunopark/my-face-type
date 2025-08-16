@@ -1,5 +1,33 @@
 let db;
 let currentResultId = null; // 전역 보관 용
+let baseReportRendered = false;
+
+/* ───────── 12. 사주 정보 분석 및 렌더링 ───────── */
+const SAJU_API_COMPUTE =
+  "https://port-0-momzzi-fastapi-m7ynssht4601229b.sel4.cloudtype.app/saju/compute";
+
+async function analyzeAndRenderSaju(id) {
+  await waitForDB();
+  const rec = await new Promise((res) => {
+    const tx = db.transaction(["results"], "readonly");
+    tx.objectStore("results").get(id).onsuccess = (e) => res(e.target.result);
+  });
+
+  if (!rec || !rec.sajuInput || !rec.sajuInput.date) return;
+
+  try {
+    const res = await fetch(SAJU_API_COMPUTE, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(rec.sajuInput),
+    });
+    if (!res.ok) throw new Error("사주 API 요청 실패");
+    const data = await res.json();
+    renderSajuResult(data);
+  } catch (err) {
+    console.warn("⚠️ 사주 분석 실패:", err);
+  }
+}
 
 /* ───────── 1. IndexedDB 초기화 ───────── */
 async function initDB() {
@@ -94,14 +122,26 @@ async function analyzeFaceImage(file, imageBase64, forceId = null) {
       id: forceId ?? crypto.randomUUID(),
       imageBase64,
       features,
-      summary, // 레거시 필드
-      detail, // 레거시 필드
+      summary,
+      detail,
       type: "base",
-      paid: false, // 레거시
+      paid: false,
       purchasedAt: null,
       timestamp: new Date().toISOString(),
-      reports: makeSkeleton(normalized, false), // ★ 스켈레톤 핵심
+      reports: makeSkeleton(normalized, false),
     };
+
+    // 🛠 기존 레코드 병합
+    await waitForDB();
+    const existing = await new Promise((res) => {
+      const tx = db.transaction(["results"], "readonly");
+      tx.objectStore("results").get(result.id).onsuccess = (e) =>
+        res(e.target.result);
+    });
+
+    if (existing?.sajuInput) {
+      result.sajuInput = existing.sajuInput; // 🔥 중요: 보존
+    }
 
     await saveToIndexedDB(result);
 
@@ -135,7 +175,12 @@ function renderResult(data) {
     paid: data.reports.base.paid,
     id: data.id,
   };
+  baseReportRendered = true;
+  if (data.id) analyzeAndRenderSaju(data.id);
+
   renderResultNormalized(norm, "base");
+
+  // ✅ base 렌더링 끝났으므로 사주 분석도 바로 실행
 }
 
 /* ================= 결과 버튼 로딩 컨트롤 ================ */
@@ -186,7 +231,7 @@ function finishResultBtnLoading() {
 
   bar.style.width = "100%";
   wrap.dataset.state = "ready";
-  status.textContent = "20,000자 관상 심층 보고서 준비 완료!";
+  status.textContent = "관상 심층 보고서가 준비되었습니다!";
   btn.disabled = false;
 }
 
@@ -410,262 +455,6 @@ function closeDiscount() {
   document.body.style.overflow = "";
 }
 
-function trackAndStartWealthPayment(resultId) {
-  mixpanel.track("유료 관상 분석 보고서 버튼 클릭", {
-    resultId: resultId,
-    timestamp: new Date().toISOString(),
-    type: "재물",
-  });
-  document.body.style.overflow = "hidden";
-
-  startWealthTossPayment(resultId);
-}
-
-async function startWealthTossPayment(resultId) {
-  const clientKey = "live_gck_yZqmkKeP8gBaRKPg1WwdrbQRxB9l"; // 테스트 키
-  const customerKey = "customer_" + new Date().getTime();
-
-  document.getElementById("wealthPaymentOverlay").style.display = "block";
-
-  try {
-    const paymentWidget = PaymentWidget(clientKey, customerKey);
-    const paymentMethodWidget = paymentWidget.renderPaymentMethods(
-      "#wealth-method",
-      { value: 9900 }
-    );
-    paymentWidget.renderAgreement("#wealth-agreement");
-
-    document.getElementById("wealth-button").onclick = async () => {
-      try {
-        await paymentWidget.requestPayment({
-          orderId: `order_${Date.now()}`,
-          orderName: "관상 재물운 상세 분석 보고서",
-          customerName: "고객",
-          successUrl: `${
-            window.location.origin
-          }/success.html?id=${encodeURIComponent(resultId)}&type=wealth`,
-          failUrl: `${window.location.origin}/fail.html?id=${encodeURIComponent(
-            resultId
-          )}&type=wealth`,
-        });
-        mixpanel.track("재물운 분석 보고서 결제 요청 시도", {
-          id: resultId,
-          price: 9900,
-        }); // ← 추가
-      } catch (err) {
-        alert("❌ 결제 실패: " + err.message);
-      }
-    };
-  } catch (e) {
-    alert("❌ 위젯 로드 실패: " + e.message);
-  }
-}
-
-function closeWealthPayment() {
-  document.getElementById("wealthPaymentOverlay").style.display = "none";
-  document.getElementById("wealth-method").innerHTML = "";
-  document.getElementById("wealth-agreement").innerHTML = "";
-
-  mixpanel.track("재물운 결제창 닫힘", {
-    id: pageId,
-    type: pageType,
-    timestamp: new Date().toISOString(),
-  });
-  document.body.style.overflow = "";
-}
-
-function trackAndStartLovePayment(resultId) {
-  mixpanel.track("유료 관상 분석 보고서 버튼 클릭", {
-    resultId: resultId,
-    timestamp: new Date().toISOString(),
-    type: "연애",
-  });
-  document.body.style.overflow = "hidden";
-
-  startLoveTossPayment(resultId);
-}
-
-async function startLoveTossPayment(resultId) {
-  const clientKey = "live_gck_yZqmkKeP8gBaRKPg1WwdrbQRxB9l"; // 테스트 키
-  const customerKey = "customer_" + new Date().getTime();
-
-  document.getElementById("lovePaymentOverlay").style.display = "block";
-
-  try {
-    const paymentWidget = PaymentWidget(clientKey, customerKey);
-    const paymentMethodWidget = paymentWidget.renderPaymentMethods(
-      "#love-method",
-      { value: 7900 }
-    );
-    paymentWidget.renderAgreement("#love-agreement");
-
-    document.getElementById("love-button").onclick = async () => {
-      try {
-        await paymentWidget.requestPayment({
-          orderId: `order_${Date.now()}`,
-          orderName: "관상 연애운 상세 분석 보고서",
-          customerName: "고객",
-          successUrl: `${
-            window.location.origin
-          }/success.html?id=${encodeURIComponent(resultId)}&type=love`,
-          failUrl: `${window.location.origin}/fail.html?id=${encodeURIComponent(
-            resultId
-          )}&type=love`,
-        });
-        mixpanel.track("연애운 분석 보고서 결제 요청 시도", {
-          id: resultId,
-          price: 7900,
-        }); // ← 추가
-      } catch (err) {
-        alert("❌ 결제 실패: " + err.message);
-      }
-    };
-  } catch (e) {
-    alert("❌ 위젯 로드 실패: " + e.message);
-  }
-}
-
-function closeLovePayment() {
-  document.getElementById("lovePaymentOverlay").style.display = "none";
-  document.getElementById("love-method").innerHTML = "";
-  document.getElementById("love-agreement").innerHTML = "";
-
-  mixpanel.track("연애운 결제창 닫힘", {
-    id: pageId,
-    type: pageType,
-    timestamp: new Date().toISOString(),
-  });
-  document.body.style.overflow = "";
-}
-
-function trackAndStartMarriagePayment(resultId) {
-  mixpanel.track("유료 관상 분석 보고서 버튼 클릭", {
-    resultId: resultId,
-    timestamp: new Date().toISOString(),
-    type: "결혼",
-  });
-  document.body.style.overflow = "hidden";
-
-  startMarriageTossPayment(resultId);
-}
-
-async function startMarriageTossPayment(resultId) {
-  const clientKey = "live_gck_yZqmkKeP8gBaRKPg1WwdrbQRxB9l"; // 테스트 키
-  const customerKey = "customer_" + new Date().getTime();
-
-  document.getElementById("marriagePaymentOverlay").style.display = "block";
-
-  try {
-    const paymentWidget = PaymentWidget(clientKey, customerKey);
-    const paymentMethodWidget = paymentWidget.renderPaymentMethods(
-      "#marriage-method",
-      { value: 6900 }
-    );
-    paymentWidget.renderAgreement("#marriage-agreement");
-
-    document.getElementById("marriage-button").onclick = async () => {
-      try {
-        await paymentWidget.requestPayment({
-          orderId: `order_${Date.now()}`,
-          orderName: "관상 결혼운 상세 분석 보고서",
-          customerName: "고객",
-          successUrl: `${
-            window.location.origin
-          }/success.html?id=${encodeURIComponent(resultId)}&type=marriage`,
-          failUrl: `${window.location.origin}/fail.html?id=${encodeURIComponent(
-            resultId
-          )}&type=marriage`,
-        });
-        mixpanel.track("결혼운 분석 보고서 결제 요청 시도", {
-          id: resultId,
-          price: 6900,
-        }); // ← 추가
-      } catch (err) {
-        alert("❌ 결제 실패: " + err.message);
-      }
-    };
-  } catch (e) {
-    alert("❌ 위젯 로드 실패: " + e.message);
-  }
-}
-
-function closeMarriagePayment() {
-  document.getElementById("marriagePaymentOverlay").style.display = "none";
-  document.getElementById("marriage-method").innerHTML = "";
-  document.getElementById("marriage-agreement").innerHTML = "";
-
-  mixpanel.track("결혼운 결제창 닫힘", {
-    id: pageId,
-    type: pageType,
-    timestamp: new Date().toISOString(),
-  });
-  document.body.style.overflow = "";
-}
-
-function trackAndStartCareerPayment(resultId) {
-  mixpanel.track("유료 관상 분석 보고서 버튼 클릭", {
-    resultId: resultId,
-    timestamp: new Date().toISOString(),
-    type: "직업",
-  });
-  document.body.style.overflow = "hidden";
-
-  startCareerTossPayment(resultId);
-}
-
-async function startCareerTossPayment(resultId) {
-  const clientKey = "live_gck_yZqmkKeP8gBaRKPg1WwdrbQRxB9l"; // 테스트 키
-  const customerKey = "customer_" + new Date().getTime();
-
-  document.getElementById("careerPaymentOverlay").style.display = "block";
-
-  try {
-    const paymentWidget = PaymentWidget(clientKey, customerKey);
-    const paymentMethodWidget = paymentWidget.renderPaymentMethods(
-      "#career-method",
-      { value: 6900 }
-    );
-    paymentWidget.renderAgreement("#career-agreement");
-
-    document.getElementById("career-button").onclick = async () => {
-      try {
-        await paymentWidget.requestPayment({
-          orderId: `order_${Date.now()}`,
-          orderName: "관상 직업운 상세 분석 보고서",
-          customerName: "고객",
-          successUrl: `${
-            window.location.origin
-          }/success.html?id=${encodeURIComponent(resultId)}&type=career`,
-          failUrl: `${window.location.origin}/fail.html?id=${encodeURIComponent(
-            resultId
-          )}&type=career`,
-        });
-        mixpanel.track("직업운 분석 보고서 결제 요청 시도", {
-          id: resultId,
-          price: 6900,
-        }); // ← 추가
-      } catch (err) {
-        alert("❌ 결제 실패: " + err.message);
-      }
-    };
-  } catch (e) {
-    alert("❌ 위젯 로드 실패: " + e.message);
-  }
-}
-
-function closeCareerPayment() {
-  document.getElementById("careerPaymentOverlay").style.display = "none";
-  document.getElementById("career-method").innerHTML = "";
-  document.getElementById("career-agreement").innerHTML = "";
-
-  mixpanel.track("직업운 결제창 닫힘", {
-    id: pageId,
-    type: pageType,
-    timestamp: new Date().toISOString(),
-  });
-  document.body.style.overflow = "";
-}
-
 // IndexedDB 준비될 때까지 기다리는 Promise
 const waitForDB = () =>
   new Promise((r) => {
@@ -677,6 +466,74 @@ const waitForDB = () =>
       }
     }, 100);
   });
+
+function renderSajuResult(data) {
+  const container = document.createElement("div");
+  container.className = "saju-section";
+
+  const p = data.pillars;
+  const fe = data.fiveElements;
+  const luck = data.luck;
+
+  container.innerHTML = `
+    <h2 class="saju-title">🧧 당신의 사주 결과</h2>
+
+    <div class="saju-grid">
+      <!-- 십성 (천간 기준) -->
+      <div class="saju-row">
+        <div class="saju-head">십성<br><small>(천간)</small></div>
+        <div>${p.hour?.tenGodStem || "—"}</div>
+        <div>${p.day?.tenGodStem || "—"}</div>
+        <div>${p.month?.tenGodStem || "—"}</div>
+        <div>${p.year?.tenGodStem || "—"}</div>
+      </div>
+
+      <!-- 천간 -->
+      <div class="saju-row">
+        <div class="saju-head">천간</div>
+        <div>${p.hour?.stem?.char || "—"}</div>
+        <div>${p.day?.stem?.char || "—"}</div>
+        <div>${p.month?.stem?.char || "—"}</div>
+        <div>${p.year?.stem?.char || "—"}</div>
+      </div>
+
+      <!-- 지지 -->
+      <div class="saju-row">
+        <div class="saju-head">지지</div>
+        <div>${p.hour?.branch?.char || "—"}</div>
+        <div>${p.day?.branch?.char || "—"}</div>
+        <div>${p.month?.branch?.char || "—"}</div>
+        <div>${p.year?.branch?.char || "—"}</div>
+      </div>
+
+      <!-- 십성 (지장간 주간 기준) -->
+      <div class="saju-row">
+        <div class="saju-head">십성<br><small>(지장간)</small></div>
+        <div>${p.hour?.tenGodBranchMain || "—"}</div>
+        <div>${p.day?.tenGodBranchMain || "—"}</div>
+        <div>${p.month?.tenGodBranchMain || "—"}</div>
+        <div>${p.year?.tenGodBranchMain || "—"}</div>
+      </div>
+    </div>
+
+    <div class="saju-elements">
+      <div>🌳 목: ${fe?.percent?.wood || 0}%</div>
+      <div>🔥 화: ${fe?.percent?.fire || 0}%</div>
+      <div>🪨 토: ${fe?.percent?.earth || 0}%</div>
+      <div>⚙️ 금: ${fe?.percent?.metal || 0}%</div>
+      <div>💧 수: ${fe?.percent?.water || 0}%</div>
+      <div>💪 신강도: ${fe?.strength} (score: ${fe?.strengthScore})</div>
+      <div>📈 대운 방향: ${luck?.direction || "—"}</div>
+    </div>
+  `;
+
+  const labelWrap = document.getElementById("label-container");
+  const summarySection = labelWrap.querySelector(".face-summary-section");
+
+  if (labelWrap && summarySection) {
+    labelWrap.insertBefore(container, summarySection.nextSibling); // ✅ 요기!
+  }
+}
 
 /* ───────── 11. URL로 자동 렌더 ───────── */
 async function autoRenderFromDB() {
@@ -836,22 +693,19 @@ function renderImage(base64) {
   document.querySelector(".image-upload-wrap").style.display = "none";
 }
 
-// 페이지 진입 시 바로 실행
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", async () => {
   const btn = document.querySelector(".result_btn");
 
   btn.addEventListener("click", () => {
-    // ① 전역 변수에서
     if (currentResultId) {
       trackAndStartPayment(currentResultId);
       return;
     }
-
-    // ② 혹시 전역이 undefined 라면, dataset 에서
     const id = btn.dataset.resultId;
     if (id) trackAndStartPayment(id);
   });
 
   mixpanel.track("기본 관상 결과 페이지 진입", { ts: Date.now() });
-  autoRenderFromDB(500);
+
+  await autoRenderFromDB();
 });

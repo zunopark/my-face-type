@@ -181,80 +181,69 @@
     <div class="main_body_wrap">
       <header id="base-survey" class="header_chat_wrap"></header>
       <div class="sheet-inner">
-        <h3>
-          [선택사항] 더 자세한 관상 분석을 원하시면 옆면 사진을 올려주세요
-        </h3>
-        <div class="couple-container">
-          <!-- 본인 사진 -->
-          <div class="couple-file-upload couple-card">
-            <input
-              class="couple-input"
-              type="file"
-              accept="image/*"
-              onchange="readCoupleURL(this, 'coupleSelf')"
-            />
-            <div class="couple-preview" id="couple-preview-self">
-              <span class="material-icons couple-icon"
-                >add_photo_alternate</span
-              >
-              <span>왼쪽 얼굴 추가</span>
-            </div>
+        <h3>사주 입력</h3>
+
+        <!-- 사주 폼 -->
+        <form id="sajuForm" class="saju-form">
+          <div class="row">
+            <label>이름</label>
+            <input type="text" name="name" placeholder="홍길동" />
           </div>
 
-          <!-- 상대 사진 -->
-          <div class="couple-file-upload couple-card">
-            <input
-              class="couple-input"
-              type="file"
-              accept="image/*"
-              onchange="readCoupleURL(this, 'couplePartner')"
-            />
-            <div class="couple-preview" id="couple-preview-partner">
-              <span class="material-icons couple-icon"
-                >add_photo_alternate</span
-              >
-              <span>오른쪽 얼굴 추가</span>
-            </div>
-          </div>
-        </div>
-
-        <!-- <div class="sheet-followup hidden" id="followupSheet">
-          <h4>추가 사주 분석</h4>
-
-          <div class="followup-input-group">
-            <label for="sajuName">이름</label>
-            <input type="text" id="sajuName" placeholder="이름을 입력하세요" />
-          </div>
-
-          <div class="followup-input-group">
-            <label for="sajuBirth">생년월일</label>
-            <input type="date" id="sajuBirth" />
-          </div>
-
-          <div class="followup-input-group">
-            <label for="sajuTime">태어난 시간</label>
-            <div style="display: flex; gap: 8px; align-items: center">
-              <input type="time" id="sajuTime" step="60" />
-              <label
-                class="checkbox-inline"
-                style="display: flex; gap: 6px; align-items: center"
-              >
-                <input type="checkbox" id="unknownTime" />
-                <span>시간 모름</span>
-              </label>
-            </div>
-            <small
-              id="branchHint"
-              style="display: block; opacity: 0.7; margin-top: 4px"
+          <div class="row">
+            <label>성별</label>
+            <label class="radio"
+              ><input type="radio" name="gender" value="male" checked />
+              남</label
             >
-              12지지: <b id="branchText">-</b>
-            </small>
+            <label class="radio"
+              ><input type="radio" name="gender" value="female" /> 여</label
+            >
           </div>
-        </div> -->
 
-        <button id="startAnalyzeBtn" class="sheet-btn">
-          관상 분석 시작하기
-        </button>
+          <div class="row">
+            <label>생년월일</label>
+            <input type="date" name="date" required />
+          </div>
+
+          <div class="row">
+            <label>출생시간(선택)</label>
+            <input type="time" name="time" />
+          </div>
+
+          <div class="row">
+            <label>달력</label>
+            <label class="radio"
+              ><input type="radio" name="calendar" value="solar" checked />
+              양력</label
+            >
+            <label class="radio"
+              ><input type="radio" name="calendar" value="lunar" /> 음력</label
+            >
+          </div>
+
+          <button type="button" id="startAnalyzeBtn" class="sheet-btn">
+            관상 분석 시작하기
+          </button>
+        </form>
+
+        <!-- 결과 표시 영역 -->
+        <div id="label-container" style="margin-top: 16px"></div>
+
+        <!-- 결제/버튼 영역(기존 코드 호환을 위해 유지) -->
+        <div class="result_btn_wrap" style="display: none">
+          <div class="result_btn_status">보고서를 준비 중입니다...</div>
+          <div
+            class="result_btn_loading"
+            style="
+              height: 4px;
+              background: #4caf50;
+              width: 0%;
+              transition: width 0.3s;
+            "
+          ></div>
+          <button class="result_btn" disabled>상세 보고서 결제</button>
+        </div>
       </div>
     </div>
     <script>

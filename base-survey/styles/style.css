@@ -11,3 +11,50 @@
 @import "product.css";
 @import "couple.css";
 @import "main.css";
+
+/* === SAJU FORM minimal === */
+.saju-form {
+  display: grid;
+  gap: 12px;
+  margin: 12px 0 8px;
+}
+.saju-form .row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.saju-form label {
+  min-width: 84px;
+  color: #dfe7ff;
+  font-weight: 600;
+}
+.saju-form input[type="text"],
+.saju-form input[type="date"],
+.saju-form input[type="time"] {
+  background: #0f1426;
+  color: #eaf1ff;
+  border: 1px solid #1b2540;
+  border-radius: 10px;
+  padding: 10px 12px;
+  outline: none;
+}
+.saju-form .radio {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: #c4d2f1;
+}
+.sheet-btn {
+  margin-top: 6px;
+  background: #4f6bed;
+  color: #fff;
+  border: none;
+  border-radius: 12px;
+  padding: 12px 16px;
+  font-weight: 800;
+  cursor: pointer;
+}
+.sheet-btn:hover {
+  filter: brightness(1.06);
+}
