@@ -84,19 +84,37 @@
 
       try {
         await saveSajuInputToResults(id, payload);
+
+        // ✅ Mixpanel 추적
         try {
+          mixpanel.identify(distinctId); // 혹시 빠졌을 경우를 대비해 명시적 identify
           mixpanel.track("사주 입력 저장", {
             id,
-            ...payload,
+            name: payload.name || "(이름 없음)",
+            gender: payload.gender,
+            date: payload.date,
+            time: payload.time || "시간 모름",
+            calendar: payload.calendar,
+            timezone: payload.timezone,
             page: "base-survey",
           });
-        } catch (_) {}
+
+          // (선택) 프로필로도 저장하고 싶을 때
+          mixpanel.people.set({
+            이름: payload.name || "(이름 없음)",
+            성별: payload.gender,
+            생년월일: payload.date,
+            "태어난 시간": payload.time || "시간 모름",
+            달력: payload.calendar,
+            타임존: payload.timezone,
+          });
+        } catch (e) {
+          console.warn("Mixpanel 트래킹 실패", e);
+        }
       } catch (err) {
         console.error("sajuInput 저장 실패:", err);
-        // 저장 실패해도 이동은 유지
       }
 
-      // ★ 기존 이동 로직 그대로
       location.href = `/base-report/?id=${encodeURIComponent(id)}`;
     });
   });
