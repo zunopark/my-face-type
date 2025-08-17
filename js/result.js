@@ -73,8 +73,8 @@ async function analyzeFaceFeatureOnly(file, imageBase64) {
     };
 
     await saveResultToDB(doc);
-    // location.href = `/base-report/?id=${encodeURIComponent(doc.id)}`;
-    location.href = `/base-survey/?id=${encodeURIComponent(doc.id)}`;
+    location.href = `/base-report/?id=${encodeURIComponent(doc.id)}`;
+    // location.href = `/base-survey/?id=${encodeURIComponent(doc.id)}`;
   } catch (err) {
     console.error("❌ 분석 실패", err);
     showRetry("분석 중 오류가 발생했습니다.<br>다시 시도해 주세요.");
