@@ -19,6 +19,7 @@
   line-height: 1.7;
   font-family: "KimjungchulMyungjo-Bold";
   text-align: center;
+  margin-bottom: 48px;
 }
 
 .face-full-section-wrapper {
@@ -497,12 +498,12 @@
   font-weight: 600;
   border: none;
   border-radius: 8px;
-  background: #eba100; /* idle·loading */
+  background: #b9b9b9; /* idle·loading */
   color: #fff;
   cursor: not-allowed;
 }
 .result_btn_wrap[data-state="ready"] .result_btn {
-  background: #eba100;
+  background: #c68800;
   cursor: pointer;
 }
 
@@ -512,11 +513,11 @@
   color: #666;
 }
 .result_btn_wrap[data-state="loading"] .result_btn_status {
-  color: #eba100;
+  color: #c68800;
 }
 .result_btn_wrap[data-state="ready"] .result_btn_status {
   font-weight: 700;
-  color: #eba100;
+  color: #c68800;
 }
 
 /* 로딩 바 */

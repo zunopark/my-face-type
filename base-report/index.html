@@ -226,11 +226,16 @@
       <div id="label-container" class="result"></div>
 
       <div class="result_btn_wrap" style="display: none" data-state="idle">
-        <button class="result_btn">관상 전체 결과 바로 확인하기</button>
-      </div>
+        <div class="result_btn_loading_wrap">
+          <div class="result_btn_loading"></div>
+        </div>
 
-      <div class="result_btn_wrap2" style="display: none" data-state="idle">
-        <button class="result_btn2">관상 전체 결과 바로 확인하기</button>
+        <!-- 진행‧완료 문구 -->
+        <div class="result_btn_status">보고서 준비 대기 중...</div>
+
+        <button class="result_btn" disabled>
+          관상 전체 결과 바로 확인하기
+        </button>
       </div>
 
       <!-- ✅ Toss 결제 모달 -->
