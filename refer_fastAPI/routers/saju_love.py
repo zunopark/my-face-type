@@ -309,26 +309,27 @@ async def analyze_love_fortune(request: SajuLoveAnalysisRequest) -> Dict[str, An
         chapters = parse_chapters(analysis_text)
         print(f"[INFO] 텍스트 분석 완료 ({len(chapters)}개 챕터)")
 
-        # 3. 이상형 이미지 생성 (병렬 처리)
+        # 3. 이상형 이미지 생성
         user_gender = request.saju_data.get("input", {}).get("gender", "male")
         image_base64 = None
         image_prompt_used = None
         partner_gender = None
-        
+        image_error = None  # 이미지 생성 실패 이유
+
         try:
             print(f"[INFO] 이미지 생성 시작... (사용자 성별: {user_gender})")
-            
+
             # 이미지 프롬프트 생성
             image_prompt = build_ideal_partner_prompt(
                 saju_data=request.saju_data,
                 user_gender=user_gender
             )
-            
+
             print(f"[INFO] Imagen 프롬프트: {image_prompt}")
-            
-            # Imagen API 호출
+
+            # Imagen 4 이미지 생성 API 호출
             image_response = client.models.generate_images(
-                model='imagen-4.0-fast-generate-001',
+                model='imagen-4.0-generate-001',
                 prompt=image_prompt,
                 config=types.GenerateImagesConfig(
                     number_of_images=1,
@@ -336,7 +337,7 @@ async def analyze_love_fortune(request: SajuLoveAnalysisRequest) -> Dict[str, An
                     person_generation="allow_adult",
                 )
             )
-            
+
             if image_response.generated_images:
                 generated_image = image_response.generated_images[0]
                 image_bytes = generated_image.image.image_bytes
@@ -345,24 +346,36 @@ async def analyze_love_fortune(request: SajuLoveAnalysisRequest) -> Dict[str, An
                 partner_gender = "female" if user_gender == "male" else "male"
                 print(f"[INFO] 이미지 생성 성공 (크기: {len(image_bytes)} bytes)")
             else:
-                print(f"[WARNING] 이미지 생성 실패 - 텍스트 분석만 반환")
-                
-        except Exception as img_error:
-            print(f"[WARNING] 이미지 생성 중 오류 (텍스트 분석은 계속 진행): {str(img_error)}")
-            # 이미지 생성 실패해도 텍스트 분석 결과는 반환
+                image_error = "이미지 생성 결과가 비어있습니다"
+                print(f"[WARNING] 이미지 생성 실패 - {image_error}")
 
-        return {
-            "success": True,
-            "analysis": analysis_text,  # 전체 텍스트 (호환성 유지)
-            "chapters": chapters,  # 챕터별 분리된 데이터
-            "user_name": request.user_name or request.saju_data.get("input", {}).get("name") or "고객",
-            "year": request.year,
-            # 이미지 데이터 추가
-            "ideal_partner_image": {
+        except Exception as img_error:
+            image_error = str(img_error)
+            print(f"[WARNING] 이미지 생성 중 오류 (텍스트 분석은 계속 진행): {image_error}")
+
+        # 이미지 결과 구성
+        ideal_partner_image = None
+        if image_base64:
+            ideal_partner_image = {
+                "success": True,
                 "image_base64": image_base64,
                 "prompt_used": image_prompt_used,
                 "partner_gender": partner_gender
-            } if image_base64 else None
+            }
+        elif image_error:
+            ideal_partner_image = {
+                "success": False,
+                "error": image_error,
+                "prompt_used": image_prompt if 'image_prompt' in locals() else None
+            }
+
+        return {
+            "success": True,
+            "analysis": analysis_text,
+            "chapters": chapters,
+            "user_name": request.user_name or request.saju_data.get("input", {}).get("name") or "고객",
+            "year": request.year,
+            "ideal_partner_image": ideal_partner_image
         }
 
     except Exception as e:
@@ -373,165 +386,140 @@ async def analyze_love_fortune(request: SajuLoveAnalysisRequest) -> Dict[str, An
 
 
 
-class IdealPartnerImageRequest(BaseModel):
-    """이상형 이미지 생성 요청"""
-    saju_data: Dict[str, Any]
-    user_name: str = None
-    gender: str  # "male" or "female" - 사용자의 성별
-
 def build_ideal_partner_prompt(saju_data: Dict[str, Any], user_gender: str) -> str:
     """
-    사주 데이터를 분석하여 이상형의 외모를 영어 프롬프트로 생성
-    
+    사주 데이터를 분석하여 이상형의 외모를 증명사진 스타일 영어 프롬프트로 생성
+    한국인이 확실히 나오도록 강화된 프롬프트
+
     Args:
         saju_data: 사주 분석 결과
         user_gender: 사용자 성별 (이상형은 반대 성별로 생성)
-    
+
     Returns:
         영어 프롬프트 문자열
     """
-    # 사용자가 남성이면 여성 이상형, 여성이면 남성 이상형 생성
     partner_gender = "woman" if user_gender == "male" else "man"
-    
+
     # 사주 분석에서 핵심 정보 추출
-    day_master = saju_data.get("dayMaster", {})
     five_elements = saju_data.get("fiveElements", {})
-    love_facts = saju_data.get("loveFacts", {})
     pillars = saju_data.get("pillars", {})
-    
-    # 일간의 오행
-    day_element = day_master.get("element", "wood")
-    
-    # 배우자 십성 정보
-    spouse_stars = love_facts.get("spouseStars", {})
-    spouse_positions = spouse_stars.get("positions", [])
-    
-    # 오행 강약 분석
+
+    # 배우자궁(일지) 오행 확인
+    day_pillar = pillars.get("day", {})
+    day_branch = day_pillar.get("branch", {})
+    spouse_element = day_branch.get("element", "").lower()
+
+    # 오행 분포
     percent = five_elements.get("percent", {})
-    strongest_element = max(percent, key=percent.get) if percent else "wood"
-    
-    # 오행별 외모 특징 매핑
-    element_appearance = {
+    strongest = max(percent, key=percent.get) if percent else "wood"
+    weakest = min(percent, key=percent.get) if percent else "water"
+
+    # 이상형 오행: 배우자궁 > 부족한 오행 > 강한 오행
+    ideal_element = spouse_element if spouse_element else (weakest if weakest else strongest)
+    ideal_element = ideal_element.lower()
+
+    # 사주 오행별 한국인 얼굴 특징 (증명사진에 맞게 얼굴 위주)
+    element_face = {
         "wood": {
-            "face": "oval face with refined features",
-            "body": "tall and slender build",
-            "style": "natural and elegant style",
-            "vibe": "gentle and intellectual"
+            "face": "slim oval face with high cheekbones",
+            "eyes": "gentle almond-shaped single or double eyelid eyes",
+            "nose": "straight refined nose",
+            "skin": "fair porcelain smooth skin",
+            "hair": "neat straight black hair",
+            "vibe": "calm intellectual scholarly aura"
         },
         "fire": {
-            "face": "sharp and expressive features, bright eyes",
-            "body": "athletic and energetic build",
-            "style": "vibrant and fashionable style",
-            "vibe": "passionate and charismatic"
+            "face": "heart-shaped face with defined features",
+            "eyes": "bright sparkling double-lidded eyes",
+            "nose": "well-defined nose",
+            "skin": "warm healthy glowing skin",
+            "hair": "styled dark brown or black hair",
+            "vibe": "charismatic confident idol-like aura"
         },
         "earth": {
-            "face": "round and warm features",
-            "body": "solid and stable build",
-            "style": "classic and comfortable style",
-            "vibe": "reliable and grounded"
+            "face": "round soft friendly face",
+            "eyes": "warm gentle eyes with natural lids",
+            "nose": "soft rounded nose",
+            "skin": "healthy natural skin tone",
+            "hair": "natural black hair neatly styled",
+            "vibe": "warm trustworthy approachable aura"
         },
         "metal": {
-            "face": "defined jawline and clear features",
-            "body": "fit and toned build",
-            "style": "sophisticated and modern style",
-            "vibe": "confident and professional"
+            "face": "angular face with sharp jawline",
+            "eyes": "intense focused eyes with defined brows",
+            "nose": "high straight nose bridge",
+            "skin": "clear flawless pale skin",
+            "hair": "sleek styled black hair",
+            "vibe": "cool professional sophisticated aura"
         },
         "water": {
-            "face": "soft and mysterious features",
-            "body": "graceful and flowing build",
-            "style": "creative and unique style",
-            "vibe": "intuitive and artistic"
+            "face": "soft flowing facial contours",
+            "eyes": "deep mysterious dreamy eyes",
+            "nose": "delicate soft nose",
+            "skin": "smooth dewy glass-like skin",
+            "hair": "soft flowing black hair",
+            "vibe": "mysterious artistic ethereal aura"
         }
     }
-    
-    # 이상형의 외모 특징 결정
-    appearance = element_appearance.get(strongest_element, element_appearance["wood"])
-    
-    # 나이대 추정 (20대 후반 ~ 30대 초반)
-    age_description = "in their late 20s to early 30s"
-    
-    # 영어 프롬프트 구성
-    prompt_parts = [
-        f"Portrait of an attractive Korean {partner_gender}",
-        age_description,
-        appearance["face"],
-        appearance["body"],
-        appearance["vibe"] + " expression",
-        "professional photography",
-        "soft natural lighting",
-        "blurred background",
-        "high quality portrait",
-        "looking at camera with a gentle smile"
-    ]
-    
-    # 의상 스타일 추가
-    if user_gender == "male":  # 여성 이상형
-        clothing_style = "wearing elegant casual outfit"
-    else:  # 남성 이상형
-        clothing_style = "wearing smart casual outfit"
-    
-    prompt_parts.append(clothing_style)
-    
-    # 최종 프롬프트
-    prompt = ", ".join(prompt_parts)
-    
-    return prompt
 
-@router.post("/generate_ideal_partner_image")
-async def generate_ideal_partner_image(request: IdealPartnerImageRequest) -> Dict[str, Any]:
-    """
-    사주 데이터를 기반으로 이상형 초상화를 Imagen API로 생성
-    
-    Returns:
-        {
-            "success": True,
-            "image_base64": "...",  # Base64 인코딩된 이미지
-            "prompt_used": "...",    # 사용된 영어 프롬프트
-            "partner_gender": "male" or "female"
-        }
-    """
-    try:
-        # 영어 프롬프트 생성
-        prompt_text = build_ideal_partner_prompt(
-            saju_data=request.saju_data,
-            user_gender=request.gender
-        )
-        
-        print(f"[INFO] Imagen 프롬프트: {prompt_text}")
-        
-        # Imagen API 호출
-        response = client.models.generate_images(
-            model='imagen-4.0-fast-generate-001',  # 빠른 생성 모델
-            prompt=prompt_text,
-            config=types.GenerateImagesConfig(
-                number_of_images=1,
-                aspect_ratio="3:4",  # 인물 초상화에 적합한 비율
-                person_generation="allow_adult",  # 성인 이미지만 생성
-            )
-        )
-        
-        # 첫 번째 이미지 가져오기
-        if not response.generated_images:
-            raise HTTPException(status_code=500, detail="이미지 생성 실패")
-        
-        generated_image = response.generated_images[0]
-        image_bytes = generated_image.image.image_bytes
-        
-        # Base64 인코딩
-        image_base64 = base64.b64encode(image_bytes).decode('utf-8')
-        
-        partner_gender = "female" if request.gender == "male" else "male"
-        
-        return {
-            "success": True,
-            "image_base64": image_base64,
-            "prompt_used": prompt_text,
-            "partner_gender": partner_gender,
-            "user_name": request.user_name or "귀하"
-        }
-    
-    except Exception as e:
-        import traceback
-        error_detail = f"이미지 생성 중 오류: {str(e)}\n{traceback.format_exc()}"
-        print(f"[ERROR] {error_detail}")
-        raise HTTPException(status_code=500, detail=f"이미지 생성 중 오류가 발생했습니다: {str(e)}")
+    features = element_face.get(ideal_element, element_face["wood"])
+
+    # 증명사진 스타일 프롬프트 구성
+    if partner_gender == "woman":
+        prompt_parts = [
+            # 증명사진 형식 (최우선)
+            "Korean passport ID photo",
+            "formal headshot portrait of a Korean woman",
+            "front facing camera directly",
+            "head and shoulders visible",
+            "plain solid white background",
+            # 한국인 강조
+            "100 percent Korean ethnicity",
+            "authentic Korean female facial structure",
+            "late 20s age",
+            # 사주별 얼굴 특징
+            features["face"],
+            features["eyes"],
+            features["nose"],
+            features["skin"],
+            features["hair"],
+            features["vibe"],
+            # 증명사진 설정
+            "neutral calm expression",
+            "professional studio lighting",
+            "even lighting no shadows on face",
+            "sharp focus",
+            "formal clean appearance",
+            "natural subtle Korean makeup",
+            "photorealistic high resolution"
+        ]
+    else:
+        prompt_parts = [
+            # 증명사진 형식 (최우선)
+            "Korean passport ID photo",
+            "formal headshot portrait of a Korean man",
+            "front facing camera directly",
+            "head and shoulders visible",
+            "plain solid white background",
+            # 한국인 강조
+            "100 percent Korean ethnicity",
+            "authentic Korean male facial structure",
+            "late 20s age",
+            # 사주별 얼굴 특징
+            features["face"],
+            features["eyes"],
+            features["nose"],
+            features["skin"],
+            features["hair"],
+            features["vibe"],
+            # 증명사진 설정
+            "neutral calm expression",
+            "professional studio lighting",
+            "even lighting no shadows on face",
+            "sharp focus",
+            "formal clean appearance",
+            "well groomed clean shaven",
+            "photorealistic high resolution"
+        ]
+
+    return ", ".join(prompt_parts)

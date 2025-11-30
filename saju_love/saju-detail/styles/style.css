@@ -221,28 +221,44 @@ body {
 .pillar_item {
   flex: 1;
   text-align: center;
-  background: #f9f9f9;
-  border-radius: 8px;
-  padding: 12px 8px;
+  background: #fff9f9;
+  border: 1px solid #ffe0e0;
+  border-radius: 12px;
+  padding: 12px 6px;
 }
 
 .pillar_label {
   font-size: 12px;
-  color: #888;
-  margin-bottom: 8px;
+  color: #e74c3c;
+  font-weight: 600;
+  margin-bottom: 10px;
 }
 
 .pillar_chars {
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 8px;
+}
+
+.pillar_char_wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
 }
 
 .pillar_stem,
 .pillar_branch {
-  font-size: 20px;
+  font-size: 24px;
   font-weight: 700;
-  color: #1a1a1a;
+}
+
+.pillar_ten_god {
+  font-size: 10px;
+  color: #888;
+  background: #f0f0f0;
+  padding: 2px 6px;
+  border-radius: 4px;
 }
 
 .pillar_korean {
@@ -640,4 +656,78 @@ body {
 
 .payment-empty {
   height: 60px;
+}
+
+/* 결제 페이지 - 사주 요약 */
+.payment-saju-summary {
+  background: #fff9f9;
+  border: 1px solid #ffe0e0;
+  border-radius: 12px;
+  padding: 16px 20px;
+  margin-top: 20px;
+}
+
+.saju-summary-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 0;
+  border-bottom: 1px solid #ffeeee;
+}
+
+.saju-summary-row:last-child {
+  border-bottom: none;
+}
+
+.saju-summary-label {
+  font-size: 14px;
+  color: #888;
+}
+
+.saju-summary-value {
+  font-size: 14px;
+  color: #1a1a1a;
+  font-weight: 600;
+}
+
+/* 결제 페이지 - 인트로 */
+.payment-intro {
+  margin-top: 20px;
+  padding: 16px;
+  background: #f8f8f8;
+  border-radius: 8px;
+  text-align: center;
+}
+
+.payment-intro p {
+  font-size: 14px;
+  color: #555;
+  line-height: 1.6;
+  margin: 0;
+}
+
+.payment-intro strong {
+  color: #e74c3c;
+}
+
+/* 결제 페이지 - 분석 내용 섹션 */
+.report-section {
+  padding: 16px 0;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.report-section:last-child {
+  border-bottom: none;
+}
+
+.report-section-title {
+  font-size: 15px;
+  font-weight: 700;
+  color: #1a1a1a;
+  margin-bottom: 8px;
+}
+
+.report-section-desc {
+  font-size: 13px;
+  color: #666;
+  line-height: 1.6;
 }

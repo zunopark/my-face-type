@@ -193,7 +193,12 @@ function renderResult(data) {
     chaptersTrack.appendChild(createChapterSlide(chapter, index));
   });
 
-  // 3. 마지막 슬라이드
+  // 3. 이상형 이미지 슬라이드 (있을 경우)
+  if (loveAnalysis.ideal_partner_image?.image_base64) {
+    chaptersTrack.appendChild(createIdealTypeSlide(loveAnalysis.ideal_partner_image, userName));
+  }
+
+  // 4. 마지막 슬라이드
   chaptersTrack.appendChild(createEndingSlide());
 
   chaptersContainer.appendChild(chaptersTrack);
@@ -247,6 +252,32 @@ function createChapterSlide(chapter, index) {
         <h2 class="chapter_title">${titleText}</h2>
       </div>
       <div class="chapter_body">${content}</div>
+    </div>
+  `;
+  return slide;
+}
+
+// 이상형 이미지 슬라이드 생성
+function createIdealTypeSlide(idealPartner, userName) {
+  const slide = document.createElement("div");
+  slide.className = "chapter_slide ideal_type_slide";
+
+  slide.innerHTML = `
+    <div class="chapter_content_wrap">
+      <div class="chapter_header">
+        <div class="chapter_number ideal_type_icon">
+          <span class="material-icons">person</span>
+        </div>
+        <h2 class="chapter_title">${userName}님의 이상형</h2>
+      </div>
+      <div class="ideal_type_content">
+        <div class="ideal_type_image_wrap">
+          <img src="data:image/png;base64,${idealPartner.image_base64}" alt="이상형 이미지" class="ideal_type_image" />
+        </div>
+        <p class="ideal_type_desc">
+          사주 분석을 바탕으로 AI가 그려낸<br>${userName}님에게 어울리는 이상형입니다
+        </p>
+      </div>
     </div>
   `;
   return slide;

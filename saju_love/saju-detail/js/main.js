@@ -119,20 +119,42 @@ function renderPillars(pillars) {
   const wrap = document.getElementById("pillarsWrap");
   const labels = { year: "년주", month: "월주", day: "일주", hour: "시주" };
 
+  // 오행 색상 맵
+  const elementColors = {
+    木: "#2aa86c",
+    火: "#ff6a6a",
+    土: "#caa46a",
+    金: "#9a9a9a",
+    水: "#6aa7ff",
+  };
+
   ["year", "month", "day", "hour"].forEach((key) => {
     const p = pillars?.[key] || {};
     const stemChar = p.stem?.char || "—";
     const branchChar = p.branch?.char || "—";
     const stemKo = p.stem?.korean || "";
     const branchKo = p.branch?.korean || "";
+    const stemElement = p.stem?.element || "";
+    const branchElement = p.branch?.element || "";
+    const tenGodStem = p.tenGodStem || "—";
+    const tenGodBranch = p.tenGodBranchMain || "—";
+
+    const stemColor = elementColors[stemElement] || "#333";
+    const branchColor = elementColors[branchElement] || "#333";
 
     const div = document.createElement("div");
     div.className = "pillar_item";
     div.innerHTML = `
       <div class="pillar_label">${labels[key]}</div>
       <div class="pillar_chars">
-        <span class="pillar_stem">${stemChar}</span>
-        <span class="pillar_branch">${branchChar}</span>
+        <div class="pillar_char_wrap">
+          <span class="pillar_stem" style="color: ${stemColor}">${stemChar}</span>
+          <span class="pillar_ten_god">${tenGodStem}</span>
+        </div>
+        <div class="pillar_char_wrap">
+          <span class="pillar_branch" style="color: ${branchColor}">${branchChar}</span>
+          <span class="pillar_ten_god">${tenGodBranch}</span>
+        </div>
       </div>
       <div class="pillar_korean">${stemKo}${branchKo}</div>
     `;
@@ -231,10 +253,41 @@ analyzeLoveBtn.addEventListener("click", function () {
     return;
   }
 
+  // 결제 페이지에 사주 요약 정보 채우기
+  fillPaymentSajuSummary(currentData.sajuData);
+
   // 결제 오버레이 표시
   document.body.style.overflow = "hidden";
   startTossPayment(currentData.id);
 });
+
+// 결제 페이지 사주 요약 채우기
+function fillPaymentSajuSummary(sajuData) {
+  const dm = sajuData.dayMaster || {};
+  const lf = sajuData.loveFacts || {};
+  const fe = sajuData.fiveElements || {};
+
+  // 일간
+  const dayMasterText = dm.title ? `${dm.char} (${dm.title})` : dm.char || "—";
+  document.getElementById("paymentDayMaster").textContent = dayMasterText;
+
+  // 신강/신약
+  document.getElementById("paymentStrength").textContent = fe.strength || "—";
+
+  // 도화살
+  const peach = lf.peachBlossom || {};
+  const peachText = peach.hasPeach
+    ? `있음 (${peach.targetBranch || ""})`
+    : "없음";
+  document.getElementById("paymentPeach").textContent = peachText;
+
+  // 배우자별
+  const spouse = lf.spouseStars || {};
+  const spouseType = lf.spouseTargetType || "";
+  const spouseCount = spouse.hitCount || 0;
+  const spouseText = spouseCount > 0 ? `${spouseType} ${spouseCount}개` : "없음";
+  document.getElementById("paymentSpouse").textContent = spouseText;
+}
 
 // 토스 페이먼츠 결제 시작
 async function startTossPayment(resultId) {
