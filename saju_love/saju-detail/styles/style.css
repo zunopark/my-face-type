@@ -1,0 +1,643 @@
+@import "../../../commonStyles/common.css";
+@import "../../../commonStyles/reset.css";
+@import "../../../commonStyles/header.css";
+@import "../../../commonStyles/footer.css";
+@import "../../../commonStyles/media.css";
+@import "../../../commonStyles/nav.css";
+@import "../../../commonStyles/styles.css";
+
+body {
+  background: whitesmoke;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+.main_body_wrap {
+  background: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100vh;
+  width: 100%;
+  max-width: 500px;
+}
+
+.main_content_wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0 20px;
+  padding-bottom: 100px;
+  width: 100%;
+  margin-top: 70px;
+}
+
+/* 로딩 */
+.loading_wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 50vh;
+  gap: 20px;
+}
+
+.loading_spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid #ffe0e0;
+  border-top-color: #e74c3c;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.loading_text {
+  font-size: 16px;
+  color: #666;
+}
+
+/* 에러 */
+.error_wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 50vh;
+  gap: 16px;
+}
+
+.error_icon {
+  font-size: 48px;
+  color: #e74c3c;
+}
+
+.error_text {
+  font-size: 16px;
+  color: #666;
+}
+
+.error_btn {
+  padding: 12px 24px;
+  background: #e74c3c;
+  color: white;
+  text-decoration: none;
+  border-radius: 8px;
+  font-weight: 600;
+}
+
+/* 결과 래퍼 */
+.result_wrap {
+  width: 100%;
+}
+
+/* 헤더 섹션 */
+.result_header {
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+.result_icon .material-symbols-outlined {
+  font-size: 48px;
+  color: #e74c3c;
+  font-variation-settings: "FILL" 1, "wght" 400, "GRAD" 0, "opsz" 48;
+}
+
+.result_title {
+  font-family: "KimjungchulMyungjo-Bold";
+  font-size: 24px;
+  font-weight: 700;
+  color: #1a1a1a;
+  margin-top: 12px;
+}
+
+.result_date {
+  font-size: 14px;
+  color: #888;
+  margin-top: 8px;
+}
+
+/* 사용자 정보 카드 */
+.user_info_card {
+  background: #fff9f9;
+  border: 1px solid #ffe0e0;
+  border-radius: 12px;
+  padding: 16px 20px;
+  margin-bottom: 20px;
+}
+
+.info_row {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 0;
+  border-bottom: 1px solid #ffeeee;
+}
+
+.info_row:last-child {
+  border-bottom: none;
+}
+
+.info_label {
+  font-size: 14px;
+  color: #888;
+}
+
+.info_value {
+  font-size: 14px;
+  color: #333;
+  font-weight: 500;
+}
+
+/* 섹션 카드 */
+.section_card {
+  background: white;
+  border: 1px solid #eee;
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 16px;
+}
+
+.section_title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 16px;
+  font-weight: 700;
+  color: #1a1a1a;
+  margin-bottom: 16px;
+}
+
+.section_title .material-icons {
+  font-size: 20px;
+  color: #e74c3c;
+}
+
+/* 일간 정보 */
+.daymaster_wrap {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.daymaster_char {
+  width: 60px;
+  height: 60px;
+  background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+  color: white;
+  font-size: 32px;
+  font-weight: 700;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.daymaster_title {
+  font-size: 18px;
+  font-weight: 700;
+  color: #1a1a1a;
+  margin-bottom: 4px;
+}
+
+.daymaster_detail {
+  font-size: 14px;
+  color: #666;
+}
+
+/* 사주 팔자 */
+.pillars_wrap {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.pillar_item {
+  flex: 1;
+  text-align: center;
+  background: #f9f9f9;
+  border-radius: 8px;
+  padding: 12px 8px;
+}
+
+.pillar_label {
+  font-size: 12px;
+  color: #888;
+  margin-bottom: 8px;
+}
+
+.pillar_chars {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.pillar_stem,
+.pillar_branch {
+  font-size: 20px;
+  font-weight: 700;
+  color: #1a1a1a;
+}
+
+.pillar_korean {
+  font-size: 11px;
+  color: #666;
+  margin-top: 6px;
+}
+
+/* 오행 분포 */
+.five_elements_wrap {
+  display: flex;
+  justify-content: space-around;
+  align-items: flex-end;
+  height: 120px;
+  padding: 10px 0;
+}
+
+.element_item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.element_bar_wrap {
+  height: 80px;
+  display: flex;
+  align-items: flex-end;
+}
+
+.element_bar {
+  width: 30px;
+  border-radius: 4px 4px 0 0;
+  min-height: 10px;
+}
+
+.element_label {
+  font-size: 16px;
+  font-weight: 700;
+  color: #333;
+}
+
+.element_percent {
+  font-size: 12px;
+  color: #666;
+}
+
+.strength_info {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid #eee;
+}
+
+.strength_label {
+  font-size: 14px;
+  color: #888;
+}
+
+.strength_value {
+  font-size: 14px;
+  font-weight: 600;
+  color: #e74c3c;
+}
+
+/* 연애 요소 */
+.love_fact_item {
+  display: flex;
+  justify-content: space-between;
+  padding: 12px 0;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.love_fact_item:last-child {
+  border-bottom: none;
+}
+
+.love_fact_label {
+  font-size: 14px;
+  color: #666;
+}
+
+.love_fact_value {
+  font-size: 14px;
+  font-weight: 600;
+  color: #1a1a1a;
+}
+
+/* 고민 섹션 */
+.concern_text {
+  font-size: 14px;
+  line-height: 1.6;
+  color: #444;
+  background: #f9f9f9;
+  padding: 16px;
+  border-radius: 8px;
+}
+
+/* 액션 버튼 */
+.action_buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+.action_btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 14px 24px;
+  font-size: 15px;
+  font-weight: 600;
+  border-radius: 12px;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.action_btn.primary {
+  background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+  color: white;
+  box-shadow: 0 4px 15px rgba(231, 76, 60, 0.3);
+}
+
+.action_btn.secondary {
+  background: #f5f5f5;
+  color: #333;
+  border: 1px solid #ddd;
+}
+
+.action_btn .material-icons {
+  font-size: 18px;
+}
+
+/* 유틸리티 */
+.hidden {
+  display: none !important;
+}
+
+/* 분석 중 오버레이 */
+.analyze_overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(255, 255, 255, 0.98);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+.analyze_overlay.active {
+  display: flex;
+}
+
+.analyze_content {
+  text-align: center;
+  padding: 40px;
+}
+
+.analyze_spinner {
+  width: 60px;
+  height: 60px;
+  border: 4px solid #ffe0e0;
+  border-top-color: #e74c3c;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin: 0 auto 24px;
+}
+
+.analyze_text {
+  font-size: 18px;
+  font-weight: 600;
+  color: #1a1a1a;
+  margin-bottom: 8px;
+}
+
+.analyze_subtext {
+  font-size: 14px;
+  color: #888;
+}
+
+/* 결제 오버레이 */
+.payment-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
+  background: whitesmoke;
+  z-index: 99999;
+  overflow-y: auto;
+}
+
+.payment-fullscreen {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  min-height: 100%;
+  padding: 20px 0;
+}
+
+.modal-content {
+  width: 100%;
+  max-width: 500px;
+  background: #fff;
+  padding: 34px 22px 28px 22px;
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.19);
+  position: relative;
+  border-radius: 12px;
+  margin: auto;
+}
+
+.payment-header {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.payment-title {
+  font-size: 20px;
+  font-weight: 700;
+  color: #343434;
+  text-align: left;
+}
+
+.payment-close {
+  color: #343434;
+  font-size: 20px;
+  font-weight: bold;
+  cursor: pointer;
+  z-index: 10000;
+  margin-left: 12px;
+}
+
+.payment-subtitle {
+  color: #e74c3c;
+  font-weight: 600;
+}
+
+.report-wrap {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: left;
+  align-items: flex-start;
+  margin-top: 20px;
+  font-size: 16px;
+}
+
+.report-title-wrap {
+  width: 100%;
+  display: flex;
+  justify-content: flex-start;
+  margin-bottom: 14px;
+}
+
+.report-title {
+  font-weight: 600;
+}
+
+.report-num {
+  color: #e74c3c;
+  margin-left: 6px;
+}
+
+.report-contents-wrap {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  font-size: 14px;
+  text-align: justify;
+}
+
+.report-contents {
+  margin-bottom: 12px;
+  text-align: left;
+}
+
+.payment-price-wrap {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 8px;
+  padding-top: 16px;
+  font-weight: 600;
+  font-size: 14px;
+  border-top: 1px solid rgb(207, 207, 207);
+}
+
+.payment-coupon-wrap {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 20px;
+  font-weight: 600;
+  font-size: 16px;
+}
+
+.payment-coupon-price-wrap {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: top;
+  margin-top: 4px;
+  font-weight: 500;
+  font-size: 14px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid rgb(207, 207, 207);
+}
+
+.payment-coupon-title {
+  text-align: left;
+  color: #181818;
+}
+
+.payment-coupon-price {
+  color: #e74c3c;
+}
+
+.payment-final-price-wrap {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-top: 4px;
+  font-weight: 500;
+  border-top: 1px solid rgb(207, 207, 207);
+  padding-top: 24px;
+}
+
+.payment-final-price-title {
+  text-align: left;
+  font-size: 14px;
+}
+
+.payment-final-price-price-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.payment-originam-price2 {
+  color: #9d9d9d;
+  text-decoration: line-through;
+  font-size: 14px;
+}
+
+.payment-final-price {
+  display: flex;
+  justify-content: flex-end;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.payment-final-price-discount {
+  color: #e74c3c;
+  margin-right: 8px;
+}
+
+.payment-final-price-num {
+  color: #181818;
+}
+
+#payment-method,
+#agreement {
+  width: 100%;
+  padding: 0;
+}
+
+.payment-final-btn {
+  margin-top: 16px;
+  width: 100%;
+  padding: 15px 0;
+  background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+  color: white;
+  font-weight: 700;
+  border: none;
+  border-radius: 8px;
+  font-size: 17px;
+  cursor: pointer;
+  box-shadow: 0 4px 15px rgba(231, 76, 60, 0.3);
+}
+
+.payment-empty {
+  height: 60px;
+}

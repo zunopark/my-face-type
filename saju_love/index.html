@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="AI 연애 사주 | 당신의 연애운을 사주로 알아보세요"
+    />
+    <meta
+      name="keywords"
+      content="연애 사주, 사주, 연애운, 궁합, 운세, AI, 인공지능 사주, 사주팔자"
+    />
+    <meta name="author" content="관상가 양반 | Nmax" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="AI 연애 사주 | 관상가 양반" />
+    <meta
+      property="og:description"
+      content="AI가 알려주는 당신의 연애 사주 | 연애운 | 궁합"
+    />
+    <meta property="og:image" content="https://i.ibb.co/nPD5mmK/face.png" />
+    <link rel="stylesheet" href="styles/style.css" />
+    <link
+      href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=favorite"
+    />
+
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=East+Sea+Dokdo&display=swap");
+      @import url("https://fonts.googleapis.com/css2?family=Yeon+Sung&display=swap");
+      @font-face {
+        font-family: "KimjungchulMyungjo-Bold";
+        src: url("https://gcore.jsdelivr.net/gh/projectnoonnu/noonfonts_2302_01@1.0/KimjungchulMyungjo-Bold.woff2")
+          format("woff2");
+        font-style: normal;
+      }
+    </style>
+
+    <title>연애 사주 | AI 사주 | 관상가 양반</title>
+
+    <link
+      rel="shortcut icon"
+      href="https://keen-poitras-075b07.netlify.app/favicon.ico"
+      type="image/x-icon"
+    />
+  </head>
+  <body>
+    <div class="main_body_wrap landing_page">
+      <!-- 뒤로가기 버튼 -->
+      <a href="/" class="back_btn">
+        <span class="material-icons">arrow_back</span>
+      </a>
+
+      <!-- 배경 이미지 -->
+      <div class="landing_bg">
+        <img src="img/1.png" alt="색동낭자 연애사주" class="landing_image" id="bgImage" />
+      </div>
+
+      <!-- 랜딩 타이틀 -->
+      <div class="landing_title_wrap" id="landingTitle">
+        <h1 class="landing_title">연애 사주</h1>
+        <p class="landing_subtitle">당신의 인연을 찾아드립니다</p>
+      </div>
+
+      <!-- 하단 시작 버튼 -->
+      <div class="landing_bottom" id="landingBottom">
+        <button class="landing_start_btn" id="startLoveSaju">
+          시작하기
+        </button>
+      </div>
+
+      <!-- 대화 UI -->
+      <div class="dialogue_overlay" id="dialogueOverlay"></div>
+      <div class="dialogue_wrap" id="dialogueWrap">
+        <div class="dialogue_box">
+          <div class="dialogue_text" id="dialogueText"></div>
+        </div>
+        <div class="dialogue_buttons">
+          <button class="dialogue_prev_btn" id="dialoguePrevBtn">
+            이전
+          </button>
+          <button class="dialogue_next_btn" id="dialogueNextBtn">
+            다음
+          </button>
+        </div>
+      </div>
+
+      <!-- 분석 중 로딩 오버레이 -->
+      <div class="analyze_overlay" id="analyzeOverlay">
+        <div class="analyze_content">
+          <div class="analyze_spinner"></div>
+          <div class="analyze_text">사주를 분석하고 있습니다</div>
+          <div class="analyze_subtext">잠시만 기다려주세요...</div>
+        </div>
+      </div>
+
+      <!-- 사주 정보 입력 (반투명 오버레이) -->
+      <div class="input_overlay" id="inputOverlay">
+        <div class="input_form_wrap">
+          <!-- 이름 입력 -->
+          <div class="input_group">
+            <label class="input_label">이름</label>
+            <input type="text" class="input_field" id="userName" placeholder="이름을 입력해주세요." />
+          </div>
+
+          <!-- 생년월일 + 양력/음력 -->
+          <div class="input_group">
+            <div class="input_row">
+              <label class="input_label">생년월일</label>
+              <div class="calendar_options">
+                <button class="calendar_btn active" data-calendar="solar">
+                  <span class="check_icon">✓</span> 양력
+                </button>
+                <button class="calendar_btn" data-calendar="lunar">
+                  <span class="check_icon">✓</span> 음력
+                </button>
+              </div>
+            </div>
+            <input type="text" class="input_field" id="birthDate" placeholder="예: 19940110" inputmode="numeric" maxlength="10" />
+          </div>
+
+          <!-- 태어난 시간 -->
+          <div class="input_group">
+            <div class="input_row">
+              <label class="input_label">태어난 시간</label>
+              <button class="time_unknown_btn" id="timeUnknownBtn">
+                <span class="check_icon">✓</span> 시간 모름
+              </button>
+            </div>
+            <select class="input_field" id="birthTime">
+              <option value="">태어난 시간을 선택해주세요.</option>
+              <option value="23:30">자시 (23:30~01:30)</option>
+              <option value="01:30">축시 (01:30~03:30)</option>
+              <option value="03:30">인시 (03:30~05:30)</option>
+              <option value="05:30">묘시 (05:30~07:30)</option>
+              <option value="07:30">진시 (07:30~09:30)</option>
+              <option value="09:30">사시 (09:30~11:30)</option>
+              <option value="11:30">오시 (11:30~13:30)</option>
+              <option value="13:30">미시 (13:30~15:30)</option>
+              <option value="15:30">신시 (15:30~17:30)</option>
+              <option value="17:30">유시 (17:30~19:30)</option>
+              <option value="19:30">술시 (19:30~21:30)</option>
+              <option value="21:30">해시 (21:30~23:30)</option>
+            </select>
+          </div>
+
+          <!-- 성별 선택 -->
+          <div class="input_group">
+            <label class="input_label">성별</label>
+            <div class="gender_options">
+              <button class="gender_btn" data-gender="male">남성</button>
+              <button class="gender_btn" data-gender="female">여성</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- 하단 버튼 -->
+        <div class="input_buttons">
+          <button class="input_prev_btn" id="inputPrevBtn">이전</button>
+          <button class="input_submit_btn" id="inputNextBtn" disabled>다 입력했어!</button>
+        </div>
+      </div>
+
+      <!-- 추가 정보 입력 (반투명 오버레이) -->
+      <div class="input_overlay" id="additionalInputOverlay">
+        <div class="input_form_wrap">
+          <!-- 연애 고민 -->
+          <div class="input_group">
+            <label class="input_label">요즘 연애 고민이 있나요?</label>
+            <textarea
+              class="input_field textarea"
+              id="userConcern"
+              placeholder="현재 연애에 대한 고민이 있다면 적어주세요.&#10;더 정확한 분석을 해드릴게요."
+              rows="4"
+            ></textarea>
+          </div>
+
+          <!-- 연애 상태 -->
+          <div class="input_group">
+            <label class="input_label">현재 연애 상태</label>
+            <div class="status_options">
+              <button class="status_btn" data-status="single">솔로</button>
+              <button class="status_btn" data-status="dating">연애중</button>
+              <button class="status_btn" data-status="complicated">복잡해요</button>
+            </div>
+          </div>
+
+          <!-- 관심사 -->
+          <div class="input_group">
+            <label class="input_label">특히 궁금한 것은?</label>
+            <div class="interest_options">
+              <button class="interest_btn" data-interest="timing">연애 시기</button>
+              <button class="interest_btn" data-interest="type">이상형</button>
+              <button class="interest_btn" data-interest="compatibility">궁합</button>
+              <button class="interest_btn" data-interest="marriage">결혼운</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- 하단 버튼 -->
+        <div class="input_buttons">
+          <button class="input_prev_btn" id="additionalPrevBtn">이전</button>
+          <button class="input_submit_btn" id="submitSaju">분석 시작!</button>
+        </div>
+      </div>
+
+      <footer class="footer"></footer>
+      <div class="nav_wrap">
+        <a href="/" class="nav_content">
+          <span class="material-icons nav_icon">home</span>
+          <div class="nav_title">전체 보기</div>
+        </a>
+        <a href="/history/" class="nav_content">
+          <span class="material-icons nav_icon">person</span>
+          <div class="nav_title">마이 페이지</div>
+        </a>
+      </div>
+    </div>
+
+    <script src="../commonJs/footer.js"></script>
+    <script src="js/main.js"></script>
+  </body>
+</html>
