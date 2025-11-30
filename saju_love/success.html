@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>결제 성공 | 연애 사주</title>
+    <title>결제 확인 | 연애 사주</title>
     <style>
       * {
         margin: 0;
@@ -24,9 +24,17 @@
         max-width: 400px;
         width: 100%;
       }
-      .status-icon {
-        font-size: 60px;
-        margin-bottom: 20px;
+      .spinner {
+        width: 50px;
+        height: 50px;
+        border: 4px solid #ffe0e0;
+        border-top-color: #e74c3c;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+        margin: 0 auto 24px;
+      }
+      @keyframes spin {
+        to { transform: rotate(360deg); }
       }
       #status {
         font-size: 20px;
@@ -45,18 +53,6 @@
         color: #666;
         margin-bottom: 24px;
       }
-      .spinner {
-        width: 50px;
-        height: 50px;
-        border: 4px solid #ffe0e0;
-        border-top-color: #e74c3c;
-        border-radius: 50%;
-        animation: spin 1s linear infinite;
-        margin: 0 auto 24px;
-      }
-      @keyframes spin {
-        to { transform: rotate(360deg); }
-      }
       #retryBtn {
         padding: 12px 24px;
         font-size: 15px;
@@ -68,27 +64,6 @@
         cursor: pointer;
         display: none;
       }
-      .progress-wrap {
-        margin-top: 20px;
-      }
-      .progress-bar {
-        width: 100%;
-        height: 8px;
-        background: #ffe0e0;
-        border-radius: 4px;
-        overflow: hidden;
-      }
-      .progress-fill {
-        height: 100%;
-        background: linear-gradient(90deg, #e74c3c, #c0392b);
-        width: 0%;
-        transition: width 0.5s ease;
-      }
-      .progress-text {
-        font-size: 13px;
-        color: #888;
-        margin-top: 8px;
-      }
     </style>
   </head>
   <body>
@@ -96,12 +71,6 @@
       <div class="spinner" id="spinner"></div>
       <h2 id="status">결제 확인 중...</h2>
       <p class="sub-text" id="subText">잠시만 기다려주세요</p>
-      <div class="progress-wrap" id="progressWrap" style="display: none;">
-        <div class="progress-bar">
-          <div class="progress-fill" id="progressFill"></div>
-        </div>
-        <p class="progress-text" id="progressText">연애 사주 분석 중...</p>
-      </div>
       <button id="retryBtn">다시 시도</button>
     </div>
 
@@ -115,7 +84,6 @@
 
       // API 엔드포인트
       const PAYMENT_CONFIRM_API = "https://port-0-momzzi-fastapi-m7ynssht4601229b.sel4.cloudtype.app/payment/confirm";
-      const SAJU_LOVE_API = "https://port-0-momzzi-fastapi-m7ynssht4601229b.sel4.cloudtype.app/saju_love/analyze";
 
       // IndexedDB 설정
       const DB_NAME = "SajuLoveDB";
@@ -127,9 +95,6 @@
       const subTextEl = document.getElementById("subText");
       const spinnerEl = document.getElementById("spinner");
       const retryBtn = document.getElementById("retryBtn");
-      const progressWrap = document.getElementById("progressWrap");
-      const progressFill = document.getElementById("progressFill");
-      const progressText = document.getElementById("progressText");
 
       // IndexedDB 열기
       function openDB() {
@@ -140,19 +105,8 @@
         });
       }
 
-      // IndexedDB에서 데이터 가져오기
-      function getData(db, id) {
-        return new Promise((resolve, reject) => {
-          const tx = db.transaction(STORE_NAME, "readonly");
-          const store = tx.objectStore(STORE_NAME);
-          const req = store.get(id);
-          req.onsuccess = () => resolve(req.result);
-          req.onerror = () => reject(req.error);
-        });
-      }
-
-      // IndexedDB에 loveAnalysis 저장
-      function saveLoveAnalysis(db, id, loveResult) {
+      // paid 상태 저장
+      function markAsPaid(db, id) {
         return new Promise((resolve, reject) => {
           const tx = db.transaction(STORE_NAME, "readwrite");
           const store = tx.objectStore(STORE_NAME);
@@ -161,7 +115,6 @@
           getReq.onsuccess = () => {
             const data = getReq.result;
             if (data) {
-              data.loveAnalysis = loveResult;
               data.paid = true;
               data.paidAt = new Date().toISOString();
               const putReq = store.put(data);
@@ -176,17 +129,11 @@
       }
 
       // fetch with timeout
-      function fetchWithTimeout(url, opts = {}, ms = 60000) {
+      function fetchWithTimeout(url, opts = {}, ms = 10000) {
         return Promise.race([
           fetch(url, opts),
           new Promise((_, rej) => setTimeout(() => rej(new Error("TIMEOUT")), ms))
         ]);
-      }
-
-      // 프로그레스 업데이트
-      function updateProgress(percent, text) {
-        progressFill.style.width = percent + "%";
-        if (text) progressText.textContent = text;
       }
 
       // 메인 플로우
@@ -208,77 +155,21 @@
           if (!res.ok) throw new Error(`HTTP ${res.status}`);
           await res.json();
 
-          // 2. 결제 성공 - 분석 시작
+          // 2. 결제 성공 - paid 상태 저장
           statusEl.textContent = "결제 완료!";
           statusEl.className = "success";
-          subTextEl.textContent = "연애 사주 분석을 시작합니다";
-          spinnerEl.style.display = "none";
-          progressWrap.style.display = "block";
-
-          // 3. IndexedDB에서 사주 데이터 가져오기
-          updateProgress(10, "사주 데이터 불러오는 중...");
-          const db = await openDB();
-          const data = await getData(db, resultId);
-
-          if (!data || !data.sajuData) {
-            throw new Error("사주 데이터를 찾을 수 없습니다.");
-          }
-
-          // 4. 연애 사주 분석 API 호출
-          updateProgress(30, "AI가 연애 사주를 분석 중...");
-
-          // 연애 고민 + 연애 상태 + 관심사 합치기
-          const statusMap = { single: "솔로", dating: "연애중", complicated: "복잡해요" };
-          const interestMap = { timing: "연애 시기", type: "이상형", compatibility: "궁합", marriage: "결혼운" };
-
-          let combinedConcern = data.input?.userConcern || "";
-          if (data.input?.status) {
-            combinedConcern += `\n현재 연애 상태: ${statusMap[data.input.status] || data.input.status}`;
-          }
-          if (data.input?.interests?.length > 0) {
-            const interestNames = data.input.interests.map(i => interestMap[i] || i).join(", ");
-            combinedConcern += `\n특히 궁금한 것: ${interestNames}`;
-          }
-
-          const payload = {
-            saju_data: data.sajuData,
-            user_name: data.input?.userName || "",
-            user_concern: combinedConcern.trim(),
-            year: new Date().getFullYear()
-          };
-
-          console.log("연애 사주 분석 요청:", payload);
-
-          const loveRes = await fetchWithTimeout(SAJU_LOVE_API, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(payload)
-          }, 120000); // 2분 타임아웃
-
-          if (!loveRes.ok) {
-            const errText = await loveRes.text();
-            throw new Error(`분석 API 오류: ${errText}`);
-          }
-
-          updateProgress(70, "분석 결과 처리 중...");
-          const loveResult = await loveRes.json();
-          console.log("연애 사주 분석 결과:", loveResult);
-
-          // 5. IndexedDB에 저장
-          updateProgress(90, "결과 저장 중...");
-          await saveLoveAnalysis(db, resultId, loveResult);
-
-          // 6. 완료 - 결과 페이지로 이동
-          updateProgress(100, "분석 완료!");
-          statusEl.textContent = "분석 완료!";
           subTextEl.textContent = "결과 페이지로 이동합니다";
 
+          const db = await openDB();
+          await markAsPaid(db, resultId);
+
+          // 3. 바로 결과 페이지로 이동 (로딩은 결과 페이지에서)
           setTimeout(() => {
             location.href = `/saju_love/saju-result/?id=${encodeURIComponent(resultId)}`;
-          }, 1000);
+          }, 500);
 
         } catch (err) {
-          console.error(`[${attempt}] 처리 실패:`, err.message);
+          console.error(`[${attempt}] 결제 확인 실패:`, err.message);
 
           if (attempt < MAX_RETRY) {
             statusEl.textContent = `재시도 중... (${attempt}/${MAX_RETRY})`;
@@ -287,8 +178,7 @@
           } else {
             // 최종 실패
             spinnerEl.style.display = "none";
-            progressWrap.style.display = "none";
-            statusEl.textContent = "처리 실패";
+            statusEl.textContent = "결제 확인 실패";
             statusEl.className = "fail";
             subTextEl.textContent = err.message || "다시 시도해주세요";
             retryBtn.style.display = "inline-block";

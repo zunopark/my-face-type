@@ -297,7 +297,7 @@ body {
 
 .gender_btn.active {
   border-color: white;
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.25);
   color: white;
 }
 
@@ -458,20 +458,24 @@ body {
   overflow: hidden;
 }
 
-.back_btn {
+.back_btn,
+.back_btn:visited,
+.back_btn:active {
   position: fixed;
   top: 16px;
   left: calc(50% - 250px + 16px);
-  width: 40px;
   height: 40px;
+  padding: 0 14px 0 10px;
   background: rgba(0, 0, 0, 0.5);
-  border-radius: 50%;
+  border-radius: 20px;
   display: flex;
   align-items: center;
   justify-content: center;
+  gap: 4px;
   z-index: 200;
   text-decoration: none;
   transition: background 0.2s ease;
+  color: white;
 }
 
 @media (max-width: 500px) {
@@ -486,7 +490,13 @@ body {
 
 .back_btn .material-icons {
   color: white;
-  font-size: 24px;
+  font-size: 22px;
+}
+
+.back_btn_text {
+  color: white;
+  font-size: 14px;
+  font-weight: 500;
 }
 
 .landing_bg {

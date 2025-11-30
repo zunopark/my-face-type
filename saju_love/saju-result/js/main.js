@@ -3,8 +3,12 @@ const DB_NAME = "SajuLoveDB";
 const DB_VERSION = 2;
 const STORE_NAME = "results";
 
+// API 엔드포인트
+const SAJU_LOVE_API = "https://port-0-momzzi-fastapi-m7ynssht4601229b.sel4.cloudtype.app/saju_love/analyze";
+
 // DOM 요소
 const loadingWrap = document.getElementById("loadingWrap");
+const loadingText = document.getElementById("loadingText");
 const errorWrap = document.getElementById("errorWrap");
 const resultWrap = document.getElementById("resultWrap");
 const chaptersContainer = document.getElementById("chaptersContainer");
@@ -17,45 +21,158 @@ const progressFill = document.getElementById("progressFill");
 let currentSlide = 0;
 let totalSlides = 0;
 let chaptersTrack = null;
+let db = null;
 
 // URL에서 ID 가져오기
 const urlParams = new URLSearchParams(window.location.search);
 const resultId = urlParams.get("id");
 
 if (!resultId) {
-  showError();
+  showError("결과를 찾을 수 없습니다.");
 } else {
-  loadResult(resultId);
+  initApp();
 }
 
-// IndexedDB에서 결과 불러오기
-function loadResult(id) {
-  const req = indexedDB.open(DB_NAME, DB_VERSION);
+// 앱 초기화
+async function initApp() {
+  try {
+    db = await openDB();
+    const data = await getData(resultId);
 
-  req.onerror = () => showError();
+    if (!data) {
+      showError("데이터를 찾을 수 없습니다.");
+      return;
+    }
 
-  req.onsuccess = (e) => {
-    const db = e.target.result;
+    // 결제 안 했으면 에러
+    if (!data.paid) {
+      showError("결제가 완료되지 않았습니다.");
+      return;
+    }
+
+    // loveAnalysis가 있으면 바로 렌더링
+    if (data.loveAnalysis) {
+      renderResult(data);
+      return;
+    }
+
+    // loveAnalysis가 없으면 API 호출
+    await fetchLoveAnalysis(data);
+
+  } catch (err) {
+    console.error("초기화 실패:", err);
+    showError(err.message || "오류가 발생했습니다.");
+  }
+}
+
+// IndexedDB 열기
+function openDB() {
+  return new Promise((resolve, reject) => {
+    const req = indexedDB.open(DB_NAME, DB_VERSION);
+    req.onerror = () => reject(req.error);
+    req.onsuccess = (e) => resolve(e.target.result);
+  });
+}
+
+// 데이터 가져오기
+function getData(id) {
+  return new Promise((resolve, reject) => {
     const tx = db.transaction(STORE_NAME, "readonly");
     const store = tx.objectStore(STORE_NAME);
-    const getReq = store.get(id);
+    const req = store.get(id);
+    req.onsuccess = () => resolve(req.result);
+    req.onerror = () => reject(req.error);
+  });
+}
 
-    getReq.onsuccess = () => {
-      if (getReq.result && getReq.result.loveAnalysis) {
-        renderResult(getReq.result);
-      } else {
-        showError();
-      }
+// 데이터 저장
+function saveData(data) {
+  return new Promise((resolve, reject) => {
+    const tx = db.transaction(STORE_NAME, "readwrite");
+    const store = tx.objectStore(STORE_NAME);
+    const req = store.put(data);
+    req.onsuccess = () => resolve();
+    req.onerror = () => reject(req.error);
+  });
+}
+
+// fetch with timeout
+function fetchWithTimeout(url, opts = {}, ms = 120000) {
+  return Promise.race([
+    fetch(url, opts),
+    new Promise((_, rej) => setTimeout(() => rej(new Error("TIMEOUT")), ms))
+  ]);
+}
+
+// 연애 사주 분석 API 호출
+async function fetchLoveAnalysis(data) {
+  updateLoadingText("연애 사주를 분석하고 있습니다...");
+
+  try {
+    // 연애 고민 + 연애 상태 + 관심사 합치기
+    const statusMap = { single: "솔로", dating: "연애중", complicated: "복잡해요" };
+    const interestMap = { timing: "연애 시기", type: "이상형", compatibility: "궁합", marriage: "결혼운" };
+
+    let combinedConcern = data.input?.userConcern || "";
+    if (data.input?.status) {
+      combinedConcern += `\n현재 연애 상태: ${statusMap[data.input.status] || data.input.status}`;
+    }
+    if (data.input?.interests?.length > 0) {
+      const interestNames = data.input.interests.map(i => interestMap[i] || i).join(", ");
+      combinedConcern += `\n특히 궁금한 것: ${interestNames}`;
+    }
+
+    const payload = {
+      saju_data: data.sajuData,
+      user_name: data.input?.userName || "",
+      user_concern: combinedConcern.trim(),
+      year: new Date().getFullYear()
     };
 
-    getReq.onerror = () => showError();
-  };
+    console.log("연애 사주 분석 요청:", payload);
+
+    const res = await fetchWithTimeout(SAJU_LOVE_API, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload)
+    }, 120000);
+
+    if (!res.ok) {
+      const errText = await res.text();
+      throw new Error(`분석 실패: ${errText}`);
+    }
+
+    const loveResult = await res.json();
+    console.log("연애 사주 분석 결과:", loveResult);
+
+    // DB에 저장
+    data.loveAnalysis = loveResult;
+    await saveData(data);
+
+    // 렌더링
+    renderResult(data);
+
+  } catch (err) {
+    console.error("분석 API 실패:", err);
+    showError("분석 중 오류가 발생했습니다. 다시 시도해주세요.");
+  }
+}
+
+// 로딩 텍스트 업데이트
+function updateLoadingText(text) {
+  if (loadingText) {
+    loadingText.textContent = text;
+  }
 }
 
 // 에러 표시
-function showError() {
+function showError(message) {
   loadingWrap.classList.add("hidden");
   errorWrap.classList.remove("hidden");
+  const errorText = errorWrap.querySelector(".error_text");
+  if (errorText && message) {
+    errorText.textContent = message;
+  }
 }
 
 // 결과 렌더링
@@ -252,7 +369,7 @@ function simpleMD(src = "") {
   src = src
     .replace(/^###### (.*$)/gim, "<h6>$1</h6>")
     .replace(/^##### (.*$)/gim, "<h5>$1</h5>")
-    .replace(/^#### (.*$)/gim, "<h3>$1</h3>")
+    .replace(/^#### (.*$)/gim, "<h4>$1</h4>")
     .replace(/^### (.*$)/gim, "<h3>$1</h3>")
     .replace(/^## (.*$)/gim, "<h2>$1</h2>")
     .replace(/^# (.*$)/gim, "<h1>$1</h1>");
