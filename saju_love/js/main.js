@@ -101,7 +101,7 @@ const dialogueNextBtn = document.getElementById("dialogueNextBtn");
 // 대화 내용
 const dialogues = [
   {
-    text: "어서오세요,\n인연을 찾아 이 곳에 오셨군요",
+    text: "어서오세요,\n인연을 찾아 이 곳에 오셨군요!",
     nextBtnText: "다음",
   },
   {
