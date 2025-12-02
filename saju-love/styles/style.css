@@ -543,15 +543,14 @@ body {
   font-family: "Danjo", serif;
   display: block;
   color: #ce3711;
-  -webkit-text-stroke: 14px #fff;
+  -webkit-text-stroke: 12px #fff;
   paint-order: stroke fill;
   line-height: 1.1;
 }
 
 .title_name,
 .title_saju {
-  font-size: 72px;
-  letter-spacing: 4px;
+  font-size: 64px;
 }
 
 .landing_subtitle {
@@ -560,7 +559,7 @@ body {
   color: white;
   text-shadow: 1px 1px 6px rgba(0, 0, 0, 0.6);
   letter-spacing: 4px;
-  margin-top: 36px;
+  margin-top: 20px;
 }
 
 .landing_title_wrap.hidden {
