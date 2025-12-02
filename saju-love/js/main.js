@@ -499,7 +499,7 @@ submitBtn.addEventListener("click", async function () {
     console.log("DB 저장 완료:", doc.id);
 
     // 3. 결과 페이지로 이동
-    location.href = `/saju_love/saju-detail/?id=${encodeURIComponent(doc.id)}`;
+    location.href = `/saju-love/saju-detail/?id=${encodeURIComponent(doc.id)}`;
   } catch (err) {
     console.error("분석 실패:", err);
     showError("분석 중 오류가 발생했습니다. 다시 시도해주세요.");

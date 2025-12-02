@@ -11,7 +11,8 @@
         box-sizing: border-box;
       }
       body {
-        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+          sans-serif;
         background: #fff9f9;
         min-height: 100vh;
         display: flex;
@@ -34,7 +35,9 @@
         margin: 0 auto 24px;
       }
       @keyframes spin {
-        to { transform: rotate(360deg); }
+        to {
+          transform: rotate(360deg);
+        }
       }
       #status {
         font-size: 20px;
@@ -83,7 +86,8 @@
       const resultId = qs.get("id");
 
       // API 엔드포인트
-      const PAYMENT_CONFIRM_API = "https://port-0-momzzi-fastapi-m7ynssht4601229b.sel4.cloudtype.app/payment/confirm";
+      const PAYMENT_CONFIRM_API =
+        "https://port-0-momzzi-fastapi-m7ynssht4601229b.sel4.cloudtype.app/payment/confirm";
 
       // IndexedDB 설정
       const DB_NAME = "SajuLoveDB";
@@ -132,7 +136,9 @@
       function fetchWithTimeout(url, opts = {}, ms = 10000) {
         return Promise.race([
           fetch(url, opts),
-          new Promise((_, rej) => setTimeout(() => rej(new Error("TIMEOUT")), ms))
+          new Promise((_, rej) =>
+            setTimeout(() => rej(new Error("TIMEOUT")), ms)
+          ),
         ]);
       }
 
@@ -146,11 +152,15 @@
           statusEl.textContent = "결제 확인 중...";
           subTextEl.textContent = "잠시만 기다려주세요";
 
-          const res = await fetchWithTimeout(PAYMENT_CONFIRM_API, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ paymentKey, orderId, amount })
-          }, 10000);
+          const res = await fetchWithTimeout(
+            PAYMENT_CONFIRM_API,
+            {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ paymentKey, orderId, amount }),
+            },
+            10000
+          );
 
           if (!res.ok) throw new Error(`HTTP ${res.status}`);
           await res.json();
@@ -165,9 +175,10 @@
 
           // 3. 바로 결과 페이지로 이동 (로딩은 결과 페이지에서)
           setTimeout(() => {
-            location.href = `/saju_love/saju-result/?id=${encodeURIComponent(resultId)}`;
+            location.href = `/saju-love/saju-result/?id=${encodeURIComponent(
+              resultId
+            )}`;
           }, 500);
-
         } catch (err) {
           console.error(`[${attempt}] 결제 확인 실패:`, err.message);
 

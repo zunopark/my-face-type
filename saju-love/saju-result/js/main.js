@@ -4,8 +4,8 @@ const DB_VERSION = 2;
 const STORE_NAME = "results";
 
 // API 엔드포인트
-const SAJU_LOVE_API =
-  "https://port-0-momzzi-fastapi-m7ynssht4601229b.sel4.cloudtype.app/saju_love/analyze";
+const saju-love_API =
+  "https://port-0-momzzi-fastapi-m7ynssht4601229b.sel4.cloudtype.app/saju-love/analyze";
 
 // ✅ 테스트용 결제 생략 플래그
 // true  : Toss 결제 완료 여부 검사 없이 결과 렌더링
@@ -150,7 +150,7 @@ async function fetchLoveAnalysis(data) {
     console.log("연애 사주 분석 요청:", payload);
 
     const res = await fetchWithTimeout(
-      SAJU_LOVE_API,
+      saju-love_API,
       {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -855,7 +855,7 @@ function createEndingSlide() {
         <p class="ending_sign">- 색동낭자 드림</p>
       </div>
       <div class="ending_buttons">
-        <a href="/saju_love/" class="action_btn primary">다른 사주 분석하기</a>
+        <a href="/saju-love/" class="action_btn primary">다른 사주 분석하기</a>
         <a href="/" class="action_btn secondary">홈으로</a>
       </div>
     </div>

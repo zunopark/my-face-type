@@ -21,7 +21,7 @@ const headerContent = () => {
             <a href="/" style="margin-right: 12px; text-decoration: none;">
           <div class="header_chat_title" style="color: rgb(130, 130, 130);" >관상</div>
         </a>
-            <a href="/saju_love/" style="margin-right: 12px; text-decoration: none;">
+            <a href="/saju-love/" style="margin-right: 12px; text-decoration: none;">
           <div class="header_chat_title" style="color: rgb(130, 130, 130);" >사주</div>
         </a>
             <a href="/animalface/" style="margin-right: 12px; text-decoration: none;">
@@ -36,7 +36,7 @@ const headerContent = () => {
             <a href="/" style="margin-right: 12px; text-decoration: none;">
           <div class="header_chat_title" style="color: rgb(130, 130, 130);" >관상</div>
         </a>
-            <a href="/saju_love/" style="margin-right: 12px; text-decoration: none;">
+            <a href="/saju-love/" style="margin-right: 12px; text-decoration: none;">
           <div class="header_chat_title" style="color: rgb(130, 130, 130);" >사주</div>
         </a>
             <a href="/animalface/" style="margin-right: 12px; text-decoration: none;">
@@ -51,7 +51,7 @@ const headerContent = () => {
             <a href="/" style="margin-right: 12px; text-decoration: none;">
           <div class="header_chat_title" style="color: rgb(130, 130, 130);" >관상</div>
         </a>
-            <a href="/saju_love/" style="margin-right: 12px; text-decoration: none;">
+            <a href="/saju-love/" style="margin-right: 12px; text-decoration: none;">
           <div class="header_chat_title">사주</div>
         </a>
             <a href="/animalface/" style="margin-right: 12px; text-decoration: none;">

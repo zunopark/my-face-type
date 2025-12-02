@@ -1,6 +1,6 @@
 // API 엔드포인트
-const SAJU_LOVE_API =
-  "https://port-0-momzzi-fastapi-m7ynssht4601229b.sel4.cloudtype.app/saju_love/analyze";
+const saju-love_API =
+  "https://port-0-momzzi-fastapi-m7ynssht4601229b.sel4.cloudtype.app/saju-love/analyze";
 
 // ✅ 테스트용 플래그
 // true : Toss 결제 단계 생략하고 바로 결과 페이지로 이동
@@ -403,7 +403,7 @@ function handleAnalyzeClick() {
 
   if (SKIP_TOSS_PAYMENT) {
     // 👉 테스트 편의를 위해 결제 없이 바로 결과 페이지로 이동
-    location.href = `/saju_love/saju-result/?id=${encodeURIComponent(
+    location.href = `/saju-love/saju-result/?id=${encodeURIComponent(
       currentData.id
     )}`;
     return;
@@ -467,15 +467,15 @@ async function startTossPayment(resultId) {
     document.getElementById("payment-button").onclick = async () => {
       try {
         await paymentWidget.requestPayment({
-          orderId: `saju_love_${Date.now()}`,
+          orderId: `saju-love_${Date.now()}`,
           orderName: "AI 연애 사주 심층 분석",
           customerName: currentData.input?.userName || "고객",
           successUrl: `${
             window.location.origin
-          }/saju_love/success.html?id=${encodeURIComponent(resultId)}`,
+          }/saju-love/success.html?id=${encodeURIComponent(resultId)}`,
           failUrl: `${
             window.location.origin
-          }/saju_love/fail.html?id=${encodeURIComponent(resultId)}`,
+          }/saju-love/fail.html?id=${encodeURIComponent(resultId)}`,
         });
       } catch (err) {
         alert("결제 실패: " + err.message);

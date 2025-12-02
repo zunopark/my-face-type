@@ -7,7 +7,7 @@ from datetime import datetime
 import base64
 import os
 
-router = APIRouter(prefix="/saju_love", tags=["saju_love"])
+router = APIRouter(prefix="/saju-love", tags=["saju-love"])
 
 # Gemini API 클라이언트 설정
 # API 키는 환경 변수 GEMINI_API_KEY에서 자동으로 가져옵니다
