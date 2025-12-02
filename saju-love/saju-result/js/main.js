@@ -109,9 +109,40 @@ function fetchWithTimeout(url, opts = {}, ms = 120000) {
   ]);
 }
 
+// 로딩 메시지 순환
+let loadingMessageInterval = null;
+function startLoadingMessages(userName) {
+  const messages = [
+    `${userName}님의 사주 팔자를 분석하고 있어요`,
+    "완료하는 데 2~3분 정도 걸려요",
+    "지금 페이지를 나가면 분석이 완료되지 않을 수 있어요",
+    `${userName}님의 연애 성향을 파악하고 있어요`,
+    "운명의 상대를 찾고 있어요",
+    "곧 분석이 완료됩니다",
+  ];
+  let index = 0;
+
+  // 첫 번째 메시지 즉시 표시
+  updateLoadingText(messages[0]);
+
+  // 4초마다 메시지 변경
+  loadingMessageInterval = setInterval(() => {
+    index = (index + 1) % messages.length;
+    updateLoadingText(messages[index]);
+  }, 4000);
+}
+
+function stopLoadingMessages() {
+  if (loadingMessageInterval) {
+    clearInterval(loadingMessageInterval);
+    loadingMessageInterval = null;
+  }
+}
+
 // 연애 사주 분석 API 호출
 async function fetchLoveAnalysis(data) {
-  updateLoadingText("연애 사주를 분석하고 있습니다...");
+  const userName = data.input?.userName || "고객";
+  startLoadingMessages(userName);
 
   try {
     // 연애 고민 + 연애 상태 + 관심사 합치기
@@ -150,7 +181,7 @@ async function fetchLoveAnalysis(data) {
     console.log("연애 사주 분석 요청:", payload);
 
     const res = await fetchWithTimeout(
-      saju - love_API,
+      saju_love_API,
       {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -171,9 +202,15 @@ async function fetchLoveAnalysis(data) {
     data.loveAnalysis = loveResult;
     await saveData(data);
 
+    // 로딩 메시지 중지
+    stopLoadingMessages();
+
     // 렌더링
     renderResult(data);
   } catch (err) {
+    // 로딩 메시지 중지
+    stopLoadingMessages();
+
     console.error("분석 API 실패:", err);
     if (err.message === "TIMEOUT") {
       showError("서버 응답 시간이 초과되었습니다. 잠시 후 다시 시도해주세요.");
