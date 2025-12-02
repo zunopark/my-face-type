@@ -84,7 +84,6 @@ const timeUnknownBtn = document.getElementById("timeUnknownBtn");
 const genderBtns = document.querySelectorAll(".gender_btn");
 const calendarBtns = document.querySelectorAll(".calendar_btn");
 const statusBtns = document.querySelectorAll(".status_btn");
-const interestBtns = document.querySelectorAll(".interest_btn");
 const analyzeOverlay = document.getElementById("analyzeOverlay");
 
 // 대화 시스템 DOM
@@ -427,22 +426,6 @@ statusBtns.forEach((btn) => {
   });
 });
 
-// 관심사 선택 (다중 선택 가능)
-formState.interests = [];
-interestBtns.forEach((btn) => {
-  btn.addEventListener("click", function () {
-    this.classList.toggle("active");
-    const interest = this.dataset.interest;
-    if (this.classList.contains("active")) {
-      if (!formState.interests.includes(interest)) {
-        formState.interests.push(interest);
-      }
-    } else {
-      formState.interests = formState.interests.filter((i) => i !== interest);
-    }
-  });
-});
-
 // 로딩 표시
 function showLoading() {
   analyzeOverlay.classList.add("active");
@@ -492,7 +475,6 @@ submitBtn.addEventListener("click", async function () {
     time: birthTimeSelect.value || null,
     userConcern: userConcernInput?.value || null,
     status: formState.status || null,
-    interests: formState.interests || [],
   };
 
   // 추가 입력 폼 닫고 로딩 표시

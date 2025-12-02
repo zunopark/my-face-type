@@ -367,27 +367,32 @@ function buildTableOfContents() {
     {
       title: "1장. 나만의 매력과 연애 성향",
       items: [
-        "풀이 1. 일간으로 보는 연애 DNA",
-        "풀이 2. 첫인상과 외적 매력",
-        "풀이 3. 연애 스타일 장단점",
-        "풀이 4. 나에게 맞는 인연 찾는 법",
+        "풀이 1. 처음 본 순간 이성이 느끼는 나의 매력",
+        "풀이 2. 내 연애 스타일 장점과 숨겨진 반전 매력",
+        "풀이 3. 인만추 vs 자만추 vs 결정사, 나에게 맞는 방식은",
+        "풀이 4. 내가 끌리는 사람 vs 나에게 끌리는 사람",
       ],
     },
     {
       title: "2장. 앞으로 펼쳐질 사랑의 흐름",
       items: [
-        "풀이 1. 연애운 폭발 시기 (2025~2027년)",
-        "풀이 2. 이번 달 연애 운세",
-        "풀이 3. 고민 상담 및 조언",
+        "풀이 1. 앞으로의 연애 총운 흐름",
+        "풀이 2. 향후 3년간 연애운 증폭 시기",
+        "풀이 3. 바로 지금, 이번 달 연애 운세",
       ],
     },
     {
       title: "3장. 결국 만나게 될 운명의 상대",
       items: [
-        "풀이 1. 이상형 분석 (외모, 성격, 직업군)",
-        "풀이 2. 언제 어디서 만나나",
-        "풀이 3. 그 사람 마음 사로잡는 법",
+        "풀이 1. 운명의 짝, 그 사람의 모든 것",
+        "풀이 2. 언제, 어떻게 만나게 될까",
+        "풀이 3. 그 사람을 끌어당길 나만의 공략법",
       ],
+    },
+    {
+      title: "4장. 색동낭자의 일침",
+      items: [],
+      desc: "입력한 고민에 대한 1:1 맞춤 상담",
     },
   ];
 
@@ -400,9 +405,12 @@ function buildTableOfContents() {
             (chapter) => `
               <li class="toc_item">
                 <div class="toc_item_title">${chapter.title}</div>
-                <ul class="toc_subitems">
-                  ${chapter.items.map((item) => `<li class="toc_subitem">${item}</li>`).join("")}
-                </ul>
+                ${chapter.desc
+                  ? `<div class="toc_item_desc">${chapter.desc}</div>`
+                  : `<ul class="toc_subitems">
+                      ${chapter.items.map((item) => `<li class="toc_subitem">${item}</li>`).join("")}
+                    </ul>`
+                }
               </li>
             `
           )

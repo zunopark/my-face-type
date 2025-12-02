@@ -1,6 +1,5 @@
 @import "../../../commonStyles/common.css";
 @import "../../../commonStyles/reset.css";
-@import "../../../commonStyles/header.css";
 @import "../../../commonStyles/footer.css";
 @import "../../../commonStyles/media.css";
 @import "../../../commonStyles/nav.css";
@@ -22,16 +21,54 @@ body {
   min-height: 100vh;
   width: 100%;
   max-width: 500px;
+  position: relative;
 }
 
-.main_content_wrap {
+/* 뒤로가기 버튼 - iOS 스타일 블러 */
+.back_btn,
+.back_btn:visited,
+.back_btn:active {
+  position: fixed;
+  top: 16px;
+  left: calc(50% - 250px + 16px);
+  height: 40px;
+  padding: 0 14px 0 10px;
+  background: rgba(255, 255, 255, 0.4);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 20px;
   display: flex;
-  flex-direction: column;
   align-items: center;
-  padding: 0 20px;
-  padding-bottom: 100px;
-  width: 100%;
-  margin-top: 70px;
+  justify-content: center;
+  gap: 4px;
+  z-index: 200;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  color: #333;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+}
+
+@media (max-width: 500px) {
+  .back_btn {
+    left: 16px;
+  }
+}
+
+.back_btn:hover {
+  background: rgba(255, 255, 255, 0.55);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+}
+
+.back_btn .material-icons {
+  color: #333;
+  font-size: 22px;
+}
+
+.back_btn_text {
+  color: #333;
+  font-size: 14px;
+  font-weight: 500;
 }
 
 /* 로딩 */
@@ -40,7 +77,7 @@ body {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  min-height: 50vh;
+  min-height: 100vh;
   gap: 20px;
 }
 
@@ -70,7 +107,7 @@ body {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  min-height: 50vh;
+  min-height: 100vh;
   gap: 16px;
 }
 
@@ -96,177 +133,96 @@ body {
 /* 결과 래퍼 */
 .result_wrap {
   width: 100%;
+  padding-bottom: 140px;
 }
 
-/* 헤더 섹션 */
-.result_header {
-  text-align: center;
-  margin-bottom: 24px;
+/* 섹션 공통 */
+.detail_section {
+  width: 100%;
 }
 
-.result_icon .material-symbols-outlined {
-  font-size: 48px;
-  color: #e74c3c;
-  font-variation-settings: "FILL" 1, "wght" 400, "GRAD" 0, "opsz" 48;
+/* 히어로 이미지 */
+.hero_image {
+  width: 100%;
 }
 
-.result_title {
-  font-family: "KimjungchulMyungjo-Bold";
-  font-size: 24px;
-  font-weight: 700;
-  color: #1a1a1a;
-  margin-top: 12px;
+.hero_image img {
+  width: 100%;
+  height: auto;
+  display: block;
 }
 
-.result_date {
-  font-size: 14px;
-  color: #888;
-  margin-top: 8px;
+/* ========== 섹션 1: 기본 정보 + 사주팔자 ========== */
+.section_1 {
+  background: linear-gradient(180deg, #fff5f5 0%, #ffffff 100%);
 }
 
-/* 사용자 정보 카드 */
-.user_info_card {
-  background: #fff9f9;
-  border: 1px solid #ffe0e0;
-  border-radius: 12px;
-  padding: 16px 20px;
-  margin-bottom: 20px;
-}
-
-.info_row {
+.info_card {
+  padding: 20px;
   display: flex;
   justify-content: space-between;
-  padding: 8px 0;
-  border-bottom: 1px solid #ffeeee;
-}
-
-.info_row:last-child {
-  border-bottom: none;
-}
-
-.info_label {
-  font-size: 14px;
-  color: #888;
-}
-
-.info_value {
-  font-size: 14px;
-  color: #333;
-  font-weight: 500;
-}
-
-/* 섹션 카드 */
-.section_card {
-  background: white;
-  border: 1px solid #eee;
-  border-radius: 12px;
-  padding: 20px;
-  margin-bottom: 16px;
-}
-
-.section_title {
-  display: flex;
   align-items: center;
-  gap: 8px;
-  font-size: 16px;
-  font-weight: 700;
-  color: #1a1a1a;
-  margin-bottom: 16px;
+  border-bottom: 1px solid #ffe8e8;
 }
 
-.section_title .material-icons {
-  font-size: 20px;
-  color: #e74c3c;
-}
-
-/* 일간 정보 */
-.daymaster_wrap {
+.info_main {
   display: flex;
-  align-items: center;
-  gap: 16px;
+  flex-direction: column;
+  gap: 4px;
 }
 
-.daymaster_char {
-  width: 60px;
-  height: 60px;
-  background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
-  color: white;
-  font-size: 32px;
-  font-weight: 700;
-  border-radius: 12px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.daymaster_title {
+.info_name {
   font-size: 18px;
   font-weight: 700;
   color: #1a1a1a;
-  margin-bottom: 4px;
 }
 
-.daymaster_detail {
+.info_birth {
+  font-size: 14px;
+  color: #888;
+}
+
+.info_ilju {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #fff9f9;
+  padding: 8px 14px;
+  border-radius: 20px;
+  border: 1px solid #ffe0e0;
+}
+
+.ilju_char {
+  font-size: 20px;
+  font-weight: 700;
+  color: #e74c3c;
+}
+
+.ilju_title {
   font-size: 14px;
   color: #666;
 }
 
-/* 일간 성향 설명 */
-.daymaster_desc_wrap {
-  margin-top: 20px;
-  padding-top: 20px;
-  border-top: 1px dashed #ffe0e0;
+/* 사주 팔자 섹션 */
+.pillars_section {
+  padding: 20px;
 }
 
-.daymaster_headline {
-  font-size: 16px;
-  font-weight: 700;
-  color: #c0392b;
-  margin-bottom: 12px;
-  line-height: 1.5;
-}
-
-.daymaster_summary {
-  font-size: 14px;
-  color: #444;
-  line-height: 1.8;
-  margin-bottom: 16px;
-  word-break: keep-all;
-}
-
-.daymaster_appearance_title {
-  font-size: 13px;
-  font-weight: 600;
-  color: #888;
-  margin-bottom: 10px;
-}
-
-.daymaster_appearance_list {
-  list-style: none;
-  padding: 0;
-  margin: 0;
+.pillars_header {
   display: flex;
-  flex-direction: column;
+  align-items: center;
   gap: 8px;
+  font-size: 15px;
+  font-weight: 700;
+  color: #1a1a1a;
+  margin-bottom: 16px;
 }
 
-.daymaster_appearance_list li {
-  font-size: 14px;
-  color: #555;
-  padding-left: 16px;
-  position: relative;
-  line-height: 1.6;
-}
-
-.daymaster_appearance_list li::before {
-  content: "•";
-  position: absolute;
-  left: 0;
+.pillars_header .material-icons {
+  font-size: 20px;
   color: #e74c3c;
-  font-weight: bold;
 }
 
-/* 사주 팔자 */
 .pillars_wrap {
   display: flex;
   justify-content: space-between;
@@ -299,7 +255,8 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 2px;
+  gap: 4px;
+  padding: 8px 6px;
 }
 
 .pillar_stem,
@@ -322,133 +279,198 @@ body {
   margin-top: 6px;
 }
 
-/* 오행 분포 */
-.five_elements_wrap {
-  display: flex;
-  justify-content: space-around;
-  align-items: flex-end;
-  height: 120px;
-  padding: 10px 0;
+/* ========== 섹션 2: 나의 결정적 매력 ========== */
+.section_2 {
+  padding: 40px 20px;
+  background: linear-gradient(180deg, #fff8f8 0%, #fff0f0 100%);
+  text-align: center;
 }
 
-.element_item {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 8px;
-}
-
-.element_bar_wrap {
-  height: 80px;
-  display: flex;
-  align-items: flex-end;
-}
-
-.element_bar {
-  width: 30px;
-  border-radius: 4px 4px 0 0;
-  min-height: 10px;
-}
-
-.element_label {
-  font-size: 16px;
-  font-weight: 700;
-  color: #333;
-}
-
-.element_percent {
-  font-size: 12px;
-  color: #666;
-}
-
-.strength_info {
-  display: flex;
-  justify-content: center;
-  gap: 8px;
-  margin-top: 16px;
-  padding-top: 16px;
-  border-top: 1px solid #eee;
-}
-
-.strength_label {
+.section_label {
   font-size: 14px;
   color: #888;
+  margin-bottom: 4px;
 }
 
-.strength_value {
-  font-size: 14px;
-  font-weight: 600;
-  color: #e74c3c;
-}
-
-/* 연애 요소 */
-.love_fact_item {
-  display: flex;
-  justify-content: space-between;
-  padding: 12px 0;
-  border-bottom: 1px solid #f0f0f0;
-}
-
-.love_fact_item:last-child {
-  border-bottom: none;
-}
-
-.love_fact_label {
-  font-size: 14px;
-  color: #666;
-}
-
-.love_fact_value {
-  font-size: 14px;
-  font-weight: 600;
+.section_main_title {
+  font-family: "KimjungchulMyungjo-Bold";
+  font-size: 26px;
+  font-weight: 700;
   color: #1a1a1a;
+  margin-bottom: 24px;
 }
 
-/* 고민 섹션 */
-.concern_text {
-  font-size: 14px;
+/* 일간 매력 헤드라인 */
+.charm_headline_wrap {
+  background: white;
+  border-radius: 16px;
+  padding: 24px 20px;
+  margin-bottom: 12px;
+  box-shadow: 0 2px 12px rgba(231, 76, 60, 0.08);
+}
+
+.charm_quote {
+  font-family: "East Sea Dokdo", cursive;
+  font-size: 36px;
+  color: #e74c3c;
+  line-height: 0.5;
+}
+
+.charm_headline {
+  font-size: 18px;
+  font-weight: 600;
+  color: #333;
   line-height: 1.6;
-  color: #444;
-  background: #f9f9f9;
-  padding: 16px;
-  border-radius: 8px;
+  padding: 12px 0;
 }
 
-/* 액션 버튼 */
-.action_buttons {
+.charm_ilgan_info {
+  font-size: 14px;
+  color: #888;
+  margin-bottom: 24px;
+}
+
+/* 내 일간 성향 */
+.charm_detail_wrap {
+  background: white;
+  border-radius: 16px;
+  padding: 24px 20px;
+  text-align: left;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 12px rgba(231, 76, 60, 0.08);
+}
+
+.charm_detail_title {
+  font-size: 15px;
+  font-weight: 700;
+  color: #1a1a1a;
+  margin-bottom: 12px;
+  margin-top: 20px;
+}
+
+.charm_detail_title:first-child {
+  margin-top: 0;
+}
+
+.charm_detail_desc {
+  font-size: 14px;
+  color: #444;
+  line-height: 1.8;
+  word-break: keep-all;
+}
+
+.charm_appearance_list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.charm_appearance_list li {
+  font-size: 14px;
+  color: #555;
+  padding-left: 16px;
+  position: relative;
+  line-height: 1.6;
+}
+
+.charm_appearance_list li::before {
+  content: "-";
+  position: absolute;
+  left: 0;
+  color: #888;
+  font-weight: normal;
+}
+
+/* 이런 내용을 알려드려요 박스 */
+.info_preview_box {
+  background: white;
+  border: 1px solid #ffe0e0;
+  border-radius: 16px;
+  padding: 20px;
+  text-align: left;
+}
+
+.info_preview_header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 16px;
+  justify-content: center;
+}
+
+.lock_icon {
+  font-size: 16px;
+}
+
+.info_preview_list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
   display: flex;
   flex-direction: column;
   gap: 12px;
-  margin-top: 24px;
 }
 
-.action_btn {
+.info_preview_list li {
+  font-size: 14px;
+  color: #555;
+  padding-left: 24px;
+  position: relative;
+  line-height: 1.5;
+}
+
+.info_preview_list li::before {
+  content: "❤️";
+  position: absolute;
+  left: 0;
+  font-size: 12px;
+}
+
+/* 하단 고정 버튼 */
+.bottom_fixed_btn {
+  position: fixed;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  max-width: 500px;
+  padding: 16px 20px 32px 20px;
+  background: linear-gradient(180deg, transparent 0%, white 20%);
+  z-index: 100;
+}
+
+.analyze_btn {
+  width: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 8px;
-  padding: 14px 24px;
-  font-size: 15px;
-  font-weight: 600;
-  border-radius: 12px;
-  text-decoration: none;
+  padding: 18px 24px;
+  background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+  color: white;
+  font-size: 17px;
+  font-weight: 700;
+  border: none;
+  border-radius: 14px;
+  cursor: pointer;
+  box-shadow: 0 4px 20px rgba(231, 76, 60, 0.4);
   transition: all 0.2s ease;
 }
 
-.action_btn.primary {
-  background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
-  color: white;
-  box-shadow: 0 4px 15px rgba(231, 76, 60, 0.3);
+.analyze_btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 25px rgba(231, 76, 60, 0.5);
 }
 
-.action_btn.secondary {
-  background: #f5f5f5;
-  color: #333;
-  border: 1px solid #ddd;
-}
-
-.action_btn .material-icons {
-  font-size: 18px;
+.analyze_btn .material-symbols-outlined {
+  font-size: 22px;
+  font-variation-settings: "FILL" 1, "wght" 400, "GRAD" 0, "opsz" 48;
 }
 
 /* 유틸리티 */

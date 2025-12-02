@@ -63,32 +63,13 @@ function showError() {
 
 // 결과 렌더링
 function renderResult(data) {
-  const { input, sajuData, timestamp } = data;
+  const { input, sajuData } = data;
 
-  // 날짜 포맷
-  document.getElementById("resultDate").textContent =
-    new Date(timestamp).toLocaleDateString("ko-KR", {
-      year: "numeric",
-      month: "long",
-      day: "numeric",
-    }) + " 분석";
-
-  // 사용자 정보
+  // 사용자 정보 - 새 레이아웃
   document.getElementById("userNameDisplay").textContent =
     input.userName || "—";
-  document.getElementById("userGender").textContent =
-    input.gender === "male" ? "남성" : "여성";
   document.getElementById("userBirthDate").textContent =
-    formatDate(input.date) +
-    ` (${input.calendar === "solar" ? "양력" : "음력"})`;
-
-  if (input.time) {
-    document.getElementById("userBirthTime").textContent = formatTime(
-      input.time
-    );
-  } else {
-    document.getElementById("birthTimeRow").classList.add("hidden");
-  }
+    formatDate(input.date);
 
   // 일간 정보
   const dm = sajuData.dayMaster || {};
@@ -97,32 +78,19 @@ function renderResult(data) {
 
   // 오행/음양 한글 변환
   const elementMap = { wood: "목", fire: "화", earth: "토", metal: "금", water: "수" };
-  const yinYangMap = { yin: "음", yang: "양" };
   const elementKo = elementMap[dm.element?.toLowerCase()] || dm.element || "—";
-  const yinYangKo = yinYangMap[dm.yinYang?.toLowerCase()] || dm.yinYang || "—";
 
-  document.getElementById("dayMasterElement").textContent = elementKo;
-  document.getElementById("dayMasterYinYang").textContent = yinYangKo;
+  // 섹션 2에 일간 정보 복사
+  const dayMasterElement2 = document.getElementById("dayMasterElement2");
+  const dayMasterTitle2 = document.getElementById("dayMasterTitle2");
+  if (dayMasterElement2) dayMasterElement2.textContent = elementKo;
+  if (dayMasterTitle2) dayMasterTitle2.textContent = dm.title || "—";
 
   // 일간 성향 설명 렌더링
   renderDayMasterDesc(dm.char);
 
   // 사주 팔자
   renderPillars(sajuData.pillars);
-
-  // 오행 분포
-  renderFiveElements(sajuData.loveFacts?.fiveElementsHanjaPercent || {});
-  document.getElementById("strengthValue").textContent =
-    sajuData.fiveElements?.strength || "—";
-
-  // 연애 요소
-  renderLoveFacts(sajuData.loveFacts);
-
-  // 고민
-  if (input.userConcern) {
-    document.getElementById("userConcern").textContent = input.userConcern;
-    document.getElementById("concernSection").classList.remove("hidden");
-  }
 
   // 표시
   loadingWrap.classList.add("hidden");
@@ -134,13 +102,33 @@ function renderPillars(pillars) {
   const wrap = document.getElementById("pillarsWrap");
   const labels = { year: "년주", month: "월주", day: "일주", hour: "시주" };
 
-  // 오행 색상 맵
+  // 오행 색상 맵 (한자 + 영어 둘 다 지원)
   const elementColors = {
-    木: "#2aa86c",
-    火: "#ff6a6a",
-    土: "#caa46a",
-    金: "#9a9a9a",
-    水: "#6aa7ff",
+    木: "#2aa86c", wood: "#2aa86c",
+    火: "#ff6a6a", fire: "#ff6a6a",
+    土: "#caa46a", earth: "#caa46a",
+    金: "#9a9a9a", metal: "#9a9a9a",
+    水: "#6aa7ff", water: "#6aa7ff",
+  };
+
+  // 오행 배경색 맵 (연한 버전)
+  const elementBgColors = {
+    木: "rgba(42, 168, 108, 0.12)", wood: "rgba(42, 168, 108, 0.12)",
+    火: "rgba(255, 106, 106, 0.12)", fire: "rgba(255, 106, 106, 0.12)",
+    土: "rgba(202, 164, 106, 0.12)", earth: "rgba(202, 164, 106, 0.12)",
+    金: "rgba(154, 154, 154, 0.12)", metal: "rgba(154, 154, 154, 0.12)",
+    水: "rgba(106, 167, 255, 0.12)", water: "rgba(106, 167, 255, 0.12)",
+  };
+
+  // element 값을 소문자로 변환하여 색상 찾기
+  const getColor = (element) => {
+    if (!element) return "#333";
+    return elementColors[element] || elementColors[element.toLowerCase()] || "#333";
+  };
+
+  const getBgColor = (element) => {
+    if (!element) return "transparent";
+    return elementBgColors[element] || elementBgColors[element.toLowerCase()] || "transparent";
   };
 
   ["hour", "day", "month", "year"].forEach((key) => {
@@ -154,19 +142,21 @@ function renderPillars(pillars) {
     const tenGodStem = p.tenGodStem || "—";
     const tenGodBranch = p.tenGodBranchMain || "—";
 
-    const stemColor = elementColors[stemElement] || "#333";
-    const branchColor = elementColors[branchElement] || "#333";
+    const stemColor = getColor(stemElement);
+    const branchColor = getColor(branchElement);
+    const stemBgColor = getBgColor(stemElement);
+    const branchBgColor = getBgColor(branchElement);
 
     const div = document.createElement("div");
     div.className = "pillar_item";
     div.innerHTML = `
       <div class="pillar_label">${labels[key]}</div>
       <div class="pillar_chars">
-        <div class="pillar_char_wrap">
+        <div class="pillar_char_wrap" style="background: ${stemBgColor}; border-radius: 8px;">
           <span class="pillar_stem" style="color: ${stemColor}">${stemChar}</span>
           <span class="pillar_ten_god">${tenGodStem}</span>
         </div>
-        <div class="pillar_char_wrap">
+        <div class="pillar_char_wrap" style="background: ${branchBgColor}; border-radius: 8px;">
           <span class="pillar_branch" style="color: ${branchColor}">${branchChar}</span>
           <span class="pillar_ten_god">${tenGodBranch}</span>
         </div>
@@ -368,12 +358,13 @@ function renderDayMasterDesc(char) {
 }
 
 // 연애 사주 분석 버튼 이벤트 - 결제 오버레이 표시
-const analyzeLoveBtn = document.getElementById("analyzeLoveBtn");
+const analyzeLoveBtn = document.getElementById("analyzeLoveBtn2");
 const analyzeOverlay = document.getElementById("analyzeOverlay");
 const paymentOverlay = document.getElementById("paymentOverlay");
 const closePaymentBtn = document.getElementById("closePaymentBtn");
 
-analyzeLoveBtn.addEventListener("click", function () {
+// 분석 버튼 클릭 핸들러
+function handleAnalyzeClick() {
   if (!currentData || !currentData.sajuData) {
     alert("사주 데이터를 찾을 수 없습니다.");
     return;
@@ -393,7 +384,12 @@ analyzeLoveBtn.addEventListener("click", function () {
   // 결제 오버레이 표시
   document.body.style.overflow = "hidden";
   startTossPayment(currentData.id);
-});
+}
+
+// 버튼 이벤트 연결
+if (analyzeLoveBtn) {
+  analyzeLoveBtn.addEventListener("click", handleAnalyzeClick);
+}
 
 // 결제 페이지 사주 요약 채우기
 function fillPaymentSajuSummary(sajuData) {

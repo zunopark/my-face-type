@@ -680,21 +680,21 @@ body {
 /* 리포트 목차 */
 .toc_card {
   width: 100%;
-  margin-top: 20px;
-  padding: 18px;
-  border-radius: 16px;
+  margin-top: 24px;
+  padding: 24px;
+  border-radius: 20px;
   background: #fff;
   border: 1px solid #f3d6d6;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.03);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
   text-align: left;
   box-sizing: border-box;
 }
 
 .toc_title {
   font-weight: 700;
-  font-size: 16px;
+  font-size: 18px;
   color: #b23c30;
-  margin-bottom: 12px;
+  margin-bottom: 20px;
 }
 
 .toc_list {
@@ -703,11 +703,11 @@ body {
   padding: 0;
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 20px;
 }
 
 .toc_item {
-  padding-bottom: 10px;
+  padding-bottom: 16px;
   border-bottom: 1px dashed #f1cccc;
 }
 
@@ -717,30 +717,34 @@ body {
 }
 
 .toc_item_title {
-  font-weight: 600;
+  font-weight: 700;
+  font-size: 17px;
   color: #5b2e2e;
-  margin-bottom: 4px;
+  margin-bottom: 10px;
 }
 
 .toc_item_desc {
-  font-size: 13px;
+  font-size: 15px;
   color: #7a5a5a;
+  line-height: 1.5;
+  margin-top: 6px;
 }
 
 .toc_subitems {
   list-style: none;
   padding: 0;
-  margin: 8px 0 0 0;
+  margin: 12px 0 0 0;
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 10px;
 }
 
 .toc_subitem {
-  font-size: 13px;
+  font-size: 15px;
   color: #7a5a5a;
-  padding-left: 14px;
+  padding-left: 18px;
   position: relative;
+  line-height: 1.5;
 }
 
 .toc_subitem::before {
