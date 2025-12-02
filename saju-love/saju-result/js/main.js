@@ -4,8 +4,8 @@ const DB_VERSION = 2;
 const STORE_NAME = "results";
 
 // API 엔드포인트
-const saju-love_API =
-  "https://port-0-momzzi-fastapi-m7ynssht4601229b.sel4.cloudtype.app/saju-love/analyze";
+const saju_love_API =
+  "https://port-0-momzzi-fastapi-m7ynssht4601229b.sel4.cloudtype.app/saju_love/analyze";
 
 // ✅ 테스트용 결제 생략 플래그
 // true  : Toss 결제 완료 여부 검사 없이 결과 렌더링
@@ -150,7 +150,7 @@ async function fetchLoveAnalysis(data) {
     console.log("연애 사주 분석 요청:", payload);
 
     const res = await fetchWithTimeout(
-      saju-love_API,
+      saju - love_API,
       {
         method: "POST",
         headers: { "Content-Type": "application/json" },

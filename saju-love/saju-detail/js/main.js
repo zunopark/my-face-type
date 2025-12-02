@@ -1,6 +1,6 @@
 // API 엔드포인트
-const saju-love_API =
-  "https://port-0-momzzi-fastapi-m7ynssht4601229b.sel4.cloudtype.app/saju-love/analyze";
+const saju_love_API =
+  "https://port-0-momzzi-fastapi-m7ynssht4601229b.sel4.cloudtype.app/saju_love/analyze";
 
 // ✅ 테스트용 플래그
 // true : Toss 결제 단계 생략하고 바로 결과 페이지로 이동
