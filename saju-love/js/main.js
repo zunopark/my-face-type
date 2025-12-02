@@ -65,6 +65,7 @@ const saveResultToDB = async (doc) => {
 const formState = {
   gender: null,
   calendar: "solar",
+  status: null,
 };
 
 // DOM 요소
