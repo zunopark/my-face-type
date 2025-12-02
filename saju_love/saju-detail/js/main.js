@@ -2,6 +2,11 @@
 const SAJU_LOVE_API =
   "https://port-0-momzzi-fastapi-m7ynssht4601229b.sel4.cloudtype.app/saju_love/analyze";
 
+// ✅ 테스트용 플래그
+// true : Toss 결제 단계 생략하고 바로 결과 페이지로 이동
+// false: 기존 결제 플로우 유지
+const SKIP_TOSS_PAYMENT = true;
+
 // IndexedDB 설정
 const DB_NAME = "SajuLoveDB";
 const DB_VERSION = 2;
@@ -253,6 +258,14 @@ analyzeLoveBtn.addEventListener("click", function () {
     return;
   }
 
+  if (SKIP_TOSS_PAYMENT) {
+    // 👉 테스트 편의를 위해 결제 없이 바로 결과 페이지로 이동
+    location.href = `/saju_love/saju-result/?id=${encodeURIComponent(
+      currentData.id
+    )}`;
+    return;
+  }
+
   // 결제 페이지에 사주 요약 정보 채우기
   fillPaymentSajuSummary(currentData.sajuData);
 
@@ -285,7 +298,8 @@ function fillPaymentSajuSummary(sajuData) {
   const spouse = lf.spouseStars || {};
   const spouseType = lf.spouseTargetType || "";
   const spouseCount = spouse.hitCount || 0;
-  const spouseText = spouseCount > 0 ? `${spouseType} ${spouseCount}개` : "없음";
+  const spouseText =
+    spouseCount > 0 ? `${spouseType} ${spouseCount}개` : "없음";
   document.getElementById("paymentSpouse").textContent = spouseText;
 }
 

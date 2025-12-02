@@ -86,7 +86,8 @@ body {
 /* 상단 네비게이션 */
 .chapter_nav {
   position: fixed;
-  top: 0;
+  top: auto;
+  bottom: 0;
   left: 50%;
   transform: translateX(-50%);
   width: 100%;
@@ -98,7 +99,8 @@ body {
   justify-content: space-between;
   padding: 0 8px;
   z-index: 100;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 -1px 4px rgba(0, 0, 0, 0.08);
+  border-top: 1px solid #f0f0f0;
 }
 
 .nav_arrow {
@@ -174,6 +176,7 @@ body {
 .chapters_container {
   flex: 1;
   margin-top: 59px;
+  margin-bottom: 72px;
   position: relative;
   overflow: hidden;
 }
@@ -187,7 +190,7 @@ body {
 .chapter_slide {
   min-width: 100%;
   width: 100%;
-  height: calc(100vh - 59px);
+  height: calc(100vh - 59px - 64px);
   overflow-y: auto;
   overflow-x: hidden;
   flex-shrink: 0;
@@ -201,24 +204,23 @@ body {
 
 /* 챕터 헤더 */
 .chapter_header {
-  text-align: center;
-  padding-bottom: 24px;
-  margin-bottom: 24px;
-  border-bottom: 2px solid #ffe0e0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 32px;
+  text-align: left;
 }
 
-.chapter_number {
+.chapter_label {
   display: inline-flex;
   align-items: center;
-  justify-content: center;
-  width: 40px;
-  height: 40px;
-  background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
-  color: white;
-  font-size: 18px;
-  font-weight: 700;
-  border-radius: 50%;
-  margin-bottom: 12px;
+  padding: 4px 10px;
+  background: #fff0f0;
+  border-radius: 999px;
+  font-size: 12px;
+  color: #b23c30;
+  font-weight: 600;
+  width: fit-content;
 }
 
 .chapter_title {
@@ -227,23 +229,59 @@ body {
   font-weight: 700;
   color: #1a1a1a;
   line-height: 1.4;
+  margin: 0;
+}
+
+.chapter_compact {
+  gap: 20px;
 }
 
 /* 챕터 본문 */
 .chapter_body {
-  line-height: 1.9;
+  line-height: 2;
   color: #333;
   word-break: keep-all;
+  margin-top: 8px;
+}
+
+.chapter_body p {
+  margin-bottom: 18px;
+  margin-top: 0;
+}
+
+.chapter_body p:first-child {
+  margin-top: 0;
+}
+
+.chapter_body p:last-child {
+  margin-bottom: 0;
 }
 
 .chapter_body h2 {
-  margin-top: 32px;
+  margin-top: 24px;
   padding-top: 20px;
-  border-top: 1px dashed #eee;
+  border-top: 1px dashed #f5b7b1;
+  font-size: 20px;
+  font-weight: 700;
+  color: #c0392b;
+}
+
+.chapter_body h2:first-child {
+  margin-top: 0;
+  padding-top: 0;
+  border-top: none;
 }
 
 .chapter_body h3 {
-  color: #e74c3c;
+  color: #c0392b;
+  font-size: 18px;
+  font-weight: 600;
+  margin-top: 20px;
+  margin-bottom: 12px;
+}
+
+.chapter_body h3:first-child {
+  margin-top: 0;
 }
 
 .chapter_body h6 {
@@ -269,53 +307,383 @@ body {
   margin: 24px 0;
 }
 
+/* 고민 박스 (4장 상단 표시) */
+.concern_box {
+  background: linear-gradient(135deg, #fff5f5 0%, #ffe8e8 100%);
+  border: 2px solid #ffcccc;
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 24px;
+  box-shadow: 0 2px 8px rgba(231, 76, 60, 0.1);
+}
+
+.concern_box_header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+  color: #e74c3c;
+  font-weight: 600;
+  font-size: 15px;
+}
+
+.concern_box_header .material-icons {
+  font-size: 20px;
+  color: #e74c3c;
+}
+
+.concern_box_title {
+  color: #e74c3c;
+  font-weight: 600;
+}
+
+.concern_box_content {
+  color: #333;
+  line-height: 1.8;
+  word-break: keep-all;
+}
+
+.concern_box_content p {
+  margin: 8px 0;
+  padding-left: 4px;
+  position: relative;
+}
+
+.concern_box_content p:first-child {
+  margin-top: 0;
+}
+
+.concern_box_content p:last-child {
+  margin-bottom: 0;
+}
+
+.concern_box_content p::before {
+  content: "💭";
+  margin-right: 8px;
+  font-size: 14px;
+}
+
+/* 챕터 섹션 스타일 (소제목 구조화) */
+.chapter_section {
+  margin-bottom: 32px;
+  padding: 20px;
+  background: #fffafa;
+  border-radius: 16px;
+  border: 1px solid #ffe8e8;
+}
+
+.chapter_section:first-child {
+  margin-top: 24px;
+}
+
+.chapter_section:last-child {
+  margin-bottom: 0;
+}
+
+.section_title {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+  padding-bottom: 14px;
+  border-bottom: 1px dashed #ffd0d0;
+  font-size: 17px;
+  font-weight: 600;
+  color: #1a1a1a;
+  line-height: 1.4;
+}
+
+.section_number {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 28px;
+  height: 28px;
+  background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+  color: #fff;
+  font-size: 14px;
+  font-weight: 700;
+  border-radius: 50%;
+  flex-shrink: 0;
+  box-shadow: 0 2px 6px rgba(231, 76, 60, 0.3);
+}
+
+.section_text {
+  flex: 1;
+  color: #2a2a2a;
+  font-weight: 700;
+}
+
+.section_content {
+  margin-top: 0;
+  padding-left: 0;
+  line-height: 2;
+  color: #444;
+  word-break: keep-all;
+}
+
+.section_content h3,
+.section_content h4,
+.section_content h5,
+.section_content h6 {
+  margin-top: 20px;
+  margin-bottom: 12px;
+  color: #e74c3c;
+  font-weight: 600;
+}
+
+.section_content p {
+  margin-bottom: 18px;
+  margin-top: 0;
+}
+
+.section_content p:first-child {
+  margin-top: 0;
+}
+
+.section_content p:last-child {
+  margin-bottom: 0;
+}
+
 /* 인트로 슬라이드 */
 .intro_slide .chapter_content_wrap {
   display: flex;
   flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  min-height: auto;
+  text-align: left;
+}
+
+.intro_compact {
+  gap: 18px;
+}
+
+.intro_header {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.intro_label {
+  display: inline-flex;
   align-items: center;
-  justify-content: center;
-  min-height: calc(100vh - 120px);
-  text-align: center;
-}
-
-.intro_icon {
-  font-size: 64px;
-  color: #e74c3c;
-  margin-bottom: 24px;
-}
-
-.intro_icon .material-symbols-outlined {
-  font-size: 64px;
-  font-variation-settings: "FILL" 1, "wght" 400, "GRAD" 0, "opsz" 48;
+  padding: 4px 10px;
+  background: #fff0f0;
+  border-radius: 999px;
+  font-size: 12px;
+  color: #b23c30;
+  font-weight: 600;
 }
 
 .intro_title {
   font-family: "KimjungchulMyungjo-Bold";
-  font-size: 26px;
+  font-size: 22px;
   font-weight: 700;
   color: #1a1a1a;
-  margin-bottom: 8px;
+  margin: 0;
 }
 
 .intro_subtitle {
-  font-size: 18px;
-  color: #e74c3c;
-  font-weight: 600;
-  margin-bottom: 48px;
+  font-size: 15px;
+  color: #7a5a5a;
+  margin: 0;
 }
 
-.intro_guide {
+/* 인트로 요약 카드 */
+.daymaster_card {
+  width: 100%;
+  margin-top: 24px;
+  padding: 20px;
+  border-radius: 16px;
+  background: #fff;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+  border: 1px solid #ffe0e0;
+  box-sizing: border-box;
+}
+
+.daymaster_header {
   display: flex;
   align-items: center;
-  gap: 8px;
-  color: #888;
-  font-size: 14px;
-  animation: swipe_hint 2s ease-in-out infinite;
+  gap: 12px;
+  margin-bottom: 16px;
+  color: #c0392b;
 }
 
-.intro_guide .material-icons {
-  font-size: 24px;
+.daymaster_header .material-icons {
+  font-size: 28px;
+}
+
+.daymaster_label {
+  font-weight: 700;
+  font-size: 16px;
+}
+
+.daymaster_sub_label {
+  font-size: 13px;
+  color: #a94442;
+}
+
+.daymaster_main {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.daymaster_char {
+  font-family: "KimjungchulMyungjo-Bold";
+  font-size: 40px;
+  color: #b1271b;
+}
+
+.daymaster_info {
+  flex: 1;
+  text-align: left;
+}
+
+.daymaster_title {
+  font-size: 20px;
+  font-weight: 700;
+  margin-bottom: 6px;
+  color: #4a2c2a;
+}
+
+.daymaster_meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  font-size: 14px;
+  color: #5e423f;
+}
+
+.daymaster_meta span {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.pillar_table_wrap {
+  width: 100%;
+  margin-top: 20px;
+  padding: 18px;
+  border-radius: 16px;
+  background: #fff;
+  border: 1px solid #ffe0e0;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+  box-sizing: border-box;
+  text-align: left;
+}
+
+.pillar_table_title {
+  font-weight: 700;
+  font-size: 16px;
+  color: #c0392b;
+  margin-bottom: 12px;
+}
+
+.pillar_table {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.pillar_row {
+  display: grid;
+  grid-template-columns: 52px 80px 1fr 110px;
+  gap: 10px;
+  align-items: center;
+  padding-bottom: 12px;
+  border-bottom: 1px dashed #f5b7b1;
+}
+
+.pillar_row:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.pillar_label {
+  font-weight: 600;
+  color: #a93226;
+}
+
+.pillar_chars {
+  display: flex;
+  gap: 6px;
+}
+
+.pillar_char {
+  width: 34px;
+  height: 34px;
+  border-radius: 8px;
+  background: #fff9f7;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  font-weight: 700;
+  color: #c0392b;
+  border: 1px solid #ffd2c9;
+}
+
+.pillar_korean {
+  font-size: 13px;
+  color: #6c4b4b;
+}
+
+.pillar_tengod {
+  font-size: 12px;
+  color: #a67c7c;
+  text-align: right;
+}
+
+/* 리포트 목차 */
+.toc_card {
+  width: 100%;
+  margin-top: 20px;
+  padding: 18px;
+  border-radius: 16px;
+  background: #fff;
+  border: 1px solid #f3d6d6;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.03);
+  text-align: left;
+  box-sizing: border-box;
+}
+
+.toc_title {
+  font-weight: 700;
+  font-size: 16px;
+  color: #b23c30;
+  margin-bottom: 12px;
+}
+
+.toc_list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.toc_item {
+  padding-bottom: 10px;
+  border-bottom: 1px dashed #f1cccc;
+}
+
+.toc_item:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.toc_item_title {
+  font-weight: 600;
+  color: #5b2e2e;
+  margin-bottom: 4px;
+}
+
+.toc_item_desc {
+  font-size: 13px;
+  color: #7a5a5a;
 }
 
 @keyframes swipe_hint {
