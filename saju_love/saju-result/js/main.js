@@ -177,8 +177,13 @@ async function fetchLoveAnalysis(data) {
     console.error("분석 API 실패:", err);
     if (err.message === "TIMEOUT") {
       showError("서버 응답 시간이 초과되었습니다. 잠시 후 다시 시도해주세요.");
-    } else if (err.message?.includes("Failed to fetch") || err.message?.includes("503")) {
-      showError("서버가 일시적으로 응답하지 않습니다. 잠시 후 다시 시도해주세요.");
+    } else if (
+      err.message?.includes("Failed to fetch") ||
+      err.message?.includes("503")
+    ) {
+      showError(
+        "서버가 일시적으로 응답하지 않습니다. 잠시 후 다시 시도해주세요."
+      );
     } else {
       showError("분석 중 오류가 발생했습니다. 다시 시도해주세요.");
     }
@@ -211,27 +216,27 @@ function renderResult(data) {
   chaptersTrack = document.createElement("div");
   chaptersTrack.className = "chapters_track";
 
+  // 슬라이드 라벨 초기화
+  slideLabels = [];
+
   // 1. 인트로 슬라이드 (사주 정보)
   chaptersTrack.appendChild(createIntroSlide(userName, data));
+  slideLabels.push(`${userName}님의 사주 원국`);
 
   // 2. 목차 슬라이드
   chaptersTrack.appendChild(createTocSlide(userName));
+  slideLabels.push("리포트 구성 안내");
 
   // 3. 챕터 슬라이드들
   const chapters = loveAnalysis.chapters || [];
   chapters.forEach((chapter, index) => {
     chaptersTrack.appendChild(createChapterSlide(chapter, index, data));
+    slideLabels.push(`${index + 1}장`);
   });
 
-  // 4. 이상형 이미지 슬라이드 (Gemini 2.5 Flash 사용)
-  if (loveAnalysis.ideal_partner_image?.image_base64) {
-    chaptersTrack.appendChild(
-      createIdealTypeSlide(loveAnalysis.ideal_partner_image, userName)
-    );
-  }
-
-  // 5. 마지막 슬라이드
+  // 4. 마지막 슬라이드
   chaptersTrack.appendChild(createEndingSlide());
+  slideLabels.push("색동낭자의 인사말");
 
   chaptersContainer.appendChild(chaptersTrack);
 
@@ -252,18 +257,21 @@ function createIntroSlide(userName, data) {
   slide.className = "chapter_slide intro_slide";
 
   const sajuData = data?.sajuData || {};
-  const dayMasterCard = buildDayMasterSummary(sajuData, userName);
-  const pillarTable = buildPillarTable(sajuData);
+  const input = data?.input || {};
+  const infoCard = buildInfoCard(userName, input, sajuData);
+  const pillarsGrid = buildPillarsGrid(sajuData);
+  const loveFactsCard = buildLoveFactsCard(sajuData);
 
   slide.innerHTML = `
     <div class="chapter_content_wrap intro_compact">
       <div class="intro_header">
         <span class="intro_label">연애 리포트</span>
-        <h1 class="intro_title">${userName}님의 사주 원국</h1>
+        <h1 class="intro_title">연애 사주 분석 보고서</h1>
         <p class="intro_subtitle">분석에 사용된 사주 정보입니다</p>
       </div>
-      ${dayMasterCard}
-      ${pillarTable}
+      ${infoCard}
+      ${pillarsGrid}
+      ${loveFactsCard}
     </div>
   `;
   return slide;
@@ -289,75 +297,193 @@ function createTocSlide(userName) {
   return slide;
 }
 
-function buildDayMasterSummary(sajuData, userName = "고객") {
+// 기본 정보 카드 (이름, 생년월일, 일간)
+function buildInfoCard(userName, input, sajuData) {
   const dayMaster = sajuData?.dayMaster || {};
-  const strength =
-    sajuData?.loveFacts?.dayMasterStrength ||
-    sajuData?.fiveElements?.strength ||
-    "—";
-  const elementKo = toKoreanElement(dayMaster.element);
-  const yinYangKo = toKoreanYinYang(dayMaster.yinYang);
+  const birthDate = input?.date || "";
 
   return `
-    <div class="daymaster_card">
-      <div class="daymaster_header">
-        <span class="material-icons">auto_awesome</span>
-        <div>
-          <div class="daymaster_label">${escapeHTML(userName)}님의 일간</div>
-          <div class="daymaster_sub_label">타고난 기질 한눈에 보기</div>
-        </div>
+    <div class="info_card">
+      <div class="info_main">
+        <span class="info_name">${escapeHTML(userName)}</span>
+        <span class="info_birth">${escapeHTML(birthDate)}</span>
       </div>
-      <div class="daymaster_main">
-        <span class="daymaster_char">${escapeHTML(dayMaster.char || "—")}</span>
-        <div class="daymaster_info">
-          <div class="daymaster_title">${escapeHTML(
-            dayMaster.title || "—"
-          )}</div>
-          <div class="daymaster_meta">
-            <span>${escapeHTML(elementKo)} / ${escapeHTML(yinYangKo)}</span>
-            <span>신강도: ${escapeHTML(strength)}</span>
-          </div>
-        </div>
+      <div class="info_ilju">
+        <span class="ilju_char">${escapeHTML(dayMaster.char || "—")}</span>
+        <span class="ilju_title">${escapeHTML(dayMaster.title || "—")}</span>
       </div>
     </div>
   `;
 }
 
-function buildPillarTable(sajuData) {
+// 사주 팔자 그리드 (saju-detail 스타일)
+function buildPillarsGrid(sajuData) {
   const pillars = sajuData?.pillars || {};
-  const labels = { year: "년주", month: "월주", day: "일주", hour: "시주" };
+  const labels = { hour: "시주", day: "일주", month: "월주", year: "년주" };
 
-  const rows = ["year", "month", "day", "hour"]
-    .map((key) => buildPillarRow(labels[key], pillars[key]))
+  // 오행 색상 맵
+  const elementColors = {
+    木: "#2aa86c",
+    wood: "#2aa86c",
+    火: "#ff6a6a",
+    fire: "#ff6a6a",
+    土: "#caa46a",
+    earth: "#caa46a",
+    金: "#9a9a9a",
+    metal: "#9a9a9a",
+    水: "#6aa7ff",
+    water: "#6aa7ff",
+  };
+
+  const elementBgColors = {
+    木: "rgba(42, 168, 108, 0.12)",
+    wood: "rgba(42, 168, 108, 0.12)",
+    火: "rgba(255, 106, 106, 0.12)",
+    fire: "rgba(255, 106, 106, 0.12)",
+    土: "rgba(202, 164, 106, 0.12)",
+    earth: "rgba(202, 164, 106, 0.12)",
+    金: "rgba(154, 154, 154, 0.12)",
+    metal: "rgba(154, 154, 154, 0.12)",
+    水: "rgba(106, 167, 255, 0.12)",
+    water: "rgba(106, 167, 255, 0.12)",
+  };
+
+  const getColor = (element) => {
+    if (!element) return "#333";
+    return (
+      elementColors[element] || elementColors[element.toLowerCase()] || "#333"
+    );
+  };
+
+  const getBgColor = (element) => {
+    if (!element) return "transparent";
+    return (
+      elementBgColors[element] ||
+      elementBgColors[element.toLowerCase()] ||
+      "transparent"
+    );
+  };
+
+  const pillarItems = ["hour", "day", "month", "year"]
+    .map((key) => {
+      const p = pillars[key] || {};
+      const stemChar = p.stem?.char || "—";
+      const branchChar = p.branch?.char || "—";
+      const stemKo = p.stem?.korean || "";
+      const branchKo = p.branch?.korean || "";
+      const stemElement = p.stem?.element || "";
+      const branchElement = p.branch?.element || "";
+      const tenGodStem = p.tenGodStem || "—";
+      const tenGodBranch = p.tenGodBranchMain || "—";
+
+      const stemColor = getColor(stemElement);
+      const branchColor = getColor(branchElement);
+      const stemBgColor = getBgColor(stemElement);
+      const branchBgColor = getBgColor(branchElement);
+
+      return `
+      <div class="pillar_item">
+        <div class="pillar_label">${labels[key]}</div>
+        <div class="pillar_chars">
+          <div class="pillar_char_wrap" style="background: ${stemBgColor}">
+            <span class="pillar_stem" style="color: ${stemColor}">${escapeHTML(
+        stemChar
+      )}</span>
+            <span class="pillar_ten_god">${escapeHTML(tenGodStem)}</span>
+          </div>
+          <div class="pillar_char_wrap" style="background: ${branchBgColor}">
+            <span class="pillar_branch" style="color: ${branchColor}">${escapeHTML(
+        branchChar
+      )}</span>
+            <span class="pillar_ten_god">${escapeHTML(tenGodBranch)}</span>
+          </div>
+        </div>
+        <div class="pillar_korean">${escapeHTML(stemKo + branchKo)}</div>
+      </div>
+    `;
+    })
     .join("");
 
   return `
-    <div class="pillar_table_wrap">
-      <div class="pillar_table_title">사주 팔자 요약</div>
-      <div class="pillar_table">${rows}</div>
+    <div class="pillars_section">
+      <div class="pillars_header">
+        <span class="material-icons">view_column</span>
+        사주 팔자
+      </div>
+      <div class="pillars_wrap">${pillarItems}</div>
     </div>
   `;
 }
 
-function buildPillarRow(label, pillar) {
-  const stemChar = pillar?.stem?.char || "—";
-  const branchChar = pillar?.branch?.char || "—";
-  const stemKo = pillar?.stem?.korean || "";
-  const branchKo = pillar?.branch?.korean || "";
-  const tenGodStem = pillar?.tenGodStem || "—";
-  const tenGodBranch = pillar?.tenGodBranchMain || "—";
+// 연애 사주 핵심 정보 카드
+function buildLoveFactsCard(sajuData) {
+  const loveFacts = sajuData?.loveFacts || {};
+  const fiveElements = sajuData?.fiveElements || {};
+  const dayMaster = sajuData?.dayMaster || {};
+
+  const strength = loveFacts.dayMasterStrength || fiveElements.strength || "—";
+  const peach = loveFacts.peachBlossom || {};
+  const spouse = loveFacts.spouseStars || {};
+  const elementKo = toKoreanElement(dayMaster.element);
+  const yinYangKo = toKoreanYinYang(dayMaster.yinYang);
+
+  // 위치를 한자로 변환
+  const positionToHanja = {
+    year: "年",
+    month: "月",
+    day: "日",
+    hour: "時",
+  };
+  const formatPositions = (positions) => {
+    if (!positions || positions.length === 0) return "";
+    return positions.map((p) => positionToHanja[p] || p).join(" ");
+  };
+
+  // 도화살 표시 (API에서 hasPeach로 반환)
+  const hasPeach =
+    peach.hasPeach || (peach.positions && peach.positions.length > 0);
+  const peachText = hasPeach ? formatPositions(peach.positions) : "없음";
+
+  // 배우자별 표시 (API에서 positions 배열로 반환)
+  const hasSpouse = spouse.positions && spouse.positions.length > 0;
+  const spouseText = hasSpouse ? formatPositions(spouse.positions) : "없음";
 
   return `
-    <div class="pillar_row">
-      <div class="pillar_label">${label}</div>
-      <div class="pillar_chars">
-        <span class="pillar_char">${escapeHTML(stemChar)}</span>
-        <span class="pillar_char">${escapeHTML(branchChar)}</span>
+    <div class="love_facts_card">
+      <div class="love_facts_header">
+        <span class="material-icons">favorite</span>
+        연애 사주 핵심
       </div>
-      <div class="pillar_korean">${escapeHTML(stemKo + branchKo)}</div>
-      <div class="pillar_tengod">${escapeHTML(
-        `${tenGodStem} / ${tenGodBranch}`
-      )}</div>
+      <div class="love_facts_grid">
+        <div class="love_fact_item">
+          <span class="love_fact_label">일간</span>
+          <span class="love_fact_value">${escapeHTML(
+            dayMaster.char || "—"
+          )} ${escapeHTML(dayMaster.title || "")}</span>
+        </div>
+        <div class="love_fact_item">
+          <span class="love_fact_label">오행/음양</span>
+          <span class="love_fact_value">${escapeHTML(elementKo)} / ${escapeHTML(
+    yinYangKo
+  )}</span>
+        </div>
+        <div class="love_fact_item">
+          <span class="love_fact_label">신강/신약</span>
+          <span class="love_fact_value">${escapeHTML(strength)}</span>
+        </div>
+        <div class="love_fact_item">
+          <span class="love_fact_label">도화살</span>
+          <span class="love_fact_value ${
+            hasPeach ? "highlight" : "muted"
+          }">${escapeHTML(peachText)}</span>
+        </div>
+        <div class="love_fact_item">
+          <span class="love_fact_label">배우자운</span>
+          <span class="love_fact_value ${
+            hasSpouse ? "highlight" : "muted"
+          }">${escapeHTML(spouseText)}</span>
+        </div>
+      </div>
     </div>
   `;
 }
@@ -405,10 +531,13 @@ function buildTableOfContents() {
             (chapter) => `
               <li class="toc_item">
                 <div class="toc_item_title">${chapter.title}</div>
-                ${chapter.desc
-                  ? `<div class="toc_item_desc">${chapter.desc}</div>`
-                  : `<ul class="toc_subitems">
-                      ${chapter.items.map((item) => `<li class="toc_subitem">${item}</li>`).join("")}
+                ${
+                  chapter.desc
+                    ? `<div class="toc_item_desc">${chapter.desc}</div>`
+                    : `<ul class="toc_subitems">
+                      ${chapter.items
+                        .map((item) => `<li class="toc_subitem">${item}</li>`)
+                        .join("")}
                     </ul>`
                 }
               </li>
@@ -463,6 +592,9 @@ function createChapterSlide(chapter, index, data) {
     titleText.includes("질문 답변") ||
     chapter.title?.includes("4장");
 
+  // 3장(운명의 상대)인지 확인
+  const isDestinyChapter = index === 2;
+
   // 고민 내용 추출 (4장인 경우에만 표시)
   let concernBox = "";
   if (isQuestionChapter && data?.input?.userConcern) {
@@ -474,16 +606,15 @@ function createChapterSlide(chapter, index, data) {
         .filter((line) => line.trim());
       concernBox = `
         <div class="concern_box">
-          <div class="concern_box_header">
-            <span class="material-icons">chat_bubble_outline</span>
-            <span class="concern_box_title">${
-              data.input.userName || "고객"
-            }님이 남긴 고민</span>
-          </div>
+          <div class="concern_box_label">${
+            data.input.userName || "고객"
+          }님이 남긴 고민</div>
           <div class="concern_box_content">
-            ${concernLines
-              .map((line) => `<p>${escapeHTML(line.trim())}</p>`)
-              .join("")}
+            <span class="concern_quote">"</span>
+            <span class="concern_text">${concernLines
+              .map((line) => escapeHTML(line.trim()))
+              .join("<br>")}</span>
+            <span class="concern_quote">"</span>
           </div>
         </div>
       `;
@@ -492,7 +623,16 @@ function createChapterSlide(chapter, index, data) {
 
   // 내용 처리: 소제목(###1., ###2. 등)을 구조화하여 표시
   let content = chapter.content || "";
-  content = formatChapterContent(content);
+
+  // 3장인 경우 이상형 이미지를 풀이 1과 풀이 2 사이에 삽입
+  if (
+    isDestinyChapter &&
+    data?.loveAnalysis?.ideal_partner_image?.image_base64
+  ) {
+    content = formatChapterContentWithIdealType(content, data);
+  } else {
+    content = formatChapterContent(content);
+  }
 
   slide.innerHTML = `
     <div class="chapter_content_wrap chapter_compact">
@@ -601,7 +741,9 @@ function formatSubsections(content) {
 
   // 첫 번째 하위 섹션 이전의 내용
   if (subsections.length > 0 && subsections[0].startIndex > 0) {
-    const beforeContent = content.substring(0, subsections[0].startIndex).trim();
+    const beforeContent = content
+      .substring(0, subsections[0].startIndex)
+      .trim();
     if (beforeContent) {
       formatted += simpleMD(beforeContent);
     }
@@ -613,8 +755,12 @@ function formatSubsections(content) {
     const nextSubsection = subsections[i + 1];
 
     const subsectionStart = subsection.endIndex;
-    const subsectionEnd = nextSubsection ? nextSubsection.startIndex : content.length;
-    const subsectionContent = content.substring(subsectionStart, subsectionEnd).trim();
+    const subsectionEnd = nextSubsection
+      ? nextSubsection.startIndex
+      : content.length;
+    const subsectionContent = content
+      .substring(subsectionStart, subsectionEnd)
+      .trim();
 
     formatted += `
       <div class="subsection">
@@ -627,30 +773,70 @@ function formatSubsections(content) {
   return formatted;
 }
 
-// 이상형 이미지 슬라이드 생성
-function createIdealTypeSlide(idealPartner, userName) {
-  const slide = document.createElement("div");
-  slide.className = "chapter_slide ideal_type_slide";
+// 3장 전용: 이상형 이미지를 풀이 1과 풀이 2 사이에 삽입하는 포맷팅
+function formatChapterContentWithIdealType(content, data) {
+  if (!content) return "";
 
-  slide.innerHTML = `
-    <div class="chapter_content_wrap">
-      <div class="chapter_header">
-        <div class="chapter_number ideal_type_icon">
-          <span class="material-icons">person</span>
+  const userName = data?.loveAnalysis?.user_name || "고객";
+  const idealPartner = data?.loveAnalysis?.ideal_partner_image;
+
+  // 풀이 패턴으로 섹션 분리
+  const sectionPattern = /###\s*(?:풀이\s*)?(\d+)\.\s*(.+?)(?:\n|$)/g;
+  const sections = [];
+
+  let match;
+  while ((match = sectionPattern.exec(content)) !== null) {
+    sections.push({
+      number: match[1],
+      title: match[2].trim(),
+      startIndex: match.index,
+      endIndex: sectionPattern.lastIndex,
+    });
+  }
+
+  if (sections.length === 0) {
+    return simpleMD(content);
+  }
+
+  let formatted = "";
+
+  for (let i = 0; i < sections.length; i++) {
+    const section = sections[i];
+    const nextSection = sections[i + 1];
+
+    const sectionStart = section.endIndex;
+    const sectionEnd = nextSection ? nextSection.startIndex : content.length;
+    let sectionContent = content.substring(sectionStart, sectionEnd).trim();
+    sectionContent = formatSubsections(sectionContent);
+
+    formatted += `
+      <div class="chapter_section">
+        <div class="section_title">
+          <span class="section_number">${section.number}</span>
+          <span class="section_text">${escapeHTML(section.title)}</span>
         </div>
-        <h2 class="chapter_title">${userName}님의 이상형</h2>
+        <div class="section_content">${sectionContent}</div>
       </div>
-      <div class="ideal_type_content">
-        <div class="ideal_type_image_wrap">
-          <img src="data:image/png;base64,${idealPartner.image_base64}" alt="이상형 이미지" class="ideal_type_image" />
+    `;
+
+    // 풀이 1 다음에 이상형 이미지 삽입
+    if (section.number === "1" && idealPartner?.image_base64) {
+      formatted += `
+        <div class="ideal_type_inline">
+          <div class="ideal_type_header">
+            <span class="ideal_type_label">드디어 공개!</span>
+            <h3 class="ideal_type_title">${userName}님의 운명의 상대</h3>
+          </div>
+          <div class="ideal_type_image_wrap ideal_type_blurred" data-click-count="0">
+            <img src="data:image/png;base64,${idealPartner.image_base64}" alt="이상형 이미지" class="ideal_type_image" />
+          </div>
+          <p class="ideal_type_tap_hint">사진을 클릭해보세요!</p>
         </div>
-        <p class="ideal_type_desc">
-          사주 분석을 바탕으로 AI가 그려낸<br>${userName}님에게 어울리는 이상형입니다
-        </p>
-      </div>
-    </div>
-  `;
-  return slide;
+      `;
+    }
+  }
+
+  return formatted;
 }
 
 // 마지막 슬라이드 생성
@@ -659,18 +845,18 @@ function createEndingSlide() {
   slide.className = "chapter_slide ending_slide";
   slide.innerHTML = `
     <div class="chapter_content_wrap">
-      <div class="ending_icon">💕</div>
-      <h2 class="ending_title">분석이 완료되었습니다</h2>
-      <p class="ending_subtitle">당신의 연애운이<br>좋은 방향으로 흘러가길 바랍니다</p>
+      <div class="ending_header">
+        <span class="ending_label">색동낭자의 인사말</span>
+      </div>
+      <div class="ending_message">
+        <p>여기까지 긴 리포트를 읽어주셔서 감사합니다.</p>
+        <p>사주는 정해진 운명이 아니라, 나를 더 잘 이해하고 더 나은 선택을 하기 위한 도구예요.</p>
+        <p>당신의 사랑이 더 깊어지고, 더 따뜻해지길 진심으로 응원합니다.</p>
+        <p class="ending_sign">- 색동낭자 드림</p>
+      </div>
       <div class="ending_buttons">
-        <a href="/saju_love/" class="action_btn primary">
-          <span class="material-icons">refresh</span>
-          다시 분석하기
-        </a>
-        <a href="/" class="action_btn secondary">
-          <span class="material-icons">home</span>
-          홈으로
-        </a>
+        <a href="/saju_love/" class="action_btn primary">다른 사주 분석하기</a>
+        <a href="/" class="action_btn secondary">홈으로</a>
       </div>
     </div>
   `;
@@ -687,6 +873,11 @@ function updateSlider() {
 
   const progress = ((currentSlide + 1) / totalSlides) * 100;
   progressFill.style.width = `${progress}%`;
+
+  // 상단 라벨 업데이트
+  if (topLabel && slideLabels[currentSlide]) {
+    topLabel.textContent = slideLabels[currentSlide];
+  }
 
   // 슬라이드 변경 시 스크롤 맨 위로
   const currentSlideEl = chaptersTrack.children[currentSlide];
@@ -710,6 +901,9 @@ function setupEvents() {
       updateSlider();
     }
   });
+
+  // 이상형 이미지 블러 공개 인터랙션
+  setupIdealTypeReveal();
 
   // 터치 스와이프
   let touchStartX = 0;
@@ -820,4 +1014,32 @@ function escapeHTML(str) {
         "'": "&#39;",
       }[m])
   );
+}
+
+// 이상형 이미지 블러 공개 인터랙션
+function setupIdealTypeReveal() {
+  const imageWrap = document.querySelector(".ideal_type_blurred");
+  if (!imageWrap) return;
+
+  const countEl = imageWrap.querySelector(".ideal_type_tap_count");
+  const maxClicks = 5;
+
+  imageWrap.addEventListener("click", () => {
+    // 이미 공개된 경우 무시
+    if (imageWrap.classList.contains("ideal_type_revealed")) return;
+
+    let currentCount = parseInt(imageWrap.dataset.clickCount) || 0;
+    currentCount++;
+    imageWrap.dataset.clickCount = currentCount;
+
+    const remaining = maxClicks - currentCount;
+
+    if (remaining > 0) {
+      countEl.textContent = `${remaining}번 남음`;
+    } else {
+      // 완전 공개
+      imageWrap.classList.remove("ideal_type_blurred");
+      imageWrap.classList.add("ideal_type_revealed");
+    }
+  });
 }

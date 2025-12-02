@@ -56,7 +56,15 @@
 
       <!-- 결과 컨텐츠 -->
       <div class="result_wrap hidden" id="resultWrap">
-        <!-- 상단 고정 네비게이션 -->
+        <!-- 상단 고정 헤더: 라벨 + 프로그레스 바 -->
+        <div class="top_fixed_header">
+          <div class="top_label" id="topLabel">연애 리포트</div>
+          <div class="chapter_progress">
+            <div class="chapter_progress_fill" id="progressFill"></div>
+          </div>
+        </div>
+
+        <!-- 하단 고정 네비게이션 -->
         <div class="chapter_nav">
           <button class="nav_arrow prev" id="prevChapter">
             <span class="material-icons">chevron_left</span>
@@ -69,11 +77,6 @@
           <button class="nav_arrow next" id="nextChapter">
             <span class="material-icons">chevron_right</span>
           </button>
-        </div>
-
-        <!-- 프로그레스 바 -->
-        <div class="chapter_progress">
-          <div class="chapter_progress_fill" id="progressFill"></div>
         </div>
 
         <!-- 챕터 슬라이드 컨테이너 -->
