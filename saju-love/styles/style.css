@@ -523,7 +523,7 @@ body {
 /* 랜딩 타이틀 */
 .landing_title_wrap {
   position: absolute;
-  top: 15%;
+  top: 8%;
   left: 0;
   right: 0;
   z-index: 10;
@@ -532,21 +532,35 @@ body {
 }
 
 .landing_title {
-  font-family: "KimjungchulMyungjo-Bold", serif;
-  font-size: 52px;
-  font-weight: 700;
-  color: white;
-  text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.5);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
   margin-bottom: 16px;
-  letter-spacing: 6px;
+}
+
+.title_line {
+  font-family: "Danjo", serif;
+  display: block;
+  color: #ce3711;
+  -webkit-text-stroke: 14px #fff;
+  paint-order: stroke fill;
+  line-height: 1.1;
+}
+
+.title_name,
+.title_saju {
+  font-size: 72px;
+  letter-spacing: 4px;
 }
 
 .landing_subtitle {
   font-family: "KimjungchulMyungjo-Bold", serif;
-  font-size: 20px;
-  color: rgba(255, 255, 255, 0.9);
-  text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.5);
-  letter-spacing: 3px;
+  font-size: 24px;
+  color: white;
+  text-shadow: 1px 1px 6px rgba(0, 0, 0, 0.6);
+  letter-spacing: 4px;
+  margin-top: 36px;
 }
 
 .landing_title_wrap.hidden {
@@ -658,8 +672,14 @@ body {
 }
 
 @keyframes blink {
-  0%, 50% { opacity: 1; }
-  51%, 100% { opacity: 0; }
+  0%,
+  50% {
+    opacity: 1;
+  }
+  51%,
+  100% {
+    opacity: 0;
+  }
 }
 
 .dialogue_buttons {
