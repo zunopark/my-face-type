@@ -423,8 +423,20 @@ statusBtns.forEach((btn) => {
     statusBtns.forEach((b) => b.classList.remove("active"));
     this.classList.add("active");
     formState.status = this.dataset.status;
+    validateAdditionalForm();
   });
 });
+
+// 고민 입력 이벤트
+const userConcernInput = document.getElementById("userConcern");
+userConcernInput.addEventListener("input", validateAdditionalForm);
+
+// 추가 정보 폼 유효성 검사
+function validateAdditionalForm() {
+  const hasStatus = formState.status;
+  const hasConcern = userConcernInput.value.trim().length > 0;
+  submitBtn.disabled = !(hasStatus && hasConcern);
+}
 
 // 로딩 표시
 function showLoading() {
@@ -464,8 +476,6 @@ async function analyzeSaju(inputData) {
 // 제출
 submitBtn.addEventListener("click", async function () {
   if (submitBtn.disabled) return;
-
-  const userConcernInput = document.getElementById("userConcern");
 
   const inputData = {
     userName: userNameInput.value.trim(),

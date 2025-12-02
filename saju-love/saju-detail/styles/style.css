@@ -542,7 +542,6 @@ body {
   justify-content: center;
   align-items: flex-start;
   min-height: 100%;
-  padding: 20px 0;
 }
 
 .modal-content {
@@ -552,7 +551,6 @@ body {
   padding: 34px 22px 28px 22px;
   box-shadow: 0 10px 28px rgba(0, 0, 0, 0.19);
   position: relative;
-  border-radius: 12px;
   margin: auto;
 }
 
