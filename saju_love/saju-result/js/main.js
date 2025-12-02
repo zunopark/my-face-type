@@ -363,22 +363,31 @@ function buildPillarRow(label, pillar) {
 }
 
 function buildTableOfContents() {
-  const sections = [
+  const chapters = [
     {
-      title: "1장. 연애 총운 개요",
-      desc: "평생 연애 흐름 · 향후 3년 운세 · 이번 달 기회",
+      title: "1장. 나만의 매력과 연애 성향",
+      items: [
+        "풀이 1. 일간으로 보는 연애 DNA",
+        "풀이 2. 첫인상과 외적 매력",
+        "풀이 3. 연애 스타일 장단점",
+        "풀이 4. 나에게 맞는 인연 찾는 법",
+      ],
     },
     {
-      title: "2장. 사주팔자와 매력",
-      desc: "첫인상 · 연애 장점 · 잘 맞는 만남 방식",
+      title: "2장. 앞으로 펼쳐질 사랑의 흐름",
+      items: [
+        "풀이 1. 연애운 폭발 시기 (2025~2027년)",
+        "풀이 2. 이번 달 연애 운세",
+        "풀이 3. 고민 상담 및 조언",
+      ],
     },
     {
-      title: "3장. 운명의 상대",
-      desc: "이상형 특징 · 만나는 시점과 장소 · 공략법",
-    },
-    {
-      title: "4장. 사전 질문 답변",
-      desc: "고민에 대한 심층 상담과 실행 조언",
+      title: "3장. 결국 만나게 될 운명의 상대",
+      items: [
+        "풀이 1. 이상형 분석 (외모, 성격, 직업군)",
+        "풀이 2. 언제 어디서 만나나",
+        "풀이 3. 그 사람 마음 사로잡는 법",
+      ],
     },
   ];
 
@@ -386,12 +395,14 @@ function buildTableOfContents() {
     <div class="toc_card">
       <div class="toc_title">이번 리포트 구성</div>
       <ul class="toc_list">
-        ${sections
+        ${chapters
           .map(
-            (section) => `
+            (chapter) => `
               <li class="toc_item">
-                <div class="toc_item_title">${section.title}</div>
-                <div class="toc_item_desc">${section.desc}</div>
+                <div class="toc_item_title">${chapter.title}</div>
+                <ul class="toc_subitems">
+                  ${chapter.items.map((item) => `<li class="toc_subitem">${item}</li>`).join("")}
+                </ul>
               </li>
             `
           )
@@ -492,9 +503,8 @@ function createChapterSlide(chapter, index, data) {
 function formatChapterContent(content) {
   if (!content) return "";
 
-  // 소제목 패턴: ###1., ###2., ###3. 또는 ### 1., ### 2. 등
-  // 먼저 소제목이 있는지 확인
-  const sectionPattern = /###\s*(\d+)\.\s*(.+?)(?:\n|$)/g;
+  // 풀이 패턴: ###풀이 1., ###풀이 2. 등 또는 기존 ###1., ###2. 형식
+  const sectionPattern = /###\s*(?:풀이\s*)?(\d+)\.\s*(.+?)(?:\n|$)/g;
   const hasSections = sectionPattern.test(content);
 
   // 패턴을 다시 사용하기 위해 리셋
@@ -507,7 +517,6 @@ function formatChapterContent(content) {
 
   // 소제목이 있는 경우 섹션으로 분리
   let formatted = "";
-  let lastIndex = 0;
   const sections = [];
 
   // 모든 섹션 찾기
@@ -529,7 +538,10 @@ function formatChapterContent(content) {
     // 현재 섹션의 내용 추출
     const sectionStart = section.endIndex;
     const sectionEnd = nextSection ? nextSection.startIndex : content.length;
-    const sectionContent = content.substring(sectionStart, sectionEnd).trim();
+    let sectionContent = content.substring(sectionStart, sectionEnd).trim();
+
+    // 하위 섹션(####) 처리
+    sectionContent = formatSubsections(sectionContent);
 
     // 섹션 HTML 생성
     formatted += `
@@ -538,7 +550,7 @@ function formatChapterContent(content) {
           <span class="section_number">${section.number}</span>
           <span class="section_text">${escapeHTML(section.title)}</span>
         </h3>
-        <div class="section_content">${simpleMD(sectionContent)}</div>
+        <div class="section_content">${sectionContent}</div>
       </div>
     `;
   }
@@ -549,6 +561,59 @@ function formatChapterContent(content) {
     if (beforeContent) {
       formatted = simpleMD(beforeContent) + formatted;
     }
+  }
+
+  return formatted;
+}
+
+// 하위 섹션(####) 포맷팅
+function formatSubsections(content) {
+  if (!content) return "";
+
+  // #### 패턴 확인
+  const subsectionPattern = /####\s*(.+?)(?:\n|$)/g;
+  const hasSubsections = subsectionPattern.test(content);
+  subsectionPattern.lastIndex = 0;
+
+  if (!hasSubsections) {
+    return simpleMD(content);
+  }
+
+  let formatted = "";
+  const subsections = [];
+  let match;
+
+  while ((match = subsectionPattern.exec(content)) !== null) {
+    subsections.push({
+      title: match[1].trim(),
+      startIndex: match.index,
+      endIndex: subsectionPattern.lastIndex,
+    });
+  }
+
+  // 첫 번째 하위 섹션 이전의 내용
+  if (subsections.length > 0 && subsections[0].startIndex > 0) {
+    const beforeContent = content.substring(0, subsections[0].startIndex).trim();
+    if (beforeContent) {
+      formatted += simpleMD(beforeContent);
+    }
+  }
+
+  // 하위 섹션별로 내용 추출 및 포맷팅
+  for (let i = 0; i < subsections.length; i++) {
+    const subsection = subsections[i];
+    const nextSubsection = subsections[i + 1];
+
+    const subsectionStart = subsection.endIndex;
+    const subsectionEnd = nextSubsection ? nextSubsection.startIndex : content.length;
+    const subsectionContent = content.substring(subsectionStart, subsectionEnd).trim();
+
+    formatted += `
+      <div class="subsection">
+        <h4 class="subsection_title">${escapeHTML(subsection.title)}</h4>
+        <div class="subsection_content">${simpleMD(subsectionContent)}</div>
+      </div>
+    `;
   }
 
   return formatted;
