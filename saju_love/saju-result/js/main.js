@@ -175,7 +175,13 @@ async function fetchLoveAnalysis(data) {
     renderResult(data);
   } catch (err) {
     console.error("분석 API 실패:", err);
-    showError("분석 중 오류가 발생했습니다. 다시 시도해주세요.");
+    if (err.message === "TIMEOUT") {
+      showError("서버 응답 시간이 초과되었습니다. 잠시 후 다시 시도해주세요.");
+    } else if (err.message?.includes("Failed to fetch") || err.message?.includes("503")) {
+      showError("서버가 일시적으로 응답하지 않습니다. 잠시 후 다시 시도해주세요.");
+    } else {
+      showError("분석 중 오류가 발생했습니다. 다시 시도해주세요.");
+    }
   }
 }
 
@@ -205,23 +211,26 @@ function renderResult(data) {
   chaptersTrack = document.createElement("div");
   chaptersTrack.className = "chapters_track";
 
-  // 1. 인트로 슬라이드
+  // 1. 인트로 슬라이드 (사주 정보)
   chaptersTrack.appendChild(createIntroSlide(userName, data));
 
-  // 2. 챕터 슬라이드들
+  // 2. 목차 슬라이드
+  chaptersTrack.appendChild(createTocSlide(userName));
+
+  // 3. 챕터 슬라이드들
   const chapters = loveAnalysis.chapters || [];
   chapters.forEach((chapter, index) => {
     chaptersTrack.appendChild(createChapterSlide(chapter, index, data));
   });
 
-  // 3. 이상형 이미지 슬라이드 (있을 경우)
+  // 4. 이상형 이미지 슬라이드 (Gemini 2.5 Flash 사용)
   if (loveAnalysis.ideal_partner_image?.image_base64) {
     chaptersTrack.appendChild(
       createIdealTypeSlide(loveAnalysis.ideal_partner_image, userName)
     );
   }
 
-  // 4. 마지막 슬라이드
+  // 5. 마지막 슬라이드
   chaptersTrack.appendChild(createEndingSlide());
 
   chaptersContainer.appendChild(chaptersTrack);
@@ -237,7 +246,7 @@ function renderResult(data) {
   resultWrap.classList.remove("hidden");
 }
 
-// 인트로 슬라이드 생성
+// 인트로 슬라이드 생성 (사주 정보만)
 function createIntroSlide(userName, data) {
   const slide = document.createElement("div");
   slide.className = "chapter_slide intro_slide";
@@ -245,17 +254,35 @@ function createIntroSlide(userName, data) {
   const sajuData = data?.sajuData || {};
   const dayMasterCard = buildDayMasterSummary(sajuData, userName);
   const pillarTable = buildPillarTable(sajuData);
-  const tocCard = buildTableOfContents();
 
   slide.innerHTML = `
     <div class="chapter_content_wrap intro_compact">
       <div class="intro_header">
         <span class="intro_label">연애 리포트</span>
-        <h1 class="intro_title">${userName}님의 맞춤 분석</h1>
-        <p class="intro_subtitle">아래 순서대로 리포트를 안내드릴게요.</p>
+        <h1 class="intro_title">${userName}님의 사주 원국</h1>
+        <p class="intro_subtitle">분석에 사용된 사주 정보입니다</p>
       </div>
       ${dayMasterCard}
       ${pillarTable}
+    </div>
+  `;
+  return slide;
+}
+
+// 목차 슬라이드 생성
+function createTocSlide(userName) {
+  const slide = document.createElement("div");
+  slide.className = "chapter_slide toc_slide";
+
+  const tocCard = buildTableOfContents();
+
+  slide.innerHTML = `
+    <div class="chapter_content_wrap intro_compact">
+      <div class="intro_header">
+        <span class="intro_label">리포트 안내</span>
+        <h1 class="intro_title">${userName}님의 맞춤 분석</h1>
+        <p class="intro_subtitle">아래 순서대로 리포트를 안내드릴게요</p>
+      </div>
       ${tocCard}
     </div>
   `;

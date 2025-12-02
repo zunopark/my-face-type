@@ -87,8 +87,46 @@ def build_love_prompt(saju_data: Dict[str, Any], user_name: str = None, user_con
     dm_element = day_master.get("element", "")
     dm_yinyang = day_master.get("yinYang", "")
 
-    # 오행 분포
+    # 오행 영문 -> 한글 변환
+    element_korean = {
+        "wood": "목(木)",
+        "fire": "화(火)",
+        "earth": "토(土)",
+        "metal": "금(金)",
+        "water": "수(水)",
+        "Wood": "목(木)",
+        "Fire": "화(火)",
+        "Earth": "토(土)",
+        "Metal": "금(金)",
+        "Water": "수(水)"
+    }
+    dm_element_kr = element_korean.get(dm_element, dm_element)
+
+    # 오행 분포 (% -> 정통 명리 표현으로 변환)
     five_percent = love_facts.get("fiveElementsHanjaPercent", {})
+
+    def get_strength_desc(percent):
+        """퍼센트를 명리학적 표현으로 변환"""
+        if percent >= 30:
+            return "왕(旺)"
+        elif percent >= 20:
+            return "상(相)"
+        elif percent >= 10:
+            return "휴(休)"
+        elif percent >= 5:
+            return "수(囚)"
+        else:
+            return "사(死)"
+
+    # 오행 분포를 정통 명리학 표현으로 변환
+    five_elements_desc = []
+    for elem, pct in five_percent.items():
+        elem_kr = element_korean.get(elem, elem)
+        strength_desc = get_strength_desc(pct)
+        five_elements_desc.append(f"{elem_kr} {strength_desc}")
+
+    five_elements_str = ", ".join(five_elements_desc) if five_elements_desc else "정보 없음"
+
     strength = love_facts.get("dayMasterStrength", "")
 
     # 도화살
@@ -146,22 +184,22 @@ def build_love_prompt(saju_data: Dict[str, Any], user_name: str = None, user_con
         오늘은 {today_str}입니다. 모든 운세 분석은 이 날짜를 기준으로 해주세요.
 
         ### 1. 페르소나 설정
-        당신은 고객의 연애 심리와 관계 역학을 사주적/관상학적 관점에서 깊이 있게 통찰하고, 이를 매력적이고 서술적인 언어로 풀어내는 전문 연애 여성 사주가 '홍련' 입니다.
+        당신은 고객의 연애 심리와 관계 역학을 사주적/관상학적 관점에서 깊이 있게 통찰하고, 이를 매력적이고 서술적인 언어로 풀어내는 전문 연애 여성 사주가 '색동낭자' 입니다.
 
         ### 2. 분석의 대상과 정보 제공
         [분석 대상] {name}님({gender})의 사주적, 관상학적 성향 및 연애운을 종합적으로 분석해 주세요.
 
-        [{name}님의 핵심 특징]
-        - **일간**: {dm_char} ({dm_title}) - {dm_element} 기운, {dm_yinyang}
-        - **신강/신약**: {strength}
-        - **사주 팔자**:
-        - 년주: {year_pillar} ({year_tengod})
-        - 월주: {month_pillar} ({month_tengod})
-        - 일주: {day_pillar} ({day_tengod})
-        - 시주: {hour_pillar} ({hour_tengod})
-        - **오행 분포**: {', '.join([f'{k} {v}%' for k, v in five_percent.items()])}
-        - **도화살**: {'있음 ({})'.format(peach_branch) if has_peach else '없음'}
-        - **배우자 별({spouse_type})**: {spouse_count}개 ({', '.join(spouse_positions) if spouse_positions else '없음'})
+        [{name}님의 사주 원국]
+        - 일간(日干): {dm_char} ({dm_title}) - {dm_element_kr}, {dm_yinyang}
+        - 격국(格局): {strength}
+        - 사주 팔자(四柱八字):
+          ┌ 년주(年柱): {year_pillar} / {year_tengod}
+          ├ 월주(月柱): {month_pillar} / {month_tengod}
+          ├ 일주(日柱): {day_pillar} / {day_tengod}
+          └ 시주(時柱): {hour_pillar} / {hour_tengod}
+        - 오행(五行) 분포: {five_elements_str}
+        - 도화살(桃花殺): {'있음 - {}'.format(peach_branch) if has_peach else '없음'}
+        - 배우자성({spouse_type}): {spouse_count}개 ({', '.join(spouse_positions) if spouse_positions else '없음'})
         {concern_text}
 
         ### 3. 문체 및 어조 지정
@@ -297,12 +335,12 @@ async def analyze_love_fortune(request: SajuLoveAnalysisRequest) -> Dict[str, An
         chapters = parse_chapters(analysis_text)
         print(f"[INFO] 텍스트 분석 완료 ({len(chapters)}개 챕터)")
 
-        # 3. 이상형 이미지 생성
+        # 3. 이상형 이미지 생성 (Gemini 2.5 Flash 사용)
         user_gender = request.saju_data.get("input", {}).get("gender", "male")
         image_base64 = None
         image_prompt_used = None
         partner_gender = None
-        image_error = None  # 이미지 생성 실패 이유
+        image_error = None
 
         try:
             print(f"[INFO] 이미지 생성 시작... (사용자 성별: {user_gender})")
@@ -313,27 +351,27 @@ async def analyze_love_fortune(request: SajuLoveAnalysisRequest) -> Dict[str, An
                 user_gender=user_gender
             )
 
-            print(f"[INFO] Imagen 프롬프트: {image_prompt}")
+            print(f"[INFO] Gemini 2.5 Flash 이미지 프롬프트: {image_prompt}")
 
-            # Imagen 4 이미지 생성 API 호출
-            image_response = client.models.generate_images(
-                model='imagen-4.0-generate-001',
-                prompt=image_prompt,
-                config=types.GenerateImagesConfig(
-                    number_of_images=1,
-                    aspect_ratio="3:4",
-                    person_generation="allow_adult",
-                )
+            # Gemini 2.5 Flash 이미지 생성 API 호출
+            image_response = client.models.generate_content(
+                model="gemini-2.5-flash-image",
+                contents=f"Generate an image: {image_prompt}",
             )
 
-            if image_response.generated_images:
-                generated_image = image_response.generated_images[0]
-                image_bytes = generated_image.image.image_bytes
-                image_base64 = base64.b64encode(image_bytes).decode('utf-8')
-                image_prompt_used = image_prompt
-                partner_gender = "female" if user_gender == "male" else "male"
-                print(f"[INFO] 이미지 생성 성공 (크기: {len(image_bytes)} bytes)")
-            else:
+            # 응답에서 이미지 추출
+            if image_response.candidates and image_response.candidates[0].content.parts:
+                for part in image_response.candidates[0].content.parts:
+                    if hasattr(part, 'inline_data') and part.inline_data:
+                        # 이미지 데이터가 있는 경우
+                        image_bytes = part.inline_data.data
+                        image_base64 = base64.b64encode(image_bytes).decode('utf-8')
+                        image_prompt_used = image_prompt
+                        partner_gender = "female" if user_gender == "male" else "male"
+                        print(f"[INFO] 이미지 생성 성공 (크기: {len(image_bytes)} bytes)")
+                        break
+
+            if not image_base64:
                 image_error = "이미지 생성 결과가 비어있습니다"
                 print(f"[WARNING] 이미지 생성 실패 - {image_error}")
 

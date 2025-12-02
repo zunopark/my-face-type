@@ -211,6 +211,61 @@ body {
   color: #666;
 }
 
+/* 일간 성향 설명 */
+.daymaster_desc_wrap {
+  margin-top: 20px;
+  padding-top: 20px;
+  border-top: 1px dashed #ffe0e0;
+}
+
+.daymaster_headline {
+  font-size: 16px;
+  font-weight: 700;
+  color: #c0392b;
+  margin-bottom: 12px;
+  line-height: 1.5;
+}
+
+.daymaster_summary {
+  font-size: 14px;
+  color: #444;
+  line-height: 1.8;
+  margin-bottom: 16px;
+  word-break: keep-all;
+}
+
+.daymaster_appearance_title {
+  font-size: 13px;
+  font-weight: 600;
+  color: #888;
+  margin-bottom: 10px;
+}
+
+.daymaster_appearance_list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.daymaster_appearance_list li {
+  font-size: 14px;
+  color: #555;
+  padding-left: 16px;
+  position: relative;
+  line-height: 1.6;
+}
+
+.daymaster_appearance_list li::before {
+  content: "•";
+  position: absolute;
+  left: 0;
+  color: #e74c3c;
+  font-weight: bold;
+}
+
 /* 사주 팔자 */
 .pillars_wrap {
   display: flex;
