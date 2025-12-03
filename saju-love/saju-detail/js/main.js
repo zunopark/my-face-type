@@ -490,8 +490,7 @@ async function startTossPayment(resultId) {
 
   try {
     const paymentWidget = PaymentWidget(clientKey, customerKey);
-    // ##수정해야함
-    paymentWidget.renderPaymentMethods("#payment-method", { value: 100 });
+    paymentWidget.renderPaymentMethods("#payment-method", { value: 9900 });
     paymentWidget.renderAgreement("#agreement");
 
     document.getElementById("payment-button").onclick = async () => {

@@ -14,7 +14,8 @@
 
 .resultHistory_wrap {
   width: 100%;
-  margin: 64px 0px;
+  min-height: 50vh;
+  margin-top: 80px;
 }
 
 .resultHistory_title {
@@ -34,7 +35,6 @@
 .resultHistory {
   width: 100%;
   padding: 16px 0;
-  border-bottom: 1px solid rgb(63, 63, 63);
 }
 
 .resultHistory a {

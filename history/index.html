@@ -3,7 +3,7 @@
   <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta charset="UTF-8" />
-    <title>관상 분석 기록</title>
+    <title>마이 페이지 | 결제 내역</title>
     <link rel="stylesheet" href="../styles/style.css" />
     <link
       href="https://fonts.googleapis.com/icon?family=Material+Icons"
@@ -11,7 +11,7 @@
     />
     <link
       rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=person"
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=person,favorite,face"
     />
     <style>
       @import url("https://fonts.googleapis.com/css2?family=East+Sea+Dokdo&display=swap");
@@ -22,6 +22,81 @@
           format("woff2");
         font-style: normal;
       }
+
+      /* 공통 카드 스타일 */
+      .history_card {
+        background: #fff;
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
+        margin-bottom: 12px;
+        border: 1px solid #f0f0f0;
+      }
+      .history_card a {
+        display: flex;
+        align-items: center;
+        padding: 14px;
+        gap: 14px;
+        text-decoration: none;
+        color: inherit;
+      }
+      .history_card .card_thumb {
+        width: 56px;
+        height: 56px;
+        border-radius: 8px;
+        object-fit: cover;
+        flex-shrink: 0;
+        background: #f5f5f5;
+      }
+      .history_card .card_info {
+        flex: 1;
+        min-width: 0;
+      }
+      .history_card .card_label {
+        font-size: 14px;
+        font-weight: 600;
+        color: #333;
+        margin-bottom: 4px;
+      }
+      .history_card .card_sub {
+        font-size: 12px;
+        color: #999;
+      }
+      .history_card .card_date {
+        font-size: 11px;
+        color: #bbb;
+        flex-shrink: 0;
+      }
+
+      /* 사주 - 썸네일 대신 이니셜 */
+      .history_card.saju .card_thumb {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #fff5f5;
+        border: 1px solid #ffe0e0;
+        font-size: 18px;
+        font-weight: 700;
+        color: #e74c3c;
+      }
+
+      /* 궁합 - 두 사진 */
+      .history_card.couple .couple_thumbs {
+        display: flex;
+        align-items: center;
+        flex-shrink: 0;
+      }
+      .history_card.couple .couple_thumb {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 2px solid #fff;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+      }
+      .history_card.couple .couple_thumb:last-child {
+        margin-left: -12px;
+      }
     </style>
   </head>
   <body>
@@ -30,7 +105,7 @@
 
       <div class="resultHistory_wrap">
         <div class="resultHistory_title">
-          <div>관상 분석 히스토리 <span id="history-count"></span></div>
+          <div>결제 내역 <span id="history-count"></span></div>
           <button id="clear-unpaid" class="clear-btn">미결제 DB 삭제</button>
         </div>
         <div id="resultHistory"></div>
@@ -42,7 +117,7 @@
           <div class="nav_title">전체 보기</div>
         </a>
         <a href="/history/" class="nav_content nav_seleted">
-          <span class="material-symbols-outlined nav_icon"> person </span>
+          <span class="material-icons nav_icon"> person </span>
 
           <div class="nav_title">마이 페이지</div>
         </a>
@@ -51,146 +126,293 @@
     </div>
 
     <script>
-      let db;
+      // ============ DB 설정 ============
+      let faceDB, sajuDB, coupleDB;
+      let allItems = []; // 모든 결제 내역
 
-      async function initDB() {
-        return new Promise((resolve, reject) => {
-          const request = indexedDB.open("FaceAnalysisDB", 1);
-
-          request.onupgradeneeded = function (event) {
-            db = event.target.result;
-            if (!db.objectStoreNames.contains("results")) {
-              const store = db.createObjectStore("results", { keyPath: "id" });
-              store.createIndex("timestamp", "timestamp", { unique: false });
-            }
-          };
-
-          request.onsuccess = function (event) {
-            db = event.target.result;
-            console.log("✅ IndexedDB 초기화 완료");
-            resolve(); // ✅ 여기가 중요
-          };
-
-          request.onerror = function (event) {
-            console.error("❌ IndexedDB 오류", event);
-            reject(event);
-          };
-        });
-      }
-
-      function getAllResults() {
-        return new Promise((resolve, reject) => {
-          const transaction = db.transaction(["results"], "readonly");
-          const store = transaction.objectStore("results");
-          const request = store.getAll();
-
-          request.onsuccess = () => resolve(request.result);
-          request.onerror = reject;
-        });
-      }
-
-      const ALL_TYPES = ["base", "wealth", "marriage", "love", "career"];
-      const TYPE_LABEL = {
-        base: "프리미엄 관상 심층 분석 보고서",
-        wealth: "재물 관상 심층 분석 보고서",
-        marriage: "결혼 관상 심층 분석 보고서",
-        love: "연애 관상 심층 분석 보고서",
-        career: "직업 관상 심층 분석 보고서",
+      // 관상 타입 라벨
+      const FACE_TYPES = ["base", "wealth", "marriage", "love", "career"];
+      const FACE_TYPE_LABEL = {
+        base: "프리미엄 관상 심층 분석",
+        wealth: "재물 관상 분석",
+        marriage: "결혼 관상 분석",
+        love: "연애 관상 분석",
+        career: "직업 관상 분석",
       };
 
-      function renderHistory(dbResults) {
-        const $list = document.getElementById("resultHistory");
-        const $count = document.getElementById("history-count");
-        $list.innerHTML = ""; // 초기화
+      // ============ DB 초기화 함수들 ============
+      function openFaceDB() {
+        return new Promise((resolve, reject) => {
+          const req = indexedDB.open("FaceAnalysisDB", 1);
+          req.onupgradeneeded = (e) => {
+            const db = e.target.result;
+            if (!db.objectStoreNames.contains("results")) {
+              db.createObjectStore("results", { keyPath: "id" });
+            }
+          };
+          req.onsuccess = (e) => resolve(e.target.result);
+          req.onerror = () => resolve(null); // DB 없어도 계속 진행
+        });
+      }
 
-        /* --- (1) ‘레코드 × 타입’으로 펼치면서 paid 검사 -------- */
-        const flattened = [];
-        dbResults.forEach((rec) => {
-          if (!rec.reports) return; // 방어
-          ALL_TYPES.forEach((t) => {
+      function openSajuDB() {
+        return new Promise((resolve, reject) => {
+          const req = indexedDB.open("SajuLoveDB", 2);
+          req.onupgradeneeded = (e) => {
+            const db = e.target.result;
+            if (!db.objectStoreNames.contains("results")) {
+              db.createObjectStore("results", { keyPath: "id" });
+            }
+          };
+          req.onsuccess = (e) => resolve(e.target.result);
+          req.onerror = () => resolve(null);
+        });
+      }
+
+      function openCoupleDB() {
+        return new Promise((resolve, reject) => {
+          const req = indexedDB.open("CoupleAnalysisDB", 1);
+          req.onupgradeneeded = (e) => {
+            const db = e.target.result;
+            if (!db.objectStoreNames.contains("results")) {
+              db.createObjectStore("results", { keyPath: "id" });
+            }
+          };
+          req.onsuccess = (e) => resolve(e.target.result);
+          req.onerror = () => resolve(null);
+        });
+      }
+
+      function getAllFromDB(db) {
+        if (!db) return Promise.resolve([]);
+        return new Promise((resolve) => {
+          try {
+            const tx = db.transaction("results", "readonly");
+            const store = tx.objectStore("results");
+            const req = store.getAll();
+            req.onsuccess = () => resolve(req.result || []);
+            req.onerror = () => resolve([]);
+          } catch (e) {
+            resolve([]);
+          }
+        });
+      }
+
+      // ============ 데이터 수집 ============
+      async function collectAllPaidItems() {
+        const items = [];
+
+        // 1. 관상 데이터
+        const faceResults = await getAllFromDB(faceDB);
+        faceResults.forEach((rec) => {
+          if (!rec.reports) return;
+          FACE_TYPES.forEach((t) => {
             const rep = rec.reports[t];
             if (rep && rep.paid) {
-              flattened.push({
+              items.push({
+                category: "face",
                 id: rec.id,
                 type: t,
                 img: rec.imageBase64,
-                ts: rep.purchasedAt || rec.timestamp, // 구매시각 없으면 최초 ts
+                ts: rep.purchasedAt || rec.timestamp,
+                label: FACE_TYPE_LABEL[t] || "관상 분석",
+                link: `/analyze-result/?id=${rec.id}&type=${t}`,
               });
             }
           });
         });
 
-        /* --- (2) paid 된 내역이 없으면 빈 화면 --- */
-        if (flattened.length === 0) {
-          $count.textContent = "(0개)";
+        // 2. 사주 데이터
+        const sajuResults = await getAllFromDB(sajuDB);
+        sajuResults.forEach((rec) => {
+          if (rec.paid) {
+            items.push({
+              category: "saju",
+              id: rec.id,
+              userName: rec.input?.userName || "사용자",
+              birthDate: rec.input?.date || "",
+              dayMaster: rec.sajuData?.dayMaster?.char || "",
+              ts: rec.paidAt || rec.createdAt || new Date().toISOString(),
+              label: "AI 연애 사주 분석",
+              link: `/saju-love/saju-result/?id=${rec.id}`,
+            });
+          }
+        });
+
+        // 3. 궁합 데이터
+        const coupleResults = await getAllFromDB(coupleDB);
+        coupleResults.forEach((rec) => {
+          if (rec.reports?.couple?.paid) {
+            items.push({
+              category: "couple",
+              id: rec.id,
+              img1: rec.image1Base64,
+              img2: rec.image2Base64,
+              ts: rec.reports.couple.purchasedAt || rec.timestamp,
+              label: "AI 궁합 분석",
+              link: `/couple-report/?id=${rec.id}`,
+            });
+          }
+        });
+
+        return items;
+      }
+
+      // ============ 렌더링 ============
+      function renderHistory(items) {
+        const $list = document.getElementById("resultHistory");
+        const $count = document.getElementById("history-count");
+        $list.innerHTML = "";
+
+        $count.textContent = `(${items.length}개)`;
+
+        // 빈 화면
+        if (items.length === 0) {
           $list.innerHTML = `
-      <div class="no-results">
-        <p>결제한 분석 결과가 아직 없습니다.</p>
-        <a href="/" class="view-face-button">AI 관상 보러 가기</a>
-      </div>`;
+            <div class="no-results">
+              <p>결제한 분석 결과가 아직 없습니다.</p>
+              <a href="/" class="view-face-button">AI 관상 보러 가기</a>
+            </div>`;
           return;
         }
 
-        /* --- (3) 최신순 정렬 & 카운터 표시 -------------------- */
-        flattened.sort((a, b) => new Date(b.ts) - new Date(a.ts));
-        $count.textContent = `(${flattened.length}개)`;
+        // 최신순 정렬
+        items.sort((a, b) => new Date(b.ts) - new Date(a.ts));
 
-        /* --- (4) DOM 생성 ------------------------------------ */
-        flattened.forEach((item) => {
+        // DOM 생성
+        items.forEach((item) => {
           const div = document.createElement("div");
-          div.className = "resultHistory paid";
-          div.innerHTML = `
-      <a href="/analyze-result/?id=${item.id}&type=${item.type}">
-        <div class="resultHistory_paid">✅ 결제 완료</div>
-        <div class="resultHistory_image_wrap">
-          <div class="image_square_frame2">
-            <img class="resultHistory_image"
-                 src="${item.img}" alt="AI 관상 분석 결과" />
-          </div>
-          <div class="resultHistory_summary">
-            ${TYPE_LABEL[item.type] || "관상 분석"}
-          </div>
-        </div>
-        <div class="resultHistory_date">
-          ${new Date(item.ts).toLocaleString()}
-        </div>
-      </a>`;
+          const dateStr = new Date(item.ts).toLocaleDateString("ko-KR", {
+            month: "numeric",
+            day: "numeric",
+          });
+
+          if (item.category === "face") {
+            div.className = "history_card face";
+            div.innerHTML = `
+              <a href="${item.link}">
+                <img class="card_thumb" src="${item.img}" alt="" />
+                <div class="card_info">
+                  <div class="card_label">${item.label}</div>
+                  <div class="card_sub">관상 분석</div>
+                </div>
+                <span class="card_date">${dateStr}</span>
+              </a>`;
+          } else if (item.category === "saju") {
+            const dayChar = item.dayMaster || "?";
+            div.className = "history_card saju";
+            div.innerHTML = `
+              <a href="${item.link}">
+                <div class="card_thumb">${escapeHTML(dayChar)}</div>
+                <div class="card_info">
+                  <div class="card_label">${escapeHTML(
+                    item.userName
+                  )}님의 연애 사주</div>
+                  <div class="card_sub">${escapeHTML(item.birthDate)}</div>
+                </div>
+                <span class="card_date">${dateStr}</span>
+              </a>`;
+          } else if (item.category === "couple") {
+            div.className = "history_card couple";
+            div.innerHTML = `
+              <a href="${item.link}">
+                <div class="couple_thumbs">
+                  <img class="couple_thumb" src="${item.img1 || ""}" alt="" />
+                  <img class="couple_thumb" src="${item.img2 || ""}" alt="" />
+                </div>
+                <div class="card_info">
+                  <div class="card_label">궁합 분석</div>
+                  <div class="card_sub">AI 궁합 리포트</div>
+                </div>
+                <span class="card_date">${dateStr}</span>
+              </a>`;
+          }
+
           $list.appendChild(div);
         });
       }
 
-      /* =========================================================
-   4) ‘미결제 DB 삭제’ – 전 레코드 중 reports 내에
-      paid==false 만 남은 경우에만 지우도록 수정
-   ========================================================= */
+      function escapeHTML(str) {
+        if (!str) return "";
+        return str.replace(
+          /[&<>"']/g,
+          (m) =>
+            ({
+              "&": "&amp;",
+              "<": "&lt;",
+              ">": "&gt;",
+              '"': "&quot;",
+              "'": "&#39;",
+            }[m])
+        );
+      }
+
+      // ============ 미결제 삭제 ============
       async function deleteUnpaidResults() {
         if (!confirm("결제하지 않은 히스토리를 모두 삭제할까요?")) return;
 
-        const tx = db.transaction("results", "readwrite");
-        const store = tx.objectStore("results");
+        // 관상 DB
+        if (faceDB) {
+          const tx = faceDB.transaction("results", "readwrite");
+          const store = tx.objectStore("results");
+          const req = store.getAll();
+          req.onsuccess = () => {
+            req.result.forEach((rec) => {
+              const hasAnyPaid = FACE_TYPES.some((t) => rec.reports?.[t]?.paid);
+              if (!hasAnyPaid) store.delete(rec.id);
+            });
+          };
+        }
 
-        const req = store.getAll();
-        req.onsuccess = () => {
-          req.result.forEach((rec) => {
-            const hasAnyPaid = ALL_TYPES.some((t) => rec.reports?.[t]?.paid);
-            if (!hasAnyPaid) store.delete(rec.id); // 전부 미결제면 삭제
-          });
-        };
+        // 사주 DB
+        if (sajuDB) {
+          const tx = sajuDB.transaction("results", "readwrite");
+          const store = tx.objectStore("results");
+          const req = store.getAll();
+          req.onsuccess = () => {
+            req.result.forEach((rec) => {
+              if (!rec.paid) store.delete(rec.id);
+            });
+          };
+        }
 
-        tx.oncomplete = async () => {
-          const refreshed = await getAllResults();
-          renderHistory(refreshed);
+        // 궁합 DB
+        if (coupleDB) {
+          const tx = coupleDB.transaction("results", "readwrite");
+          const store = tx.objectStore("results");
+          const req = store.getAll();
+          req.onsuccess = () => {
+            req.result.forEach((rec) => {
+              if (!rec.reports?.couple?.paid) store.delete(rec.id);
+            });
+          };
+        }
+
+        // 새로고침
+        setTimeout(async () => {
+          allItems = await collectAllPaidItems();
+          renderHistory(allItems);
           alert("미결제 히스토리가 삭제되었습니다 ✅");
-        };
-        tx.onerror = () => alert("오류가 발생했습니다. 다시 시도해 주세요.");
+        }, 500);
       }
+
+      // ============ 초기화 ============
       (async () => {
-        await initDB();
-        const results = await getAllResults();
-        renderHistory(results);
+        // 모든 DB 열기
+        [faceDB, sajuDB, coupleDB] = await Promise.all([
+          openFaceDB(),
+          openSajuDB(),
+          openCoupleDB(),
+        ]);
+
+        console.log("✅ 모든 DB 초기화 완료");
+
+        // 결제 내역 수집 및 렌더링
+        allItems = await collectAllPaidItems();
+        renderHistory(allItems);
       })();
 
-      /* 버튼 클릭 이벤트 */
+      // 미결제 삭제 버튼
       document
         .getElementById("clear-unpaid")
         .addEventListener("click", deleteUnpaidResults);
