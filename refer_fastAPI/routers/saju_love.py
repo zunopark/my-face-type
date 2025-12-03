@@ -7,7 +7,7 @@ from datetime import datetime
 import base64
 import os
 
-router = APIRouter(prefix="/saju-love", tags=["saju-love"])
+router = APIRouter(prefix="/saju_love", tags=["saju_love"])
 
 # Gemini API 클라이언트 설정
 # API 키는 환경 변수 GEMINI_API_KEY에서 자동으로 가져옵니다
@@ -184,6 +184,19 @@ def build_love_prompt(saju_data: Dict[str, Any], user_name: str = None, user_con
         ### 0. 오늘 날짜
         오늘은 {today_str}입니다. 모든 운세 분석은 이 날짜를 기준으로 해주세요.
 
+        ### 사주별 개인 매력 및 연애 성향 가이드
+        [일간별 매력]
+        - 갑목일간: 단아함과 우아함이 돋보이는 청순 주인공 스타일
+        - 을목일간: 유연한 생명력, 강인함이 숨겨진 야생화 타입
+        - 병화일간: 타고난 스포트라이트, 빛나는 태양의 아우라
+        - 정화일간: 은은한 섬광, 온기를 품은 촛불 감성
+        - 무토일간: 고요함 속에 깊이가 있는 고급스러운 우아미
+        - 기토일간: 묵묵히 곁을 지키는 안정감 마스터
+        - 경금일간: 흔들림 없는 신뢰, 강철 로맨티스트
+        - 신금일간: 예리한 완벽함, 빛나는 보석 같은 귀티
+        - 임수일간: 깊은 지혜의 바다, 포용력 마스터
+        - 계수일간: 촉촉한 감성의 소유자, 예술적 영감의 샘
+
         ### 1. 페르소나 설정
         당신은 고객의 연애 심리와 관계 역학을 사주적/관상학적 관점에서 깊이 있게 통찰하고, 이를 매력적이고 서술적인 언어로 풀어내는 전문 연애 여성 사주가 '색동낭자' 입니다.
 
@@ -259,7 +272,8 @@ def build_love_prompt(saju_data: Dict[str, Any], user_name: str = None, user_con
         - 인연의 타이밍이 언제 집중되어 있는지, 어떤 흐름으로 사랑이 펼쳐질지 설명해요.
 
         ###풀이 2. 향후 3년간 연애운 증폭 시기
-        - 2025년부터 2027년까지 연애운이 폭발하는 구체적인 시기를 분석해요.
+        - 우선 3년간 총 몇 번의 연애 기회가 올지 강조해서 보여주세요. 
+        - 2026년, 2027년, 2028년 연애운이 폭발하는 구체적인 시기를 분석해요.
         - 총 몇 번의 의미 있는 연애 기회가 있을지, 각 시기마다 어떤 인연이 나타날지 예측합니다.
         - 특히 인연이 집중되는 달과 그때 만날 상대의 특징을 미리 알려드려요.
 
@@ -279,7 +293,7 @@ def build_love_prompt(saju_data: Dict[str, Any], user_name: str = None, user_con
 
         ###풀이 2. 언제, 어떻게 만나게 될까
         - 운명적 인연이 등장하는 구체적인 시기와 상황을 예측해요.
-        - 클라이밍장, 독서모임, 소개팅, 직장, 온라인 등 어떤 장소와 계기로 만나게 될지 사주를 근거로 설명합니다.
+        - 어떤 장소와 계기로 만나게 될지 사주를 근거로 설명합니다. (정적인, 동적인 등 구체적인 장소를 정확히 설명해주세요.)
         - 왜 그 장소가 {name}님에게 길한지 명리학적으로 해석해드려요.
 
         ###풀이 3. 그 사람을 끌어당길 나만의 공략법
@@ -364,65 +378,65 @@ async def analyze_love_fortune(request: SajuLoveAnalysisRequest) -> Dict[str, An
         chapters = parse_chapters(analysis_text)
         print(f"[INFO] 텍스트 분석 완료 ({len(chapters)}개 챕터)")
 
-        # 3. 이상형 이미지 생성 (Gemini 2.5 Flash 사용)
-        user_gender = request.saju_data.get("input", {}).get("gender", "male")
-        image_base64 = None
-        image_prompt_used = None
-        partner_gender = None
-        image_error = None
+        # 3. 이상형 이미지 생성 (임시 비활성화)
+        # user_gender = request.saju_data.get("input", {}).get("gender", "male")
+        # image_base64 = None
+        # image_prompt_used = None
+        # partner_gender = None
+        # image_error = None
 
-        try:
-            print(f"[INFO] 이미지 생성 시작... (사용자 성별: {user_gender})")
+        # try:
+        #     print(f"[INFO] 이미지 생성 시작... (사용자 성별: {user_gender})")
 
-            # 이미지 프롬프트 생성
-            image_prompt = build_ideal_partner_prompt(
-                saju_data=request.saju_data,
-                user_gender=user_gender
-            )
+        #     # 이미지 프롬프트 생성
+        #     image_prompt = build_ideal_partner_prompt(
+        #         saju_data=request.saju_data,
+        #         user_gender=user_gender
+        #     )
 
-            print(f"[INFO] Gemini 2.5 Flash 이미지 프롬프트: {image_prompt}")
+        #     print(f"[INFO] Gemini 2.5 Flash 이미지 프롬프트: {image_prompt}")
 
-            # Gemini 2.5 Flash 이미지 생성 API 호출
-            image_response = client.models.generate_content(
-                model="gemini-2.5-flash-image",
-                contents=f"Generate an image: {image_prompt}",
-            )
+        #     # Gemini 2.5 Flash 이미지 생성 API 호출
+        #     image_response = client.models.generate_content(
+        #         model="gemini-2.5-flash-image",
+        #         contents=f"Generate an image: {image_prompt}",
+        #     )
 
-            # 응답에서 이미지 추출
-            if image_response.candidates and image_response.candidates[0].content.parts:
-                for part in image_response.candidates[0].content.parts:
-                    if hasattr(part, 'inline_data') and part.inline_data:
-                        # 이미지 데이터가 있는 경우
-                        image_bytes = part.inline_data.data
-                        image_base64 = base64.b64encode(image_bytes).decode('utf-8')
-                        image_prompt_used = image_prompt
-                        partner_gender = "female" if user_gender == "male" else "male"
-                        print(f"[INFO] 이미지 생성 성공 (크기: {len(image_bytes)} bytes)")
-                        break
+        #     # 응답에서 이미지 추출
+        #     if image_response.candidates and image_response.candidates[0].content.parts:
+        #         for part in image_response.candidates[0].content.parts:
+        #             if hasattr(part, 'inline_data') and part.inline_data:
+        #                 # 이미지 데이터가 있는 경우
+        #                 image_bytes = part.inline_data.data
+        #                 image_base64 = base64.b64encode(image_bytes).decode('utf-8')
+        #                 image_prompt_used = image_prompt
+        #                 partner_gender = "female" if user_gender == "male" else "male"
+        #                 print(f"[INFO] 이미지 생성 성공 (크기: {len(image_bytes)} bytes)")
+        #                 break
 
-            if not image_base64:
-                image_error = "이미지 생성 결과가 비어있습니다"
-                print(f"[WARNING] 이미지 생성 실패 - {image_error}")
+        #     if not image_base64:
+        #         image_error = "이미지 생성 결과가 비어있습니다"
+        #         print(f"[WARNING] 이미지 생성 실패 - {image_error}")
 
-        except Exception as img_error:
-            image_error = str(img_error)
-            print(f"[WARNING] 이미지 생성 중 오류 (텍스트 분석은 계속 진행): {image_error}")
+        # except Exception as img_error:
+        #     image_error = str(img_error)
+        #     print(f"[WARNING] 이미지 생성 중 오류 (텍스트 분석은 계속 진행): {image_error}")
 
-        # 이미지 결과 구성
+        # 이미지 결과 구성 (임시 비활성화)
         ideal_partner_image = None
-        if image_base64:
-            ideal_partner_image = {
-                "success": True,
-                "image_base64": image_base64,
-                "prompt_used": image_prompt_used,
-                "partner_gender": partner_gender
-            }
-        elif image_error:
-            ideal_partner_image = {
-                "success": False,
-                "error": image_error,
-                "prompt_used": image_prompt if 'image_prompt' in locals() else None
-            }
+        # if image_base64:
+        #     ideal_partner_image = {
+        #         "success": True,
+        #         "image_base64": image_base64,
+        #         "prompt_used": image_prompt_used,
+        #         "partner_gender": partner_gender
+        #     }
+        # elif image_error:
+        #     ideal_partner_image = {
+        #         "success": False,
+        #         "error": image_error,
+        #         "prompt_used": image_prompt if 'image_prompt' in locals() else None
+        #     }
 
         return {
             "success": True,
@@ -473,49 +487,84 @@ def build_ideal_partner_prompt(saju_data: Dict[str, Any], user_gender: str) -> s
     ideal_element = spouse_element if spouse_element else (weakest if weakest else strongest)
     ideal_element = ideal_element.lower()
 
-    # 사주 오행별 한국인 얼굴 특징 (증명사진에 맞게 얼굴 위주)
-    element_face = {
-        "wood": {
-            "face": "slim oval face with high cheekbones",
-            "eyes": "gentle almond-shaped single or double eyelid eyes",
-            "nose": "straight refined nose",
-            "skin": "fair porcelain smooth skin",
-            "hair": "neat straight black hair",
-            "vibe": "calm intellectual scholarly aura"
-        },
-        "fire": {
-            "face": "heart-shaped face with defined features",
-            "eyes": "bright sparkling double-lidded eyes",
-            "nose": "well-defined nose",
-            "skin": "warm healthy glowing skin",
-            "hair": "styled dark brown or black hair",
-            "vibe": "charismatic confident idol-like aura"
-        },
-        "earth": {
-            "face": "round soft friendly face",
-            "eyes": "warm gentle eyes with natural lids",
-            "nose": "soft rounded nose",
-            "skin": "healthy natural skin tone",
-            "hair": "natural black hair neatly styled",
-            "vibe": "warm trustworthy approachable aura"
-        },
-        "metal": {
-            "face": "angular face with sharp jawline",
-            "eyes": "intense focused eyes with defined brows",
-            "nose": "high straight nose bridge",
-            "skin": "clear flawless pale skin",
-            "hair": "sleek styled black hair",
-            "vibe": "cool professional sophisticated aura"
-        },
-        "water": {
-            "face": "soft flowing facial contours",
-            "eyes": "deep mysterious dreamy eyes",
-            "nose": "delicate soft nose",
-            "skin": "smooth dewy glass-like skin",
-            "hair": "soft flowing black hair",
-            "vibe": "mysterious artistic ethereal aura"
+    # 사주 오행별 얼굴 특징 (성별에 따라 다르게 적용)
+    if partner_gender == "woman":
+        element_face = {
+            "wood": {
+                "face": "slim oval face with high cheekbones",
+                "eyes": "gentle almond-shaped double eyelid eyes",
+                "nose": "straight refined nose",
+                "skin": "fair porcelain smooth skin",
+                "hair": "long straight black hair"
+            },
+            "fire": {
+                "face": "heart-shaped face with defined features",
+                "eyes": "bright sparkling big eyes",
+                "nose": "well-defined small nose",
+                "skin": "warm healthy glowing skin",
+                "hair": "styled wavy dark brown hair"
+            },
+            "earth": {
+                "face": "soft gentle face with cute cheeks",
+                "eyes": "warm gentle puppy eyes",
+                "nose": "cute button nose",
+                "skin": "healthy natural glowing skin",
+                "hair": "natural black hair softly styled"
+            },
+            "metal": {
+                "face": "elegant face with defined features",
+                "eyes": "sharp cat-like eyes",
+                "nose": "high straight nose bridge",
+                "skin": "clear flawless pale skin",
+                "hair": "sleek styled black hair"
+            },
+            "water": {
+                "face": "soft ethereal facial features",
+                "eyes": "deep dreamy doe eyes",
+                "nose": "delicate soft nose",
+                "skin": "smooth dewy glass skin",
+                "hair": "soft flowing black hair"
+            }
         }
-    }
+    else:
+        # 남자는 아이돌/꽃미남 스타일로
+        element_face = {
+            "wood": {
+                "face": "slim elegant oval face",
+                "eyes": "gentle deep monolid or double eyelid eyes",
+                "nose": "straight high nose bridge",
+                "skin": "fair flawless porcelain skin",
+                "hair": "styled comma hair black"
+            },
+            "fire": {
+                "face": "sharp V-line face with defined jawline",
+                "eyes": "bright charismatic phoenix eyes",
+                "nose": "sharp defined nose",
+                "skin": "warm healthy clear skin",
+                "hair": "trendy two-block cut dark brown"
+            },
+            "earth": {
+                "face": "soft boyfriend-look face",
+                "eyes": "warm gentle smiling eyes",
+                "nose": "natural straight nose",
+                "skin": "healthy natural clear skin",
+                "hair": "natural black middle part hair"
+            },
+            "metal": {
+                "face": "cold handsome sharp face",
+                "eyes": "intense sharp cat eyes",
+                "nose": "high straight sculpted nose",
+                "skin": "pale flawless glass skin",
+                "hair": "sleek black comma hair"
+            },
+            "water": {
+                "face": "soft pretty boy face",
+                "eyes": "deep mysterious puppy eyes",
+                "nose": "delicate refined nose",
+                "skin": "dewy translucent skin",
+                "hair": "soft fluffy black hair"
+            }
+        }
 
     features = element_face.get(ideal_element, element_face["wood"])
 
@@ -541,7 +590,6 @@ def build_ideal_partner_prompt(saju_data: Dict[str, Any], user_gender: str) -> s
             features["nose"],
             features["skin"],
             features["hair"],
-            features["vibe"],
             # 매력적인 분위기
             "gentle genuine smile",
             "warm approachable expression",
@@ -560,39 +608,44 @@ def build_ideal_partner_prompt(saju_data: Dict[str, Any], user_gender: str) -> s
         ]
     else:
         prompt_parts = [
-            # 자연스러운 포트레이트 스타일
-            "candid lifestyle portrait photo",
-            "handsome young Korean man",
-            "natural confident pose",
+            # 아이돌 스타일 포트레이트
+            "Korean idol style portrait photo",
+            "extremely handsome young Korean man",
+            "slim fit body",
             "upper body shot from chest up",
-            # 배경 설정 (자연스럽고 세련된)
+            # 배경 설정
             "soft bokeh background",
-            "warm golden hour lighting",
-            "cafe or urban outdoor setting",
-            # 한국인 특징 강조
+            "studio lighting with soft diffusion",
+            "clean minimal background",
+            # 젊고 세련된 외모 강조
             "100 percent Korean ethnicity",
-            "authentic Korean male facial features",
-            "age late 20s",
+            "Kpop idol visual",
+            "age early to mid 20s",
+            "youthful baby face",
+            "slim sharp V-line jawline",
+            "small face proportion",
+            "thin slim body not muscular",
             # 사주별 얼굴 특징
             features["face"],
             features["eyes"],
             features["nose"],
             features["skin"],
             features["hair"],
-            features["vibe"],
-            # 매력적인 분위기
-            "charming natural smile",
-            "warm confident expression",
-            "looking slightly off camera",
+            # 아이돌 분위기
+            "flower boy aesthetic",
+            "soft charismatic expression",
+            "gentle mysterious gaze",
+            "looking at camera with slight smile",
             # 스타일링
-            "stylish smart casual fashion",
-            "well-groomed clean appearance",
-            "neat hairstyle",
+            "trendy Korean fashion",
+            "perfectly styled hair",
+            "flawless clear skin",
+            "no facial hair clean shaven",
+            "slim neck",
             # 기술적 설정
-            "professional DSLR photography",
-            "shallow depth of field",
-            "soft natural lighting",
-            "cinematic color grading",
+            "professional fashion photography",
+            "soft flattering lighting",
+            "high fashion magazine quality",
             "photorealistic ultra detailed",
             "8k high resolution"
         ]

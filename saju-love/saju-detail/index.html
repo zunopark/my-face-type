@@ -29,6 +29,12 @@
           format("woff2");
         font-style: normal;
       }
+      @font-face {
+        font-family: "Danjo";
+        src: url("../fonts/Danjo-bold-Regular.otf") format("opentype");
+        font-weight: normal;
+        font-style: normal;
+      }
     </style>
 
     <title>연애 사주 분석 결과 | AI 사주</title>
@@ -94,13 +100,13 @@
         <!-- 섹션 2: 나의 결정적 매력 -->
         <section class="detail_section section_2">
           <div class="section_label">이성을 사로잡는</div>
-          <h2 class="section_main_title">나의 결정적 매력</h2>
+          <div class="section_main_title">나의 결정적 매력</div>
 
           <!-- 일간 매력 헤드라인 -->
           <div class="charm_headline_wrap">
-            <div class="charm_quote">"</div>
+            <span class="charm_quote">"</span>
             <div class="charm_headline" id="dayMasterHeadline"></div>
-            <div class="charm_quote">"</div>
+            <span class="charm_quote">"</span>
           </div>
           <div class="charm_ilgan_info">
             <span id="dayMasterElement2"></span> |
@@ -112,21 +118,38 @@
             <h3 class="charm_detail_title">내 일간 성향</h3>
             <p class="charm_detail_desc" id="dayMasterSummary"></p>
 
-            <h3 class="charm_detail_title">내 일간의 분위기</h3>
-            <ul class="charm_appearance_list" id="dayMasterAppearance"></ul>
+            <div class="charm_appearance_wrap">
+              <h3 class="charm_detail_title">내 일간의 분위기</h3>
+              <ul class="charm_appearance_list" id="dayMasterAppearance"></ul>
+              <div class="charm_appearance_fade"></div>
+            </div>
           </div>
 
           <!-- 이런 내용을 알려드려요 박스 -->
           <div class="info_preview_box">
+            <div class="info_preview_lock">
+              <span class="material-icons">lock</span>
+            </div>
             <div class="info_preview_header">
-              <span class="lock_icon">🔒</span>
               <span>이런 내용을 알려드려요!</span>
             </div>
             <ul class="info_preview_list">
-              <li>처음 본 순간 이성이 느끼는 나의 매력</li>
-              <li>내 연애 스타일 장점과 숨겨진 반전 매력</li>
-              <li>인만추 vs 자만추 vs 결정사, 나에게 맞는 방식은</li>
-              <li>내가 끌리는 사람 vs 나에게 끌리는 사람</li>
+              <li>
+                <span class="material-symbols-outlined">favorite</span>처음 본
+                순간 이성이 느끼는 나의 매력
+              </li>
+              <li>
+                <span class="material-symbols-outlined">favorite</span>내 연애
+                스타일 장점과 숨겨진 반전 매력
+              </li>
+              <li>
+                <span class="material-symbols-outlined">favorite</span>인만추 vs
+                자만추 vs 결정사, 나에게 맞는 방식은
+              </li>
+              <li>
+                <span class="material-symbols-outlined">favorite</span>내가
+                끌리는 사람 vs 나에게 끌리는 사람
+              </li>
             </ul>
           </div>
         </section>

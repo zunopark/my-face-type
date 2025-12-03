@@ -552,6 +552,11 @@ body {
   color: #888;
 }
 
+.info_time {
+  font-size: 14px;
+  color: #888;
+}
+
 .info_ilju {
   display: flex;
   align-items: center;

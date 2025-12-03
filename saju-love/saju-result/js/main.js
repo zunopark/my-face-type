@@ -148,8 +148,8 @@ async function fetchLoveAnalysis(data) {
     // 연애 고민 + 연애 상태 + 관심사 합치기
     const statusMap = {
       single: "솔로",
-      dating: "연애중",
-      complicated: "복잡해요",
+      some: "썸 타는 중",
+      breakup: "이별 고민중",
     };
     const interestMap = {
       timing: "연애 시기",
@@ -334,16 +334,37 @@ function createTocSlide(userName) {
   return slide;
 }
 
-// 기본 정보 카드 (이름, 생년월일, 일간)
+// 시간을 시(時) 이름으로 변환
+function formatTimeToSi(timeStr) {
+  const timeMap = {
+    "23:30": "자시 (23:30~01:30)",
+    "01:30": "축시 (01:30~03:30)",
+    "03:30": "인시 (03:30~05:30)",
+    "05:30": "묘시 (05:30~07:30)",
+    "07:30": "진시 (07:30~09:30)",
+    "09:30": "사시 (09:30~11:30)",
+    "11:30": "오시 (11:30~13:30)",
+    "13:30": "미시 (13:30~15:30)",
+    "15:30": "신시 (15:30~17:30)",
+    "17:30": "유시 (17:30~19:30)",
+    "19:30": "술시 (19:30~21:30)",
+    "21:30": "해시 (21:30~23:30)",
+  };
+  return timeMap[timeStr] || timeStr || "";
+}
+
+// 기본 정보 카드 (이름, 생년월일, 시, 일간)
 function buildInfoCard(userName, input, sajuData) {
   const dayMaster = sajuData?.dayMaster || {};
   const birthDate = input?.date || "";
+  const birthTime = formatTimeToSi(input?.time);
+  const birthDateText = birthTime ? `${birthDate} | ${birthTime}` : birthDate;
 
   return `
     <div class="info_card">
       <div class="info_main">
         <span class="info_name">${escapeHTML(userName)}</span>
-        <span class="info_birth">${escapeHTML(birthDate)}</span>
+        <span class="info_birth">${escapeHTML(birthDateText)}</span>
       </div>
       <div class="info_ilju">
         <span class="ilju_char">${escapeHTML(dayMaster.char || "—")}</span>
@@ -647,11 +668,9 @@ function createChapterSlide(chapter, index, data) {
             data.input.userName || "고객"
           }님이 남긴 고민</div>
           <div class="concern_box_content">
-            <span class="concern_quote">"</span>
             <span class="concern_text">${concernLines
               .map((line) => escapeHTML(line.trim()))
               .join("<br>")}</span>
-            <span class="concern_quote">"</span>
           </div>
         </div>
       `;
@@ -942,42 +961,6 @@ function setupEvents() {
   // 이상형 이미지 블러 공개 인터랙션
   setupIdealTypeReveal();
 
-  // 터치 스와이프
-  let touchStartX = 0;
-  let touchEndX = 0;
-
-  chaptersContainer.addEventListener(
-    "touchstart",
-    (e) => {
-      touchStartX = e.changedTouches[0].screenX;
-    },
-    { passive: true }
-  );
-
-  chaptersContainer.addEventListener(
-    "touchend",
-    (e) => {
-      touchEndX = e.changedTouches[0].screenX;
-      handleSwipe();
-    },
-    { passive: true }
-  );
-
-  function handleSwipe() {
-    const diff = touchStartX - touchEndX;
-    const threshold = 50;
-
-    if (Math.abs(diff) > threshold) {
-      if (diff > 0 && currentSlide < totalSlides - 1) {
-        currentSlide++;
-        updateSlider();
-      } else if (diff < 0 && currentSlide > 0) {
-        currentSlide--;
-        updateSlider();
-      }
-    }
-  }
-
   // 키보드
   document.addEventListener("keydown", (e) => {
     if (e.key === "ArrowLeft" && currentSlide > 0) {
@@ -1072,7 +1055,7 @@ function setupIdealTypeReveal() {
     const remaining = maxClicks - currentCount;
 
     if (remaining > 0) {
-      countEl.textContent = `${remaining}번 남음`;
+      if (countEl) countEl.textContent = `${remaining}번 남음`;
     } else {
       // 완전 공개
       imageWrap.classList.remove("ideal_type_blurred");

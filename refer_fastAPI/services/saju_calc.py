@@ -150,16 +150,46 @@ def elem_percent_hanja(five: Dict[str, Any]) -> Dict[str, float]:
     return {ELEM_HANJA[k]: v for k, v in p.items()}
 
 def detect_peach_blossom(pillars_raw: Dict[str, Dict[str, Optional[str]]]) -> Dict[str, Any]:
-    """일지 기준 도화 표적지지와 실제 출현 위치(year/month/day/hour)"""
+    """
+    년지와 일지 기준 도화 표적지지와 실제 출현 위치(year/month/day/hour)
+    - 년지 기준 도화: 년도 삼합에 따른 도화
+    - 일지 기준 도화: 일주 삼합에 따른 도화
+    둘 다 확인하여 도화살 존재 여부 판단
+    """
+    year_branch = (pillars_raw.get("year") or {}).get("branch")
     day_branch = (pillars_raw.get("day") or {}).get("branch")
-    target = PEACH_MAP.get(day_branch) if day_branch else None
+
+    # 년지 기준 도화 타겟
+    target_from_year = PEACH_MAP.get(year_branch) if year_branch else None
+    # 일지 기준 도화 타겟
+    target_from_day = PEACH_MAP.get(day_branch) if day_branch else None
+
     positions = []
-    if target:
+    targets = set()
+
+    # 년지 기준 도화 확인
+    if target_from_year:
+        targets.add(target_from_year)
         for k in ["year","month","day","hour"]:
-            if (pillars_raw.get(k) or {}).get("branch") == target:
+            branch = (pillars_raw.get(k) or {}).get("branch")
+            if branch == target_from_year and k not in positions:
                 positions.append(k)
+
+    # 일지 기준 도화 확인
+    if target_from_day:
+        targets.add(target_from_day)
+        for k in ["year","month","day","hour"]:
+            branch = (pillars_raw.get(k) or {}).get("branch")
+            if branch == target_from_day and k not in positions:
+                positions.append(k)
+
+    # 타겟 지지들을 문자열로 변환
+    target_branches = list(targets) if targets else None
+
     return {
-        "targetBranch": target,
+        "targetBranch": target_branches[0] if target_branches and len(target_branches) == 1 else target_branches,
+        "targetFromYear": target_from_year,
+        "targetFromDay": target_from_day,
         "positions": positions,
         "hasPeach": bool(positions)
     }

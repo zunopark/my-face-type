@@ -5,7 +5,7 @@ const saju_love_API =
 // ✅ 테스트용 플래그
 // true : Toss 결제 단계 생략하고 바로 결과 페이지로 이동
 // false: 기존 결제 플로우 유지
-const SKIP_TOSS_PAYMENT = false;
+const SKIP_TOSS_PAYMENT = true;
 
 // IndexedDB 설정
 const DB_NAME = "SajuLoveDB";
@@ -68,28 +68,33 @@ function renderResult(data) {
   // 사용자 정보 - 새 레이아웃
   document.getElementById("userNameDisplay").textContent =
     input.userName || "—";
-  document.getElementById("userBirthDate").textContent = formatDate(input.date);
+  const birthTime = formatTimeToSi(input.time);
+  const birthDateText = birthTime
+    ? `${formatDate(input.date)} | ${birthTime}`
+    : formatDate(input.date);
+  document.getElementById("userBirthDate").textContent = birthDateText;
 
   // 일간 정보
   const dm = sajuData.dayMaster || {};
   document.getElementById("dayMasterChar").textContent = dm.char || "—";
   document.getElementById("dayMasterTitle").textContent = dm.title || "—";
 
-  // 오행/음양 한글 변환
-  const elementMap = {
-    wood: "목",
-    fire: "화",
-    earth: "토",
-    metal: "금",
-    water: "수",
+  // 일간 한자 + 오행 한자 조합 (예: 甲木)
+  const elementHanjaMap = {
+    wood: "木",
+    fire: "火",
+    earth: "土",
+    metal: "金",
+    water: "水",
   };
-  const elementKo = elementMap[dm.element?.toLowerCase()] || dm.element || "—";
+  const elementHanja = elementHanjaMap[dm.element?.toLowerCase()] || "";
+  const dayMasterHanja = (dm.char || "") + elementHanja; // 甲木, 丙火 등
 
-  // 섹션 2에 일간 정보 복사
+  // 섹션 2에 일간 정보 복사 (갑목 | 甲木 형식)
   const dayMasterElement2 = document.getElementById("dayMasterElement2");
   const dayMasterTitle2 = document.getElementById("dayMasterTitle2");
-  if (dayMasterElement2) dayMasterElement2.textContent = elementKo;
-  if (dayMasterTitle2) dayMasterTitle2.textContent = dm.title || "—";
+  if (dayMasterElement2) dayMasterElement2.textContent = dm.title || "—"; // 갑목, 병화 등
+  if (dayMasterTitle2) dayMasterTitle2.textContent = dayMasterHanja; // 甲木, 丙火 등
 
   // 일간 성향 설명 렌더링
   renderDayMasterDesc(dm.char);
@@ -223,8 +228,13 @@ function renderLoveFacts(loveFacts) {
 
   // 도화살
   const peach = loveFacts.peachBlossom || {};
-  const peachText = peach.hasPeach
-    ? `있음 (${peach.targetBranch || ""})`
+  const targetBranch = Array.isArray(peach.targetBranch)
+    ? peach.targetBranch.join(", ")
+    : peach.targetBranch || "";
+  // hasPeach: 실제 도화 지지가 사주에 있는지, positions: 어느 주에 있는지
+  const hasPeach = peach.hasPeach || (peach.positions && peach.positions.length > 0);
+  const peachText = hasPeach
+    ? `있음 (${targetBranch})`
     : "없음";
   document.getElementById("peachBlossom").textContent = peachText;
 
@@ -261,6 +271,24 @@ function formatTime(timeStr) {
     "21:30": "해시 (21:30~23:30)",
   };
   return timeMap[timeStr] || timeStr;
+}
+
+function formatTimeToSi(timeStr) {
+  const timeMap = {
+    "23:30": "자시 (23:30~01:30)",
+    "01:30": "축시 (01:30~03:30)",
+    "03:30": "인시 (03:30~05:30)",
+    "05:30": "묘시 (05:30~07:30)",
+    "07:30": "진시 (07:30~09:30)",
+    "09:30": "사시 (09:30~11:30)",
+    "11:30": "오시 (11:30~13:30)",
+    "13:30": "미시 (13:30~15:30)",
+    "15:30": "신시 (15:30~17:30)",
+    "17:30": "유시 (17:30~19:30)",
+    "19:30": "술시 (19:30~21:30)",
+    "21:30": "해시 (21:30~23:30)",
+  };
+  return timeMap[timeStr] || timeStr || "";
 }
 
 function labelKo(key) {
@@ -437,8 +465,12 @@ function fillPaymentSajuSummary(sajuData) {
 
   // 도화살
   const peach = lf.peachBlossom || {};
-  const peachText = peach.hasPeach
-    ? `있음 (${peach.targetBranch || ""})`
+  const targetBranch = Array.isArray(peach.targetBranch)
+    ? peach.targetBranch.join(", ")
+    : peach.targetBranch || "";
+  const hasPeach = peach.hasPeach || (peach.positions && peach.positions.length > 0);
+  const peachText = hasPeach
+    ? `있음 (${targetBranch})`
     : "없음";
   document.getElementById("paymentPeach").textContent = peachText;
 
