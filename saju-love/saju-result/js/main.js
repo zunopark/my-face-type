@@ -28,6 +28,8 @@ let currentSlide = 0;
 let totalSlides = 0;
 let chaptersTrack = null;
 let db = null;
+let isInitialized = false; // 중복 호출 방지 플래그
+let isFetchingAnalysis = false; // API 호출 중복 방지 플래그
 
 // URL에서 ID 가져오기
 const urlParams = new URLSearchParams(window.location.search);
@@ -41,6 +43,13 @@ if (!resultId) {
 
 // 앱 초기화
 async function initApp() {
+  // 중복 호출 방지
+  if (isInitialized) {
+    console.log("initApp 이미 실행됨 - 중복 호출 무시");
+    return;
+  }
+  isInitialized = true;
+
   try {
     db = await openDB();
     const data = await getData(resultId);
@@ -140,9 +149,19 @@ function stopLoadingMessages() {
 }
 
 // 연애 사주 분석 API 호출
-async function fetchLoveAnalysis(data) {
+async function fetchLoveAnalysis(data, retryCount = 0) {
+  const MAX_RETRIES = 2; // 최대 2번 재시도 (총 3번 시도)
   const userName = data.input?.userName || "고객";
-  startLoadingMessages(userName);
+
+  // 중복 호출 방지 (재시도가 아닌 첫 호출일 때만 체크)
+  if (retryCount === 0) {
+    if (isFetchingAnalysis) {
+      console.log("fetchLoveAnalysis 이미 실행 중 - 중복 호출 무시");
+      return;
+    }
+    isFetchingAnalysis = true;
+    startLoadingMessages(userName);
+  }
 
   try {
     // 연애 고민 + 연애 상태 + 관심사 합치기
@@ -178,7 +197,10 @@ async function fetchLoveAnalysis(data) {
       year: new Date().getFullYear(),
     };
 
-    console.log("연애 사주 분석 요청:", payload);
+    console.log(
+      `연애 사주 분석 요청 (시도 ${retryCount + 1}/${MAX_RETRIES + 1}):`,
+      payload
+    );
 
     const res = await fetchWithTimeout(
       saju_love_API,
@@ -197,6 +219,21 @@ async function fetchLoveAnalysis(data) {
 
     const loveResult = await res.json();
     console.log("연애 사주 분석 결과:", loveResult);
+
+    // 이미지 생성 실패 체크 - 이미지가 없으면 재시도
+    const hasImage = loveResult.ideal_partner_image?.image_base64;
+    if (!hasImage && retryCount < MAX_RETRIES) {
+      console.log(
+        `이미지 생성 실패, 재시도 중... (${retryCount + 1}/${MAX_RETRIES})`
+      );
+      updateLoadingText("이미지 생성 재시도 중...");
+      return fetchLoveAnalysis(data, retryCount + 1);
+    }
+
+    if (!hasImage) {
+      console.warn("이미지 생성 최종 실패 - 이미지 없이 결과 표시 불가");
+      throw new Error("이미지 생성에 실패했습니다.");
+    }
 
     // DB에 저장
     data.loveAnalysis = loveResult;
@@ -220,6 +257,10 @@ async function fetchLoveAnalysis(data) {
     ) {
       showError(
         "서버가 일시적으로 응답하지 않습니다. 잠시 후 다시 시도해주세요."
+      );
+    } else if (err.message?.includes("이미지 생성")) {
+      showError(
+        "이미지 생성에 실패했습니다. 잠시 후 다시 시도해주세요."
       );
     } else {
       showError("분석 중 오류가 발생했습니다. 다시 시도해주세요.");
