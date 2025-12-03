@@ -106,7 +106,6 @@
       <div class="resultHistory_wrap">
         <div class="resultHistory_title">
           <div>결제 내역 <span id="history-count"></span></div>
-          <button id="clear-unpaid" class="clear-btn">미결제 DB 삭제</button>
         </div>
         <div id="resultHistory"></div>
       </div>
@@ -411,11 +410,6 @@
         allItems = await collectAllPaidItems();
         renderHistory(allItems);
       })();
-
-      // 미결제 삭제 버튼
-      document
-        .getElementById("clear-unpaid")
-        .addEventListener("click", deleteUnpaidResults);
     </script>
 
     <script src="../commonJs/footer.js"></script>
