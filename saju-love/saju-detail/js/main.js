@@ -5,7 +5,7 @@ const saju_love_API =
 // ✅ 테스트용 플래그
 // true : Toss 결제 단계 생략하고 바로 결과 페이지로 이동
 // false: 기존 결제 플로우 유지
-const SKIP_TOSS_PAYMENT = false;
+const SKIP_TOSS_PAYMENT = true;
 
 // IndexedDB 설정
 const DB_NAME = "SajuLoveDB";
