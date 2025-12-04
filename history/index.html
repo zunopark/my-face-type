@@ -215,7 +215,9 @@
                 img: rec.imageBase64,
                 ts: rep.purchasedAt || rec.timestamp,
                 label: FACE_TYPE_LABEL[t] || "관상 분석",
-                link: `/analyze-result/?id=${rec.id}&type=${t}`,
+                link: t === "base"
+                  ? `/base-report/?id=${rec.id}`
+                  : `/analyze-result/?id=${rec.id}&type=${t}`,
               });
             }
           });

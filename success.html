@@ -258,12 +258,17 @@
 
           /* 2초 후 보고서로 이동 */
           setTimeout(() => {
-            const url =
-              reportType === "couple"
-                ? `/couple-report/?id=${encodeURIComponent(resultId)}`
-                : `/analyze-result/?id=${encodeURIComponent(
-                    resultId
-                  )}&type=${encodeURIComponent(reportType)}`;
+            let url;
+            if (reportType === "couple") {
+              url = `/couple-report/?id=${encodeURIComponent(resultId)}`;
+            } else if (reportType === "base") {
+              // base는 base-report에서 결과 표시
+              url = `/base-report/?id=${encodeURIComponent(resultId)}`;
+            } else {
+              url = `/analyze-result/?id=${encodeURIComponent(
+                resultId
+              )}&type=${encodeURIComponent(reportType)}`;
+            }
             location.href = url;
           }, 2000);
         } catch (err) {

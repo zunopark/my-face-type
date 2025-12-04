@@ -111,11 +111,11 @@ async function analyzeFaceImage(file, imageBase64, forceId = null) {
       { method: "POST", body: formData }
     );
     if (!resp.ok) throw new Error("서버 응답 오류");
-    const { summary, detail, features } = await resp.json();
+    const { summary, detail, sections, features } = await resp.json();
     if (!summary || !detail) throw new Error("summary/detail 없음");
 
-    /* (1) normalize */
-    const normalized = { isMulti: false, summary, detail };
+    /* (1) normalize - sections 포함 */
+    const normalized = { isMulti: false, summary, detail, sections };
 
     /* (2) 스켈레톤 + 결과 객체 */
     const result = {
@@ -124,6 +124,7 @@ async function analyzeFaceImage(file, imageBase64, forceId = null) {
       features,
       summary,
       detail,
+      sections,
       type: "base",
       paid: false,
       purchasedAt: null,
@@ -141,6 +142,13 @@ async function analyzeFaceImage(file, imageBase64, forceId = null) {
 
     if (existing?.sajuInput) {
       result.sajuInput = existing.sajuInput; // 🔥 중요: 보존
+    }
+
+    // 🔥 기존 paid 상태 보존
+    if (existing?.reports?.base?.paid) {
+      result.reports.base.paid = true;
+      result.reports.base.purchasedAt = existing.reports.base.purchasedAt;
+      result.paid = true;
     }
 
     await saveToIndexedDB(result);
@@ -262,19 +270,20 @@ function renderLoading() {
 
   fakeProgress = 0;
   clearInterval(progressInterval);
+  // 결제 후 실제 분석 로딩 - 느리게 (약 15~20초)
   progressInterval = setInterval(() => {
     if (fakeProgress < 94) {
-      fakeProgress += Math.random() * 2.6;
+      fakeProgress += Math.random() * 1.5;
       bar.style.width = `${Math.min(fakeProgress, 94)}%`;
     }
-  }, 300);
+  }, 400);
 
   let idx = 0;
   clearInterval(messageInterval);
   messageInterval = setInterval(() => {
     idx = (idx + 1) % loadingMessages.length;
     msg.textContent = loadingMessages[idx];
-  }, 3000);
+  }, 3500);
   mixpanel.track("기본 분석 보고서 시작", { id: pageId, type: pageType }); // ← 추가
 }
 
@@ -299,7 +308,7 @@ function showError(msg) {
   if (status) status.textContent = "보고서 생성에 실패했습니다.";
 }
 
-// 9. 이미지 업로드 처리
+// 9. 이미지 업로드 처리 (API 호출 없이 이미지만 저장)
 function readURL(input) {
   if (input.files && input.files[0]) {
     const reader = new FileReader();
@@ -314,10 +323,43 @@ function readURL(input) {
         timestamp: new Date().toISOString(),
       });
 
-      await analyzeFaceImage(input.files[0], imageBase64);
+      // 이미지만 저장하고 결제 유도 페이지로 이동
+      await saveImageOnly(imageBase64);
     };
     reader.readAsDataURL(input.files[0]);
   }
+}
+
+// 이미지만 저장 (API 호출 없이)
+async function saveImageOnly(imageBase64) {
+  await waitForDB();
+
+  const resultId = crypto.randomUUID();
+  const result = {
+    id: resultId,
+    imageBase64,
+    type: "base",
+    paid: false,
+    purchasedAt: null,
+    timestamp: new Date().toISOString(),
+    reports: {
+      base: { paid: false, data: null },
+      wealth: { paid: false, data: null },
+      love: { paid: false, data: null },
+      marriage: { paid: false, data: null },
+      career: { paid: false, data: null },
+    },
+  };
+
+  await saveToIndexedDB(result);
+  currentResultId = resultId;
+
+  // URL에 id 추가
+  const newUrl = `${location.pathname}?id=${resultId}`;
+  history.replaceState(null, "", newUrl);
+
+  // 결제 유도 페이지 표시
+  renderPaymentInducePage();
 }
 
 // 10. 결제 처리
@@ -640,15 +682,110 @@ async function autoRenderFromDB() {
     return;
   }
 
-  /* (4) 아무것도 없다면 최초 분석 요청 */
-  if (rec.imageBase64 && rec.features) {
+  /* (4) 결제 완료 상태면 API 호출하여 분석 */
+  if (rec.reports?.base?.paid && rec.imageBase64) {
+    currentResultId = rec.id;
     const file = await (await fetch(rec.imageBase64)).blob();
-    analyzeFaceImage(
+    await analyzeFaceImage(
       new File([file], `${rec.id}.jpg`),
       rec.imageBase64,
       rec.id
     );
+    return;
   }
+
+  /* (5) 미결제 상태면 결제 유도 페이지만 보여줌 */
+  if (rec.imageBase64) {
+    currentResultId = rec.id;
+    renderPaymentInducePage();
+  }
+}
+
+/* ───────── 결제 유도 페이지 렌더 (API 호출 없이) ───────── */
+const LOADING_DONE_KEY = "base_report_loading_done";
+
+function renderPaymentInducePage() {
+  const wrap = document.getElementById("label-container");
+
+  // 요약 섹션 없이 faceteller.png 상세 페이지만 표시
+  wrap.innerHTML = `
+    <div class="face_teller_wrap">
+      <img src="../img/faceteller.png" alt="" class="face_teller_img" />
+    </div>
+  `;
+
+  // 버튼 영역 표시
+  const btnWrap = document.querySelector(".result_btn_wrap");
+  if (btnWrap) {
+    btnWrap.style.display = "flex";
+  }
+
+  // 이미 로딩 완료한 적 있으면 바로 활성화
+  const loadingDoneId = sessionStorage.getItem(LOADING_DONE_KEY);
+  if (loadingDoneId === currentResultId) {
+    activateButton();
+  } else {
+    startFakeLoading();
+  }
+
+  mixpanel.track("결제 유도 페이지 진입", { id: currentResultId });
+}
+
+/* 가짜 로딩 시작 */
+function startFakeLoading() {
+  const btnWrap = document.querySelector(".result_btn_wrap");
+  const bar = document.querySelector(".result_btn_loading");
+  const status = document.querySelector(".result_btn_status");
+  const btn = document.querySelector(".result_btn");
+
+  if (btnWrap) btnWrap.dataset.state = "loading";
+  if (status) status.textContent = "관상을 분석하는 중입니다...";
+  if (btn) btn.disabled = true;
+  if (bar) bar.style.width = "0%";
+
+  const loadingMessages = [
+    "관상을 분석하는 중입니다...",
+    "얼굴 특징을 읽는 중...",
+    "전통 관상학 데이터 참조 중...",
+    "보고서를 정리하는 중...",
+  ];
+
+  let progress = 0;
+  let msgIdx = 0;
+
+  // 빠르게 완료 (약 3~4초)
+  const progressInterval = setInterval(() => {
+    progress += Math.random() * 5;
+    if (progress >= 100) {
+      progress = 100;
+      clearInterval(progressInterval);
+      clearInterval(msgInterval);
+      finishFakeLoading();
+    }
+    if (bar) bar.style.width = `${Math.min(progress, 100)}%`;
+  }, 200);
+
+  const msgInterval = setInterval(() => {
+    msgIdx = (msgIdx + 1) % loadingMessages.length;
+    if (status) status.textContent = loadingMessages[msgIdx];
+  }, 2500);
+}
+
+/* 로딩 완료 */
+function finishFakeLoading() {
+  sessionStorage.setItem(LOADING_DONE_KEY, currentResultId);
+  activateButton();
+}
+
+/* 버튼 활성화 */
+function activateButton() {
+  const btnWrap = document.querySelector(".result_btn_wrap");
+  const status = document.querySelector(".result_btn_status");
+  const btn = document.querySelector(".result_btn");
+
+  if (btnWrap) btnWrap.dataset.state = "ready";
+  if (status) status.textContent = "관상 분석을 완료했습니다.";
+  if (btn) btn.disabled = false;
 }
 
 function renderResultNormalized(obj, reportType = "base") {
@@ -710,7 +847,31 @@ function renderResultNormalized(obj, reportType = "base") {
         '<a href="$2" target="_blank" rel="noopener">$1</a>'
       );
 
-    // 6) 가로줄
+    // 6) 마크다운 표(table) 처리
+    src = src.replace(/(?:^|\n)((?:\|[^\n]+\|\n)+)/g, (match, tableBlock) => {
+      const rows = tableBlock.trim().split("\n");
+      if (rows.length < 2) return match;
+
+      let html = '<table class="md-table">';
+      rows.forEach((row, idx) => {
+        // 구분선 (|---|---|---| 등) 건너뛰기
+        if (/^\|[\s\-:|]+\|$/.test(row.trim()) && row.includes("-")) return;
+
+        const cells = row
+          .split("|")
+          .filter((_, i, arr) => i > 0 && i < arr.length - 1);
+        const tag = idx === 0 ? "th" : "td";
+        html += "<tr>";
+        cells.forEach((cell) => {
+          html += `<${tag}>${cell.trim()}</${tag}>`;
+        });
+        html += "</tr>";
+      });
+      html += "</table>";
+      return html;
+    });
+
+    // 7) 가로줄
     src = src.replace(/^\s*(\*\s*\*\s*\*|-{3,}|_{3,})\s*$/gm, "<hr>");
 
     // 7) 블록인용
@@ -726,9 +887,7 @@ function renderResultNormalized(obj, reportType = "base") {
       .replace(/(<\/ol>\s*)<ol>/g, ""); // 인접 <ol> 병합
 
     // 9) 남은 개행을 <br>로
-    // src = src
-    //   .replace(/\n{2,}/g, "</p><p>")
-    //   .replace(/\n/g, "<br>");
+    src = src.replace(/\n{2,}/g, "</p><p>").replace(/\n/g, "<br>");
 
     return `<p>${src}</p>`;
   }
@@ -748,14 +907,56 @@ function renderResultNormalized(obj, reportType = "base") {
     );
   }
 
-  wrap.innerHTML = `
-    <div class="face-summary-section">
-      <div class="face-summary">${simpleMD(obj.summary)}</div>
-    </div>
-    <div class="face_teller_wrap">
-      <img src="../img/faceteller.png" alt="" class="face_teller_img" />
-    </div>
-  `;
+  // 섹션 정보
+  const sectionConfig = [
+    { key: "face_reading", title: "부위별 관상 심층 풀이" },
+    { key: "love", title: "연애운 심층 풀이" },
+    { key: "career", title: "직업운 심층 풀이" },
+    { key: "wealth", title: "재물운 심층 풀이" },
+    { key: "health", title: "건강운 심층 풀이" },
+  ];
+
+  // sections가 있으면 카드 UI로, 없으면 기존 방식
+  if (obj.sections && Object.keys(obj.sections).some((k) => obj.sections[k])) {
+    const sectionsHTML = sectionConfig
+      .filter((sec) => obj.sections[sec.key])
+      .map(
+        (sec) => `
+        <div class="report-card">
+          <div class="report-card-header">
+            <h3 class="report-card-title">${sec.title}</h3>
+          </div>
+          <div class="report-card-content">
+            ${simpleMD(obj.sections[sec.key])}
+          </div>
+        </div>
+      `
+      )
+      .join("");
+
+    wrap.innerHTML = `
+      <div class="face-summary-section">
+        <div class="face-summary">${simpleMD(obj.summary)}</div>
+      </div>
+      <div class="report-cards-container">
+        ${sectionsHTML}
+      </div>
+    `;
+  } else {
+    // 기존 방식 (sections 없을 때 fallback)
+    wrap.innerHTML = `
+      <div class="face-summary-section">
+        <div class="face-summary">${simpleMD(obj.summary)}</div>
+      </div>
+      <div class="face-detail-section">
+        <div class="face-detail">${simpleMD(obj.detail)}</div>
+      </div>
+    `;
+  }
+
+  // 결과 페이지에서는 버튼 숨김
+  const btnWrap = document.querySelector(".result_btn_wrap");
+  if (btnWrap) btnWrap.style.display = "none";
 }
 
 function renderImage(base64) {
