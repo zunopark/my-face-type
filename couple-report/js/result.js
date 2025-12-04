@@ -280,6 +280,73 @@ window.addEventListener("scroll", () => {
 
 function closeLovePayment() {
   document.getElementById("lovePaymentOverlay").style.display = "none";
+  document.getElementById("love-method").innerHTML = "";
+  document.getElementById("love-agreement").innerHTML = "";
+
+  mixpanel.track("궁합 결제창 닫힘", {
+    id: coupleId,
+    timestamp: new Date().toISOString(),
+  });
+
+  document.body.style.overflow = "";
+
+  // 1초 후 깜짝 할인 결제창 열기
+  setTimeout(() => {
+    startDiscountedPayment();
+    document.body.style.overflow = "hidden";
+  }, 1000);
+}
+
+// 깜짝 할인 결제
+async function startDiscountedPayment() {
+  const clientKey = "live_gck_yZqmkKeP8gBaRKPg1WwdrbQRxB9l";
+  const customerKey = "customer_" + Date.now();
+
+  document.getElementById("discountOverlay").style.display = "block";
+
+  mixpanel.track("궁합 할인 결제창 열림", {
+    id: coupleId,
+    timestamp: new Date().toISOString(),
+  });
+
+  try {
+    const widget = PaymentWidget(clientKey, customerKey);
+    widget.renderPaymentMethods("#discount-method", { value: 7900 });
+    widget.renderAgreement("#discount-agreement");
+
+    document.getElementById("discount-button").onclick = async () => {
+      try {
+        await widget.requestPayment({
+          orderId: `discount_${Date.now()}`,
+          orderName: "AI 커플 궁합 관상 보고서 - 할인 특가",
+          customerName: "고객",
+          successUrl: `${window.location.origin}/success.html?id=${coupleId}&type=couple`,
+          failUrl: `${window.location.origin}/fail.html?id=${coupleId}&type=couple`,
+        });
+
+        mixpanel.track("궁합 할인 결제 시도", {
+          id: coupleId,
+          price: 7900,
+          timestamp: new Date().toISOString(),
+        });
+      } catch (err) {
+        alert("❌ 할인 결제 실패: " + err.message);
+      }
+    };
+  } catch (e) {
+    alert("❌ 할인 결제 위젯 로드 실패: " + e.message);
+  }
+}
+
+function closeDiscount() {
+  document.getElementById("discountOverlay").style.display = "none";
+  document.getElementById("discount-method").innerHTML = "";
+  document.getElementById("discount-agreement").innerHTML = "";
+  mixpanel.track("궁합 할인 결제창 닫힘", {
+    id: coupleId,
+    timestamp: new Date().toISOString(),
+  });
+  document.body.style.overflow = "";
 }
 
 let fakeProgress = 0;

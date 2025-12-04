@@ -1,116 +1,98 @@
+/* ===== 커플 궁합 보고서 (전통 양반 테마) ===== */
+
 .result-section {
   margin: 32px 0;
   font-size: 16px;
   line-height: 1.6;
 }
 
-.result-section pre {
-  white-space: pre-wrap;
-  background: #f9f9f9;
-  padding: 16px;
-  border-radius: 8px;
-}
-
-.couple-score {
-  font-size: 32px;
-  font-weight: bold;
-  margin: 12px 0;
-}
-
-.couple-summary {
-  font-size: 18px;
-  font-style: italic;
-  margin-bottom: 24px;
-}
-
-.loading {
-  padding: 100px 20px;
-  text-align: center;
-  font-size: 18px;
-  display: none;
-}
-
-.report-container {
-  max-width: 720px;
-  margin: 0 auto;
-  padding: 24px;
-  display: none;
-}
-
-.photo-pair {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 12px;
-  margin-top: 20px;
-}
-
-.photo-pair img {
-  width: 120px;
-  height: 120px;
-  object-fit: cover;
-  border-radius: 50%;
-  border: 2px solid #d28b6c;
-}
-
-.heart {
-  color: #df5b59;
-}
-
-.section {
-  margin-bottom: 40px;
-}
-
-.section h2 {
-  font-size: 20px;
-  color: #b42d2d;
-}
-
-.section pre {
-  background: #f9f6f1;
-  padding: 16px;
-  white-space: pre-wrap;
-  line-height: 1.6;
-  border-radius: 8px;
-}
-
+/* 궁합 점수 섹션 */
 .score-summary {
-  color: rgb(34, 34, 34);
+  color: #4a3c2a;
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 16px;
-  border-radius: 8px;
+  padding: 28px 20px;
+  background: #fdfcf8;
+  border: 1px solid #d4c5a9;
   line-height: 1.6;
+  margin-bottom: 32px;
+  position: relative;
 }
 
 .score-summary-title {
+  font-size: 14px;
+  color: #8b7355;
+  font-family: "KimjungchulMyungjo-Bold", serif;
+  letter-spacing: 2px;
+  margin-bottom: 8px;
 }
 
 .score-num {
-  font-weight: 500;
-  font-size: 40px;
+  font-weight: 700;
+  font-size: 48px;
+  color: #6b4423;
+  font-family: "KimjungchulMyungjo-Bold", serif;
 }
 
 .summary-wrap {
   text-align: center;
+  margin-top: 12px;
+  font-size: 16px;
+  color: #4a3c2a;
+  line-height: 1.8;
+}
+
+/* 사진 쌍 */
+.photo-pair {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  margin-top: 24px;
+  margin-bottom: 32px;
+}
+
+.photo-pair img {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 3px solid #d4c5a9;
+  box-shadow: 0 2px 8px rgba(74, 60, 42, 0.15);
+}
+
+.heart {
+  color: #b85c38;
+  font-size: 28px;
+}
+
+/* 섹션 카드 */
+.section {
+  margin-bottom: 24px;
 }
 
 .result-content-wrap {
   position: relative;
   overflow: hidden;
-  border-radius: 8px;
+  background: #fdfcf8;
+  border: 1px solid #d4c5a9;
 }
 
 .result-content-wrap pre {
-  background: #f9f6f1;
-  padding: 16px;
+  background: #fdfcf8;
+  padding: 24px 20px;
   white-space: pre-wrap;
-  line-height: 1.6;
-  border-radius: 8px;
+  line-height: 1.9;
   margin: 0;
+  font-size: 15px;
+  color: #3d3d3d;
+  font-family: inherit;
+  text-align: justify;
+  word-break: keep-all;
 }
 
+/* 블러 마스크 */
 .result-mask {
   position: absolute;
   top: 0;
@@ -149,32 +131,47 @@
   );
 }
 
+/* 로딩 박스 */
 .loading-box {
   padding: 60px 24px;
   text-align: center;
 }
 
+.loading-box.dark-mode {
+  color: #4a3c2a;
+  background: #fdfcf8;
+  border: 1px solid #d4c5a9;
+  border-radius: 0;
+  padding: 40px 24px;
+  text-align: center;
+  width: 100%;
+  max-width: 360px;
+  margin: 20px auto;
+}
+
 .loading-text {
-  font-size: 14px;
-  font-weight: bold;
+  font-size: 15px;
+  font-weight: 500;
   margin-bottom: 20px;
+  color: #4a3c2a;
+  font-family: "KimjungchulMyungjo-Bold", serif;
   animation: fadeIn 1s ease-in-out infinite alternate;
 }
 
 .progress-bar-container {
   width: 100%;
-  height: 12px;
-  background-color: #eee;
-  border-radius: 8px;
+  height: 8px;
+  background-color: #e8e0d0;
+  border-radius: 0;
   overflow: hidden;
 }
 
 .progress-bar-fill {
   height: 100%;
   width: 0%;
-  background-color: #ff7f50;
+  background: linear-gradient(to right, #8b7355, #6b4423);
   transition: width 0.4s ease;
-  border-radius: 8px;
+  border-radius: 0;
 }
 
 @keyframes fadeIn {
@@ -186,6 +183,7 @@
   }
 }
 
+/* 전체 보기 버튼 영역 */
 .view-full-mask-button-wrap {
   width: 100%;
 }
@@ -195,86 +193,108 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  border-top: 1px solid #dbdbdb;
-  border-bottom: 1px solid #dbdbdb;
-  margin-bottom: 20px;
-  padding-top: 40px;
+  border-top: 1px solid #d4c5a9;
+  border-bottom: 1px solid #d4c5a9;
+  margin-bottom: 24px;
+  padding: 32px 20px;
+  background: #f9f6f0;
 }
 
 .full-title {
   text-align: center;
-  font-size: 20px;
+  font-size: 18px;
+  color: #4a3c2a;
+  font-family: "KimjungchulMyungjo-Bold", serif;
 }
 
 .full-subtitle {
   text-align: center;
-  font-size: 20px;
-  margin-bottom: 20px;
-}
-.full-check-wrap {
-  display: flex;
-  flex-direction: column;
-  width: 320px;
-}
-.full-check {
-  width: 320px;
-  display: flex;
-  justify-content: space-between;
-  padding: 12px 20px;
-  border: 1px solid #9fdb9f;
-  border-radius: 20px;
-  margin-bottom: 8px;
-}
-.full-check-title {
-}
-.full-check-icon {
-  color: #9fdb9f;
-}
-.view-full-btn {
-  background-color: #ff6a0e;
-  padding: 20px 40px;
-  font-size: 18px;
-  font-weight: 700;
-
-  border-radius: 40px;
-  margin-bottom: 40px;
-  margin-top: 12px;
-  color: rgb(22, 22, 22);
+  font-size: 17px;
+  margin-bottom: 24px;
+  color: #4a3c2a;
+  line-height: 1.6;
 }
 
 .couple_bold {
   font-weight: 700;
-  color: #ff6a0e;
+  color: #6b4423;
 }
 
+.full-check-wrap {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 320px;
+}
+
+.full-check {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 16px;
+  border: 1px solid #d4c5a9;
+  background: #fdfcf8;
+  margin-bottom: 8px;
+}
+
+.full-check-title {
+  font-size: 14px;
+  color: #4a3c2a;
+}
+
+.full-check-icon {
+  color: #8b7355;
+}
+
+.view-full-btn {
+  background: linear-gradient(135deg, #d4a017 0%, #b8860b 100%);
+  padding: 18px 36px;
+  font-size: 17px;
+  font-weight: 700;
+  border: none;
+  margin-top: 16px;
+  color: #fff;
+  font-family: "KimjungchulMyungjo-Bold", serif;
+  cursor: pointer;
+  box-shadow: 0 4px 16px rgba(184, 134, 11, 0.35);
+}
+
+/* 하단 고정 버튼 */
 #view-full-btn-wrap2 {
   width: 100%;
   display: flex;
   justify-content: center;
 }
+
 .view-full-always-btn {
   position: fixed;
-  bottom: 0px;
-  background-color: #ff6a0e;
-  padding: 20px 40px;
-  font-size: 18px;
+  bottom: 32px;
+  padding: 18px 36px;
+  font-size: 17px;
   font-weight: 700;
-
-  border-radius: 40px;
+  background: linear-gradient(135deg, #d4a017 0%, #b8860b 100%);
+  color: #fff;
+  border: none;
   z-index: 1000;
+  transition: opacity 0.3s;
+  font-family: "KimjungchulMyungjo-Bold", serif;
+  cursor: pointer;
+  box-shadow: 0 4px 16px rgba(184, 134, 11, 0.35);
 }
 
-.view-full-always-btn {
-  position: fixed;
-  bottom: 40px;
-  /* transform: translateX(-50%); */
-  padding: 20px 40px;
+/* 보고서 컨테이너 */
+.report-container {
+  max-width: 100%;
+  margin: 0 auto;
+  padding: 0 16px;
+  display: none;
+}
 
+/* 로딩 상태 */
+.loading {
+  padding: 100px 20px;
+  text-align: center;
   font-size: 18px;
-  font-weight: 700;
-
-  border-radius: 40px;
-
-  transition: opacity 0.3s;
-  color: rgb(22, 22, 22);
+  display: none;
 }

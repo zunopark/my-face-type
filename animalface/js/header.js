@@ -25,7 +25,7 @@ const headerContent = () => {
           <div class="header_chat_title" style="color: rgb(130, 130, 130);">관상</div>
         </a>
             <a href="/saju-love/" style="margin-right: 12px; text-decoration: none;">
-          <div class="header_chat_title" style="color: rgb(130, 130, 130);">사주<span style="${newBadgeStyle}">NEW</span></div>
+          <div class="header_chat_title" style="color: rgb(130, 130, 130);">연애 사주<span style="${newBadgeStyle}">NEW</span></div>
         </a>
             <a href="/animalface/" style="margin-right: 12px; text-decoration: none;">
           <div class="header_chat_title">동물상</div>

@@ -521,9 +521,69 @@ function closePayment() {
   document.getElementById("payment-method").innerHTML = "";
   document.getElementById("agreement").innerHTML = "";
   document.body.style.overflow = "";
+
+  // 1초 후 깜짝 할인 결제창 열기
+  setTimeout(() => {
+    startDiscountedPayment();
+    document.body.style.overflow = "hidden";
+  }, 1000);
 }
 
 closePaymentBtn.addEventListener("click", closePayment);
+
+// 깜짝 할인 결제
+async function startDiscountedPayment() {
+  const clientKey = "live_gck_yZqmkKeP8gBaRKPg1WwdrbQRxB9l";
+  const customerKey = "customer_" + Date.now();
+
+  const discountOverlay = document.getElementById("discountOverlay");
+  discountOverlay.style.display = "block";
+
+  // 할인 모달에 사주 정보 표시
+  if (currentData?.sajuData) {
+    const saju = currentData.sajuData;
+    document.getElementById("discountDayMaster").textContent =
+      saju.dayMaster?.char + " " + saju.dayMaster?.title || "—";
+    document.getElementById("discountStrength").textContent =
+      saju.strength || "—";
+    document.getElementById("discountPeach").textContent =
+      saju.peachBlossom?.hasPeach ? "있음" : "없음";
+    document.getElementById("discountSpouse").textContent =
+      saju.spouseElement?.summary || "—";
+  }
+
+  try {
+    const widget = PaymentWidget(clientKey, customerKey);
+    widget.renderPaymentMethods("#discount-method", { value: 7900 });
+    widget.renderAgreement("#discount-agreement");
+
+    document.getElementById("discount-button").onclick = async () => {
+      try {
+        await widget.requestPayment({
+          orderId: `discount_${Date.now()}`,
+          orderName: "연애 사주 심층 분석 - 할인 특가",
+          customerName: "고객",
+          successUrl: `${window.location.origin}/saju-love/success.html?id=${resultId}`,
+          failUrl: `${window.location.origin}/saju-love/fail.html?id=${resultId}`,
+        });
+      } catch (err) {
+        alert("할인 결제 실패: " + err.message);
+      }
+    };
+  } catch (e) {
+    alert("할인 결제 위젯 로드 실패: " + e.message);
+  }
+}
+
+// 깜짝 할인 창 닫기
+function closeDiscount() {
+  document.getElementById("discountOverlay").style.display = "none";
+  document.getElementById("discount-method").innerHTML = "";
+  document.getElementById("discount-agreement").innerHTML = "";
+  document.body.style.overflow = "";
+}
+
+document.getElementById("closeDiscountBtn").addEventListener("click", closeDiscount);
 
 // IndexedDB 업데이트 함수
 function updateLoveAnalysis(id, loveResult) {

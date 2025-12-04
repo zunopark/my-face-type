@@ -352,6 +352,83 @@
       </div>
     </div>
 
+    <!-- 깜짝 할인 오버레이 -->
+    <div id="discountOverlay" class="payment-overlay" style="display: none">
+      <div class="payment-fullscreen">
+        <div class="modal-content">
+          <div class="payment-header">
+            <div class="payment-title">🎁 깜짝 선물! 2,000원 추가 할인</div>
+            <div class="payment-close" onclick="closeDiscount()">✕</div>
+          </div>
+          <div class="payment-header">
+            <div class="payment-subtitle">
+              얼굴만으로 밝혀지는 우리 관계의 모든 것
+            </div>
+          </div>
+
+          <div class="report-wrap">
+            <div class="report-title-wrap">
+              <div class="report-title">보고서 내용</div>
+              <div class="report-num">총 8,000자+ 심층 분석</div>
+            </div>
+
+            <div class="report-contents-wrap">
+              <div class="report-contents">1. 두 사람의 성격 궁합 분석</div>
+            </div>
+            <div class="report-contents-wrap">
+              <div class="report-contents">2. 관상으로 보는 연애 스타일</div>
+            </div>
+            <div class="report-contents-wrap">
+              <div class="report-contents">3. 나의 매력 & 유혹 전략</div>
+            </div>
+            <div class="report-contents-wrap">
+              <div class="report-contents">4. 헤어질 가능성과 주의할 점</div>
+            </div>
+            <div class="report-contents-wrap">
+              <div class="report-contents">
+                5. [+천기누설] 관상으로 보는 속궁합 분석 🔥
+              </div>
+            </div>
+          </div>
+
+          <div class="payment-price-wrap">
+            <div class="payment-original-price-title">보고서 금액</div>
+            <div class="payment-original-price">21,140원</div>
+          </div>
+
+          <div class="payment-coupon-wrap">
+            <div class="payment-coupon">쿠폰 할인 적용 💸</div>
+          </div>
+
+          <div class="payment-coupon-price-wrap">
+            <div class="payment-coupon-title">
+              궁합 관상 보고서 특별가 + 추가 2천원 할인
+            </div>
+            <div class="payment-coupon-price">-13,240원</div>
+          </div>
+
+          <div id="discount-method"></div>
+          <div id="discount-agreement"></div>
+
+          <div class="payment-final-price-wrap">
+            <div class="payment-final-price-title">최종 결제 금액</div>
+            <div class="payment-final-price-price-wrap">
+              <div class="payment-originam-price2">21,140원</div>
+              <div class="payment-final-price">
+                <div class="payment-final-price-discount">63%</div>
+                <div class="payment-final-price-num">7,900원</div>
+              </div>
+            </div>
+          </div>
+
+          <button id="discount-button" class="payment-final-btn">
+            보고서 확인하기
+          </button>
+          <div class="payment-empty"></div>
+        </div>
+      </div>
+    </div>
+
     <script>
       // 고유 사용자 ID를 localStorage에서 불러오거나 새로 생성
       let distinctId = localStorage.getItem("mixpanel_distinct_id");

@@ -292,6 +292,120 @@
         </div>
       </div>
 
+      <!-- 깜짝 할인 오버레이 -->
+      <div id="discountOverlay" class="payment-overlay" style="display: none">
+        <div class="payment-fullscreen">
+          <div class="modal-content">
+            <div class="payment-header">
+              <div class="payment-title">🎁 깜짝 선물! 2,000원 추가 할인</div>
+              <div class="payment-close" id="closeDiscountBtn">✕</div>
+            </div>
+
+            <!-- 사주 요약 -->
+            <div class="payment-saju-summary">
+              <div class="saju-summary-row">
+                <span class="saju-summary-label">일간</span>
+                <span class="saju-summary-value" id="discountDayMaster">—</span>
+              </div>
+              <div class="saju-summary-row">
+                <span class="saju-summary-label">신강/신약</span>
+                <span class="saju-summary-value" id="discountStrength">—</span>
+              </div>
+              <div class="saju-summary-row">
+                <span class="saju-summary-label">도화살</span>
+                <span class="saju-summary-value" id="discountPeach">—</span>
+              </div>
+              <div class="saju-summary-row">
+                <span class="saju-summary-label">배우자운</span>
+                <span class="saju-summary-value" id="discountSpouse">—</span>
+              </div>
+            </div>
+
+            <div class="payment-intro">
+              <p>
+                사주 팔자 기반의 <strong>10,000자 이상</strong> 연애 심층 보고서
+              </p>
+            </div>
+
+            <div class="report-wrap">
+              <div class="report-section">
+                <div class="report-section-title">
+                  1장. 나만의 매력과 연애 성향
+                </div>
+                <div class="report-section-desc">
+                  처음 본 순간 이성이 느끼는 나의 매력, 내 연애 스타일 장점과
+                  숨겨진 반전 매력, 인만추 vs 자만추 vs 결정사 중 나에게 맞는
+                  방식, 내가 끌리는 사람 vs 나에게 끌리는 사람까지 분석합니다.
+                </div>
+              </div>
+
+              <div class="report-section">
+                <div class="report-section-title">
+                  2장. 앞으로 펼쳐질 사랑의 흐름
+                </div>
+                <div class="report-section-desc">
+                  앞으로의 연애 총운 흐름, 향후 3년간 연애운 증폭 시기와 총 몇
+                  번의 연애 기회가 있을지, 바로 지금 이번 달 연애 운세까지
+                  상세하게 분석합니다.
+                </div>
+              </div>
+
+              <div class="report-section">
+                <div class="report-section-title">
+                  3장. 결국 만나게 될 운명의 상대
+                </div>
+                <div class="report-section-desc">
+                  운명의 짝 그 사람의 외모, 성격, MBTI, 직업군까지 모든 것, 언제
+                  어떻게 만나게 될지, 그 사람을 끌어당길 나만의 공략법까지
+                  구체적으로 풀이합니다.
+                </div>
+              </div>
+
+              <div class="report-section">
+                <div class="report-section-title">4장. 색동낭자의 일침</div>
+                <div class="report-section-desc">
+                  입력한 고민에 대해 사주 기반으로 뼈 때리는 직언과 현실적인
+                  처방전을 1:1 맞춤 상담 형식으로 제공합니다.
+                </div>
+              </div>
+            </div>
+
+            <div class="payment-price-wrap">
+              <div class="payment-original-price-title">정가</div>
+              <div class="payment-original-price">29,900원</div>
+            </div>
+
+            <div class="payment-coupon-wrap">
+              <div class="payment-coupon">출시 기념 할인 + 추가 할인</div>
+            </div>
+            <div class="payment-coupon-price-wrap">
+              <div class="payment-coupon-title">
+                출시 기념 특별 할인 + 추가 2천원 할인
+              </div>
+              <div class="payment-coupon-price">-22,000원</div>
+            </div>
+
+            <div id="discount-method"></div>
+            <div id="discount-agreement"></div>
+
+            <div class="payment-final-price-wrap">
+              <div class="payment-final-price-title">최종 결제 금액</div>
+              <div class="payment-final-price-price-wrap">
+                <div class="payment-originam-price2">29,900원</div>
+                <div class="payment-final-price">
+                  <div class="payment-final-price-discount">74%</div>
+                  <div class="payment-final-price-num">7,900원</div>
+                </div>
+              </div>
+            </div>
+            <button id="discount-button" class="payment-final-btn">
+              심층 분석 받기
+            </button>
+            <div class="payment-empty"></div>
+          </div>
+        </div>
+      </div>
+
       <footer class="footer"></footer>
     </div>
 
