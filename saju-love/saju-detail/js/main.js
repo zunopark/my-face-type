@@ -5,7 +5,7 @@ const saju_love_API =
 // ✅ 테스트용 플래그
 // true : Toss 결제 단계 생략하고 바로 결과 페이지로 이동
 // false: 기존 결제 플로우 유지
-const SKIP_TOSS_PAYMENT = false;
+const SKIP_TOSS_PAYMENT = true;
 
 // IndexedDB 설정
 const DB_NAME = "SajuLoveDB";
@@ -558,8 +558,10 @@ async function startDiscountedPayment() {
       saju.dayMaster?.char + " " + saju.dayMaster?.title || "—";
     document.getElementById("discountStrength").textContent =
       saju.strength || "—";
-    document.getElementById("discountPeach").textContent =
-      saju.peachBlossom?.hasPeach ? "있음" : "없음";
+    document.getElementById("discountPeach").textContent = saju.peachBlossom
+      ?.hasPeach
+      ? "있음"
+      : "없음";
     document.getElementById("discountSpouse").textContent =
       saju.spouseElement?.summary || "—";
   }
@@ -595,7 +597,9 @@ function closeDiscount() {
   document.body.style.overflow = "";
 }
 
-document.getElementById("closeDiscountBtn").addEventListener("click", closeDiscount);
+document
+  .getElementById("closeDiscountBtn")
+  .addEventListener("click", closeDiscount);
 
 // IndexedDB 업데이트 함수
 function updateLoveAnalysis(id, loveResult) {
