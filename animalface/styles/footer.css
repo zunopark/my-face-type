@@ -40,6 +40,14 @@
   font-weight: 700;
 }
 
+.business_info {
+  color: rgb(180, 180, 180);
+}
+
+.business_info div {
+  color: rgb(180, 180, 180);
+}
+
 .bottom_nav {
   display: flex;
   width: 320px;

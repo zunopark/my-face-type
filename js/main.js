@@ -15,6 +15,14 @@ const TITLE_MAP = {
 
 document.querySelectorAll(".category_btn").forEach((btn) => {
   btn.addEventListener("click", () => {
+    const target = btn.dataset.target;
+
+    // 연애 사주는 별도 페이지로 이동
+    if (target === "saju") {
+      window.location.href = "/saju-love/";
+      return;
+    }
+
     /* --- (1) 버튼 active 토글 --- */
     document
       .querySelectorAll(".category_btn")
@@ -22,7 +30,6 @@ document.querySelectorAll(".category_btn").forEach((btn) => {
     btn.classList.add("active");
 
     /* --- (2) 콘텐츠 영역 토글 --- */
-    const target = btn.dataset.target; // face / match …
     document
       .querySelectorAll(".tab_content")
       .forEach((c) => c.classList.remove("active"));

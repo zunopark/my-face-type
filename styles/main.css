@@ -210,6 +210,51 @@ body {
   border: 1px solid #222;
 }
 
+/* NEW 뱃지가 있는 버튼 */
+.category_btn_new {
+  position: relative;
+  overflow: hidden;
+}
+
+.category_btn_new::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(
+    120deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.5) 50%,
+    transparent 100%
+  );
+  animation: shine-sweep 2.5s ease-in-out infinite;
+}
+
+@keyframes shine-sweep {
+  0% {
+    left: -100%;
+  }
+  50%, 100% {
+    left: 150%;
+  }
+}
+
+/* NEW 뱃지 */
+.new_badge {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  background: linear-gradient(135deg, #ff5252, #ff1744);
+  color: #fff;
+  font-size: 9px;
+  font-weight: 700;
+  padding: 2px 5px;
+  border-radius: 4px;
+  letter-spacing: 0.5px;
+}
+
 .tab_content {
   display: none;
 } /* 기본 숨김 */
