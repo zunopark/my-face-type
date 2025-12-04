@@ -1074,6 +1074,53 @@ body {
   background: #fffafa;
 }
 
+/* 블록인용 (색동낭자 속닥속닥) */
+blockquote {
+  position: relative;
+  margin: 20px 0;
+  padding: 20px 20px 20px 24px;
+  background: #fffaf5;
+  border: 1px solid #ffe0d0;
+  border-radius: 16px;
+  font-size: 14px;
+  line-height: 1.8;
+  color: #666;
+  box-shadow: 0 2px 8px rgba(231, 76, 60, 0.08);
+}
+
+blockquote::before {
+  content: "";
+  position: absolute;
+  top: -10px;
+  left: 20px;
+  width: 0;
+  height: 0;
+  border-left: 10px solid transparent;
+  border-right: 10px solid transparent;
+  border-bottom: 10px solid #ffe0d0;
+}
+
+blockquote::after {
+  content: "";
+  position: absolute;
+  top: -8px;
+  left: 21px;
+  width: 0;
+  height: 0;
+  border-left: 9px solid transparent;
+  border-right: 9px solid transparent;
+  border-bottom: 9px solid #fffaf5;
+}
+
+blockquote strong {
+  display: block;
+  color: #e74c3c;
+  font-size: 12px;
+  font-weight: 700;
+  margin-bottom: 8px;
+  letter-spacing: 0.5px;
+}
+
 /* 유틸리티 */
 .hidden {
   display: none !important;

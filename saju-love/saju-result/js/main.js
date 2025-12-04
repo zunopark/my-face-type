@@ -1087,8 +1087,15 @@ function simpleMD(src = "") {
   // 7) 가로줄
   src = src.replace(/^\s*(\*\s*\*\s*\*|-{3,}|_{3,})\s*$/gm, "<hr>");
 
-  // 8) 블록인용
-  src = src.replace(/^>\s+(.*)$/gm, "<blockquote>$1</blockquote>");
+  // 8) 블록인용 (연속된 > 줄을 하나의 blockquote로 합침)
+  src = src.replace(/(^>\s?.*$\n?)+/gm, (match) => {
+    const content = match
+      .split("\n")
+      .map((line) => line.replace(/^>\s?/, "").trim())
+      .filter((line) => line)
+      .join("<br>");
+    return `<blockquote>${content}</blockquote>`;
+  });
 
   // 9) 리스트 (볼드 처리 후에 수행)
   src = src
