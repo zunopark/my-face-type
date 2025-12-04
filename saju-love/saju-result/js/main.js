@@ -287,8 +287,19 @@ function showError(message) {
 
 // 결과 렌더링
 function renderResult(data) {
-  const { loveAnalysis } = data;
+  const { loveAnalysis, input } = data;
   const userName = loveAnalysis.user_name || "고객";
+
+  // Mixpanel 트래킹 (유저 정보 포함)
+  if (typeof mixpanel !== "undefined") {
+    mixpanel.track("연애 사주 결과 페이지 방문", {
+      userName: input?.userName || userName,
+      birthDate: input?.date || "",
+      gender: input?.gender || "",
+      url: window.location.href,
+      timestamp: new Date().toISOString(),
+    });
+  }
 
   // 트랙 생성
   chaptersTrack = document.createElement("div");

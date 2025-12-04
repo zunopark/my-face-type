@@ -46,6 +46,18 @@ function loadResult(id) {
       if (getReq.result) {
         currentData = getReq.result;
         renderResult(getReq.result);
+
+        // Mixpanel 트래킹 (유저 정보 포함)
+        if (typeof mixpanel !== "undefined") {
+          const input = getReq.result.input || {};
+          mixpanel.track("연애 사주 상세 페이지 방문", {
+            userName: input.userName || "",
+            birthDate: input.date || "",
+            gender: input.gender || "",
+            url: window.location.href,
+            timestamp: new Date().toISOString(),
+          });
+        }
       } else {
         showError();
       }
