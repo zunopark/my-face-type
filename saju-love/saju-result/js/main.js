@@ -1025,14 +1025,18 @@ function setupEvents() {
   });
 }
 
-// 마크다운 파서
+// 마크다운 파서 (base-report 버전 기반)
 function simpleMD(src = "") {
+  // 1) 코드블록 – 먼저 보존
   src = src.replace(
     /```([\s\S]*?)```/g,
     (_, c) => `<pre><code>${escapeHTML(c)}</code></pre>`
   );
+
+  // 2) 인라인 코드 보존
   src = src.replace(/`([^`]+?)`/g, (_, c) => `<code>${escapeHTML(c)}</code>`);
 
+  // 3) 헤딩
   src = src
     .replace(/^###### (.*$)/gim, "<h6>$1</h6>")
     .replace(/^##### (.*$)/gim, "<h5>$1</h5>")
@@ -1041,15 +1045,14 @@ function simpleMD(src = "") {
     .replace(/^## (.*$)/gim, "<h2>$1</h2>")
     .replace(/^# (.*$)/gim, "<h1>$1</h1>");
 
+  // 4) 굵게 / 이탤릭 / 취소선 (리스트 처리 전에 수행)
   src = src
-    .replace(/\*\*\*(.+?)\*\*\*/g, "<strong><em>$1</em></strong>")
-    .replace(/___(.+?)___/g, "<strong><em>$1</em></strong>")
-    .replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>")
-    .replace(/__(.+?)__/g, "<strong>$1</strong>")
-    .replace(/\*(.+?)\*/g, "<em>$1</em>")
-    .replace(/_(.+?)_/g, "<em>$1</em>")
-    .replace(/~~(.+?)~~/g, "<del>$1</del>");
+    .replace(/\*\*\*([^*]+)\*\*\*/g, "<strong><em>$1</em></strong>")
+    .replace(/___([^_]+)___/g, "<strong><em>$1</em></strong>")
+    .replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>")
+    .replace(/__([^_]+)__/g, "<strong>$1</strong>");
 
+  // 5) 링크 / 이미지
   src = src
     .replace(/!\[([^\]]*?)\]\((.*?)\)/g, '<img src="$2" alt="$1">')
     .replace(
@@ -1057,21 +1060,55 @@ function simpleMD(src = "") {
       '<a href="$2" target="_blank" rel="noopener">$1</a>'
     );
 
+  // 6) 마크다운 표(table) 처리
+  src = src.replace(/(?:^|\n)((?:\|[^\n]+\|\n)+)/g, (match, tableBlock) => {
+    const rows = tableBlock.trim().split("\n");
+    if (rows.length < 2) return match;
+
+    let html = '<table class="md-table">';
+    rows.forEach((row, idx) => {
+      // 구분선 (|---|---|---| 등) 건너뛰기
+      if (/^\|[\s\-:|]+\|$/.test(row.trim()) && row.includes("-")) return;
+
+      const cells = row
+        .split("|")
+        .filter((_, i, arr) => i > 0 && i < arr.length - 1);
+      const tag = idx === 0 ? "th" : "td";
+      html += "<tr>";
+      cells.forEach((cell) => {
+        html += `<${tag}>${cell.trim()}</${tag}>`;
+      });
+      html += "</tr>";
+    });
+    html += "</table>";
+    return html;
+  });
+
+  // 7) 가로줄
   src = src.replace(/^\s*(\*\s*\*\s*\*|-{3,}|_{3,})\s*$/gm, "<hr>");
+
+  // 8) 블록인용
   src = src.replace(/^>\s+(.*)$/gm, "<blockquote>$1</blockquote>");
 
+  // 9) 리스트 (볼드 처리 후에 수행)
   src = src
     .replace(/^\s*[*+-]\s+(.+)$/gm, "<ul><li>$1</li></ul>")
     .replace(/(<\/ul>\s*)<ul>/g, "")
     .replace(/^\s*\d+\.\s+(.+)$/gm, "<ol><li>$1</li></ol>")
     .replace(/(<\/ol>\s*)<ol>/g, "");
 
-  // 연속된 빈 줄 정리 후 줄바꿈 처리
-  src = src.replace(/\n{2,}/g, "\n");
-  src = src.replace(/\n(?!<)/g, "<br>\n");
-  src = src.replace(/(<br>\s*){2,}/g, "<br>");
+  // 10) 이탤릭 처리 (리스트 처리 후에 수행 - 단일 *가 리스트 마커와 충돌 방지)
+  src = src
+    .replace(/(?<!\*)\*([^*\n]+)\*(?!\*)/g, "<em>$1</em>")
+    .replace(/(?<!_)_([^_\n]+)_(?!_)/g, "<em>$1</em>");
 
-  return src;
+  // 11) 취소선
+  src = src.replace(/~~(.+?)~~/g, "<del>$1</del>");
+
+  // 12) 남은 개행을 <br>로
+  src = src.replace(/\n{2,}/g, "</p><p>").replace(/\n/g, "<br>");
+
+  return `<p>${src}</p>`;
 }
 
 function escapeHTML(str) {

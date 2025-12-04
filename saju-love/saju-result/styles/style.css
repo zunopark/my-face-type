@@ -1046,6 +1046,34 @@ body {
   opacity: 0;
 }
 
+/* 마크다운 표 */
+.md-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 16px 0;
+  font-size: 14px;
+  border: 1px solid #ffd0d0;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.md-table th,
+.md-table td {
+  padding: 10px 12px;
+  text-align: center;
+  border: 1px solid #ffd0d0;
+}
+
+.md-table th {
+  background: #fff5f5;
+  font-weight: 600;
+  color: #c0392b;
+}
+
+.md-table tr:nth-child(even) {
+  background: #fffafa;
+}
+
 /* 유틸리티 */
 .hidden {
   display: none !important;
