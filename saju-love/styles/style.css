@@ -653,6 +653,14 @@ body {
   min-height: 120px;
 }
 
+.dialogue_speaker {
+  font-size: 13px;
+  font-weight: 600;
+  color: #f5a5a5;
+  margin-bottom: 12px;
+  letter-spacing: 1px;
+}
+
 .dialogue_text {
   font-size: 17px;
   line-height: 1.8;
