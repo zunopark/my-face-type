@@ -26,26 +26,6 @@
   margin-bottom: 0;
 }
 
-.face-summary-section::before {
-  content: "『";
-  font-size: 28px;
-  color: #8b7355;
-  position: absolute;
-  left: 12px;
-  top: 50%;
-  transform: translateY(-50%);
-}
-
-.face-summary-section::after {
-  content: "』";
-  font-size: 28px;
-  color: #8b7355;
-  position: absolute;
-  right: 12px;
-  top: 50%;
-  transform: translateY(-50%);
-}
-
 .face-detail-section {
   padding: 0 10px;
   margin-bottom: 80px;
