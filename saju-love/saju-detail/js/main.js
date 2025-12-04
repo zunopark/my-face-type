@@ -5,7 +5,7 @@ const saju_love_API =
 // ✅ 테스트용 플래그
 // true : Toss 결제 단계 생략하고 바로 결과 페이지로 이동
 // false: 기존 결제 플로우 유지
-const SKIP_TOSS_PAYMENT = true;
+const SKIP_TOSS_PAYMENT = false;
 
 // IndexedDB 설정
 const DB_NAME = "SajuLoveDB";
@@ -502,7 +502,7 @@ async function startTossPayment(resultId) {
 
   try {
     const paymentWidget = PaymentWidget(clientKey, customerKey);
-    paymentWidget.renderPaymentMethods("#payment-method", { value: 9900 });
+    paymentWidget.renderPaymentMethods("#payment-method", { value: 900 });
     paymentWidget.renderAgreement("#agreement");
 
     document.getElementById("payment-button").onclick = async () => {
@@ -535,10 +535,10 @@ function closePayment() {
   document.body.style.overflow = "";
 
   // 1초 후 깜짝 할인 결제창 열기
-  setTimeout(() => {
-    startDiscountedPayment();
-    document.body.style.overflow = "hidden";
-  }, 1000);
+  // setTimeout(() => {
+  //   startDiscountedPayment();
+  //   document.body.style.overflow = "hidden";
+  // }, 1000);
 }
 
 closePaymentBtn.addEventListener("click", closePayment);
