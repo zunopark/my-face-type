@@ -213,7 +213,7 @@ body {
 /* NEW 뱃지가 있는 버튼 */
 .category_btn_new {
   position: relative;
-  overflow: hidden;
+  overflow: visible;
 }
 
 .category_btn_new::before {
@@ -253,6 +253,23 @@ body {
   padding: 2px 5px;
   border-radius: 4px;
   letter-spacing: 0.5px;
+}
+
+/* 무료 뱃지 */
+.free_badge {
+  position: absolute;
+  top: -12px;
+  right: -14px;
+  background: linear-gradient(135deg, #ff6b6b, #ee5a24);
+  color: #fff;
+  font-size: 10px;
+  font-weight: 700;
+  padding: 3px 6px;
+  border-radius: 4px;
+  letter-spacing: 0.3px;
+  white-space: nowrap;
+  box-shadow: 0 2px 6px rgba(238, 90, 36, 0.4);
+  z-index: 10;
 }
 
 .tab_content {
