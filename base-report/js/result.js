@@ -178,6 +178,7 @@ function renderResult(data) {
     console.error("normalized 없음:", data);
     return;
   }
+
   const norm = {
     ...data.reports.base.data,
     paid: data.reports.base.paid,
@@ -189,6 +190,75 @@ function renderResult(data) {
   renderResultNormalized(norm, "base");
 
   // ✅ base 렌더링 끝났으므로 사주 분석도 바로 실행
+}
+
+/* ───────── 가라 분석 오버레이 ───────── */
+function showFakeAnalysis(imageBase64) {
+  return new Promise((resolve) => {
+    const overlay = document.getElementById("fakeAnalysisOverlay");
+    const photo = document.getElementById("fakeAnalysisImage");
+    const textEl = document.getElementById("fakeAnalysisText");
+    const progressBar = document.getElementById("fakeAnalysisProgress");
+
+    if (!overlay) {
+      resolve();
+      return;
+    }
+
+    // 이미지 설정
+    if (imageBase64) {
+      photo.src = imageBase64;
+    }
+
+    // 오버레이 표시
+    overlay.classList.add("active");
+    document.body.style.overflow = "hidden";
+
+    // 문구 배열
+    const messages = [
+      "관상학 분석 중",
+      "오관(눈, 코, 입, 귀, 눈썹)을 분석 중입니다...",
+      "삼정(이마, 코, 턱 세 구역)을 분석 중입니다...",
+      "12궁을 통해 재물운을 분석 중입니다...",
+      "12궁을 통해 건강운을 분석 중입니다...",
+      "12궁을 통해 연애운을 분석 중입니다...",
+      "12궁을 통해 직업운을 분석 중입니다...",
+      "전체 관상을 종합하는 중입니다...",
+      "관상학 보고서 작성 중",
+      "최종 정리 중..."
+    ];
+
+    let progress = 0;
+    let msgIdx = 0;
+    const totalDuration = 30000; // 30초
+    const progressInterval = 100; // 100ms마다 업데이트
+    const msgChangeInterval = 3000; // 3초마다 문구 변경
+
+    // 프로그레스 바 업데이트
+    const progressTimer = setInterval(() => {
+      progress += (100 * progressInterval) / totalDuration;
+      if (progress >= 100) {
+        progress = 100;
+        clearInterval(progressTimer);
+      }
+      progressBar.style.width = `${Math.min(progress, 100)}%`;
+    }, progressInterval);
+
+    // 문구 변경
+    const msgTimer = setInterval(() => {
+      msgIdx = (msgIdx + 1) % messages.length;
+      textEl.textContent = messages[msgIdx];
+    }, msgChangeInterval);
+
+    // 30초 후 종료
+    setTimeout(() => {
+      clearInterval(progressTimer);
+      clearInterval(msgTimer);
+      overlay.classList.remove("active");
+      document.body.style.overflow = "";
+      resolve();
+    }, totalDuration);
+  });
 }
 
 /* ================= 결과 버튼 로딩 컨트롤 ================ */
@@ -704,86 +774,59 @@ async function autoRenderFromDB() {
 /* ───────── 결제 유도 페이지 렌더 (API 호출 없이) ───────── */
 const LOADING_DONE_KEY = "base_report_loading_done";
 
-function renderPaymentInducePage() {
+async function renderPaymentInducePage() {
   const wrap = document.getElementById("label-container");
+  const btnWrap = document.querySelector(".result_btn_wrap");
 
-  // 요약 섹션 없이 faceteller.png 상세 페이지만 표시
+  // 이미 로딩 완료한 적 있으면 바로 faceteller 보여줌
+  const loadingDoneId = sessionStorage.getItem(LOADING_DONE_KEY);
+  if (loadingDoneId === currentResultId) {
+    showFacetellerPage();
+    return;
+  }
+
+  // 처음 진입: faceteller와 버튼 숨기고 가라 분석 시작
+  wrap.innerHTML = ""; // 빈 상태로
+  if (btnWrap) btnWrap.style.display = "none";
+
+  // 이미지 가져오기
+  const rec = await new Promise((res) => {
+    const tx = db.transaction(["results"], "readonly");
+    tx.objectStore("results").get(currentResultId).onsuccess = (e) =>
+      res(e.target.result);
+  });
+
+  // 가라 분석 30초 보여주기
+  await showFakeAnalysis(rec?.imageBase64);
+
+  // 로딩 완료 표시
+  sessionStorage.setItem(LOADING_DONE_KEY, currentResultId);
+
+  // faceteller 페이지 보여주기
+  showFacetellerPage();
+
+  mixpanel.track("결제 유도 페이지 진입", { id: currentResultId });
+}
+
+function showFacetellerPage() {
+  const wrap = document.getElementById("label-container");
+  const btnWrap = document.querySelector(".result_btn_wrap");
+
+  // faceteller.png 표시
   wrap.innerHTML = `
     <div class="face_teller_wrap">
       <img src="../img/faceteller.png" alt="" class="face_teller_img" />
     </div>
   `;
 
-  // 버튼 영역 표시
-  const btnWrap = document.querySelector(".result_btn_wrap");
+  // 버튼 영역 표시 및 활성화
   if (btnWrap) {
     btnWrap.style.display = "flex";
+    btnWrap.dataset.state = "ready";
   }
 
-  // 이미 로딩 완료한 적 있으면 바로 활성화
-  const loadingDoneId = sessionStorage.getItem(LOADING_DONE_KEY);
-  if (loadingDoneId === currentResultId) {
-    activateButton();
-  } else {
-    startFakeLoading();
-  }
-
-  mixpanel.track("결제 유도 페이지 진입", { id: currentResultId });
-}
-
-/* 가짜 로딩 시작 */
-function startFakeLoading() {
-  const btnWrap = document.querySelector(".result_btn_wrap");
-  const bar = document.querySelector(".result_btn_loading");
   const status = document.querySelector(".result_btn_status");
   const btn = document.querySelector(".result_btn");
-
-  if (btnWrap) btnWrap.dataset.state = "loading";
-  if (status) status.textContent = "관상을 분석하는 중입니다...";
-  if (btn) btn.disabled = true;
-  if (bar) bar.style.width = "0%";
-
-  const loadingMessages = [
-    "관상을 분석하는 중입니다...",
-    "얼굴 특징을 읽는 중...",
-    "전통 관상학 데이터 참조 중...",
-    "보고서를 정리하는 중...",
-  ];
-
-  let progress = 0;
-  let msgIdx = 0;
-
-  // 빠르게 완료 (약 3~4초)
-  const progressInterval = setInterval(() => {
-    progress += Math.random() * 5;
-    if (progress >= 100) {
-      progress = 100;
-      clearInterval(progressInterval);
-      clearInterval(msgInterval);
-      finishFakeLoading();
-    }
-    if (bar) bar.style.width = `${Math.min(progress, 100)}%`;
-  }, 200);
-
-  const msgInterval = setInterval(() => {
-    msgIdx = (msgIdx + 1) % loadingMessages.length;
-    if (status) status.textContent = loadingMessages[msgIdx];
-  }, 2500);
-}
-
-/* 로딩 완료 */
-function finishFakeLoading() {
-  sessionStorage.setItem(LOADING_DONE_KEY, currentResultId);
-  activateButton();
-}
-
-/* 버튼 활성화 */
-function activateButton() {
-  const btnWrap = document.querySelector(".result_btn_wrap");
-  const status = document.querySelector(".result_btn_status");
-  const btn = document.querySelector(".result_btn");
-
-  if (btnWrap) btnWrap.dataset.state = "ready";
   if (status) status.textContent = "관상 분석을 완료했습니다.";
   if (btn) btn.disabled = false;
 }

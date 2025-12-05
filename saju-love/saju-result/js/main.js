@@ -259,9 +259,7 @@ async function fetchLoveAnalysis(data, retryCount = 0) {
         "서버가 일시적으로 응답하지 않습니다. 잠시 후 다시 시도해주세요."
       );
     } else if (err.message?.includes("이미지 생성")) {
-      showError(
-        "이미지 생성에 실패했습니다. 잠시 후 다시 시도해주세요."
-      );
+      showError("이미지 생성에 실패했습니다. 잠시 후 다시 시도해주세요.");
     } else {
       showError("분석 중 오류가 발생했습니다. 다시 시도해주세요.");
     }
@@ -1096,6 +1094,20 @@ function simpleMD(src = "") {
       .join("<br>");
     return `<blockquote>${content}</blockquote>`;
   });
+
+  // 8-1) 블록인용 내 "색동낭자 콕 찍기/속닥속닥/토닥토닥" 앞에 프로필 이미지 추가
+  src = src.replace(
+    /<blockquote><strong>색동낭자 콕 찍기<\/strong>/g,
+    '<blockquote class="quote-pinch"><div class="quote-header"><img src="/saju-love/img/pinch.png" class="quote-profile" alt="색동낭자"><strong>색동낭자 콕 찍기</strong></div>'
+  );
+  src = src.replace(
+    /<blockquote><strong>색동낭자 속닥속닥<\/strong>/g,
+    '<blockquote class="quote-sokdak"><div class="quote-header"><img src="/saju-love/img/sokdak.png" class="quote-profile" alt="색동낭자"><strong>색동낭자 속닥속닥</strong></div>'
+  );
+  src = src.replace(
+    /<blockquote><strong>색동낭자 토닥토닥<\/strong>/g,
+    '<blockquote class="quote-todak"><div class="quote-header"><img src="/saju-love/img/todak.png" class="quote-profile" alt="색동낭자"><strong>색동낭자 토닥토닥</strong></div>'
+  );
 
   // 9) 리스트 (볼드 처리 후에 수행)
   src = src

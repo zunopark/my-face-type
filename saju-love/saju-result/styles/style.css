@@ -99,7 +99,8 @@ body {
   justify-content: space-between;
   padding: 0 8px;
   z-index: 100;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.4);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.4);
   border: 1px solid rgba(255, 255, 255, 0.4);
   border-radius: 24px;
 }
@@ -305,11 +306,19 @@ body {
 }
 
 .chapter_body blockquote {
-  border-left: 3px solid #e74c3c;
-  padding-left: 16px;
-  margin: 16px 0;
+  all: unset;
+  display: block;
+  position: relative;
+  margin: 20px 0;
+  padding: 20px;
+  background: #fffaf5;
+  border: none;
+  border-radius: 16px;
+  font-size: 14px;
+  line-height: 1.8;
   color: #666;
-  font-style: italic;
+  font-style: normal;
+  box-shadow: 0 2px 8px rgba(231, 76, 60, 0.08);
 }
 
 .chapter_body hr {
@@ -1076,11 +1085,13 @@ body {
 
 /* 블록인용 (색동낭자 속닥속닥) */
 blockquote {
+  all: unset;
+  display: block;
   position: relative;
   margin: 20px 0;
-  padding: 20px 20px 20px 24px;
+  padding: 20px;
   background: #fffaf5;
-  border: 1px solid #ffe0d0;
+  border: none;
   border-radius: 16px;
   font-size: 14px;
   line-height: 1.8;
@@ -1119,6 +1130,158 @@ blockquote strong {
   font-weight: 700;
   margin-bottom: 8px;
   letter-spacing: 0.5px;
+}
+
+/* 색동낭자 콕 찍기 - 프로필 이미지 */
+.quote-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.quote-pinch strong,
+.quote-sokdak strong,
+.quote-todak strong {
+  display: inline;
+  margin-bottom: 0px;
+  padding-top: 4px;
+  font-size: 16px;
+}
+
+.quote-profile {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-right: 8px;
+}
+
+/* 리스트 스타일 (ul/li) */
+.chapter_body ul,
+.section_content ul {
+  list-style: none;
+  margin: 16px 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.chapter_body ul li,
+.section_content ul li {
+  position: relative;
+  padding: 14px 16px 14px 44px;
+  background: linear-gradient(135deg, #fff9f9 0%, #fff5f5 100%);
+  border-radius: 12px;
+  border: 1px solid #ffe8e8;
+  font-size: 15px;
+  line-height: 1.7;
+  color: #444;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.chapter_body ul li::before,
+.section_content ul li::before {
+  content: "";
+  position: absolute;
+  left: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 8px;
+  height: 8px;
+  background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+  border-radius: 50%;
+  box-shadow: 0 2px 4px rgba(231, 76, 60, 0.3);
+}
+
+/* 중첩 리스트 */
+.chapter_body ul ul,
+.section_content ul ul {
+  margin: 10px 0 0 0;
+  gap: 8px;
+}
+
+.chapter_body ul ul li,
+.section_content ul ul li {
+  padding: 10px 14px 10px 36px;
+  background: #fff;
+  border: 1px dashed #ffd0d0;
+  font-size: 14px;
+}
+
+.chapter_body ul ul li::before,
+.section_content ul ul li::before {
+  width: 6px;
+  height: 6px;
+  left: 14px;
+  background: #f5a59e;
+}
+
+/* 순서 있는 리스트 (ol) */
+.chapter_body ol,
+.section_content ol {
+  list-style: none;
+  margin: 16px 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  counter-reset: list-counter;
+}
+
+.chapter_body ol li,
+.section_content ol li {
+  position: relative;
+  padding: 16px 16px 16px 52px;
+  background: #fff;
+  border-radius: 14px;
+  border: 1px solid #ffe0e0;
+  font-size: 15px;
+  line-height: 1.7;
+  color: #444;
+  counter-increment: list-counter;
+  box-shadow: 0 2px 8px rgba(231, 76, 60, 0.06);
+}
+
+.chapter_body ol li::before,
+.section_content ol li::before {
+  content: counter(list-counter);
+  position: absolute;
+  left: 14px;
+  top: 14px;
+  width: 26px;
+  height: 26px;
+  background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+  color: #fff;
+  font-size: 13px;
+  font-weight: 700;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 6px rgba(231, 76, 60, 0.3);
+}
+
+/* 체크리스트 스타일 (✓ 표시용) */
+.chapter_body ul.checklist li,
+.section_content ul.checklist li {
+  padding-left: 48px;
+}
+
+.chapter_body ul.checklist li::before,
+.section_content ul.checklist li::before {
+  content: "✓";
+  width: 22px;
+  height: 22px;
+  background: linear-gradient(135deg, #27ae60 0%, #1e8449 100%);
+  color: #fff;
+  font-size: 12px;
+  font-weight: 700;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 4px rgba(39, 174, 96, 0.3);
 }
 
 /* 유틸리티 */
