@@ -1238,3 +1238,690 @@ body {
   background: linear-gradient(90deg, #c68800, #d4a017);
   transition: width 0.3s linear;
 }
+
+/* === 결제 모달 스타일 (원본 payment.css 기반) === */
+.payment-overlay {
+  position: fixed;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  height: 400vh;
+  background: rgba(0, 0, 0, 0.9);
+  z-index: 99999;
+  text-align: center;
+  overflow-y: auto;
+}
+
+.modal-content {
+  width: 100%;
+  height: 100vh;
+  background: #fff;
+  padding: 34px 22px 28px 22px;
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.19);
+  position: relative;
+  max-height: 100vh;
+  overflow-y: auto;
+}
+
+.payment-fullscreen {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.payment-header {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.payment-title {
+  font-size: 20px;
+  font-weight: 700;
+  color: #343434;
+  text-align: left;
+}
+
+.payment-close {
+  color: #343434;
+  font-size: 20px;
+  font-weight: bold;
+  cursor: pointer;
+  z-index: 10000;
+  margin-left: 12px;
+}
+
+.payment-subtitle {
+  color: #2f3846;
+  font-weight: 600;
+}
+
+.payment-price-wrap {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 8px;
+  padding-top: 16px;
+  font-weight: 600;
+  font-size: 14px;
+  border-top: 1px solid rgb(207, 207, 207);
+}
+
+.payment-original-price-title {
+}
+
+.payment-original-price {
+}
+
+.payment-coupon-wrap {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 20px;
+  font-weight: 600;
+  font-size: 16px;
+}
+
+.payment-coupon {
+}
+
+.payment-coupon-price-wrap {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: top;
+  margin-top: 4px;
+  font-weight: 500;
+  font-size: 14px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid rgb(207, 207, 207);
+}
+
+.payment-coupon-title {
+  text-align: left;
+  color: #181818;
+}
+
+.payment-coupon-price {
+  color: #ff5121;
+}
+
+.report-wrap {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  margin-top: 20px;
+  background: #fffaf0;
+  border-radius: 12px;
+  padding: 16px;
+  border: 1px solid #ffe4b5;
+}
+
+.report-title-wrap {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+  padding-bottom: 12px;
+  border-bottom: 1px dashed #e0c080;
+}
+
+.report-title {
+  font-size: 15px;
+  font-weight: 700;
+  color: #333;
+}
+
+.report-num {
+  font-size: 13px;
+  font-weight: 600;
+  color: #fff;
+  background: linear-gradient(135deg, #ff6b00, #ff8c00);
+  padding: 4px 10px;
+  border-radius: 20px;
+}
+
+.report-contents-wrap {
+  width: 100%;
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 10px;
+}
+
+.report-contents-wrap:last-child {
+  margin-bottom: 0;
+}
+
+.report-contents {
+  font-size: 13px;
+  line-height: 1.5;
+  color: #444;
+  text-align: left;
+  padding-left: 8px;
+  border-left: 2px solid #ffbe0a;
+}
+
+.payment-final-price-wrap {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-top: 4px;
+  font-weight: 500;
+  border-top: 1px solid rgb(207, 207, 207);
+  padding-top: 24px;
+}
+
+.payment-final-price-title {
+  text-align: left;
+  font-size: 14px;
+}
+
+.payment-final-price-price-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.payment-originam-price2 {
+  color: #9d9d9d;
+  text-decoration: line-through;
+  font-size: 14px;
+}
+
+.payment-final-price {
+  display: flex;
+  justify-content: flex-end;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.payment-final-price-discount {
+  color: #ff5121;
+  margin-right: 8px;
+}
+
+.payment-final-price-num {
+  color: #181818;
+}
+
+#payment-method,
+#agreement {
+  width: 100%;
+  padding: 0;
+}
+
+#payment-button {
+  margin-top: 10px;
+  width: 100%;
+  padding: 15px 0;
+  background-color: #ffbe0a;
+  color: #181818;
+  font-weight: 700;
+  border: none;
+  border-radius: 8px;
+  font-size: 17px;
+  box-shadow: 0 1px 6px rgba(240, 180, 15, 0.09);
+}
+
+.payment-final-btn {
+  margin-top: 16px;
+  width: 100%;
+  padding: 12px;
+  background-color: #ffbe0a;
+  color: rgb(13, 13, 13);
+  font-weight: 700;
+  border: none;
+  border-radius: 6px;
+  font-size: 14px;
+  margin-bottom: 60px;
+  cursor: pointer;
+}
+
+.payment-final-btn:hover {
+  background-color: #f5aa00;
+}
+
+.payment-empty {
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* ========================================
+   바텀시트 (궁합 관계 선택)
+   ======================================== */
+.bottom-analyze-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.bottom-analyze-overlay.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+.bottom-sheet {
+  position: fixed;
+  left: 50%;
+  bottom: 0;
+  transform: translateX(-50%) translateY(100%);
+  width: 100%;
+  max-width: 500px;
+  background: #fff;
+  border-radius: 20px 20px 0 0;
+  z-index: 1001;
+  transition: transform 0.35s ease;
+  max-height: 75vh;
+  overflow-y: auto;
+}
+
+.bottom-sheet.active {
+  transform: translateX(-50%) translateY(0);
+}
+
+.sheet-inner {
+  padding: 32px 24px 40px;
+}
+
+.sheet-inner h3 {
+  font-size: 18px;
+  font-weight: 700;
+  color: #171717;
+  margin-bottom: 20px;
+  font-family: "KimjungchulMyungjo-Bold", serif;
+}
+
+.sheet-inner h4 {
+  font-size: 16px;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 16px;
+  margin-top: 4px;
+}
+
+.relationship-options {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.relationship-options div {
+  padding: 14px 18px;
+  border-radius: 12px;
+  background-color: #f4f4f4;
+  font-size: 15px;
+  font-weight: 500;
+  color: #333;
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.relationship-options div:hover {
+  background-color: #ececec;
+}
+
+.relationship-options div.selected {
+  background-color: #c4965a;
+  color: white;
+  font-weight: 600;
+  transform: scale(1.02);
+}
+
+.sheet-followup {
+  margin-top: 28px;
+  padding-top: 24px;
+  border-top: 1px solid #e8e8e8;
+}
+
+.followup-options {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.followup-options div {
+  padding: 12px 16px;
+  border-radius: 10px;
+  background-color: #faf8f5;
+  font-size: 14px;
+  color: #444;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  border: 1px solid #e8e0d0;
+}
+
+.followup-options div:hover {
+  background-color: #f5f0e6;
+}
+
+.followup-options div.selected {
+  background-color: #553900;
+  color: white;
+  border-color: #553900;
+}
+
+.sheet-btn {
+  width: 100%;
+  margin-top: 24px;
+  padding: 16px;
+  font-size: 17px;
+  font-weight: 700;
+  background: linear-gradient(135deg, #d4a017 0%, #b8860b 100%);
+  color: #fff;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  font-family: "KimjungchulMyungjo-Bold", serif;
+  box-shadow: 0 4px 16px rgba(184, 134, 11, 0.35);
+  transition: transform 0.2s ease;
+}
+
+.sheet-btn:active {
+  transform: scale(0.98);
+}
+
+/* ========================================
+   커플 궁합 결과 페이지 스타일
+   ======================================== */
+
+/* 사진 쌍 */
+.photo-pair {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  margin-top: 24px;
+  margin-bottom: 32px;
+}
+
+.photo-pair img {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 3px solid #d4c5a9;
+  box-shadow: 0 2px 8px rgba(74, 60, 42, 0.15);
+}
+
+.heart {
+  color: #b85c38;
+  font-size: 28px;
+}
+
+/* 궁합 점수 섹션 */
+.score-summary {
+  color: #4a3c2a;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 28px 20px;
+  background: #fdfcf8;
+  border: 1px solid #d4c5a9;
+  line-height: 1.6;
+  margin-bottom: 32px;
+  position: relative;
+}
+
+.score-summary-title {
+  font-size: 14px;
+  color: #8b7355;
+  font-family: "KimjungchulMyungjo-Bold", serif;
+  letter-spacing: 2px;
+  margin-bottom: 8px;
+}
+
+.score-num {
+  font-weight: 700;
+  font-size: 48px;
+  color: #6b4423;
+  font-family: "KimjungchulMyungjo-Bold", serif;
+}
+
+.summary-wrap {
+  text-align: center;
+  margin-top: 12px;
+  font-size: 16px;
+  color: #4a3c2a;
+  line-height: 1.8;
+}
+
+/* 섹션 카드 */
+.section {
+  margin-bottom: 24px;
+}
+
+.result-content-wrap {
+  position: relative;
+  overflow: hidden;
+  background: #fdfcf8;
+  border: 1px solid #d4c5a9;
+}
+
+.result-content-wrap pre {
+  background: #fdfcf8;
+  padding: 24px 20px;
+  white-space: pre-wrap;
+  line-height: 1.9;
+  margin: 0;
+  font-size: 15px;
+  color: #3d3d3d;
+  font-family: inherit;
+  text-align: justify;
+  word-break: keep-all;
+}
+
+/* 블러 마스크 */
+.result-mask {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 2;
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-end;
+}
+
+.blur-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  mask-image: linear-gradient(
+    to bottom,
+    transparent 0%,
+    transparent 5%,
+    #ffffff 20%,
+    #ffffff 100%
+  );
+  -webkit-mask-image: linear-gradient(
+    to bottom,
+    transparent 0%,
+    transparent 5%,
+    #ffffff 20%,
+    #ffffff 100%
+  );
+}
+
+/* 전체 보기 버튼 영역 */
+.view-full-mask-button-wrap {
+  width: 100%;
+}
+
+.view-full-wrap {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border-top: 1px solid #d4c5a9;
+  border-bottom: 1px solid #d4c5a9;
+  margin-bottom: 24px;
+  padding: 32px 20px;
+  background: #f9f6f0;
+}
+
+.full-title {
+  text-align: center;
+  font-size: 18px;
+  color: #4a3c2a;
+  font-family: "KimjungchulMyungjo-Bold", serif;
+}
+
+.full-subtitle {
+  text-align: center;
+  font-size: 17px;
+  margin-bottom: 24px;
+  color: #4a3c2a;
+  line-height: 1.6;
+}
+
+.couple_bold {
+  font-weight: 700;
+  color: #6b4423;
+}
+
+.full-check-wrap {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 320px;
+}
+
+.full-check {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 16px;
+  border: 1px solid #d4c5a9;
+  background: #fdfcf8;
+  margin-bottom: 8px;
+}
+
+.full-check-title {
+  font-size: 14px;
+  color: #4a3c2a;
+}
+
+.full-check-icon {
+  color: #8b7355;
+}
+
+.view-full-btn {
+  background: linear-gradient(135deg, #d4a017 0%, #b8860b 100%);
+  padding: 18px 36px;
+  font-size: 17px;
+  font-weight: 700;
+  border: none;
+  margin-top: 16px;
+  color: #fff;
+  font-family: "KimjungchulMyungjo-Bold", serif;
+  cursor: pointer;
+  box-shadow: 0 4px 16px rgba(184, 134, 11, 0.35);
+}
+
+/* 하단 고정 버튼 */
+#view-full-btn-wrap2 {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.view-full-always-btn {
+  position: fixed;
+  bottom: 32px;
+  padding: 18px 36px;
+  font-size: 17px;
+  font-weight: 700;
+  background: linear-gradient(135deg, #d4a017 0%, #b8860b 100%);
+  color: #fff;
+  border: none;
+  z-index: 1000;
+  transition: opacity 0.3s;
+  font-family: "KimjungchulMyungjo-Bold", serif;
+  cursor: pointer;
+  box-shadow: 0 4px 16px rgba(184, 134, 11, 0.35);
+}
+
+/* 보고서 컨테이너 */
+.report-container {
+  max-width: 100%;
+  margin: 0 auto;
+  padding: 0 16px;
+  display: none;
+}
+
+/* 커플 로딩 박스 (양반 테마) */
+.loading-box.dark-mode {
+  color: #4a3c2a;
+  background: #fdfcf8;
+  border: 1px solid #d4c5a9;
+  border-radius: 0;
+  padding: 40px 24px;
+  text-align: center;
+  width: 100%;
+  max-width: 360px;
+  margin: 20px auto;
+}
+
+.loading-box.dark-mode .loading-text {
+  font-size: 15px;
+  font-weight: 500;
+  margin-bottom: 20px;
+  color: #4a3c2a;
+  font-family: "KimjungchulMyungjo-Bold", serif;
+  animation: fadeInPulse 1s ease-in-out infinite alternate;
+}
+
+.loading-box.dark-mode .progress-bar-container {
+  width: 100%;
+  height: 8px;
+  background-color: #e8e0d0;
+  border-radius: 0;
+  overflow: hidden;
+}
+
+.loading-box.dark-mode .progress-bar-fill {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(to right, #8b7355, #6b4423);
+  transition: width 0.4s ease;
+  border-radius: 0;
+}
+
+@keyframes fadeInPulse {
+  from {
+    opacity: 0.7;
+  }
+  to {
+    opacity: 1;
+  }
+}

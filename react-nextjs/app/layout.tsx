@@ -125,6 +125,12 @@ export default function RootLayout({
           />
         )}
 
+        {/* TossPayments */}
+        <Script
+          src="https://js.tosspayments.com/v1/payment-widget"
+          strategy="beforeInteractive"
+        />
+
       </body>
     </html>
   );
