@@ -1,8 +1,6 @@
 # services/saju_calc.py
 from typing import Dict, Any, Optional, Tuple
-from datetime import datetime
-from dateutil import tz
-from lunar_python import Solar, Lunar  # pip install lunar-python==1.4.4
+from sajupy import calculate_saju, lunar_to_solar  # pip install sajupy
 
 # === 1) 기본 테이블 ===
 STEMS = ["甲","乙","丙","丁","戊","己","庚","辛","壬","癸"]
@@ -16,9 +14,10 @@ BRANCH_YIN  = ["yang","yin","yang","yin","yang","yin","yang","yin","yang","yin",
 BRANCH_KOR  = ["자","축","인","묘","진","사","오","미","신","유","술","해"]
 ZODIAC      = ["rat","ox","tiger","rabbit","dragon","snake","horse","goat","monkey","rooster","dog","pig"]
 
-# 지지 주지장간(주간만; 단순화)
+# 지지 지장간 본기(本氣) - 십성 계산 기준
+# 子:癸, 丑:己, 寅:甲, 卯:乙, 辰:戊, 巳:丙, 午:丁, 未:己, 申:庚, 酉:辛, 戌:戊, 亥:壬
 BRANCH_MAIN_HS = {
-    "子":"癸","丑":"己","寅":"甲","卯":"乙","辰":"戊","巳":"庚","午":"丁","未":"己","申":"庚","酉":"辛","戌":"戊","亥":"壬"
+    "子":"癸","丑":"己","寅":"甲","卯":"乙","辰":"戊","巳":"丙","午":"丁","未":"己","申":"庚","酉":"辛","戌":"戊","亥":"壬"
 }
 
 # 오행 → 색상
@@ -71,24 +70,30 @@ def branch_info(branch: str) -> Dict[str, Any]:
     }
 
 def ten_god(day_stem: str, target_stem: str) -> str:
-    """일간 vs 타천간 → 십성"""
+    """일간 vs 타천간 → 십성
+
+    편(偏)/정(正) 구분: 일간과 대상의 음양이 같으면 편, 다르면 정
+    """
     elem_idx = {"wood":0,"fire":1,"earth":2,"metal":3,"water":4}
     me_e = STEM_ELEM[STEMS.index(day_stem)]
     me_y = STEM_YIN[STEMS.index(day_stem)]
     tg_e = STEM_ELEM[STEMS.index(target_stem)]
     tg_y = STEM_YIN[STEMS.index(target_stem)]
 
+    # 음양이 같으면 편(偏), 다르면 정(正)
+    is_same_yinyang = (me_y == tg_y)
+
     me = elem_idx[me_e]; tg = elem_idx[tg_e]
-    if (me + 1) % 5 == tg:        # 내가 생함
-        return "식신" if tg_y=="yang" else "상관"
-    if (me + 2) % 5 == tg:        # 내가 극함
-        return "편재" if tg_y=="yang" else "정재"
-    if (tg + 2) % 5 == me:        # 나를 극함
-        return "편관" if tg_y=="yang" else "정관"
-    if (tg + 1) % 5 == me:        # 나를 생함
-        return "편인" if tg_y=="yang" else "정인"
-    if me_e == tg_e:
-        return "비견" if me_y == tg_y else "겁재"
+    if (me + 1) % 5 == tg:        # 내가 생함 → 식상
+        return "식신" if is_same_yinyang else "상관"
+    if (me + 2) % 5 == tg:        # 내가 극함 → 재성
+        return "편재" if is_same_yinyang else "정재"
+    if (tg + 2) % 5 == me:        # 나를 극함 → 관성
+        return "편관" if is_same_yinyang else "정관"
+    if (tg + 1) % 5 == me:        # 나를 생함 → 인성
+        return "편인" if is_same_yinyang else "정인"
+    if me_e == tg_e:              # 같은 오행 → 비겁
+        return "비견" if is_same_yinyang else "겁재"
     return "미정"
 
 def five_elements_score(pillars_raw: Dict[str, Dict[str, Optional[str]]], day_stem_elem: str) -> Dict[str, Any]:
@@ -103,36 +108,41 @@ def five_elements_score(pillars_raw: Dict[str, Dict[str, Optional[str]]], day_st
     strength = "신강" if percent.get(day_stem_elem, 0) >= 28 else "신약"
     return {"score": score, "percent": percent, "strength": strength, "strengthScore": round(max(percent.values())/100, 2)}
 
-def _gz_pair(gz: str) -> Tuple[str, str]:
-    """'丙申' → ('丙','申')"""
-    return gz[0], gz[1]
+def compute_pillars(date: str, time: Optional[str], _timezone: str, calendar: str) -> Tuple[Tuple[str,str], Tuple[str,str], Tuple[str,str], Tuple[Optional[str],Optional[str]]]:
+    """연/월/일/시 간지 계산 (sajupy 사용) - timezone은 sajupy 내부에서 처리"""
+    year, month, day = [int(x) for x in date.split("-")]
 
-def compute_pillars(date: str, time: Optional[str], timezone: str, calendar: str) -> Tuple[Tuple[str,str], Tuple[str,str], Tuple[str,str], Tuple[Optional[str],Optional[str]]]:
-    """연/월/일/시 간지 계산 (lunar-python)"""
     if time:
         hh, mm = [int(x) for x in time.split(":")]
     else:
         hh, mm = 12, 0  # 시간 미입력 시 임시값(시주는 최종 None 처리)
 
-    tzinfo = tz.gettz(timezone) or tz.gettz("Asia/Seoul")
-    dt = datetime.fromisoformat(f"{date}T{hh:02d}:{mm:02d}:00").replace(tzinfo=tzinfo)
-
+    # 음력인 경우 양력으로 변환
     if calendar == "lunar":
-        lunar = Lunar.fromYmdHms(dt.year, dt.month, dt.day, dt.hour, dt.minute, dt.second)
-        solar = lunar.getSolar()
-    else:
-        solar = Solar.fromYmdHms(dt.year, dt.month, dt.day, dt.hour, dt.minute, dt.second)
+        solar_result = lunar_to_solar(year, month, day)
+        year = solar_result["solar_year"]
+        month = solar_result["solar_month"]
+        day = solar_result["solar_day"]
 
-    lunar = solar.getLunar()
-    ygz = lunar.getYearInGanZhi()
-    mgz = lunar.getMonthInGanZhi()
-    dgz = lunar.getDayInGanZhi()
-    tgz = lunar.getTimeInGanZhi()
+    # sajupy로 사주 계산 (태양시 보정 + 서울 기준)
+    # early_zi_time=False: 00:00부터 당일로 계산 (야자시 방식)
+    saju = calculate_saju(
+        year=year,
+        month=month,
+        day=day,
+        hour=hh,
+        minute=mm,
+        city="Seoul",
+        use_solar_time=True,
+        utc_offset=9,
+        early_zi_time=False
+    )
 
-    ys, yb = _gz_pair(ygz)
-    ms, mb = _gz_pair(mgz)
-    ds, db = _gz_pair(dgz)
-    ts, tb = (_gz_pair(tgz) if time else (None, None))
+    ys, yb = saju['year_stem'], saju['year_branch']
+    ms, mb = saju['month_stem'], saju['month_branch']
+    ds, db = saju['day_stem'], saju['day_branch']
+    ts, tb = (saju['hour_stem'], saju['hour_branch']) if time else (None, None)
+
     return (ys, yb), (ms, mb), (ds, db), (ts, tb)
 
 def luck_direction(day_stem: str, gender: str) -> Dict[str, str]:
@@ -281,5 +291,5 @@ def compute_all(name: Optional[str], gender: str, date: str, time: Optional[str]
         "fiveElements": fe,
         "luck": luck,
         "loveFacts": loveFacts,
-        "notice": "한자+한글 병기/오행 색상 적용. 음력 윤달은 별도 플래그 필요 시 확장."
+        "notice": "sajupy 라이브러리 사용. 태양시 보정 및 조자시 처리 적용."
     }

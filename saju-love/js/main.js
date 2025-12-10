@@ -355,10 +355,18 @@ additionalPrevBtn.addEventListener("click", function () {
 timeUnknownBtn.addEventListener("click", function () {
   this.classList.toggle("active");
   if (this.classList.contains("active")) {
-    birthTimeSelect.disabled = true;
-    birthTimeSelect.value = "";
+    birthTimeSelect.value = "unknown";
   } else {
-    birthTimeSelect.disabled = false;
+    birthTimeSelect.value = "";
+  }
+});
+
+// 시간 선택 변경 시 "시간 모름" 버튼 상태 동기화
+birthTimeSelect.addEventListener("change", function () {
+  if (this.value === "unknown") {
+    timeUnknownBtn.classList.add("active");
+  } else {
+    timeUnknownBtn.classList.remove("active");
   }
 });
 
@@ -483,7 +491,7 @@ submitBtn.addEventListener("click", async function () {
     gender: formState.gender,
     date: birthDateInput.value,
     calendar: formState.calendar,
-    time: birthTimeSelect.value || null,
+    time: birthTimeSelect.value === "unknown" ? null : (birthTimeSelect.value || null),
     userConcern: userConcernInput?.value || null,
     status: formState.status || null,
   };
