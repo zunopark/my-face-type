@@ -5,6 +5,7 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { Progress } from "@/components/ui/progress";
 import { analyzeFaceFeatures } from "@/app/actions/analyze";
+import { saveFaceAnalysisRecord } from "@/lib/db/faceAnalysisDB";
 
 interface FaceUploaderProps {
   onAnalysisStart?: () => void;
@@ -59,16 +60,13 @@ export default function FaceUploader({
           // IndexedDB에 저장하고 결과 페이지로 이동
           const resultId = crypto.randomUUID();
 
-          // 임시로 localStorage 사용 (나중에 IndexedDB로 교체)
-          localStorage.setItem(
-            `face_result_${resultId}`,
-            JSON.stringify({
-              id: resultId,
-              imageBase64: base64,
-              features: result.data.features,
-              timestamp: new Date().toISOString(),
-            })
-          );
+          // IndexedDB에 저장
+          await saveFaceAnalysisRecord({
+            id: resultId,
+            imageBase64: base64,
+            features: result.data.features,
+            timestamp: new Date().toISOString(),
+          });
 
           onAnalysisComplete?.(result.data);
 

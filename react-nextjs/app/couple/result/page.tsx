@@ -7,6 +7,11 @@ import Link from "next/link";
 import { analyzeCoupleReport, analyzeCoupleScore } from "@/app/actions/analyze";
 import Footer from "@/components/layout/Footer";
 import { track } from "@/lib/mixpanel";
+import {
+  getCoupleAnalysisRecord,
+  updateCoupleAnalysisRecord,
+  CoupleAnalysisRecord,
+} from "@/lib/db/coupleAnalysisDB";
 
 // TossPayments 타입 선언
 declare global {
@@ -97,31 +102,48 @@ function CoupleResultContent() {
   // 하단 고정 버튼 표시 여부
   const [showFloatingBtn, setShowFloatingBtn] = useState(false);
 
-  // localStorage에서 결과 가져오기
+  // IndexedDB에서 결과 가져오기
   useEffect(() => {
     if (!resultId) {
       router.push("/");
       return;
     }
 
-    const stored = localStorage.getItem(`couple_result_${resultId}`);
-    if (stored) {
-      const parsed = JSON.parse(stored) as CoupleResult;
-      setResult(parsed);
+    const loadData = async () => {
+      const stored = await getCoupleAnalysisRecord(resultId);
+      if (stored) {
+        // CoupleAnalysisRecord를 CoupleResult로 변환
+        const parsed: CoupleResult = {
+          id: stored.id,
+          features1: stored.features1,
+          features2: stored.features2,
+          image1Base64: stored.image1Base64,
+          image2Base64: stored.image2Base64,
+          relationshipType: stored.relationshipType,
+          relationshipFeeling: stored.relationshipFeeling,
+          createdAt: stored.createdAt,
+          reports: (stored.report as CoupleResult["reports"]) || {
+            couple: { paid: stored.paid || false, data: null },
+          },
+        };
+        setResult(parsed);
 
-      // 이미 분석 완료된 경우 바로 결과 표시
-      if (parsed.reports?.couple?.data?.details?.length === 5) {
-        setShowResult(true);
+        // 이미 분석 완료된 경우 바로 결과 표시
+        if (parsed.reports?.couple?.data?.details?.length === 5) {
+          setShowResult(true);
+          setIsLoading(false);
+          return;
+        }
+
+        // 분석 시작
         setIsLoading(false);
-        return;
+        startAnalysis(parsed);
+      } else {
+        router.push("/");
       }
+    };
 
-      // 분석 시작
-      setIsLoading(false);
-      startAnalysis(parsed);
-    } else {
-      router.push("/");
-    }
+    loadData();
   }, [resultId, router]);
 
   // 스크롤 감지
@@ -205,8 +227,10 @@ function CoupleResultContent() {
         },
       };
 
-      // localStorage 업데이트
-      localStorage.setItem(`couple_result_${data.id}`, JSON.stringify(updatedResult));
+      // IndexedDB 업데이트
+      await updateCoupleAnalysisRecord(data.id, {
+        report: updatedResult.reports as unknown,
+      });
       setResult(updatedResult);
       setShowResult(true);
     } catch (error) {

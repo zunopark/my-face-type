@@ -4,6 +4,9 @@ import { useEffect, useState, Suspense } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { track } from "@/lib/mixpanel";
 import { confirmPayment as confirmPaymentAction } from "@/app/actions/analyze";
+import { markSajuLovePaid } from "@/lib/db/sajuLoveDB";
+import { markFaceReportPaid } from "@/lib/db/faceAnalysisDB";
+import { markCoupleAnalysisPaid } from "@/lib/db/coupleAnalysisDB";
 
 const MAX_RETRY = 3;
 const BASE_DELAY = 1500;
@@ -82,29 +85,29 @@ function SuccessContent() {
         ts: new Date().toISOString(),
       });
 
-      // localStorage 업데이트 (paid = true)
+      // 결제 정보 업데이트
       if (resultId) {
         try {
-          const stored = localStorage.getItem(`face_result_${resultId}`);
-          if (stored) {
-            const data = JSON.parse(stored);
-            data.paid = true;
-            data.reports = data.reports || {};
-            data.reports[reportType] = {
-              ...data.reports[reportType],
-              paid: true,
-              purchasedAt: new Date().toISOString(),
-            };
-            localStorage.setItem(`face_result_${resultId}`, JSON.stringify(data));
+          if (reportType === "saju") {
+            // 사주 결제인 경우
+            await markSajuLovePaid(resultId);
+          } else if (reportType === "couple") {
+            // 궁합 결제인 경우
+            await markCoupleAnalysisPaid(resultId);
+          } else {
+            // 관상 결제인 경우 (base, wealth, love, marriage, career)
+            await markFaceReportPaid(resultId, reportType as "base" | "wealth" | "love" | "marriage" | "career");
           }
         } catch (e) {
-          console.error("localStorage 업데이트 실패:", e);
+          console.error("결제 정보 업데이트 실패:", e);
         }
       }
 
       // 2초 후 결과 페이지로 이동
       setTimeout(() => {
-        if (reportType === "couple") {
+        if (reportType === "saju") {
+          router.push(`/saju-love/result?id=${resultId}`);
+        } else if (reportType === "couple") {
           router.push(`/couple/result?id=${resultId}`);
         } else {
           router.push(`/face/result?id=${resultId}`);

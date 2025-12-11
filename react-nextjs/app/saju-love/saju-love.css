@@ -1,0 +1,591 @@
+/* 연애 사주 메인 페이지 스타일 - 원본 CSS와 동일 */
+
+/* 랜딩 페이지 스타일 */
+.landing_page {
+  position: relative;
+  width: 100%;
+  max-width: 500px;
+  min-height: 100vh;
+  overflow: hidden;
+}
+
+.back_btn,
+.back_btn:visited,
+.back_btn:active {
+  position: fixed;
+  top: 16px;
+  left: calc(50% - 250px + 16px);
+  height: 40px;
+  padding: 0 14px 0 10px;
+  background: rgba(255, 255, 255, 0.4);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  z-index: 200;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  color: #333;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+}
+
+@media (max-width: 500px) {
+  .back_btn {
+    left: 16px;
+  }
+}
+
+.back_btn:hover {
+  background: rgba(255, 255, 255, 0.55);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+}
+
+.back_btn .material-icons {
+  color: #333;
+  font-size: 22px;
+}
+
+.back_btn_text {
+  color: #333;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.landing_bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1;
+}
+
+.landing_image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top center;
+  transition: opacity 0.5s ease;
+}
+
+.landing_image.fade {
+  opacity: 0;
+}
+
+/* 랜딩 타이틀 */
+.landing_title_wrap {
+  position: absolute;
+  top: 8%;
+  left: 0;
+  right: 0;
+  z-index: 10;
+  text-align: center;
+  padding: 0 20px;
+}
+
+.landing_title_wrap.hidden {
+  display: none;
+}
+
+.landing_title {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
+  margin-bottom: 16px;
+}
+
+.title_line {
+  font-family: "Danjo", serif;
+  display: block;
+  color: #ce3711;
+  -webkit-text-stroke: 12px #fff;
+  paint-order: stroke fill;
+  line-height: 1.1;
+}
+
+.title_name,
+.title_saju {
+  font-size: 64px;
+}
+
+.landing_subtitle {
+  font-family: "KimjungchulMyungjo-Bold", serif;
+  font-size: 20px;
+  color: white;
+  text-shadow: 1px 1px 6px rgba(0, 0, 0, 0.6);
+  letter-spacing: 4px;
+  margin-top: 20px;
+}
+
+/* 하단 시작 버튼 */
+.landing_bottom {
+  position: fixed;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  max-width: 500px;
+  padding: 20px;
+  padding-bottom: calc(20px + env(safe-area-inset-bottom));
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.7) 0%, transparent 100%);
+  z-index: 100;
+}
+
+.landing_bottom.hidden {
+  display: none;
+}
+
+.landing_start_btn {
+  width: 100%;
+  padding: 18px 32px;
+  font-size: 18px;
+  font-weight: 700;
+  background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+  color: white;
+  border: none;
+  border-radius: 14px;
+  cursor: pointer;
+  box-shadow: 0 4px 20px rgba(231, 76, 60, 0.4);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.landing_start_btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 25px rgba(231, 76, 60, 0.5);
+}
+
+.landing_start_btn:active {
+  transform: translateY(0);
+}
+
+.landing_page .nav_wrap {
+  display: none;
+}
+
+.landing_page .footer {
+  display: none;
+}
+
+/* 대화 오버레이 */
+.dialogue_overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 99;
+  display: none;
+}
+
+.dialogue_overlay.active {
+  display: block;
+}
+
+/* 대화 UI 스타일 */
+.dialogue_wrap {
+  position: fixed;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  max-width: 500px;
+  padding: 20px;
+  padding-bottom: calc(20px + env(safe-area-inset-bottom));
+  z-index: 100;
+  display: none;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.dialogue_wrap.active {
+  display: flex;
+}
+
+.dialogue_box {
+  background: rgba(0, 0, 0, 0.8);
+  border-radius: 16px;
+  padding: 24px;
+  min-height: 120px;
+}
+
+.dialogue_speaker {
+  font-size: 13px;
+  font-weight: 600;
+  color: #f5a5a5;
+  margin-bottom: 12px;
+  letter-spacing: 1px;
+}
+
+.dialogue_text {
+  font-size: 17px;
+  line-height: 1.8;
+  color: white;
+  font-family: "KimjungchulMyungjo-Bold", serif;
+  white-space: pre-line;
+}
+
+.dialogue_text .typing-cursor {
+  display: inline-block;
+  width: 2px;
+  height: 1em;
+  background: white;
+  margin-left: 2px;
+  animation: blink 0.7s infinite;
+}
+
+@keyframes blink {
+  0%,
+  50% {
+    opacity: 1;
+  }
+  51%,
+  100% {
+    opacity: 0;
+  }
+}
+
+.dialogue_buttons {
+  display: none;
+  gap: 10px;
+}
+
+.dialogue_buttons.visible {
+  display: flex;
+}
+
+.dialogue_prev_btn {
+  padding: 16px 24px;
+  font-size: 16px;
+  font-weight: 700;
+  background: white;
+  color: #333;
+  border: 1px solid #ddd;
+  border-radius: 12px;
+  cursor: pointer;
+}
+
+.dialogue_next_btn {
+  flex: 1;
+  padding: 16px 32px;
+  font-size: 16px;
+  font-weight: 700;
+  background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+  color: white;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  box-shadow: 0 4px 20px rgba(231, 76, 60, 0.4);
+}
+
+/* 입력 폼 오버레이 */
+.input_overlay {
+  position: fixed;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  max-width: 500px;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.75);
+  z-index: 100;
+  display: none;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 20px;
+  padding-bottom: calc(20px + env(safe-area-inset-bottom));
+}
+
+.input_overlay.active {
+  display: flex;
+}
+
+.input_form_wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.input_group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.input_row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.input_label {
+  font-size: 14px;
+  font-weight: 600;
+  color: white;
+}
+
+/* 입력 필드 */
+.input_field {
+  width: 100%;
+  padding: 14px 16px;
+  border: none;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 0;
+  font-size: 15px;
+  color: white;
+  background: transparent;
+  transition: border-color 0.2s ease;
+}
+
+.input_field:focus {
+  outline: none;
+  border-bottom-color: white;
+}
+
+.input_field::placeholder {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.input_field option {
+  color: #333;
+  background: white;
+}
+
+/* 양력/음력 선택 */
+.calendar_options {
+  display: flex;
+  gap: 12px;
+}
+
+.calendar_btn {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 0;
+  border: none;
+  background: transparent;
+  font-size: 14px;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.5);
+  cursor: pointer;
+}
+
+.calendar_btn .check_icon {
+  display: none;
+}
+
+.calendar_btn.active {
+  color: white;
+}
+
+.calendar_btn.active .check_icon {
+  display: inline;
+}
+
+/* 시간 모름 버튼 */
+.time_unknown_btn {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 0;
+  border: none;
+  background: transparent;
+  font-size: 14px;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.5);
+  cursor: pointer;
+}
+
+.time_unknown_btn .check_icon {
+  display: none;
+}
+
+.time_unknown_btn.active {
+  color: white;
+}
+
+.time_unknown_btn.active .check_icon {
+  display: inline;
+}
+
+/* 성별 선택 버튼 */
+.gender_options {
+  display: flex;
+  gap: 12px;
+}
+
+.gender_btn {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 14px 20px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 12px;
+  background: transparent;
+  font-size: 15px;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.7);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.gender_btn.active {
+  border-color: white;
+  background: rgba(255, 255, 255, 0.25);
+  color: white;
+}
+
+/* 하단 버튼 */
+.input_buttons {
+  display: flex;
+  gap: 10px;
+}
+
+.input_prev_btn {
+  padding: 16px 24px;
+  font-size: 16px;
+  font-weight: 700;
+  background: white;
+  color: #333;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+}
+
+.input_submit_btn {
+  flex: 1;
+  padding: 16px 32px;
+  font-size: 16px;
+  font-weight: 700;
+  background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+  color: white;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  box-shadow: 0 4px 20px rgba(231, 76, 60, 0.4);
+}
+
+.input_submit_btn:disabled {
+  background: #666;
+  box-shadow: none;
+  cursor: not-allowed;
+}
+
+/* 텍스트에어리어 */
+.input_field.textarea {
+  resize: none;
+  line-height: 1.6;
+  min-height: 100px;
+}
+
+/* 연애 상태 선택 */
+.status_options {
+  display: flex;
+  gap: 10px;
+}
+
+.status_btn {
+  flex: 1;
+  padding: 12px 16px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 10px;
+  background: transparent;
+  font-size: 14px;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.7);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.status_btn.active {
+  border-color: white;
+  background: rgba(255, 255, 255, 0.1);
+  color: white;
+}
+
+/* 관심사 선택 */
+.interest_options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.interest_btn {
+  padding: 10px 16px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 20px;
+  background: transparent;
+  font-size: 14px;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.7);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.interest_btn.active {
+  border-color: #e74c3c;
+  background: rgba(231, 76, 60, 0.2);
+  color: white;
+}
+
+/* 분석 중 로딩 오버레이 */
+.analyze_overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.analyze_overlay.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+.analyze_content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+.analyze_spinner {
+  width: 50px;
+  height: 50px;
+  border: 4px solid #ffe0e0;
+  border-top-color: #e74c3c;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.analyze_text {
+  font-size: 18px;
+  font-weight: 700;
+  color: #1a1a1a;
+}
+
+.analyze_subtext {
+  font-size: 14px;
+  color: #666;
+}

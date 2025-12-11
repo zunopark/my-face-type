@@ -263,3 +263,150 @@ export async function analyzeCoupleScore(detail1: string) {
     };
   }
 }
+
+// ==========================================
+// 연애 사주 관련 Server Actions
+// ==========================================
+
+// 사주 API 엔드포인트
+const SAJU_API_URL = "https://port-0-momzzi-fastapi-m7ynssht4601229b.sel4.cloudtype.app";
+
+// 사주 입력 데이터 타입
+interface SajuInput {
+  gender: string;
+  date: string;
+  time: string | null;
+  timezone?: string;
+  calendar: string;
+}
+
+// 사주 계산 결과 타입
+export interface SajuData {
+  dayMaster: {
+    char: string;
+    title: string;
+    element: string;
+    yinYang: string;
+  };
+  pillars: {
+    year: PillarData;
+    month: PillarData;
+    day: PillarData;
+    hour: PillarData;
+  };
+  fiveElements: {
+    strength: string;
+    percent: Record<string, number>;
+  };
+  loveFacts: {
+    dayMasterStrength: string;
+    peachBlossom: {
+      hasPeach: boolean;
+      targetBranch: string[];
+      positions: string[];
+    };
+    spouseStars: {
+      hitCount: number;
+      positions: string[];
+    };
+    spouseTargetType: string;
+  };
+}
+
+interface PillarData {
+  stem: {
+    char: string;
+    korean: string;
+    element: string;
+  };
+  branch: {
+    char: string;
+    korean: string;
+    element: string;
+  };
+  tenGodStem: string;
+  tenGodBranchMain: string;
+}
+
+/**
+ * 사주 계산 (기본 정보로 사주팔자 계산)
+ * - /saju/compute 엔드포인트 호출
+ */
+export async function computeSaju(input: SajuInput) {
+  try {
+    const payload = {
+      gender: input.gender,
+      date: input.date,
+      time: input.time,
+      timezone: input.timezone || "Asia/Seoul",
+      calendar: input.calendar,
+    };
+
+    const response = await fetch(`${SAJU_API_URL}/saju/compute`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(payload),
+    });
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      throw new Error(errorText || "사주 계산에 실패했습니다.");
+    }
+
+    const data = await response.json();
+    return { success: true, data };
+  } catch (error) {
+    console.error("Saju compute error:", error);
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : "서버 오류가 발생했습니다.",
+    };
+  }
+}
+
+// 연애 사주 분석 입력 타입
+interface SajuLoveAnalyzeInput {
+  sajuData: SajuData;
+  userName: string;
+  userConcern: string;
+  year: number;
+}
+
+/**
+ * 연애 사주 분석 (결제 후 상세 분석)
+ * - /saju_love/analyze 엔드포인트 호출
+ */
+export async function analyzeSajuLove(input: SajuLoveAnalyzeInput) {
+  try {
+    const payload = {
+      saju_data: input.sajuData,
+      user_name: input.userName,
+      user_concern: input.userConcern,
+      year: input.year,
+    };
+
+    const response = await fetch(`${SAJU_API_URL}/saju_love/analyze`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(payload),
+    });
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      throw new Error(errorText || "연애 사주 분석에 실패했습니다.");
+    }
+
+    const data = await response.json();
+    return { success: true, data };
+  } catch (error) {
+    console.error("Saju love analysis error:", error);
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : "서버 오류가 발생했습니다.",
+    };
+  }
+}

@@ -7,6 +7,7 @@ import { useRouter } from "next/navigation";
 import { extractFaceFeatures, extractPairFeatures } from "./actions/analyze";
 import Footer from "@/components/layout/Footer";
 import { track } from "@/lib/mixpanel";
+import { saveCoupleAnalysisRecord } from "@/lib/db/coupleAnalysisDB";
 
 const TITLE_MAP = {
   face: {
@@ -197,7 +198,7 @@ export default function HomePage() {
         },
       };
 
-      localStorage.setItem(`couple_result_${resultId}`, JSON.stringify(resultData));
+      await saveCoupleAnalysisRecord(resultData);
       router.push(`/couple/result?id=${resultId}`);
     } catch (error) {
       console.error("궁합 분석 오류:", error);
@@ -256,13 +257,14 @@ export default function HomePage() {
           >
             궁합 관상
           </button>
-          <button
+          <Link
+            href="/saju-love"
             className={`category_btn category_btn_new ${activeTab === "saju" ? "active" : ""}`}
-            onClick={() => handleTabClick("saju")}
+            style={{ textDecoration: "none" }}
           >
             연애 사주
             <span className="free_badge">오늘만 100원</span>
-          </button>
+          </Link>
         </div>
 
         {/* Face Content */}
@@ -387,22 +389,6 @@ export default function HomePage() {
           </div>
         </div>
 
-        {/* Saju Content */}
-        <div
-          id="content-saju"
-          className={`tab_content ${activeTab === "saju" ? "active" : ""}`}
-        >
-          <div className="reunion-sheet-inner">
-            <div className="reunion-relationship-options">
-              <div data-type="interest">썸이 깨졌어요</div>
-              <div data-type="crush">고백에 실패했어요</div>
-              <div data-type="fling">성격 차이/잦은 다툼</div>
-              <div data-type="dating">집착 및 이성 문제</div>
-              <div data-type="ghosting">잠수이별 및 통보</div>
-              <div data-type="affair">바람 및 외도</div>
-            </div>
-          </div>
-        </div>
       </div>
 
       {/* 바텀시트 오버레이 */}

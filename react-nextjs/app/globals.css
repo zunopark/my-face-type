@@ -137,6 +137,13 @@
   font-style: normal;
 }
 
+@font-face {
+  font-family: "Danjo";
+  src: url("/fonts/Danjo-bold-Regular.otf") format("opentype");
+  font-weight: normal;
+  font-style: normal;
+}
+
 /* 분석 중 오버레이 애니메이션 */
 @keyframes dots {
   0% {

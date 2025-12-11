@@ -7,6 +7,11 @@ import Link from "next/link";
 import { analyzeFaceFeatures } from "@/app/actions/analyze";
 import Footer from "@/components/layout/Footer";
 import { track } from "@/lib/mixpanel";
+import {
+  getFaceAnalysisRecord,
+  updateFaceAnalysisRecord,
+  FaceAnalysisRecord,
+} from "@/lib/db/faceAnalysisDB";
 
 // TossPayments 타입 선언
 declare global {
@@ -119,49 +124,64 @@ function ResultContent() {
   // 결과 렌더링 상태
   const [showResult, setShowResult] = useState(false);
 
-  // localStorage에서 결과 가져오기
+  // IndexedDB에서 결과 가져오기
   useEffect(() => {
     if (!resultId) {
       router.push("/");
       return;
     }
 
-    const stored = localStorage.getItem(`face_result_${resultId}`);
-    if (stored) {
-      const parsed = JSON.parse(stored) as FaceResult;
-      setResult(parsed);
+    const loadData = async () => {
+      const stored = await getFaceAnalysisRecord(resultId);
+      if (stored) {
+        // FaceAnalysisRecord를 FaceResult로 변환
+        const parsed: FaceResult = {
+          id: stored.id,
+          imageBase64: stored.imageBase64,
+          features: stored.features,
+          paid: stored.paid || false,
+          timestamp: stored.timestamp,
+          summary: (stored.reports?.base?.data as { summary?: string })?.summary,
+          detail: (stored.reports?.base?.data as { detail?: string })?.detail,
+          sections: (stored.reports?.base?.data as { sections?: FaceResult["sections"] })?.sections,
+          reports: stored.reports as FaceResult["reports"],
+        };
+        setResult(parsed);
 
-      // 이미 분석 완료된 경우 바로 결과 표시
-      if (parsed.summary && parsed.detail) {
-        setShowResult(true);
-        setIsLoading(false);
-        return;
-      }
+        // 이미 분석 완료된 경우 바로 결과 표시
+        if (parsed.summary && parsed.detail) {
+          setShowResult(true);
+          setIsLoading(false);
+          return;
+        }
 
-      // 결제 완료 상태면 바로 분석 시작
-      if (parsed.paid || parsed.reports?.base?.paid) {
-        setIsLoading(false);
-        startRealAnalysis(parsed);
-        return;
-      }
+        // 결제 완료 상태면 바로 분석 시작
+        if (parsed.paid || parsed.reports?.base?.paid) {
+          setIsLoading(false);
+          startRealAnalysis(parsed);
+          return;
+        }
 
-      // 미결제 상태: 가라 분석 시작
-      const loadingDoneKey = `base_report_loading_done_${resultId}`;
-      const loadingDone = sessionStorage.getItem(loadingDoneKey);
+        // 미결제 상태: 가라 분석 시작
+        const loadingDoneKey = `base_report_loading_done_${resultId}`;
+        const loadingDone = sessionStorage.getItem(loadingDoneKey);
 
-      if (loadingDone) {
-        // 이미 가라 분석 완료 → 결제 유도 페이지 표시
-        setShowPaymentPage(true);
-        setIsLoading(false);
+        if (loadingDone) {
+          // 이미 가라 분석 완료 → 결제 유도 페이지 표시
+          setShowPaymentPage(true);
+          setIsLoading(false);
+        } else {
+          // 가라 분석 시작
+          setShowFakeAnalysis(true);
+          setIsLoading(false);
+          startFakeAnalysis(resultId);
+        }
       } else {
-        // 가라 분석 시작
-        setShowFakeAnalysis(true);
-        setIsLoading(false);
-        startFakeAnalysis(resultId);
+        router.push("/");
       }
-    } else {
-      router.push("/");
-    }
+    };
+
+    loadData();
   }, [resultId, router]);
 
   // 가라 분석 (30초)
@@ -241,11 +261,12 @@ function ResultContent() {
         },
       };
 
-      // localStorage 업데이트
-      localStorage.setItem(
-        `face_result_${data.id}`,
-        JSON.stringify(updatedResult)
-      );
+      // IndexedDB 업데이트
+      await updateFaceAnalysisRecord(data.id, {
+        features: features || data.features,
+        paid: true,
+        reports: updatedResult.reports as FaceAnalysisRecord["reports"],
+      });
       setResult(updatedResult);
       setShowResult(true);
     } catch (error) {
