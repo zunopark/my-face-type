@@ -279,6 +279,7 @@
   justify-content: space-around;
   padding: 12px 0;
   border-top: 1px solid rgba(128, 128, 128, 0.2);
+  z-index: 9999;
 }
 
 .nav_content {
@@ -366,6 +367,9 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
+  width: 100%;
+  max-width: 500px;
+  margin: 0 auto;
 }
 
 .main_content_wrap {
@@ -1930,5 +1934,216 @@ body {
   }
   to {
     opacity: 1;
+  }
+}
+
+/* ========================================
+   양반가 랜딩 페이지 스타일
+   ======================================== */
+
+.landing-container {
+  min-height: 100vh;
+  background: #fff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-bottom: 100px;
+  position: relative;
+  width: 100%;
+}
+
+/* 메인 히어로 이미지 */
+.landing-hero {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  background: linear-gradient(180deg, #fdfcf8 0%, #fff 100%);
+}
+
+.landing-hero-image {
+  width: 100%;
+  max-width: 500px;
+  height: auto;
+  object-fit: contain;
+}
+
+/* 서비스 카드 섹션 */
+.landing-cards {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 100%;
+  max-width: 500px;
+  padding: 0 20px;
+  margin-top: 24px;
+  position: relative;
+  z-index: 1;
+  box-sizing: border-box;
+}
+
+.service-card {
+  background: #fff;
+  border: 1px solid #d4c5a9;
+  padding: 24px;
+  text-decoration: none;
+  position: relative;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(74, 60, 42, 0.08);
+}
+
+.service-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(74, 60, 42, 0.15);
+}
+
+.service-card:active {
+  transform: translateY(0);
+}
+
+/* 카드 뱃지 */
+.card-badge {
+  position: absolute;
+  top: -10px;
+  right: 16px;
+  background: linear-gradient(135deg, #ff6b6b, #ee5a24);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: 4px;
+  box-shadow: 0 2px 6px rgba(238, 90, 36, 0.4);
+}
+
+.card-icon-wrap {
+  margin-bottom: 12px;
+}
+
+.card-icon {
+  font-size: 32px;
+}
+
+.card-title {
+  font-family: "KimjungchulMyungjo-Bold", serif;
+  font-size: 20px;
+  color: #4a3c2a;
+  margin: 0 0 8px 0;
+}
+
+.card-desc {
+  font-size: 14px;
+  color: #6b5a4a;
+  line-height: 1.6;
+  margin: 0 0 12px 0;
+}
+
+.card-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.card-tags .tag {
+  font-size: 12px;
+  color: #8b7355;
+  background: #f5f0e6;
+  padding: 4px 10px;
+  border-radius: 12px;
+}
+
+.card-arrow {
+  position: absolute;
+  right: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #c4965a;
+}
+
+.card-arrow .material-icons {
+  font-size: 24px;
+}
+
+/* 카드 개별 스타일 */
+.card-face {
+  border-left: 4px solid #6b4423;
+}
+
+.card-couple {
+  border-left: 4px solid #c4965a;
+}
+
+.card-saju {
+  border-left: 4px solid #ee5a24;
+}
+
+/* 신뢰 지표 */
+.landing-trust {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 24px;
+  margin-top: 32px;
+  padding: 24px 20px;
+  background: #fdfcf8;
+  border: 1px solid #e8e0d0;
+  width: 100%;
+  max-width: 500px;
+  box-sizing: border-box;
+  position: relative;
+  z-index: 1;
+}
+
+.trust-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.trust-number {
+  font-family: "KimjungchulMyungjo-Bold", serif;
+  font-size: 20px;
+  color: #6b4423;
+  font-weight: 700;
+}
+
+.trust-label {
+  font-size: 12px;
+  color: #8b7355;
+}
+
+.trust-divider {
+  width: 1px;
+  height: 32px;
+  background: #d4c5a9;
+}
+
+/* 반응형 */
+@media screen and (min-width: 500px) {
+  .landing-container {
+    width: 500px;
+    margin: 0 auto;
+  }
+}
+
+@media screen and (max-width: 360px) {
+  .landing-title {
+    font-size: 28px;
+    letter-spacing: 4px;
+  }
+
+  .landing-logo-icon {
+    font-size: 36px;
+  }
+
+  .intro-text {
+    font-size: 16px;
+  }
+
+  .service-card {
+    padding: 20px;
+  }
+
+  .card-title {
+    font-size: 18px;
   }
 }

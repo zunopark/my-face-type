@@ -69,7 +69,10 @@ function SuccessContent() {
       );
 
       if (!result.success) {
-        throw new Error(result.error);
+        const errorMsg = typeof result.error === 'string'
+          ? result.error
+          : JSON.stringify(result.error) || "알 수 없는 오류";
+        throw new Error(errorMsg);
       }
 
       // 결제 성공

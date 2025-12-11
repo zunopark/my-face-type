@@ -602,6 +602,50 @@ function TocSlide({ userName }: { userName: string }) {
   );
 }
 
+// 이상형 이미지 컴포넌트
+function IdealTypeImage({
+  imageBase64,
+  userName,
+}: {
+  imageBase64: string;
+  userName: string;
+}) {
+  const [clickCount, setClickCount] = useState(0);
+  const [isShaking, setIsShaking] = useState(false);
+  const maxClicks = 5;
+  const blurLevel = Math.max(0, 30 - clickCount * 6);
+  const isRevealed = clickCount >= maxClicks;
+
+  const handleClick = () => {
+    if (clickCount < maxClicks) {
+      setClickCount(clickCount + 1);
+      setIsShaking(true);
+      setTimeout(() => setIsShaking(false), 500);
+    }
+  };
+
+  return (
+    <div className="ideal_type_inline">
+      <div className="ideal_type_header">
+        <span className="ideal_type_label">드디어 공개!</span>
+        <h3 className="ideal_type_title">{userName}님의 운명의 상대</h3>
+      </div>
+      <div
+        className={`ideal_type_image_wrap ${isRevealed ? 'ideal_type_revealed' : 'ideal_type_blurred'} ${isShaking ? 'ideal_type_shake' : ''}`}
+        onClick={handleClick}
+      >
+        <img
+          src={`data:image/png;base64,${imageBase64}`}
+          alt="이상형 이미지"
+          className="ideal_type_image"
+          style={{ filter: `blur(${blurLevel}px)`, transition: 'filter 0.4s ease-out' }}
+        />
+      </div>
+      {!isRevealed && <p className="ideal_type_tap_hint">사진을 {maxClicks - clickCount}번 더 클릭해보세요!</p>}
+    </div>
+  );
+}
+
 // 챕터 슬라이드 컴포넌트
 function ChapterSlide({
   chapter,
@@ -612,9 +656,6 @@ function ChapterSlide({
   index: number;
   data: SajuLoveRecord;
 }) {
-  const [clickCount, setClickCount] = useState(0);
-  const maxClicks = 5;
-
   // 제목 정리
   let titleText = chapter.title || `챕터 ${index + 1}`;
   titleText = titleText
@@ -636,15 +677,64 @@ function ChapterSlide({
   // 고민 내용 (4장인 경우에만 표시)
   const userConcern = data.input?.userConcern?.trim();
 
-  // 내용 처리
-  const formatContent = () => {
-    let content = chapter.content || "";
+  // 이상형 이미지 데이터
+  const idealPartner = data.loveAnalysis?.ideal_partner_image;
+  const userName = data.loveAnalysis?.user_name || data.input?.userName || "고객";
 
-    if (isDestinyChapter && data.loveAnalysis?.ideal_partner_image?.image_base64) {
-      return formatChapterContentWithIdealType(content, data, clickCount, setClickCount, maxClicks);
+  // 3장 컨텐츠를 섹션별로 분리
+  const renderDestinyChapterContent = () => {
+    const content = chapter.content || "";
+    const sectionPattern = /###\s*(?:풀이\s*)?(\d+)\.\s*(.+?)(?:\n|$)/g;
+    const sections: { number: string; title: string; content: string }[] = [];
+
+    let match;
+    const matches: { number: string; title: string; startIndex: number; endIndex: number }[] = [];
+
+    while ((match = sectionPattern.exec(content)) !== null) {
+      matches.push({
+        number: match[1],
+        title: match[2].trim(),
+        startIndex: match.index,
+        endIndex: sectionPattern.lastIndex,
+      });
     }
 
-    return formatChapterContent(content);
+    for (let i = 0; i < matches.length; i++) {
+      const m = matches[i];
+      const nextMatch = matches[i + 1];
+      const sectionStart = m.endIndex;
+      const sectionEnd = nextMatch ? nextMatch.startIndex : content.length;
+      const sectionContent = content.substring(sectionStart, sectionEnd).trim();
+
+      sections.push({
+        number: m.number,
+        title: m.title,
+        content: formatSubsections(sectionContent),
+      });
+    }
+
+    return (
+      <>
+        {sections.map((section, i) => (
+          <div key={i}>
+            <div className="chapter_section">
+              <div className="section_title">
+                <span className="section_number">{section.number}</span>
+                <span className="section_text">{section.title}</span>
+              </div>
+              <div
+                className="section_content"
+                dangerouslySetInnerHTML={{ __html: section.content }}
+              />
+            </div>
+            {/* 풀이 1 다음에 이상형 이미지 삽입 */}
+            {section.number === "1" && idealPartner?.image_base64 && (
+              <IdealTypeImage imageBase64={idealPartner.image_base64} userName={userName} />
+            )}
+          </div>
+        ))}
+      </>
+    );
   };
 
   return (
@@ -673,10 +763,16 @@ function ChapterSlide({
           </div>
         )}
 
-        <div
-          className="chapter_body"
-          dangerouslySetInnerHTML={{ __html: formatContent() }}
-        />
+        {isDestinyChapter && idealPartner?.image_base64 ? (
+          <div className="chapter_body">
+            {renderDestinyChapterContent()}
+          </div>
+        ) : (
+          <div
+            className="chapter_body"
+            dangerouslySetInnerHTML={{ __html: formatChapterContent(chapter.content || "") }}
+          />
+        )}
       </div>
     </div>
   );
@@ -934,88 +1030,6 @@ function formatSubsections(content: string): string {
   return formatted;
 }
 
-// 3장 전용 포맷팅 (이상형 이미지 포함)
-function formatChapterContentWithIdealType(
-  content: string,
-  data: SajuLoveRecord,
-  clickCount: number,
-  setClickCount: (count: number) => void,
-  maxClicks: number
-): string {
-  if (!content) return "";
-
-  const userName = data.loveAnalysis?.user_name || "고객";
-  const idealPartner = data.loveAnalysis?.ideal_partner_image;
-
-  const sectionPattern = /###\s*(?:풀이\s*)?(\d+)\.\s*(.+?)(?:\n|$)/g;
-  const sections: { number: string; title: string; startIndex: number; endIndex: number }[] = [];
-
-  let match;
-  while ((match = sectionPattern.exec(content)) !== null) {
-    sections.push({
-      number: match[1],
-      title: match[2].trim(),
-      startIndex: match.index,
-      endIndex: sectionPattern.lastIndex,
-    });
-  }
-
-  if (sections.length === 0) {
-    return simpleMD(content);
-  }
-
-  let formatted = "";
-
-  for (let i = 0; i < sections.length; i++) {
-    const section = sections[i];
-    const nextSection = sections[i + 1];
-
-    const sectionStart = section.endIndex;
-    const sectionEnd = nextSection ? nextSection.startIndex : content.length;
-    let sectionContent = content.substring(sectionStart, sectionEnd).trim();
-    sectionContent = formatSubsections(sectionContent);
-
-    formatted += `
-      <div class="chapter_section">
-        <div class="section_title">
-          <span class="section_number">${section.number}</span>
-          <span class="section_text">${escapeHTML(section.title)}</span>
-        </div>
-        <div class="section_content">${sectionContent}</div>
-      </div>
-    `;
-
-    // 풀이 1 다음에 이상형 이미지 삽입
-    if (section.number === "1" && idealPartner?.image_base64) {
-      const blurLevel = Math.max(0, 30 - clickCount * 6);
-      const isRevealed = clickCount >= maxClicks;
-
-      formatted += `
-        <div class="ideal_type_inline">
-          <div class="ideal_type_header">
-            <span class="ideal_type_label">드디어 공개!</span>
-            <h3 class="ideal_type_title">${userName}님의 운명의 상대</h3>
-          </div>
-          <div
-            class="ideal_type_image_wrap ${isRevealed ? 'ideal_type_revealed' : 'ideal_type_blurred'}"
-            data-click-count="${clickCount}"
-            onclick="this.dataset.clickCount = Math.min(${maxClicks}, parseInt(this.dataset.clickCount || 0) + 1); if(parseInt(this.dataset.clickCount) >= ${maxClicks}) { this.classList.remove('ideal_type_blurred'); this.classList.add('ideal_type_revealed'); }"
-          >
-            <img
-              src="data:image/png;base64,${idealPartner.image_base64}"
-              alt="이상형 이미지"
-              class="ideal_type_image"
-              style="filter: blur(${blurLevel}px); transition: filter 0.4s ease-out;"
-            />
-          </div>
-          ${!isRevealed ? '<p class="ideal_type_tap_hint">사진을 클릭해보세요!</p>' : ''}
-        </div>
-      `;
-    }
-  }
-
-  return formatted;
-}
 
 // Suspense로 감싼 export default 컴포넌트
 export default function SajuLoveResultPage() {
