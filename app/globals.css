@@ -2480,14 +2480,14 @@ body {
 .animal-border {
   box-sizing: border-box;
   position: relative;
-  background: #d69658;
-  background-image: linear-gradient(to top right, #5d5d5b, #383838);
+  background: linear-gradient(135deg, #8b5a2b 0%, #d69658 50%, #a0522d 100%);
   width: 280px;
   box-shadow: -1px 1px 2px 1px rgba(0, 0, 0, 0.1),
     -2px 2px 2px 1px rgba(0, 0, 0, 0.09), -3px 3px 2px 1px rgba(0, 0, 0, 0.08),
     -4px 4px 2px 1px rgba(0, 0, 0, 0.07), -5px 5px 2px 1px rgba(0, 0, 0, 0.06),
     -6px 6px 2px 1px rgba(0, 0, 0, 0.05), -7px 7px 2px 1px rgba(0, 0, 0, 0.04),
     -8px 8px 2px 1px rgba(0, 0, 0, 0.03);
+  border: 3px solid #6b4226;
 }
 
 .animal-border::before {
