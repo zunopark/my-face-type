@@ -679,7 +679,7 @@ function ResultContent() {
                       {PAYMENT_CONFIG.originalPrice.toLocaleString()}원
                     </div>
                     <div className="payment-final-price">
-                      <div className="payment-final-price-discount">67%</div>
+                      <div className="payment-final-price-discount">{Math.floor((1 - PAYMENT_CONFIG.price / PAYMENT_CONFIG.originalPrice) * 100)}%</div>
                       <div className="payment-final-price-num">
                         {PAYMENT_CONFIG.price.toLocaleString()}원
                       </div>
@@ -767,7 +767,7 @@ function ResultContent() {
                       {PAYMENT_CONFIG.originalPrice.toLocaleString()}원
                     </div>
                     <div className="payment-final-price">
-                      <div className="payment-final-price-discount">74%</div>
+                      <div className="payment-final-price-discount">{Math.floor((1 - PAYMENT_CONFIG.discountPrice / PAYMENT_CONFIG.originalPrice) * 100)}%</div>
                       <div className="payment-final-price-num">
                         {PAYMENT_CONFIG.discountPrice.toLocaleString()}원
                       </div>

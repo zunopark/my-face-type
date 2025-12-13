@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { computeSaju } from "@/app/actions/analyze";
@@ -77,6 +77,9 @@ export default function SajuLovePage() {
   const [status, setStatus] = useState<string | null>(null);
   const [userConcern, setUserConcern] = useState("");
 
+  // 타이핑 인터벌 ref
+  const typingIntervalRef = useRef<NodeJS.Timeout | null>(null);
+
   // 페이지 방문 추적
   useEffect(() => {
     trackPageView("saju_love");
@@ -84,23 +87,37 @@ export default function SajuLovePage() {
 
   // 타이핑 효과
   const typeText = useCallback((text: string, onComplete: () => void) => {
+    // 기존 인터벌 클리어
+    if (typingIntervalRef.current) {
+      clearInterval(typingIntervalRef.current);
+    }
+
     setIsTyping(true);
     setShowButtons(false);
     setDialogueText("");
 
     let i = 0;
-    const interval = setInterval(() => {
+    typingIntervalRef.current = setInterval(() => {
       if (i < text.length) {
         setDialogueText(text.substring(0, i + 1));
         i++;
       } else {
-        clearInterval(interval);
+        if (typingIntervalRef.current) {
+          clearInterval(typingIntervalRef.current);
+          typingIntervalRef.current = null;
+        }
         setIsTyping(false);
         onComplete();
       }
     }, 50);
+  }, []);
 
-    return () => clearInterval(interval);
+  // 타이핑 스킵 (클릭 시 즉시 완성)
+  const skipTyping = useCallback(() => {
+    if (typingIntervalRef.current) {
+      clearInterval(typingIntervalRef.current);
+      typingIntervalRef.current = null;
+    }
   }, []);
 
   // 시작하기 버튼
@@ -117,6 +134,8 @@ export default function SajuLovePage() {
   // 다음 대화
   const handleNextDialogue = () => {
     if (isTyping) {
+      // 타이핑 중이면 즉시 완성
+      skipTyping();
       const dialogues = isAdditionalDialogue ? ADDITIONAL_DIALOGUES : DIALOGUES;
       setDialogueText(dialogues[currentDialogue].text);
       setIsTyping(false);

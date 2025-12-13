@@ -3,7 +3,7 @@
 import { useEffect, useState, Suspense, useRef } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import Link from "next/link";
-import { trackPageView, trackPaymentModalOpen } from "@/lib/mixpanel";
+import { trackPageView, trackPaymentModalOpen, trackPaymentModalClose, trackPaymentAttempt } from "@/lib/mixpanel";
 import { getSajuLoveRecord, SajuLoveRecord } from "@/lib/db/sajuLoveDB";
 import "./detail.css";
 
@@ -33,7 +33,7 @@ declare global {
 // 결제 설정
 const PAYMENT_CONFIG = {
   clientKey: process.env.NEXT_PUBLIC_TOSS_CLIENT_KEY || "live_gck_yZqmkKeP8gBaRKPg1WwdrbQRxB9l",
-  price: 100,
+  price: 9900,
   discountPrice: 7900,
   originalPrice: 29900,
   orderName: "AI 연애 사주 심층 분석",
@@ -118,7 +118,9 @@ function SajuDetailContent() {
   const [data, setData] = useState<SajuLoveRecord | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [showPaymentModal, setShowPaymentModal] = useState(false);
+  const [showDiscountModal, setShowDiscountModal] = useState(false);
   const paymentWidgetRef = useRef<ReturnType<typeof window.PaymentWidget> | null>(null);
+  const discountWidgetRef = useRef<ReturnType<typeof window.PaymentWidget> | null>(null);
 
   // 데이터 로드 (IndexedDB에서)
   useEffect(() => {
@@ -206,10 +208,81 @@ function SajuDetailContent() {
     }
   };
 
-  // 결제 모달 닫기
+  // 결제 모달 닫기 (할인 모달 열기)
   const closePaymentModal = () => {
     setShowPaymentModal(false);
     paymentWidgetRef.current = null;
+
+    trackPaymentModalClose("saju_love", {
+      id: data?.id,
+      reason: "user_close",
+    });
+
+    // 1초 후 깜짝 할인 모달 열기
+    setTimeout(() => {
+      openDiscountModal();
+    }, 1000);
+  };
+
+  // 할인 모달 열기
+  const openDiscountModal = () => {
+    if (!data) return;
+
+    trackPaymentModalOpen("saju_love", {
+      id: data.id,
+      price: PAYMENT_CONFIG.discountPrice,
+      is_discount: true,
+    });
+
+    setShowDiscountModal(true);
+
+    setTimeout(() => {
+      if (typeof window !== "undefined" && window.PaymentWidget) {
+        const customerKey = `customer_${Date.now()}`;
+        const widget = window.PaymentWidget(PAYMENT_CONFIG.clientKey, customerKey);
+        discountWidgetRef.current = widget;
+
+        widget.renderPaymentMethods("#saju-discount-method", {
+          value: PAYMENT_CONFIG.discountPrice,
+        });
+        widget.renderAgreement("#saju-discount-agreement");
+      }
+    }, 100);
+  };
+
+  // 할인 결제 요청
+  const handleDiscountPaymentRequest = async () => {
+    if (!discountWidgetRef.current || !data) return;
+
+    try {
+      trackPaymentAttempt("saju_love", {
+        id: data.id,
+        price: PAYMENT_CONFIG.discountPrice,
+        is_discount: true,
+      });
+
+      await discountWidgetRef.current.requestPayment({
+        orderId: `saju-love-discount_${Date.now()}`,
+        orderName: "AI 연애 사주 심층 분석 - 할인 특가",
+        customerName: data.input.userName || "고객",
+        successUrl: `${window.location.origin}/payment/success?type=saju&id=${encodeURIComponent(data.id)}`,
+        failUrl: `${window.location.origin}/payment/fail?id=${encodeURIComponent(data.id)}&type=saju`,
+      });
+    } catch (err) {
+      console.error("할인 결제 오류:", err);
+    }
+  };
+
+  // 할인 모달 닫기
+  const closeDiscountModal = () => {
+    setShowDiscountModal(false);
+    discountWidgetRef.current = null;
+
+    trackPaymentModalClose("saju_love", {
+      id: data?.id,
+      reason: "user_close",
+      is_discount: true,
+    });
   };
 
   const getColor = (element: string | undefined) => {
@@ -498,7 +571,7 @@ function SajuDetailContent() {
                 <div className="payment-coupon">출시 기념 할인</div>
               </div>
               <div className="payment-coupon-price-wrap">
-                <div className="payment-coupon-title">출시 기념 오늘만 100원 이벤트</div>
+                <div className="payment-coupon-title">출시 기념 오늘만 특별 할인</div>
                 <div className="payment-coupon-price">-{(PAYMENT_CONFIG.originalPrice - PAYMENT_CONFIG.price).toLocaleString()}원</div>
               </div>
 
@@ -510,13 +583,119 @@ function SajuDetailContent() {
                 <div className="payment-final-price-price-wrap">
                   <div className="payment-originam-price2">{PAYMENT_CONFIG.originalPrice.toLocaleString()}원</div>
                   <div className="payment-final-price">
-                    <div className="payment-final-price-discount">99%</div>
+                    <div className="payment-final-price-discount">{Math.floor((1 - PAYMENT_CONFIG.price / PAYMENT_CONFIG.originalPrice) * 100)}%</div>
                     <div className="payment-final-price-num">{PAYMENT_CONFIG.price.toLocaleString()}원</div>
                   </div>
                 </div>
               </div>
               <button className="payment-final-btn" onClick={handlePaymentRequest}>
                 심층 분석 받기
+              </button>
+              <div className="payment-empty" />
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* 할인 모달 */}
+      {showDiscountModal && (
+        <div className="payment-overlay" style={{ display: "block" }}>
+          <div className="payment-fullscreen">
+            <div className="modal-content">
+              <div className="payment-header">
+                <div className="payment-title">🎁 깜짝 선물! 2,000원 추가 할인</div>
+                <div className="payment-close" onClick={closeDiscountModal}>
+                  ✕
+                </div>
+              </div>
+
+              {/* 사주 요약 */}
+              <div className="payment-saju-summary">
+                <div className="saju-summary-row">
+                  <span className="saju-summary-label">일간</span>
+                  <span className="saju-summary-value">{dayMaster.char} ({dayMaster.title})</span>
+                </div>
+                <div className="saju-summary-row">
+                  <span className="saju-summary-label">신강/신약</span>
+                  <span className="saju-summary-value">{sajuData.fiveElements?.strength || "—"}</span>
+                </div>
+                <div className="saju-summary-row">
+                  <span className="saju-summary-label">도화살</span>
+                  <span className="saju-summary-value">
+                    {sajuData.loveFacts?.peachBlossom?.hasPeach ? "있음" : "없음"}
+                  </span>
+                </div>
+                <div className="saju-summary-row">
+                  <span className="saju-summary-label">배우자운</span>
+                  <span className="saju-summary-value">
+                    {(sajuData.loveFacts?.spouseStars?.hitCount ?? 0) > 0
+                      ? `${sajuData.loveFacts?.spouseTargetType} ${sajuData.loveFacts?.spouseStars?.hitCount}개`
+                      : "없음"}
+                  </span>
+                </div>
+              </div>
+
+              <div className="payment-intro">
+                <p>
+                  사주 팔자 기반의 <strong>10,000자 이상</strong> 연애 심층 보고서
+                </p>
+              </div>
+
+              <div className="report-wrap">
+                <div className="report-section">
+                  <div className="report-section-title">1장. 나만의 매력과 연애 성향</div>
+                  <div className="report-section-desc">
+                    처음 본 순간 이성이 느끼는 나의 매력, 내 연애 스타일 장점과 숨겨진 반전 매력, 인만추 vs 자만추 vs 결정사 중 나에게 맞는 방식, 내가 끌리는 사람 vs 나에게 끌리는 사람까지 분석합니다.
+                  </div>
+                </div>
+                <div className="report-section">
+                  <div className="report-section-title">2장. 앞으로 펼쳐질 사랑의 흐름</div>
+                  <div className="report-section-desc">
+                    앞으로의 연애 총운 흐름, 향후 3년간 연애운 증폭 시기와 총 몇 번의 연애 기회가 있을지, 바로 지금 이번 달 연애 운세까지 상세하게 분석합니다.
+                  </div>
+                </div>
+                <div className="report-section">
+                  <div className="report-section-title">3장. 결국 만나게 될 운명의 상대</div>
+                  <div className="report-section-desc">
+                    운명의 짝 그 사람의 외모, 성격, MBTI, 직업군까지 모든 것, 언제 어떻게 만나게 될지, 그 사람을 끌어당길 나만의 공략법까지 구체적으로 풀이합니다.
+                  </div>
+                </div>
+                <div className="report-section">
+                  <div className="report-section-title">4장. 색동낭자의 일침</div>
+                  <div className="report-section-desc">
+                    입력한 고민에 대해 사주 기반으로 뼈 때리는 직언과 현실적인 처방전을 1:1 맞춤 상담 형식으로 제공합니다.
+                  </div>
+                </div>
+              </div>
+
+              <div className="payment-price-wrap">
+                <div className="payment-original-price-title">정가</div>
+                <div className="payment-original-price">{PAYMENT_CONFIG.originalPrice.toLocaleString()}원</div>
+              </div>
+
+              <div className="payment-coupon-wrap">
+                <div className="payment-coupon">출시 기념 할인 + 추가 할인</div>
+              </div>
+              <div className="payment-coupon-price-wrap">
+                <div className="payment-coupon-title">출시 기념 특별 할인 + 추가 2천원 할인</div>
+                <div className="payment-coupon-price">-{(PAYMENT_CONFIG.originalPrice - PAYMENT_CONFIG.discountPrice).toLocaleString()}원</div>
+              </div>
+
+              <div id="saju-discount-method" style={{ padding: 0, margin: 0 }} />
+              <div id="saju-discount-agreement" />
+
+              <div className="payment-final-price-wrap">
+                <div className="payment-final-price-title">최종 결제 금액</div>
+                <div className="payment-final-price-price-wrap">
+                  <div className="payment-originam-price2">{PAYMENT_CONFIG.originalPrice.toLocaleString()}원</div>
+                  <div className="payment-final-price">
+                    <div className="payment-final-price-discount">{Math.floor((1 - PAYMENT_CONFIG.discountPrice / PAYMENT_CONFIG.originalPrice) * 100)}%</div>
+                    <div className="payment-final-price-num">{PAYMENT_CONFIG.discountPrice.toLocaleString()}원</div>
+                  </div>
+                </div>
+              </div>
+              <button className="payment-final-btn" onClick={handleDiscountPaymentRequest}>
+                할인가로 심층 분석 받기
               </button>
               <div className="payment-empty" />
             </div>

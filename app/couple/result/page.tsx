@@ -620,7 +620,7 @@ function CoupleResultContent() {
                     {PAYMENT_CONFIG.originalPrice.toLocaleString()}원
                   </div>
                   <div className="payment-final-price">
-                    <div className="payment-final-price-discount">53%</div>
+                    <div className="payment-final-price-discount">{Math.floor((1 - PAYMENT_CONFIG.price / PAYMENT_CONFIG.originalPrice) * 100)}%</div>
                     <div className="payment-final-price-num">
                       {PAYMENT_CONFIG.price.toLocaleString()}원
                     </div>
@@ -704,7 +704,7 @@ function CoupleResultContent() {
                     {PAYMENT_CONFIG.originalPrice.toLocaleString()}원
                   </div>
                   <div className="payment-final-price">
-                    <div className="payment-final-price-discount">63%</div>
+                    <div className="payment-final-price-discount">{Math.floor((1 - PAYMENT_CONFIG.discountPrice / PAYMENT_CONFIG.originalPrice) * 100)}%</div>
                     <div className="payment-final-price-num">
                       {PAYMENT_CONFIG.discountPrice.toLocaleString()}원
                     </div>
