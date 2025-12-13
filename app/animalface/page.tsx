@@ -3,7 +3,12 @@
 import { useState, useCallback, useRef, useEffect } from "react";
 import Link from "next/link";
 import Script from "next/script";
-import { track } from "@/lib/mixpanel";
+import {
+  trackPageView,
+  trackPhotoUpload,
+  trackAnalysisComplete,
+  trackRetry,
+} from "@/lib/mixpanel";
 import Footer from "@/components/layout/Footer";
 
 // 동물상 설명 데이터
@@ -106,6 +111,11 @@ export default function AnimalFacePage() {
   const [scriptsLoaded, setScriptsLoaded] = useState(false);
   const imageRef = useRef<HTMLImageElement>(null);
 
+  // 페이지 방문 추적
+  useEffect(() => {
+    trackPageView("animalface");
+  }, []);
+
   const handleImageChange = useCallback(
     async (e: React.ChangeEvent<HTMLInputElement>) => {
       const file = e.target.files?.[0];
@@ -118,10 +128,7 @@ export default function AnimalFacePage() {
         setIsAnalyzing(true);
         setResult(null);
 
-        track("동물상 사진 업로드", {
-          gender,
-          timestamp: new Date().toISOString(),
-        });
+        trackPhotoUpload("animalface", { gender });
       };
       reader.readAsDataURL(file);
     },
@@ -169,11 +176,10 @@ export default function AnimalFacePage() {
         allResults: results,
       });
 
-      track("동물상 결과 도출", {
+      trackAnalysisComplete("animalface", {
         result: topAnimal,
         gender,
         top5: results.slice(0, 5).map((r) => `${r.key} (${r.value}%)`).join(", "),
-        timestamp: new Date().toISOString(),
       });
     } catch (error) {
       console.error("분석 오류:", error);
@@ -187,7 +193,7 @@ export default function AnimalFacePage() {
     setImage(null);
     setResult(null);
     setIsAnalyzing(false);
-    track("동물상 다시하기");
+    trackRetry("animalface");
   };
 
   const handleGenderToggle = () => {

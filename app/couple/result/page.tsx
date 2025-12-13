@@ -6,7 +6,11 @@ import Image from "next/image";
 import Link from "next/link";
 import { analyzeCoupleReport, analyzeCoupleScore } from "@/app/actions/analyze";
 import Footer from "@/components/layout/Footer";
-import { track } from "@/lib/mixpanel";
+import {
+  trackPaymentModalOpen,
+  trackPaymentModalClose,
+  trackPaymentAttempt,
+} from "@/lib/mixpanel";
 import {
   getCoupleAnalysisRecord,
   updateCoupleAnalysisRecord,
@@ -251,10 +255,10 @@ function CoupleResultContent() {
   const openPaymentModal = () => {
     if (!result) return;
 
-    track("유료 관상 분석 보고서 버튼 클릭", {
-      resultId: result.id,
-      type: "궁합",
+    trackPaymentModalOpen("couple", {
+      id: result.id,
       price: PAYMENT_CONFIG.price,
+      is_discount: false,
     });
 
     setShowPaymentModal(true);
@@ -296,8 +300,9 @@ function CoupleResultContent() {
     setShowPaymentModal(false);
     paymentWidgetRef.current = null;
 
-    track("궁합 결제창 닫힘", {
+    trackPaymentModalClose("couple", {
       id: result?.id,
+      reason: "user_close",
     });
 
     // 1초 후 깜짝 할인 모달 열기
@@ -310,8 +315,10 @@ function CoupleResultContent() {
   const openDiscountModal = () => {
     if (!result) return;
 
-    track("궁합 할인 결제창 열림", {
+    trackPaymentModalOpen("couple", {
       id: result.id,
+      price: PAYMENT_CONFIG.discountPrice,
+      is_discount: true,
     });
 
     setShowDiscountModal(true);
@@ -336,9 +343,10 @@ function CoupleResultContent() {
     if (!discountWidgetRef.current || !result) return;
 
     try {
-      track("궁합 할인 결제 시도", {
+      trackPaymentAttempt("couple", {
         id: result.id,
         price: PAYMENT_CONFIG.discountPrice,
+        is_discount: true,
       });
 
       await discountWidgetRef.current.requestPayment({
@@ -358,8 +366,10 @@ function CoupleResultContent() {
     setShowDiscountModal(false);
     discountWidgetRef.current = null;
 
-    track("궁합 할인 결제창 닫힘", {
+    trackPaymentModalClose("couple", {
       id: result?.id,
+      reason: "user_close",
+      is_discount: true,
     });
   };
 

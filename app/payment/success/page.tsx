@@ -2,7 +2,7 @@
 
 import { useEffect, useState, Suspense } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
-import { track } from "@/lib/mixpanel";
+import { trackPaymentSuccess, trackPaymentFail, ServiceType } from "@/lib/mixpanel";
 import { confirmPayment as confirmPaymentAction } from "@/app/actions/analyze";
 import { markSajuLovePaid } from "@/lib/db/sajuLoveDB";
 import { markFaceReportPaid } from "@/lib/db/faceAnalysisDB";
@@ -38,11 +38,7 @@ function SuccessContent() {
       return;
     }
 
-    track("관상 결제 성공 페이지 진입", {
-      url: window.location.href,
-      ua: navigator.userAgent,
-      ts: new Date().toISOString(),
-    });
+    // 결제 성공 페이지 진입은 별도 추적 안함 (실제 성공시 아래서 추적)
 
     // 팁 스피너
     const spinner = setInterval(() => {
@@ -79,13 +75,23 @@ function SuccessContent() {
       setStatus("success");
       setMessage("✅ 결제가 완료되었습니다!");
 
-      track("관상 결제 성공", {
-        orderId,
-        amount,
-        paymentKey,
-        resultId,
-        reportType,
-        ts: new Date().toISOString(),
+      // 결제 성공 추적
+      const serviceTypeMap: Record<string, ServiceType> = {
+        saju: "saju_love",
+        couple: "couple",
+        base: "face",
+        wealth: "face",
+        love: "face",
+        marriage: "face",
+        career: "face",
+      };
+      const serviceType = serviceTypeMap[reportType] || "face";
+
+      trackPaymentSuccess(serviceType, {
+        order_id: orderId,
+        amount: Number(amount),
+        result_id: resultId,
+        report_type: reportType,
       });
 
       // 결제 정보 업데이트
@@ -127,13 +133,19 @@ function SuccessContent() {
         setStatus("fail");
         setMessage("❌ 결제 확인 실패. 다시 시도해 주세요.");
 
-        track("관상 결제 실패", {
+        // 결제 실패 추적
+        const serviceTypeMap: Record<string, ServiceType> = {
+          saju: "saju_love",
+          couple: "couple",
+          base: "face",
+        };
+        const serviceType = serviceTypeMap[reportType] || "face";
+
+        trackPaymentFail(serviceType, {
           error: err instanceof Error ? err.message : "Unknown error",
-          orderId,
-          amount,
-          paymentKey,
-          resultId,
-          ts: new Date().toISOString(),
+          order_id: orderId,
+          amount: Number(amount),
+          result_id: resultId,
         });
       }
     }

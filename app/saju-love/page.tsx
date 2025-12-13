@@ -4,7 +4,7 @@ import { useState, useEffect, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { computeSaju } from "@/app/actions/analyze";
-import { track } from "@/lib/mixpanel";
+import { trackPageView, trackFormSubmit } from "@/lib/mixpanel";
 import { saveSajuLoveRecord } from "@/lib/db/sajuLoveDB";
 import "./saju-love.css";
 
@@ -77,9 +77,9 @@ export default function SajuLovePage() {
   const [status, setStatus] = useState<string | null>(null);
   const [userConcern, setUserConcern] = useState("");
 
-  // Mixpanel 트래킹
+  // 페이지 방문 추적
   useEffect(() => {
-    track("연애 사주 페이지 방문");
+    trackPageView("saju_love");
   }, []);
 
   // 타이핑 효과
@@ -296,8 +296,7 @@ export default function SajuLovePage() {
         loveAnalysis: null,
       });
 
-      track("연애 사주 분석 시작", {
-        userName,
+      trackFormSubmit("saju_love", {
         gender,
         calendar,
         status,

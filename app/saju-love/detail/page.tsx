@@ -3,7 +3,7 @@
 import { useEffect, useState, Suspense, useRef } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import Link from "next/link";
-import { track } from "@/lib/mixpanel";
+import { trackPageView, trackPaymentModalOpen } from "@/lib/mixpanel";
 import { getSajuLoveRecord, SajuLoveRecord } from "@/lib/db/sajuLoveDB";
 import "./detail.css";
 
@@ -133,9 +133,7 @@ function SajuDetailContent() {
         setData(record);
         setIsLoading(false);
 
-        track("연애 사주 상세 페이지 방문", {
-          userName: record.input.userName,
-          birthDate: record.input.date,
+        trackPageView("saju_love_detail", {
           gender: record.input.gender,
         });
       } else {
@@ -170,7 +168,7 @@ function SajuDetailContent() {
   const openPaymentModal = () => {
     if (!data) return;
 
-    track("연애 사주 결제창 열림", {
+    trackPaymentModalOpen("saju_love", {
       id: data.id,
       price: PAYMENT_CONFIG.price,
     });

@@ -6,7 +6,11 @@ import Image from "next/image";
 import Link from "next/link";
 import { analyzeFaceFeatures } from "@/app/actions/analyze";
 import Footer from "@/components/layout/Footer";
-import { track } from "@/lib/mixpanel";
+import {
+  trackPaymentModalOpen,
+  trackPaymentModalClose,
+  trackPaymentAttempt,
+} from "@/lib/mixpanel";
 import {
   getFaceAnalysisRecord,
   updateFaceAnalysisRecord,
@@ -286,9 +290,10 @@ function ResultContent() {
   const openPaymentModal = () => {
     if (!result) return;
 
-    track("유료 관상 분석 보고서 버튼 클릭", {
+    trackPaymentModalOpen("face", {
       id: result.id,
       price: PAYMENT_CONFIG.price,
+      is_discount: false,
     });
 
     setShowPaymentModal(true);
@@ -316,9 +321,10 @@ function ResultContent() {
     if (!paymentWidgetRef.current || !result) return;
 
     try {
-      track("기본 분석 보고서 결제 요청 시도", {
+      trackPaymentAttempt("face", {
         id: result.id,
         price: PAYMENT_CONFIG.price,
+        is_discount: false,
       });
 
       await paymentWidgetRef.current.requestPayment({
@@ -334,7 +340,7 @@ function ResultContent() {
       });
     } catch (err) {
       console.error("결제 오류:", err);
-      track("기본 결제창 닫힘", { id: result.id });
+      trackPaymentModalClose("face", { id: result.id, reason: "payment_error" });
     }
   };
 
@@ -342,7 +348,7 @@ function ResultContent() {
   const closePaymentModal = () => {
     setShowPaymentModal(false);
     paymentWidgetRef.current = null;
-    track("기본 결제창 닫힘", { id: result?.id });
+    trackPaymentModalClose("face", { id: result?.id, reason: "user_close" });
 
     // 1초 후 깜짝 할인 모달 열기
     setTimeout(() => {
@@ -354,7 +360,11 @@ function ResultContent() {
   const openDiscountModal = () => {
     if (!result) return;
 
-    track("관상 할인 결제창 열림", { id: result.id });
+    trackPaymentModalOpen("face", {
+      id: result.id,
+      price: PAYMENT_CONFIG.discountPrice,
+      is_discount: true,
+    });
 
     setShowDiscountModal(true);
 
@@ -378,9 +388,10 @@ function ResultContent() {
     if (!discountWidgetRef.current || !result) return;
 
     try {
-      track("관상 할인 결제 시도", {
+      trackPaymentAttempt("face", {
         id: result.id,
         price: PAYMENT_CONFIG.discountPrice,
+        is_discount: true,
       });
 
       await discountWidgetRef.current.requestPayment({
@@ -399,7 +410,7 @@ function ResultContent() {
   const closeDiscountModal = () => {
     setShowDiscountModal(false);
     discountWidgetRef.current = null;
-    track("관상 할인 결제창 닫힘", { id: result?.id });
+    trackPaymentModalClose("face", { id: result?.id, reason: "user_close", is_discount: true });
   };
 
   // 간단한 마크다운 파서

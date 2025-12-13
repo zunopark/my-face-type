@@ -5,7 +5,13 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { extractFaceFeatures, extractPairFeatures } from "../actions/analyze";
-import { track } from "@/lib/mixpanel";
+import {
+  trackPageView,
+  trackPhotoUpload,
+  trackAnalysisStart,
+  trackAnalysisComplete,
+  trackButtonClick,
+} from "@/lib/mixpanel";
 import { saveCoupleAnalysisRecord } from "@/lib/db/coupleAnalysisDB";
 import { saveFaceAnalysisRecord } from "@/lib/db/faceAnalysisDB";
 import Footer from "@/components/layout/Footer";
@@ -79,11 +85,14 @@ function FacePageContent() {
   // 분석 오버레이 상태
   const [showCoupleAnalyzeOverlay, setShowCoupleAnalyzeOverlay] = useState(false);
 
-  // URL 파라미터 변경 시 탭 업데이트
+  // 페이지 방문 추적 + URL 파라미터 변경 시 탭 업데이트
   useEffect(() => {
     const tab = searchParams.get("tab");
     if (tab === "match") {
       setActiveTab("match");
+      trackPageView("face", { tab: "match" });
+    } else {
+      trackPageView("face", { tab: "face" });
     }
   }, [searchParams]);
 
@@ -96,11 +105,17 @@ function FacePageContent() {
       const file = e.target.files?.[0];
       if (!file) return;
 
+      // 사진 업로드 추적
+      trackPhotoUpload("face", { file_size: file.size });
+
       const reader = new FileReader();
       reader.onload = async (event) => {
         const base64 = event.target?.result as string;
         setFaceImage(base64);
         setIsAnalyzing(true);
+
+        // 분석 시작 추적
+        trackAnalysisStart("face");
 
         try {
           const result = await extractFaceFeatures(base64.split(",")[1]);
@@ -128,6 +143,10 @@ function FacePageContent() {
           };
 
           await saveFaceAnalysisRecord(resultData);
+
+          // 분석 완료 추적
+          trackAnalysisComplete("face", { result_id: resultId });
+
           router.push(`/face/result?id=${resultId}`);
         } catch (error) {
           console.error("분석 오류:", error);
@@ -180,11 +199,10 @@ function FacePageContent() {
     setShowBottomSheet(false);
     setShowCoupleAnalyzeOverlay(true);
 
-    track("궁합 분석 시작", {
-      type: "couple",
-      relationshipType: selectedRelation,
-      relationshipFeeling: selectedFeeling,
-      timestamp: new Date().toISOString(),
+    // 궁합 분석 시작 추적
+    trackAnalysisStart("couple", {
+      relationship_type: selectedRelation,
+      relationship_feeling: selectedFeeling,
     });
 
     try {
@@ -212,6 +230,10 @@ function FacePageContent() {
       };
 
       await saveCoupleAnalysisRecord(resultData);
+
+      // 궁합 분석 완료 추적
+      trackAnalysisComplete("couple", { result_id: resultId });
+
       router.push(`/couple/result?id=${resultId}`);
     } catch (error) {
       console.error("궁합 분석 오류:", error);

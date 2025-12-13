@@ -2,15 +2,18 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { track } from "@/lib/mixpanel";
+import { useEffect } from "react";
+import { trackPageView, trackCardClick, ServiceType } from "@/lib/mixpanel";
 import Footer from "@/components/layout/Footer";
 
 export default function LandingPage() {
-  const handleCardClick = (type: string) => {
-    track("랜딩 카드 클릭", {
-      type,
-      timestamp: new Date().toISOString(),
-    });
+  // 페이지 방문 추적
+  useEffect(() => {
+    trackPageView("landing");
+  }, []);
+
+  const handleCardClick = (type: ServiceType | string) => {
+    trackCardClick(type, "landing");
   };
 
   return (

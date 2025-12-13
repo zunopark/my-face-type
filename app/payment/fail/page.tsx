@@ -3,7 +3,7 @@
 import { Suspense } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { useEffect } from "react";
-import { track } from "@/lib/mixpanel";
+import { trackPaymentFail, ServiceType } from "@/lib/mixpanel";
 
 function FailContent() {
   const searchParams = useSearchParams();
@@ -15,11 +15,17 @@ function FailContent() {
   const errorMessage = searchParams.get("message");
 
   useEffect(() => {
-    track("관상 결제 실패 페이지 진입", {
-      resultId,
-      reportType,
-      errorCode,
-      errorMessage,
+    const serviceTypeMap: Record<string, ServiceType> = {
+      saju: "saju_love",
+      couple: "couple",
+      base: "face",
+    };
+    const serviceType = serviceTypeMap[reportType] || "face";
+
+    trackPaymentFail(serviceType, {
+      result_id: resultId,
+      error_code: errorCode,
+      error_message: errorMessage,
     });
   }, [resultId, reportType, errorCode, errorMessage]);
 
