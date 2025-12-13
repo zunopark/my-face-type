@@ -1,0 +1,13 @@
+[build]
+  command = "npm run build"
+  publish = ".next"
+
+[[plugins]]
+  package = "@netlify/plugin-nextjs"
+
+# Netlify 도메인에서 yangban.ai로 301 리다이렉트
+[[redirects]]
+  from = "https://keen-poitras-075b07.netlify.app/*"
+  to = "https://yangban.ai/:splat"
+  status = 301
+  force = true
