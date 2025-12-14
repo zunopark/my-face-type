@@ -24,11 +24,38 @@ interface LoveAnalysisResult {
 // 메시지 타입 정의
 type MessageItem = {
   id: string;
-  type: "dialogue" | "report" | "image" | "ending";
+  type: "dialogue" | "report" | "image" | "ending" | "saju" | "intro";
   content: string;
   chapterIndex?: number;
   imageBase64?: string;
   bgImage?: string;
+};
+
+// 오행 색상
+const elementColors: Record<string, string> = {
+  "木": "#2aa86c", wood: "#2aa86c", Wood: "#2aa86c",
+  "火": "#ff6a6a", fire: "#ff6a6a", Fire: "#ff6a6a",
+  "土": "#caa46a", earth: "#caa46a", Earth: "#caa46a",
+  "金": "#9a9a9a", metal: "#9a9a9a", Metal: "#9a9a9a",
+  "水": "#6aa7ff", water: "#6aa7ff", Water: "#6aa7ff",
+};
+
+const getColor = (element?: string): string => {
+  if (!element) return "#333";
+  return elementColors[element] || "#333";
+};
+
+// 오행 한글 변환 함수 (음양 포함)
+const getElementKorean = (element: string | undefined, yinYang?: string): string => {
+  if (!element) return "";
+  const el = element.toLowerCase();
+  const sign = yinYang?.toLowerCase() === "yang" ? "+" : "-";
+  if (el === "fire" || element === "火") return `${sign}화`;
+  if (el === "wood" || element === "木") return `${sign}목`;
+  if (el === "water" || element === "水") return `${sign}수`;
+  if (el === "metal" || element === "金") return `${sign}금`;
+  if (el === "earth" || element === "土") return `${sign}토`;
+  return "";
 };
 
 // 각 챕터별 대사와 배경 이미지
@@ -127,11 +154,43 @@ function SajuLoveResultContent() {
     result.push({
       id: "opening-dialogue",
       type: "dialogue",
-      content: `안녕, ${userName}님!\n드디어 분석이 완료됐어. 천천히 살펴보자!`,
-      bgImage: "/saju-love/img/2.png",
+      content: `안녕하세요, ${userName}님!\n드디어 분석이 완료됐어요. 천천히 살펴볼까요?`,
+      bgImage: "/saju-love/img/nangja.png",
     });
 
-    // 2. 각 챕터별 [intro 대화 → 리포트 → outro 대화]
+    // 2. 들어가며 안내 대화
+    result.push({
+      id: "intro-guide-dialogue",
+      type: "dialogue",
+      content: `${userName}님의 사주를 알려드리기 전에,\n먼저 연애 사주에 대해 간단히 설명해드릴게요.`,
+      bgImage: "/saju-love/img/nangja.png",
+    });
+
+    // 3. 들어가며 인트로 카드
+    result.push({
+      id: "intro-card",
+      type: "intro",
+      content: "",
+      bgImage: "/saju-love/img/nangja.png",
+    });
+
+    // 4. 사주 원국 소개 대화
+    result.push({
+      id: "saju-intro-dialogue",
+      type: "dialogue",
+      content: `이제 ${userName}님의 사주 원국을 보여드릴게요.\n이게 바로 ${userName}님의 타고난 운명이에요!`,
+      bgImage: "/saju-love/img/nangja.png",
+    });
+
+    // 5. 사주 원국 카드
+    result.push({
+      id: "saju-card",
+      type: "saju",
+      content: "",
+      bgImage: "/saju-love/img/nangja.png",
+    });
+
+    // 6. 각 챕터별 [intro 대화 → 리포트 → outro 대화]
     // 3장 이후에 이상형 이미지 삽입
     chapters.forEach((chapter, index) => {
       const chapterKey = getChapterKey(chapter);
@@ -557,6 +616,12 @@ function SajuLoveResultContent() {
       {showReport && currentMsg && (
         <div className="report_overlay active">
           <div className="report_scroll" ref={reportRef}>
+            {currentMsg.type === "intro" && (
+              <IntroCard userName={userName} />
+            )}
+            {currentMsg.type === "saju" && (
+              <SajuCard data={data} />
+            )}
             {currentMsg.type === "report" && (
               <ReportCard
                 chapter={data.loveAnalysis!.chapters[currentMsg.chapterIndex!]}
@@ -709,6 +774,648 @@ function IdealTypeCard({ imageBase64, userName }: { imageBase64: string; userNam
       {!isRevealed && (
         <p className="ideal_tap_hint">사진을 {maxClicks - clickCount}번 더 클릭해보세요!</p>
       )}
+    </div>
+  );
+}
+
+// 사주 원국 카드
+function SajuCard({ data }: { data: SajuLoveRecord }) {
+  const userName = data.input?.userName || "고객";
+  const pillars = data.sajuData?.pillars || {};
+  const sajuData = data.sajuData;
+  const dayMaster = data.sajuData?.dayMaster;
+  const input = data.input;
+
+  // 태어난 시간 포맷
+  const birthTime = input?.time
+    ? `${input.time.slice(0, 2)}:${input.time.slice(2, 4)}`
+    : null;
+
+  const pillarOrder = ["hour", "day", "month", "year"] as const;
+
+  return (
+    <div className="report_card saju_card">
+      <div className="card_header">
+        <span className="card_label">사주 원국</span>
+        <h3 className="card_title">{userName}님의 타고난 운명</h3>
+      </div>
+
+      {/* 기본 정보 카드 */}
+      <div className="info_card">
+        <div className="info_main">
+          <span className="info_name">{input?.userName}</span>
+          <span className="info_birth">
+            {input?.date}{birthTime ? ` | ${birthTime}` : ""}
+          </span>
+        </div>
+        {dayMaster && (
+          <div className="info_ilju">
+            <span className="ilju_char" style={{ color: getColor(dayMaster.element) }}>{dayMaster.char}</span>
+            <span className="ilju_title">{dayMaster.title}</span>
+          </div>
+        )}
+      </div>
+
+      {/* 사주 팔자 테이블 */}
+      <div className="pillars_section">
+        <div className="pillars_header">
+          <span className="material-icons">view_column</span>
+          사주 팔자
+        </div>
+        <div className="saju_table_wrap">
+          <table className="saju_table">
+            <thead>
+              <tr>
+                <th></th>
+                <th>생시</th>
+                <th>생일</th>
+                <th>생월</th>
+                <th>생년</th>
+              </tr>
+            </thead>
+            <tbody>
+              {/* 천간 */}
+              <tr className="row_cheongan">
+                <td className="row_label">천간</td>
+                {pillarOrder.map((key) => {
+                  const p = pillars[key];
+                  if (!p?.stem?.char) return <td key={key} className="cell_empty">—</td>;
+                  return (
+                    <td key={key}>
+                      <span className="char_main" style={{ color: getColor(p.stem.element) }}>
+                        {p.stem.char}{p.stem.korean}
+                      </span>
+                      <span className="char_element" style={{ color: getColor(p.stem.element) }}>
+                        {getElementKorean(p.stem.element, p.stem.yinYang)}
+                      </span>
+                    </td>
+                  );
+                })}
+              </tr>
+              {/* 십성 (천간) */}
+              <tr className="row_sipsung">
+                <td className="row_label">십성</td>
+                {pillarOrder.map((key) => {
+                  const p = pillars[key];
+                  return (
+                    <td key={key} className="cell_sipsung" style={{ color: getColor(p?.stem?.element) }}>
+                      {p?.tenGodStem || "—"}
+                    </td>
+                  );
+                })}
+              </tr>
+              {/* 지지 */}
+              <tr className="row_jiji">
+                <td className="row_label">지지</td>
+                {pillarOrder.map((key) => {
+                  const p = pillars[key];
+                  if (!p?.branch?.char) return <td key={key} className="cell_empty">—</td>;
+                  return (
+                    <td key={key}>
+                      <span className="char_main" style={{ color: getColor(p.branch.element) }}>
+                        {p.branch.char}{p.branch.korean}
+                      </span>
+                      <span className="char_element" style={{ color: getColor(p.branch.element) }}>
+                        {getElementKorean(p.branch.element, p.branch.yinYang)}
+                      </span>
+                    </td>
+                  );
+                })}
+              </tr>
+              {/* 십성 (지지) */}
+              <tr className="row_sipsung">
+                <td className="row_label">십성</td>
+                {pillarOrder.map((key) => {
+                  const p = pillars[key];
+                  return (
+                    <td key={key} className="cell_sipsung" style={{ color: getColor(p?.branch?.element) }}>
+                      {p?.tenGodBranchMain || "—"}
+                    </td>
+                  );
+                })}
+              </tr>
+              {/* 지장간 */}
+              <tr className="row_extra">
+                <td className="row_label">지장간</td>
+                {pillarOrder.map((key) => {
+                  const p = pillars[key];
+                  const jijanggan = p?.jijanggan;
+                  let displayValue = "—";
+                  if (typeof jijanggan === 'string') {
+                    displayValue = jijanggan;
+                  } else if (jijanggan && typeof jijanggan === 'object') {
+                    const obj = jijanggan as { display?: string; displayKorean?: string };
+                    if (obj.display && obj.displayKorean) {
+                      displayValue = `${obj.display}(${obj.displayKorean})`;
+                    } else {
+                      displayValue = obj.displayKorean || obj.display || "—";
+                    }
+                  }
+                  return <td key={key} className="cell_extra">{displayValue}</td>;
+                })}
+              </tr>
+              {/* 12운성 */}
+              <tr className="row_extra">
+                <td className="row_label">12운성</td>
+                {pillarOrder.map((key) => {
+                  const p = pillars[key];
+                  const twelveStage = (p as unknown as { twelveStage?: string })?.twelveStage || p?.twelveUnsung;
+                  const displayValue = typeof twelveStage === 'string'
+                    ? twelveStage
+                    : (twelveStage as unknown as { display?: string })?.display || "—";
+                  return <td key={key} className="cell_extra">{displayValue}</td>;
+                })}
+              </tr>
+              {/* 12신살 */}
+              <tr className="row_extra">
+                <td className="row_label">12신살</td>
+                {pillarOrder.map((key) => {
+                  const p = pillars[key];
+                  const twelveSinsal = p?.twelveSinsal;
+                  const displayValue = typeof twelveSinsal === 'string'
+                    ? twelveSinsal
+                    : (twelveSinsal as unknown as { display?: string })?.display || "—";
+                  return <td key={key} className="cell_extra">{displayValue}</td>;
+                })}
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      {/* 신살과 길성 */}
+      <div className="sinsal_section">
+        <div className="sinsal_header">
+          <span className="material-icons">auto_awesome</span>
+          신살과 길성
+        </div>
+        <p className="sinsal_tags">
+          {sajuData?.sinsal?._active && sajuData.sinsal._active.length > 0 ? (
+            sajuData.sinsal._active.map((name, i, arr) => {
+              const isLoveSinsal = name === "도화살" || name === "홍염살" || name === "화개살";
+              return (
+                <span key={i} className={isLoveSinsal ? "love" : "normal"}>
+                  {name}{i < arr.length - 1 ? ", " : ""}
+                </span>
+              );
+            })
+          ) : (
+            <span className="sinsal_empty">특이 신살 없음</span>
+          )}
+        </p>
+
+        {/* 신살과 길성 테이블 */}
+        <div className="sinsal_table_wrap">
+          <table className="sinsal_table">
+            <thead>
+              <tr>
+                <th></th>
+                <th>생시</th>
+                <th>생일</th>
+                <th>생월</th>
+                <th>생년</th>
+              </tr>
+            </thead>
+            <tbody>
+              {/* 천간 */}
+              <tr>
+                <td className="row_label">천간</td>
+                {pillarOrder.map((key) => {
+                  const p = pillars[key];
+                  return (
+                    <td key={key}>
+                      <span className="char_hanja" style={{ color: getColor(p?.stem?.element) }}>
+                        {p?.stem?.char || "—"}
+                      </span>
+                    </td>
+                  );
+                })}
+              </tr>
+              {/* 천간 신살/길성 */}
+              <tr>
+                <td className="row_label">신살</td>
+                {pillarOrder.map((key) => {
+                  const byPillar = sajuData?.sinsal?._byPillar;
+                  const stemSinsal = byPillar?.[key]?.stem || [];
+                  return (
+                    <td key={key} className="cell_gilsung">
+                      {stemSinsal.length > 0 ? stemSinsal.join(", ") : "×"}
+                    </td>
+                  );
+                })}
+              </tr>
+              {/* 지지 */}
+              <tr>
+                <td className="row_label">지지</td>
+                {pillarOrder.map((key) => {
+                  const p = pillars[key];
+                  return (
+                    <td key={key}>
+                      <span className="char_hanja" style={{ color: getColor(p?.branch?.element) }}>
+                        {p?.branch?.char || "—"}
+                      </span>
+                    </td>
+                  );
+                })}
+              </tr>
+              {/* 지지 신살/길성 */}
+              <tr>
+                <td className="row_label">신살</td>
+                {pillarOrder.map((key) => {
+                  const byPillar = sajuData?.sinsal?._byPillar;
+                  const branchSinsal = byPillar?.[key]?.branch || [];
+                  return (
+                    <td key={key} className="cell_gilsung">
+                      {branchSinsal.length > 0 ? branchSinsal.join(", ") : "×"}
+                    </td>
+                  );
+                })}
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// 들어가며 인트로 카드
+function IntroCard({ userName }: { userName: string }) {
+  return (
+    <div className="report_card intro_card">
+      {/* 장면 1: 인사 */}
+      <div className="intro_section intro_welcome">
+        <div className="intro_greeting">
+          <p className="greeting_main">어서 오세요.<br/>家 양반가에 오신 것을 환영해요.</p>
+        </div>
+        <p className="intro_sub_text">
+          저는 이곳에서 연애 사주를 봐드리는 색동낭자예요.<br/>
+          오늘 처음 오신 분도 계실 테니,<br/>
+          본격적인 풀이에 앞서 사주에 대해 간단히 알려드릴게요.
+        </p>
+      </div>
+
+      {/* 장면 2: 사주란 무엇인가요? */}
+      <div className="intro_section">
+        <h3 className="intro_section_title">━━━ 들어가며 ━━━</h3>
+        <div className="intro_section_content">
+          <p className="intro_question">
+            "혹시 <strong>사주(四柱)</strong>라는 말, 들어보셨나요?"
+          </p>
+          <p>
+            사주는 한자로 '네 개의 기둥'이라는 뜻이에요.<br/>
+            태어난 년(年), 월(月), 일(日), 시(時)<br/>
+            이 네 가지 시간을 각각 하나의 기둥으로 보는 거예요.
+          </p>
+        </div>
+
+        {/* 4개의 기둥 시각화 - 의미 포함 */}
+        <div className="intro_pillars_meaning">
+          <div className="pillar_meaning_item">
+            <span className="pillar_meaning_label">시주(時柱)</span>
+            <div className="pillar_meaning_bar">
+              <span className="pillar_meaning_top">천간</span>
+              <span className="pillar_meaning_bottom">지지</span>
+            </div>
+            <span className="pillar_meaning_time">태어난 시간</span>
+            <span className="pillar_meaning_who">자녀·말년</span>
+          </div>
+          <div className="pillar_meaning_item highlight">
+            <span className="pillar_meaning_label">일주(日柱)</span>
+            <div className="pillar_meaning_bar">
+              <span className="pillar_meaning_top">나</span>
+              <span className="pillar_meaning_bottom">배우자</span>
+            </div>
+            <span className="pillar_meaning_time">태어난 날</span>
+            <span className="pillar_meaning_who">본인·배우자</span>
+          </div>
+          <div className="pillar_meaning_item">
+            <span className="pillar_meaning_label">월주(月柱)</span>
+            <div className="pillar_meaning_bar">
+              <span className="pillar_meaning_top">천간</span>
+              <span className="pillar_meaning_bottom">지지</span>
+            </div>
+            <span className="pillar_meaning_time">태어난 달</span>
+            <span className="pillar_meaning_who">부모·청년기</span>
+          </div>
+          <div className="pillar_meaning_item">
+            <span className="pillar_meaning_label">년주(年柱)</span>
+            <div className="pillar_meaning_bar">
+              <span className="pillar_meaning_top">천간</span>
+              <span className="pillar_meaning_bottom">지지</span>
+            </div>
+            <span className="pillar_meaning_time">태어난 해</span>
+            <span className="pillar_meaning_who">조상·유년기</span>
+          </div>
+        </div>
+
+        <div className="intro_section_content">
+          <p>
+            이 네 기둥이 바로 {userName}님이 세상에 태어난 순간,<br/>
+            하늘과 땅이 품고 있던 기운이에요.
+          </p>
+        </div>
+      </div>
+
+      {/* 장면 3: 팔자(八字)의 의미 */}
+      <div className="intro_section">
+        <h3 className="intro_section_title">━━━ 사주팔자 ━━━</h3>
+        <div className="intro_section_content">
+          <p className="intro_question">
+            "그런데 왜 '사주팔자'라고 부를까요?"
+          </p>
+          <p>
+            각 기둥은 두 글자로 이루어져 있거든요.<br/>
+            위에는 <strong>천간(天干)</strong> - 하늘의 기운<br/>
+            아래는 <strong>지지(地支)</strong> - 땅의 기운
+          </p>
+          <p className="intro_formula">
+            4개의 기둥 × 2글자 = <strong>8글자</strong><br/>
+            그래서 '사주팔자(四柱八字)'라고 부르는 거예요.
+          </p>
+        </div>
+
+        {/* 사주 다이어그램 */}
+        <div className="intro_diagram">
+          <div className="diagram_header">
+            <span>시주</span>
+            <span>일주</span>
+            <span>월주</span>
+            <span>년주</span>
+          </div>
+          <div className="diagram_row">
+            <span className="diagram_char metal">庚</span>
+            <span className="diagram_char earth">戊</span>
+            <span className="diagram_char fire">丙</span>
+            <span className="diagram_char wood">甲</span>
+          </div>
+          <div className="diagram_label">← 천간(天干)</div>
+          <div className="diagram_row">
+            <span className="diagram_char metal">申</span>
+            <span className="diagram_char fire">午</span>
+            <span className="diagram_char wood">寅</span>
+            <span className="diagram_char water">子</span>
+          </div>
+          <div className="diagram_label">← 지지(地支)</div>
+        </div>
+
+        <div className="intro_section_content">
+          <p>
+            이 여덟 글자 안에<br/>
+            {userName}님의 성격, 재능, 인연, 그리고 <strong>사랑의 운명</strong>까지<br/>
+            모두 담겨 있답니다.
+          </p>
+        </div>
+      </div>
+
+      {/* 장면 4: 천간이란? */}
+      <div className="intro_section">
+        <h3 className="intro_section_title">━━━ 하늘의 기운, 천간 ━━━</h3>
+        <div className="intro_section_content">
+          <p className="intro_question">
+            "그럼 <strong>천간(天干)</strong>부터 알아볼까요?"
+          </p>
+          <p>
+            천간은 하늘에서 내려오는 기운이에요.<br/>
+            총 10가지가 있어요.
+          </p>
+        </div>
+
+        <div className="intro_cheongan_table">
+          <div className="cheongan_row header">
+            <span className="element wood">목(木)</span>
+            <span className="element fire">화(火)</span>
+            <span className="element earth">토(土)</span>
+            <span className="element metal">금(金)</span>
+            <span className="element water">수(水)</span>
+          </div>
+          <div className="cheongan_row chars">
+            <span className="wood">甲 乙<br/>갑 을</span>
+            <span className="fire">丙 丁<br/>병 정</span>
+            <span className="earth">戊 己<br/>무 기</span>
+            <span className="metal">庚 辛<br/>경 신</span>
+            <span className="water">壬 癸<br/>임 계</span>
+          </div>
+          <div className="cheongan_row meaning">
+            <span>🌳 🌿<br/>큰나무 · 풀</span>
+            <span>☀️ 🕯️<br/>태양 · 촛불</span>
+            <span>🏔️ 🌾<br/>산 · 논밭</span>
+            <span>⚔️ 💎<br/>바위 · 보석</span>
+            <span>🌊 💧<br/>바다 · 시냇물</span>
+          </div>
+        </div>
+
+        <div className="intro_section_content">
+          <p>
+            천간은 겉으로 드러나는 성격,<br/>
+            세상에 보여주는 나의 모습을 나타내요.
+          </p>
+          <p>
+            예를 들어 <strong>丙(병)</strong>은 태양처럼 밝고 열정적인 사람,<br/>
+            <strong>癸(계)</strong>는 시냇물처럼 조용하고 감성적인 사람이에요.
+          </p>
+        </div>
+      </div>
+
+      {/* 장면 5: 지지란? */}
+      <div className="intro_section">
+        <h3 className="intro_section_title">━━━ 땅의 기운, 지지 ━━━</h3>
+        <div className="intro_section_content">
+          <p className="intro_question">
+            "다음은 <strong>지지(地支)</strong>예요."
+          </p>
+          <p>
+            지지는 땅에서 올라오는 기운이에요.<br/>
+            총 12가지가 있는데...<br/>
+            어디서 많이 본 숫자 아니에요?
+          </p>
+          <p>
+            맞아요, 바로 <strong>12지신</strong>이에요!<br/>
+            우리가 흔히 말하는 '띠'가 지지랍니다.
+          </p>
+        </div>
+
+        <div className="intro_jiji_grid">
+          <div className="jiji_item"><span className="jiji_char water">子</span><span className="jiji_kor">자</span><span className="jiji_emoji">🐭</span><span className="jiji_animal">쥐</span></div>
+          <div className="jiji_item"><span className="jiji_char earth">丑</span><span className="jiji_kor">축</span><span className="jiji_emoji">🐮</span><span className="jiji_animal">소</span></div>
+          <div className="jiji_item"><span className="jiji_char wood">寅</span><span className="jiji_kor">인</span><span className="jiji_emoji">🐯</span><span className="jiji_animal">호랑이</span></div>
+          <div className="jiji_item"><span className="jiji_char wood">卯</span><span className="jiji_kor">묘</span><span className="jiji_emoji">🐰</span><span className="jiji_animal">토끼</span></div>
+          <div className="jiji_item"><span className="jiji_char earth">辰</span><span className="jiji_kor">진</span><span className="jiji_emoji">🐲</span><span className="jiji_animal">용</span></div>
+          <div className="jiji_item"><span className="jiji_char fire">巳</span><span className="jiji_kor">사</span><span className="jiji_emoji">🐍</span><span className="jiji_animal">뱀</span></div>
+          <div className="jiji_item"><span className="jiji_char fire">午</span><span className="jiji_kor">오</span><span className="jiji_emoji">🐴</span><span className="jiji_animal">말</span></div>
+          <div className="jiji_item"><span className="jiji_char earth">未</span><span className="jiji_kor">미</span><span className="jiji_emoji">🐏</span><span className="jiji_animal">양</span></div>
+          <div className="jiji_item"><span className="jiji_char metal">申</span><span className="jiji_kor">신</span><span className="jiji_emoji">🐵</span><span className="jiji_animal">원숭이</span></div>
+          <div className="jiji_item"><span className="jiji_char metal">酉</span><span className="jiji_kor">유</span><span className="jiji_emoji">🐔</span><span className="jiji_animal">닭</span></div>
+          <div className="jiji_item"><span className="jiji_char earth">戌</span><span className="jiji_kor">술</span><span className="jiji_emoji">🐶</span><span className="jiji_animal">개</span></div>
+          <div className="jiji_item"><span className="jiji_char water">亥</span><span className="jiji_kor">해</span><span className="jiji_emoji">🐷</span><span className="jiji_animal">돼지</span></div>
+        </div>
+
+        <div className="intro_section_content">
+          <p>
+            지지는 숨겨진 내면,<br/>
+            무의식적인 감정과 욕구를 나타내요.
+          </p>
+          <p>
+            겉으로는 차분해 보여도<br/>
+            속으로는 열정이 넘치는 분들 있잖아요?<br/>
+            그런 게 다 지지에 담겨 있답니다.
+          </p>
+        </div>
+      </div>
+
+      {/* 장면 6: 오행이란? */}
+      <div className="intro_section">
+        <h3 className="intro_section_title">━━━ 다섯 가지 기운, 오행 ━━━</h3>
+        <div className="intro_section_content">
+          <p className="intro_question">
+            "그런데 천간과 지지,<br/>
+            이렇게 많은 글자를 어떻게 이해하냐고요?"
+          </p>
+          <p>
+            걱정 마세요.<br/>
+            모든 글자는 다섯 가지 기운으로 나눌 수 있어요.<br/>
+            바로 <strong>오행(五行)</strong>이에요.
+          </p>
+        </div>
+
+        <div className="intro_ohang_list">
+          <div className="ohang_item wood">
+            <span className="ohang_icon">🌳</span>
+            <div className="ohang_content">
+              <strong>목(木) - 성장하는 사랑</strong>
+              <p>나무처럼 성장하고 뻗어나가는 기운<br/>새로운 시작을 좋아하고, 발전하는 관계를 추구해요</p>
+            </div>
+          </div>
+          <div className="ohang_item fire">
+            <span className="ohang_icon">🔥</span>
+            <div className="ohang_content">
+              <strong>화(火) - 뜨거운 사랑</strong>
+              <p>불처럼 뜨겁고 밝게 타오르는 기운<br/>열정적이고 표현력이 강하며, 확실한 애정표현을 해요</p>
+            </div>
+          </div>
+          <div className="ohang_item earth">
+            <span className="ohang_icon">🏔️</span>
+            <div className="ohang_content">
+              <strong>토(土) - 안정된 사랑</strong>
+              <p>땅처럼 안정되고 포용하는 기운<br/>믿음직하고 변함없는 사랑을 하며, 포용력이 커요</p>
+            </div>
+          </div>
+          <div className="ohang_item metal">
+            <span className="ohang_icon">⚔️</span>
+            <div className="ohang_content">
+              <strong>금(金) - 원칙있는 사랑</strong>
+              <p>쇠처럼 단단하고 원칙있는 기운<br/>깔끔하고 명확한 관계를 좋아하며, 신의를 중시해요</p>
+            </div>
+          </div>
+          <div className="ohang_item water">
+            <span className="ohang_icon">💧</span>
+            <div className="ohang_content">
+              <strong>수(水) - 깊은 사랑</strong>
+              <p>물처럼 유연하고 지혜로운 기운<br/>감성적이고 직관적이며, 상대에게 맞춰주는 편이에요</p>
+            </div>
+          </div>
+        </div>
+
+        <div className="intro_section_content">
+          <p>
+            이 다섯 가지 기운의 조합과 균형이<br/>
+            바로 {userName}님의 성격과 연애 스타일을 만들어요.
+          </p>
+        </div>
+      </div>
+
+      {/* 장면 7: 연애 사주의 핵심 - 일주 */}
+      <div className="intro_section">
+        <h3 className="intro_section_title">━━━ 연애의 열쇠, 일주 ━━━</h3>
+        <div className="intro_section_content">
+          <p className="intro_question">
+            "자, 이제 중요한 이야기를 해볼게요."
+          </p>
+          <p>
+            사주의 네 기둥 중에서<br/>
+            연애를 볼 때 가장 중요한 기둥이 있어요.<br/>
+            바로 <strong>일주(日柱)</strong>예요.
+          </p>
+        </div>
+
+        {/* 일주 강조 시각화 - 천간/지지 의미 */}
+        <div className="intro_ilju_focus">
+          <div className="ilju_focus_pillars">
+            <div className="ilju_focus_item faded">
+              <span className="ilju_focus_label">시주</span>
+              <div className="ilju_focus_box">
+                <span className="ilju_focus_char">○</span>
+                <span className="ilju_focus_char">○</span>
+              </div>
+            </div>
+            <div className="ilju_focus_item active">
+              <span className="ilju_focus_label">일주</span>
+              <div className="ilju_focus_box">
+                <span className="ilju_focus_char top">나</span>
+                <span className="ilju_focus_char bottom">배우자</span>
+              </div>
+              <span className="ilju_focus_arrow">↑ 이게 나!</span>
+            </div>
+            <div className="ilju_focus_item faded">
+              <span className="ilju_focus_label">월주</span>
+              <div className="ilju_focus_box">
+                <span className="ilju_focus_char">○</span>
+                <span className="ilju_focus_char">○</span>
+              </div>
+            </div>
+            <div className="ilju_focus_item faded">
+              <span className="ilju_focus_label">년주</span>
+              <div className="ilju_focus_box">
+                <span className="ilju_focus_char">○</span>
+                <span className="ilju_focus_char">○</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div className="intro_section_content">
+          <p>
+            일주는 태어난 '날'의 기둥인데요,<br/>
+            사주에서 <strong>'나 자신'</strong>을 의미해요.
+          </p>
+          <p>
+            특히 일주의 아랫글자, <strong>일지(日支)</strong>는<br/>
+            '배우자 자리'라고도 불러요.
+          </p>
+          <p>
+            내 마음 깊은 곳에서 원하는 이상형,<br/>
+            무의식적으로 끌리는 사람의 유형,<br/>
+            연애할 때 나도 모르게 나오는 습관...<br/>
+            이런 것들이 모두 일주에 담겨 있답니다.
+          </p>
+        </div>
+      </div>
+
+      {/* 장면 8: 마무리 - 본 풀이로 전환 */}
+      <div className="intro_section intro_transition">
+        <div className="transition_greeting">
+          <p className="transition_main">"어때요, 사주가 조금은 친숙해지셨나요?"</p>
+        </div>
+        <div className="intro_section_content">
+          <p>
+            물론 이건 아주 기본적인 이야기예요.<br/>
+            실제로는 글자들 사이의 관계,<br/>
+            합(合)과 충(沖), 형(刑)과 파(破),<br/>
+            운의 흐름까지 복잡하게 얽혀 있거든요.
+          </p>
+          <p>
+            하지만 걱정 마세요.<br/>
+            어려운 건 제가 풀어드릴 테니까요.
+          </p>
+          <p className="transition_final">
+            자, 그럼 이제<br/>
+            {userName}님의 사주를 펼쳐볼까요?<br/>
+            {userName}님이 태어난 그 순간,<br/>
+            하늘과 땅은 어떤 이야기를 써두었는지<br/>
+            함께 읽어봐요.
+          </p>
+        </div>
+      </div>
     </div>
   );
 }
