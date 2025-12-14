@@ -1316,7 +1316,45 @@ function SajuCard({ data }: { data: SajuLoveRecord }) {
           <p className="nangja_text">잠깐, 여기 중요해요. 연애할 때 꼭 봐야 할 신살이에요.</p>
         </div>
 
+        {/* 내가 가진 연애 신살 표시 */}
+        {(() => {
+          const allSinsal: string[] = [];
+          (["hour", "day", "month", "year"] as const).forEach((key) => {
+            const byPillar = sajuData?.sinsal?._byPillar;
+            const stemSinsal = byPillar?.[key]?.stem || [];
+            const branchSinsal = byPillar?.[key]?.branch || [];
+            allSinsal.push(...stemSinsal, ...branchSinsal);
+            // 12신살에서 도화살 체크
+            const twelveSinsal = pillars[key]?.twelveSinsal;
+            if (typeof twelveSinsal === 'string' && twelveSinsal === '도화살') {
+              allSinsal.push('도화살');
+            }
+          });
+          const hasDohwa = allSinsal.some(s => s.includes('도화'));
+          const hasHongyeom = allSinsal.some(s => s.includes('홍염'));
+          const hasHwagae = allSinsal.some(s => s.includes('화개'));
+          const hasAny = hasDohwa || hasHongyeom || hasHwagae;
 
+          return (
+            <div className="my_love_sinsal">
+              <p className="my_sinsal_label">{userName}님이 가진 연애 신살</p>
+              <div className="my_sinsal_tags">
+                <span className={`sinsal_tag dohwa ${hasDohwa ? 'active' : ''}`}>
+                  도화살 {hasDohwa ? '✓' : '✗'}
+                </span>
+                <span className={`sinsal_tag hongyeom ${hasHongyeom ? 'active' : ''}`}>
+                  홍염살 {hasHongyeom ? '✓' : '✗'}
+                </span>
+                <span className={`sinsal_tag hwagae ${hasHwagae ? 'active' : ''}`}>
+                  화개살 {hasHwagae ? '✓' : '✗'}
+                </span>
+              </div>
+              {!hasAny && (
+                <p className="no_sinsal_text">연애 신살이 없어도 괜찮아요. 다른 요소들이 연애 스타일을 만들어줘요.</p>
+              )}
+            </div>
+          );
+        })()}
 
         <div className="love_sinsal_cards">
           <div className="love_sinsal_card">
