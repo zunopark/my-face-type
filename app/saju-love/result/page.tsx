@@ -2,7 +2,8 @@
 
 import { useEffect, useState, useCallback, useRef, Suspense } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
-import { analyzeSajuLove, SajuData } from "@/app/actions/analyze";
+// 클라이언트에서 직접 FastAPI 호출 (Netlify 타임아웃 우회)
+const SAJU_API_URL = process.env.NEXT_PUBLIC_SAJU_API_URL;
 import { getSajuLoveRecord, updateSajuLoveRecord, SajuLoveRecord } from "@/lib/db/sajuLoveDB";
 import Link from "next/link";
 import "./result.css";
@@ -454,18 +455,26 @@ function SajuLoveResultContent() {
       try {
         const combinedConcern = storedData.input?.userConcern || "";
 
-        const result = await analyzeSajuLove({
-          sajuData: storedData.sajuData as unknown as SajuData,
-          userName: storedData.input?.userName || "",
-          userConcern: combinedConcern.trim(),
-          year: new Date().getFullYear(),
+        // 클라이언트에서 직접 FastAPI 호출 (Netlify 타임아웃 우회)
+        const response = await fetch(`${SAJU_API_URL}/saju_love/analyze`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            saju_data: storedData.sajuData,
+            user_name: storedData.input?.userName || "",
+            user_concern: combinedConcern.trim(),
+            year: new Date().getFullYear(),
+          }),
         });
 
-        if (!result.success) {
-          throw new Error(result.error || "분석에 실패했습니다.");
+        if (!response.ok) {
+          const errorText = await response.text();
+          throw new Error(errorText || "분석에 실패했습니다.");
         }
 
-        const loveResult = result.data as LoveAnalysisResult;
+        const loveResult = await response.json() as LoveAnalysisResult;
 
         const hasImage = loveResult.ideal_partner_image?.image_base64;
         if (!hasImage && retryCount < MAX_RETRIES) {
