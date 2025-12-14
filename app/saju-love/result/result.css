@@ -5187,3 +5187,57 @@
   color: #b85a85;
   margin: 0;
 }
+
+/* 사주 원국 마무리 섹션 */
+.saju_result_page .saju_outro_section {
+  margin-top: 24px;
+}
+
+.saju_result_page .saju_outro_box {
+  background: linear-gradient(135deg, #fff5f8 0%, #f8f5ff 100%);
+  border-radius: 16px;
+  padding: 24px 20px;
+  text-align: center;
+}
+
+.saju_result_page .saju_outro_title {
+  font-size: 16px;
+  font-weight: 700;
+  color: #5a4a5a;
+  margin: 0 0 16px 0;
+}
+
+.saju_result_page .saju_outro_text {
+  font-size: 14px;
+  line-height: 1.8;
+  color: #6a5a6a;
+  margin: 0 0 12px 0;
+}
+
+.saju_result_page .saju_outro_text strong {
+  color: #b85a85;
+}
+
+.saju_result_page .saju_outro_chapters {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+  margin: 20px 0;
+}
+
+.saju_result_page .saju_outro_chapters span {
+  font-size: 12px;
+  color: #8a7a8a;
+  background: #fff;
+  padding: 6px 12px;
+  border-radius: 20px;
+  border: 1px solid #e8e0e8;
+}
+
+.saju_result_page .saju_outro_cta {
+  font-size: 14px;
+  font-weight: 600;
+  color: #b85a85;
+  margin: 16px 0 0 0;
+}

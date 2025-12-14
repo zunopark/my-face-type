@@ -1785,13 +1785,26 @@ function SajuCard({ data }: { data: SajuLoveRecord }) {
       </div>
 
       {/* 장면 10: 마무리 전환 */}
-      <div className="intro_section">
-        {/* 색동낭자 대화 - 마무리 */}
-        <div className="nangja_comment">
-          <p className="nangja_text">사주 원국은 여기까지예요. 이제 본격적으로 연애 운을 풀어볼게요.</p>
-        </div>
-        <div className="intro_section_content" style={{ textAlign: "center", marginTop: "12px" }}>
-          <p>1장부터 6장까지, 하나씩 자세히 풀어드릴 테니 천천히 따라와 주세요!</p>
+      <div className="intro_section saju_outro_section">
+        <div className="saju_outro_box">
+          <p className="saju_outro_title">여기까지가 {userName}님의 사주 원국이에요</p>
+          <p className="saju_outro_text">
+            타고난 글자들, 오행의 균형, 신강/신약까지...<br/>
+            이제 {userName}님이 어떤 사람인지 조금은 보이시나요?
+          </p>
+          <p className="saju_outro_text">
+            다음부터는 이 사주를 바탕으로<br/>
+            <strong>{userName}님의 연애 이야기</strong>를 본격적으로 풀어드릴게요.
+          </p>
+          <div className="saju_outro_chapters">
+            <span>1장 나의 매력</span>
+            <span>2장 연애 운세</span>
+            <span>3장 운명의 상대</span>
+            <span>4장 가짜 인연</span>
+            <span>5장 스킨십</span>
+            <span>6장 고민 답변</span>
+          </div>
+          <p className="saju_outro_cta">준비되셨으면, 다음으로 넘어가 주세요!</p>
         </div>
       </div>
     </div>
