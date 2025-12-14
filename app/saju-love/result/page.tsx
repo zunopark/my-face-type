@@ -61,44 +61,44 @@ const getElementKorean = (element: string | undefined, yinYang?: string): string
 
 // 각 챕터별 대사와 배경 이미지
 // API 응답: [1장, 2장, 3장, 4장, 5장, 6장] - 총 6개 챕터
-const CHAPTER_CONFIG: Record<string, { intro: string; outro: string; bgImage: string }> = {
+const getChapterConfig = (userName: string): Record<string, { intro: string; outro: string; bgImage: string }> => ({
   chapter1: {
     // 1장: 나만의 매력과 연애 성향
-    intro: "1장에서는 네가 가진 매력과\n연애 스타일을 알려줄게!",
-    outro: "어때, 너의 매력을 알겠어?\n이제 미래의 연애 운을 살펴볼게!",
+    intro: `1장에서는 ${userName}님이 가진 매력과\n연애 스타일을 알려드릴게요!`,
+    outro: `어떠세요, ${userName}님의 매력이 보이시나요?\n이제 미래의 연애 운을 살펴볼게요!`,
     bgImage: "/saju-love/img/2.png",
   },
   chapter2: {
     // 2장: 앞으로 펼쳐질 사랑의 흐름
-    intro: "2장에서는 앞으로 펼쳐질\n너의 연애 운세를 알려줄게.",
-    outro: "운세의 흐름을 파악했으니,\n이제 운명의 상대에 대해 얘기해볼까?",
+    intro: `2장에서는 앞으로 펼쳐질\n${userName}님의 연애 운세를 알려드릴게요.`,
+    outro: "운세의 흐름을 파악했으니,\n이제 운명의 상대에 대해 얘기해볼까요?",
     bgImage: "/saju-love/img/3.png",
   },
   chapter3: {
     // 3장: 결국 만나게 될 운명의 상대
-    intro: "3장에서는 네가 만나게 될\n운명의 상대에 대해 알려줄게.",
-    outro: "이제 조심해야 할 가짜 인연에\n대해 이야기해볼게.",
+    intro: `3장에서는 ${userName}님이 만나게 될\n운명의 상대에 대해 알려드릴게요.`,
+    outro: "이제 조심해야 할 가짜 인연에\n대해 이야기해드릴게요.",
     bgImage: "/saju-love/img/11.png",
   },
   chapter4: {
     // 4장: 운명이라 착각하는 가짜 인연
-    intro: "4장에서는 운명이라 착각할 수 있는\n가짜 인연에 대해 알려줄게.",
-    outro: "자, 이제 조금 민감한 주제로\n넘어가볼까?",
+    intro: "4장에서는 운명이라 착각할 수 있는\n가짜 인연에 대해 알려드릴게요.",
+    outro: "자, 이제 조금 민감한 주제로\n넘어가볼까요?",
     bgImage: "/saju-love/img/22.png",
   },
   chapter5: {
-    // 5장: 아무한테도 말 못할, 그 사람과의 스킨십
-    intro: "5장에서는 아무한테도 말 못할,\n스킨십에 대해 이야기해볼게.",
-    outro: "마지막으로 내가 너한테\n전해줄 귀띔이 있어.",
+    // 5장: 누구에게도 말 못할, 그 사람과의 스킨십
+    intro: "5장에서는 누구에게도 말 못할,\n스킨십에 대해 이야기해드릴게요.",
+    outro: `마지막으로 제가 ${userName}님께\n전해드릴 귀띔이 있어요.`,
     bgImage: "/saju-love/img/33.png",
   },
   chapter6: {
     // 6장: 색동낭자의 귀띔 (고민 답변)
-    intro: "자, 이제 마지막 장이야.\n네 고민에 대한 답을 줄게.",
+    intro: `자, 이제 마지막 장이에요.\n${userName}님의 고민에 대한 답을 드릴게요.`,
     outro: "",
     bgImage: "/saju-love/img/33.png",
   },
-};
+});
 
 function SajuLoveResultContent() {
   const searchParams = useSearchParams();
@@ -117,9 +117,10 @@ function SajuLoveResultContent() {
   const [isTyping, setIsTyping] = useState(false);
   const [showButtons, setShowButtons] = useState(false);
   const [showReport, setShowReport] = useState(false);
-  const [currentBgImage, setCurrentBgImage] = useState("/saju-love/img/1.png");
   const [canProceed, setCanProceed] = useState(false);
   const [showScrollHint, setShowScrollHint] = useState(false);
+  const [showTocModal, setShowTocModal] = useState(false);
+  const [showExitModal, setShowExitModal] = useState(false);
 
   const isFetchingRef = useRef(false);
   const loadingIntervalRef = useRef<NodeJS.Timeout | null>(null);
@@ -193,9 +194,10 @@ function SajuLoveResultContent() {
 
     // 6. 각 챕터별 [intro 대화 → 리포트 → outro 대화]
     // 3장 이후에 이상형 이미지 삽입
+    const chapterConfig = getChapterConfig(userName);
     chapters.forEach((chapter, index) => {
       const chapterKey = getChapterKey(chapter);
-      const config = CHAPTER_CONFIG[chapterKey];
+      const config = chapterConfig[chapterKey];
       const chapterNum = parseInt(chapterKey.replace("chapter", ""));
 
       // 챕터 intro 대화 (있는 경우에만)
@@ -232,7 +234,7 @@ function SajuLoveResultContent() {
         result.push({
           id: "ideal-type-dialogue",
           type: "dialogue",
-          content: "잠깐, 여기서 특별히 보여줄게 있어.\n네 운명의 상대가 어떻게 생겼는지 궁금하지 않아?",
+          content: `잠깐, 여기서 특별히 보여드릴게 있어요.\n${userName}님의 운명의 상대가 어떻게 생겼는지 궁금하지 않으세요?`,
           bgImage: "/saju-love/img/11.png",
         });
         result.push({
@@ -245,7 +247,7 @@ function SajuLoveResultContent() {
         result.push({
           id: "ideal-type-outro",
           type: "dialogue",
-          content: "어때, 설레지 않아?\n자, 이제 계속해서 네 연애 운을 살펴보자!",
+          content: `어떠세요, 설레지 않으세요?\n자, 이제 계속해서 ${userName}님의 연애 운을 살펴볼게요!`,
           bgImage: "/saju-love/img/11.png",
         });
       }
@@ -349,7 +351,6 @@ function SajuLoveResultContent() {
     const prevIndex = currentIndex - 1;
     setCurrentIndex(prevIndex);
     const prevMsg = messages[prevIndex];
-    if (prevMsg.bgImage) setCurrentBgImage(prevMsg.bgImage);
 
     if (prevMsg.type === "dialogue") {
       // 이전 대화는 타이핑 효과 없이 바로 보여주기
@@ -386,7 +387,6 @@ function SajuLoveResultContent() {
       if (nextIndex < messages.length) {
         setCurrentIndex(nextIndex);
         const nextMsg = messages[nextIndex];
-        if (nextMsg.bgImage) setCurrentBgImage(nextMsg.bgImage);
 
         if (nextMsg.type === "dialogue") {
           typeText(nextMsg.content, () => setShowButtons(true));
@@ -403,7 +403,6 @@ function SajuLoveResultContent() {
     if (nextIndex < messages.length) {
       setCurrentIndex(nextIndex);
       const nextMsg = messages[nextIndex];
-      if (nextMsg.bgImage) setCurrentBgImage(nextMsg.bgImage);
 
       if (nextMsg.type === "dialogue") {
         typeText(nextMsg.content, () => setShowButtons(true));
@@ -505,7 +504,6 @@ function SajuLoveResultContent() {
 
         // 첫 번째 메시지 자동 시작
         setTimeout(() => {
-          if (messageList[0].bgImage) setCurrentBgImage(messageList[0].bgImage);
           typeText(messageList[0].content, () => setShowButtons(true));
         }, 500);
       } catch (err) {
@@ -550,7 +548,6 @@ function SajuLoveResultContent() {
         setMessages(messageList);
         setIsLoading(false);
         setTimeout(() => {
-          if (messageList[0].bgImage) setCurrentBgImage(messageList[0].bgImage);
           typeText(messageList[0].content, () => setShowButtons(true));
         }, 500);
         return;
@@ -612,17 +609,61 @@ function SajuLoveResultContent() {
       {/* 배경 이미지 */}
       <div className="result_bg">
         <img
-          src={currentBgImage}
+          src="/saju-love/img/nangja.png"
           alt=""
           className="result_bg_image"
         />
       </div>
 
       {/* 뒤로가기 버튼 */}
-      <Link href="/saju-love" className="back_btn">
+      <button className="back_btn" onClick={() => setShowExitModal(true)}>
         <span className="material-icons">arrow_back</span>
-        <span className="back_btn_text">처음으로</span>
-      </Link>
+        <span className="back_btn_text">홈으로</span>
+      </button>
+
+      {/* 홈으로 돌아가기 확인 모달 */}
+      {showExitModal && (
+        <div className="exit_modal_overlay" onClick={() => setShowExitModal(false)}>
+          <div className="exit_modal" onClick={(e) => e.stopPropagation()}>
+            <p className="exit_modal_text">홈으로 돌아갈까요?</p>
+            <div className="exit_modal_buttons">
+              <button className="exit_modal_cancel" onClick={() => setShowExitModal(false)}>
+                아니요
+              </button>
+              <button className="exit_modal_confirm" onClick={() => router.push("/saju-love")}>
+                네, 돌아갈게요
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* 목차 버튼 */}
+      <button className="toc_btn" onClick={() => setShowTocModal(true)}>
+        <span className="toc_btn_text">목차</span>
+      </button>
+
+      {/* 목차 모달 */}
+      {showTocModal && (
+        <TocModal
+          messages={messages}
+          currentIndex={currentIndex}
+          onClose={() => setShowTocModal(false)}
+          onNavigate={(index) => {
+            setCurrentIndex(index);
+            const targetMsg = messages[index];
+            if (targetMsg.type === "dialogue") {
+              setShowReport(false);
+              setDialogueText(targetMsg.content);
+              setShowButtons(true);
+            } else {
+              setShowReport(true);
+              setShowButtons(true);
+            }
+            setShowTocModal(false);
+          }}
+        />
+      )}
 
       {/* 리포트 카드 (오버레이) */}
       {showReport && currentMsg && (
@@ -758,6 +799,15 @@ function IdealTypeCard({ imageBase64, userName }: { imageBase64: string; userNam
   const blurLevel = Math.max(0, 30 - clickCount * 6);
   const isRevealed = clickCount >= maxClicks;
 
+  // 클릭 횟수에 따른 힌트 문구
+  const hintMessages = [
+    "사진을 클릭해보세요!",
+    "조금씩 보이기 시작해요...",
+    "점점 선명해지고 있어요!",
+    "거의 다 왔어요!",
+    "마지막 한 번만 더!",
+  ];
+
   const handleClick = () => {
     if (clickCount < maxClicks) {
       setClickCount(clickCount + 1);
@@ -784,7 +834,12 @@ function IdealTypeCard({ imageBase64, userName }: { imageBase64: string; userNam
         />
       </div>
       {!isRevealed && (
-        <p className="ideal_tap_hint">사진을 {maxClicks - clickCount}번 더 클릭해보세요!</p>
+        <p className="ideal_tap_hint">{hintMessages[clickCount]}</p>
+      )}
+      {isRevealed && (
+        <div className="ideal_revealed_message">
+          <p>어떠세요, {userName}님?<br />혹시 어디선가 스쳐 지나간 적 있는 얼굴인가요?</p>
+        </div>
       )}
     </div>
   );
@@ -798,10 +853,27 @@ function SajuCard({ data }: { data: SajuLoveRecord }) {
   const dayMaster = data.sajuData?.dayMaster;
   const input = data.input;
 
-  // 태어난 시간 포맷
-  const birthTime = input?.time
-    ? `${input.time.slice(0, 2)}:${input.time.slice(2, 4)}`
-    : null;
+  // 태어난 시간을 시진으로 변환
+  const formatTimeToSi = (time: string | null | undefined): string | null => {
+    if (!time) return null;
+    const timeMap: Record<string, string> = {
+      "0030": "자시",
+      "0230": "축시",
+      "0430": "인시",
+      "0630": "묘시",
+      "0830": "진시",
+      "1030": "사시",
+      "1230": "오시",
+      "1430": "미시",
+      "1630": "신시",
+      "1830": "유시",
+      "2030": "술시",
+      "2230": "해시",
+    };
+    return timeMap[time] || null;
+  };
+
+  const birthTime = formatTimeToSi(input?.time);
 
   const pillarOrder = ["hour", "day", "month", "year"] as const;
 
@@ -1473,7 +1545,7 @@ function IntroCard({ userName }: { userName: string }) {
             <p><strong>2장</strong> 앞으로 펼쳐질 사랑의 흐름</p>
             <p><strong>3장</strong> 결국 만나게 될 운명의 상대</p>
             <p><strong>4장</strong> 운명이라 착각하는 가짜 인연</p>
-            <p><strong>5장</strong> 아무한테도 말 못할, 그 사람과의 스킨십</p>
+            <p><strong>5장</strong> 누구에게도 말 못할, 그 사람과의 스킨십</p>
             <p><strong>6장</strong> 색동낭자의 귀띔</p>
           </div>
         </div>
@@ -1486,6 +1558,73 @@ function IntroCard({ userName }: { userName: string }) {
             그럼 이제, 색동낭자와 함께 {userName}님의 사주를 펼쳐볼까요?
           </p>
         </div>
+      </div>
+    </div>
+  );
+}
+
+// 목차 모달
+function TocModal({
+  messages,
+  currentIndex,
+  onClose,
+  onNavigate,
+}: {
+  messages: MessageItem[];
+  currentIndex: number;
+  onClose: () => void;
+  onNavigate: (index: number) => void;
+}) {
+  // 목차 항목 정의
+  const tocItems = [
+    { label: "들어가며", targetId: "intro-card" },
+    { label: "사주 원국", targetId: "saju-card" },
+    { label: "1장: 나만의 매력과 연애 성향", targetId: "chapter-chapter1-report" },
+    { label: "2장: 앞으로 펼쳐질 사랑의 흐름", targetId: "chapter-chapter2-report" },
+    { label: "3장: 결국 만나게 될 운명의 상대", targetId: "chapter-chapter3-report" },
+    { label: "보너스: 이상형 이미지", targetId: "ideal-type-image" },
+    { label: "4장: 운명이라 착각하는 가짜 인연", targetId: "chapter-chapter4-report" },
+    { label: "5장: 누구에게도 말 못할, 그 사람과의 스킨십", targetId: "chapter-chapter5-report" },
+    { label: "6장: 색동낭자의 귀띔", targetId: "chapter-chapter6-report" },
+    { label: "마무리", targetId: "ending" },
+  ];
+
+  // 메시지 ID로 인덱스 찾기
+  const findIndexById = (targetId: string) => {
+    return messages.findIndex((msg) => msg.id === targetId);
+  };
+
+  return (
+    <div className="toc_modal_overlay" onClick={onClose}>
+      <div className="toc_modal" onClick={(e) => e.stopPropagation()}>
+        <div className="toc_modal_header">
+          <h3 className="toc_modal_title">목차</h3>
+          <button className="toc_modal_close" onClick={onClose}>
+            <span className="material-icons">close</span>
+          </button>
+        </div>
+        <ul className="toc_modal_list">
+          {tocItems.map((item, i) => {
+            const targetIndex = findIndexById(item.targetId);
+            const isAvailable = targetIndex !== -1 && targetIndex <= messages.length - 1;
+            const isCurrent = targetIndex !== -1 && targetIndex === currentIndex;
+
+            return (
+              <li
+                key={i}
+                className={`toc_modal_item ${isCurrent ? "current" : ""} ${!isAvailable ? "disabled" : ""}`}
+                onClick={() => {
+                  if (isAvailable) {
+                    onNavigate(targetIndex);
+                  }
+                }}
+              >
+                <span className="toc_item_label">{item.label}</span>
+                {isCurrent && <span className="toc_item_current">현재</span>}
+              </li>
+            );
+          })}
+        </ul>
       </div>
     </div>
   );
@@ -1513,39 +1652,338 @@ function EndingCard({ data }: { data: SajuLoveRecord | null }) {
           <p className="ending_sign">- 색동낭자 드림</p>
         </div>
 
-        {/* 보고서 요약 */}
-        {chapters.length > 0 && (
-          <div className="ending_summary">
-            <h3 className="summary_title">📜 나의 연애 사주 리포트 요약</h3>
-            {chapters.map((chapter, index) => {
-              // 3장인지 확인 (숫자 추출 또는 문자열 포함 체크)
+        {/* 보고서 전체 */}
+        <div className="ending_summary">
+          <h3 className="summary_title">나의 연애 사주 리포트 전체</h3>
+
+          {/* 들어가며 */}
+          <div className="report_card summary_report_card">
+            <div className="card_header">
+              <span className="card_label">들어가며</span>
+              <h3 className="card_title">색동낭자의 인사</h3>
+            </div>
+            <div className="card_content intro_summary_content">
+              <p>{userName}님, 안녕하세요.</p>
+              <p>저는 색동낭자예요. 사주로 인연의 실타래를 풀어드리죠.</p>
+              <p>{userName}님의 생년월일시를 바탕으로 타고난 연애 성향, 운명적 인연, 그리고 앞으로의 사랑 운을 살펴봤어요.</p>
+            </div>
+          </div>
+
+          {/* 사주 원국 */}
+          {data && <SummmarySajuCard data={data} />}
+
+          {/* 각 챕터 */}
+          {chapters.map((chapter, index) => {
+              // 챕터 번호 추출
               const chapterMatch = chapter.title.match(/(\d+)장/);
-              const chapterNum = chapterMatch ? parseInt(chapterMatch[1]) : null;
-              const isChapter3 = chapterNum === 3 || chapter.title.includes("3장");
+              const chapterNum = chapterMatch ? parseInt(chapterMatch[1]) : index + 1;
+              const isChapter3 = chapterNum === 3;
+
+              // 타이틀 정리
+              const titleText = chapter.title
+                .replace(/^#+\s*/, "")
+                .replace(/\[(\d+)장\]\s*/, "")
+                .replace(/^(\d+)장\s*/, "")
+                .trim();
 
               return (
-                <div key={index} className="summary_chapter">
-                  <h2 className="summary_chapter_title">{chapter.title}</h2>
-                  <div
-                    className="chapter_body"
-                    dangerouslySetInnerHTML={{ __html: formatChapterContent(chapter.content) }}
-                  />
+                <div key={index}>
+                  <div className="report_card summary_report_card">
+                    <div className="card_header">
+                      <span className="card_label">{chapterNum}장</span>
+                      <h3 className="card_title">{titleText}</h3>
+                    </div>
+                    <div
+                      className="card_content"
+                      dangerouslySetInnerHTML={{ __html: formatChapterContent(chapter.content) }}
+                    />
+                  </div>
                   {/* 3장 뒤에 이상형 이미지 표시 */}
                   {isChapter3 && idealPartnerImage && (
-                    <div className="summary_ideal_image">
-                      <p className="ideal_image_label">{userName}님의 운명의 상대</p>
-                      <img
-                        src={`data:image/png;base64,${idealPartnerImage}`}
-                        alt="이상형 이미지"
-                        className="ideal_image"
-                      />
+                    <div className="report_card summary_ideal_card">
+                      <div className="card_header">
+                        <span className="card_label">보너스</span>
+                        <h3 className="card_title">{userName}님의 이상형</h3>
+                      </div>
+                      <div className="summary_ideal_image">
+                        <img
+                          src={`data:image/png;base64,${idealPartnerImage}`}
+                          alt="이상형 이미지"
+                          className="ideal_image_full"
+                        />
+                      </div>
                     </div>
                   )}
                 </div>
               );
             })}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// 마무리 카드용 사주 원국 (전체 버전)
+function SummmarySajuCard({ data }: { data: SajuLoveRecord }) {
+  const userName = data.input?.userName || "고객";
+  const pillars = data.sajuData?.pillars || {};
+  const sajuData = data.sajuData;
+  const dayMaster = data.sajuData?.dayMaster;
+  const input = data.input;
+
+  const formatTimeToSi = (time: string | null | undefined): string | null => {
+    if (!time) return null;
+    const timeMap: Record<string, string> = {
+      "0030": "자시", "0230": "축시", "0430": "인시", "0630": "묘시",
+      "0830": "진시", "1030": "사시", "1230": "오시", "1430": "미시",
+      "1630": "신시", "1830": "유시", "2030": "술시", "2230": "해시",
+    };
+    return timeMap[time] || null;
+  };
+
+  const birthTime = formatTimeToSi(input?.time);
+  const pillarOrder = ["hour", "day", "month", "year"] as const;
+
+  return (
+    <div className="report_card summary_report_card summary_saju_card">
+      <div className="card_header">
+        <span className="card_label">사주 원국</span>
+        <h3 className="card_title">{userName}님의 타고난 운명</h3>
+      </div>
+
+      <div className="info_card">
+        <div className="info_main">
+          <span className="info_name">{input?.userName}</span>
+          <span className="info_birth">
+            {input?.date}{birthTime ? ` | ${birthTime}` : ""}
+          </span>
+        </div>
+        {dayMaster && (
+          <div className="info_ilju">
+            <span className="ilju_char" style={{ color: getColor(dayMaster.element) }}>{dayMaster.char}</span>
+            <span className="ilju_title">{dayMaster.title}</span>
           </div>
         )}
+      </div>
+
+      {/* 사주 팔자 테이블 */}
+      <div className="pillars_section">
+        <div className="pillars_header">
+          <span className="material-icons">view_column</span>
+          사주 팔자
+        </div>
+        <div className="saju_table_wrap">
+          <table className="saju_table">
+            <thead>
+              <tr>
+                <th></th>
+                <th>생시</th>
+                <th>생일</th>
+                <th>생월</th>
+                <th>생년</th>
+              </tr>
+            </thead>
+            <tbody>
+              {/* 천간 */}
+              <tr className="row_cheongan">
+                <td className="row_label">천간</td>
+                {pillarOrder.map((key) => {
+                  const p = pillars[key];
+                  if (!p?.stem?.char) return <td key={key} className="cell_empty">—</td>;
+                  return (
+                    <td key={key}>
+                      <span className="char_main" style={{ color: getColor(p.stem.element) }}>
+                        {p.stem.char}{p.stem.korean}
+                      </span>
+                      <span className="char_element" style={{ color: getColor(p.stem.element) }}>
+                        {getElementKorean(p.stem.element, p.stem.yinYang)}
+                      </span>
+                    </td>
+                  );
+                })}
+              </tr>
+              {/* 십성 (천간) */}
+              <tr className="row_sipsung">
+                <td className="row_label">십성</td>
+                {pillarOrder.map((key) => {
+                  const p = pillars[key];
+                  return (
+                    <td key={key} className="cell_sipsung" style={{ color: getColor(p?.stem?.element) }}>
+                      {p?.tenGodStem || "—"}
+                    </td>
+                  );
+                })}
+              </tr>
+              {/* 지지 */}
+              <tr className="row_jiji">
+                <td className="row_label">지지</td>
+                {pillarOrder.map((key) => {
+                  const p = pillars[key];
+                  if (!p?.branch?.char) return <td key={key} className="cell_empty">—</td>;
+                  return (
+                    <td key={key}>
+                      <span className="char_main" style={{ color: getColor(p.branch.element) }}>
+                        {p.branch.char}{p.branch.korean}
+                      </span>
+                      <span className="char_element" style={{ color: getColor(p.branch.element) }}>
+                        {getElementKorean(p.branch.element, p.branch.yinYang)}
+                      </span>
+                    </td>
+                  );
+                })}
+              </tr>
+              {/* 십성 (지지) */}
+              <tr className="row_sipsung">
+                <td className="row_label">십성</td>
+                {pillarOrder.map((key) => {
+                  const p = pillars[key];
+                  return (
+                    <td key={key} className="cell_sipsung" style={{ color: getColor(p?.branch?.element) }}>
+                      {p?.tenGodBranchMain || "—"}
+                    </td>
+                  );
+                })}
+              </tr>
+              {/* 지장간 */}
+              <tr className="row_extra">
+                <td className="row_label">지장간</td>
+                {pillarOrder.map((key) => {
+                  const p = pillars[key];
+                  const jijanggan = p?.jijanggan;
+                  let displayValue = "—";
+                  if (typeof jijanggan === 'string') {
+                    displayValue = jijanggan;
+                  } else if (jijanggan && typeof jijanggan === 'object') {
+                    const obj = jijanggan as { display?: string; displayKorean?: string };
+                    if (obj.display && obj.displayKorean) {
+                      displayValue = `${obj.display}(${obj.displayKorean})`;
+                    } else {
+                      displayValue = obj.displayKorean || obj.display || "—";
+                    }
+                  }
+                  return <td key={key} className="cell_extra">{displayValue}</td>;
+                })}
+              </tr>
+              {/* 12운성 */}
+              <tr className="row_extra">
+                <td className="row_label">12운성</td>
+                {pillarOrder.map((key) => {
+                  const p = pillars[key];
+                  const twelveStage = (p as unknown as { twelveStage?: string })?.twelveStage || p?.twelveUnsung;
+                  const displayValue = typeof twelveStage === 'string'
+                    ? twelveStage
+                    : (twelveStage as unknown as { display?: string })?.display || "—";
+                  return <td key={key} className="cell_extra">{displayValue}</td>;
+                })}
+              </tr>
+              {/* 12신살 */}
+              <tr className="row_extra">
+                <td className="row_label">12신살</td>
+                {pillarOrder.map((key) => {
+                  const p = pillars[key];
+                  const twelveSinsal = p?.twelveSinsal;
+                  const displayValue = typeof twelveSinsal === 'string'
+                    ? twelveSinsal
+                    : (twelveSinsal as unknown as { display?: string })?.display || "—";
+                  return <td key={key} className="cell_extra">{displayValue}</td>;
+                })}
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      {/* 신살과 길성 */}
+      <div className="sinsal_section">
+        <div className="sinsal_header">
+          <span className="material-icons">auto_awesome</span>
+          신살과 길성
+        </div>
+        <p className="sinsal_tags">
+          {sajuData?.sinsal?._active && sajuData.sinsal._active.length > 0 ? (
+            sajuData.sinsal._active.map((name, i, arr) => {
+              const isLoveSinsal = name === "도화살" || name === "홍염살" || name === "화개살";
+              return (
+                <span key={i} className={isLoveSinsal ? "love" : "normal"}>
+                  {name}{i < arr.length - 1 ? ", " : ""}
+                </span>
+              );
+            })
+          ) : (
+            <span className="sinsal_empty">특이 신살 없음</span>
+          )}
+        </p>
+
+        {/* 신살과 길성 테이블 */}
+        <div className="sinsal_table_wrap">
+          <table className="sinsal_table">
+            <thead>
+              <tr>
+                <th></th>
+                <th>생시</th>
+                <th>생일</th>
+                <th>생월</th>
+                <th>생년</th>
+              </tr>
+            </thead>
+            <tbody>
+              {/* 천간 */}
+              <tr>
+                <td className="row_label">천간</td>
+                {pillarOrder.map((key) => {
+                  const p = pillars[key];
+                  return (
+                    <td key={key}>
+                      <span className="char_hanja" style={{ color: getColor(p?.stem?.element) }}>
+                        {p?.stem?.char || "—"}
+                      </span>
+                    </td>
+                  );
+                })}
+              </tr>
+              {/* 천간 신살/길성 */}
+              <tr>
+                <td className="row_label">신살</td>
+                {pillarOrder.map((key) => {
+                  const byPillar = sajuData?.sinsal?._byPillar;
+                  const stemSinsal = byPillar?.[key]?.stem || [];
+                  return (
+                    <td key={key} className="cell_gilsung">
+                      {stemSinsal.length > 0 ? stemSinsal.join(", ") : "×"}
+                    </td>
+                  );
+                })}
+              </tr>
+              {/* 지지 */}
+              <tr>
+                <td className="row_label">지지</td>
+                {pillarOrder.map((key) => {
+                  const p = pillars[key];
+                  return (
+                    <td key={key}>
+                      <span className="char_hanja" style={{ color: getColor(p?.branch?.element) }}>
+                        {p?.branch?.char || "—"}
+                      </span>
+                    </td>
+                  );
+                })}
+              </tr>
+              {/* 지지 신살/길성 */}
+              <tr>
+                <td className="row_label">신살</td>
+                {pillarOrder.map((key) => {
+                  const byPillar = sajuData?.sinsal?._byPillar;
+                  const branchSinsal = byPillar?.[key]?.branch || [];
+                  return (
+                    <td key={key} className="cell_gilsung">
+                      {branchSinsal.length > 0 ? branchSinsal.join(", ") : "×"}
+                    </td>
+                  );
+                })}
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   );
@@ -1640,10 +2078,7 @@ function formatChapterContent(content: string): string {
 
     formatted += `
       <div class="chapter_section">
-        <h3 class="section_title">
-          <span class="section_number">${section.number}</span>
-          <span class="section_text">${escapeHTML(section.title)}</span>
-        </h3>
+        <h3 class="section_title">${escapeHTML(section.title)}</h3>
         <div class="section_content">${sectionContent}</div>
       </div>
     `;
