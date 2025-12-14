@@ -20,15 +20,14 @@ export default function LandingPage() {
     <div className="landing-container">
       {/* 브랜드 로고 */}
       <div className="landing-brand">
-        <span className="brand-hanja">家</span>
-        <span className="brand-name">양반가</span>
+        <span className="brand-name">양반家</span>
       </div>
 
       {/* 메인 히어로 이미지 */}
       <div className="landing-hero">
         <Image
           src="/img/main-bg.png"
-          alt="양반가 - 정통 운세"
+          alt="양반家 - 정통 운세"
           width={500}
           height={350}
           className="landing-hero-image"

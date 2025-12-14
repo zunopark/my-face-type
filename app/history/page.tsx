@@ -194,7 +194,7 @@ export default function HistoryPage() {
           gap: "6px"
         }}>
           <span style={{ fontFamily: "KimjungchulMyungjo-Bold, serif", fontSize: "20px", color: "#171717" }}>家</span>
-          <span style={{ fontFamily: "KimjungchulMyungjo-Bold, serif", fontSize: "18px", fontWeight: 700, color: "#171717" }}>양반가</span>
+          <span style={{ fontFamily: "KimjungchulMyungjo-Bold, serif", fontSize: "18px", fontWeight: 700, color: "#171717" }}>양반家</span>
         </div>
       </header>
 

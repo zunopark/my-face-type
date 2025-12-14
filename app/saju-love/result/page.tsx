@@ -462,7 +462,10 @@ function SajuLoveResultContent() {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            saju_data: storedData.sajuData,
+            saju_data: {
+              ...storedData.sajuData,
+              input: storedData.input,  // 성별 정보 포함
+            },
             user_name: storedData.input?.userName || "",
             user_concern: combinedConcern.trim(),
             year: new Date().getFullYear(),
@@ -1054,139 +1057,142 @@ function IntroCard({ userName }: { userName: string }) {
     <div className="report_card intro_card">
       {/* 장면 1: 인사 */}
       <div className="intro_section intro_welcome">
-        <div className="intro_greeting">
-          <p className="greeting_main">어서 오세요.<br/>家 양반가에 오신 것을 환영해요.</p>
-        </div>
-        <p className="intro_sub_text">
-          저는 이곳에서 연애 사주를 봐드리는 색동낭자예요.<br/>
-          오늘 처음 오신 분도 계실 테니,<br/>
-          본격적인 풀이에 앞서 사주에 대해 간단히 알려드릴게요.
+        <p className="welcome_main">어서 오세요</p>
+        <p className="welcome_sub">양반家에 오신 것을 환영해요</p>
+        <div className="welcome_divider">❀</div>
+        <p className="welcome_text">
+          저는 이곳에서 연애 사주를 봐드리는 <strong>색동낭자</strong>예요.
+        </p>
+        <p className="welcome_text">
+          미래가 궁금해서, 마음속 고민이 쉽게 풀리지 않아서, 혹은 인생의 중요한 갈림길 앞에서 방향을 찾고 싶어서... 이런 여러 가지 이유로 양반가에 오셨겠죠?
+        </p>
+        <p className="welcome_text">
+          그렇다면 정말 잘 찾아오셨어요. {userName}님의 사주 속에는 이미 수많은 힌트와 가능성들이 담겨 있어요.
+        </p>
+        <p className="welcome_text">
+          제가 사주라는 지도를 함께 펼치고, {userName}님이 걸어갈 인생의 길을 환하게 밝혀드릴게요.
         </p>
       </div>
 
-      {/* 장면 2: 사주란 무엇인가요? */}
+      {/* 장면 2: 사주란? */}
       <div className="intro_section">
-        <h3 className="intro_section_title">━━━ 들어가며 ━━━</h3>
-        <div className="intro_section_content">
-          <p className="intro_question">
-            "혹시 <strong>사주(四柱)</strong>라는 말, 들어보셨나요?"
-          </p>
-          <p>
-            사주는 한자로 '네 개의 기둥'이라는 뜻이에요.<br/>
-            태어난 년(年), 월(月), 일(日), 시(時)<br/>
-            이 네 가지 시간을 각각 하나의 기둥으로 보는 거예요.
-          </p>
-        </div>
-
-        {/* 4개의 기둥 시각화 - 의미 포함 */}
-        <div className="intro_pillars_meaning">
-          <div className="pillar_meaning_item">
-            <span className="pillar_meaning_label">시주(時柱)</span>
-            <div className="pillar_meaning_bar">
-              <span className="pillar_meaning_top">천간</span>
-              <span className="pillar_meaning_bottom">지지</span>
-            </div>
-            <span className="pillar_meaning_time">태어난 시간</span>
-            <span className="pillar_meaning_who">자녀·말년</span>
-          </div>
-          <div className="pillar_meaning_item highlight">
-            <span className="pillar_meaning_label">일주(日柱)</span>
-            <div className="pillar_meaning_bar">
-              <span className="pillar_meaning_top">나</span>
-              <span className="pillar_meaning_bottom">배우자</span>
-            </div>
-            <span className="pillar_meaning_time">태어난 날</span>
-            <span className="pillar_meaning_who">본인·배우자</span>
-          </div>
-          <div className="pillar_meaning_item">
-            <span className="pillar_meaning_label">월주(月柱)</span>
-            <div className="pillar_meaning_bar">
-              <span className="pillar_meaning_top">천간</span>
-              <span className="pillar_meaning_bottom">지지</span>
-            </div>
-            <span className="pillar_meaning_time">태어난 달</span>
-            <span className="pillar_meaning_who">부모·청년기</span>
-          </div>
-          <div className="pillar_meaning_item">
-            <span className="pillar_meaning_label">년주(年柱)</span>
-            <div className="pillar_meaning_bar">
-              <span className="pillar_meaning_top">천간</span>
-              <span className="pillar_meaning_bottom">지지</span>
-            </div>
-            <span className="pillar_meaning_time">태어난 해</span>
-            <span className="pillar_meaning_who">조상·유년기</span>
-          </div>
-        </div>
+        <h3 className="intro_section_title">들어가며</h3>
+        <p className="intro_section_subtitle">사주란 무엇인가요?</p>
 
         <div className="intro_section_content">
+          <p className="intro_quote">
+            "사주(四柱)"는 '네 개의 기둥'이라는 뜻이에요.
+          </p>
           <p>
-            이 네 기둥이 바로 {userName}님이 세상에 태어난 순간,<br/>
-            하늘과 땅이 품고 있던 기운이에요.
+            사주는 사람이 태어난 <strong>연(年)</strong>, <strong>월(月)</strong>, <strong>일(日)</strong>, <strong>시(時)</strong> 이 네 가지 기둥으로 이루어진 팔자예요.
+          </p>
+          <p>
+            이 네 가지 요소를 통해 한 사람이 지닌 성격, 타고난 기질, 흐르는 운의 방향까지 자세히 살펴볼 수 있답니다.
+          </p>
+          <p className="intro_note">
+            사주는 단순히 '미래를 맞히는 점술'이 아니라, <strong>'나를 이해하고, 더 나은 선택을 할 수 있게 도와주는 삶의 지도'</strong>라고 보시면 좋아요.
+          </p>
+          <p>
+            나도 몰랐던 내 안의 가능성과 흐름을 발견하게 되니까요.
           </p>
         </div>
       </div>
 
-      {/* 장면 3: 팔자(八字)의 의미 */}
+      {/* 장면 3: 사주팔자의 구조 */}
       <div className="intro_section">
-        <h3 className="intro_section_title">━━━ 사주팔자 ━━━</h3>
-        <div className="intro_section_content">
-          <p className="intro_question">
-            "그런데 왜 '사주팔자'라고 부를까요?"
-          </p>
-          <p>
-            각 기둥은 두 글자로 이루어져 있거든요.<br/>
-            위에는 <strong>천간(天干)</strong> - 하늘의 기운<br/>
-            아래는 <strong>지지(地支)</strong> - 땅의 기운
-          </p>
-          <p className="intro_formula">
-            4개의 기둥 × 2글자 = <strong>8글자</strong><br/>
-            그래서 '사주팔자(四柱八字)'라고 부르는 거예요.
-          </p>
-        </div>
-
-        {/* 사주 다이어그램 */}
-        <div className="intro_diagram">
-          <div className="diagram_header">
-            <span>시주</span>
-            <span>일주</span>
-            <span>월주</span>
-            <span>년주</span>
-          </div>
-          <div className="diagram_row">
-            <span className="diagram_char metal">庚</span>
-            <span className="diagram_char earth">戊</span>
-            <span className="diagram_char fire">丙</span>
-            <span className="diagram_char wood">甲</span>
-          </div>
-          <div className="diagram_label">← 천간(天干)</div>
-          <div className="diagram_row">
-            <span className="diagram_char metal">申</span>
-            <span className="diagram_char fire">午</span>
-            <span className="diagram_char wood">寅</span>
-            <span className="diagram_char water">子</span>
-          </div>
-          <div className="diagram_label">← 지지(地支)</div>
-        </div>
+        <h3 className="intro_section_title">사주팔자의 구조</h3>
+        <p className="intro_section_subtitle">왜 '팔자'라고 부를까요?</p>
 
         <div className="intro_section_content">
           <p>
-            이 여덟 글자 안에<br/>
-            {userName}님의 성격, 재능, 인연, 그리고 <strong>사랑의 운명</strong>까지<br/>
-            모두 담겨 있답니다.
+            사주는 흔히 <strong>'사주팔자(四柱八字)'</strong>라고도 불리는데요, 여기서 '팔자'는 태어난 순간의 하늘과 땅의 기운이 담긴 여덟 글자를 말해요.
+          </p>
+          <p>
+            각 기둥은 두 글자로 이루어져 있어요.<br/>
+            위쪽 글자는 <strong>천간(天干)</strong> — 하늘의 기운<br/>
+            아래 글자는 <strong>지지(地支)</strong> — 땅의 기운
+          </p>
+          <p>
+            4개의 기둥 × 2글자 = <strong>8글자</strong>, 그래서 '사주팔자'라고 불러요.
+          </p>
+        </div>
+
+        {/* 예시 사주명식 테이블 */}
+        <div className="intro_saju_table">
+          <div className="saju_pillar_row">
+            <div className="saju_pillar">
+              <span className="pillar_name">시주</span>
+              <div className="pillar_chars">
+                <div className="char_cell">
+                  <span className="cell_hanja metal">庚</span>
+                  <span className="char_meaning">자녀</span>
+                </div>
+                <div className="char_cell">
+                  <span className="cell_hanja metal">申</span>
+                  <span className="char_meaning">말년</span>
+                </div>
+              </div>
+            </div>
+            <div className="saju_pillar highlight">
+              <span className="pillar_name">일주</span>
+              <div className="pillar_chars">
+                <div className="char_cell">
+                  <span className="cell_hanja earth">戊</span>
+                  <span className="char_meaning">나</span>
+                </div>
+                <div className="char_cell">
+                  <span className="cell_hanja fire">午</span>
+                  <span className="char_meaning">배우자</span>
+                </div>
+              </div>
+            </div>
+            <div className="saju_pillar">
+              <span className="pillar_name">월주</span>
+              <div className="pillar_chars">
+                <div className="char_cell">
+                  <span className="cell_hanja fire">丙</span>
+                  <span className="char_meaning">부모</span>
+                </div>
+                <div className="char_cell">
+                  <span className="cell_hanja wood">寅</span>
+                  <span className="char_meaning">청년기</span>
+                </div>
+              </div>
+            </div>
+            <div className="saju_pillar">
+              <span className="pillar_name">년주</span>
+              <div className="pillar_chars">
+                <div className="char_cell">
+                  <span className="cell_hanja wood">甲</span>
+                  <span className="char_meaning">조상</span>
+                </div>
+                <div className="char_cell">
+                  <span className="cell_hanja water">子</span>
+                  <span className="char_meaning">유년기</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div className="intro_section_content">
+          <p>
+            우리가 이 세상에 태어난 그 순간, 눈에 보이지 않는 운명의 설계도가 이미 그려지는 거예요.
+          </p>
+          <p className="intro_note">
+            그래서 사주는 예언이 아니라, 나의 성격과 기질, 그리고 앞으로 맞이할 인생의 흐름을 미리 살펴볼 수 있는 <strong>소중한 지도</strong>랍니다.
           </p>
         </div>
       </div>
 
-      {/* 장면 4: 천간이란? */}
+      {/* 장면 4: 천간(天干) */}
       <div className="intro_section">
-        <h3 className="intro_section_title">━━━ 하늘의 기운, 천간 ━━━</h3>
+        <h3 className="intro_section_title">천간(天干)</h3>
+        <p className="intro_section_subtitle">하늘에서 내려오는 열 가지 기운</p>
+
         <div className="intro_section_content">
-          <p className="intro_question">
-            "그럼 <strong>천간(天干)</strong>부터 알아볼까요?"
-          </p>
           <p>
-            천간은 하늘에서 내려오는 기운이에요.<br/>
-            총 10가지가 있어요.
+            천간은 하늘의 기운이에요. 총 <strong>10가지</strong>가 있어요.
           </p>
         </div>
 
@@ -1199,184 +1205,205 @@ function IntroCard({ userName }: { userName: string }) {
             <span className="element water">수(水)</span>
           </div>
           <div className="cheongan_row chars">
-            <span className="wood">甲 乙<br/>갑 을</span>
-            <span className="fire">丙 丁<br/>병 정</span>
-            <span className="earth">戊 己<br/>무 기</span>
-            <span className="metal">庚 辛<br/>경 신</span>
-            <span className="water">壬 癸<br/>임 계</span>
+            <span className="wood">甲 乙<br/><span className="char_kor">갑 을</span></span>
+            <span className="fire">丙 丁<br/><span className="char_kor">병 정</span></span>
+            <span className="earth">戊 己<br/><span className="char_kor">무 기</span></span>
+            <span className="metal">庚 辛<br/><span className="char_kor">경 신</span></span>
+            <span className="water">壬 癸<br/><span className="char_kor">임 계</span></span>
           </div>
           <div className="cheongan_row meaning">
-            <span>🌳 🌿<br/>큰나무 · 풀</span>
-            <span>☀️ 🕯️<br/>태양 · 촛불</span>
-            <span>🏔️ 🌾<br/>산 · 논밭</span>
-            <span>⚔️ 💎<br/>바위 · 보석</span>
-            <span>🌊 💧<br/>바다 · 시냇물</span>
+            <span>큰나무<br/>풀·꽃</span>
+            <span>태양<br/>촛불</span>
+            <span>산<br/>논밭</span>
+            <span>바위<br/>보석</span>
+            <span>바다<br/>시냇물</span>
           </div>
         </div>
 
         <div className="intro_section_content">
           <p>
-            천간은 겉으로 드러나는 성격,<br/>
-            세상에 보여주는 나의 모습을 나타내요.
+            천간은 <strong>겉으로 드러나는 성격</strong>, 세상에 보여주는 나의 모습을 나타내요.
           </p>
-          <p>
-            예를 들어 <strong>丙(병)</strong>은 태양처럼 밝고 열정적인 사람,<br/>
-            <strong>癸(계)</strong>는 시냇물처럼 조용하고 감성적인 사람이에요.
+          <p className="intro_note">
+            예를 들어 <strong>丙(병)</strong>은 태양처럼 밝고 열정적인 사람, <strong>癸(계)</strong>는 시냇물처럼 조용하고 감성적인 사람이에요.
           </p>
         </div>
       </div>
 
-      {/* 장면 5: 지지란? */}
+      {/* 장면 5: 지지(地支) */}
       <div className="intro_section">
-        <h3 className="intro_section_title">━━━ 땅의 기운, 지지 ━━━</h3>
-        <div className="intro_section_content">
-          <p className="intro_question">
-            "다음은 <strong>지지(地支)</strong>예요."
-          </p>
-          <p>
-            지지는 땅에서 올라오는 기운이에요.<br/>
-            총 12가지가 있는데...<br/>
-            어디서 많이 본 숫자 아니에요?
-          </p>
-          <p>
-            맞아요, 바로 <strong>12지신</strong>이에요!<br/>
-            우리가 흔히 말하는 '띠'가 지지랍니다.
-          </p>
-        </div>
-
-        <div className="intro_jiji_grid">
-          <div className="jiji_item"><span className="jiji_char water">子</span><span className="jiji_kor">자</span><span className="jiji_emoji">🐭</span><span className="jiji_animal">쥐</span></div>
-          <div className="jiji_item"><span className="jiji_char earth">丑</span><span className="jiji_kor">축</span><span className="jiji_emoji">🐮</span><span className="jiji_animal">소</span></div>
-          <div className="jiji_item"><span className="jiji_char wood">寅</span><span className="jiji_kor">인</span><span className="jiji_emoji">🐯</span><span className="jiji_animal">호랑이</span></div>
-          <div className="jiji_item"><span className="jiji_char wood">卯</span><span className="jiji_kor">묘</span><span className="jiji_emoji">🐰</span><span className="jiji_animal">토끼</span></div>
-          <div className="jiji_item"><span className="jiji_char earth">辰</span><span className="jiji_kor">진</span><span className="jiji_emoji">🐲</span><span className="jiji_animal">용</span></div>
-          <div className="jiji_item"><span className="jiji_char fire">巳</span><span className="jiji_kor">사</span><span className="jiji_emoji">🐍</span><span className="jiji_animal">뱀</span></div>
-          <div className="jiji_item"><span className="jiji_char fire">午</span><span className="jiji_kor">오</span><span className="jiji_emoji">🐴</span><span className="jiji_animal">말</span></div>
-          <div className="jiji_item"><span className="jiji_char earth">未</span><span className="jiji_kor">미</span><span className="jiji_emoji">🐏</span><span className="jiji_animal">양</span></div>
-          <div className="jiji_item"><span className="jiji_char metal">申</span><span className="jiji_kor">신</span><span className="jiji_emoji">🐵</span><span className="jiji_animal">원숭이</span></div>
-          <div className="jiji_item"><span className="jiji_char metal">酉</span><span className="jiji_kor">유</span><span className="jiji_emoji">🐔</span><span className="jiji_animal">닭</span></div>
-          <div className="jiji_item"><span className="jiji_char earth">戌</span><span className="jiji_kor">술</span><span className="jiji_emoji">🐶</span><span className="jiji_animal">개</span></div>
-          <div className="jiji_item"><span className="jiji_char water">亥</span><span className="jiji_kor">해</span><span className="jiji_emoji">🐷</span><span className="jiji_animal">돼지</span></div>
-        </div>
+        <h3 className="intro_section_title">지지(地支)</h3>
+        <p className="intro_section_subtitle">땅에서 올라오는 열두 가지 기운</p>
 
         <div className="intro_section_content">
           <p>
-            지지는 숨겨진 내면,<br/>
-            무의식적인 감정과 욕구를 나타내요.
+            지지는 땅의 기운을 뜻하는 열두 가지 글자로, 하늘의 기운을 받아들여 더욱 구체적인 모습을 이루어 가죠.
           </p>
           <p>
-            겉으로는 차분해 보여도<br/>
-            속으로는 열정이 넘치는 분들 있잖아요?<br/>
-            그런 게 다 지지에 담겨 있답니다.
+            맞아요, 바로 우리가 흔히 아는 <strong>12지신(띠)</strong>이에요!
+          </p>
+        </div>
+
+        <div className="intro_jiji_table">
+          <div className="jiji_table_row">
+            <div className="jiji_cell">
+              <span className="jiji_hanja water">子</span>
+              <span className="jiji_info">자 · 쥐</span>
+            </div>
+            <div className="jiji_cell">
+              <span className="jiji_hanja earth">丑</span>
+              <span className="jiji_info">축 · 소</span>
+            </div>
+            <div className="jiji_cell">
+              <span className="jiji_hanja wood">寅</span>
+              <span className="jiji_info">인 · 호랑이</span>
+            </div>
+            <div className="jiji_cell">
+              <span className="jiji_hanja wood">卯</span>
+              <span className="jiji_info">묘 · 토끼</span>
+            </div>
+          </div>
+          <div className="jiji_table_row">
+            <div className="jiji_cell">
+              <span className="jiji_hanja earth">辰</span>
+              <span className="jiji_info">진 · 용</span>
+            </div>
+            <div className="jiji_cell">
+              <span className="jiji_hanja fire">巳</span>
+              <span className="jiji_info">사 · 뱀</span>
+            </div>
+            <div className="jiji_cell">
+              <span className="jiji_hanja fire">午</span>
+              <span className="jiji_info">오 · 말</span>
+            </div>
+            <div className="jiji_cell">
+              <span className="jiji_hanja earth">未</span>
+              <span className="jiji_info">미 · 양</span>
+            </div>
+          </div>
+          <div className="jiji_table_row">
+            <div className="jiji_cell">
+              <span className="jiji_hanja metal">申</span>
+              <span className="jiji_info">신 · 원숭이</span>
+            </div>
+            <div className="jiji_cell">
+              <span className="jiji_hanja metal">酉</span>
+              <span className="jiji_info">유 · 닭</span>
+            </div>
+            <div className="jiji_cell">
+              <span className="jiji_hanja earth">戌</span>
+              <span className="jiji_info">술 · 개</span>
+            </div>
+            <div className="jiji_cell">
+              <span className="jiji_hanja water">亥</span>
+              <span className="jiji_info">해 · 돼지</span>
+            </div>
+          </div>
+        </div>
+
+        <div className="intro_section_content">
+          <p>
+            이 천간과 지지가 서로 만나 하나의 조화를 이루면, 하늘과 땅이 어우러지듯 우리의 생년월일시가 정해지게 돼요.
+          </p>
+          <p className="intro_note">
+            그리고 그 순간의 기운이 우리의 성향과 삶에 깊이 스며들어, 그 사람의 성격부터 앞으로 펼쳐질 운명의 중요한 열쇠가 된답니다!
           </p>
         </div>
       </div>
 
-      {/* 장면 6: 오행이란? */}
+      {/* 장면 6: 오행 */}
       <div className="intro_section">
-        <h3 className="intro_section_title">━━━ 다섯 가지 기운, 오행 ━━━</h3>
+        <h3 className="intro_section_title">다섯 가지 기운, 오행</h3>
+        <p className="intro_section_subtitle">천간과 지지를 이해하는 열쇠</p>
+
         <div className="intro_section_content">
-          <p className="intro_question">
-            "그런데 천간과 지지,<br/>
-            이렇게 많은 글자를 어떻게 이해하냐고요?"
-          </p>
           <p>
-            걱정 마세요.<br/>
-            모든 글자는 다섯 가지 기운으로 나눌 수 있어요.<br/>
-            바로 <strong>오행(五行)</strong>이에요.
+            그런데 천간과 지지, 이렇게 많은 글자를 어떻게 이해하냐고요? 걱정 마세요. 모든 글자는 다섯 가지 기운으로 나눌 수 있어요. 바로 <strong>오행(五行)</strong>이에요.
           </p>
         </div>
 
-        <div className="intro_ohang_list">
-          <div className="ohang_item wood">
-            <span className="ohang_icon">🌳</span>
-            <div className="ohang_content">
-              <strong>목(木) - 성장하는 사랑</strong>
-              <p>나무처럼 성장하고 뻗어나가는 기운<br/>새로운 시작을 좋아하고, 발전하는 관계를 추구해요</p>
+        <div className="intro_ohang_circle">
+          <div className="ohang_circle_wrapper">
+            <div className="ohang_node fire top">
+              <span className="ohang_label">화(火)</span>
+              <span className="ohang_desc">열정</span>
+            </div>
+            <div className="ohang_node wood left-top">
+              <span className="ohang_label">목(木)</span>
+              <span className="ohang_desc">성장</span>
+            </div>
+            <div className="ohang_node earth right-top">
+              <span className="ohang_label">토(土)</span>
+              <span className="ohang_desc">안정</span>
+            </div>
+            <div className="ohang_node water left-bottom">
+              <span className="ohang_label">수(水)</span>
+              <span className="ohang_desc">지혜</span>
+            </div>
+            <div className="ohang_node metal right-bottom">
+              <span className="ohang_label">금(金)</span>
+              <span className="ohang_desc">원칙</span>
             </div>
           </div>
-          <div className="ohang_item fire">
-            <span className="ohang_icon">🔥</span>
-            <div className="ohang_content">
-              <strong>화(火) - 뜨거운 사랑</strong>
-              <p>불처럼 뜨겁고 밝게 타오르는 기운<br/>열정적이고 표현력이 강하며, 확실한 애정표현을 해요</p>
-            </div>
-          </div>
-          <div className="ohang_item earth">
-            <span className="ohang_icon">🏔️</span>
-            <div className="ohang_content">
-              <strong>토(土) - 안정된 사랑</strong>
-              <p>땅처럼 안정되고 포용하는 기운<br/>믿음직하고 변함없는 사랑을 하며, 포용력이 커요</p>
-            </div>
-          </div>
-          <div className="ohang_item metal">
-            <span className="ohang_icon">⚔️</span>
-            <div className="ohang_content">
-              <strong>금(金) - 원칙있는 사랑</strong>
-              <p>쇠처럼 단단하고 원칙있는 기운<br/>깔끔하고 명확한 관계를 좋아하며, 신의를 중시해요</p>
-            </div>
-          </div>
-          <div className="ohang_item water">
-            <span className="ohang_icon">💧</span>
-            <div className="ohang_content">
-              <strong>수(水) - 깊은 사랑</strong>
-              <p>물처럼 유연하고 지혜로운 기운<br/>감성적이고 직관적이며, 상대에게 맞춰주는 편이에요</p>
-            </div>
+          <div className="ohang_relations">
+            <p className="ohang_relation saeng">
+              <span className="relation_label">생(生)</span>
+              목 → 화 → 토 → 금 → 수 → 목
+            </p>
+            <p className="ohang_relation geuk">
+              <span className="relation_label">극(剋)</span>
+              목 → 토 → 수 → 화 → 금 → 목
+            </p>
           </div>
         </div>
 
         <div className="intro_section_content">
-          <p>
-            이 다섯 가지 기운의 조합과 균형이<br/>
-            바로 {userName}님의 성격과 연애 스타일을 만들어요.
+          <p className="intro_note">
+            이 다섯 가지 기운의 조합과 균형이 바로 {userName}님의 성격과 연애 스타일을 만들어요.
           </p>
         </div>
       </div>
 
-      {/* 장면 7: 연애 사주의 핵심 - 일주 */}
+      {/* 장면 7: 일주 */}
       <div className="intro_section">
-        <h3 className="intro_section_title">━━━ 연애의 열쇠, 일주 ━━━</h3>
+        <h3 className="intro_section_title">연애의 열쇠, 일주</h3>
+        <p className="intro_section_subtitle">사주에서 가장 중요한 기둥</p>
+
         <div className="intro_section_content">
-          <p className="intro_question">
-            "자, 이제 중요한 이야기를 해볼게요."
-          </p>
           <p>
-            사주의 네 기둥 중에서<br/>
-            연애를 볼 때 가장 중요한 기둥이 있어요.<br/>
-            바로 <strong>일주(日柱)</strong>예요.
+            자, 이제 중요한 이야기를 해볼게요. 사주의 네 기둥 중에서 연애를 볼 때 가장 중요한 기둥이 있어요. 바로 <strong>일주(日柱)</strong>예요.
           </p>
         </div>
 
-        {/* 일주 강조 시각화 - 천간/지지 의미 */}
-        <div className="intro_ilju_focus">
-          <div className="ilju_focus_pillars">
-            <div className="ilju_focus_item faded">
-              <span className="ilju_focus_label">시주</span>
-              <div className="ilju_focus_box">
-                <span className="ilju_focus_char">○</span>
-                <span className="ilju_focus_char">○</span>
+        <div className="intro_ilju_diagram">
+          <div className="ilju_pillars">
+            <div className="ilju_pillar">
+              <span className="ilju_pillar_name">시주</span>
+              <div className="ilju_pillar_chars">
+                <span>○</span>
+                <span>○</span>
               </div>
             </div>
-            <div className="ilju_focus_item active">
-              <span className="ilju_focus_label">일주</span>
-              <div className="ilju_focus_box">
-                <span className="ilju_focus_char top">나</span>
-                <span className="ilju_focus_char bottom">배우자</span>
+            <div className="ilju_pillar highlight">
+              <span className="ilju_pillar_name">일주</span>
+              <div className="ilju_pillar_chars">
+                <span>나</span>
+                <span>배우자</span>
               </div>
-              <span className="ilju_focus_arrow">↑ 이게 나!</span>
+              <span className="ilju_arrow">↑ 이게 나!</span>
             </div>
-            <div className="ilju_focus_item faded">
-              <span className="ilju_focus_label">월주</span>
-              <div className="ilju_focus_box">
-                <span className="ilju_focus_char">○</span>
-                <span className="ilju_focus_char">○</span>
+            <div className="ilju_pillar">
+              <span className="ilju_pillar_name">월주</span>
+              <div className="ilju_pillar_chars">
+                <span>○</span>
+                <span>○</span>
               </div>
             </div>
-            <div className="ilju_focus_item faded">
-              <span className="ilju_focus_label">년주</span>
-              <div className="ilju_focus_box">
-                <span className="ilju_focus_char">○</span>
-                <span className="ilju_focus_char">○</span>
+            <div className="ilju_pillar">
+              <span className="ilju_pillar_name">년주</span>
+              <div className="ilju_pillar_chars">
+                <span>○</span>
+                <span>○</span>
               </div>
             </div>
           </div>
@@ -1384,44 +1411,79 @@ function IntroCard({ userName }: { userName: string }) {
 
         <div className="intro_section_content">
           <p>
-            일주는 태어난 '날'의 기둥인데요,<br/>
-            사주에서 <strong>'나 자신'</strong>을 의미해요.
+            일주는 태어난 '날'의 기둥인데요, 사주에서 '나 자신'을 의미해요.
           </p>
           <p>
-            특히 일주의 아랫글자, <strong>일지(日支)</strong>는<br/>
-            '배우자 자리'라고도 불러요.
+            특히 일주의 아랫글자, <strong>일지(日支)</strong>는 '배우자 자리'라고도 불러요.
           </p>
-          <p>
-            내 마음 깊은 곳에서 원하는 이상형,<br/>
-            무의식적으로 끌리는 사람의 유형,<br/>
-            연애할 때 나도 모르게 나오는 습관...<br/>
-            이런 것들이 모두 일주에 담겨 있답니다.
+          <p className="intro_note">
+            내 마음 깊은 곳에서 원하는 이상형, 무의식적으로 끌리는 사람의 유형, 연애할 때 나도 모르게 나오는 습관... 이런 것들이 모두 일주에 담겨 있답니다.
           </p>
         </div>
       </div>
 
-      {/* 장면 8: 마무리 - 본 풀이로 전환 */}
+      {/* 장면 8: 사주를 알면 무엇이 좋을까? */}
+      <div className="intro_section">
+        <h3 className="intro_section_title">사주를 알면</h3>
+        <p className="intro_section_subtitle">무엇이 좋을까요?</p>
+
+        <div className="intro_section_content">
+          <p>
+            사주를 알면 내가 어떤 사람인지, 진짜 내 모습이 무엇인지 더 깊이 이해할 수 있어요.
+          </p>
+          <p>
+            성격이나 재능, 적성은 물론이고, 인간관계에서의 특징이나 연애 스타일까지도 구체적으로 파악할 수 있답니다.
+          </p>
+          <p>
+            또 언제 좋은 기회가 들어오고, 언제 조심해야 하는지도 미리 살펴볼 수 있어서 삶의 중요한 순간들을 보다 현명하게 준비할 수 있죠.
+          </p>
+          <p className="intro_note">
+            특히 인생에서 중요한 시기를 맞이했을 때, 내가 가진 사주를 바탕으로 흐름을 읽고 대비한다면 훨씬 안정적이고 후회 없는 결정을 내릴 수 있어요. 사주는 그렇게, 지금의 나와 앞으로의 나를 잇는 다리 역할을 해준답니다.
+          </p>
+        </div>
+      </div>
+
+      {/* 장면 7: 색동낭자의 약속 */}
+      <div className="intro_section">
+        <h3 className="intro_section_title">색동낭자의 약속</h3>
+
+        <div className="intro_section_content">
+          <p>
+            사주는 운명을 점치는 것이 아니라, 운명을 더 잘 살아내기 위한 지혜예요.
+          </p>
+          <p>
+            저는 {userName}님의 사주를 정성스럽게 바라보면서, 진심을 담아 조언해드릴게요.
+          </p>
+          <p className="intro_promise">
+            좋은 운은 더 크게 살리고, 어려운 운은 지혜롭게 피할 수 있도록, 무엇보다 {userName}님이 스스로를 더 사랑하고 이해할 수 있도록 도와드릴게요.
+          </p>
+        </div>
+      </div>
+
+      {/* 장면 8: 보고서 안내 */}
+      <div className="intro_section">
+        <h3 className="intro_section_title">보고서 안내</h3>
+
+        <div className="intro_section_content">
+          <p>
+            이 보고서는 총 <strong>6개의 장</strong>으로 구성되어 있어요.
+          </p>
+          <div className="intro_chapters_list">
+            <p><strong>1장</strong> 나만의 매력과 연애 성향</p>
+            <p><strong>2장</strong> 앞으로 펼쳐질 사랑의 흐름</p>
+            <p><strong>3장</strong> 결국 만나게 될 운명의 상대</p>
+            <p><strong>4장</strong> 운명이라 착각하는 가짜 인연</p>
+            <p><strong>5장</strong> 아무한테도 말 못할, 그 사람과의 스킨십</p>
+            <p><strong>6장</strong> 색동낭자의 귀띔</p>
+          </div>
+        </div>
+      </div>
+
+      {/* 장면 9: 마무리 - 전환 */}
       <div className="intro_section intro_transition">
-        <div className="transition_greeting">
-          <p className="transition_main">"어때요, 사주가 조금은 친숙해지셨나요?"</p>
-        </div>
         <div className="intro_section_content">
-          <p>
-            물론 이건 아주 기본적인 이야기예요.<br/>
-            실제로는 글자들 사이의 관계,<br/>
-            합(合)과 충(沖), 형(刑)과 파(破),<br/>
-            운의 흐름까지 복잡하게 얽혀 있거든요.
-          </p>
-          <p>
-            하지만 걱정 마세요.<br/>
-            어려운 건 제가 풀어드릴 테니까요.
-          </p>
-          <p className="transition_final">
-            자, 그럼 이제<br/>
-            {userName}님의 사주를 펼쳐볼까요?<br/>
-            {userName}님이 태어난 그 순간,<br/>
-            하늘과 땅은 어떤 이야기를 써두었는지<br/>
-            함께 읽어봐요.
+          <p className="transition_text">
+            그럼 이제, 색동낭자와 함께 {userName}님의 사주를 펼쳐볼까요?
           </p>
         </div>
       </div>
