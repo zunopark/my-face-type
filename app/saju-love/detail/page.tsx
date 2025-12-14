@@ -4,7 +4,7 @@
 // 🔧 결제 스킵 설정 (개발/테스트용)
 // true: 결제 없이 바로 결과 페이지로 이동
 // false: 정상 결제 프로세스 진행
-const SKIP_PAYMENT = true;
+const SKIP_PAYMENT = false;
 // ============================================================
 
 import { useEffect, useState, Suspense, useRef } from "react";
@@ -763,7 +763,7 @@ function SajuDetailContent() {
                   </div>
                 </div>
                 <div className="report-section">
-                  <div className="report-section-title">5장. 아무한테도 말 못할, 스킨십</div>
+                  <div className="report-section-title">5장. 누구에게도 말 못할, 그 사람과의 스킨십</div>
                   <div className="report-section-desc">
                     상대를 홀리는 나의 성적 매력, 그 사람의 성적 매력, 그 사람과의 스킨십 궁합까지 은밀하게 풀이합니다.
                   </div>
@@ -893,7 +893,7 @@ function SajuDetailContent() {
                   </div>
                 </div>
                 <div className="report-section">
-                  <div className="report-section-title">5장. 아무한테도 말 못할, 스킨십</div>
+                  <div className="report-section-title">5장. 누구에게도 말 못할, 그 사람과의 스킨십</div>
                   <div className="report-section-desc">
                     상대를 홀리는 나의 성적 매력, 그 사람의 성적 매력, 그 사람과의 스킨십 궁합까지 은밀하게 풀이합니다.
                   </div>

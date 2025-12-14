@@ -274,9 +274,13 @@ function SajuLoveResultContent() {
         const { scrollTop, scrollHeight, clientHeight } = el;
         const isAtBottom = scrollTop + clientHeight >= scrollHeight - 50; // 50px 여유
 
+        // 스크롤이 조금이라도 발생하면 힌트 숨김
+        if (scrollTop > 10) {
+          setShowScrollHint(false);
+        }
+
         if (isAtBottom) {
           setCanProceed(true);
-          setShowScrollHint(false);
         }
       };
 
@@ -581,9 +585,12 @@ function SajuLoveResultContent() {
           <div className="error_wrap">
             <div className="error_icon">!</div>
             <p className="error_text">{error}</p>
-            <Link href="/saju-love" className="error_btn">
+            <button
+              className="error_btn"
+              onClick={() => window.location.reload()}
+            >
               다시 시작하기
-            </Link>
+            </button>
           </div>
         </div>
       </div>

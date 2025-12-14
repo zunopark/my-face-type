@@ -86,6 +86,8 @@ export default function RootLayout({
   return (
     <html lang="ko" suppressHydrationWarning>
       <head>
+        {/* 모바일 브라우저 자동 링크 변환 비활성화 */}
+        <meta name="format-detection" content="telephone=no, date=no, email=no, address=no" />
         {/* Google Fonts */}
         <link
           href="https://fonts.googleapis.com/css?family=Asap:400,500,700"
