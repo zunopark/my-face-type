@@ -26,10 +26,15 @@ export interface SajuLoveRecord {
       yinYang?: string;
     };
     pillars: Record<string, {
-      stem: { char: string; korean?: string; element?: string };
-      branch: { char: string; korean?: string; element?: string };
+      stem: { char: string; korean?: string; element?: string; yinYang?: string } | null;
+      branch: { char: string; korean?: string; element?: string; yinYang?: string; mainHiddenStem?: string } | null;
       tenGodStem?: string;
       tenGodBranchMain?: string;
+      jijanggan?: string | { chars?: string[]; display?: string; displayKorean?: string; detail?: unknown[] } | null;  // 지장간
+      twelveStage?: string;  // 12운성 (API 필드명)
+      twelveUnsung?: string;  // 12운성 (별칭)
+      twelveSinsal?: string;  // 12신살
+      gilsung?: string[];  // 길성 목록
     }>;
     fiveElements?: {
       strength?: string;
@@ -40,10 +45,36 @@ export interface SajuLoveRecord {
       spouseTargetType?: string;
       dayMasterStrength?: string;
     } | null;
+    sinsal?: {
+      [key: string]: unknown;
+      _active?: string[];
+      _activeCount?: number;
+      _byPillar?: Record<string, { stem: string[]; branch: string[] }>;
+      도화살?: { has?: boolean; found?: unknown[] };
+      홍염살?: { has?: boolean; found?: string[] };
+      화개살?: { has?: boolean; found?: unknown[] };
+      천을귀인?: { has?: boolean; found?: string[] };
+      역마살?: { has?: boolean; found?: unknown[]; hasSimple?: boolean };
+      양인살?: { has?: boolean; target?: string };
+      괴강살?: { has?: boolean };
+      공망?: { has?: boolean; found?: string[] };
+      원진살?: { has?: boolean; found?: string[] };
+      귀문관살?: { has?: boolean; found?: string[] };
+      백호살?: { has?: boolean };
+      천덕귀인?: { has?: boolean; target?: string };
+      월덕귀인?: { has?: boolean; target?: string };
+      태극귀인?: { has?: boolean; found?: string[] };
+      문창귀인?: { has?: boolean; target?: string };
+      천의성?: { has?: boolean; target?: string };
+      현침살?: { has?: boolean; found?: string[] };
+      고란살?: { has?: boolean };
+      과숙살?: { has?: boolean; target?: string; forGender?: string };
+      고신살?: { has?: boolean; target?: string; forGender?: string };
+    } | null;
   };
   loveAnalysis?: {
     user_name: string;
-    chapters: { title: string; content: string }[];
+    chapters: { number: number; title: string; content: string }[];
     ideal_partner_image?: { image_base64: string; prompt?: string };
   } | null;
 }

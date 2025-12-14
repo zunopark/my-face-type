@@ -1,5 +1,12 @@
 "use client";
 
+// ============================================================
+// 🔧 결제 스킵 설정 (개발/테스트용)
+// true: 결제 없이 바로 결과 페이지로 이동
+// false: 정상 결제 프로세스 진행
+const SKIP_PAYMENT = true;
+// ============================================================
+
 import { useEffect, useState, Suspense, useRef } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import Link from "next/link";
@@ -95,19 +102,33 @@ const dayMasterData: Record<string, { headline: string; summary: string; appeara
 
 // 오행 색상
 const elementColors: Record<string, string> = {
-  "木": "#2aa86c", wood: "#2aa86c",
-  "火": "#ff6a6a", fire: "#ff6a6a",
-  "土": "#caa46a", earth: "#caa46a",
-  "金": "#9a9a9a", metal: "#9a9a9a",
-  "水": "#6aa7ff", water: "#6aa7ff",
+  "木": "#2aa86c", wood: "#2aa86c", Wood: "#2aa86c",
+  "火": "#ff6a6a", fire: "#ff6a6a", Fire: "#ff6a6a",
+  "土": "#caa46a", earth: "#caa46a", Earth: "#caa46a",
+  "金": "#9a9a9a", metal: "#9a9a9a", Metal: "#9a9a9a",
+  "水": "#6aa7ff", water: "#6aa7ff", Water: "#6aa7ff",
 };
 
 const elementBgColors: Record<string, string> = {
-  "木": "rgba(42, 168, 108, 0.12)", wood: "rgba(42, 168, 108, 0.12)",
-  "火": "rgba(255, 106, 106, 0.12)", fire: "rgba(255, 106, 106, 0.12)",
-  "土": "rgba(202, 164, 106, 0.12)", earth: "rgba(202, 164, 106, 0.12)",
-  "金": "rgba(154, 154, 154, 0.12)", metal: "rgba(154, 154, 154, 0.12)",
-  "水": "rgba(106, 167, 255, 0.12)", water: "rgba(106, 167, 255, 0.12)",
+  "木": "rgba(42, 168, 108, 0.12)", wood: "rgba(42, 168, 108, 0.12)", Wood: "rgba(42, 168, 108, 0.12)",
+  "火": "rgba(255, 106, 106, 0.12)", fire: "rgba(255, 106, 106, 0.12)", Fire: "rgba(255, 106, 106, 0.12)",
+  "土": "rgba(202, 164, 106, 0.12)", earth: "rgba(202, 164, 106, 0.12)", Earth: "rgba(202, 164, 106, 0.12)",
+  "金": "rgba(154, 154, 154, 0.12)", metal: "rgba(154, 154, 154, 0.12)", Metal: "rgba(154, 154, 154, 0.12)",
+  "水": "rgba(106, 167, 255, 0.12)", water: "rgba(106, 167, 255, 0.12)", Water: "rgba(106, 167, 255, 0.12)",
+};
+
+// 오행 한글 변환 함수 (음양 포함)
+const getElementKorean = (element: string | undefined, yinYang?: string): string => {
+  if (!element) return "";
+  const el = element.toLowerCase();
+  // 음양 기호: yang(양) = +, yin(음) = -
+  const sign = yinYang?.toLowerCase() === "yang" ? "+" : "-";
+  if (el === "fire" || element === "火") return `${sign}화`;
+  if (el === "wood" || element === "木") return `${sign}목`;
+  if (el === "water" || element === "水") return `${sign}수`;
+  if (el === "metal" || element === "金") return `${sign}금`;
+  if (el === "earth" || element === "土") return `${sign}토`;
+  return "";
 };
 
 function SajuDetailContent() {
@@ -166,9 +187,17 @@ function SajuDetailContent() {
     return timeMap[timeStr] || "";
   };
 
-  // 결제 모달 열기
-  const openPaymentModal = () => {
+  // 결제 모달 열기 (또는 스킵 시 바로 결과 페이지로 이동)
+  const openPaymentModal = async () => {
     if (!data) return;
+
+    // 결제 스킵 모드: 바로 결과 페이지로 이동
+    if (SKIP_PAYMENT) {
+      const { markSajuLovePaid } = await import("@/lib/db/sajuLoveDB");
+      await markSajuLovePaid(data.id);
+      router.push(`/saju-love/result?id=${encodeURIComponent(data.id)}`);
+      return;
+    }
 
     trackPaymentModalOpen("saju_love", {
       id: data.id,
@@ -351,66 +380,227 @@ function SajuDetailContent() {
             </div>
           </div>
 
-          {/* 사주 팔자 */}
+          {/* 사주 팔자 테이블 */}
           <div className="pillars_section">
             <div className="pillars_header">
               <span className="material-icons">view_column</span>
               사주 팔자
             </div>
-            <div className="pillars_wrap">
-              {(["hour", "day", "month", "year"] as const).map((key) => {
-                const p = pillars[key];
-                const labels = { hour: "시주", day: "일주", month: "월주", year: "년주" };
-                if (!p || !p.stem || !p.branch) {
-                  return (
-                    <div key={key} className="pillar_item pillar_unknown">
-                      <div className="pillar_label">{labels[key]}</div>
-                      <div className="pillar_chars">
-                        <div className="pillar_char_wrap">
-                          <span className="pillar_stem">—</span>
-                        </div>
-                        <div className="pillar_char_wrap">
-                          <span className="pillar_branch">—</span>
-                        </div>
-                      </div>
-                    </div>
-                  );
-                }
+            <div className="saju_table_wrap">
+              <table className="saju_table">
+                <thead>
+                  <tr>
+                    <th></th>
+                    <th>생시</th>
+                    <th>생일</th>
+                    <th>생월</th>
+                    <th>생년</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {/* 천간 */}
+                  <tr className="row_cheongan">
+                    <td className="row_label">천간</td>
+                    {(["hour", "day", "month", "year"] as const).map((key) => {
+                      const p = pillars[key];
+                      if (!p?.stem?.char) return <td key={key} className="cell_empty">—</td>;
+                      return (
+                        <td key={key}>
+                          <span className="char_main" style={{ color: getColor(p.stem.element) }}>
+                            {p.stem.char}{p.stem.korean}
+                          </span>
+                          <span className="char_element" style={{ color: getColor(p.stem.element) }}>
+                            {getElementKorean(p.stem.element, p.stem.yinYang)}
+                          </span>
+                        </td>
+                      );
+                    })}
+                  </tr>
+                  {/* 십성 (천간) */}
+                  <tr className="row_sipsung">
+                    <td className="row_label">십성</td>
+                    {(["hour", "day", "month", "year"] as const).map((key) => {
+                      const p = pillars[key];
+                      return (
+                        <td key={key} className="cell_sipsung" style={{ color: getColor(p?.stem?.element) }}>
+                          {p?.tenGodStem || "—"}
+                        </td>
+                      );
+                    })}
+                  </tr>
+                  {/* 지지 */}
+                  <tr className="row_jiji">
+                    <td className="row_label">지지</td>
+                    {(["hour", "day", "month", "year"] as const).map((key) => {
+                      const p = pillars[key];
+                      if (!p?.branch?.char) return <td key={key} className="cell_empty">—</td>;
+                      return (
+                        <td key={key}>
+                          <span className="char_main" style={{ color: getColor(p.branch.element) }}>
+                            {p.branch.char}{p.branch.korean}
+                          </span>
+                          <span className="char_element" style={{ color: getColor(p.branch.element) }}>
+                            {getElementKorean(p.branch.element, p.branch.yinYang)}
+                          </span>
+                        </td>
+                      );
+                    })}
+                  </tr>
+                  {/* 십성 (지지) */}
+                  <tr className="row_sipsung">
+                    <td className="row_label">십성</td>
+                    {(["hour", "day", "month", "year"] as const).map((key) => {
+                      const p = pillars[key];
+                      return (
+                        <td key={key} className="cell_sipsung" style={{ color: getColor(p?.branch?.element) }}>
+                          {p?.tenGodBranchMain || "—"}
+                        </td>
+                      );
+                    })}
+                  </tr>
+                  {/* 지장간 */}
+                  <tr className="row_extra">
+                    <td className="row_label">지장간</td>
+                    {(["hour", "day", "month", "year"] as const).map((key) => {
+                      const p = pillars[key];
+                      const jijanggan = p?.jijanggan;
+                      let displayValue = "—";
+                      if (typeof jijanggan === 'string') {
+                        displayValue = jijanggan;
+                      } else if (jijanggan && typeof jijanggan === 'object') {
+                        const obj = jijanggan as { display?: string; displayKorean?: string };
+                        // 한자(한글) 형태로 표시
+                        if (obj.display && obj.displayKorean) {
+                          displayValue = `${obj.display}(${obj.displayKorean})`;
+                        } else {
+                          displayValue = obj.displayKorean || obj.display || "—";
+                        }
+                      }
+                      return <td key={key} className="cell_extra">{displayValue}</td>;
+                    })}
+                  </tr>
+                  {/* 12운성 */}
+                  <tr className="row_extra">
+                    <td className="row_label">12운성</td>
+                    {(["hour", "day", "month", "year"] as const).map((key) => {
+                      const p = pillars[key];
+                      // API에서는 twelveStage로 반환됨
+                      const twelveStage = (p as unknown as { twelveStage?: string })?.twelveStage || p?.twelveUnsung;
+                      const displayValue = typeof twelveStage === 'string'
+                        ? twelveStage
+                        : (twelveStage as unknown as { display?: string })?.display || "—";
+                      return <td key={key} className="cell_extra">{displayValue}</td>;
+                    })}
+                  </tr>
+                  {/* 12신살 */}
+                  <tr className="row_extra">
+                    <td className="row_label">12신살</td>
+                    {(["hour", "day", "month", "year"] as const).map((key) => {
+                      const p = pillars[key];
+                      const twelveSinsal = p?.twelveSinsal;
+                      const displayValue = typeof twelveSinsal === 'string'
+                        ? twelveSinsal
+                        : (twelveSinsal as unknown as { display?: string })?.display || "—";
+                      return <td key={key} className="cell_extra">{displayValue}</td>;
+                    })}
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          {/* 신살과 길성 */}
+          <div className="sinsal_section">
+            <div className="sinsal_header">
+              <span className="material-icons">auto_awesome</span>
+              신살과 길성
+            </div>
+            <div className="sinsal_tags">
+              {/* 활성화된 신살 태그들 */}
+              {sajuData.sinsal?._active?.map((name, i) => {
+                // 길성(귀인)은 파란색, 신살은 빨간색
+                const isGilsung = name.includes("귀인") || name === "천의성";
                 return (
-                  <div key={key} className="pillar_item">
-                    <div className="pillar_label">{labels[key]}</div>
-                    <div className="pillar_chars">
-                      <div
-                        className="pillar_char_wrap"
-                        style={{ background: getBgColor(p.stem.element) }}
-                      >
-                        <span
-                          className="pillar_stem"
-                          style={{ color: getColor(p.stem.element) }}
-                        >
-                          {p.stem.char}
-                        </span>
-                        <span className="pillar_ten_god">{p.tenGodStem}</span>
-                      </div>
-                      <div
-                        className="pillar_char_wrap"
-                        style={{ background: getBgColor(p.branch.element) }}
-                      >
-                        <span
-                          className="pillar_branch"
-                          style={{ color: getColor(p.branch.element) }}
-                        >
-                          {p.branch.char}
-                        </span>
-                        <span className="pillar_ten_god">{p.tenGodBranchMain}</span>
-                      </div>
-                    </div>
-                    <div className="pillar_korean">
-                      {p.stem.korean}{p.branch.korean}
-                    </div>
-                  </div>
+                  <span key={i} className={`sinsal_tag ${isGilsung ? "gilsung" : ""}`}>
+                    {name}
+                  </span>
                 );
               })}
+              {/* 활성화된 신살이 없는 경우 */}
+              {(!sajuData.sinsal?._active || sajuData.sinsal._active.length === 0) && (
+                <span className="sinsal_empty">특이 신살 없음</span>
+              )}
+            </div>
+
+            {/* 신살과 길성 테이블 */}
+            <div className="sinsal_table_wrap">
+              <table className="sinsal_table">
+                <thead>
+                  <tr>
+                    <th></th>
+                    <th>생시</th>
+                    <th>생일</th>
+                    <th>생월</th>
+                    <th>생년</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {/* 천간 */}
+                  <tr>
+                    <td className="row_label">천간</td>
+                    {(["hour", "day", "month", "year"] as const).map((key) => {
+                      const p = pillars[key];
+                      return (
+                        <td key={key}>
+                          <span className="char_hanja" style={{ color: getColor(p?.stem?.element) }}>
+                            {p?.stem?.char || "—"}
+                          </span>
+                        </td>
+                      );
+                    })}
+                  </tr>
+                  {/* 천간 신살/길성 */}
+                  <tr>
+                    <td className="row_label">신살</td>
+                    {(["hour", "day", "month", "year"] as const).map((key) => {
+                      const byPillar = sajuData.sinsal?._byPillar;
+                      const stemSinsal = byPillar?.[key]?.stem || [];
+                      return (
+                        <td key={key} className="cell_gilsung">
+                          {stemSinsal.length > 0 ? stemSinsal.join(", ") : "×"}
+                        </td>
+                      );
+                    })}
+                  </tr>
+                  {/* 지지 */}
+                  <tr>
+                    <td className="row_label">지지</td>
+                    {(["hour", "day", "month", "year"] as const).map((key) => {
+                      const p = pillars[key];
+                      return (
+                        <td key={key}>
+                          <span className="char_hanja" style={{ color: getColor(p?.branch?.element) }}>
+                            {p?.branch?.char || "—"}
+                          </span>
+                        </td>
+                      );
+                    })}
+                  </tr>
+                  {/* 지지 신살/길성 */}
+                  <tr>
+                    <td className="row_label">신살</td>
+                    {(["hour", "day", "month", "year"] as const).map((key) => {
+                      const byPillar = sajuData.sinsal?._byPillar;
+                      const branchSinsal = byPillar?.[key]?.branch || [];
+                      return (
+                        <td key={key} className="cell_gilsung">
+                          {branchSinsal.length > 0 ? branchSinsal.join(", ") : "×"}
+                        </td>
+                      );
+                    })}
+                  </tr>
+                </tbody>
+              </table>
             </div>
           </div>
         </section>
@@ -511,12 +701,24 @@ function SajuDetailContent() {
                 </div>
                 <div className="saju-summary-row">
                   <span className="saju-summary-label">신강/신약</span>
-                  <span className="saju-summary-value">{sajuData.fiveElements?.strength || "—"}</span>
+                  <span className="saju-summary-value">{sajuData.loveFacts?.dayMasterStrength || sajuData.fiveElements?.strength || "—"}</span>
                 </div>
                 <div className="saju-summary-row">
                   <span className="saju-summary-label">도화살</span>
                   <span className="saju-summary-value">
-                    {sajuData.loveFacts?.peachBlossom?.hasPeach ? "있음" : "없음"}
+                    {sajuData.loveFacts?.peachBlossom?.hasPeach || sajuData.sinsal?.도화살?.has ? "있음" : "없음"}
+                  </span>
+                </div>
+                <div className="saju-summary-row">
+                  <span className="saju-summary-label">홍염살</span>
+                  <span className="saju-summary-value">
+                    {sajuData.sinsal?.홍염살?.has ? "있음" : "없음"}
+                  </span>
+                </div>
+                <div className="saju-summary-row">
+                  <span className="saju-summary-label">화개살</span>
+                  <span className="saju-summary-value">
+                    {sajuData.sinsal?.화개살?.has ? "있음" : "없음"}
                   </span>
                 </div>
                 <div className="saju-summary-row">
@@ -551,11 +753,23 @@ function SajuDetailContent() {
                 <div className="report-section">
                   <div className="report-section-title">3장. 결국 만나게 될 운명의 상대</div>
                   <div className="report-section-desc">
-                    운명의 짝 그 사람의 외모, 성격, MBTI, 직업군까지 모든 것, 언제 어떻게 만나게 될지, 그 사람을 끌어당길 나만의 공략법까지 구체적으로 풀이합니다.
+                    운명의 짝 그 사람의 외모, 성격, 직업군까지 모든 것, 언제 어떻게 만나게 될지, 그 사람을 끌어당길 나만의 공략법까지 구체적으로 풀이합니다.
                   </div>
                 </div>
                 <div className="report-section">
-                  <div className="report-section-title">4장. 색동낭자의 일침</div>
+                  <div className="report-section-title">4장. 운명이라 착각하는 가짜 인연</div>
+                  <div className="report-section-desc">
+                    내가 유독 약해지는 사람 유형, 운명이라고 착각하게 되는 이유, 가짜 인연을 거르는 방법을 알려드립니다.
+                  </div>
+                </div>
+                <div className="report-section">
+                  <div className="report-section-title">5장. 아무한테도 말 못할, 스킨십</div>
+                  <div className="report-section-desc">
+                    상대를 홀리는 나의 성적 매력, 그 사람의 성적 매력, 그 사람과의 스킨십 궁합까지 은밀하게 풀이합니다.
+                  </div>
+                </div>
+                <div className="report-section">
+                  <div className="report-section-title">6장. 색동낭자의 귀띔</div>
                   <div className="report-section-desc">
                     입력한 고민에 대해 사주 기반으로 뼈 때리는 직언과 현실적인 처방전을 1:1 맞춤 상담 형식으로 제공합니다.
                   </div>
@@ -617,12 +831,24 @@ function SajuDetailContent() {
                 </div>
                 <div className="saju-summary-row">
                   <span className="saju-summary-label">신강/신약</span>
-                  <span className="saju-summary-value">{sajuData.fiveElements?.strength || "—"}</span>
+                  <span className="saju-summary-value">{sajuData.loveFacts?.dayMasterStrength || sajuData.fiveElements?.strength || "—"}</span>
                 </div>
                 <div className="saju-summary-row">
                   <span className="saju-summary-label">도화살</span>
                   <span className="saju-summary-value">
-                    {sajuData.loveFacts?.peachBlossom?.hasPeach ? "있음" : "없음"}
+                    {sajuData.loveFacts?.peachBlossom?.hasPeach || sajuData.sinsal?.도화살?.has ? "있음" : "없음"}
+                  </span>
+                </div>
+                <div className="saju-summary-row">
+                  <span className="saju-summary-label">홍염살</span>
+                  <span className="saju-summary-value">
+                    {sajuData.sinsal?.홍염살?.has ? "있음" : "없음"}
+                  </span>
+                </div>
+                <div className="saju-summary-row">
+                  <span className="saju-summary-label">화개살</span>
+                  <span className="saju-summary-value">
+                    {sajuData.sinsal?.화개살?.has ? "있음" : "없음"}
                   </span>
                 </div>
                 <div className="saju-summary-row">
@@ -657,11 +883,23 @@ function SajuDetailContent() {
                 <div className="report-section">
                   <div className="report-section-title">3장. 결국 만나게 될 운명의 상대</div>
                   <div className="report-section-desc">
-                    운명의 짝 그 사람의 외모, 성격, MBTI, 직업군까지 모든 것, 언제 어떻게 만나게 될지, 그 사람을 끌어당길 나만의 공략법까지 구체적으로 풀이합니다.
+                    운명의 짝 그 사람의 외모, 성격, 직업군까지 모든 것, 언제 어떻게 만나게 될지, 그 사람을 끌어당길 나만의 공략법까지 구체적으로 풀이합니다.
                   </div>
                 </div>
                 <div className="report-section">
-                  <div className="report-section-title">4장. 색동낭자의 일침</div>
+                  <div className="report-section-title">4장. 운명이라 착각하는 가짜 인연</div>
+                  <div className="report-section-desc">
+                    내가 유독 약해지는 사람 유형, 운명이라고 착각하게 되는 이유, 가짜 인연을 거르는 방법을 알려드립니다.
+                  </div>
+                </div>
+                <div className="report-section">
+                  <div className="report-section-title">5장. 아무한테도 말 못할, 스킨십</div>
+                  <div className="report-section-desc">
+                    상대를 홀리는 나의 성적 매력, 그 사람의 성적 매력, 그 사람과의 스킨십 궁합까지 은밀하게 풀이합니다.
+                  </div>
+                </div>
+                <div className="report-section">
+                  <div className="report-section-title">6장. 색동낭자의 귀띔</div>
                   <div className="report-section-desc">
                     입력한 고민에 대해 사주 기반으로 뼈 때리는 직언과 현실적인 처방전을 1:1 맞춤 상담 형식으로 제공합니다.
                   </div>

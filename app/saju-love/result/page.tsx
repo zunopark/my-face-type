@@ -11,6 +11,7 @@ import "./result.css";
 interface LoveAnalysisResult {
   user_name: string;
   chapters: {
+    number: number;  // 0=들어가며, 1~6=각 장
     title: string;
     content: string;
   }[];
@@ -23,86 +24,49 @@ interface LoveAnalysisResult {
 // 메시지 타입 정의
 type MessageItem = {
   id: string;
-  type: "dialogue" | "report" | "image" | "saju-intro" | "ending";
+  type: "dialogue" | "report" | "image" | "ending";
   content: string;
   chapterIndex?: number;
   imageBase64?: string;
   bgImage?: string;
 };
 
-// 오행 색상 맵
-const ELEMENT_COLORS: Record<string, string> = {
-  木: "#2aa86c", wood: "#2aa86c",
-  火: "#ff6a6a", fire: "#ff6a6a",
-  土: "#caa46a", earth: "#caa46a",
-  金: "#9a9a9a", metal: "#9a9a9a",
-  水: "#6aa7ff", water: "#6aa7ff",
-};
-
-const ELEMENT_BG_COLORS: Record<string, string> = {
-  木: "rgba(42, 168, 108, 0.12)", wood: "rgba(42, 168, 108, 0.12)",
-  火: "rgba(255, 106, 106, 0.12)", fire: "rgba(255, 106, 106, 0.12)",
-  土: "rgba(202, 164, 106, 0.12)", earth: "rgba(202, 164, 106, 0.12)",
-  金: "rgba(154, 154, 154, 0.12)", metal: "rgba(154, 154, 154, 0.12)",
-  水: "rgba(106, 167, 255, 0.12)", water: "rgba(106, 167, 255, 0.12)",
-};
-
-// 시간을 시(時) 이름으로 변환
-const TIME_MAP: Record<string, string> = {
-  "00:30": "자시 (23:30~01:30)",
-  "02:30": "축시 (01:30~03:30)",
-  "04:30": "인시 (03:30~05:30)",
-  "06:30": "묘시 (05:30~07:30)",
-  "08:30": "진시 (07:30~09:30)",
-  "10:30": "사시 (09:30~11:30)",
-  "12:30": "오시 (11:30~13:30)",
-  "14:30": "미시 (13:30~15:30)",
-  "16:30": "신시 (15:30~17:30)",
-  "18:30": "유시 (17:30~19:30)",
-  "20:30": "술시 (19:30~21:30)",
-  "22:30": "해시 (21:30~23:30)",
-};
-
-// 각 챕터별 색동낭자 대사 (챕터 타이틀 키워드 기반)
-// "들어가며" = intro, "1장" = chapter1, ... "6장" = chapter6
-const CHAPTER_DIALOGUES: Record<string, { intro: string; outro: string; bgImage: string }> = {
-  saju: {
-    intro: "먼저, 너의 사주 팔자를\n살펴볼게.",
-    outro: "자, 이제 본격적으로\n너의 연애 성향을 파헤쳐볼까?",
-    bgImage: "/saju-love/img/1.png",
-  },
-  intro: {
-    intro: "",
-    outro: "자, 이제 본격적으로\n너의 연애 성향을 파헤쳐볼까?",
-    bgImage: "/saju-love/img/2.png",
-  },
+// 각 챕터별 대사와 배경 이미지
+// API 응답: [1장, 2장, 3장, 4장, 5장, 6장] - 총 6개 챕터
+const CHAPTER_CONFIG: Record<string, { intro: string; outro: string; bgImage: string }> = {
   chapter1: {
+    // 1장: 나만의 매력과 연애 성향
     intro: "1장에서는 네가 가진 매력과\n연애 스타일을 알려줄게!",
     outro: "어때, 너의 매력을 알겠어?\n이제 미래의 연애 운을 살펴볼게!",
     bgImage: "/saju-love/img/2.png",
   },
   chapter2: {
+    // 2장: 앞으로 펼쳐질 사랑의 흐름
     intro: "2장에서는 앞으로 펼쳐질\n너의 연애 운세를 알려줄게.",
     outro: "운세의 흐름을 파악했으니,\n이제 운명의 상대에 대해 얘기해볼까?",
     bgImage: "/saju-love/img/3.png",
   },
   chapter3: {
+    // 3장: 결국 만나게 될 운명의 상대
     intro: "3장에서는 네가 만나게 될\n운명의 상대에 대해 알려줄게.",
     outro: "이제 조심해야 할 가짜 인연에\n대해 이야기해볼게.",
     bgImage: "/saju-love/img/11.png",
   },
   chapter4: {
+    // 4장: 운명이라 착각하는 가짜 인연
     intro: "4장에서는 운명이라 착각할 수 있는\n가짜 인연에 대해 알려줄게.",
     outro: "자, 이제 조금 민감한 주제로\n넘어가볼까?",
     bgImage: "/saju-love/img/22.png",
   },
   chapter5: {
+    // 5장: 아무한테도 말 못할, 그 사람과의 스킨십
     intro: "5장에서는 아무한테도 말 못할,\n스킨십에 대해 이야기해볼게.",
     outro: "마지막으로 내가 너한테\n전해줄 귀띔이 있어.",
     bgImage: "/saju-love/img/33.png",
   },
   chapter6: {
-    intro: "자, 이제 마지막 장이야.\n색동낭자의 귀띔을 전할게.",
+    // 6장: 색동낭자의 귀띔 (고민 답변)
+    intro: "자, 이제 마지막 장이야.\n네 고민에 대한 답을 줄게.",
     outro: "",
     bgImage: "/saju-love/img/33.png",
   },
@@ -131,80 +95,56 @@ function SajuLoveResultContent() {
 
   const isFetchingRef = useRef(false);
   const loadingIntervalRef = useRef<NodeJS.Timeout | null>(null);
+  const typingIntervalRef = useRef<NodeJS.Timeout | null>(null);
   const reportRef = useRef<HTMLDivElement>(null);
 
-  // 챕터 타이틀에서 키 추출
-  const getChapterKey = (title: string): string => {
-    if (title.includes("들어가며")) return "intro";
+  // 챕터에서 키 추출 (number 또는 title 기반)
+  const getChapterKey = (chapter: { number?: number; title?: string }): string => {
+    // number가 있으면 사용 (1~6장)
+    if (typeof chapter.number === "number" && chapter.number >= 1 && chapter.number <= 6) {
+      return `chapter${chapter.number}`;
+    }
+    // number가 없으면 title에서 추출 (기존 데이터 호환)
+    const title = chapter.title || "";
     if (title.includes("1장")) return "chapter1";
     if (title.includes("2장")) return "chapter2";
     if (title.includes("3장")) return "chapter3";
     if (title.includes("4장")) return "chapter4";
     if (title.includes("5장")) return "chapter5";
     if (title.includes("6장")) return "chapter6";
-    return "intro";
-  };
-
-  // 실제 장 번호 추출 (1장, 2장, 3장, 4장 등)
-  const getChapterNumber = (title: string): number | null => {
-    const match = title.match(/(\d+)장/);
-    return match ? parseInt(match[1]) : null;
+    return "chapter1"; // 기본값
   };
 
   // 메시지 리스트 생성
+  // 흐름: 첫 인사 → [1장] → [2장] → [3장] → 이상형 이미지 → [4장] → [5장] → [6장] → 엔딩
   const buildMessageList = useCallback((record: SajuLoveRecord): MessageItem[] => {
     const result: MessageItem[] = [];
     const userName = record.loveAnalysis?.user_name || record.input?.userName || "고객";
     const chapters = record.loveAnalysis?.chapters || [];
+    const hasIdealImage = !!record.loveAnalysis?.ideal_partner_image?.image_base64;
 
-    // 1. 인트로 대사
+    // 1. 첫 인사 대화
     result.push({
-      id: "intro-dialogue",
+      id: "opening-dialogue",
       type: "dialogue",
-      content: `${userName}님, 드디어 분석이 완료됐어!\n지금부터 너의 연애 사주를 풀어줄게.`,
-      bgImage: "/saju-love/img/1.png",
-    });
-
-    // 2. 사주 원국 소개 대사
-    result.push({
-      id: "saju-intro-dialogue",
-      type: "dialogue",
-      content: CHAPTER_DIALOGUES.saju.intro,
-      bgImage: CHAPTER_DIALOGUES.saju.bgImage,
-    });
-
-    // 3. 사주 원국 카드
-    result.push({
-      id: "saju-intro-card",
-      type: "saju-intro",
-      content: "",
+      content: `안녕, ${userName}님!\n드디어 분석이 완료됐어. 천천히 살펴보자!`,
       bgImage: "/saju-love/img/2.png",
     });
 
-    // 4. 사주 원국 아웃트로
-    result.push({
-      id: "saju-outro-dialogue",
-      type: "dialogue",
-      content: CHAPTER_DIALOGUES.saju.outro,
-      bgImage: "/saju-love/img/2.png",
-    });
-
-    // 5. 각 챕터별 메시지
+    // 2. 각 챕터별 [intro 대화 → 리포트 → outro 대화]
+    // 3장 이후에 이상형 이미지 삽입
     chapters.forEach((chapter, index) => {
-      const chapterKey = getChapterKey(chapter.title);
-      const chapterNum = getChapterNumber(chapter.title);
-      const dialogues = CHAPTER_DIALOGUES[chapterKey];
+      const chapterKey = getChapterKey(chapter);
+      const config = CHAPTER_CONFIG[chapterKey];
+      const chapterNum = parseInt(chapterKey.replace("chapter", ""));
 
-      // "들어가며" 챕터는 인트로 대사 없이 바로 리포트 표시
-      const isIntroChapter = chapterKey === "intro";
-
-      // 챕터 인트로 대사 (들어가며 제외)
-      if (!isIntroChapter && dialogues?.intro) {
+      // 챕터 intro 대화 (있는 경우에만)
+      if (config?.intro) {
         result.push({
           id: `chapter-${chapterKey}-intro`,
           type: "dialogue",
-          content: dialogues.intro,
-          bgImage: dialogues.bgImage,
+          content: config.intro,
+          bgImage: config.bgImage || "/saju-love/img/1.png",
         });
       }
 
@@ -214,32 +154,44 @@ function SajuLoveResultContent() {
         type: "report",
         content: chapter.content,
         chapterIndex: index,
-        bgImage: dialogues?.bgImage || "/saju-love/img/1.png",
+        bgImage: config?.bgImage || "/saju-love/img/1.png",
       });
 
-      // 3장인 경우 이상형 이미지 추가
-      if (chapterNum === 3 && record.loveAnalysis?.ideal_partner_image?.image_base64) {
+      // 챕터 outro 대화 (있는 경우에만)
+      if (config?.outro) {
+        result.push({
+          id: `chapter-${chapterKey}-outro`,
+          type: "dialogue",
+          content: config.outro,
+          bgImage: config.bgImage || "/saju-love/img/1.png",
+        });
+      }
+
+      // 3장 이후에 이상형 이미지 삽입
+      if (chapterNum === 3 && hasIdealImage) {
+        result.push({
+          id: "ideal-type-dialogue",
+          type: "dialogue",
+          content: "잠깐, 여기서 특별히 보여줄게 있어.\n네 운명의 상대가 어떻게 생겼는지 궁금하지 않아?",
+          bgImage: "/saju-love/img/11.png",
+        });
         result.push({
           id: "ideal-type-image",
           type: "image",
           content: `${userName}님의 운명의 상대`,
-          imageBase64: record.loveAnalysis.ideal_partner_image.image_base64,
-          bgImage: "/saju-love/img/33.png",
+          imageBase64: record.loveAnalysis!.ideal_partner_image!.image_base64,
+          bgImage: "/saju-love/img/11.png",
         });
-      }
-
-      // 챕터 아웃트로 대사 (들어가며는 아웃트로만 표시, 4장은 아웃트로 없음)
-      if (dialogues?.outro) {
         result.push({
-          id: `chapter-${chapterKey}-outro`,
+          id: "ideal-type-outro",
           type: "dialogue",
-          content: dialogues.outro,
-          bgImage: dialogues.bgImage,
+          content: "어때, 설레지 않아?\n자, 이제 계속해서 네 연애 운을 살펴보자!",
+          bgImage: "/saju-love/img/11.png",
         });
       }
     });
 
-    // 6. 마무리 메시지
+    // 3. 마무리 메시지
     result.push({
       id: "ending",
       type: "ending",
@@ -295,29 +247,68 @@ function SajuLoveResultContent() {
 
   // 타이핑 효과
   const typeText = useCallback((text: string, onComplete: () => void) => {
+    // 기존 인터벌 클리어
+    if (typingIntervalRef.current) {
+      clearInterval(typingIntervalRef.current);
+    }
+
     setIsTyping(true);
     setShowButtons(false);
     setDialogueText("");
 
     let i = 0;
-    const interval = setInterval(() => {
+    typingIntervalRef.current = setInterval(() => {
       if (i < text.length) {
         setDialogueText(text.substring(0, i + 1));
         i++;
       } else {
-        clearInterval(interval);
+        if (typingIntervalRef.current) {
+          clearInterval(typingIntervalRef.current);
+          typingIntervalRef.current = null;
+        }
         setIsTyping(false);
         onComplete();
       }
     }, 50);
-
-    return () => clearInterval(interval);
   }, []);
+
+  // 이전 메시지로 이동
+  const handlePrev = useCallback(() => {
+    // 타이핑 중이면 무시
+    if (isTyping) return;
+
+    // 첫 번째 메시지면 무시
+    if (currentIndex <= 0) return;
+
+    // 리포트 보고 있으면 닫기
+    if (showReport) {
+      setShowReport(false);
+    }
+
+    // 이전 메시지로
+    const prevIndex = currentIndex - 1;
+    setCurrentIndex(prevIndex);
+    const prevMsg = messages[prevIndex];
+    if (prevMsg.bgImage) setCurrentBgImage(prevMsg.bgImage);
+
+    if (prevMsg.type === "dialogue") {
+      // 이전 대화는 타이핑 효과 없이 바로 보여주기
+      setDialogueText(prevMsg.content);
+      setShowButtons(true);
+    } else {
+      setShowReport(true);
+      setShowButtons(true);
+    }
+  }, [currentIndex, messages, isTyping, showReport]);
 
   // 다음 메시지로 이동
   const handleNext = useCallback(() => {
-    // 타이핑 중이면 스킵
+    // 타이핑 중이면 스킵 (인터벌 클리어하고 텍스트 완성)
     if (isTyping) {
+      if (typingIntervalRef.current) {
+        clearInterval(typingIntervalRef.current);
+        typingIntervalRef.current = null;
+      }
       const currentMsg = messages[currentIndex];
       if (currentMsg?.type === "dialogue") {
         setDialogueText(currentMsg.content);
@@ -566,9 +557,6 @@ function SajuLoveResultContent() {
       {showReport && currentMsg && (
         <div className="report_overlay active">
           <div className="report_scroll" ref={reportRef}>
-            {currentMsg.type === "saju-intro" && (
-              <SajuIntroCard data={data} userName={userName} />
-            )}
             {currentMsg.type === "report" && (
               <ReportCard
                 chapter={data.loveAnalysis!.chapters[currentMsg.chapterIndex!]}
@@ -606,9 +594,16 @@ function SajuLoveResultContent() {
                 </Link>
               </div>
             ) : (
-              <button className="report_next_btn" onClick={handleNext}>
-                확인했어
-              </button>
+              <div className="report_nav_buttons">
+                {currentIndex > 0 && (
+                  <button className="report_prev_btn" onClick={handlePrev}>
+                    이전
+                  </button>
+                )}
+                <button className="report_next_btn" onClick={handleNext}>
+                  확인했어
+                </button>
+              </div>
             )}
           </div>
         </div>
@@ -616,7 +611,7 @@ function SajuLoveResultContent() {
 
       {/* 대화 UI (하단 고정) */}
       <div className={`dialogue_wrap ${!showReport ? "active" : ""}`}>
-        <div className="dialogue_box">
+        <div className="dialogue_box" onClick={handleNext}>
           <div className="dialogue_speaker">색동낭자</div>
           <p className="dialogue_text">
             {dialogueText}
@@ -625,121 +620,14 @@ function SajuLoveResultContent() {
         </div>
 
         <div className={`dialogue_buttons ${showButtons ? "visible" : ""}`}>
+          {currentIndex > 0 && (
+            <button className="dialogue_prev_btn" onClick={handlePrev}>
+              이전
+            </button>
+          )}
           <button className="dialogue_next_btn" onClick={handleNext}>
             {getButtonText()}
           </button>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-// 사주 인트로 카드
-function SajuIntroCard({ data, userName }: { data: SajuLoveRecord; userName: string }) {
-  const { input, sajuData } = data;
-  const birthTime = input.time ? TIME_MAP[input.time] || input.time : "";
-  const birthDateText = birthTime ? `${input.date} | ${birthTime}` : input.date;
-  const dayMaster = sajuData.dayMaster;
-  const pillars = sajuData.pillars;
-  const loveFacts = sajuData.loveFacts;
-
-  const getColor = (element: string | undefined) => {
-    if (!element) return "#333";
-    return ELEMENT_COLORS[element] || ELEMENT_COLORS[element.toLowerCase()] || "#333";
-  };
-
-  const getBgColor = (element: string | undefined) => {
-    if (!element) return "transparent";
-    return ELEMENT_BG_COLORS[element] || ELEMENT_BG_COLORS[element.toLowerCase()] || "transparent";
-  };
-
-  const toKoreanElement = (element: string | undefined) => {
-    if (!element) return "—";
-    const map: Record<string, string> = { wood: "목", fire: "화", earth: "토", metal: "금", water: "수" };
-    return map[element.toLowerCase()] || element;
-  };
-
-  const toKoreanYinYang = (value: string | undefined) => {
-    if (!value) return "—";
-    const map: Record<string, string> = { yang: "양", yin: "음" };
-    return map[value.toLowerCase()] || value;
-  };
-
-  const positionToHanja: Record<string, string> = { year: "年", month: "月", day: "日", hour: "時" };
-
-  const formatPositions = (positions: string[] | undefined) => {
-    if (!positions || positions.length === 0) return "";
-    return positions.map((p) => positionToHanja[p] || p).join(" ");
-  };
-
-  const hasPeach = loveFacts?.peachBlossom?.hasPeach ||
-    (loveFacts?.peachBlossom?.positions && loveFacts.peachBlossom.positions.length > 0);
-  const peachText = hasPeach ? formatPositions(loveFacts?.peachBlossom?.positions) : "없음";
-
-  const hasSpouse = loveFacts?.spouseStars?.positions && loveFacts.spouseStars.positions.length > 0;
-  const spouseText = hasSpouse ? formatPositions(loveFacts?.spouseStars?.positions) : "없음";
-
-  const pillarLabels: Record<string, string> = { hour: "시주", day: "일주", month: "월주", year: "년주" };
-
-  return (
-    <div className="report_card saju_intro_card">
-      <div className="card_header">
-        <span className="card_label">사주 원국</span>
-        <h3 className="card_title">{userName}님의 사주 팔자</h3>
-      </div>
-
-      <div className="saju_info_row">
-        <div className="saju_info_main">
-          <span className="saju_info_name">{userName}</span>
-          <span className="saju_info_birth">{birthDateText}</span>
-        </div>
-        <div className="saju_info_ilju">
-          <span className="ilju_char">{dayMaster?.char || "—"}</span>
-          <span className="ilju_title">{dayMaster?.title || "—"}</span>
-        </div>
-      </div>
-
-      <div className="pillars_mini">
-        {(["hour", "day", "month", "year"] as const).map((key) => {
-          const p = pillars[key];
-          return (
-            <div key={key} className="pillar_mini_item">
-              <div className="pillar_mini_label">{pillarLabels[key]}</div>
-              <div className="pillar_mini_chars">
-                <span
-                  className="pillar_mini_stem"
-                  style={{ color: getColor(p?.stem?.element), background: getBgColor(p?.stem?.element) }}
-                >
-                  {p?.stem?.char || "—"}
-                </span>
-                <span
-                  className="pillar_mini_branch"
-                  style={{ color: getColor(p?.branch?.element), background: getBgColor(p?.branch?.element) }}
-                >
-                  {p?.branch?.char || "—"}
-                </span>
-              </div>
-            </div>
-          );
-        })}
-      </div>
-
-      <div className="love_facts_mini">
-        <div className="love_fact_mini">
-          <span className="fact_label">일간</span>
-          <span className="fact_value">{dayMaster?.char} {dayMaster?.title}</span>
-        </div>
-        <div className="love_fact_mini">
-          <span className="fact_label">오행/음양</span>
-          <span className="fact_value">{toKoreanElement(dayMaster?.element)} / {toKoreanYinYang(dayMaster?.yinYang)}</span>
-        </div>
-        <div className="love_fact_mini">
-          <span className="fact_label">도화살</span>
-          <span className={`fact_value ${hasPeach ? "highlight" : "muted"}`}>{peachText}</span>
-        </div>
-        <div className="love_fact_mini">
-          <span className="fact_label">배우자운</span>
-          <span className={`fact_value ${hasSpouse ? "highlight" : "muted"}`}>{spouseText}</span>
         </div>
       </div>
     </div>
@@ -758,21 +646,16 @@ function ReportCard({
 
   // 챕터 번호 추출 (1장, 2장 등)
   const chapterMatch = rawTitle.match(/(\d+)장/);
-  const chapterNum = chapterMatch ? parseInt(chapterMatch[1]) : null;
-
-  // "들어가며" 여부 확인
-  const isIntroChapter = rawTitle.includes("들어가며");
+  const chapterNum = chapterMatch ? parseInt(chapterMatch[1]) : chapterIndex + 1;
 
   // 라벨 텍스트 결정
-  const labelText = isIntroChapter ? "들어가며" : chapterNum ? `${chapterNum}장` : `챕터 ${chapterIndex + 1}`;
+  const labelText = `${chapterNum}장`;
 
   // 타이틀 텍스트 정리
   let titleText = rawTitle
     .replace(/^#+\s*/, "")
-    .replace(/\[들어가며[^\]]*\]\s*/, "")
     .replace(/\[(\d+)장\]\s*/, "")
     .replace(/^(\d+)장\s*/, "")
-    .replace(/들어가며:\s*/, "")
     .trim();
 
   return (
@@ -856,26 +739,33 @@ function EndingCard({ data }: { data: SajuLoveRecord | null }) {
         {chapters.length > 0 && (
           <div className="ending_summary">
             <h3 className="summary_title">📜 나의 연애 사주 리포트 요약</h3>
-            {chapters.map((chapter, index) => (
-              <div key={index} className="summary_chapter">
-                <h2 className="summary_chapter_title">{chapter.title}</h2>
-                <div
-                  className="chapter_body"
-                  dangerouslySetInnerHTML={{ __html: simpleMD(chapter.content) }}
-                />
-                {/* 3장 뒤에 이상형 이미지 표시 */}
-                {chapter.title.includes("3장") && idealPartnerImage && (
-                  <div className="summary_ideal_image">
-                    <p className="ideal_image_label">{userName}님의 운명의 상대</p>
-                    <img
-                      src={`data:image/png;base64,${idealPartnerImage}`}
-                      alt="이상형 이미지"
-                      className="ideal_image"
-                    />
-                  </div>
-                )}
-              </div>
-            ))}
+            {chapters.map((chapter, index) => {
+              // 3장인지 확인 (숫자 추출 또는 문자열 포함 체크)
+              const chapterMatch = chapter.title.match(/(\d+)장/);
+              const chapterNum = chapterMatch ? parseInt(chapterMatch[1]) : null;
+              const isChapter3 = chapterNum === 3 || chapter.title.includes("3장");
+
+              return (
+                <div key={index} className="summary_chapter">
+                  <h2 className="summary_chapter_title">{chapter.title}</h2>
+                  <div
+                    className="chapter_body"
+                    dangerouslySetInnerHTML={{ __html: formatChapterContent(chapter.content) }}
+                  />
+                  {/* 3장 뒤에 이상형 이미지 표시 */}
+                  {isChapter3 && idealPartnerImage && (
+                    <div className="summary_ideal_image">
+                      <p className="ideal_image_label">{userName}님의 운명의 상대</p>
+                      <img
+                        src={`data:image/png;base64,${idealPartnerImage}`}
+                        alt="이상형 이미지"
+                        className="ideal_image"
+                      />
+                    </div>
+                  )}
+                </div>
+              );
+            })}
           </div>
         )}
       </div>

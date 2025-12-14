@@ -1887,6 +1887,17 @@
   display: flex;
 }
 
+.saju_result_page .dialogue_prev_btn {
+  padding: 16px 24px;
+  font-size: 16px;
+  font-weight: 700;
+  background: white;
+  color: #333;
+  border: 1px solid #ddd;
+  border-radius: 12px;
+  cursor: pointer;
+}
+
 .saju_result_page .dialogue_next_btn {
   flex: 1;
   padding: 16px 32px;
@@ -1943,8 +1954,25 @@
   pointer-events: auto;
 }
 
-.saju_result_page .report_next_btn {
+.saju_result_page .report_nav_buttons {
+  display: flex;
+  gap: 10px;
   width: 100%;
+}
+
+.saju_result_page .report_prev_btn {
+  padding: 16px 24px;
+  font-size: 16px;
+  font-weight: 700;
+  background: white;
+  color: #333;
+  border: 1px solid #ddd;
+  border-radius: 12px;
+  cursor: pointer;
+}
+
+.saju_result_page .report_next_btn {
+  flex: 1;
   padding: 16px 32px;
   font-size: 16px;
   font-weight: 700;

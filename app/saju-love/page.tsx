@@ -245,7 +245,7 @@ export default function SajuLovePage() {
   const isBasicFormValid =
     userName.trim() && birthDate.replace(/\D/g, "").length === 8 && gender;
 
-  const isAdditionalFormValid = status && userConcern.trim();
+  const isAdditionalFormValid = status;
 
   // 분석 시작
   const handleSubmit = async () => {
@@ -279,7 +279,7 @@ export default function SajuLovePage() {
       }
 
       // 필요한 데이터만 추출하여 저장 (용량 절약)
-      const { dayMaster, pillars, fiveElements, loveFacts } = result.data;
+      const { dayMaster, pillars, fiveElements, loveFacts, sinsal } = result.data;
       const minimalSajuData = {
         dayMaster,
         pillars,
@@ -293,8 +293,10 @@ export default function SajuLovePage() {
               peachBlossom: loveFacts.peachBlossom,
               spouseStars: loveFacts.spouseStars,
               spouseTargetType: loveFacts.spouseTargetType,
+              dayMasterStrength: loveFacts.dayMasterStrength,
             }
           : null,
+        sinsal: sinsal || null,
       };
 
       // IndexedDB에 저장
@@ -569,11 +571,14 @@ export default function SajuLovePage() {
 
             {/* 연애 고민 */}
             <div className="input_group">
-              <label className="input_label">요즘 연애 고민이 있나요?</label>
+              <label className="input_label">
+                요즘 연애 고민이 있나요?
+                <span className="input_optional">(선택)</span>
+              </label>
               <textarea
                 className="input_field textarea"
                 placeholder={
-                  "현재 연애에 대한 고민이 있다면 적어주세요.\n더 정확한 분석을 해드릴게요."
+                  "적지 않아도 괜찮아요!\n고민이 있다면 더 맞춤형 답변을 드릴게요."
                 }
                 rows={4}
                 value={userConcern}

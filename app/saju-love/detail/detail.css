@@ -216,76 +216,199 @@
   color: #e74c3c;
 }
 
-.pillars_wrap {
-  display: flex;
-  justify-content: space-between;
-  gap: 8px;
+/* 사주 테이블 */
+.saju_table_wrap {
+  overflow-x: auto;
+  margin-bottom: 8px;
 }
 
-.pillar_item {
-  flex: 1;
+.saju_table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+  table-layout: fixed;
+}
+
+.saju_table th,
+.saju_table td {
+  padding: 10px 4px;
   text-align: center;
-  background: #fff9f9;
-  border: 1px solid #ffe0e0;
-  border-radius: 12px;
-  padding: 12px 6px;
+  border-bottom: 1px solid #f0e8e8;
 }
 
-.pillar_label {
+.saju_table th {
   font-size: 12px;
+  font-weight: 500;
+  color: #999;
+  background: #fafafa;
+}
+
+.saju_table th:first-child,
+.saju_table td:first-child {
+  width: 50px;
+}
+
+.saju_table .row_label {
+  font-size: 11px;
+  color: #999;
+  font-weight: 500;
+  text-align: left;
+  padding-left: 8px;
+}
+
+.saju_table .row_cheongan td,
+.saju_table .row_jiji td {
+  padding: 12px 4px;
+}
+
+.saju_table .char_main {
+  display: block;
+  font-size: 22px;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.saju_table .char_element {
+  display: block;
+  font-size: 11px;
+  font-weight: 500;
+  margin-top: 2px;
+}
+
+.saju_table .row_sipsung td {
+  background: #fafafa;
+}
+
+.saju_table .cell_sipsung {
+  font-size: 12px;
+  color: #666;
+}
+
+.saju_table .cell_sipsung.highlight_red {
   color: #e74c3c;
   font-weight: 600;
-  margin-bottom: 10px;
 }
 
-.pillar_chars {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
+.saju_table .row_extra td {
+  font-size: 11px;
+  color: #888;
 }
 
-.pillar_char_wrap {
+.saju_table .cell_extra {
+  font-size: 11px;
+  color: #888;
+}
+
+.saju_table .cell_empty {
+  color: #ccc;
+}
+
+/* 신살과 길성 섹션 */
+.sinsal_section {
+  padding: 20px;
+  background: #fafafa;
+  border-top: 1px solid #f0e8e8;
+}
+
+.sinsal_header {
   display: flex;
-  flex-direction: column;
   align-items: center;
-  gap: 4px;
-  padding: 8px 6px;
+  gap: 8px;
+  font-size: 15px;
+  font-weight: 700;
+  color: #1a1a1a;
+  margin-bottom: 12px;
 }
 
-.pillar_stem,
-.pillar_branch {
-  font-size: 24px;
+.sinsal_header .material-icons {
+  font-size: 20px;
+  color: #e74c3c;
+}
+
+.sinsal_tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.sinsal_tag {
+  display: inline-block;
+  padding: 6px 12px;
+  background: #fff;
+  border: 1px solid #ffe0e0;
+  border-radius: 20px;
+  font-size: 12px;
+  color: #e74c3c;
+  font-weight: 500;
+}
+
+.sinsal_tag.gilsung {
+  background: #f0f8ff;
+  border-color: #b8d4f0;
+  color: #3b82f6;
+}
+
+.sinsal_empty {
+  font-size: 12px;
+  color: #999;
+}
+
+/* 신살 테이블 */
+.sinsal_table_wrap {
+  overflow-x: auto;
+}
+
+.sinsal_table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12px;
+  background: #fff;
+  border-radius: 8px;
+  overflow: hidden;
+  table-layout: fixed;
+}
+
+.sinsal_table th,
+.sinsal_table td {
+  padding: 10px 4px;
+  text-align: center;
+  border-bottom: 1px solid #f0e8e8;
+}
+
+.sinsal_table th {
+  font-size: 11px;
+  font-weight: 500;
+  color: #999;
+  background: #f8f8f8;
+}
+
+.sinsal_table th:first-child,
+.sinsal_table td:first-child {
+  width: 50px;
+}
+
+.sinsal_table .row_label {
+  font-size: 11px;
+  color: #999;
+  font-weight: 500;
+  text-align: left;
+  padding-left: 8px;
+}
+
+.sinsal_table .char_hanja {
+  font-size: 18px;
   font-weight: 700;
 }
 
-.pillar_ten_god {
+.sinsal_table .cell_gilsung {
   font-size: 10px;
-  color: #888;
-  background: #f0f0f0;
-  padding: 2px 6px;
-  border-radius: 4px;
-}
-
-.pillar_korean {
-  font-size: 11px;
   color: #666;
-  margin-top: 6px;
+  line-height: 1.4;
 }
 
-/* 시주 모름 스타일 */
-.pillar_unknown {
-  background: #fefefe;
-  border-color: #f0e8e8;
-}
-
-.pillar_unknown .pillar_label {
-  color: #dbb;
-}
-
-.pillar_unknown .pillar_stem,
-.pillar_unknown .pillar_branch {
-  color: #ddd;
-  font-weight: 400;
+.sinsal_table tr:last-child td {
+  border-bottom: none;
 }
 
 /* ========== 섹션 2: 나의 결정적 매력 ========== */

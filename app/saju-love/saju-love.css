@@ -330,6 +330,13 @@
   color: white;
 }
 
+.input_optional {
+  font-size: 12px;
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.5);
+  margin-left: 6px;
+}
+
 /* 입력 필드 */
 .input_field {
   width: 100%;
