@@ -1,11 +1,11 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "양반家 - 관상 테스트 | 관상가 양반 | AI 관상",
+  title: "관상 테스트 | 관상가 양반 | AI 관상",
   description: "AI가 분석하는 나의 관상! 얼굴 사진 한 장으로 성격, 연애운, 재물운, 직업운까지 상세하게 분석해드립니다.",
   keywords: ["관상 테스트", "AI 관상", "관상가 양반", "얼굴 분석", "성격 분석", "연애운", "재물운"],
   openGraph: {
-    title: "양반家 - 관상 테스트 | 관상가 양반 | AI 관상",
+    title: "관상 테스트 | 관상가 양반 | AI 관상",
     description: "AI가 분석하는 나의 관상! 얼굴 사진 한 장으로 성격, 연애운, 재물운, 직업운까지 상세하게 분석해드립니다.",
     images: [
       {
@@ -18,7 +18,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "양반家 - 관상 테스트 | 관상가 양반 | AI 관상",
+    title: "관상 테스트 | 관상가 양반 | AI 관상",
     description: "AI가 분석하는 나의 관상! 얼굴 사진 한 장으로 성격, 연애운, 재물운, 직업운까지 상세하게 분석해드립니다.",
   },
 };
