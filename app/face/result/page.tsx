@@ -4,7 +4,19 @@ import { useEffect, useState, Suspense, useCallback, useRef } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
-import { analyzeFaceFeatures } from "@/app/actions/analyze";
+// 클라이언트에서 직접 FastAPI 호출 (Netlify 타임아웃 우회)
+const API_URL = process.env.NEXT_PUBLIC_SAJU_API_URL;
+
+// Base64를 Blob으로 변환
+function base64ToBlob(base64: string, mimeType: string = "image/jpeg"): Blob {
+  const byteCharacters = atob(base64);
+  const byteNumbers = new Array(byteCharacters.length);
+  for (let i = 0; i < byteCharacters.length; i++) {
+    byteNumbers[i] = byteCharacters.charCodeAt(i);
+  }
+  const byteArray = new Uint8Array(byteNumbers);
+  return new Blob([byteArray], { type: mimeType });
+}
 import Footer from "@/components/layout/Footer";
 import {
   trackPaymentModalOpen,
@@ -238,19 +250,28 @@ function ResultContent() {
     }, 400);
 
     try {
-      // face-teller2 API 호출
-      const apiResult = await analyzeFaceFeatures(
-        data.imageBase64.split(",")[1]
-      );
+      // 클라이언트에서 직접 FastAPI 호출 (Netlify 타임아웃 우회)
+      const imageBase64 = data.imageBase64.split(",")[1];
+      const blob = base64ToBlob(imageBase64);
+      const formData = new FormData();
+      formData.append("file", blob, "image.jpg");
 
-      if (!apiResult.success) {
-        throw new Error(apiResult.error);
+      const response = await fetch(`${API_URL}/face-teller2/`, {
+        method: "POST",
+        body: formData,
+      });
+
+      if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(errorText || "분석에 실패했습니다.");
       }
+
+      const apiResult = await response.json();
 
       clearInterval(progressTimer);
       setAnalysisProgress(100);
 
-      const { summary, detail, sections, features } = apiResult.data;
+      const { summary, detail, sections, features } = apiResult;
 
       // 결과 업데이트
       const updatedResult: FaceResult = {

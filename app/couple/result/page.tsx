@@ -4,7 +4,8 @@ import { useEffect, useState, Suspense, useCallback, useRef } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
-import { analyzeCoupleReport, analyzeCoupleScore } from "@/app/actions/analyze";
+// 클라이언트에서 직접 FastAPI 호출 (Netlify 타임아웃 우회)
+const API_URL = process.env.NEXT_PUBLIC_SAJU_API_URL;
 import Footer from "@/components/layout/Footer";
 import {
   trackPaymentModalOpen,
@@ -187,24 +188,39 @@ function CoupleResultContent() {
     }, 4000);
 
     try {
+      // 클라이언트에서 직접 FastAPI 호출 (Netlify 타임아웃 우회)
       // 궁합 리포트 생성
-      const reportResult = await analyzeCoupleReport(
-        data.features1,
-        data.features2,
-        data.relationshipType,
-        data.relationshipFeeling
-      );
+      const reportResponse = await fetch(`${API_URL}/analyze/couple/report`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          features1: data.features1,
+          features2: data.features2,
+          relationshipType: data.relationshipType,
+          relationshipFeeling: data.relationshipFeeling,
+        }),
+      });
 
-      if (!reportResult.success) throw new Error(reportResult.error);
+      if (!reportResponse.ok) {
+        const errorText = await reportResponse.text();
+        throw new Error(errorText || "궁합 분석에 실패했습니다.");
+      }
 
-      const report = reportResult.data;
+      const report = await reportResponse.json();
 
       // 궁합 점수 계산
-      const scoreResult = await analyzeCoupleScore(report.detail1);
+      const scoreResponse = await fetch(`${API_URL}/analyze/couple/score`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ detail1: report.detail1 }),
+      });
 
-      if (!scoreResult.success) throw new Error(scoreResult.error);
+      if (!scoreResponse.ok) {
+        const errorText = await scoreResponse.text();
+        throw new Error(errorText || "점수 계산에 실패했습니다.");
+      }
 
-      const score = scoreResult.data;
+      const score = await scoreResponse.json();
 
       clearInterval(progressTimer);
       clearInterval(messageTimer);
