@@ -852,105 +852,260 @@ function IdealTypeCard({ imageBase64, userName }: { imageBase64: string; userNam
   );
 }
 
-// 사주 원국 카드
+// 일간별 연애 성향 데이터
+const dayMasterLoveData: Record<string, { headline: string; summary: string; keywords: string[] }> = {
+  "甲": {
+    headline: "곧고 당당한, 큰 나무 같은 사랑",
+    summary: "갑목일간은 기둥처럼 곧고 당당해요. 연애에서도 솔직하고 의연하게, 상대를 든든히 지켜주는 스타일이에요.",
+    keywords: ["솔직함", "의리", "리더십"],
+  },
+  "乙": {
+    headline: "유연하게 감싸 안는, 덩굴 같은 사랑",
+    summary: "을목일간은 덩굴처럼 상대를 감싸며 끈질기게 관계를 이어가요. 어떤 환경에도 적응하는 헌신적인 연애 스타일이에요.",
+    keywords: ["적응력", "헌신", "인내심"],
+  },
+  "丙": {
+    headline: "뜨겁게 밝히는, 태양 같은 사랑",
+    summary: "병화일간은 태양처럼 화끈하고 열정적이에요. 숨김없이 솔직하게, 온 마음을 다해 사랑하는 타입이에요.",
+    keywords: ["열정", "적극성", "밝은 에너지"],
+  },
+  "丁": {
+    headline: "은은하게 비추는, 촛불 같은 사랑",
+    summary: "정화일간은 촛불처럼 은은하고 섬세해요. 따뜻한 마음으로 상대를 보살피며 오래도록 관계를 유지해요.",
+    keywords: ["섬세함", "따뜻함", "지속성"],
+  },
+  "戊": {
+    headline: "넉넉하게 품어주는, 큰 산 같은 사랑",
+    summary: "무토일간은 큰 산처럼 깊고 넉넉한 포용력을 가졌어요. 상대를 안정시키고 듬직하게 지켜주는 연애 스타일이에요.",
+    keywords: ["포용력", "안정감", "듬직함"],
+  },
+  "己": {
+    headline: "묵묵히 곁을 지키는, 대지 같은 사랑",
+    summary: "기토일간은 농사짓는 땅처럼 상대를 돌보고 길러내요. 가장 헌신적이고 현실적인 연애 타입이에요.",
+    keywords: ["헌신", "실속", "살뜰함"],
+  },
+  "庚": {
+    headline: "흔들림 없는, 강철 같은 사랑",
+    summary: "경금일간은 사랑하는 사람에게 흔들림 없는 신뢰와 보호를 제공해요. 의리 있고 단호한 연애 스타일이에요.",
+    keywords: ["의리", "결단력", "보호본능"],
+  },
+  "辛": {
+    headline: "빛나고 예리한, 보석 같은 사랑",
+    summary: "신금일간은 보석처럼 자신을 가꾸고, 관계에서도 완벽함을 추구해요. 깔끔하고 섬세한 연애 스타일이에요.",
+    keywords: ["완벽주의", "섬세함", "귀티"],
+  },
+  "壬": {
+    headline: "모든 것을 담아내는, 바다 같은 사랑",
+    summary: "임수일간은 바다처럼 넓은 포용력으로 상대를 이해하고 감싸줘요. 깊은 지혜를 가진 연애 타입이에요.",
+    keywords: ["포용력", "지혜", "깊이"],
+  },
+  "癸": {
+    headline: "촉촉하게 스며드는, 이슬 같은 사랑",
+    summary: "계수일간은 비나 이슬처럼 촉촉하고 섬세해요. 상대를 위로하며 조용히 헌신하는 연애 스타일이에요.",
+    keywords: ["감성", "섬세함", "헌신"],
+  },
+};
+
+// 신강/신약 연애 해석 (상세)
+const strengthLoveInterpretation: Record<string, {
+  title: string;
+  mainRatio: string;
+  traits: string[];
+  pattern: string[];
+  goodPoints: string[];
+  warning: string[];
+  idealType: string;
+}> = {
+  "극신강": {
+    title: "100% 내가 주도하는 스타일",
+    mainRatio: "주도권 100%",
+    traits: ["독단적이고 지배적", "내 방식대로 하려 함", "통제욕이 강함"],
+    pattern: ["내가 하라는 대로 해", "왜 말 안 들어?", "내가 다 맞아"],
+    goodPoints: ["결단력 있음", "흔들림 없는 중심"],
+    warning: ["상대를 지배하려 함", "갈등 시 절대 안 꺾임", "관계가 일방적이 됨"],
+    idealType: "내 리드를 잘 따라오는 사람",
+  },
+  "신강": {
+    title: "대부분 내가 주도하는 스타일",
+    mainRatio: "주도권 70~80%",
+    traits: ["자기 스타일 고집", "독립적", "확실하고 직접적"],
+    pattern: ["내가 다 알아서 할게", "이렇게 하는 게 맞아", "난 이게 좋아"],
+    goodPoints: ["결단력 있음", "상대를 이끌어줌", "흔들리지 않는 중심"],
+    warning: ["상대 의견 무시할 수 있음", "내 맘대로 되기 쉬움", "상대가 숨막혀할 수 있음"],
+    idealType: "내 방식을 따라와 줄 사람",
+  },
+  "중화신강": {
+    title: "약간 내가 더 주도하는 스타일",
+    mainRatio: "주도권 6:4",
+    traits: ["자기 의견 확실하되 상대도 존중", "주도적이지만 독단적이지 않음"],
+    pattern: ["내 생각엔 이게 좋을 것 같아. 어때?", "내가 할게~ 근데 네 의견도 말해줘"],
+    goodPoints: ["리더십 있으면서 배려도 함", "상대에게 안정감을 줌", "결정력 + 유연함"],
+    warning: [],
+    idealType: "내 리드를 따라오면서도 자기 의견 있는 사람",
+  },
+  "중화": {
+    title: "완벽한 균형의 스타일",
+    mainRatio: "주도권 5:5",
+    traits: ["상황에 따라 리드도, 서포트도", "자연스럽고 균형 잡힘"],
+    pattern: ["오늘은 내가 정할게~ 다음엔 네가 해", "우리 같이 정하자"],
+    goodPoints: ["어떤 상대든 맞출 수 있음", "관계의 균형을 잘 잡음", "건강한 관계 유지"],
+    warning: [],
+    idealType: "동등한 파트너",
+  },
+  "중화신약": {
+    title: "약간 상대에게 맞추는 스타일",
+    mainRatio: "주도권 4:6",
+    traits: ["부드럽게 맞춰주되 자기 의견도 있음", "조율형"],
+    pattern: ["난 이게 좋은데, 너는 어때?", "네 의견 존중해, 근데 나는..."],
+    goodPoints: ["균형 잡힌 배려", "갈등 조율 능력", "부드러운 리더십 가능"],
+    warning: [],
+    idealType: "나를 존중하면서 이끌어주는 사람",
+  },
+  "신약": {
+    title: "상대에게 맞추는 스타일",
+    mainRatio: "주도권 20~30%",
+    traits: ["배려심 깊음", "맞춰줌", "헌신적"],
+    pattern: ["뭐 먹을래? 난 아무거나~", "내가 맞출게", "네가 행복하면 나도 행복해"],
+    goodPoints: ["상대를 편하게 해줌", "배려심이 깊음", "갈등을 피하려 함"],
+    warning: ["너무 맞추다 지칠 수 있음", "자기 욕구를 억누름", "상대가 답답해할 수도 있음"],
+    idealType: "든든하고 리드해주는 사람",
+  },
+  "극신약": {
+    title: "완전히 상대 중심의 스타일",
+    mainRatio: "주도권 거의 없음",
+    traits: ["자존감 낮음", "의존 심함", "버림받을 불안"],
+    pattern: ["네가 좋다면 난 다 좋아...", "내가 뭘 잘못했어?", "떠나지만 마..."],
+    goodPoints: ["헌신적", "상대를 최우선으로 생각"],
+    warning: ["나쁜 관계도 못 끊음", "이용당할 수 있음", "자기 자신을 잃어버림"],
+    idealType: "나를 이끌어주는 강한 사람",
+  },
+};
+
+// 신강/신약 궁합 데이터
+const strengthCompatibility = [
+  { pair: "중화 + 중화", rating: "⭐⭐⭐", desc: "완벽한 균형, 동등한 파트너" },
+  { pair: "신강 + 신약", rating: "⭐⭐⭐", desc: "리드/서포트 역할 분담 명확" },
+  { pair: "중화신강 + 중화신약", rating: "⭐⭐⭐", desc: "약간의 주도권 차이, 안정적" },
+  { pair: "신강 + 신강", rating: "⚠️", desc: "주도권 싸움, 충돌 가능" },
+  { pair: "신약 + 신약", rating: "⚠️", desc: "둘 다 눈치, 진전 없음" },
+  { pair: "극신강 + 극신약", rating: "🚨", desc: "지배/종속 관계, 불건강" },
+];
+
+// 사주 원국 카드 (기획서 기반 - IntroCard 스타일)
 function SajuCard({ data }: { data: SajuLoveRecord }) {
   const userName = data.input?.userName || "고객";
   const pillars = data.sajuData?.pillars || {};
   const sajuData = data.sajuData;
   const dayMaster = data.sajuData?.dayMaster;
+  const fiveElements = data.sajuData?.fiveElements;
+  const loveFacts = data.sajuData?.loveFacts;
   const input = data.input;
 
   // 태어난 시간을 시진으로 변환
   const formatTimeToSi = (time: string | null | undefined): string | null => {
     if (!time) return null;
+    // 다양한 형식 지원
     const timeMap: Record<string, string> = {
-      "0030": "자시",
-      "0230": "축시",
-      "0430": "인시",
-      "0630": "묘시",
-      "0830": "진시",
-      "1030": "사시",
-      "1230": "오시",
-      "1430": "미시",
-      "1630": "신시",
-      "1830": "유시",
-      "2030": "술시",
-      "2230": "해시",
+      "0030": "자시", "0230": "축시", "0430": "인시", "0630": "묘시",
+      "0830": "진시", "1030": "사시", "1230": "오시", "1430": "미시",
+      "1630": "신시", "1830": "유시", "2030": "술시", "2230": "해시",
+      // HH:MM 형식도 지원
+      "00:30": "자시", "02:30": "축시", "04:30": "인시", "06:30": "묘시",
+      "08:30": "진시", "10:30": "사시", "12:30": "오시", "14:30": "미시",
+      "16:30": "신시", "18:30": "유시", "20:30": "술시", "22:30": "해시",
     };
-    return timeMap[time] || null;
+    if (timeMap[time]) return timeMap[time];
+    // 시간대로 변환 시도
+    const hour = parseInt(time.replace(":", "").slice(0, 2), 10);
+    if (!isNaN(hour)) {
+      if (hour >= 23 || hour < 1) return "자시";
+      if (hour >= 1 && hour < 3) return "축시";
+      if (hour >= 3 && hour < 5) return "인시";
+      if (hour >= 5 && hour < 7) return "묘시";
+      if (hour >= 7 && hour < 9) return "진시";
+      if (hour >= 9 && hour < 11) return "사시";
+      if (hour >= 11 && hour < 13) return "오시";
+      if (hour >= 13 && hour < 15) return "미시";
+      if (hour >= 15 && hour < 17) return "신시";
+      if (hour >= 17 && hour < 19) return "유시";
+      if (hour >= 19 && hour < 21) return "술시";
+      if (hour >= 21 && hour < 23) return "해시";
+    }
+    return null;
   };
 
   const birthTime = formatTimeToSi(input?.time);
 
-  const pillarOrder = ["hour", "day", "month", "year"] as const;
+  // 일간 데이터
+  const dmData = dayMaster?.char ? dayMasterLoveData[dayMaster.char] : null;
+
+  // 신강/신약 레벨
+  const strengthLevel = fiveElements?.strengthLevel || fiveElements?.strength || "중화";
+  const strengthData = strengthLoveInterpretation[strengthLevel] || strengthLoveInterpretation["중화신강"];
+
+  // 오행 퍼센트
+  const elementPercent = loveFacts?.fiveElementsHanjaPercent || fiveElements?.percent || {};
 
   return (
-    <div className="report_card saju_card">
-      <div className="card_header">
-        <span className="card_label">사주 원국</span>
-        <h3 className="card_title">{userName}님의 타고난 운명</h3>
+    <div className="report_card intro_card saju_card_simple">
+      {/* 장면 1: 장 오프닝 */}
+      <div className="intro_section intro_welcome compact">
+        <p className="welcome_sub">사주 원국</p>
+        <p className="welcome_main">{userName}님의 사주</p>
+        <p className="welcome_text">
+          {userName}님의 사주에는 어떤 글자들이 있을까요?<br/>
+          지금부터 하나씩 살펴볼게요.
+        </p>
       </div>
 
-      {/* 기본 정보 카드 */}
-      <div className="info_card">
-        <div className="info_main">
-          <span className="info_name">{input?.userName}</span>
-          <span className="info_birth">
-            {input?.date}{birthTime ? ` | ${birthTime}` : ""}
-          </span>
+      {/* 장면 2: 사주원국표 */}
+      <div className="intro_section">
+        {/* 기본 정보 */}
+        <div className="saju_info_header">
+          <span className="saju_info_name">{userName}님의 사주</span>
+          <span className="saju_info_date">{input?.date}{birthTime ? ` | ${birthTime}` : ""}</span>
         </div>
-        {dayMaster && (
-          <div className="info_ilju">
-            <span className="ilju_char" style={{ color: getColor(dayMaster.element) }}>{dayMaster.char}</span>
-            <span className="ilju_title">{dayMaster.title}</span>
-          </div>
-        )}
-      </div>
 
-      {/* 사주 팔자 테이블 */}
-      <div className="pillars_section">
-        <div className="pillars_header">
-          <span className="material-icons">view_column</span>
-          사주 팔자
-        </div>
-        <div className="saju_table_wrap">
-          <table className="saju_table">
+        {/* 사주 원국표 */}
+        <div className="saju_table_card">
+          <table className="saju_full_table">
             <thead>
               <tr>
                 <th></th>
-                <th>생시</th>
-                <th>생일</th>
-                <th>생월</th>
-                <th>생년</th>
+                <th>時</th>
+                <th>日</th>
+                <th>月</th>
+                <th>年</th>
               </tr>
             </thead>
             <tbody>
-              {/* 천간 */}
-              <tr className="row_cheongan">
-                <td className="row_label">천간</td>
-                {pillarOrder.map((key) => {
+              {/* 십성 (천간) */}
+              <tr className="row_sipsung_top">
+                <td className="row_label">십성</td>
+                {(["hour", "day", "month", "year"] as const).map((key) => {
                   const p = pillars[key];
-                  if (!p?.stem?.char) return <td key={key} className="cell_empty">—</td>;
+                  const isDay = key === "day";
                   return (
-                    <td key={key}>
-                      <span className="char_main" style={{ color: getColor(p.stem.element) }}>
-                        {p.stem.char}{p.stem.korean}
-                      </span>
-                      <span className="char_element" style={{ color: getColor(p.stem.element) }}>
-                        {getElementKorean(p.stem.element, p.stem.yinYang)}
-                      </span>
+                    <td key={key} className={isDay ? "highlight" : ""}>
+                      <span className="sipsung_text">{p?.tenGodStem || "—"}</span>
                     </td>
                   );
                 })}
               </tr>
-              {/* 십성 (천간) */}
-              <tr className="row_sipsung">
-                <td className="row_label">십성</td>
-                {pillarOrder.map((key) => {
+              {/* 천간 */}
+              <tr className="row_cheongan">
+                <td className="row_label">천간</td>
+                {(["hour", "day", "month", "year"] as const).map((key) => {
                   const p = pillars[key];
+                  const isDay = key === "day";
                   return (
-                    <td key={key} className="cell_sipsung" style={{ color: getColor(p?.stem?.element) }}>
-                      {p?.tenGodStem || "—"}
+                    <td key={key} className={isDay ? "highlight" : ""}>
+                      <div className="char_box">
+                        <span className="char_hanja" style={{ color: getColor(p?.stem?.element) }}>
+                          {p?.stem?.char || "—"}
+                        </span>
+                        <span className="char_korean">{p?.stem?.korean || ""}{p?.stem?.element ? getElementKorean(p.stem.element, p.stem.yinYang) : ""}</span>
+                      </div>
                     </td>
                   );
                 })}
@@ -958,172 +1113,685 @@ function SajuCard({ data }: { data: SajuLoveRecord }) {
               {/* 지지 */}
               <tr className="row_jiji">
                 <td className="row_label">지지</td>
-                {pillarOrder.map((key) => {
+                {(["hour", "day", "month", "year"] as const).map((key) => {
                   const p = pillars[key];
-                  if (!p?.branch?.char) return <td key={key} className="cell_empty">—</td>;
+                  const isDay = key === "day";
                   return (
-                    <td key={key}>
-                      <span className="char_main" style={{ color: getColor(p.branch.element) }}>
-                        {p.branch.char}{p.branch.korean}
-                      </span>
-                      <span className="char_element" style={{ color: getColor(p.branch.element) }}>
-                        {getElementKorean(p.branch.element, p.branch.yinYang)}
-                      </span>
+                    <td key={key} className={isDay ? "highlight" : ""}>
+                      <div className="char_box">
+                        <span className="char_hanja" style={{ color: getColor(p?.branch?.element) }}>
+                          {p?.branch?.char || "—"}
+                        </span>
+                        <span className="char_korean">{p?.branch?.korean || ""}{p?.branch?.element ? getElementKorean(p.branch.element, p.branch.yinYang) : ""}</span>
+                      </div>
                     </td>
                   );
                 })}
               </tr>
               {/* 십성 (지지) */}
-              <tr className="row_sipsung">
+              <tr className="row_sipsung_bottom">
                 <td className="row_label">십성</td>
-                {pillarOrder.map((key) => {
+                {(["hour", "day", "month", "year"] as const).map((key) => {
                   const p = pillars[key];
+                  const isDay = key === "day";
                   return (
-                    <td key={key} className="cell_sipsung" style={{ color: getColor(p?.branch?.element) }}>
-                      {p?.tenGodBranchMain || "—"}
+                    <td key={key} className={isDay ? "highlight" : ""}>
+                      <span className="sipsung_text">{p?.tenGodBranchMain || "—"}</span>
                     </td>
                   );
                 })}
               </tr>
-              {/* 지장간 */}
+              {/* 십이운성 */}
               <tr className="row_extra">
-                <td className="row_label">지장간</td>
-                {pillarOrder.map((key) => {
+                <td className="row_label">십이운성</td>
+                {(["hour", "day", "month", "year"] as const).map((key) => {
                   const p = pillars[key];
-                  const jijanggan = p?.jijanggan;
-                  let displayValue = "—";
-                  if (typeof jijanggan === 'string') {
-                    displayValue = jijanggan;
-                  } else if (jijanggan && typeof jijanggan === 'object') {
-                    const obj = jijanggan as { display?: string; displayKorean?: string };
-                    if (obj.display && obj.displayKorean) {
-                      displayValue = `${obj.display}(${obj.displayKorean})`;
-                    } else {
-                      displayValue = obj.displayKorean || obj.display || "—";
-                    }
-                  }
-                  return <td key={key} className="cell_extra">{displayValue}</td>;
-                })}
-              </tr>
-              {/* 12운성 */}
-              <tr className="row_extra">
-                <td className="row_label">12운성</td>
-                {pillarOrder.map((key) => {
-                  const p = pillars[key];
+                  const isDay = key === "day";
                   const twelveStage = (p as unknown as { twelveStage?: string })?.twelveStage || p?.twelveUnsung;
                   const displayValue = typeof twelveStage === 'string'
                     ? twelveStage
                     : (twelveStage as unknown as { display?: string })?.display || "—";
-                  return <td key={key} className="cell_extra">{displayValue}</td>;
+                  return <td key={key} className={isDay ? "highlight" : ""}>{displayValue}</td>;
                 })}
               </tr>
               {/* 12신살 */}
               <tr className="row_extra">
                 <td className="row_label">12신살</td>
-                {pillarOrder.map((key) => {
+                {(["hour", "day", "month", "year"] as const).map((key) => {
                   const p = pillars[key];
+                  const isDay = key === "day";
                   const twelveSinsal = p?.twelveSinsal;
                   const displayValue = typeof twelveSinsal === 'string'
                     ? twelveSinsal
                     : (twelveSinsal as unknown as { display?: string })?.display || "—";
-                  return <td key={key} className="cell_extra">{displayValue}</td>;
+                  // 도화살 강조
+                  const isSinsalHighlight = displayValue === "도화살";
+                  return (
+                    <td key={key} className={`${isDay ? "highlight" : ""} ${isSinsalHighlight ? "cell_sinsal_highlight" : ""}`}>
+                      {displayValue}
+                    </td>
+                  );
+                })}
+              </tr>
+              {/* 신살 */}
+              <tr className="row_extra">
+                <td className="row_label">신살</td>
+                {(["hour", "day", "month", "year"] as const).map((key) => {
+                  const isDay = key === "day";
+                  const byPillar = sajuData?.sinsal?._byPillar;
+                  const stemSinsal = byPillar?.[key]?.stem || [];
+                  const branchSinsal = byPillar?.[key]?.branch || [];
+                  // 귀인 제외한 신살만 표시
+                  const allSinsal = [...stemSinsal, ...branchSinsal].filter(s => !s.includes("귀인"));
+                  // 특별 강조할 신살
+                  const highlightSinsal = ["홍염살", "화개살", "도화살"];
+                  return (
+                    <td key={key} className={`cell_sinsal ${isDay ? "highlight" : ""}`}>
+                      {allSinsal.length > 0 ? (
+                        <div className="sinsal_vertical">
+                          {allSinsal.map((s, i) => (
+                            <span key={i} className={highlightSinsal.some(hs => s.includes(hs)) ? "sinsal_highlight" : ""}>{s}</span>
+                          ))}
+                        </div>
+                      ) : "—"}
+                    </td>
+                  );
+                })}
+              </tr>
+              {/* 귀인 */}
+              <tr className="row_extra">
+                <td className="row_label">귀인</td>
+                {(["hour", "day", "month", "year"] as const).map((key) => {
+                  const isDay = key === "day";
+                  const byPillar = sajuData?.sinsal?._byPillar;
+                  const stemSinsal = byPillar?.[key]?.stem || [];
+                  const branchSinsal = byPillar?.[key]?.branch || [];
+                  const allSinsal = [...stemSinsal, ...branchSinsal].filter(s => s.includes("귀인"));
+                  return (
+                    <td key={key} className={`cell_gilsung ${isDay ? "highlight" : ""}`}>
+                      {allSinsal.length > 0 ? (
+                        <div className="gilsung_vertical">
+                          {allSinsal.map((s, i) => (
+                            <span key={i}>{s}</span>
+                          ))}
+                        </div>
+                      ) : "—"}
+                    </td>
+                  );
                 })}
               </tr>
             </tbody>
           </table>
+        </div>
+
+        {/* 사주원국 설명 */}
+        <div className="intro_section_content" style={{ marginTop: "16px" }}>
+          <p style={{ textAlign: "center" }}>그럼, <strong>사주원국</strong>이란 게 뭔지 간단히 짚고 넘어갈게요.</p>
+        </div>
+
+        <div className="saju_explain_card">
+          <p className="saju_explain_title">사주원국이란?</p>
+          <p className="saju_explain_text">
+            {userName}님의 생년월일시에 해당하는 하늘과 땅의 글자를 십성, 십이운성, 살 등과 함께 적은 표예요.
+          </p>
         </div>
       </div>
 
-      {/* 신살과 길성 */}
-      <div className="sinsal_section">
-        <div className="sinsal_header">
-          <span className="material-icons">auto_awesome</span>
-          신살과 길성
+      {/* 장면 3: 천간/지지 분리 설명 */}
+      <div className="intro_section">
+ 
+        <div className="intro_section_content">
+          <p>생년월일시를 가지고 역학달력에 따라 <strong>사주(四柱)</strong>를 적어요.</p>
+          <p>각각의 기둥을 위 아래로 나누면, 하늘의 기운을 담은 <strong>천간</strong>과 땅의 기운을 담은 <strong>지지</strong>가 되는거죠.</p>
         </div>
-        <p className="sinsal_tags">
-          {sajuData?.sinsal?._active && sajuData.sinsal._active.length > 0 ? (
-            sajuData.sinsal._active.map((name, i, arr) => {
-              const isLoveSinsal = name === "도화살" || name === "홍염살" || name === "화개살";
-              return (
-                <span key={i} className={isLoveSinsal ? "love" : "normal"}>
-                  {name}{i < arr.length - 1 ? ", " : ""}
-                </span>
-              );
-            })
-          ) : (
-            <span className="sinsal_empty">특이 신살 없음</span>
-          )}
-        </p>
 
-        {/* 신살과 길성 테이블 */}
-        <div className="sinsal_table_wrap">
-          <table className="sinsal_table">
-            <thead>
-              <tr>
-                <th></th>
-                <th>생시</th>
-                <th>생일</th>
-                <th>생월</th>
-                <th>생년</th>
-              </tr>
-            </thead>
+        <div className="saju_split_table">
+          <div className="split_row">
+            <span className="split_label">천간<br/>(天干)</span>
+            {(["hour", "day", "month", "year"] as const).map((key) => {
+              const p = pillars[key];
+              return (
+                <div key={key} className="split_cell">
+                  <span className="split_hanja" style={{ color: getColor(p?.stem?.element) }}>{p?.stem?.char || "—"}</span>
+                  <span className="split_korean">{p?.stem?.korean || ""}</span>
+                </div>
+              );
+            })}
+          </div>
+          <div className="split_row">
+            <span className="split_label">지지<br/>(地支)</span>
+            {(["hour", "day", "month", "year"] as const).map((key) => {
+              const p = pillars[key];
+              return (
+                <div key={key} className="split_cell">
+                  <span className="split_hanja" style={{ color: getColor(p?.branch?.element) }}>{p?.branch?.char || "—"}</span>
+                  <span className="split_korean">{p?.branch?.korean || ""}</span>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* 각 요소 연애 의미 설명 */}
+        <div className="saju_elements_meaning">
+          <p className="elements_meaning_title">각 요소가 연애에서 의미하는 것</p>
+          <div className="element_meaning_list">
+            <div className="element_meaning_item">
+              <strong>천간(天干)</strong>
+              <p>겉으로 드러나는 연애 스타일, 표현 방식. 상대에게 보여지는 나의 모습이에요.</p>
+            </div>
+            <div className="element_meaning_item">
+              <strong>지지(地支)</strong>
+              <p>내면의 욕구와 본능. 무의식적으로 끌리는 이상형, 진짜 원하는 연애가 담겨 있어요.</p>
+            </div>
+            <div className="element_meaning_item">
+              <strong>십성(十星)</strong>
+              <p>나와 상대의 관계 패턴. 어떤 사람에게 끌리고, 어떤 연애를 하는지 알 수 있어요.</p>
+            </div>
+            <div className="element_meaning_item">
+              <strong>십이운성(十二運星)</strong>
+              <p>연애 에너지의 상태. 적극적인지 소극적인지, 연애운의 강약을 나타내요.</p>
+            </div>
+            <div className="element_meaning_item">
+              <strong>12신살</strong>
+              <p>연애에 영향을 주는 특별한 기운. 도화살은 이성에게 인기, 매력을 뜻해요.</p>
+            </div>
+            <div className="element_meaning_item">
+              <strong>신살(神殺)</strong>
+              <p>특별한 사건이나 기운을 나타내요. 홍염살, 화개살 등 연애에 영향을 주는 살이 있어요.</p>
+            </div>
+            <div className="element_meaning_item">
+              <strong>귀인(貴人)</strong>
+              <p>나를 도와주는 좋은 기운. 연애에서 좋은 인연을 만나게 해주는 역할을 해요.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+      {/* 연애 신살 설명 */}
+      <div className="intro_section">
+        {/* 색동낭자 대화 - 연애 신살 전 */}
+        <div className="nangja_comment">
+          <p className="nangja_text">잠깐, 여기 중요해요. 연애할 때 꼭 봐야 할 신살이에요.</p>
+        </div>
+
+
+
+        <div className="love_sinsal_cards">
+          <div className="love_sinsal_card">
+            <div className="sinsal_card_header">
+              <strong>도화살(桃花殺)</strong>
+            </div>
+            <p className="sinsal_meaning">복숭아꽃 살. 이성을 끌어당기는 매력, 분위기, 인기를 뜻해요.</p>
+            <div className="sinsal_love_effect">
+              <span className="effect_good">이성에게 인기 많음, 연애 기회 많음</span>
+              <span className="effect_bad">유혹에 약함, 복잡한 이성관계 주의</span>
+            </div>
+          </div>
+
+          <div className="love_sinsal_card">
+            <div className="sinsal_card_header">
+              <strong>홍염살(紅艶殺)</strong>
+            </div>
+            <p className="sinsal_meaning">붉은 요염함. 도화살보다 더 강렬한 성적 매력, 관능미예요.</p>
+            <div className="sinsal_love_effect">
+              <span className="effect_good">강렬한 첫인상, 잊히지 않는 매력</span>
+              <span className="effect_bad">애정 문제 복잡, 집착/질투 유발 가능</span>
+            </div>
+          </div>
+
+          <div className="love_sinsal_card">
+            <div className="sinsal_card_header">
+              <strong>화개살(華蓋殺)</strong>
+            </div>
+            <p className="sinsal_meaning">꽃 덮개. 예술성, 감수성, 혼자만의 세계를 뜻해요.</p>
+            <div className="sinsal_love_effect">
+              <span className="effect_good">깊이 있는 사랑, 정신적 교감 중시</span>
+              <span className="effect_bad">외로움을 잘 탐, 이상이 높음</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* 장면 5: 일간 강조 */}
+      <div className="intro_section">
+        {/* 색동낭자 대화 - 일간 설명 전 */}
+        <div className="nangja_comment">
+          <p className="nangja_text">{userName}님을 나타내는 글자, 일간이에요. 여기가 핵심이에요.</p>
+        </div>
+
+        <h3 className="intro_section_title">일간(日干)</h3>
+        <p className="intro_section_subtitle">나를 대표하는 글자</p>
+
+      
+
+        <div className="ilgan_simple_display">
+          <span className="ilgan_char" style={{ color: getColor(dayMaster?.element) }}>
+            {dayMaster?.char}
+          </span>
+          <span className="ilgan_label">{dayMaster?.title}</span>
+        </div>
+
+        <div className="intro_section_content">
+          <p>이 글자가 바로 <strong>나 자신</strong>을 의미하기 때문에, 사주를 해석할 때 가장 중심이 되는 부분이에요.</p>
+
+          {dmData && (
+            <div className="ilgan_love_box">
+              <p className="ilgan_headline">{dmData.headline}</p>
+              <p className="ilgan_summary">{dmData.summary}</p>
+              <div className="ilgan_keywords">
+                {dmData.keywords.map((kw, i) => (
+                  <span key={i} className="ilgan_keyword">#{kw}</span>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
+
+
+
+      {/* 장면 7: 각 기둥별 관계 해석 */}
+      <div className="intro_section">
+        {/* 색동낭자 대화 - 기둥별 관계 전 */}
+        <div className="nangja_comment">
+          <p className="nangja_text">각 기둥마다 다른 의미가 있어요. 어떤 관계를 뜻하는지 볼까요?</p>
+        </div>
+
+        <div className="pillar_timing_cards">
+          <div className="timing_card">
+            {/* 미니 사주표 - 년주 강조 */}
+            <div className="mini_saju_table">
+              {(["hour", "day", "month", "year"] as const).map((key) => {
+                const p = pillars[key];
+                const isHighlight = key === "year";
+                return (
+                  <div key={key} className={`mini_pillar ${isHighlight ? "highlight" : "dimmed"}`}>
+                    <span className="mini_stem" style={{ color: isHighlight ? getColor(p?.stem?.element) : undefined }}>{p?.stem?.char || "—"}</span>
+                    <span className="mini_branch" style={{ color: isHighlight ? getColor(p?.branch?.element) : undefined }}>{p?.branch?.char || "—"}</span>
+                  </div>
+                );
+              })}
+            </div>
+            <div className="timing_header">
+              <span className="timing_pillar">년주(年柱)</span>
+              <span className="timing_period">뿌리 · 조상, 부모</span>
+            </div>
+            <p className="timing_desc">나의 뿌리, 조상과 부모님, 그리고 사회적 배경을 나타내요.</p>
+            <p className="timing_love">연애에서는: 가정환경이 연애관에 미친 영향</p>
+          </div>
+
+          <div className="timing_card">
+            {/* 미니 사주표 - 월주 강조 */}
+            <div className="mini_saju_table">
+              {(["hour", "day", "month", "year"] as const).map((key) => {
+                const p = pillars[key];
+                const isHighlight = key === "month";
+                return (
+                  <div key={key} className={`mini_pillar ${isHighlight ? "highlight" : "dimmed"}`}>
+                    <span className="mini_stem" style={{ color: isHighlight ? getColor(p?.stem?.element) : undefined }}>{p?.stem?.char || "—"}</span>
+                    <span className="mini_branch" style={{ color: isHighlight ? getColor(p?.branch?.element) : undefined }}>{p?.branch?.char || "—"}</span>
+                  </div>
+                );
+              })}
+            </div>
+            <div className="timing_header">
+              <span className="timing_pillar">월주(月柱)</span>
+              <span className="timing_period">줄기 · 형제, 사회</span>
+            </div>
+            <p className="timing_desc">나의 줄기, 부모님과 형제, 그리고 사회생활을 나타내요.</p>
+            <p className="timing_love">연애에서는: 사회에서의 연애 (직장연애, 소개팅 등)</p>
+          </div>
+
+          <div className="timing_card highlight">
+            {/* 미니 사주표 - 일주 강조 */}
+            <div className="mini_saju_table">
+              {(["hour", "day", "month", "year"] as const).map((key) => {
+                const p = pillars[key];
+                const isHighlight = key === "day";
+                return (
+                  <div key={key} className={`mini_pillar ${isHighlight ? "highlight" : "dimmed"}`}>
+                    <span className="mini_stem" style={{ color: isHighlight ? getColor(p?.stem?.element) : undefined }}>{p?.stem?.char || "—"}</span>
+                    <span className="mini_branch" style={{ color: isHighlight ? getColor(p?.branch?.element) : undefined }}>{p?.branch?.char || "—"}</span>
+                  </div>
+                );
+              })}
+            </div>
+            <div className="timing_header">
+              <span className="timing_pillar">일주(日柱)</span>
+              <span className="timing_period">꽃 · 나, 배우자</span>
+            </div>
+            <p className="timing_desc">나의 꽃, 나 자신과 배우자를 나타내는 가장 중요한 자리예요.</p>
+            <p className="timing_love">연애에서는: 가장 중요! 나의 연애 본질, 배우자 자리. 무의식적으로 끌리는 이상형이 여기에!</p>
+          </div>
+
+          <div className="timing_card">
+            {/* 미니 사주표 - 시주 강조 */}
+            <div className="mini_saju_table">
+              {(["hour", "day", "month", "year"] as const).map((key) => {
+                const p = pillars[key];
+                const isHighlight = key === "hour";
+                return (
+                  <div key={key} className={`mini_pillar ${isHighlight ? "highlight" : "dimmed"}`}>
+                    <span className="mini_stem" style={{ color: isHighlight ? getColor(p?.stem?.element) : undefined }}>{p?.stem?.char || "—"}</span>
+                    <span className="mini_branch" style={{ color: isHighlight ? getColor(p?.branch?.element) : undefined }}>{p?.branch?.char || "—"}</span>
+                  </div>
+                );
+              })}
+            </div>
+            <div className="timing_header">
+              <span className="timing_pillar">시주(時柱)</span>
+              <span className="timing_period">열매 · 자녀, 결실</span>
+            </div>
+            <p className="timing_desc">나의 열매, 자녀와 말년의 결실을 나타내요.</p>
+            <p className="timing_love">연애에서는: 연애의 결과, 가정을 꾸린 후의 모습</p>
+          </div>
+        </div>
+      </div>
+
+      {/* 장면 8: 오행 */}
+      <div className="intro_section">
+        {/* 색동낭자 대화 - 오행 설명 전 */}
+        <div className="nangja_comment">
+          <p className="nangja_text">오행은 궁합 볼 때 중요해요. {userName}님은 어떤 기운이 많을까요?</p>
+        </div>
+
+        <h3 className="intro_section_title">{userName}님의 오행</h3>
+
+        {/* 오행비율 막대그래프 */}
+        {Object.keys(elementPercent).length > 0 && (
+          <div className="ohang_chart_card">
+            <p className="ohang_chart_title">나의 오행 비율</p>
+            {[
+              { key: "木", label: "목(木)", color: "#2aa86c" },
+              { key: "火", label: "화(火)", color: "#ff6a6a" },
+              { key: "土", label: "토(土)", color: "#caa46a" },
+              { key: "金", label: "금(金)", color: "#a0a0a0" },
+              { key: "水", label: "수(水)", color: "#4a90d9" },
+            ].map(({ key, label, color }) => {
+              const pct = elementPercent[key] || 0;
+              const status = pct >= 30 ? "과다" : pct >= 10 ? "적정" : pct > 0 ? "부족" : "결핍";
+              return (
+                <div key={key} className="ohang_bar_row">
+                  <span className="ohang_label" style={{ color }}>{label}</span>
+                  <div className="ohang_bar_track">
+                    <div className="ohang_bar_fill" style={{ width: `${Math.min(pct, 100)}%`, backgroundColor: color }} />
+                  </div>
+                  <span className="ohang_pct">{pct.toFixed(1)}%</span>
+                  <span className={`ohang_status ${status}`}>{status}</span>
+                </div>
+              );
+            })}
+          </div>
+        )}
+
+        {/* 오행별 기본 특징 */}
+        <div className="ohang_traits_section">
+          <p className="ohang_section_title">오행별 연애 특징</p>
+          <div className="ohang_traits_list">
+            {[
+              { key: "木", label: "목", color: "#2aa86c", keyword: "성장 · 자유 · 솔직",
+                desc: "함께 성장하는 사랑을 원해요. 솔직하고 직진형이지만 구속을 싫어해요." },
+              { key: "火", label: "화", color: "#ff6a6a", keyword: "열정 · 표현 · 로맨틱",
+                desc: "뜨겁고 열정적인 사랑. 확실하게 표현하고 이벤트를 좋아해요." },
+              { key: "土", label: "토", color: "#caa46a", keyword: "안정 · 포용 · 믿음",
+                desc: "느리지만 확실한 사랑. 한번 마음 주면 변치 않고 묵묵히 지켜요." },
+              { key: "金", label: "금", color: "#a0a0a0", keyword: "원칙 · 깔끔 · 의리",
+                desc: "명확하고 깔끔한 관계. 쿨하고 약속을 중시해요." },
+              { key: "水", label: "수", color: "#4a90d9", keyword: "감성 · 공감 · 배려",
+                desc: "감성적이고 깊은 사랑. 상대에게 맞춰주고 공감을 잘해요." },
+            ].map(({ key, label, color, keyword, desc }) => (
+              <div key={key} className="ohang_trait_item">
+                <span className="ohang_trait_label" style={{ backgroundColor: color }}>{label}</span>
+                <div className="ohang_trait_content">
+                  <span className="ohang_trait_keyword">{keyword}</span>
+                  <p className="ohang_trait_desc">{desc}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* 오행 궁합 - 상생/상극 */}
+        <div className="ohang_compatibility_section">
+          <p className="ohang_section_title">오행 궁합</p>
+          <div className="ohang_compat_cards">
+            <div className="ohang_compat_card good">
+              <p className="compat_card_title">잘 맞는 궁합 (상생)</p>
+              <div className="compat_list">
+                <div className="compat_item">
+                  <span style={{ color: "#4a90d9" }}>수</span>
+                  <span className="compat_arrow">→</span>
+                  <span style={{ color: "#2aa86c" }}>목</span>
+                  <span className="compat_desc">지지하고 키워주는 관계</span>
+                </div>
+                <div className="compat_item">
+                  <span style={{ color: "#2aa86c" }}>목</span>
+                  <span className="compat_arrow">→</span>
+                  <span style={{ color: "#ff6a6a" }}>화</span>
+                  <span className="compat_desc">열정에 불을 지펴주는 관계</span>
+                </div>
+                <div className="compat_item">
+                  <span style={{ color: "#ff6a6a" }}>화</span>
+                  <span className="compat_arrow">→</span>
+                  <span style={{ color: "#caa46a" }}>토</span>
+                  <span className="compat_desc">따뜻하게 안정시키는 관계</span>
+                </div>
+                <div className="compat_item">
+                  <span style={{ color: "#caa46a" }}>토</span>
+                  <span className="compat_arrow">→</span>
+                  <span style={{ color: "#a0a0a0" }}>금</span>
+                  <span className="compat_desc">든든히 받쳐주는 관계</span>
+                </div>
+                <div className="compat_item">
+                  <span style={{ color: "#a0a0a0" }}>금</span>
+                  <span className="compat_arrow">→</span>
+                  <span style={{ color: "#4a90d9" }}>수</span>
+                  <span className="compat_desc">방향을 잡아주는 관계</span>
+                </div>
+              </div>
+            </div>
+            <div className="ohang_compat_card bad">
+              <p className="compat_card_title">주의할 궁합 (상극)</p>
+              <div className="compat_list">
+                <div className="compat_item">
+                  <span style={{ color: "#a0a0a0" }}>금</span>
+                  <span className="compat_arrow bad">⚡</span>
+                  <span style={{ color: "#2aa86c" }}>목</span>
+                  <span className="compat_desc">비판하고 깎아내리는 관계</span>
+                </div>
+                <div className="compat_item">
+                  <span style={{ color: "#2aa86c" }}>목</span>
+                  <span className="compat_arrow bad">⚡</span>
+                  <span style={{ color: "#caa46a" }}>토</span>
+                  <span className="compat_desc">안정을 흔드는 관계</span>
+                </div>
+                <div className="compat_item">
+                  <span style={{ color: "#caa46a" }}>토</span>
+                  <span className="compat_arrow bad">⚡</span>
+                  <span style={{ color: "#4a90d9" }}>수</span>
+                  <span className="compat_desc">감정 흐름을 막는 관계</span>
+                </div>
+                <div className="compat_item">
+                  <span style={{ color: "#4a90d9" }}>수</span>
+                  <span className="compat_arrow bad">⚡</span>
+                  <span style={{ color: "#ff6a6a" }}>화</span>
+                  <span className="compat_desc">열정을 꺼뜨리는 관계</span>
+                </div>
+                <div className="compat_item">
+                  <span style={{ color: "#ff6a6a" }}>화</span>
+                  <span className="compat_arrow bad">⚡</span>
+                  <span style={{ color: "#a0a0a0" }}>금</span>
+                  <span className="compat_desc">원칙을 무너뜨리는 관계</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* 나의 오행 분석 - 과다/부족 해석 */}
+        <div className="ohang_analysis_section">
+          <p className="ohang_section_title">{userName}님의 오행 분석</p>
+          {[
+            { key: "木", label: "목(木)", color: "#2aa86c",
+              overTitle: "자유로운 연애 스타일",
+              overDesc: "새로운 시작을 좋아하고 발전하는 관계를 추구해요. 구속을 싫어하고 상대에게도 성장을 요구하는 편이에요.",
+              overAdvice: "한 곳에 집중하는 연습이 필요해요. 원칙적이고 깔끔한 금(金) 성향의 사람을 만나면 균형이 맞아요.",
+              lackTitle: "소극적인 연애 스타일",
+              lackDesc: "새로운 시작이 두렵고 고백을 잘 못해요. 변화보다 현재 상태를 유지하려 해요.",
+              lackAdvice: "용기를 내서 먼저 다가가보세요. 적극적이고 밝은 목(木) 성향의 사람에게 자극받으면 성장할 수 있어요."
+            },
+            { key: "火", label: "화(火)", color: "#ff6a6a",
+              overTitle: "열정적인 연애 스타일",
+              overDesc: "사랑하면 올인하고 확실하게 표현해요. 다만 감정 기복이 있고 질투가 강할 수 있어요.",
+              overAdvice: "감정 조절이 필요해요. 차분하고 감성적인 수(水) 성향의 사람이 열기를 식혀줄 수 있어요.",
+              lackTitle: "표현이 서툰 연애 스타일",
+              lackDesc: "열정이 부족하고 무덤덤해 보여요. 상대가 내 마음을 확인하고 싶어할 수 있어요.",
+              lackAdvice: "작은 것부터 표현해보세요. 밝고 열정적인 화(火) 성향의 사람을 만나면 불이 붙을 수 있어요."
+            },
+            { key: "土", label: "토(土)", color: "#caa46a",
+              overTitle: "안정 추구 연애 스타일",
+              overDesc: "한번 마음 주면 변치 않고 묵묵히 챙겨줘요. 하지만 고집이 세고 변화를 싫어할 수 있어요.",
+              overAdvice: "유연함이 필요해요. 자유롭고 활발한 목(木) 성향의 사람이 답답함을 뚫어줄 수 있어요.",
+              lackTitle: "불안정한 연애 스타일",
+              lackDesc: "중심이 없고 한 사람에게 정착하기 어려워요. 약속을 지키는 것도 힘들 수 있어요.",
+              lackAdvice: "책임감을 키워보세요. 믿음직하고 든든한 토(土) 성향의 사람이 중심을 잡아줄 수 있어요."
+            },
+            { key: "金", label: "금(金)", color: "#a0a0a0",
+              overTitle: "원칙적인 연애 스타일",
+              overDesc: "명확하고 깔끔한 관계를 원해요. 약속을 잘 지키지만 차갑고 비판적으로 보일 수 있어요.",
+              overAdvice: "따뜻함이 필요해요. 열정적이고 따뜻한 화(火) 성향의 사람이 얼음을 녹여줄 수 있어요.",
+              lackTitle: "우유부단한 연애 스타일",
+              lackDesc: "결단력이 부족하고 관계 정리를 못해요. 이 사람 저 사람 눈치를 보게 돼요.",
+              lackAdvice: "명확하게 표현하는 연습이 필요해요. 결단력 있는 금(金) 성향의 사람이 정리를 도와줄 수 있어요."
+            },
+            { key: "水", label: "수(水)", color: "#4a90d9",
+              overTitle: "감성적인 연애 스타일",
+              overDesc: "상대 감정에 민감하고 깊이 공감해요. 하지만 너무 맞춰주다 자기를 잃을 수 있어요.",
+              overAdvice: "중심을 잡는 게 필요해요. 든든하고 안정적인 토(土) 성향의 사람이 중심을 잡아줄 수 있어요.",
+              lackTitle: "공감이 부족한 연애 스타일",
+              lackDesc: "상대 감정을 잘 못 읽고 눈치가 부족해요. 정서적 교감이 어려울 수 있어요.",
+              lackAdvice: "상대 감정을 살피는 연습이 필요해요. 감성적이고 섬세한 수(水) 성향의 사람에게 배울 수 있어요."
+            },
+          ].map(({ key, label, color, overTitle, overDesc, overAdvice, lackTitle, lackDesc, lackAdvice }) => {
+            const pct = elementPercent[key] || 0;
+            const status = pct >= 30 ? "과다" : pct >= 10 ? "적정" : pct > 0 ? "부족" : "결핍";
+            if (status === "적정") return null;
+            const isOver = status === "과다";
+            return (
+              <div key={key} className="ohang_analysis_card">
+                <div className="ohang_analysis_header">
+                  <span className="ohang_element" style={{ color }}>{label}</span>
+                  <span className={`ohang_status_badge ${status}`}>{status}</span>
+                </div>
+                <p className="ohang_analysis_title">{isOver ? overTitle : lackTitle}</p>
+                <p className="ohang_analysis_desc">{isOver ? overDesc : lackDesc}</p>
+                <p className="ohang_analysis_advice">{isOver ? overAdvice : lackAdvice}</p>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* 장면 9: 신강신약 */}
+      <div className="intro_section">
+        {/* 색동낭자 대화 - 신강신약 전 */}
+        <div className="nangja_comment">
+          <p className="nangja_text">{userName}님의 에너지가 강한지 약한지도 연애에 영향을 줘요.</p>
+        </div>
+
+        <h3 className="intro_section_title">신강신약</h3>
+        <p className="intro_section_subtitle">연애 주도권의 척도</p>
+
+        <div className="intro_section_content">
+          <p>신강/신약은 일간의 힘이 얼마나 강한지를 나타내요. 연애에서는 <strong>주도권</strong>과 관련이 깊어요.</p>
+        </div>
+
+        <div className="strength_gauge_card">
+          <div className="gauge_labels">
+            {["극신약", "신약", "중화신약", "중화신강", "신강", "극신강"].map((level) => (
+              <span key={level} className={level === strengthLevel ? "active" : ""}>{level}</span>
+            ))}
+          </div>
+          <div className="gauge_track">
+            {["극신약", "신약", "중화신약", "중화신강", "신강", "극신강"].map((level) => (
+              <div key={level} className={`gauge_dot ${level === strengthLevel ? "active" : ""}`} />
+            ))}
+          </div>
+          <p className="strength_result_text">
+            일간 <strong style={{ color: getColor(dayMaster?.element) }}>{dayMaster?.char}</strong>, <strong>{strengthLevel}</strong>
+          </p>
+        </div>
+
+        {/* 상세 해석 카드 */}
+        <div className="strength_detail_card">
+          <p className="strength_detail_title">{strengthData.title}</p>
+          <p className="strength_detail_ratio">{strengthData.mainRatio}</p>
+
+          {/* 표 형태로 정리 */}
+          <table className="strength_detail_table">
             <tbody>
-              {/* 천간 */}
               <tr>
-                <td className="row_label">천간</td>
-                {pillarOrder.map((key) => {
-                  const p = pillars[key];
-                  return (
-                    <td key={key}>
-                      <span className="char_hanja" style={{ color: getColor(p?.stem?.element) }}>
-                        {p?.stem?.char || "—"}
-                      </span>
-                    </td>
-                  );
-                })}
+                <th>연애 특징</th>
+                <td>{strengthData.traits.join(", ")}</td>
               </tr>
-              {/* 천간 신살/길성 */}
               <tr>
-                <td className="row_label">신살</td>
-                {pillarOrder.map((key) => {
-                  const byPillar = sajuData?.sinsal?._byPillar;
-                  const stemSinsal = byPillar?.[key]?.stem || [];
-                  return (
-                    <td key={key} className="cell_gilsung">
-                      {stemSinsal.length > 0 ? stemSinsal.join(", ") : "×"}
-                    </td>
-                  );
-                })}
+                <th>자주 하는 말</th>
+                <td>
+                  {strengthData.pattern.map((p, i) => (
+                    <span key={i} className="pattern_quote">{p}</span>
+                  ))}
+                </td>
               </tr>
-              {/* 지지 */}
-              <tr>
-                <td className="row_label">지지</td>
-                {pillarOrder.map((key) => {
-                  const p = pillars[key];
-                  return (
-                    <td key={key}>
-                      <span className="char_hanja" style={{ color: getColor(p?.branch?.element) }}>
-                        {p?.branch?.char || "—"}
-                      </span>
-                    </td>
-                  );
-                })}
-              </tr>
-              {/* 지지 신살/길성 */}
-              <tr>
-                <td className="row_label">신살</td>
-                {pillarOrder.map((key) => {
-                  const byPillar = sajuData?.sinsal?._byPillar;
-                  const branchSinsal = byPillar?.[key]?.branch || [];
-                  return (
-                    <td key={key} className="cell_gilsung">
-                      {branchSinsal.length > 0 ? branchSinsal.join(", ") : "×"}
-                    </td>
-                  );
-                })}
+              {strengthData.goodPoints.length > 0 && (
+                <tr className="good_row">
+                  <th>장점</th>
+                  <td>{strengthData.goodPoints.join(", ")}</td>
+                </tr>
+              )}
+              {strengthData.warning.length > 0 && (
+                <tr className="warning_row">
+                  <th>주의할 점</th>
+                  <td>{strengthData.warning.join(", ")}</td>
+                </tr>
+              )}
+              <tr className="ideal_row">
+                <th>잘 맞는 상대</th>
+                <td>{strengthData.idealType}</td>
               </tr>
             </tbody>
           </table>
+        </div>
+
+        {/* 궁합 참고 */}
+        <div className="strength_compat_section">
+          <p className="strength_compat_title">신강/신약 궁합 참고</p>
+          <div className="strength_compat_list">
+            {strengthCompatibility.map((item, i) => (
+              <div key={i} className="strength_compat_item">
+                <span className="compat_pair">{item.pair}</span>
+                <span className="compat_rating">{item.rating}</span>
+                <span className="compat_desc">{item.desc}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* 안내 문구 */}
+        <div className="strength_note">
+          <p>이건 신강/신약만 본 대략적인 경향이에요. 실제 연애 스타일은 사주팔자 전체와 대운, 세운까지 종합해서 봐야 정확해요.</p>
+        </div>
+      </div>
+
+      {/* 장면 10: 마무리 전환 */}
+      <div className="intro_section">
+        {/* 색동낭자 대화 - 마무리 */}
+        <div className="nangja_comment">
+          <p className="nangja_text">사주 원국은 여기까지예요. 이제 본격적으로 연애 운을 풀어볼게요.</p>
+        </div>
+        <div className="intro_section_content" style={{ textAlign: "center", marginTop: "12px" }}>
+          <p>1장부터 6장까지, 하나씩 자세히 풀어드릴 테니 천천히 따라와 주세요!</p>
         </div>
       </div>
     </div>
@@ -1160,7 +1828,7 @@ function IntroCard({ userName }: { userName: string }) {
 
         <div className="intro_section_content">
           <p className="intro_quote">
-            "사주(四柱)"는 '네 개의 기둥'이라는 뜻이에요.
+            사주(四柱)는 네 개의 기둥이라는 뜻이에요.
           </p>
           <p>
             사주는 사람이 태어난 <strong>연(年)</strong>, <strong>월(月)</strong>, <strong>일(日)</strong>, <strong>시(時)</strong> 이 네 가지 기둥으로 이루어진 팔자예요.
@@ -1169,7 +1837,7 @@ function IntroCard({ userName }: { userName: string }) {
             이 네 가지 요소를 통해 한 사람이 지닌 성격, 타고난 기질, 흐르는 운의 방향까지 자세히 살펴볼 수 있답니다.
           </p>
           <p className="intro_note">
-            사주는 단순히 '미래를 맞히는 점술'이 아니라, <strong>'나를 이해하고, 더 나은 선택을 할 수 있게 도와주는 삶의 지도'</strong>라고 보시면 좋아요.
+            사주는 단순히 미래를 맞히는 점술이 아니라, <strong>나를 이해하고, 더 나은 선택을 할 수 있게 도와주는 삶의 지도</strong>라고 보시면 좋아요.
           </p>
           <p>
             나도 몰랐던 내 안의 가능성과 흐름을 발견하게 되니까요.
@@ -1180,11 +1848,11 @@ function IntroCard({ userName }: { userName: string }) {
       {/* 장면 3: 사주팔자의 구조 */}
       <div className="intro_section">
         <h3 className="intro_section_title">사주팔자의 구조</h3>
-        <p className="intro_section_subtitle">왜 '팔자'라고 부를까요?</p>
+        <p className="intro_section_subtitle">왜 팔자라고 부를까요?</p>
 
         <div className="intro_section_content">
           <p>
-            사주는 흔히 <strong>'사주팔자(四柱八字)'</strong>라고도 불리는데요, 여기서 '팔자'는 태어난 순간의 하늘과 땅의 기운이 담긴 여덟 글자를 말해요.
+            사주는 흔히 <strong>사주팔자(四柱八字)</strong>라고도 불리는데요, 여기서 팔자는 태어난 순간의 하늘과 땅의 기운이 담긴 여덟 글자를 말해요.
           </p>
           <p>
             각 기둥은 두 글자로 이루어져 있어요.<br/>
@@ -1192,7 +1860,7 @@ function IntroCard({ userName }: { userName: string }) {
             아래 글자는 <strong>지지(地支)</strong> — 땅의 기운
           </p>
           <p>
-            4개의 기둥 × 2글자 = <strong>8글자</strong>, 그래서 '사주팔자'라고 불러요.
+            4개의 기둥 × 2글자 = <strong>8글자</strong>, 그래서 사주팔자라고 불러요.
           </p>
         </div>
 

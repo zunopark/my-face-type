@@ -38,12 +38,15 @@ export interface SajuLoveRecord {
     }>;
     fiveElements?: {
       strength?: string;
+      strengthLevel?: string;
+      percent?: Record<string, number>;
     } | null;
     loveFacts?: {
       peachBlossom?: { hasPeach?: boolean; positions?: string[] };
       spouseStars?: { hitCount?: number; positions?: string[] };
       spouseTargetType?: string;
       dayMasterStrength?: string;
+      fiveElementsHanjaPercent?: Record<string, number>;
     } | null;
     sinsal?: {
       [key: string]: unknown;

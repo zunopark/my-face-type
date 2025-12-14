@@ -286,6 +286,8 @@ export default function SajuLovePage() {
         fiveElements: fiveElements
           ? {
               strength: fiveElements.strength,
+              strengthLevel: fiveElements.strengthLevel,
+              percent: fiveElements.percent,
             }
           : null,
         loveFacts: loveFacts
@@ -294,6 +296,7 @@ export default function SajuLovePage() {
               spouseStars: loveFacts.spouseStars,
               spouseTargetType: loveFacts.spouseTargetType,
               dayMasterStrength: loveFacts.dayMasterStrength,
+              fiveElementsHanjaPercent: loveFacts.fiveElementsHanjaPercent,
             }
           : null,
         sinsal: sinsal || null,
