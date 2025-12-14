@@ -1719,7 +1719,8 @@
 }
 
 /* 인용문 - 색동낭자 스타일 */
-.saju_result_page .report_card .section_content blockquote {
+.saju_result_page .report_card .section_content blockquote,
+.saju_result_page .report_card .card_content blockquote {
   all: unset;
   display: block;
   position: relative;
@@ -1734,27 +1735,33 @@
 
 .saju_result_page .report_card .section_content blockquote.quote-pinch,
 .saju_result_page .report_card .section_content blockquote.quote-sokdak,
-.saju_result_page .report_card .section_content blockquote.quote-todak {
+.saju_result_page .report_card .section_content blockquote.quote-todak,
+.saju_result_page .report_card .card_content blockquote.quote-pinch,
+.saju_result_page .report_card .card_content blockquote.quote-sokdak,
+.saju_result_page .report_card .card_content blockquote.quote-todak {
   background: #fff;
   border: 1px solid #f0e8e8;
   padding: 20px;
 }
 
-.saju_result_page .report_card .section_content .quote-header {
+.saju_result_page .report_card .section_content .quote-header,
+.saju_result_page .report_card .card_content .quote-header {
   display: flex;
   align-items: center;
   margin-bottom: 12px;
   gap: 10px;
 }
 
-.saju_result_page .report_card .section_content .quote-profile {
+.saju_result_page .report_card .section_content .quote-profile,
+.saju_result_page .report_card .card_content .quote-profile {
   width: 36px;
   height: 36px;
   border-radius: 50%;
   object-fit: cover;
 }
 
-.saju_result_page .report_card .section_content .quote-header strong {
+.saju_result_page .report_card .section_content .quote-header strong,
+.saju_result_page .report_card .card_content .quote-header strong {
   font-size: 14px;
   color: #c0392b;
 }
