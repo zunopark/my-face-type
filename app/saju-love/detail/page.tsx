@@ -4,7 +4,7 @@
 // 🔧 결제 스킵 설정 (개발/테스트용)
 // true: 결제 없이 바로 결과 페이지로 이동
 // false: 정상 결제 프로세스 진행
-const SKIP_PAYMENT = true;
+const SKIP_PAYMENT = false;
 // ============================================================
 
 import { useEffect, useState, Suspense, useRef } from "react";
@@ -822,30 +822,8 @@ function SajuDetailContent() {
 
           {/* 이런 내용을 알려드려요 */}
           <div className="info_preview_box">
-            <div className="info_preview_lock">
-              <span className="material-icons">lock</span>
-            </div>
-            <div className="info_preview_header">
-              <span>이런 내용을 알려드려요!</span>
-            </div>
-            <ul className="info_preview_list">
-              <li>
-                <span className="material-symbols-outlined">favorite</span>
-                처음 본 순간 이성이 느끼는 나의 매력
-              </li>
-              <li>
-                <span className="material-symbols-outlined">favorite</span>내
-                연애 스타일 장점과 숨겨진 반전 매력
-              </li>
-              <li>
-                <span className="material-symbols-outlined">favorite</span>
-                인만추 vs 자만추 vs 결정사, 나에게 맞는 방식은
-              </li>
-              <li>
-                <span className="material-symbols-outlined">favorite</span>
-                내가 끌리는 사람 vs 나에게 끌리는 사람
-              </li>
-            </ul>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/saju-love/img/info_preview_box.jpg" alt="이런 내용을 알려드려요" />
           </div>
         </section>
 
