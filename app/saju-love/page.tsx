@@ -381,9 +381,9 @@ export default function SajuLovePage() {
       {/* 대화 UI */}
       {showDialogue && (
         <>
-          <div className="dialogue_overlay active" />
-          <div className="dialogue_wrap active">
-            <div className="dialogue_box" onClick={handleNextDialogue}>
+          <div className="dialogue_overlay active" onClick={handleNextDialogue} />
+          <div className="dialogue_wrap active" onClick={handleNextDialogue}>
+            <div className="dialogue_box">
               <div className="dialogue_speaker">색동낭자</div>
               <div className="dialogue_text">
                 {dialogueText.split("\n").map((line, i) => (
@@ -399,13 +399,19 @@ export default function SajuLovePage() {
               <div className="dialogue_buttons visible">
                 <button
                   className="dialogue_prev_btn"
-                  onClick={handlePrevDialogue}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handlePrevDialogue();
+                  }}
                 >
                   이전
                 </button>
                 <button
                   className="dialogue_next_btn"
-                  onClick={handleNextDialogue}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleNextDialogue();
+                  }}
                 >
                   {getCurrentBtnText()}
                 </button>
