@@ -475,7 +475,7 @@ function SajuDetailContent() {
         <section className="detail_section section_1">
           <div className="hero_image">
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="/saju-love/img/detail.png" alt="연애 사주" />
+            <img src="/saju-love/img/detail.jpg" alt="연애 사주" />
           </div>
 
           <div className="info_card">
@@ -853,7 +853,7 @@ function SajuDetailContent() {
         <section className="detail_section section_3">
           <div className="hero_image">
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="/saju-love/img/deatil2.png" alt="운명의 상대" />
+            <img src="/saju-love/img/detail2.jpg" alt="운명의 상대" />
           </div>
         </section>
       </div>

@@ -591,7 +591,7 @@ function ResultContent() {
           {/* faceteller 이미지 */}
           <div className="face_teller_wrap">
             <Image
-              src="/img/faceteller.png"
+              src="/img/faceteller.jpg"
               alt="관상 분석 완료"
               width={350}
               height={500}

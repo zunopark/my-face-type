@@ -66,49 +66,49 @@ const getChapterConfig = (userName: string): Record<string, { intro: string; out
     // 1장: 나만의 매력과 연애 성향
     intro: `1장에서는 ${userName}님이 가진 매력과\n연애 스타일을 알려드릴게요!`,
     outro: `어떠세요, ${userName}님의 매력이 보이시나요?\n이제 미래의 연애 운을 살펴볼게요!`,
-    introBg: "/saju-love/img/nangja-6.png",
-    reportBg: "/saju-love/img/nangja-7.png",
-    outroBg: "/saju-love/img/nangja-8.png",
+    introBg: "/saju-love/img/nangja-6.jpg",
+    reportBg: "/saju-love/img/nangja-7.jpg",
+    outroBg: "/saju-love/img/nangja-8.jpg",
   },
   chapter2: {
     // 2장: 앞으로 펼쳐질 사랑의 흐름
     intro: `2장에서는 앞으로 펼쳐질\n${userName}님의 연애 운세를 알려드릴게요.`,
     outro: "운세의 흐름을 파악했으니,\n이제 운명의 상대에 대해 얘기해볼까요?",
-    introBg: "/saju-love/img/nangja-9.png",
-    reportBg: "/saju-love/img/nangja-10.png",
-    outroBg: "/saju-love/img/nangja-11.png",
+    introBg: "/saju-love/img/nangja-9.jpg",
+    reportBg: "/saju-love/img/nangja-10.jpg",
+    outroBg: "/saju-love/img/nangja-11.jpg",
   },
   chapter3: {
     // 3장: 결국 만나게 될 운명의 상대
     intro: `3장에서는 ${userName}님이 만나게 될\n운명의 상대에 대해 알려드릴게요.`,
     outro: "이제 조심해야 할 가짜 인연에\n대해 이야기해드릴게요.",
-    introBg: "/saju-love/img/nangja-12.png",
-    reportBg: "/saju-love/img/nangja-13.png",
-    outroBg: "/saju-love/img/nangja-14.png",
+    introBg: "/saju-love/img/nangja-12.jpg",
+    reportBg: "/saju-love/img/nangja-13.jpg",
+    outroBg: "/saju-love/img/nangja-14.jpg",
   },
   chapter4: {
     // 4장: 운명이라 착각하는 가짜 인연
     intro: "4장에서는 운명이라 착각할 수 있는\n가짜 인연에 대해 알려드릴게요.",
     outro: "자, 이제 조금 민감한 주제로\n넘어가볼까요?",
-    introBg: "/saju-love/img/nangja-18.png",
-    reportBg: "/saju-love/img/nangja-19.png",
-    outroBg: "/saju-love/img/nangja-20.png",
+    introBg: "/saju-love/img/nangja-18.jpg",
+    reportBg: "/saju-love/img/nangja-19.jpg",
+    outroBg: "/saju-love/img/nangja-20.jpg",
   },
   chapter5: {
     // 5장: 누구에게도 말 못할, 그 사람과의 스킨십
     intro: "5장에서는 누구에게도 말 못할,\n스킨십에 대해 이야기해드릴게요.",
     outro: `마지막으로 제가 ${userName}님께\n전해드릴 귀띔이 있어요.`,
-    introBg: "/saju-love/img/nangja-21.png",
-    reportBg: "/saju-love/img/nangja-22.png",
-    outroBg: "/saju-love/img/nangja-23.png",
+    introBg: "/saju-love/img/nangja-21.jpg",
+    reportBg: "/saju-love/img/nangja-22.jpg",
+    outroBg: "/saju-love/img/nangja-23.jpg",
   },
   chapter6: {
     // 6장: 색동낭자의 귀띔 (고민 답변)
     intro: `자, 이제 마지막 장이에요.\n${userName}님의 고민에 대한 답을 드릴게요.`,
     outro: "",
-    introBg: "/saju-love/img/nangja-24.png",
-    reportBg: "/saju-love/img/nangja-25.png",
-    outroBg: "/saju-love/img/nangja-25.png",
+    introBg: "/saju-love/img/nangja-24.jpg",
+    reportBg: "/saju-love/img/nangja-25.jpg",
+    outroBg: "/saju-love/img/nangja-25.jpg",
   },
 });
 
@@ -133,7 +133,7 @@ function SajuLoveResultContent() {
   const [showScrollHint, setShowScrollHint] = useState(false);
   const [showTocModal, setShowTocModal] = useState(false);
   const [showExitModal, setShowExitModal] = useState(false);
-  const [currentBgImage, setCurrentBgImage] = useState("/saju-love/img/nangja-1.png");
+  const [currentBgImage, setCurrentBgImage] = useState("/saju-love/img/nangja-1.jpg");
 
   const isFetchingRef = useRef(false);
   const loadingIntervalRef = useRef<NodeJS.Timeout | null>(null);
@@ -142,7 +142,7 @@ function SajuLoveResultContent() {
 
   // 이미지 프리로드 (페이지 로드 시)
   useEffect(() => {
-    const imageUrls = Array.from({ length: 26 }, (_, i) => `/saju-love/img/nangja-${i + 1}.png`);
+    const imageUrls = Array.from({ length: 26 }, (_, i) => `/saju-love/img/nangja-${i + 1}.jpg`);
     imageUrls.forEach((url) => {
       const img = new Image();
       img.src = url;
@@ -179,7 +179,7 @@ function SajuLoveResultContent() {
       id: "opening-dialogue",
       type: "dialogue",
       content: `안녕하세요, ${userName}님!\n드디어 분석이 완료됐어요. 천천히 살펴볼까요?`,
-      bgImage: "/saju-love/img/nangja-1.png",
+      bgImage: "/saju-love/img/nangja-1.jpg",
     });
 
     // 2. 들어가며 안내 대화
@@ -187,7 +187,7 @@ function SajuLoveResultContent() {
       id: "intro-guide-dialogue",
       type: "dialogue",
       content: `${userName}님의 사주를 알려드리기 전에,\n먼저 연애 사주에 대해 간단히 설명해드릴게요.`,
-      bgImage: "/saju-love/img/nangja-2.png",
+      bgImage: "/saju-love/img/nangja-2.jpg",
     });
 
     // 3. 들어가며 인트로 카드
@@ -195,7 +195,7 @@ function SajuLoveResultContent() {
       id: "intro-card",
       type: "intro",
       content: "",
-      bgImage: "/saju-love/img/nangja-3.png",
+      bgImage: "/saju-love/img/nangja-3.jpg",
     });
 
     // 4. 사주 원국 소개 대화
@@ -203,7 +203,7 @@ function SajuLoveResultContent() {
       id: "saju-intro-dialogue",
       type: "dialogue",
       content: `이제 ${userName}님의 사주 원국을 보여드릴게요.\n이게 바로 ${userName}님의 타고난 운명이에요!`,
-      bgImage: "/saju-love/img/nangja-4.png",
+      bgImage: "/saju-love/img/nangja-4.jpg",
     });
 
     // 5. 사주 원국 카드
@@ -211,7 +211,7 @@ function SajuLoveResultContent() {
       id: "saju-card",
       type: "saju",
       content: "",
-      bgImage: "/saju-love/img/nangja-5.png",
+      bgImage: "/saju-love/img/nangja-5.jpg",
     });
 
     // 6. 각 챕터별 [intro 대화 → 리포트 → outro 대화]
@@ -228,7 +228,7 @@ function SajuLoveResultContent() {
           id: `chapter-${chapterKey}-intro`,
           type: "dialogue",
           content: config.intro,
-          bgImage: config.introBg || "/saju-love/img/nangja-1.png",
+          bgImage: config.introBg || "/saju-love/img/nangja-1.jpg",
         });
       }
 
@@ -238,7 +238,7 @@ function SajuLoveResultContent() {
         type: "report",
         content: chapter.content,
         chapterIndex: index,
-        bgImage: config?.reportBg || "/saju-love/img/nangja-1.png",
+        bgImage: config?.reportBg || "/saju-love/img/nangja-1.jpg",
       });
 
       // 챕터 outro 대화 (있는 경우에만)
@@ -247,7 +247,7 @@ function SajuLoveResultContent() {
           id: `chapter-${chapterKey}-outro`,
           type: "dialogue",
           content: config.outro,
-          bgImage: config.outroBg || "/saju-love/img/nangja-1.png",
+          bgImage: config.outroBg || "/saju-love/img/nangja-1.jpg",
         });
       }
 
@@ -257,20 +257,20 @@ function SajuLoveResultContent() {
           id: "ideal-type-dialogue",
           type: "dialogue",
           content: `잠깐, 여기서 특별히 보여드릴게 있어요.\n${userName}님의 운명의 상대가 어떻게 생겼는지 궁금하지 않으세요?`,
-          bgImage: "/saju-love/img/nangja-15.png",
+          bgImage: "/saju-love/img/nangja-15.jpg",
         });
         result.push({
           id: "ideal-type-image",
           type: "image",
           content: `${userName}님의 운명의 상대`,
           imageBase64: record.loveAnalysis!.ideal_partner_image!.image_base64,
-          bgImage: "/saju-love/img/nangja-16.png",
+          bgImage: "/saju-love/img/nangja-16.jpg",
         });
         result.push({
           id: "ideal-type-outro",
           type: "dialogue",
           content: `어떠세요, 설레지 않으세요?\n자, 이제 계속해서 ${userName}님의 연애 운을 살펴볼게요!`,
-          bgImage: "/saju-love/img/nangja-17.png",
+          bgImage: "/saju-love/img/nangja-17.jpg",
         });
       }
     });
@@ -280,7 +280,7 @@ function SajuLoveResultContent() {
       id: "ending",
       type: "ending",
       content: "",
-      bgImage: "/saju-love/img/nangja-26.png",
+      bgImage: "/saju-love/img/nangja-26.jpg",
     });
 
     return result;
@@ -379,7 +379,7 @@ function SajuLoveResultContent() {
     const prevMsg = messages[prevIndex];
 
     // 이미지 업데이트
-    const prevImage = prevMsg.bgImage || "/saju-love/img/nangja-1.png";
+    const prevImage = prevMsg.bgImage || "/saju-love/img/nangja-1.jpg";
     setCurrentBgImage(prevImage);
 
     if (prevMsg.type === "dialogue") {
@@ -415,7 +415,7 @@ function SajuLoveResultContent() {
       setCurrentIndex(nextIndex);
 
       // 이미지 업데이트
-      const nextImage = nextMsg.bgImage || "/saju-love/img/nangja-1.png";
+      const nextImage = nextMsg.bgImage || "/saju-love/img/nangja-1.jpg";
       setCurrentBgImage(nextImage);
 
       if (nextMsg.type === "dialogue") {
@@ -431,7 +431,7 @@ function SajuLoveResultContent() {
       const nextIndex = currentIndex + 1;
       if (nextIndex < messages.length) {
         const nextMsg = messages[nextIndex];
-        const nextImage = nextMsg.bgImage || "/saju-love/img/nangja-1.png";
+        const nextImage = nextMsg.bgImage || "/saju-love/img/nangja-1.jpg";
 
         // 이미지가 다르면: 이미지 먼저 바꾸고 딜레이 후 전환
         if (nextImage !== currentBgImage) {
@@ -705,7 +705,7 @@ function SajuLoveResultContent() {
             setCurrentIndex(index);
             const targetMsg = messages[index];
             // 이미지 업데이트
-            const targetImage = targetMsg.bgImage || "/saju-love/img/nangja-1.png";
+            const targetImage = targetMsg.bgImage || "/saju-love/img/nangja-1.jpg";
             setCurrentBgImage(targetImage);
             if (targetMsg.type === "dialogue") {
               setShowReport(false);
@@ -2803,11 +2803,11 @@ function simpleMD(src: string = ""): string {
     return `<blockquote>${content}</blockquote>`;
   });
   src = src.replace(/<blockquote><strong>색동낭자 콕 찍기<\/strong>/g,
-    '<blockquote class="quote-pinch"><div class="quote-header"><img src="/saju-love/img/pinch.png" class="quote-profile" alt="색동낭자"><strong>색동낭자 콕 찍기</strong></div>');
+    '<blockquote class="quote-pinch"><div class="quote-header"><img src="/saju-love/img/pinch.jpg" class="quote-profile" alt="색동낭자"><strong>색동낭자 콕 찍기</strong></div>');
   src = src.replace(/<blockquote><strong>색동낭자 속닥속닥<\/strong>/g,
-    '<blockquote class="quote-sokdak"><div class="quote-header"><img src="/saju-love/img/sokdak.png" class="quote-profile" alt="색동낭자"><strong>색동낭자 속닥속닥</strong></div>');
+    '<blockquote class="quote-sokdak"><div class="quote-header"><img src="/saju-love/img/sokdak.jpg" class="quote-profile" alt="색동낭자"><strong>색동낭자 속닥속닥</strong></div>');
   src = src.replace(/<blockquote><strong>색동낭자 토닥토닥<\/strong>/g,
-    '<blockquote class="quote-todak"><div class="quote-header"><img src="/saju-love/img/todak.png" class="quote-profile" alt="색동낭자"><strong>색동낭자 토닥토닥</strong></div>');
+    '<blockquote class="quote-todak"><div class="quote-header"><img src="/saju-love/img/todak.jpg" class="quote-profile" alt="색동낭자"><strong>색동낭자 토닥토닥</strong></div>');
   src = src
     .replace(/^\s*[*+-]\s+(.+)$/gm, "<ul><li>$1</li></ul>")
     .replace(/(<\/ul>\s*)<ul>/g, "")

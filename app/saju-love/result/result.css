@@ -1,7 +1,7 @@
 /* 연애 사주 결과 페이지 스타일 */
 
 .saju_result_page {
-  background: #fff9f9 url('/saju-love/img/nangja.png') center top / 100% auto no-repeat;
+  background: #fff9f9 url('/saju-love/img/nangja.jpg') center top / 100% auto no-repeat;
   background-attachment: fixed;
   min-height: 100vh;
 }

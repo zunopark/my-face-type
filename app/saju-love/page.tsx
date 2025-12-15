@@ -54,7 +54,7 @@ export default function SajuLovePage() {
   const router = useRouter();
 
   // UI 상태
-  const [currentImage, setCurrentImage] = useState("/saju-love/img/nangja2.png");
+  const [currentImage, setCurrentImage] = useState("/saju-love/img/nangja2.jpg");
   const [showLanding, setShowLanding] = useState(true);
   const [showDialogue, setShowDialogue] = useState(false);
   const [showInputForm, setShowInputForm] = useState(false);
@@ -123,7 +123,7 @@ export default function SajuLovePage() {
   // 시작하기 버튼
   const handleStart = () => {
     setShowLanding(false);
-    setCurrentImage("/saju-love/img/nangja.png");
+    setCurrentImage("/saju-love/img/nangja.jpg");
 
     setTimeout(() => {
       setShowDialogue(true);
@@ -181,7 +181,7 @@ export default function SajuLovePage() {
         setIsAdditionalDialogue(false);
         setCurrentDialogue(0);
         setShowDialogue(false);
-        setCurrentImage("/saju-love/img/nangja.png");
+        setCurrentImage("/saju-love/img/nangja.jpg");
         setShowInputForm(true);
       }
     } else {
@@ -194,7 +194,7 @@ export default function SajuLovePage() {
       } else {
         setShowDialogue(false);
         setShowLanding(true);
-        setCurrentImage("/saju-love/img/nangja.png");
+        setCurrentImage("/saju-love/img/nangja.jpg");
         setCurrentDialogue(0);
       }
     }
@@ -213,7 +213,7 @@ export default function SajuLovePage() {
     setShowInputForm(false);
     setIsAdditionalDialogue(true);
     setCurrentDialogue(0);
-    setCurrentImage("/saju-love/img/nangja.png");
+    setCurrentImage("/saju-love/img/nangja.jpg");
     setShowDialogue(true);
     typeText(ADDITIONAL_DIALOGUES[0].text, () => setShowButtons(true));
   };
