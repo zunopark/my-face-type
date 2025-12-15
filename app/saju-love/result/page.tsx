@@ -95,7 +95,7 @@ const getChapterConfig = (userName: string): Record<string, { intro: string; out
     outroBg: "/saju-love/img/nangja-20.jpg",
   },
   chapter5: {
-    // 5장: 누구에게도 말 못할, 그 사람과의 스킨십
+    // 5장: 누구에게도 말 못할, 19금 사주 풀이
     intro: "5장에서는 누구에게도 말 못할,\n스킨십에 대해 이야기해드릴게요.",
     outro: `마지막으로 제가 ${userName}님께\n전해드릴 귀띔이 있어요.`,
     introBg: "/saju-love/img/nangja-21.jpg",
@@ -129,6 +129,7 @@ function SajuLoveResultContent() {
   const [isTyping, setIsTyping] = useState(false);
   const [showButtons, setShowButtons] = useState(false);
   const [showReport, setShowReport] = useState(false);
+  const [isAnimating, setIsAnimating] = useState(false);
   const [canProceed, setCanProceed] = useState(false);
   const [showScrollHint, setShowScrollHint] = useState(false);
   const [showTocModal, setShowTocModal] = useState(false);
@@ -421,8 +422,11 @@ function SajuLoveResultContent() {
       if (nextMsg.type === "dialogue") {
         typeText(nextMsg.content, () => setShowButtons(true));
       } else {
+        setIsAnimating(true);
         setShowReport(true);
         setShowButtons(true);
+        // 애니메이션 완료 후 상호작용 허용 (0.5s transition)
+        setTimeout(() => setIsAnimating(false), 550);
       }
     };
 
@@ -722,7 +726,7 @@ function SajuLoveResultContent() {
 
       {/* 리포트 카드 (오버레이) */}
       {showReport && currentMsg && (
-        <div className="report_overlay active">
+        <div className={`report_overlay active ${isAnimating ? "animating" : ""}`}>
           <div className="report_scroll" ref={reportRef}>
             {currentMsg.type === "intro" && (
               <IntroCard userName={userName} />
@@ -1887,7 +1891,7 @@ function SajuCard({ data }: { data: SajuLoveRecord }) {
             <span>2장 연애 운세</span>
             <span>3장 운명의 상대</span>
             <span>4장 가짜 인연</span>
-            <span>5장 스킨십</span>
+            <span>5장 19금</span>
             <span>6장 고민 답변</span>
           </div>
           <p className="saju_outro_cta">준비되셨으면, 다음으로 넘어가 주세요!</p>
@@ -2319,7 +2323,7 @@ function IntroCard({ userName }: { userName: string }) {
             <p><strong>2장</strong> 앞으로 펼쳐질 사랑의 흐름</p>
             <p><strong>3장</strong> 결국 만나게 될 운명의 상대</p>
             <p><strong>4장</strong> 운명이라 착각하는 가짜 인연</p>
-            <p><strong>5장</strong> 누구에게도 말 못할, 그 사람과의 스킨십</p>
+            <p><strong>5장</strong> 누구에게도 말 못할, 19금 사주 풀이</p>
             <p><strong>6장</strong> 색동낭자의 귀띔</p>
           </div>
         </div>
@@ -2358,7 +2362,7 @@ function TocModal({
     { label: "3장: 결국 만나게 될 운명의 상대", targetId: "chapter-chapter3-report" },
     { label: "보너스: 이상형 초상화", targetId: "ideal-type-image" },
     { label: "4장: 운명이라 착각하는 가짜 인연", targetId: "chapter-chapter4-report" },
-    { label: "5장: 누구에게도 말 못할, 그 사람과의 스킨십", targetId: "chapter-chapter5-report" },
+    { label: "5장: 누구에게도 말 못할, 19금 사주 풀이", targetId: "chapter-chapter5-report" },
     { label: "6장: 색동낭자의 귀띔", targetId: "chapter-chapter6-report" },
     { label: "마무리", targetId: "ending" },
   ];

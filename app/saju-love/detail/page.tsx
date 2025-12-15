@@ -968,7 +968,7 @@ function SajuDetailContent() {
                 </div>
                 <div className="report-section">
                   <div className="report-section-title">
-                    5장. 누구에게도 말 못할, 그 사람과의 스킨십
+                    5장. 누구에게도 말 못할, 19금 사주 풀이
                   </div>
                   <div className="report-section-desc">
                     상대를 홀리는 나의 성적 매력, 그 사람의 성적 매력, 그
@@ -1176,7 +1176,7 @@ function SajuDetailContent() {
                 </div>
                 <div className="report-section">
                   <div className="report-section-title">
-                    5장. 누구에게도 말 못할, 그 사람과의 스킨십
+                    5장. 누구에게도 말 못할, 19금 사주 풀이
                   </div>
                   <div className="report-section-desc">
                     상대를 홀리는 나의 성적 매력, 그 사람의 성적 매력, 그

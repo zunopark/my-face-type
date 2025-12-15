@@ -2030,6 +2030,13 @@
   pointer-events: auto;
 }
 
+/* 애니메이션 중에는 스크롤/터치 차단 */
+.saju_result_page .report_overlay.animating .report_scroll {
+  pointer-events: none;
+  overflow: hidden;
+  touch-action: none;
+}
+
 .saju_result_page .report_scroll {
   flex: 1;
   overflow-y: auto;
