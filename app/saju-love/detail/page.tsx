@@ -4,7 +4,7 @@
 // 🔧 결제 스킵 설정 (개발/테스트용)
 // true: 결제 없이 바로 결과 페이지로 이동
 // false: 정상 결제 프로세스 진행
-const SKIP_PAYMENT = false;
+const SKIP_PAYMENT = true;
 // ============================================================
 
 import { useEffect, useState, Suspense, useRef } from "react";
@@ -687,12 +687,12 @@ function SajuDetailContent() {
             <div className="sinsal_tags">
               {/* 활성화된 신살 태그들 */}
               {sajuData.sinsal?._active?.map((name, i) => {
-                // 길성(귀인)은 파란색, 신살은 빨간색
-                const isGilsung = name.includes("귀인") || name === "천의성";
+                // 연애 신살(도화살, 홍염살, 화개살)은 붉은색
+                const isLoveSinsal = name.includes("도화") || name.includes("홍염") || name.includes("화개");
                 return (
                   <span
                     key={i}
-                    className={`sinsal_tag ${isGilsung ? "gilsung" : ""}`}
+                    className={`sinsal_tag ${isLoveSinsal ? "love" : "normal"}`}
                   >
                     {name}
                   </span>

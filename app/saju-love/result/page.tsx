@@ -61,42 +61,54 @@ const getElementKorean = (element: string | undefined, yinYang?: string): string
 
 // 각 챕터별 대사와 배경 이미지
 // API 응답: [1장, 2장, 3장, 4장, 5장, 6장] - 총 6개 챕터
-const getChapterConfig = (userName: string): Record<string, { intro: string; outro: string; bgImage: string }> => ({
+const getChapterConfig = (userName: string): Record<string, { intro: string; outro: string; introBg: string; reportBg: string; outroBg: string }> => ({
   chapter1: {
     // 1장: 나만의 매력과 연애 성향
     intro: `1장에서는 ${userName}님이 가진 매력과\n연애 스타일을 알려드릴게요!`,
     outro: `어떠세요, ${userName}님의 매력이 보이시나요?\n이제 미래의 연애 운을 살펴볼게요!`,
-    bgImage: "/saju-love/img/2.png",
+    introBg: "/saju-love/img/nangja-6.png",
+    reportBg: "/saju-love/img/nangja-7.png",
+    outroBg: "/saju-love/img/nangja-8.png",
   },
   chapter2: {
     // 2장: 앞으로 펼쳐질 사랑의 흐름
     intro: `2장에서는 앞으로 펼쳐질\n${userName}님의 연애 운세를 알려드릴게요.`,
     outro: "운세의 흐름을 파악했으니,\n이제 운명의 상대에 대해 얘기해볼까요?",
-    bgImage: "/saju-love/img/3.png",
+    introBg: "/saju-love/img/nangja-9.png",
+    reportBg: "/saju-love/img/nangja-10.png",
+    outroBg: "/saju-love/img/nangja-11.png",
   },
   chapter3: {
     // 3장: 결국 만나게 될 운명의 상대
     intro: `3장에서는 ${userName}님이 만나게 될\n운명의 상대에 대해 알려드릴게요.`,
     outro: "이제 조심해야 할 가짜 인연에\n대해 이야기해드릴게요.",
-    bgImage: "/saju-love/img/11.png",
+    introBg: "/saju-love/img/nangja-12.png",
+    reportBg: "/saju-love/img/nangja-13.png",
+    outroBg: "/saju-love/img/nangja-14.png",
   },
   chapter4: {
     // 4장: 운명이라 착각하는 가짜 인연
     intro: "4장에서는 운명이라 착각할 수 있는\n가짜 인연에 대해 알려드릴게요.",
     outro: "자, 이제 조금 민감한 주제로\n넘어가볼까요?",
-    bgImage: "/saju-love/img/22.png",
+    introBg: "/saju-love/img/nangja-18.png",
+    reportBg: "/saju-love/img/nangja-19.png",
+    outroBg: "/saju-love/img/nangja-20.png",
   },
   chapter5: {
     // 5장: 누구에게도 말 못할, 그 사람과의 스킨십
     intro: "5장에서는 누구에게도 말 못할,\n스킨십에 대해 이야기해드릴게요.",
     outro: `마지막으로 제가 ${userName}님께\n전해드릴 귀띔이 있어요.`,
-    bgImage: "/saju-love/img/33.png",
+    introBg: "/saju-love/img/nangja-21.png",
+    reportBg: "/saju-love/img/nangja-22.png",
+    outroBg: "/saju-love/img/nangja-23.png",
   },
   chapter6: {
     // 6장: 색동낭자의 귀띔 (고민 답변)
     intro: `자, 이제 마지막 장이에요.\n${userName}님의 고민에 대한 답을 드릴게요.`,
     outro: "",
-    bgImage: "/saju-love/img/33.png",
+    introBg: "/saju-love/img/nangja-24.png",
+    reportBg: "/saju-love/img/nangja-25.png",
+    outroBg: "/saju-love/img/nangja-25.png",
   },
 });
 
@@ -121,11 +133,21 @@ function SajuLoveResultContent() {
   const [showScrollHint, setShowScrollHint] = useState(false);
   const [showTocModal, setShowTocModal] = useState(false);
   const [showExitModal, setShowExitModal] = useState(false);
+  const [currentBgImage, setCurrentBgImage] = useState("/saju-love/img/nangja-1.png");
 
   const isFetchingRef = useRef(false);
   const loadingIntervalRef = useRef<NodeJS.Timeout | null>(null);
   const typingIntervalRef = useRef<NodeJS.Timeout | null>(null);
   const reportRef = useRef<HTMLDivElement>(null);
+
+  // 이미지 프리로드 (페이지 로드 시)
+  useEffect(() => {
+    const imageUrls = Array.from({ length: 26 }, (_, i) => `/saju-love/img/nangja-${i + 1}.png`);
+    imageUrls.forEach((url) => {
+      const img = new Image();
+      img.src = url;
+    });
+  }, []);
 
   // 챕터에서 키 추출 (number 또는 title 기반)
   const getChapterKey = (chapter: { number?: number; title?: string }): string => {
@@ -157,7 +179,7 @@ function SajuLoveResultContent() {
       id: "opening-dialogue",
       type: "dialogue",
       content: `안녕하세요, ${userName}님!\n드디어 분석이 완료됐어요. 천천히 살펴볼까요?`,
-      bgImage: "/saju-love/img/nangja.png",
+      bgImage: "/saju-love/img/nangja-1.png",
     });
 
     // 2. 들어가며 안내 대화
@@ -165,7 +187,7 @@ function SajuLoveResultContent() {
       id: "intro-guide-dialogue",
       type: "dialogue",
       content: `${userName}님의 사주를 알려드리기 전에,\n먼저 연애 사주에 대해 간단히 설명해드릴게요.`,
-      bgImage: "/saju-love/img/nangja.png",
+      bgImage: "/saju-love/img/nangja-2.png",
     });
 
     // 3. 들어가며 인트로 카드
@@ -173,7 +195,7 @@ function SajuLoveResultContent() {
       id: "intro-card",
       type: "intro",
       content: "",
-      bgImage: "/saju-love/img/nangja.png",
+      bgImage: "/saju-love/img/nangja-3.png",
     });
 
     // 4. 사주 원국 소개 대화
@@ -181,7 +203,7 @@ function SajuLoveResultContent() {
       id: "saju-intro-dialogue",
       type: "dialogue",
       content: `이제 ${userName}님의 사주 원국을 보여드릴게요.\n이게 바로 ${userName}님의 타고난 운명이에요!`,
-      bgImage: "/saju-love/img/nangja.png",
+      bgImage: "/saju-love/img/nangja-4.png",
     });
 
     // 5. 사주 원국 카드
@@ -189,7 +211,7 @@ function SajuLoveResultContent() {
       id: "saju-card",
       type: "saju",
       content: "",
-      bgImage: "/saju-love/img/nangja.png",
+      bgImage: "/saju-love/img/nangja-5.png",
     });
 
     // 6. 각 챕터별 [intro 대화 → 리포트 → outro 대화]
@@ -206,7 +228,7 @@ function SajuLoveResultContent() {
           id: `chapter-${chapterKey}-intro`,
           type: "dialogue",
           content: config.intro,
-          bgImage: config.bgImage || "/saju-love/img/1.png",
+          bgImage: config.introBg || "/saju-love/img/nangja-1.png",
         });
       }
 
@@ -216,7 +238,7 @@ function SajuLoveResultContent() {
         type: "report",
         content: chapter.content,
         chapterIndex: index,
-        bgImage: config?.bgImage || "/saju-love/img/1.png",
+        bgImage: config?.reportBg || "/saju-love/img/nangja-1.png",
       });
 
       // 챕터 outro 대화 (있는 경우에만)
@@ -225,7 +247,7 @@ function SajuLoveResultContent() {
           id: `chapter-${chapterKey}-outro`,
           type: "dialogue",
           content: config.outro,
-          bgImage: config.bgImage || "/saju-love/img/1.png",
+          bgImage: config.outroBg || "/saju-love/img/nangja-1.png",
         });
       }
 
@@ -235,30 +257,30 @@ function SajuLoveResultContent() {
           id: "ideal-type-dialogue",
           type: "dialogue",
           content: `잠깐, 여기서 특별히 보여드릴게 있어요.\n${userName}님의 운명의 상대가 어떻게 생겼는지 궁금하지 않으세요?`,
-          bgImage: "/saju-love/img/11.png",
+          bgImage: "/saju-love/img/nangja-15.png",
         });
         result.push({
           id: "ideal-type-image",
           type: "image",
           content: `${userName}님의 운명의 상대`,
           imageBase64: record.loveAnalysis!.ideal_partner_image!.image_base64,
-          bgImage: "/saju-love/img/11.png",
+          bgImage: "/saju-love/img/nangja-16.png",
         });
         result.push({
           id: "ideal-type-outro",
           type: "dialogue",
           content: `어떠세요, 설레지 않으세요?\n자, 이제 계속해서 ${userName}님의 연애 운을 살펴볼게요!`,
-          bgImage: "/saju-love/img/11.png",
+          bgImage: "/saju-love/img/nangja-17.png",
         });
       }
     });
 
-    // 3. 마무리 메시지
+    // 26. 마무리 메시지
     result.push({
       id: "ending",
       type: "ending",
       content: "",
-      bgImage: "/saju-love/img/33.png",
+      bgImage: "/saju-love/img/nangja-26.png",
     });
 
     return result;
@@ -356,6 +378,10 @@ function SajuLoveResultContent() {
     setCurrentIndex(prevIndex);
     const prevMsg = messages[prevIndex];
 
+    // 이미지 업데이트
+    const prevImage = prevMsg.bgImage || "/saju-love/img/nangja-1.png";
+    setCurrentBgImage(prevImage);
+
     if (prevMsg.type === "dialogue") {
       // 이전 대화는 타이핑 효과 없이 바로 보여주기
       setDialogueText(prevMsg.content);
@@ -383,20 +409,40 @@ function SajuLoveResultContent() {
       return;
     }
 
+    // 다음 메시지로 이동하는 함수
+    const goToNextMessage = (nextIndex: number) => {
+      const nextMsg = messages[nextIndex];
+      setCurrentIndex(nextIndex);
+
+      // 이미지 업데이트
+      const nextImage = nextMsg.bgImage || "/saju-love/img/nangja-1.png";
+      setCurrentBgImage(nextImage);
+
+      if (nextMsg.type === "dialogue") {
+        typeText(nextMsg.content, () => setShowButtons(true));
+      } else {
+        setShowReport(true);
+        setShowButtons(true);
+      }
+    };
+
     // 리포트 보고 있으면 닫기
     if (showReport) {
-      setShowReport(false);
-      // 다음 메시지로
       const nextIndex = currentIndex + 1;
       if (nextIndex < messages.length) {
-        setCurrentIndex(nextIndex);
         const nextMsg = messages[nextIndex];
+        const nextImage = nextMsg.bgImage || "/saju-love/img/nangja-1.png";
 
-        if (nextMsg.type === "dialogue") {
-          typeText(nextMsg.content, () => setShowButtons(true));
+        // 이미지가 다르면: 이미지 먼저 바꾸고 딜레이 후 전환
+        if (nextImage !== currentBgImage) {
+          setCurrentBgImage(nextImage);
+          setTimeout(() => {
+            setShowReport(false);
+            goToNextMessage(nextIndex);
+          }, 100);
         } else {
-          setShowReport(true);
-          setShowButtons(true);
+          setShowReport(false);
+          goToNextMessage(nextIndex);
         }
       }
       return;
@@ -405,17 +451,9 @@ function SajuLoveResultContent() {
     // 다음 메시지로
     const nextIndex = currentIndex + 1;
     if (nextIndex < messages.length) {
-      setCurrentIndex(nextIndex);
-      const nextMsg = messages[nextIndex];
-
-      if (nextMsg.type === "dialogue") {
-        typeText(nextMsg.content, () => setShowButtons(true));
-      } else {
-        setShowReport(true);
-        setShowButtons(true);
-      }
+      goToNextMessage(nextIndex);
     }
-  }, [currentIndex, messages, isTyping, showReport, typeText]);
+  }, [currentIndex, messages, isTyping, showReport, typeText, currentBgImage]);
 
   // 로딩 메시지 순환
   const startLoadingMessages = useCallback((userName: string) => {
@@ -611,19 +649,26 @@ function SajuLoveResultContent() {
     return "확인하기";
   };
 
+  // 화면 전체 클릭 핸들러 (대화 중일 때만 스킵)
+  const handleScreenClick = () => {
+    if (!showReport && currentMsg?.type === "dialogue") {
+      handleNext();
+    }
+  };
+
   return (
-    <div className="saju_result_page chat_mode">
+    <div className="saju_result_page chat_mode" onClick={handleScreenClick}>
       {/* 배경 이미지 */}
       <div className="result_bg">
         <img
-          src="/saju-love/img/nangja.png"
+          src={currentBgImage}
           alt=""
           className="result_bg_image"
         />
       </div>
 
       {/* 뒤로가기 버튼 */}
-      <button className="back_btn" onClick={() => setShowExitModal(true)}>
+      <button className="back_btn" onClick={(e) => { e.stopPropagation(); setShowExitModal(true); }}>
         <span className="material-icons">arrow_back</span>
         <span className="back_btn_text">홈으로</span>
       </button>
@@ -646,7 +691,7 @@ function SajuLoveResultContent() {
       )}
 
       {/* 목차 버튼 */}
-      <button className="toc_btn" onClick={() => setShowTocModal(true)}>
+      <button className="toc_btn" onClick={(e) => { e.stopPropagation(); setShowTocModal(true); }}>
         <span className="toc_btn_text">목차</span>
       </button>
 
@@ -659,6 +704,9 @@ function SajuLoveResultContent() {
           onNavigate={(index) => {
             setCurrentIndex(index);
             const targetMsg = messages[index];
+            // 이미지 업데이트
+            const targetImage = targetMsg.bgImage || "/saju-love/img/nangja-1.png";
+            setCurrentBgImage(targetImage);
             if (targetMsg.type === "dialogue") {
               setShowReport(false);
               setDialogueText(targetMsg.content);
@@ -735,7 +783,7 @@ function SajuLoveResultContent() {
       )}
 
       {/* 대화 UI (하단 고정) */}
-      <div className={`dialogue_wrap ${!showReport ? "active" : ""}`}>
+      <div className={`dialogue_wrap ${!showReport ? "active" : ""}`} onClick={(e) => e.stopPropagation()}>
         <div className="dialogue_box" onClick={handleNext}>
           <div className="dialogue_speaker">색동낭자</div>
           <p className="dialogue_text">
@@ -2308,7 +2356,7 @@ function TocModal({
     { label: "1장: 나만의 매력과 연애 성향", targetId: "chapter-chapter1-report" },
     { label: "2장: 앞으로 펼쳐질 사랑의 흐름", targetId: "chapter-chapter2-report" },
     { label: "3장: 결국 만나게 될 운명의 상대", targetId: "chapter-chapter3-report" },
-    { label: "보너스: 이상형 이미지", targetId: "ideal-type-image" },
+    { label: "보너스: 이상형 초상화", targetId: "ideal-type-image" },
     { label: "4장: 운명이라 착각하는 가짜 인연", targetId: "chapter-chapter4-report" },
     { label: "5장: 누구에게도 말 못할, 그 사람과의 스킨십", targetId: "chapter-chapter5-report" },
     { label: "6장: 색동낭자의 귀띔", targetId: "chapter-chapter6-report" },

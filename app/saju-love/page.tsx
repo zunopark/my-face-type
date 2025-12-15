@@ -54,7 +54,7 @@ export default function SajuLovePage() {
   const router = useRouter();
 
   // UI 상태
-  const [currentImage, setCurrentImage] = useState("/saju-love/img/nangja.png");
+  const [currentImage, setCurrentImage] = useState("/saju-love/img/nangja2.png");
   const [showLanding, setShowLanding] = useState(true);
   const [showDialogue, setShowDialogue] = useState(false);
   const [showInputForm, setShowInputForm] = useState(false);
