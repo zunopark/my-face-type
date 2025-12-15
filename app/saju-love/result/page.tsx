@@ -144,10 +144,27 @@ function SajuLoveResultContent() {
   // 이미지 프리로드 (페이지 로드 시)
   useEffect(() => {
     const imageUrls = Array.from({ length: 26 }, (_, i) => `/saju-love/img/nangja-${i + 1}.jpg`);
-    imageUrls.forEach((url) => {
-      const img = new Image();
-      img.src = url;
-    });
+
+    // 이미지를 순차적으로 로드 (3개씩 병렬)
+    const preloadImages = async () => {
+      const batchSize = 3;
+      for (let i = 0; i < imageUrls.length; i += batchSize) {
+        const batch = imageUrls.slice(i, i + batchSize);
+        await Promise.all(
+          batch.map(
+            (url) =>
+              new Promise<void>((resolve) => {
+                const img = new Image();
+                img.onload = () => resolve();
+                img.onerror = () => resolve(); // 에러 시에도 진행
+                img.src = url;
+              })
+          )
+        );
+      }
+    };
+
+    preloadImages();
   }, []);
 
   // 챕터에서 키 추출 (number 또는 title 기반)
@@ -410,13 +427,33 @@ function SajuLoveResultContent() {
       return;
     }
 
-    // 다음 메시지로 이동하는 함수
-    const goToNextMessage = (nextIndex: number) => {
-      const nextMsg = messages[nextIndex];
-      setCurrentIndex(nextIndex);
+    // 이미지 프리로드 헬퍼
+    const ensureImageLoaded = (url: string): Promise<void> => {
+      return new Promise((resolve) => {
+        const img = new Image();
+        img.onload = () => resolve();
+        img.onerror = () => resolve();
+        // 이미 캐시되어 있으면 즉시 resolve
+        if (img.complete) {
+          resolve();
+          return;
+        }
+        img.src = url;
+      });
+    };
 
-      // 이미지 업데이트
+    // 다음 메시지로 이동하는 함수
+    const goToNextMessage = async (nextIndex: number) => {
+      const nextMsg = messages[nextIndex];
       const nextImage = nextMsg.bgImage || "/saju-love/img/nangja-1.jpg";
+
+      // 이미지 로드 대기 (최대 100ms)
+      await Promise.race([
+        ensureImageLoaded(nextImage),
+        new Promise((resolve) => setTimeout(resolve, 100)),
+      ]);
+
+      setCurrentIndex(nextIndex);
       setCurrentBgImage(nextImage);
 
       if (nextMsg.type === "dialogue") {

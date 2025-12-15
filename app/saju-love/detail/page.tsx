@@ -47,9 +47,9 @@ const PAYMENT_CONFIG = {
   clientKey:
     process.env.NEXT_PUBLIC_TOSS_CLIENT_KEY ||
     "live_gck_yZqmkKeP8gBaRKPg1WwdrbQRxB9l",
-  price: 9900,
-  discountPrice: 7900,
-  originalPrice: 29900,
+  price: 14900,
+  discountPrice: 9900,
+  originalPrice: 34900,
   orderName: "AI 연애 사주 심층 분석",
 };
 
