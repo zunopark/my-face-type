@@ -26,7 +26,7 @@ export default function LandingPage() {
       {/* 메인 히어로 이미지 */}
       <div className="landing-hero">
         <Image
-          src="/img/main-bg.png"
+          src="/img/main-bg.jpg"
           alt="양반家 - 정통 운세"
           width={500}
           height={350}

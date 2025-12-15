@@ -2786,12 +2786,12 @@ body {
 
 /* 카드 개별 스타일 */
 .card-face {
-  background: url("/img/faceyangban.png") center center / cover no-repeat;
+  background: url("/img/faceyangban.jpg") center center / cover no-repeat;
   position: relative;
 }
 
 .card-couple {
-  background: url("/img/faceyangban-couple.png") center center / cover no-repeat;
+  background: url("/img/faceyangban-couple.jpg") center center / cover no-repeat;
   position: relative;
 }
 
@@ -2807,7 +2807,7 @@ body {
 }
 
 .card-saju {
-  background: url("/img/nangja.png") center center / cover no-repeat;
+  background: url("/img/nangja.jpg") center center / cover no-repeat;
   position: relative;
 }
 
