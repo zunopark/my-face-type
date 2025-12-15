@@ -994,11 +994,11 @@ function SajuDetailContent() {
               </div>
 
               <div className="payment-coupon-wrap">
-                <div className="payment-coupon">출시 기념 할인</div>
+                <div className="payment-coupon">특별 할인</div>
               </div>
               <div className="payment-coupon-price-wrap">
                 <div className="payment-coupon-title">
-                  출시 기념 오늘만 특별 할인
+                  양반家 연애 사주 출시 기념
                 </div>
                 <div className="payment-coupon-price">
                   -
@@ -1202,11 +1202,11 @@ function SajuDetailContent() {
               </div>
 
               <div className="payment-coupon-wrap">
-                <div className="payment-coupon">출시 기념 할인 + 추가 할인</div>
+                <div className="payment-coupon">특별 할인 + 추가 할인</div>
               </div>
               <div className="payment-coupon-price-wrap">
                 <div className="payment-coupon-title">
-                  출시 기념 특별 할인 + 추가 2천원 할인
+                  양반家 연애 사주 출시 기념 + 추가 2천원 할인
                 </div>
                 <div className="payment-coupon-price">
                   -
