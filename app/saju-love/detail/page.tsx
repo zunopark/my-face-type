@@ -4,7 +4,7 @@
 // 🔧 결제 스킵 설정 (개발/테스트용)
 // true: 결제 없이 바로 결과 페이지로 이동
 // false: 정상 결제 프로세스 진행
-const SKIP_PAYMENT = true;
+const SKIP_PAYMENT = false;
 // ============================================================
 
 import { useEffect, useState, Suspense, useRef } from "react";
@@ -223,6 +223,8 @@ function SajuDetailContent() {
   const [isLoading, setIsLoading] = useState(true);
   const [showPaymentModal, setShowPaymentModal] = useState(false);
   const [showDiscountModal, setShowDiscountModal] = useState(false);
+  const [couponCode, setCouponCode] = useState("");
+  const [couponError, setCouponError] = useState("");
   const paymentWidgetRef = useRef<ReturnType<
     typeof window.PaymentWidget
   > | null>(null);
@@ -308,6 +310,21 @@ function SajuDetailContent() {
         widget.renderAgreement("#saju-agreement");
       }
     }, 100);
+  };
+
+  // 쿠폰 확인
+  const handleCouponSubmit = async () => {
+    if (!data) return;
+
+    if (couponCode === "1234") {
+      setCouponError("");
+      // 결제 완료 처리
+      const { markSajuLovePaid } = await import("@/lib/db/sajuLoveDB");
+      await markSajuLovePaid(data.id);
+      router.push(`/saju-love/result?id=${encodeURIComponent(data.id)}`);
+    } else {
+      setCouponError("유효하지 않은 쿠폰입니다");
+    }
   };
 
   // 결제 요청
@@ -990,6 +1007,27 @@ function SajuDetailContent() {
                   ).toLocaleString()}
                   원
                 </div>
+              </div>
+
+              {/* 쿠폰 입력 */}
+              <div className="coupon-input-wrap">
+                <div className="coupon-input-label">쿠폰 코드</div>
+                <div className="coupon-input-row">
+                  <input
+                    type="text"
+                    className="coupon-input"
+                    placeholder="쿠폰 코드를 입력하세요"
+                    value={couponCode}
+                    onChange={(e) => {
+                      setCouponCode(e.target.value);
+                      setCouponError("");
+                    }}
+                  />
+                  <button className="coupon-submit-btn" onClick={handleCouponSubmit}>
+                    확인
+                  </button>
+                </div>
+                {couponError && <div className="coupon-error">{couponError}</div>}
               </div>
 
               <div id="saju-payment-method" style={{ padding: 0, margin: 0 }} />

@@ -818,6 +818,61 @@
   color: #e74c3c;
 }
 
+/* 쿠폰 입력 */
+.coupon-input-wrap {
+  width: 100%;
+  margin-top: 16px;
+  padding: 16px;
+  background: #f9f9f9;
+  border-radius: 8px;
+}
+
+.coupon-input-label {
+  font-size: 13px;
+  font-weight: 500;
+  color: #333;
+  margin-bottom: 8px;
+}
+
+.coupon-input-row {
+  display: flex;
+  gap: 8px;
+}
+
+.coupon-input {
+  flex: 1;
+  padding: 10px 12px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 14px;
+  outline: none;
+}
+
+.coupon-input:focus {
+  border-color: #e74c3c;
+}
+
+.coupon-submit-btn {
+  padding: 10px 16px;
+  background: #e74c3c;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.coupon-submit-btn:active {
+  background: #c0392b;
+}
+
+.coupon-error {
+  margin-top: 8px;
+  font-size: 12px;
+  color: #e74c3c;
+}
+
 .payment-final-price-wrap {
   width: 100%;
   display: flex;
