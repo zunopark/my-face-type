@@ -531,11 +531,12 @@
 
 /* 이런 내용을 알려드려요 박스 */
 .info_preview_box {
-  background: #fff9f9;
-  border: 1px solid #ffe0e0;
-  border-radius: 16px;
-  padding: 24px 20px;
   text-align: center;
+}
+
+.info_preview_box img {
+  width: 100%;
+  display: block;
 }
 
 .info_preview_lock {
