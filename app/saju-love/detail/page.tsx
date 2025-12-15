@@ -4,7 +4,7 @@
 // 🔧 결제 스킵 설정 (개발/테스트용)
 // true: 결제 없이 바로 결과 페이지로 이동
 // false: 정상 결제 프로세스 진행
-const SKIP_PAYMENT = true;
+const SKIP_PAYMENT = false;
 // ============================================================
 
 import { useEffect, useState, Suspense, useRef } from "react";
