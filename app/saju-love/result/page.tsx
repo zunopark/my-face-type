@@ -5,7 +5,6 @@ import { useSearchParams, useRouter } from "next/navigation";
 // 클라이언트에서 직접 FastAPI 호출 (Netlify 타임아웃 우회)
 const SAJU_API_URL = process.env.NEXT_PUBLIC_SAJU_API_URL;
 import { getSajuLoveRecord, updateSajuLoveRecord, SajuLoveRecord } from "@/lib/db/sajuLoveDB";
-import Link from "next/link";
 import "./result.css";
 
 // 연애 사주 분석 결과 타입
@@ -104,7 +103,7 @@ const getChapterConfig = (userName: string): Record<string, { intro: string; out
   },
   chapter6: {
     // 6장: 색동낭자의 귀띔 (고민 답변)
-    intro: `자, 이제 마지막 장이에요.\n${userName}님의 고민에 대한 답을 드릴게요.`,
+    intro: `${userName}님의 고민에 제가 답변드릴게요.`,
     outro: "",
     introBg: "/saju-love/img/nangja-24.jpg",
     reportBg: "/saju-love/img/nangja-25.jpg",
@@ -293,12 +292,28 @@ function SajuLoveResultContent() {
       }
     });
 
-    // 26. 마무리 메시지
+    // 26. 마무리 전 대화
+    result.push({
+      id: "ending-intro",
+      type: "dialogue",
+      content: `${userName}님, 여기까지 긴 여정 함께해주셔서 감사해요.\n어떠셨어요? 연애 사주를 보니 조금은 마음이 풀리셨나요?`,
+      bgImage: "/saju-love/img/nangja-1.jpg",
+    });
+
+    // 27. 마무리 인사
+    result.push({
+      id: "ending-outro",
+      type: "dialogue",
+      content: `앞으로의 인연 길에\n늘 좋은 일만 가득하시길 바랄게요.\n\n그럼, 마지막 인사를 담아드릴게요.`,
+      bgImage: "/saju-love/img/nangja-1.jpg",
+    });
+
+    // 28. 마무리 메시지
     result.push({
       id: "ending",
       type: "ending",
       content: "",
-      bgImage: "/saju-love/img/nangja-26.jpg",
+      bgImage: "/saju-love/img/nangja-1.jpg",
     });
 
     return result;
@@ -800,12 +815,12 @@ function SajuLoveResultContent() {
           <div className={`report_bottom_btn_wrap ${canProceed ? "visible" : ""}`}>
             {currentMsg.type === "ending" ? (
               <div className="end_buttons">
-                <Link href="/saju-love" className="dialogue_next_btn">
-                  다시 분석하기
-                </Link>
-                <Link href="/" className="dialogue_secondary_btn">
+                <button className="dialogue_next_btn" onClick={() => window.location.reload()}>
+                  처음부터 다시 보기
+                </button>
+                <button className="dialogue_secondary_btn" onClick={() => setShowExitModal(true)}>
                   홈으로
-                </Link>
+                </button>
               </div>
             ) : (
               <div className="report_nav_buttons">
@@ -2212,23 +2227,23 @@ function IntroCard({ userName }: { userName: string }) {
         <div className="intro_ohang_circle">
           <div className="ohang_circle_wrapper">
             <div className="ohang_node fire top">
-              <span className="ohang_label">화(火)</span>
+              <span className="ohang_label">화</span>
               <span className="ohang_desc">열정</span>
             </div>
             <div className="ohang_node wood left-top">
-              <span className="ohang_label">목(木)</span>
+              <span className="ohang_label">목</span>
               <span className="ohang_desc">성장</span>
             </div>
             <div className="ohang_node earth right-top">
-              <span className="ohang_label">토(土)</span>
+              <span className="ohang_label">토</span>
               <span className="ohang_desc">안정</span>
             </div>
             <div className="ohang_node water left-bottom">
-              <span className="ohang_label">수(水)</span>
+              <span className="ohang_label">수</span>
               <span className="ohang_desc">지혜</span>
             </div>
             <div className="ohang_node metal right-bottom">
-              <span className="ohang_label">금(金)</span>
+              <span className="ohang_label">금</span>
               <span className="ohang_desc">원칙</span>
             </div>
           </div>
@@ -2474,7 +2489,6 @@ function EndingCard({ data }: { data: SajuLoveRecord | null }) {
           {/* 들어가며 */}
           <div className="report_card summary_report_card">
             <div className="card_header">
-              <span className="card_label">들어가며</span>
               <h3 className="card_title">색동낭자의 인사</h3>
             </div>
             <div className="card_content intro_summary_content">
@@ -2505,8 +2519,7 @@ function EndingCard({ data }: { data: SajuLoveRecord | null }) {
                 <div key={index}>
                   <div className="report_card summary_report_card">
                     <div className="card_header">
-                      <span className="card_label">{chapterNum}장</span>
-                      <h3 className="card_title">{titleText}</h3>
+                      <h3 className="card_title">{chapterNum}장 {titleText}</h3>
                     </div>
                     <div
                       className="card_content"
@@ -2517,7 +2530,6 @@ function EndingCard({ data }: { data: SajuLoveRecord | null }) {
                   {isChapter3 && idealPartnerImage && (
                     <div className="report_card summary_ideal_card">
                       <div className="card_header">
-                        <span className="card_label">보너스</span>
                         <h3 className="card_title">{userName}님의 이상형</h3>
                       </div>
                       <div className="summary_ideal_image">
@@ -2538,11 +2550,10 @@ function EndingCard({ data }: { data: SajuLoveRecord | null }) {
   );
 }
 
-// 마무리 카드용 사주 원국 (전체 버전)
+// 마무리 카드용 사주 원국 (간소화 버전)
 function SummmarySajuCard({ data }: { data: SajuLoveRecord }) {
   const userName = data.input?.userName || "고객";
   const pillars = data.sajuData?.pillars || {};
-  const sajuData = data.sajuData;
   const dayMaster = data.sajuData?.dayMaster;
   const input = data.input;
 
@@ -2558,247 +2569,45 @@ function SummmarySajuCard({ data }: { data: SajuLoveRecord }) {
 
   const birthTime = formatTimeToSi(input?.time);
   const pillarOrder = ["hour", "day", "month", "year"] as const;
+  const pillarLabels = ["시주", "일주", "월주", "년주"];
 
   return (
     <div className="report_card summary_report_card summary_saju_card">
       <div className="card_header">
-        <span className="card_label">사주 원국</span>
-        <h3 className="card_title">{userName}님의 타고난 운명</h3>
+        <h3 className="card_title">{userName}님의 사주 원국</h3>
       </div>
 
-      <div className="info_card">
-        <div className="info_main">
-          <span className="info_name">{input?.userName}</span>
-          <span className="info_birth">
-            {input?.date}{birthTime ? ` | ${birthTime}` : ""}
-          </span>
-        </div>
+      {/* 기본 정보 */}
+      <div className="summary_saju_info">
+        <p className="summary_saju_birth">
+          {input?.userName} · {input?.date}{birthTime ? ` · ${birthTime}` : ""}
+        </p>
         {dayMaster && (
-          <div className="info_ilju">
-            <span className="ilju_char" style={{ color: getColor(dayMaster.element) }}>{dayMaster.char}</span>
-            <span className="ilju_title">{dayMaster.title}</span>
-          </div>
+          <p className="summary_saju_daymaster">
+            <span className="daymaster_char" style={{ color: getColor(dayMaster.element) }}>{dayMaster.char}</span>
+            <span className="daymaster_title">{dayMaster.title}</span>
+          </p>
         )}
       </div>
 
-      {/* 사주 팔자 테이블 */}
-      <div className="pillars_section">
-        <div className="pillars_header">
-          <span className="material-icons">view_column</span>
-          사주 팔자
-        </div>
-        <div className="saju_table_wrap">
-          <table className="saju_table">
-            <thead>
-              <tr>
-                <th></th>
-                <th>생시</th>
-                <th>생일</th>
-                <th>생월</th>
-                <th>생년</th>
-              </tr>
-            </thead>
-            <tbody>
-              {/* 천간 */}
-              <tr className="row_cheongan">
-                <td className="row_label">천간</td>
-                {pillarOrder.map((key) => {
-                  const p = pillars[key];
-                  if (!p?.stem?.char) return <td key={key} className="cell_empty">—</td>;
-                  return (
-                    <td key={key}>
-                      <span className="char_main" style={{ color: getColor(p.stem.element) }}>
-                        {p.stem.char}{p.stem.korean}
-                      </span>
-                      <span className="char_element" style={{ color: getColor(p.stem.element) }}>
-                        {getElementKorean(p.stem.element, p.stem.yinYang)}
-                      </span>
-                    </td>
-                  );
-                })}
-              </tr>
-              {/* 십성 (천간) */}
-              <tr className="row_sipsung">
-                <td className="row_label">십성</td>
-                {pillarOrder.map((key) => {
-                  const p = pillars[key];
-                  return (
-                    <td key={key} className="cell_sipsung" style={{ color: getColor(p?.stem?.element) }}>
-                      {p?.tenGodStem || "—"}
-                    </td>
-                  );
-                })}
-              </tr>
-              {/* 지지 */}
-              <tr className="row_jiji">
-                <td className="row_label">지지</td>
-                {pillarOrder.map((key) => {
-                  const p = pillars[key];
-                  if (!p?.branch?.char) return <td key={key} className="cell_empty">—</td>;
-                  return (
-                    <td key={key}>
-                      <span className="char_main" style={{ color: getColor(p.branch.element) }}>
-                        {p.branch.char}{p.branch.korean}
-                      </span>
-                      <span className="char_element" style={{ color: getColor(p.branch.element) }}>
-                        {getElementKorean(p.branch.element, p.branch.yinYang)}
-                      </span>
-                    </td>
-                  );
-                })}
-              </tr>
-              {/* 십성 (지지) */}
-              <tr className="row_sipsung">
-                <td className="row_label">십성</td>
-                {pillarOrder.map((key) => {
-                  const p = pillars[key];
-                  return (
-                    <td key={key} className="cell_sipsung" style={{ color: getColor(p?.branch?.element) }}>
-                      {p?.tenGodBranchMain || "—"}
-                    </td>
-                  );
-                })}
-              </tr>
-              {/* 지장간 */}
-              <tr className="row_extra">
-                <td className="row_label">지장간</td>
-                {pillarOrder.map((key) => {
-                  const p = pillars[key];
-                  const jijanggan = p?.jijanggan;
-                  let displayValue = "—";
-                  if (typeof jijanggan === 'string') {
-                    displayValue = jijanggan;
-                  } else if (jijanggan && typeof jijanggan === 'object') {
-                    const obj = jijanggan as { display?: string; displayKorean?: string };
-                    if (obj.display && obj.displayKorean) {
-                      displayValue = `${obj.display}(${obj.displayKorean})`;
-                    } else {
-                      displayValue = obj.displayKorean || obj.display || "—";
-                    }
-                  }
-                  return <td key={key} className="cell_extra">{displayValue}</td>;
-                })}
-              </tr>
-              {/* 12운성 */}
-              <tr className="row_extra">
-                <td className="row_label">12운성</td>
-                {pillarOrder.map((key) => {
-                  const p = pillars[key];
-                  const twelveStage = (p as unknown as { twelveStage?: string })?.twelveStage || p?.twelveUnsung;
-                  const displayValue = typeof twelveStage === 'string'
-                    ? twelveStage
-                    : (twelveStage as unknown as { display?: string })?.display || "—";
-                  return <td key={key} className="cell_extra">{displayValue}</td>;
-                })}
-              </tr>
-              {/* 12신살 */}
-              <tr className="row_extra">
-                <td className="row_label">12신살</td>
-                {pillarOrder.map((key) => {
-                  const p = pillars[key];
-                  const twelveSinsal = p?.twelveSinsal;
-                  const displayValue = typeof twelveSinsal === 'string'
-                    ? twelveSinsal
-                    : (twelveSinsal as unknown as { display?: string })?.display || "—";
-                  return <td key={key} className="cell_extra">{displayValue}</td>;
-                })}
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-
-      {/* 신살과 길성 */}
-      <div className="sinsal_section">
-        <div className="sinsal_header">
-          <span className="material-icons">auto_awesome</span>
-          신살과 길성
-        </div>
-        <p className="sinsal_tags">
-          {sajuData?.sinsal?._active && sajuData.sinsal._active.length > 0 ? (
-            sajuData.sinsal._active.map((name, i, arr) => {
-              const isLoveSinsal = name === "도화살" || name === "홍염살" || name === "화개살";
-              return (
-                <span key={i} className={isLoveSinsal ? "love" : "normal"}>
-                  {name}{i < arr.length - 1 ? ", " : ""}
+      {/* 간소화된 사주 팔자 */}
+      <div className="summary_pillars">
+        {pillarOrder.map((key, idx) => {
+          const p = pillars[key];
+          return (
+            <div key={key} className="summary_pillar">
+              <span className="pillar_label">{pillarLabels[idx]}</span>
+              <div className="pillar_chars">
+                <span className="pillar_stem" style={{ color: getColor(p?.stem?.element) }}>
+                  {p?.stem?.char || "—"}
                 </span>
-              );
-            })
-          ) : (
-            <span className="sinsal_empty">특이 신살 없음</span>
-          )}
-        </p>
-
-        {/* 신살과 길성 테이블 */}
-        <div className="sinsal_table_wrap">
-          <table className="sinsal_table">
-            <thead>
-              <tr>
-                <th></th>
-                <th>생시</th>
-                <th>생일</th>
-                <th>생월</th>
-                <th>생년</th>
-              </tr>
-            </thead>
-            <tbody>
-              {/* 천간 */}
-              <tr>
-                <td className="row_label">천간</td>
-                {pillarOrder.map((key) => {
-                  const p = pillars[key];
-                  return (
-                    <td key={key}>
-                      <span className="char_hanja" style={{ color: getColor(p?.stem?.element) }}>
-                        {p?.stem?.char || "—"}
-                      </span>
-                    </td>
-                  );
-                })}
-              </tr>
-              {/* 천간 신살/길성 */}
-              <tr>
-                <td className="row_label">신살</td>
-                {pillarOrder.map((key) => {
-                  const byPillar = sajuData?.sinsal?._byPillar;
-                  const stemSinsal = byPillar?.[key]?.stem || [];
-                  return (
-                    <td key={key} className="cell_gilsung">
-                      {stemSinsal.length > 0 ? stemSinsal.join(", ") : "×"}
-                    </td>
-                  );
-                })}
-              </tr>
-              {/* 지지 */}
-              <tr>
-                <td className="row_label">지지</td>
-                {pillarOrder.map((key) => {
-                  const p = pillars[key];
-                  return (
-                    <td key={key}>
-                      <span className="char_hanja" style={{ color: getColor(p?.branch?.element) }}>
-                        {p?.branch?.char || "—"}
-                      </span>
-                    </td>
-                  );
-                })}
-              </tr>
-              {/* 지지 신살/길성 */}
-              <tr>
-                <td className="row_label">신살</td>
-                {pillarOrder.map((key) => {
-                  const byPillar = sajuData?.sinsal?._byPillar;
-                  const branchSinsal = byPillar?.[key]?.branch || [];
-                  return (
-                    <td key={key} className="cell_gilsung">
-                      {branchSinsal.length > 0 ? branchSinsal.join(", ") : "×"}
-                    </td>
-                  );
-                })}
-              </tr>
-            </tbody>
-          </table>
-        </div>
+                <span className="pillar_branch" style={{ color: getColor(p?.branch?.element) }}>
+                  {p?.branch?.char || "—"}
+                </span>
+              </div>
+            </div>
+          );
+        })}
       </div>
     </div>
   );
