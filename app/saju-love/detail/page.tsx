@@ -316,7 +316,7 @@ function SajuDetailContent() {
   const handleCouponSubmit = async () => {
     if (!data) return;
 
-    if (couponCode === "1234") {
+    if (couponCode === "1234" || couponCode === "chaerin") {
       setCouponError("");
       // 결제 완료 처리
       const { markSajuLovePaid } = await import("@/lib/db/sajuLoveDB");
