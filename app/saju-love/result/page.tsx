@@ -184,7 +184,7 @@ function SajuLoveResultContent() {
   };
 
   // 메시지 리스트 생성
-  // 흐름: 첫 인사 → [1장] → [2장] → [3장] → 이상형 이미지 → [4장] → [5장] → [6장] → 엔딩
+  // 흐름: 첫 인사 → [1장] → [2장] → [3장] → 운명의 상대 이미지 → [4장] → [5장] → [6장] → 엔딩
   const buildMessageList = useCallback((record: SajuLoveRecord): MessageItem[] => {
     const result: MessageItem[] = [];
     const userName = record.loveAnalysis?.user_name || record.input?.userName || "고객";
@@ -232,7 +232,7 @@ function SajuLoveResultContent() {
     });
 
     // 6. 각 챕터별 [intro 대화 → 리포트 → outro 대화]
-    // 3장 이후에 이상형 이미지 삽입
+    // 3장 이후에 운명의 상대 이미지 삽입
     const chapterConfig = getChapterConfig(userName);
     chapters.forEach((chapter, index) => {
       const chapterKey = getChapterKey(chapter);
@@ -268,7 +268,7 @@ function SajuLoveResultContent() {
         });
       }
 
-      // 3장 이후에 이상형 이미지 삽입
+      // 3장 이후에 운명의 상대 이미지 삽입
       if (chapterNum === 3 && hasIdealImage) {
         result.push({
           id: "ideal-type-dialogue",
@@ -902,7 +902,7 @@ function ReportCard({
   );
 }
 
-// 이상형 이미지 카드
+// 운명의 상대 이미지 카드
 function IdealTypeCard({ imageBase64, userName }: { imageBase64: string; userName: string }) {
   const [clickCount, setClickCount] = useState(0);
   const [isShaking, setIsShaking] = useState(false);
@@ -930,8 +930,7 @@ function IdealTypeCard({ imageBase64, userName }: { imageBase64: string; userNam
   return (
     <div className="report_card ideal_type_card">
       <div className="card_header">
-        <span className="card_label">운명의 상대</span>
-        <h3 className="card_title">{userName}님의 이상형</h3>
+        <h3 className="card_title">{userName}님의 운명의 상대</h3>
       </div>
       <div
         className={`ideal_image_wrap ${isRevealed ? "revealed" : "blurred"} ${isShaking ? "shake" : ""}`}
@@ -939,7 +938,7 @@ function IdealTypeCard({ imageBase64, userName }: { imageBase64: string; userNam
       >
         <img
           src={`data:image/png;base64,${imageBase64}`}
-          alt="이상형 이미지"
+          alt="운명의 상대 이미지"
           className="ideal_image"
           style={{ filter: `blur(${blurLevel}px)`, transition: "filter 0.4s ease-out" }}
         />
@@ -2412,7 +2411,7 @@ function TocModal({
     { label: "1장: 나만의 매력과 연애 성향", targetId: "chapter-chapter1-report" },
     { label: "2장: 앞으로 펼쳐질 사랑의 흐름", targetId: "chapter-chapter2-report" },
     { label: "3장: 결국 만나게 될 운명의 상대", targetId: "chapter-chapter3-report" },
-    { label: "보너스: 이상형 초상화", targetId: "ideal-type-image" },
+    { label: "보너스: 운명의 상대 이미지", targetId: "ideal-type-image" },
     { label: "4장: 운명이라 착각하는 가짜 인연", targetId: "chapter-chapter4-report" },
     { label: "5장: 누구에게도 말 못할, 19금 사주 풀이", targetId: "chapter-chapter5-report" },
     { label: "6장: 색동낭자의 귀띔", targetId: "chapter-chapter6-report" },
@@ -2526,16 +2525,16 @@ function EndingCard({ data }: { data: SajuLoveRecord | null }) {
                       dangerouslySetInnerHTML={{ __html: formatChapterContent(chapter.content) }}
                     />
                   </div>
-                  {/* 3장 뒤에 이상형 이미지 표시 */}
+                  {/* 3장 뒤에 운명의 상대 이미지 표시 */}
                   {isChapter3 && idealPartnerImage && (
                     <div className="report_card summary_ideal_card">
                       <div className="card_header">
-                        <h3 className="card_title">{userName}님의 이상형</h3>
+                        <h3 className="card_title">{userName}님의 운명의 상대</h3>
                       </div>
                       <div className="summary_ideal_image">
                         <img
                           src={`data:image/png;base64,${idealPartnerImage}`}
-                          alt="이상형 이미지"
+                          alt="운명의 상대 이미지"
                           className="ideal_image_full"
                         />
                       </div>
