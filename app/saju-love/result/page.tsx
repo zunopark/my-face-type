@@ -905,7 +905,6 @@ function SajuLoveResultContent() {
       {/* 배경 이미지 */}
       <div className="result_bg">
         <img
-          key={currentBgImage}
           src={currentBgImage}
           alt=""
           className="result_bg_image"
