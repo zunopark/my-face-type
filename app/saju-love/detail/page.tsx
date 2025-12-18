@@ -48,9 +48,9 @@ const PAYMENT_CONFIG = {
   clientKey:
     process.env.NEXT_PUBLIC_TOSS_CLIENT_KEY ||
     "live_gck_yZqmkKeP8gBaRKPg1WwdrbQRxB9l",
-  price: 9900,
-  discountPrice: 7900,
-  originalPrice: 24900,
+  price: 14900,
+  discountPrice: 9900,
+  originalPrice: 32900,
   orderName: "AI 연애 사주 심층 분석",
 };
 
@@ -753,7 +753,10 @@ function SajuDetailContent() {
               {/* 활성화된 신살 태그들 */}
               {sajuData.sinsal?._active?.map((name, i) => {
                 // 연애 신살(도화살, 홍염살, 화개살)은 붉은색
-                const isLoveSinsal = name.includes("도화") || name.includes("홍염") || name.includes("화개");
+                const isLoveSinsal =
+                  name.includes("도화") ||
+                  name.includes("홍염") ||
+                  name.includes("화개");
                 return (
                   <span
                     key={i}
@@ -888,7 +891,10 @@ function SajuDetailContent() {
           {/* 이런 내용을 알려드려요 */}
           <div className="info_preview_box">
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="/saju-love/img/info_preview_box.jpg" alt="이런 내용을 알려드려요" />
+            <img
+              src="/saju-love/img/info_preview_box.jpg"
+              alt="이런 내용을 알려드려요"
+            />
           </div>
         </section>
 
@@ -926,12 +932,32 @@ function SajuDetailContent() {
                   <div className="report-toc-badge">10,000자 이상</div>
                 </div>
                 <ul className="report-toc-list">
-                  <li><span>1장. 나만의 매력과 연애 성향</span><span className="toc-keywords">첫인상, 연애스타일, 끌리는 유형</span></li>
-                  <li><span>2장. 앞으로 펼쳐질 사랑의 흐름</span><span className="toc-keywords">3년 운세, 이번 달 운세</span></li>
-                  <li><span>3장. 결국 만나게 될 운명의 상대</span><span className="toc-keywords">운명의 상대, 만남 시기</span></li>
-                  <li><span>4장. 운명이라 착각하는 가짜 인연</span><span className="toc-keywords">위험 신호, 필터링</span></li>
-                  <li><span>5장. 누구에게도 말 못할, 19금 사주 풀이</span><span className="toc-keywords">성적 매력, 궁합</span></li>
-                  <li><span>6장. 색동낭자의 귀띔</span><span className="toc-keywords">맞춤 조언</span></li>
+                  <li>
+                    <span>1장. 나만의 매력과 연애 성향</span>
+                    <span className="toc-keywords">
+                      첫인상, 연애스타일, 끌리는 유형
+                    </span>
+                  </li>
+                  <li>
+                    <span>2장. 앞으로 펼쳐질 사랑의 흐름</span>
+                    <span className="toc-keywords">3년 운세, 이번 달 운세</span>
+                  </li>
+                  <li>
+                    <span>3장. 결국 만나게 될 운명의 상대</span>
+                    <span className="toc-keywords">운명의 상대, 만남 시기</span>
+                  </li>
+                  <li>
+                    <span>4장. 운명이라 착각하는 가짜 인연</span>
+                    <span className="toc-keywords">위험 신호, 필터링</span>
+                  </li>
+                  <li>
+                    <span>5장. 누구에게도 말 못할, 19금 사주 풀이</span>
+                    <span className="toc-keywords">성적 매력, 궁합</span>
+                  </li>
+                  <li>
+                    <span>6장. 색동낭자의 귀띔</span>
+                    <span className="toc-keywords">맞춤 조언</span>
+                  </li>
                 </ul>
               </div>
 
@@ -971,11 +997,16 @@ function SajuDetailContent() {
                       setCouponError("");
                     }}
                   />
-                  <button className="coupon-submit-btn" onClick={handleCouponSubmit}>
+                  <button
+                    className="coupon-submit-btn"
+                    onClick={handleCouponSubmit}
+                  >
                     확인
                   </button>
                 </div>
-                {couponError && <div className="coupon-error">{couponError}</div>}
+                {couponError && (
+                  <div className="coupon-error">{couponError}</div>
+                )}
               </div>
 
               <div id="saju-payment-method" style={{ padding: 0, margin: 0 }} />
@@ -1034,12 +1065,32 @@ function SajuDetailContent() {
                   <div className="report-toc-badge">10,000자 이상</div>
                 </div>
                 <ul className="report-toc-list">
-                  <li><span>1장. 나만의 매력과 연애 성향</span><span className="toc-keywords">첫인상, 연애스타일, 끌리는 유형</span></li>
-                  <li><span>2장. 앞으로 펼쳐질 사랑의 흐름</span><span className="toc-keywords">3년 운세, 이번 달 운세</span></li>
-                  <li><span>3장. 결국 만나게 될 운명의 상대</span><span className="toc-keywords">운명의 상대, 만남 시기</span></li>
-                  <li><span>4장. 운명이라 착각하는 가짜 인연</span><span className="toc-keywords">위험 신호, 필터링</span></li>
-                  <li><span>5장. 누구에게도 말 못할, 19금 사주 풀이</span><span className="toc-keywords">성적 매력, 궁합</span></li>
-                  <li><span>6장. 색동낭자의 귀띔</span><span className="toc-keywords">맞춤 조언</span></li>
+                  <li>
+                    <span>1장. 나만의 매력과 연애 성향</span>
+                    <span className="toc-keywords">
+                      첫인상, 연애스타일, 끌리는 유형
+                    </span>
+                  </li>
+                  <li>
+                    <span>2장. 앞으로 펼쳐질 사랑의 흐름</span>
+                    <span className="toc-keywords">3년 운세, 이번 달 운세</span>
+                  </li>
+                  <li>
+                    <span>3장. 결국 만나게 될 운명의 상대</span>
+                    <span className="toc-keywords">운명의 상대, 만남 시기</span>
+                  </li>
+                  <li>
+                    <span>4장. 운명이라 착각하는 가짜 인연</span>
+                    <span className="toc-keywords">위험 신호, 필터링</span>
+                  </li>
+                  <li>
+                    <span>5장. 누구에게도 말 못할, 19금 사주 풀이</span>
+                    <span className="toc-keywords">성적 매력, 궁합</span>
+                  </li>
+                  <li>
+                    <span>6장. 색동낭자의 귀띔</span>
+                    <span className="toc-keywords">맞춤 조언</span>
+                  </li>
                 </ul>
               </div>
 
@@ -1055,7 +1106,7 @@ function SajuDetailContent() {
               </div>
               <div className="payment-coupon-price-wrap">
                 <div className="payment-coupon-title">
-                  양반家 연애 사주 출시 기념 + 추가 2천원 할인
+                  양반家 연애 사주 출시 기념 + 추가 5천원 할인
                 </div>
                 <div className="payment-coupon-price">
                   -
