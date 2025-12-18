@@ -361,7 +361,7 @@ function SajuDetailContent() {
       router.push(`/saju-love/result?id=${encodeURIComponent(data.id)}`);
     }
     // 할인 쿠폰 (5000원 할인)
-    else if (couponCode === "boniiii" || couponCode === "serinn") {
+    else if (couponCode === "boniiii" || couponCode === "차세린") {
       setCouponError("");
       setAppliedCoupon({ code: couponCode, discount: 5000 });
 
@@ -399,7 +399,9 @@ function SajuDetailContent() {
 
     try {
       await paymentWidgetRef.current.requestPayment({
-        orderId: `saju-love${appliedCoupon ? `-${appliedCoupon.code}` : ""}_${Date.now()}`,
+        orderId: `saju-love${
+          appliedCoupon ? `-${appliedCoupon.code}` : ""
+        }_${Date.now()}`,
         orderName: appliedCoupon
           ? `${PAYMENT_CONFIG.orderName} - ${appliedCoupon.code} 할인`
           : PAYMENT_CONFIG.orderName,
@@ -1002,7 +1004,10 @@ function SajuDetailContent() {
               <div className="payment-coupon-wrap">
                 <div className="payment-coupon">특별 할인</div>
               </div>
-              <div className="payment-coupon-price-wrap" style={appliedCoupon ? { borderBottom: "none" } : undefined}>
+              <div
+                className="payment-coupon-price-wrap"
+                style={appliedCoupon ? { borderBottom: "none" } : undefined}
+              >
                 <div className="payment-coupon-title">
                   양반家 연애 사주 출시 기념
                 </div>
@@ -1017,11 +1022,25 @@ function SajuDetailContent() {
 
               {/* 쿠폰 할인 적용 표시 */}
               {appliedCoupon && (
-                <div className="payment-coupon-price-wrap" style={{ background: "none", paddingTop: "12px", paddingBottom: "12px", border: "none" }}>
-                  <div className="payment-coupon-title" style={{ color: "#333" }}>
+                <div
+                  className="payment-coupon-price-wrap"
+                  style={{
+                    background: "none",
+                    paddingTop: "12px",
+                    paddingBottom: "12px",
+                    border: "none",
+                  }}
+                >
+                  <div
+                    className="payment-coupon-title"
+                    style={{ color: "#333" }}
+                  >
                     {appliedCoupon.code} 쿠폰 적용
                   </div>
-                  <div className="payment-coupon-price" style={{ color: "#e74c3c" }}>
+                  <div
+                    className="payment-coupon-price"
+                    style={{ color: "#e74c3c" }}
+                  >
                     -{appliedCoupon.discount.toLocaleString()}원
                   </div>
                 </div>
@@ -1077,7 +1096,9 @@ function SajuDetailContent() {
                     </div>
                     <div className="payment-final-price-num">
                       {appliedCoupon
-                        ? (PAYMENT_CONFIG.price - appliedCoupon.discount).toLocaleString()
+                        ? (
+                            PAYMENT_CONFIG.price - appliedCoupon.discount
+                          ).toLocaleString()
                         : PAYMENT_CONFIG.price.toLocaleString()}
                       원
                     </div>
