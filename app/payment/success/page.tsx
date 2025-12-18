@@ -99,7 +99,12 @@ function SuccessContent() {
         try {
           if (reportType === "saju") {
             // 사주 결제인 경우
-            await markSajuLovePaid(resultId);
+            const isDiscount = orderId?.includes("discount") || false;
+            await markSajuLovePaid(resultId, {
+              method: "toss",
+              price: Number(amount),
+              isDiscount,
+            });
           } else if (reportType === "couple") {
             // 궁합 결제인 경우
             await markCoupleAnalysisPaid(resultId);

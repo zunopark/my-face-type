@@ -15,6 +15,7 @@ import {
   trackPaymentModalOpen,
   trackPaymentModalClose,
   trackPaymentAttempt,
+  trackPaymentSuccess,
 } from "@/lib/mixpanel";
 import { getSajuLoveRecord, SajuLoveRecord } from "@/lib/db/sajuLoveDB";
 import "./detail.css";
@@ -246,7 +247,15 @@ function SajuDetailContent() {
         setIsLoading(false);
 
         trackPageView("saju_love_detail", {
+          id: record.id,
           gender: record.input.gender,
+          user_name: record.input.userName,
+          birth_date: record.input.date,
+          birth_time: record.input.time || "모름",
+          status: record.input.status,
+          user_concern: record.input.userConcern,
+          day_master: record.sajuData.dayMaster?.char,
+          day_master_title: record.sajuData.dayMaster?.title,
         });
       } else {
         router.push("/saju-love");
@@ -291,6 +300,11 @@ function SajuDetailContent() {
     trackPaymentModalOpen("saju_love", {
       id: data.id,
       price: PAYMENT_CONFIG.price,
+      user_name: data.input.userName,
+      gender: data.input.gender,
+      birth_date: data.input.date,
+      day_master: data.sajuData.dayMaster?.char,
+      user_concern: data.input.userConcern,
     });
 
     setShowPaymentModal(true);
@@ -318,9 +332,27 @@ function SajuDetailContent() {
 
     if (couponCode === "1234" || couponCode === "chaerin") {
       setCouponError("");
+
+      // 쿠폰 결제 성공 추적
+      trackPaymentSuccess("saju_love", {
+        id: data.id,
+        price: 0,
+        payment_method: "coupon",
+        coupon_code: couponCode,
+        user_name: data.input.userName,
+        gender: data.input.gender,
+        birth_date: data.input.date,
+        day_master: data.sajuData.dayMaster?.char,
+        user_concern: data.input.userConcern,
+      });
+
       // 결제 완료 처리
       const { markSajuLovePaid } = await import("@/lib/db/sajuLoveDB");
-      await markSajuLovePaid(data.id);
+      await markSajuLovePaid(data.id, {
+        method: "coupon",
+        price: 0,
+        couponCode: couponCode,
+      });
       router.push(`/saju-love/result?id=${encodeURIComponent(data.id)}`);
     } else {
       setCouponError("유효하지 않은 쿠폰입니다");
@@ -330,6 +362,17 @@ function SajuDetailContent() {
   // 결제 요청
   const handlePaymentRequest = async () => {
     if (!paymentWidgetRef.current || !data) return;
+
+    trackPaymentAttempt("saju_love", {
+      id: data.id,
+      price: PAYMENT_CONFIG.price,
+      is_discount: false,
+      user_name: data.input.userName,
+      gender: data.input.gender,
+      birth_date: data.input.date,
+      day_master: data.sajuData.dayMaster?.char,
+      user_concern: data.input.userConcern,
+    });
 
     try {
       await paymentWidgetRef.current.requestPayment({
@@ -402,6 +445,11 @@ function SajuDetailContent() {
         id: data.id,
         price: PAYMENT_CONFIG.discountPrice,
         is_discount: true,
+        user_name: data.input.userName,
+        gender: data.input.gender,
+        birth_date: data.input.date,
+        day_master: data.sajuData.dayMaster?.char,
+        user_concern: data.input.userConcern,
       });
 
       await discountWidgetRef.current.requestPayment({

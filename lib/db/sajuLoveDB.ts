@@ -9,6 +9,13 @@ export interface SajuLoveRecord {
   createdAt: string;
   paidAt?: string;
   paid: boolean;
+  // 결제 정보
+  paymentInfo?: {
+    method: "toss" | "coupon";
+    price: number;
+    couponCode?: string;
+    isDiscount?: boolean;
+  };
   input: {
     userName: string;
     gender: string;
@@ -169,9 +176,18 @@ export async function updateSajuLoveRecord(
   return saveSajuLoveRecord(updated);
 }
 
-export async function markSajuLovePaid(id: string): Promise<boolean> {
+export async function markSajuLovePaid(
+  id: string,
+  paymentInfo?: {
+    method: "toss" | "coupon";
+    price: number;
+    couponCode?: string;
+    isDiscount?: boolean;
+  }
+): Promise<boolean> {
   return updateSajuLoveRecord(id, {
     paid: true,
     paidAt: new Date().toISOString(),
+    paymentInfo,
   });
 }

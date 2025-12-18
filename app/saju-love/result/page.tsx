@@ -9,6 +9,7 @@ import {
   updateSajuLoveRecord,
   SajuLoveRecord,
 } from "@/lib/db/sajuLoveDB";
+import { trackPageView } from "@/lib/mixpanel";
 import "./result.css";
 
 // 연애 사주 분석 결과 타입
@@ -777,6 +778,25 @@ function SajuLoveResultContent() {
         router.push(`/saju-love/detail?id=${resultId}`);
         return;
       }
+
+      // 결과 페이지 방문 추적 (결제 완료된 사용자)
+      trackPageView("saju_love_result", {
+        id: record.id,
+        user_name: record.input.userName,
+        gender: record.input.gender,
+        birth_date: record.input.date,
+        birth_time: record.input.time || "모름",
+        status: record.input.status,
+        user_concern: record.input.userConcern,
+        day_master: record.sajuData.dayMaster?.char,
+        day_master_title: record.sajuData.dayMaster?.title,
+        paid: true,
+        // 결제 정보
+        payment_method: record.paymentInfo?.method,
+        payment_price: record.paymentInfo?.price,
+        coupon_code: record.paymentInfo?.couponCode,
+        is_discount: record.paymentInfo?.isDiscount,
+      });
 
       if (record.loveAnalysis) {
         setData(record);
