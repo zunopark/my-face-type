@@ -2178,16 +2178,6 @@
   height: 100%;
   object-fit: cover;
   object-position: top center;
-  animation: bgFadeIn 0.6s ease-in-out;
-}
-
-@keyframes bgFadeIn {
-  from {
-    opacity: 0.4;
-  }
-  to {
-    opacity: 1;
-  }
 }
 
 /* 뒤로가기 버튼 - iOS 글래스모피즘 */
