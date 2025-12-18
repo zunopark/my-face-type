@@ -4,16 +4,11 @@
   position: relative;
   background: #272727;
   background-image: linear-gradient(to top right, #5d5d5b, #383838);
-  box-shadow:
-    -1px 1px 2px 1px rgba(0, 0, 0, 0.1),
-    -2px 2px 2px 1px rgba(0, 0, 0, 0.09),
-    -3px 3px 2px 1px rgba(0, 0, 0, 0.08),
-    -4px 4px 2px 1px rgba(0, 0, 0, 0.07),
-    -5px 5px 2px 1px rgba(0, 0, 0, 0.06),
-    -6px 6px 2px 1px rgba(0, 0, 0, 0.05),
-    -7px 7px 2px 1px rgba(0, 0, 0, 0.04),
-    -8px 8px 2px 1px rgba(0, 0, 0, 0.03),
-    -9px 9px 2px 1px rgba(0, 0, 0, 0.03),
+  box-shadow: -1px 1px 2px 1px rgba(0, 0, 0, 0.1),
+    -2px 2px 2px 1px rgba(0, 0, 0, 0.09), -3px 3px 2px 1px rgba(0, 0, 0, 0.08),
+    -4px 4px 2px 1px rgba(0, 0, 0, 0.07), -5px 5px 2px 1px rgba(0, 0, 0, 0.06),
+    -6px 6px 2px 1px rgba(0, 0, 0, 0.05), -7px 7px 2px 1px rgba(0, 0, 0, 0.04),
+    -8px 8px 2px 1px rgba(0, 0, 0, 0.03), -9px 9px 2px 1px rgba(0, 0, 0, 0.03),
     -10px 10px 2px 1px rgba(0, 0, 0, 0.03),
     -11px 11px 2px 1px rgba(0, 0, 0, 0.03),
     -12px 12px 2px 1px rgba(0, 0, 0, 0.02),
@@ -24,7 +19,7 @@
 }
 
 .border::before {
-  content: '';
+  content: "";
   display: block;
   padding-bottom: 125%;
 }
@@ -67,9 +62,12 @@
   position: relative;
   width: 80%;
   height: 80%;
-  background:
-    linear-gradient(to bottom, rgba(44, 44, 44, 0.5) 0%, rgba(44, 44, 44, 0.5) 100%),
-    url('https://i.ibb.co/B2kj8Pk/man.png');
+  background: linear-gradient(
+      to bottom,
+      rgba(44, 44, 44, 0.5) 0%,
+      rgba(44, 44, 44, 0.5) 100%
+    ),
+    url("https://i.ibb.co/B2kj8Pk/man.png");
   background-size: cover;
   display: flex;
   flex-direction: column;
@@ -103,7 +101,7 @@
   align-items: center;
   text-align: center;
   font-size: 10px;
-  font-family: 'KimjungchulMyungjo-Bold', serif;
+  font-family: "KimjungchulMyungjo-Bold", serif;
 }
 
 .dragText h2 {

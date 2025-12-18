@@ -24,7 +24,8 @@ export const metadata: Metadata = {
     default: "관상 테스트 | 관상가 양반 | AI 관상 | AI 사주",
     template: "%s",
   },
-  description: "AI 관상 테스트로 나의 얼굴을 분석해보세요. 관상가 양반이 알려주는 관상, 동물상, 궁합, 연애 사주까지 한 번에!",
+  description:
+    "AI 관상 테스트로 나의 얼굴을 분석해보세요. 관상가 양반이 알려주는 관상, 동물상, 궁합, 연애 사주까지 한 번에!",
   keywords: [
     "관상 테스트",
     "관상",
@@ -54,10 +55,11 @@ export const metadata: Metadata = {
     locale: "ko_KR",
     siteName: "양반家",
     title: "관상 테스트 | 관상가 양반 | AI 관상 | AI 사주",
-    description: "AI 관상 테스트로 나의 얼굴을 분석해보세요. 관상가 양반이 알려주는 관상, 동물상, 궁합, 연애 사주까지 한 번에!",
+    description:
+      "AI 관상 테스트로 나의 얼굴을 분석해보세요. 관상가 양반이 알려주는 관상, 동물상, 궁합, 연애 사주까지 한 번에!",
     images: [
       {
-        url: "https://i.ibb.co/nPD5mmK/face.png",
+        url: "https://i.ibb.co/pVwxWdq/gvv.png",
         width: 1200,
         height: 630,
         alt: "관상가 양반",
@@ -67,7 +69,8 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "관상 테스트 | 관상가 양반 | AI 관상 | AI 사주",
-    description: "AI 관상 테스트로 나의 얼굴을 분석해보세요. 관상가 양반이 알려주는 관상, 동물상, 궁합, 연애 사주까지 한 번에!",
+    description:
+      "AI 관상 테스트로 나의 얼굴을 분석해보세요. 관상가 양반이 알려주는 관상, 동물상, 궁합, 연애 사주까지 한 번에!",
   },
   robots: {
     index: true,
@@ -87,7 +90,10 @@ export default function RootLayout({
     <html lang="ko" suppressHydrationWarning>
       <head>
         {/* 모바일 브라우저 자동 링크 변환 비활성화 */}
-        <meta name="format-detection" content="telephone=no, date=no, email=no, address=no" />
+        <meta
+          name="format-detection"
+          content="telephone=no, date=no, email=no, address=no"
+        />
         {/* Google Fonts */}
         <link
           href="https://fonts.googleapis.com/css?family=Asap:400,500,700"
@@ -102,10 +108,11 @@ export default function RootLayout({
           href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
         />
       </head>
-      <body className={`${kimjungchul.variable} antialiased bg-gray-50`} suppressHydrationWarning>
-        <MixpanelProvider>
-          {children}
-        </MixpanelProvider>
+      <body
+        className={`${kimjungchul.variable} antialiased bg-gray-50`}
+        suppressHydrationWarning
+      >
+        <MixpanelProvider>{children}</MixpanelProvider>
 
         {/* Google Analytics */}
         {process.env.NEXT_PUBLIC_GA_ID && (
@@ -139,7 +146,6 @@ export default function RootLayout({
           src="https://js.tosspayments.com/v1/payment-widget"
           strategy="beforeInteractive"
         />
-
       </body>
     </html>
   );
