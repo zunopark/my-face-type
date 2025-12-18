@@ -361,9 +361,9 @@ function SajuDetailContent() {
       router.push(`/saju-love/result?id=${encodeURIComponent(data.id)}`);
     }
     // 할인 쿠폰 (5000원 할인)
-    else if (couponCode === "boniiii") {
+    else if (couponCode === "boniiii" || couponCode === "serinn") {
       setCouponError("");
-      setAppliedCoupon({ code: "boniiii", discount: 5000 });
+      setAppliedCoupon({ code: couponCode, discount: 5000 });
 
       // 결제 위젯 금액 업데이트
       if (paymentWidgetRef.current) {
