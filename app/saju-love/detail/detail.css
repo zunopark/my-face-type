@@ -705,6 +705,8 @@
   padding: 34px 22px 28px 22px;
   box-shadow: 0 10px 28px rgba(0, 0, 0, 0.19);
   position: relative;
+  display: flex;
+  flex-direction: column;
 }
 
 .payment-header {
@@ -878,10 +880,11 @@
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  margin-top: 4px;
+  margin-top: 16px;
   font-weight: 500;
   border-top: 1px solid rgb(207, 207, 207);
   padding-top: 24px;
+  flex-shrink: 0;
 }
 
 .payment-final-price-title {
@@ -920,9 +923,14 @@
 #payment-method,
 #agreement,
 #saju-payment-method,
-#saju-agreement {
+#saju-agreement,
+#saju-discount-method,
+#saju-discount-agreement {
   width: 100%;
   padding: 0;
+  display: block;
+  clear: both;
+  flex-shrink: 0;
 }
 
 .payment-final-btn {
@@ -994,25 +1002,61 @@
   color: #e74c3c;
 }
 
-/* 결제 페이지 - 분석 내용 섹션 */
-.report-section {
-  padding: 16px 0;
-  border-bottom: 1px solid #f0f0f0;
+/* 결제 페이지 - 보고서 목차 */
+.report-toc {
+  padding: 16px 20px;
+  background: #fafafa;
+  border-radius: 12px;
+  margin: 16px 0;
 }
 
-.report-section:last-child {
+.report-toc-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.report-toc-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: #333;
+}
+
+.report-toc-badge {
+  font-size: 11px;
+  font-weight: 500;
+  color: #e74c3c;
+  background: #fff0f0;
+  padding: 4px 10px;
+  border-radius: 12px;
+  border: 1px solid #ffe0e0;
+}
+
+.report-toc-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.report-toc-list li {
+  font-size: 13px;
+  color: #555;
+  padding: 8px 0;
+  border-bottom: 1px solid #eee;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+}
+
+.report-toc-list li:last-child {
   border-bottom: none;
 }
 
-.report-section-title {
-  font-size: 15px;
-  font-weight: 700;
-  color: #1a1a1a;
-  margin-bottom: 8px;
-}
-
-.report-section-desc {
-  font-size: 13px;
-  color: #666;
-  line-height: 1.6;
+.toc-keywords {
+  font-size: 11px;
+  color: #999;
+  text-align: right;
+  flex-shrink: 0;
 }

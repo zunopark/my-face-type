@@ -872,118 +872,19 @@ function SajuDetailContent() {
                 </div>
               </div>
 
-              {/* 사주 요약 */}
-              <div className="payment-saju-summary">
-                <div className="saju-summary-row">
-                  <span className="saju-summary-label">일간</span>
-                  <span className="saju-summary-value">
-                    {dayMaster.char} ({dayMaster.title})
-                  </span>
+              <div className="report-toc">
+                <div className="report-toc-header">
+                  <div className="report-toc-title">보고서 목차</div>
+                  <div className="report-toc-badge">10,000자 이상</div>
                 </div>
-                <div className="saju-summary-row">
-                  <span className="saju-summary-label">신강/신약</span>
-                  <span className="saju-summary-value">
-                    {sajuData.loveFacts?.dayMasterStrength ||
-                      sajuData.fiveElements?.strength ||
-                      "—"}
-                  </span>
-                </div>
-                <div className="saju-summary-row">
-                  <span className="saju-summary-label">도화살</span>
-                  <span className="saju-summary-value">
-                    {sajuData.loveFacts?.peachBlossom?.hasPeach ||
-                    sajuData.sinsal?.도화살?.has
-                      ? "있음"
-                      : "없음"}
-                  </span>
-                </div>
-                <div className="saju-summary-row">
-                  <span className="saju-summary-label">홍염살</span>
-                  <span className="saju-summary-value">
-                    {sajuData.sinsal?.홍염살?.has ? "있음" : "없음"}
-                  </span>
-                </div>
-                <div className="saju-summary-row">
-                  <span className="saju-summary-label">화개살</span>
-                  <span className="saju-summary-value">
-                    {sajuData.sinsal?.화개살?.has ? "있음" : "없음"}
-                  </span>
-                </div>
-                <div className="saju-summary-row">
-                  <span className="saju-summary-label">배우자운</span>
-                  <span className="saju-summary-value">
-                    {(sajuData.loveFacts?.spouseStars?.hitCount ?? 0) > 0
-                      ? `${sajuData.loveFacts?.spouseTargetType} ${sajuData.loveFacts?.spouseStars?.hitCount}개`
-                      : "없음"}
-                  </span>
-                </div>
-              </div>
-
-              <div className="payment-intro">
-                <p>
-                  사주 팔자 기반의 <strong>10,000자 이상</strong> 연애 심층
-                  보고서
-                </p>
-              </div>
-
-              <div className="report-wrap">
-                <div className="report-section">
-                  <div className="report-section-title">
-                    1장. 나만의 매력과 연애 성향
-                  </div>
-                  <div className="report-section-desc">
-                    처음 본 순간 이성이 느끼는 나의 매력, 내 연애 스타일 장점과
-                    숨겨진 반전 매력, 인만추 vs 자만추 vs 결정사 중 나에게 맞는
-                    방식, 내가 끌리는 사람 vs 나에게 끌리는 사람까지 분석합니다.
-                  </div>
-                </div>
-                <div className="report-section">
-                  <div className="report-section-title">
-                    2장. 앞으로 펼쳐질 사랑의 흐름
-                  </div>
-                  <div className="report-section-desc">
-                    앞으로의 연애 총운 흐름, 향후 3년간 연애운 증폭 시기와 총 몇
-                    번의 연애 기회가 있을지, 바로 지금 이번 달 연애 운세까지
-                    상세하게 분석합니다.
-                  </div>
-                </div>
-                <div className="report-section">
-                  <div className="report-section-title">
-                    3장. 결국 만나게 될 운명의 상대
-                  </div>
-                  <div className="report-section-desc">
-                    운명의 짝 그 사람의 외모, 성격, 직업군까지 모든 것, 언제
-                    어떻게 만나게 될지, 그 사람을 끌어당길 나만의 공략법까지
-                    구체적으로 풀이합니다.
-                  </div>
-                </div>
-                <div className="report-section">
-                  <div className="report-section-title">
-                    4장. 운명이라 착각하는 가짜 인연
-                  </div>
-                  <div className="report-section-desc">
-                    내가 유독 약해지는 사람 유형, 운명이라고 착각하게 되는 이유,
-                    가짜 인연을 거르는 방법을 알려드립니다.
-                  </div>
-                </div>
-                <div className="report-section">
-                  <div className="report-section-title">
-                    5장. 누구에게도 말 못할, 19금 사주 풀이
-                  </div>
-                  <div className="report-section-desc">
-                    상대를 홀리는 나의 성적 매력, 그 사람의 성적 매력, 그
-                    사람과의 스킨십 궁합까지 은밀하게 풀이합니다.
-                  </div>
-                </div>
-                <div className="report-section">
-                  <div className="report-section-title">
-                    6장. 색동낭자의 귀띔
-                  </div>
-                  <div className="report-section-desc">
-                    입력한 고민에 대해 사주 기반으로 뼈 때리는 직언과 현실적인
-                    처방전을 1:1 맞춤 상담 형식으로 제공합니다.
-                  </div>
-                </div>
+                <ul className="report-toc-list">
+                  <li><span>1장. 나만의 매력과 연애 성향</span><span className="toc-keywords">첫인상, 연애스타일, 끌리는 유형</span></li>
+                  <li><span>2장. 앞으로 펼쳐질 사랑의 흐름</span><span className="toc-keywords">3년 운세, 이번 달 운세</span></li>
+                  <li><span>3장. 결국 만나게 될 운명의 상대</span><span className="toc-keywords">운명의 상대, 만남 시기</span></li>
+                  <li><span>4장. 운명이라 착각하는 가짜 인연</span><span className="toc-keywords">위험 신호, 필터링</span></li>
+                  <li><span>5장. 누구에게도 말 못할, 19금 사주 풀이</span><span className="toc-keywords">성적 매력, 궁합</span></li>
+                  <li><span>6장. 색동낭자의 귀띔</span><span className="toc-keywords">맞춤 조언</span></li>
+                </ul>
               </div>
 
               <div className="payment-price-wrap">
@@ -1011,7 +912,6 @@ function SajuDetailContent() {
 
               {/* 쿠폰 입력 */}
               <div className="coupon-input-wrap">
-                <div className="coupon-input-label">쿠폰 코드</div>
                 <div className="coupon-input-row">
                   <input
                     type="text"
@@ -1080,118 +980,19 @@ function SajuDetailContent() {
                 </div>
               </div>
 
-              {/* 사주 요약 */}
-              <div className="payment-saju-summary">
-                <div className="saju-summary-row">
-                  <span className="saju-summary-label">일간</span>
-                  <span className="saju-summary-value">
-                    {dayMaster.char} ({dayMaster.title})
-                  </span>
+              <div className="report-toc">
+                <div className="report-toc-header">
+                  <div className="report-toc-title">보고서 목차</div>
+                  <div className="report-toc-badge">10,000자 이상</div>
                 </div>
-                <div className="saju-summary-row">
-                  <span className="saju-summary-label">신강/신약</span>
-                  <span className="saju-summary-value">
-                    {sajuData.loveFacts?.dayMasterStrength ||
-                      sajuData.fiveElements?.strength ||
-                      "—"}
-                  </span>
-                </div>
-                <div className="saju-summary-row">
-                  <span className="saju-summary-label">도화살</span>
-                  <span className="saju-summary-value">
-                    {sajuData.loveFacts?.peachBlossom?.hasPeach ||
-                    sajuData.sinsal?.도화살?.has
-                      ? "있음"
-                      : "없음"}
-                  </span>
-                </div>
-                <div className="saju-summary-row">
-                  <span className="saju-summary-label">홍염살</span>
-                  <span className="saju-summary-value">
-                    {sajuData.sinsal?.홍염살?.has ? "있음" : "없음"}
-                  </span>
-                </div>
-                <div className="saju-summary-row">
-                  <span className="saju-summary-label">화개살</span>
-                  <span className="saju-summary-value">
-                    {sajuData.sinsal?.화개살?.has ? "있음" : "없음"}
-                  </span>
-                </div>
-                <div className="saju-summary-row">
-                  <span className="saju-summary-label">배우자운</span>
-                  <span className="saju-summary-value">
-                    {(sajuData.loveFacts?.spouseStars?.hitCount ?? 0) > 0
-                      ? `${sajuData.loveFacts?.spouseTargetType} ${sajuData.loveFacts?.spouseStars?.hitCount}개`
-                      : "없음"}
-                  </span>
-                </div>
-              </div>
-
-              <div className="payment-intro">
-                <p>
-                  사주 팔자 기반의 <strong>10,000자 이상</strong> 연애 심층
-                  보고서
-                </p>
-              </div>
-
-              <div className="report-wrap">
-                <div className="report-section">
-                  <div className="report-section-title">
-                    1장. 나만의 매력과 연애 성향
-                  </div>
-                  <div className="report-section-desc">
-                    처음 본 순간 이성이 느끼는 나의 매력, 내 연애 스타일 장점과
-                    숨겨진 반전 매력, 인만추 vs 자만추 vs 결정사 중 나에게 맞는
-                    방식, 내가 끌리는 사람 vs 나에게 끌리는 사람까지 분석합니다.
-                  </div>
-                </div>
-                <div className="report-section">
-                  <div className="report-section-title">
-                    2장. 앞으로 펼쳐질 사랑의 흐름
-                  </div>
-                  <div className="report-section-desc">
-                    앞으로의 연애 총운 흐름, 향후 3년간 연애운 증폭 시기와 총 몇
-                    번의 연애 기회가 있을지, 바로 지금 이번 달 연애 운세까지
-                    상세하게 분석합니다.
-                  </div>
-                </div>
-                <div className="report-section">
-                  <div className="report-section-title">
-                    3장. 결국 만나게 될 운명의 상대
-                  </div>
-                  <div className="report-section-desc">
-                    운명의 짝 그 사람의 외모, 성격, 직업군까지 모든 것, 언제
-                    어떻게 만나게 될지, 그 사람을 끌어당길 나만의 공략법까지
-                    구체적으로 풀이합니다.
-                  </div>
-                </div>
-                <div className="report-section">
-                  <div className="report-section-title">
-                    4장. 운명이라 착각하는 가짜 인연
-                  </div>
-                  <div className="report-section-desc">
-                    내가 유독 약해지는 사람 유형, 운명이라고 착각하게 되는 이유,
-                    가짜 인연을 거르는 방법을 알려드립니다.
-                  </div>
-                </div>
-                <div className="report-section">
-                  <div className="report-section-title">
-                    5장. 누구에게도 말 못할, 19금 사주 풀이
-                  </div>
-                  <div className="report-section-desc">
-                    상대를 홀리는 나의 성적 매력, 그 사람의 성적 매력, 그
-                    사람과의 스킨십 궁합까지 은밀하게 풀이합니다.
-                  </div>
-                </div>
-                <div className="report-section">
-                  <div className="report-section-title">
-                    6장. 색동낭자의 귀띔
-                  </div>
-                  <div className="report-section-desc">
-                    입력한 고민에 대해 사주 기반으로 뼈 때리는 직언과 현실적인
-                    처방전을 1:1 맞춤 상담 형식으로 제공합니다.
-                  </div>
-                </div>
+                <ul className="report-toc-list">
+                  <li><span>1장. 나만의 매력과 연애 성향</span><span className="toc-keywords">첫인상, 연애스타일, 끌리는 유형</span></li>
+                  <li><span>2장. 앞으로 펼쳐질 사랑의 흐름</span><span className="toc-keywords">3년 운세, 이번 달 운세</span></li>
+                  <li><span>3장. 결국 만나게 될 운명의 상대</span><span className="toc-keywords">운명의 상대, 만남 시기</span></li>
+                  <li><span>4장. 운명이라 착각하는 가짜 인연</span><span className="toc-keywords">위험 신호, 필터링</span></li>
+                  <li><span>5장. 누구에게도 말 못할, 19금 사주 풀이</span><span className="toc-keywords">성적 매력, 궁합</span></li>
+                  <li><span>6장. 색동낭자의 귀띔</span><span className="toc-keywords">맞춤 조언</span></li>
+                </ul>
               </div>
 
               <div className="payment-price-wrap">
