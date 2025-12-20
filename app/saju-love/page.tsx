@@ -564,11 +564,19 @@ export default function SajuLovePage() {
                 </button>
                 <button
                   className={`status_btn ${
+                    status === "dating" ? "active" : ""
+                  }`}
+                  onClick={() => setStatus("dating")}
+                >
+                  연애중
+                </button>
+                <button
+                  className={`status_btn ${
                     status === "breakup" ? "active" : ""
                   }`}
                   onClick={() => setStatus("breakup")}
                 >
-                  연애중
+                  이별 정리중
                 </button>
               </div>
             </div>
