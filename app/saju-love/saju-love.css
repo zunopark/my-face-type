@@ -69,11 +69,30 @@
   height: 100%;
   object-fit: cover;
   object-position: top center;
-  transition: opacity 0.5s ease;
 }
 
-.landing_image.fade {
-  opacity: 0;
+/* 이전 이미지 (전환 중 뒤에 깔림) */
+.landing_image_prev {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1;
+}
+
+/* 현재 이미지 fade in */
+.landing_image_fade_in {
+  position: relative;
+  z-index: 2;
+  animation: landingBgFadeIn 0.5s ease-out forwards;
+}
+
+@keyframes landingBgFadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
 /* 랜딩 타이틀 */

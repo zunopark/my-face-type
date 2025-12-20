@@ -55,6 +55,8 @@ export default function SajuLovePage() {
 
   // UI 상태
   const [currentImage, setCurrentImage] = useState("/saju-love/img/nangja2.jpg");
+  const [prevImage, setPrevImage] = useState("/saju-love/img/nangja2.jpg");
+  const [isImageTransitioning, setIsImageTransitioning] = useState(false);
   const [showLanding, setShowLanding] = useState(true);
   const [showDialogue, setShowDialogue] = useState(false);
   const [showInputForm, setShowInputForm] = useState(false);
@@ -79,6 +81,15 @@ export default function SajuLovePage() {
 
   // 타이핑 인터벌 ref
   const typingIntervalRef = useRef<NodeJS.Timeout | null>(null);
+
+  // 이미지 부드럽게 전환하는 함수
+  const changeImage = useCallback((newImage: string) => {
+    if (newImage === currentImage) return;
+    setPrevImage(currentImage);
+    setCurrentImage(newImage);
+    setIsImageTransitioning(true);
+    setTimeout(() => setIsImageTransitioning(false), 500);
+  }, [currentImage]);
 
   // 페이지 방문 추적
   useEffect(() => {
@@ -123,7 +134,7 @@ export default function SajuLovePage() {
   // 시작하기 버튼
   const handleStart = () => {
     setShowLanding(false);
-    setCurrentImage("/saju-love/img/nangja.jpg");
+    changeImage("/saju-love/img/nangja.jpg");
 
     setTimeout(() => {
       setShowDialogue(true);
@@ -252,6 +263,8 @@ export default function SajuLovePage() {
     if (!isAdditionalFormValid) return;
 
     setIsLoading(true);
+    // 분석 중 이미지를 다른 이미지로 부드럽게 전환
+    changeImage("/saju-love/img/nangja-1.jpg");
 
     try {
       const result = await computeSaju({
@@ -267,9 +280,22 @@ export default function SajuLovePage() {
 
       const resultId = crypto.randomUUID();
 
-      // 필요한 데이터만 추출하여 저장 (용량 절약)
-      const { dayMaster, pillars, fiveElements, loveFacts, sinsal } = result.data;
-      const minimalSajuData = {
+      // 전체 API 응답 데이터
+      const rawData = result.data;
+      const { dayMaster, pillars, fiveElements, loveFacts, sinsal, daeun, zodiac, gong, luckCycles, currentSaeun, jieQi, tianShen, jiShen, xiongSha, nobleDirection, jiuXing, xiu28, jianZhi, chong, pengZu } = rawData;
+
+      // 납음 데이터 추출 (pillars에서)
+      const nayin: Record<string, string> = {};
+      if (pillars) {
+        for (const key of ["year", "month", "day", "hour"]) {
+          if (pillars[key]?.naYinKor) {
+            nayin[key] = pillars[key].naYinKor;
+          }
+        }
+      }
+
+      // sajuData에 모든 데이터 포함
+      const fullSajuData = {
         dayMaster,
         pillars,
         fiveElements: fiveElements
@@ -289,9 +315,28 @@ export default function SajuLovePage() {
             }
           : null,
         sinsal: sinsal || null,
+        // 추가 데이터
+        daeun: daeun || null,
+        zodiac: zodiac || null,
+        taiYuan: gong?.taiYuan || null,
+        mingGong: gong?.mingGong || null,
+        shenGong: gong?.shenGong || null,
+        nayin: Object.keys(nayin).length > 0 ? nayin : undefined,
+        luckCycles: luckCycles || null,
+        currentSaeun: currentSaeun || null,
+        jieQi: jieQi || null,
+        tianShen: tianShen || null,
+        jiShen: jiShen || null,
+        xiongSha: xiongSha || null,
+        nobleDirection: nobleDirection || null,
+        jiuXing: jiuXing || null,
+        xiu28: xiu28 || null,
+        jianZhi: jianZhi || null,
+        chong: chong || null,
+        pengZu: pengZu || null,
       };
 
-      // IndexedDB에 저장
+      // IndexedDB에 저장 (rawSajuData에 전체 원본 데이터도 저장)
       await saveSajuLoveRecord({
         id: resultId,
         createdAt: new Date().toISOString(),
@@ -305,7 +350,8 @@ export default function SajuLovePage() {
           userConcern: userConcern.trim(),
           status: status!,
         },
-        sajuData: minimalSajuData,
+        rawSajuData: rawData,
+        sajuData: fullSajuData,
         loveAnalysis: null,
       });
 
@@ -317,8 +363,8 @@ export default function SajuLovePage() {
         birth_time: birthTime === "unknown" ? "모름" : birthTime,
         user_name: name,
         user_concern: userConcern.trim(),
-        day_master: minimalSajuData.dayMaster?.char,
-        day_master_title: minimalSajuData.dayMaster?.title,
+        day_master: fullSajuData.dayMaster?.char,
+        day_master_title: fullSajuData.dayMaster?.title,
       });
 
       router.push(`/saju-love/detail?id=${resultId}`);
@@ -344,13 +390,23 @@ export default function SajuLovePage() {
         <span className="back_btn_text">홈으로</span>
       </Link>
 
-      {/* 배경 이미지 */}
+      {/* 배경 이미지 - crossfade */}
       <div className="landing_bg">
+        {/* 이전 이미지 (전환 중에만 보임) */}
+        {isImageTransitioning && (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img
+            src={prevImage}
+            alt=""
+            className="landing_image landing_image_prev"
+          />
+        )}
+        {/* 현재 이미지 */}
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           src={currentImage}
           alt="색동낭자 연애사주"
-          className="landing_image"
+          className={`landing_image ${isImageTransitioning ? 'landing_image_fade_in' : ''}`}
         />
       </div>
 

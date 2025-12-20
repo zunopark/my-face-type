@@ -5169,10 +5169,17 @@
 }
 
 .saju_result_page .ohang_analysis_title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
   font-size: 14px;
   font-weight: 600;
   color: #3a2a2a;
   margin: 0 0 6px 0;
+}
+
+.saju_result_page .ohang_analysis_title .ohang_status_badge {
+  flex-shrink: 0;
 }
 
 .saju_result_page .ohang_analysis_desc {
@@ -5189,6 +5196,25 @@
   margin: 0;
   padding-top: 8px;
   border-top: 1px dashed #e8e0d8;
+}
+
+.saju_result_page .ohang_keyword {
+  font-size: 12px;
+  color: #8a7a6a;
+  flex: 1;
+}
+
+.saju_result_page .ohang_base_desc {
+  font-size: 13px;
+  line-height: 1.6;
+  color: #5a4a4a;
+  margin: 0 0 10px 0;
+}
+
+.saju_result_page .compat_card_subtitle {
+  font-size: 12px;
+  color: #8a7a6a;
+  margin: 0 0 12px 0;
 }
 
 /* 신강신약 게이지 카드 */
@@ -5452,9 +5478,9 @@
 }
 
 .saju_result_page .saju_outro_box {
-  background: linear-gradient(135deg, #fff5f8 0%, #f8f5ff 100%);
-  border-radius: 16px;
-  padding: 24px 20px;
+  background: transparent;
+  border-radius: 0;
+  padding: 0;
   text-align: center;
 }
 
@@ -5498,6 +5524,85 @@
   font-weight: 600;
   color: #b85a85;
   margin: 16px 0 0 0;
+}
+
+/* 사주 데이터 플레이스홀더 */
+.saju_result_page .saju_data_placeholder {
+  min-height: 20px;
+  margin: 16px 0;
+}
+
+/* 보고서 목차 상세 */
+.saju_result_page .saju_outro_chapters_detail {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin: 20px 0;
+  text-align: left;
+}
+
+/* 심플 목차 스타일 */
+.saju_result_page .saju_outro_chapters_simple {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  margin: 16px 0;
+}
+
+.saju_result_page .chapter_row {
+  padding: 12px 0;
+  border-bottom: 1px solid #f0e8f0;
+}
+
+.saju_result_page .chapter_row:last-child {
+  border-bottom: none;
+}
+
+.saju_result_page .chapter_header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.saju_result_page .chapter_num {
+  font-size: 11px;
+  font-weight: 600;
+  color: #b85a85;
+}
+
+.saju_result_page .chapter_title {
+  font-size: 13px;
+  font-weight: 600;
+  color: #3a2a3a;
+}
+
+.saju_result_page .chapter_sublist {
+  margin: 6px 0 0 0;
+  padding: 0 0 0 32px;
+  list-style: none;
+}
+
+.saju_result_page .chapter_sublist li {
+  font-size: 11px;
+  color: #8a7a8a;
+  line-height: 1.7;
+  position: relative;
+  padding-left: 10px;
+}
+
+.saju_result_page .chapter_sublist li::before {
+  content: "-";
+  position: absolute;
+  left: 0;
+  color: #b85a85;
+}
+
+.saju_result_page .chapter_row.bonus .chapter_num {
+  color: #d4a853;
+}
+
+.saju_result_page .chapter_row.bonus .chapter_title {
+  color: #d4a853;
 }
 
 /* 내가 가진 연애 신살 */
@@ -5643,4 +5748,987 @@
   margin: 0;
   font-size: 14px;
   color: #888;
+}
+
+/* ===== 보고서 목차 카드 ===== */
+.saju_result_page .report_toc_card {
+  background: #f7f3f0;
+  border-radius: 0;
+  padding: 0;
+  margin: 24px 0;
+  overflow: hidden;
+}
+
+.saju_result_page .toc_chapter {
+  background: #f7f3f0;
+  padding: 28px 24px;
+  border-bottom: 1px solid #e8e0dc;
+}
+
+.saju_result_page .toc_chapter:last-child {
+  border-bottom: none;
+}
+
+.saju_result_page .toc_chapter_header {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  margin-bottom: 20px;
+  text-align: left;
+}
+
+.saju_result_page .toc_chapter.bonus .toc_chapter_header {
+  margin-bottom: 0;
+}
+
+.saju_result_page .toc_chapter_num {
+  font-family: "Danjo", serif;
+  font-size: 14px;
+  font-weight: 600;
+  color: #c0392b;
+  margin-bottom: 8px;
+  padding-left: 12px;
+  border-left: 4px solid #c0392b;
+  display: block;
+}
+
+.saju_result_page .toc_chapter_num.bonus {
+  color: #f5a623;
+  border-left-color: #f5a623;
+}
+
+.saju_result_page .toc_chapter_title {
+  font-family: "Danjo", serif;
+  font-size: 26px;
+  font-weight: 700;
+  color: #2a2a2a;
+  margin: 0;
+  line-height: 1.3;
+  letter-spacing: -0.5px;
+  text-align: left;
+}
+
+.saju_result_page .toc_list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.saju_result_page .toc_list li {
+  font-size: 16px;
+  color: #3a3a3a;
+  line-height: 1.5;
+  padding: 10px 0;
+  border-bottom: 1px solid #e8e0dc;
+  text-align: left;
+}
+
+.saju_result_page .toc_list li:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.saju_result_page .toc_list li:first-child {
+  padding-top: 0;
+}
+
+.saju_result_page .toc_sub {
+  display: block;
+  font-size: 14px;
+  color: #888;
+  margin-top: 6px;
+}
+
+/* 사주 데이터 종합 표 */
+.saju_result_page .saju_data_summary {
+  background: #faf8f6;
+  border: 1px solid #e8e0dc;
+  margin: 24px 0;
+  padding: 20px 16px;
+}
+
+.saju_result_page .saju_data_section {
+  margin-bottom: 20px;
+}
+
+.saju_result_page .saju_data_section:last-child {
+  margin-bottom: 0;
+}
+
+.saju_result_page .saju_data_title {
+  font-family: "Danjo", serif;
+  font-size: 15px;
+  font-weight: 600;
+  color: #c0392b;
+  margin: 0 0 12px 0;
+  padding-left: 10px;
+  border-left: 3px solid #c0392b;
+}
+
+/* 사주 원국 테이블 */
+.saju_result_page .saju_data_table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+  text-align: center;
+}
+
+.saju_result_page .saju_data_table th {
+  background: #f0ebe8;
+  padding: 8px 4px;
+  font-weight: 600;
+  color: #5a5a5a;
+  border-bottom: 1px solid #ddd;
+}
+
+.saju_result_page .saju_data_table td {
+  padding: 8px 4px;
+  border-bottom: 1px solid #eee;
+  color: #3a3a3a;
+}
+
+.saju_result_page .saju_data_table td.row_label {
+  background: #f5f1ee;
+  font-weight: 500;
+  color: #666;
+  text-align: left;
+  padding-left: 8px;
+  width: 60px;
+}
+
+.saju_result_page .saju_data_table td.highlight {
+  background: #fff3e0;
+  font-weight: 600;
+  color: #c0392b;
+}
+
+/* 오행 분포 */
+.saju_result_page .saju_data_row {
+  display: flex;
+  justify-content: space-around;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.saju_result_page .element_item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.saju_result_page .element_name {
+  font-size: 13px;
+  color: #666;
+}
+
+.saju_result_page .element_value {
+  font-size: 14px;
+  font-weight: 600;
+  color: #3a3a3a;
+}
+
+.saju_result_page .saju_data_inline {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 12px;
+  background: #fff;
+  border: 1px solid #e8e0dc;
+}
+
+.saju_result_page .inline_label {
+  font-size: 13px;
+  color: #666;
+}
+
+.saju_result_page .inline_value {
+  font-size: 14px;
+  font-weight: 600;
+  color: #c0392b;
+}
+
+/* 신살 태그 */
+.saju_result_page .sinsal_tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.saju_result_page .sinsal_tag {
+  display: inline-block;
+  padding: 6px 12px;
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 16px;
+  font-size: 13px;
+  color: #5a5a5a;
+}
+
+.saju_result_page .no_data {
+  font-size: 13px;
+  color: #999;
+}
+
+/* 연애 지표 */
+.saju_result_page .love_indicators {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.saju_result_page .indicator_item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 12px;
+  background: #fff;
+  border: 1px solid #e8e0dc;
+}
+
+.saju_result_page .indicator_label {
+  font-size: 13px;
+  color: #666;
+}
+
+.saju_result_page .indicator_value {
+  font-size: 14px;
+  font-weight: 500;
+  color: #3a3a3a;
+}
+
+.saju_result_page .indicator_sub {
+  font-size: 12px;
+  color: #888;
+  margin-left: 4px;
+}
+
+.saju_result_page .indicator_value.highlight_red {
+  color: #c0392b;
+  font-weight: 600;
+}
+
+/* 대운 흐름 */
+.saju_result_page .daeun_info {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.saju_result_page .daeun_direction {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 12px;
+  background: #fff;
+  border: 1px solid #e8e0dc;
+}
+
+.saju_result_page .daeun_list {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+
+.saju_result_page .daeun_item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 10px 8px;
+  background: #fff;
+  border: 1px solid #e8e0dc;
+  text-align: center;
+}
+
+.saju_result_page .daeun_age {
+  font-size: 11px;
+  color: #888;
+  margin-bottom: 4px;
+}
+
+.saju_result_page .daeun_ganzhi {
+  font-size: 16px;
+  font-weight: 600;
+  color: #3a3a3a;
+}
+
+/* ==========================================
+   분석 데이터 섹션 스타일 (analysis_data_wrap)
+   ========================================== */
+
+.saju_result_page .analysis_data_wrap {
+  margin: 24px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.saju_result_page .analysis_data_card {
+  background: #faf8f6;
+  border: 1px solid #e8e0dc;
+  padding: 16px;
+}
+
+.saju_result_page .analysis_data_card.love_card {
+  background: linear-gradient(135deg, #fff5f5 0%, #faf8f6 100%);
+  border-color: #e8d0d0;
+}
+
+.saju_result_page .analysis_data_title {
+  font-family: "Danjo", serif;
+  font-size: 14px;
+  font-weight: 600;
+  color: #c0392b;
+  margin: 0 0 12px 0;
+  padding-left: 10px;
+  border-left: 3px solid #c0392b;
+}
+
+.saju_result_page .analysis_data_grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+}
+
+.saju_result_page .analysis_data_grid.three_col {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.saju_result_page .analysis_data_item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 12px 8px;
+  background: #fff;
+  border: 1px solid #e8e0dc;
+  text-align: center;
+  gap: 4px;
+}
+
+.saju_result_page .data_label {
+  font-size: 12px;
+  color: #888;
+}
+
+.saju_result_page .data_value {
+  font-size: 15px;
+  font-weight: 600;
+  color: #3a3a3a;
+}
+
+.saju_result_page .data_value.highlight_yes {
+  color: #27ae60;
+}
+
+.saju_result_page .data_value.highlight_no {
+  color: #bbb;
+}
+
+.saju_result_page .data_sub {
+  font-size: 11px;
+  color: #aaa;
+}
+
+/* 득력 점수 바 */
+.saju_result_page .strength_score_bar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 12px;
+  padding: 10px 12px;
+  background: #fff;
+  border: 1px solid #e8e0dc;
+}
+
+.saju_result_page .score_label {
+  font-size: 12px;
+  color: #666;
+  flex-shrink: 0;
+}
+
+.saju_result_page .score_bar_track {
+  flex: 1;
+  height: 8px;
+  background: #e8e0dc;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.saju_result_page .score_bar_fill {
+  height: 100%;
+  background: linear-gradient(90deg, #c0392b, #e74c3c);
+  border-radius: 4px;
+  transition: width 0.3s ease;
+}
+
+.saju_result_page .score_value {
+  font-size: 12px;
+  font-weight: 600;
+  color: #c0392b;
+  flex-shrink: 0;
+}
+
+/* 대운 스크롤 */
+.saju_result_page .daeun_scroll_wrap {
+  overflow-x: auto;
+  margin: 0 -16px;
+  padding: 0 16px;
+  -webkit-overflow-scrolling: touch;
+}
+
+.saju_result_page .daeun_scroll {
+  display: flex;
+  gap: 8px;
+  min-width: max-content;
+  padding-bottom: 4px;
+}
+
+.saju_result_page .daeun_card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 10px 12px;
+  background: #fff;
+  border: 1px solid #e8e0dc;
+  min-width: 70px;
+  gap: 4px;
+}
+
+.saju_result_page .daeun_card_age {
+  font-size: 10px;
+  color: #888;
+}
+
+.saju_result_page .daeun_card_ganzhi {
+  font-size: 16px;
+  font-weight: 600;
+  color: #3a3a3a;
+}
+
+.saju_result_page .daeun_card_tenGod {
+  font-size: 11px;
+  color: #c0392b;
+}
+
+.saju_result_page .daeun_card_stage {
+  font-size: 10px;
+  color: #888;
+  background: #f5f1ee;
+  padding: 2px 6px;
+  border-radius: 8px;
+}
+
+/* 연애 특수 지표 그리드 */
+.saju_result_page .love_indicator_grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+}
+
+.saju_result_page .love_indicator_item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 12px 8px;
+  background: #fff;
+  border: 1px solid #e8e0dc;
+  text-align: center;
+  gap: 4px;
+}
+
+.saju_result_page .love_indicator_label {
+  font-size: 12px;
+  color: #888;
+}
+
+.saju_result_page .love_indicator_value {
+  font-size: 14px;
+  font-weight: 600;
+  color: #999;
+}
+
+.saju_result_page .love_indicator_value.has {
+  color: #c0392b;
+}
+
+.saju_result_page .love_indicator_value.has.red {
+  color: #e74c3c;
+}
+
+.saju_result_page .love_indicator_pos {
+  font-size: 11px;
+  color: #666;
+}
+
+/* 귀인 태그 */
+.saju_result_page .guiin_tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.saju_result_page .guiin_tag {
+  display: inline-block;
+  padding: 6px 12px;
+  background: linear-gradient(135deg, #fff8e1 0%, #fffde7 100%);
+  border: 1px solid #ffd54f;
+  border-radius: 16px;
+  font-size: 13px;
+  color: #f57c00;
+  font-weight: 500;
+}
+
+.saju_result_page .no_guiin {
+  font-size: 13px;
+  color: #999;
+}
+
+/* 주의 신살 태그 */
+.saju_result_page .warning_sinsal_tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.saju_result_page .warning_sinsal_tag {
+  display: inline-block;
+  padding: 6px 12px;
+  background: linear-gradient(135deg, #ffebee 0%, #fff5f5 100%);
+  border: 1px solid #ef9a9a;
+  border-radius: 16px;
+  font-size: 13px;
+  color: #c62828;
+  font-weight: 500;
+}
+
+.saju_result_page .no_warning {
+  font-size: 13px;
+  color: #999;
+}
+
+/* ==========================================
+   미니 데이터 섹션 (extra_data_mini_wrap)
+   ========================================== */
+
+.saju_result_page .extra_data_mini_wrap {
+  margin: 20px 0;
+  padding: 16px;
+  background: linear-gradient(135deg, #faf8f6 0%, #f5f2ef 100%);
+  border: 1px solid #e8e0dc;
+  border-radius: 8px;
+}
+
+.saju_result_page .mini_data_section {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 8px 0;
+  border-bottom: 1px dashed #e0d8d4;
+}
+
+.saju_result_page .mini_data_section:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.saju_result_page .mini_data_section:first-child {
+  padding-top: 0;
+}
+
+.saju_result_page .mini_section_label {
+  flex-shrink: 0;
+  width: 90px;
+  font-size: 11px;
+  font-weight: 600;
+  color: #888;
+}
+
+.saju_result_page .mini_data_row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  flex: 1;
+}
+
+.saju_result_page .mini_chip {
+  display: inline-block;
+  padding: 3px 8px;
+  background: #fff;
+  border: 1px solid #d8d0cc;
+  border-radius: 10px;
+  font-size: 11px;
+  color: #666;
+}
+
+.saju_result_page .mini_chip.good {
+  background: #e8f5e9;
+  border-color: #a5d6a7;
+  color: #2e7d32;
+}
+
+.saju_result_page .mini_chip.warn {
+  background: #ffebee;
+  border-color: #ef9a9a;
+  color: #c62828;
+}
+
+.saju_result_page .mini_chip_data {
+  display: inline-block;
+  padding: 3px 10px;
+  background: #fff;
+  border: 1px solid #c0392b;
+  border-radius: 10px;
+  font-size: 12px;
+  font-weight: 600;
+  color: #c0392b;
+}
+
+.saju_result_page .mini_chip_sm {
+  display: inline-block;
+  padding: 2px 6px;
+  background: #f5f1ee;
+  border: 1px solid #e0d8d4;
+  border-radius: 8px;
+  font-size: 10px;
+  color: #888;
+}
+
+.saju_result_page .mini_chip_indicator {
+  display: inline-block;
+  padding: 3px 8px;
+  border-radius: 10px;
+  font-size: 11px;
+  font-weight: 500;
+}
+
+.saju_result_page .mini_chip_indicator.on {
+  background: #e8f5e9;
+  border: 1px solid #a5d6a7;
+  color: #2e7d32;
+}
+
+.saju_result_page .mini_chip_indicator.off {
+  background: #f5f5f5;
+  border: 1px solid #e0e0e0;
+  color: #bbb;
+}
+
+/* ==========================================
+   대운/연운/월운 섹션 (luck_cycles_wrap)
+   ========================================== */
+
+.saju_result_page .luck_cycles_wrap {
+  margin: 24px 0;
+  padding: 20px 16px;
+  background: #faf8f6;
+  border: 1px solid #e8e0dc;
+  border-radius: 12px;
+}
+
+.saju_result_page .luck_header {
+  margin-bottom: 20px;
+}
+
+.saju_result_page .luck_title {
+  font-family: "Danjo", serif;
+  font-size: 18px;
+  font-weight: 600;
+  color: #3a3a3a;
+  margin: 0 0 6px 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.saju_result_page .direction_badge {
+  display: inline-block;
+  padding: 2px 8px;
+  background: #e3f2fd;
+  border: 1px solid #90caf9;
+  border-radius: 10px;
+  font-size: 11px;
+  font-weight: 500;
+  color: #1976d2;
+}
+
+.saju_result_page .direction_badge.reverse {
+  background: #fff3e0;
+  border-color: #ffb74d;
+  color: #f57c00;
+}
+
+.saju_result_page .luck_hint {
+  font-size: 12px;
+  color: #999;
+  margin: 0;
+}
+
+.saju_result_page .luck_section {
+  margin-bottom: 20px;
+}
+
+.saju_result_page .luck_section:last-of-type {
+  margin-bottom: 16px;
+}
+
+.saju_result_page .luck_section_title {
+  font-family: "Danjo", serif;
+  font-size: 14px;
+  font-weight: 600;
+  color: #666;
+  margin: 0 0 10px 0;
+}
+
+.saju_result_page .luck_scroll_wrap {
+  overflow-x: auto;
+  margin: 0 -16px;
+  padding: 0 16px;
+  -webkit-overflow-scrolling: touch;
+}
+
+.saju_result_page .luck_scroll {
+  display: flex;
+  gap: 8px;
+  min-width: max-content;
+  padding-bottom: 4px;
+}
+
+.saju_result_page .luck_scroll.reverse {
+  flex-direction: row;
+}
+
+/* 대운/연운 카드 */
+.saju_result_page .luck_card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 60px;
+  background: #fff;
+  border: 1px solid #e0d8d4;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.saju_result_page .luck_card.current {
+  border: 2px solid #c0392b;
+  box-shadow: 0 2px 8px rgba(192, 57, 43, 0.2);
+}
+
+.saju_result_page .luck_card_top {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 6px 4px 4px;
+  background: #f5f2ef;
+  gap: 2px;
+}
+
+.saju_result_page .luck_card_age,
+.saju_result_page .luck_card_year {
+  font-size: 11px;
+  color: #888;
+}
+
+.saju_result_page .luck_card_tengod {
+  font-size: 11px;
+  font-weight: 500;
+  color: #666;
+}
+
+.saju_result_page .luck_card_stem {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 6px 4px;
+  text-align: center;
+}
+
+.saju_result_page .luck_card_stem .char_hanja {
+  font-size: 26px;
+  font-weight: 700;
+}
+
+.saju_result_page .luck_card_stem .char_korean {
+  font-size: 11px;
+  font-weight: 500;
+  opacity: 0.8;
+}
+
+.saju_result_page .luck_card_branch {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  padding: 6px 4px;
+  text-align: center;
+}
+
+.saju_result_page .luck_card_branch .char_hanja {
+  font-size: 22px;
+  font-weight: 700;
+}
+
+.saju_result_page .luck_card_branch .char_korean {
+  font-size: 10px;
+  font-weight: 500;
+  opacity: 0.8;
+}
+
+.saju_result_page .luck_card_bottom {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 4px;
+  background: #f9f7f5;
+  gap: 2px;
+}
+
+.saju_result_page .luck_card_tengod_branch {
+  font-size: 10px;
+  color: #888;
+}
+
+.saju_result_page .luck_card_stage {
+  font-size: 10px;
+  color: #aaa;
+}
+
+/* 오행 색상 */
+.saju_result_page .elem_wood { color: #2aa86c; }
+.saju_result_page .elem_fire { color: #ff6a6a; }
+.saju_result_page .elem_earth { color: #caa46a; }
+.saju_result_page .elem_metal { color: #888; }
+.saju_result_page .elem_water { color: #6aa7ff; }
+
+/* 지지 오행 색상 */
+.saju_result_page .luck_card_branch.elem_wood { color: #2aa86c; }
+.saju_result_page .luck_card_branch.elem_fire { color: #ff6a6a; }
+.saju_result_page .luck_card_branch.elem_earth { color: #caa46a; }
+.saju_result_page .luck_card_branch.elem_metal { color: #888; }
+.saju_result_page .luck_card_branch.elem_water { color: #6aa7ff; }
+
+/* 월운 미니 카드 */
+.saju_result_page .luck_card_mini {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 50px;
+  padding: 8px 6px;
+  background: #fff;
+  border: 1px solid #e0d8d4;
+  border-radius: 6px;
+  gap: 4px;
+}
+
+.saju_result_page .luck_card_mini.current {
+  border: 2px solid #c0392b;
+  background: #fff5f5;
+}
+
+.saju_result_page .luck_mini_month {
+  font-size: 12px;
+  font-weight: 600;
+  color: #666;
+}
+
+.saju_result_page .luck_mini_tengod {
+  font-size: 11px;
+  color: #888;
+}
+
+/* 추가 정보 미니 섹션 */
+.saju_result_page .extra_info_mini {
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px dashed #e0d8d4;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.saju_result_page .extra_info_row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.saju_result_page .extra_label {
+  flex-shrink: 0;
+  font-size: 12px;
+  color: #888;
+  min-width: 90px;
+}
+
+.saju_result_page .extra_values {
+  display: flex;
+  gap: 6px;
+}
+
+.saju_result_page .extra_ganzi {
+  padding: 3px 10px;
+  background: #fff;
+  border: 1px solid #c0392b;
+  border-radius: 10px;
+  font-size: 12px;
+  font-weight: 600;
+  color: #c0392b;
+}
+
+.saju_result_page .extra_indicator {
+  padding: 3px 8px;
+  background: #f5f5f5;
+  border: 1px solid #e0e0e0;
+  border-radius: 10px;
+  font-size: 11px;
+  color: #bbb;
+}
+
+.saju_result_page .extra_indicator.on {
+  background: #e8f5e9;
+  border-color: #a5d6a7;
+  color: #2e7d32;
+}
+
+.saju_result_page .extra_usage {
+  flex-shrink: 0;
+  font-size: 10px;
+  color: #aaa;
+  margin-left: auto;
+}
+
+.saju_result_page .extra_score {
+  font-size: 12px;
+  font-weight: 600;
+  color: #c0392b;
+}
+
+.saju_result_page .extra_level {
+  padding: 2px 8px;
+  background: #fff3e0;
+  border: 1px solid #ffcc80;
+  border-radius: 10px;
+  font-size: 11px;
+  color: #e65100;
+}
+
+.saju_result_page .extra_text {
+  font-size: 12px;
+  font-weight: 500;
+  color: #555;
+}
+
+.saju_result_page .extra_positions {
+  font-size: 11px;
+  color: #888;
+}
+
+.saju_result_page .extra_indicator.small {
+  padding: 2px 6px;
+  font-size: 10px;
+}
+
+.saju_result_page .extra_count {
+  font-size: 12px;
+  font-weight: 600;
+  color: #c0392b;
 }

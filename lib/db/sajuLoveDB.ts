@@ -4,6 +4,195 @@ const DB_NAME = "SajuLoveDB";
 const DB_VERSION = 2;
 const STORE_NAME = "results";
 
+// 사주 API 전체 응답 타입 (rawSajuData로 저장)
+export interface RawSajuData {
+  input?: {
+    name?: string;
+    gender?: string;
+    genderKor?: string;
+    solar?: string;
+    solarTime?: string | null;
+    lunar?: string;
+    isLunar?: boolean;
+    hasTime?: boolean;
+    place?: string | null;
+  };
+  dayMaster?: {
+    char?: string;
+    korean?: string;
+    element?: string;
+    elementHanja?: string;
+    yinYang?: string;
+    yinYangKor?: string;
+    title?: string;
+  };
+  pillars?: Record<string, {
+    ganZhi?: string;
+    ganZhiKor?: string;
+    stem?: { char?: string; korean?: string; element?: string; yinYang?: string } | null;
+    branch?: { char?: string; korean?: string; element?: string; yinYang?: string; mainHiddenStem?: string } | null;
+    tenGodStem?: string;
+    tenGodBranch?: string;
+    tenGodBranchMain?: string;
+    twelveStage?: string;
+    twelveSinsal?: string;
+    jijanggan?: unknown;
+    naYin?: string;
+    naYinKor?: string;
+  }>;
+  pillarsRaw?: Record<string, { stem?: string; branch?: string }>;
+  zodiac?: {
+    char?: string;
+    korean?: string;
+    animal?: string;
+    animalKor?: string;
+  };
+  fiveElements?: {
+    strength?: string;
+    strengthLevel?: string;
+    level?: string;
+    score?: number;
+    score560?: number;
+    maxScore560?: number;
+    percent?: Record<string, number>;
+    percentHanja?: Record<string, number>;
+    deukryung?: boolean;
+    deukji?: boolean;
+    deukse?: boolean;
+    details560?: unknown;
+    [key: string]: unknown;
+  };
+  sinsal?: {
+    [key: string]: unknown;
+    _active?: string[];
+    _activeCount?: number;
+    _byPillar?: Record<string, { stem: string[]; branch: string[] }>;
+  };
+  daeun?: {
+    direction?: string;
+    startYear?: number;
+    startMonth?: number;
+    startDay?: number;
+    list?: Array<{
+      ganZhi?: string;
+      ganZhiKor?: string;
+      startAge?: number;
+      endAge?: number;
+      tenGodStem?: string;
+      tenGodBranch?: string;
+      twelveStage?: string;
+    }>;
+  };
+  luckCycles?: {
+    daeun?: unknown[];
+    saeun?: unknown[];
+    woleun?: unknown[];
+  };
+  currentSaeun?: Array<{
+    year?: number;
+    age?: number;
+    ganZhi?: string;
+    ganZhiKor?: string;
+    tenGodStem?: string;
+    tenGodBranch?: string;
+    twelveStage?: string;
+  }>;
+  currentSoun?: unknown[];
+  jieQi?: {
+    current?: string;
+    prev?: string;
+    next?: string;
+  };
+  tianShen?: {
+    day?: {
+      name?: string;
+      nameKor?: string;
+      type?: string;
+      typeKor?: string;
+    };
+    time?: {
+      name?: string;
+      nameKor?: string;
+      type?: string;
+      typeKor?: string;
+    };
+  };
+  jiShen?: {
+    dayJiShen?: Array<{ name?: string; nameKor?: string }>;
+    dayYi?: string[];
+    dayJi?: string[];
+    timeJiShen?: Array<{ name?: string; nameKor?: string }>;
+    timeYi?: string[];
+    timeJi?: string[];
+  };
+  xiongSha?: {
+    dayXiongSha?: Array<{ name?: string; nameKor?: string }>;
+    timeXiongSha?: Array<{ name?: string; nameKor?: string }>;
+  };
+  nobleDirection?: Record<string, {
+    name?: string;
+    direction?: string;
+    directionDesc?: string;
+  }>;
+  jiuXing?: Record<string, {
+    name?: string;
+    nameKor?: string;
+  }>;
+  xiu28?: {
+    xiu?: string;
+    xiuKor?: string;
+    gong?: string;
+    gongKor?: string;
+    luck?: string;
+    luckKor?: string;
+    animal?: string;
+    animalKor?: string;
+  };
+  jianZhi?: {
+    name?: string;
+    nameKor?: string;
+    type?: string;
+  };
+  chong?: {
+    dayChong?: {
+      branch?: string;
+      branchKor?: string;
+      zodiac?: string;
+      zodiacKor?: string;
+    };
+    timeChong?: {
+      branch?: string;
+      branchKor?: string;
+      zodiac?: string;
+      zodiacKor?: string;
+    };
+  };
+  gong?: {
+    taiYuan?: { name?: string; ganZhi?: string };
+    mingGong?: { name?: string; ganZhi?: string };
+    shenGong?: { name?: string; ganZhi?: string };
+  };
+  pengZu?: {
+    stem?: string;
+    branch?: string;
+  };
+  loveFacts?: {
+    hourKnown?: boolean;
+    peachBlossom?: { hasPeach?: boolean; positions?: string[] };
+    spouseStars?: { hitCount?: number; positions?: string[]; targetStars?: string[] };
+    spouseTargetType?: string;
+    dayMasterStrength?: string;
+    fiveElementsHanjaPercent?: Record<string, number>;
+    [key: string]: unknown;
+  };
+  // 납음 (추가 데이터)
+  nayin?: Record<string, string>;
+  // 태원/명궁/신궁 (result에서 직접 접근용)
+  taiYuan?: { name?: string; ganZhi?: string };
+  mingGong?: { name?: string; ganZhi?: string };
+  shenGong?: { name?: string; ganZhi?: string };
+}
+
 export interface SajuLoveRecord {
   id: string;
   createdAt: string;
@@ -25,6 +214,9 @@ export interface SajuLoveRecord {
     userConcern: string;
     status: string;
   };
+  // 전체 사주 API 응답 데이터 (원본 그대로 저장)
+  rawSajuData?: RawSajuData;
+  // 기존 sajuData 필드 (하위 호환성 유지)
   sajuData: {
     dayMaster: {
       char: string;
@@ -81,6 +273,25 @@ export interface SajuLoveRecord {
       과숙살?: { has?: boolean; target?: string; forGender?: string };
       고신살?: { has?: boolean; target?: string; forGender?: string };
     } | null;
+    // 추가 데이터 (rawSajuData에서 가져온 것들을 직접 접근 가능하도록)
+    daeun?: RawSajuData["daeun"];
+    zodiac?: RawSajuData["zodiac"];
+    taiYuan?: { name?: string; ganZhi?: string };
+    mingGong?: { name?: string; ganZhi?: string };
+    shenGong?: { name?: string; ganZhi?: string };
+    nayin?: Record<string, string>;
+    luckCycles?: RawSajuData["luckCycles"];
+    currentSaeun?: RawSajuData["currentSaeun"];
+    jieQi?: RawSajuData["jieQi"];
+    tianShen?: RawSajuData["tianShen"];
+    jiShen?: RawSajuData["jiShen"];
+    xiongSha?: RawSajuData["xiongSha"];
+    nobleDirection?: RawSajuData["nobleDirection"];
+    jiuXing?: RawSajuData["jiuXing"];
+    xiu28?: RawSajuData["xiu28"];
+    jianZhi?: RawSajuData["jianZhi"];
+    chong?: RawSajuData["chong"];
+    pengZu?: RawSajuData["pengZu"];
   };
   loveAnalysis?: {
     user_name: string;
