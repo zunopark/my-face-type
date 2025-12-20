@@ -172,6 +172,10 @@ function SajuLoveResultContent() {
   const [currentBgImage, setCurrentBgImage] = useState(
     "/saju-love/img/nangja-1.jpg"
   );
+  const [prevBgImage, setPrevBgImage] = useState(
+    "/saju-love/img/nangja-1.jpg"
+  );
+  const [isBgTransitioning, setIsBgTransitioning] = useState(false);
   const [isAnalyzing, setIsAnalyzing] = useState(false);
 
   const isFetchingRef = useRef(false);
@@ -582,8 +586,16 @@ function SajuLoveResultContent() {
         new Promise((resolve) => setTimeout(resolve, 100)),
       ]);
 
+      // 이미지가 바뀌는 경우: crossfade 전환
+      if (nextImage !== currentBgImage) {
+        setPrevBgImage(currentBgImage);
+        setCurrentBgImage(nextImage);
+        setIsBgTransitioning(true);
+        // 전환 완료 후 상태 리셋
+        setTimeout(() => setIsBgTransitioning(false), 400);
+      }
+
       setCurrentIndex(nextIndex);
-      setCurrentBgImage(nextImage);
 
       if (nextMsg.type === "dialogue") {
         typeText(nextMsg.content, () => setShowButtons(true));
@@ -857,6 +869,19 @@ function SajuLoveResultContent() {
     );
   }
 
+  // 재시도 핸들러
+  const handleRetry = () => {
+    if (data) {
+      setError(null);
+      setIsLoading(true);
+      setIsAnalyzing(true);
+      fetchLoveAnalysis(data);
+    } else {
+      // data가 없으면 페이지 새로고침
+      window.location.reload();
+    }
+  };
+
   // 에러 화면
   if (error) {
     return (
@@ -864,12 +889,16 @@ function SajuLoveResultContent() {
         <div className="main_body_wrap">
           <div className="error_wrap">
             <div className="error_icon">!</div>
-            <p className="error_text">{error}</p>
+            <p className="error_text">
+              정말 죄송합니다.<br />
+              사주 분석하는데 오류가 발생해서<br />
+              다시 한 번만 더 시도해주세요.
+            </p>
             <button
               className="error_btn"
-              onClick={() => window.location.reload()}
+              onClick={handleRetry}
             >
-              다시 시작하기
+              다시 시도하기
             </button>
           </div>
         </div>
@@ -902,12 +931,21 @@ function SajuLoveResultContent() {
 
   return (
     <div className="saju_result_page chat_mode" onClick={handleScreenClick}>
-      {/* 배경 이미지 */}
+      {/* 배경 이미지 - crossfade */}
       <div className="result_bg">
+        {/* 이전 이미지 (전환 중에만 보임) */}
+        {isBgTransitioning && (
+          <img
+            src={prevBgImage}
+            alt=""
+            className="result_bg_image result_bg_prev"
+          />
+        )}
+        {/* 현재 이미지 */}
         <img
           src={currentBgImage}
           alt=""
-          className="result_bg_image"
+          className={`result_bg_image ${isBgTransitioning ? 'result_bg_fade_in' : ''}`}
         />
       </div>
 

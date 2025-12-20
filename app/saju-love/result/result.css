@@ -4,11 +4,13 @@
   background: #fff9f9 url('/saju-love/img/nangja.jpg') center top / 100% auto no-repeat;
   background-attachment: fixed;
   min-height: 100vh;
+  min-height: 100dvh;
 }
 
 .saju_result_page .main_body_wrap {
   background: white;
   min-height: 100vh;
+  min-height: 100dvh;
   width: 100%;
   max-width: 500px;
   margin: 0 auto;
@@ -23,7 +25,8 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  min-height: 100vh;
+  height: 100vh;
+  height: 100dvh;
   width: 100%;
   max-width: 500px;
   margin: 0 auto;
@@ -2174,10 +2177,33 @@
 }
 
 .saju_result_page .result_bg_image {
+  position: absolute;
+  top: 0;
+  left: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
   object-position: top center;
+}
+
+/* 이전 이미지 (뒤에 깔림) */
+.saju_result_page .result_bg_prev {
+  z-index: 1;
+}
+
+/* 현재 이미지 fade in */
+.saju_result_page .result_bg_fade_in {
+  z-index: 2;
+  animation: bgFadeIn 0.4s ease-out forwards;
+}
+
+@keyframes bgFadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
 /* 뒤로가기 버튼 - iOS 글래스모피즘 */
@@ -5521,9 +5547,11 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  min-height: 60vh;
+  min-height: 100vh;
+  min-height: 100dvh;
   padding: 40px 20px;
   text-align: center;
+  background: #fff9f9;
 }
 
 .saju_result_page .waiting_content {
