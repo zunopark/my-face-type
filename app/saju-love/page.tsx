@@ -267,17 +267,6 @@ export default function SajuLovePage() {
 
       const resultId = crypto.randomUUID();
 
-      const statusMap: Record<string, string> = {
-        single: "솔로",
-        some: "썸 타는 중",
-        breakup: "연애중",
-      };
-
-      let combinedConcern = userConcern;
-      if (status) {
-        combinedConcern += `\n현재 연애 상태: ${statusMap[status] || status}`;
-      }
-
       // 필요한 데이터만 추출하여 저장 (용량 절약)
       const { dayMaster, pillars, fiveElements, loveFacts, sinsal } = result.data;
       const minimalSajuData = {
@@ -313,7 +302,7 @@ export default function SajuLovePage() {
           date: birthDate,
           calendar,
           time: birthTime === "unknown" ? null : birthTime || null,
-          userConcern: combinedConcern.trim(),
+          userConcern: userConcern.trim(),
           status: status!,
         },
         sajuData: minimalSajuData,
@@ -327,7 +316,7 @@ export default function SajuLovePage() {
         birth_date: birthDate,
         birth_time: birthTime === "unknown" ? "모름" : birthTime,
         user_name: name,
-        user_concern: combinedConcern.trim(),
+        user_concern: userConcern.trim(),
         day_master: minimalSajuData.dayMaster?.char,
         day_master_title: minimalSajuData.dayMaster?.title,
       });

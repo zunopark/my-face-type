@@ -675,8 +675,6 @@ function SajuLoveResultContent() {
       }
 
       try {
-        const combinedConcern = storedData.input?.userConcern || "";
-
         // 클라이언트에서 직접 FastAPI 호출 (Netlify 타임아웃 우회)
         const response = await fetch(`${SAJU_API_URL}/saju_love/analyze`, {
           method: "POST",
@@ -686,10 +684,11 @@ function SajuLoveResultContent() {
           body: JSON.stringify({
             saju_data: {
               ...storedData.sajuData,
-              input: storedData.input, // 성별 정보 포함
+              input: storedData.input, // 성별, 상태 정보 포함
             },
             user_name: storedData.input?.userName || "",
-            user_concern: combinedConcern.trim(),
+            user_concern: storedData.input?.userConcern?.trim() || "",
+            user_status: storedData.input?.status || "",
             year: new Date().getFullYear(),
           }),
         });
@@ -1344,21 +1343,25 @@ const strengthLoveInterpretation: Record<
     ],
     idealType: "내 방식을 따라와 줄 사람",
   },
-  중화신강: {
-    title: "약간 내가 더 주도하는 스타일",
-    mainRatio: "주도권 6:4",
-    traits: ["자기 의견 확실하되 상대도 존중", "주도적이지만 독단적이지 않음"],
+  태강: {
+    title: "강하게 주도하는 스타일",
+    mainRatio: "주도권 85~90%",
+    traits: ["자기 확신이 강함", "결정이 빠름", "추진력 있음"],
     pattern: [
-      "내 생각엔 이게 좋을 것 같아. 어때?",
-      "내가 할게~ 근데 네 의견도 말해줘",
+      "내가 결정할게",
+      "이게 맞아, 따라와",
+      "걱정 마, 내가 다 할게",
     ],
     goodPoints: [
-      "리더십 있으면서 배려도 함",
+      "결단력과 추진력",
       "상대에게 안정감을 줌",
-      "결정력 + 유연함",
+      "흔들림 없는 리더십",
     ],
-    warning: [],
-    idealType: "내 리드를 따라오면서도 자기 의견 있는 사람",
+    warning: [
+      "상대 의견을 놓칠 수 있음",
+      "융통성이 부족할 수 있음",
+    ],
+    idealType: "나를 믿고 따라와 주는 사람",
   },
   중화: {
     title: "완벽한 균형의 스타일",
@@ -1373,14 +1376,18 @@ const strengthLoveInterpretation: Record<
     warning: [],
     idealType: "동등한 파트너",
   },
-  중화신약: {
-    title: "약간 상대에게 맞추는 스타일",
-    mainRatio: "주도권 4:6",
-    traits: ["부드럽게 맞춰주되 자기 의견도 있음", "조율형"],
-    pattern: ["난 이게 좋은데, 너는 어때?", "네 의견 존중해, 근데 나는..."],
-    goodPoints: ["균형 잡힌 배려", "갈등 조율 능력", "부드러운 리더십 가능"],
-    warning: [],
-    idealType: "나를 존중하면서 이끌어주는 사람",
+  태약: {
+    title: "상대에게 많이 맞추는 스타일",
+    mainRatio: "주도권 10~15%",
+    traits: ["배려심이 매우 깊음", "맞춰주는 게 편함", "갈등 회피"],
+    pattern: ["네가 원하는 대로 할게", "난 괜찮아, 넌 어때?", "네가 행복하면 돼"],
+    goodPoints: ["헌신적", "상대를 편하게 해줌", "부드러운 성격"],
+    warning: [
+      "자기 의견 표현이 어려움",
+      "참다가 폭발할 수 있음",
+      "상대가 답답해할 수도",
+    ],
+    idealType: "나를 이해하고 리드해주는 사람",
   },
   신약: {
     title: "상대에게 맞추는 스타일",
@@ -1422,11 +1429,7 @@ const strengthLoveInterpretation: Record<
 const strengthCompatibility = [
   { pair: "중화 + 중화", rating: "⭐⭐⭐", desc: "완벽한 균형, 동등한 파트너" },
   { pair: "신강 + 신약", rating: "⭐⭐⭐", desc: "리드/서포트 역할 분담 명확" },
-  {
-    pair: "중화신강 + 중화신약",
-    rating: "⭐⭐⭐",
-    desc: "약간의 주도권 차이, 안정적",
-  },
+  { pair: "태강 + 태약", rating: "⭐⭐⭐", desc: "확실한 역할 분담" },
   { pair: "신강 + 신강", rating: "⚠️", desc: "주도권 싸움, 충돌 가능" },
   { pair: "신약 + 신약", rating: "⚠️", desc: "둘 다 눈치, 진전 없음" },
   { pair: "극신강 + 극신약", rating: "🚨", desc: "지배/종속 관계, 불건강" },
@@ -1503,7 +1506,7 @@ function SajuCard({ data }: { data: SajuLoveRecord }) {
     fiveElements?.strengthLevel || fiveElements?.strength || "중화";
   const strengthData =
     strengthLoveInterpretation[strengthLevel] ||
-    strengthLoveInterpretation["중화신강"];
+    strengthLoveInterpretation["중화"];
 
   // 오행 퍼센트
   const elementPercent =
@@ -2549,7 +2552,11 @@ function SajuCard({ data }: { data: SajuLoveRecord }) {
                       {label}
                     </span>
                     <span className={`ohang_status_badge ${status}`}>
-                      {status}
+                      {isOver
+                        ? "넘쳐서"
+                        : status === "결핍"
+                        ? "없어서"
+                        : "부족해서"}
                     </span>
                   </div>
                   <p className="ohang_analysis_title">
@@ -2589,7 +2596,7 @@ function SajuCard({ data }: { data: SajuLoveRecord }) {
 
         <div className="strength_gauge_card">
           <div className="gauge_labels">
-            {["극신약", "신약", "중화신약", "중화신강", "신강", "극신강"].map(
+            {["극신약", "태약", "신약", "중화", "신강", "태강", "극신강"].map(
               (level) => (
                 <span
                   key={level}
@@ -2601,7 +2608,7 @@ function SajuCard({ data }: { data: SajuLoveRecord }) {
             )}
           </div>
           <div className="gauge_track">
-            {["극신약", "신약", "중화신약", "중화신강", "신강", "극신강"].map(
+            {["극신약", "태약", "신약", "중화", "신강", "태강", "극신강"].map(
               (level) => (
                 <div
                   key={level}
@@ -2695,13 +2702,13 @@ function SajuCard({ data }: { data: SajuLoveRecord }) {
           <p className="saju_outro_text">
             타고난 글자들, 오행의 균형, 신강/신약까지...
             <br />
-            이제 {userName}님이 어떤 사람인지 조금은 보이시나요?
+            아직 너무 어렵죠? 걱정하지 마세요!
           </p>
           <p className="saju_outro_text">
-            다음부터는 이 사주를 바탕으로
+            다음 사주 분석 보고서에서
             <br />
-            <strong>{userName}님의 연애 이야기</strong>를 본격적으로
-            풀어드릴게요.
+            <strong>{userName}님의 연애 특징</strong>을 하나하나 쉽게
+            알려드릴게요.
           </p>
           <div className="saju_outro_chapters">
             <span>1장 나의 매력</span>
