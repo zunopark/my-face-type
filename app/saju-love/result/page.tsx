@@ -3618,8 +3618,8 @@ function simpleMD(src: string = ""): string {
   src = src
     .replace(/^\s*[*+-]\s+(.+)$/gm, "<ul><li>$1</li></ul>")
     .replace(/(<\/ul>\s*)<ul>/g, "")
-    .replace(/^\s*\d+\.\s+(.+)$/gm, "<ol><li>$1</li></ol>")
-    .replace(/(<\/ol>\s*)<ol>/g, "");
+    .replace(/^\s*\d+\.\s+(.+)$/gm, "<ul><li>$1</li></ul>")
+    .replace(/(<\/ul>\s*)<ul>/g, "");
   src = src
     .replace(/(?<!\*)\*([^*\n]+)\*(?!\*)/g, "<em>$1</em>")
     .replace(/(?<!_)_([^_\n]+)_(?!_)/g, "<em>$1</em>");

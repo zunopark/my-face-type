@@ -1990,24 +1990,29 @@
   color: #c0392b;
 }
 
-/* 리스트 스타일 - 인트로 스타일과 통일 */
+/* 리스트 스타일 - 심플 */
 .saju_result_page .report_card .section_content ul {
   list-style: none;
-  margin: 20px 0;
+  margin: 12px 0;
   padding: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
 }
 
 .saju_result_page .report_card .section_content ul li {
-  padding: 16px 20px;
-  background: #fff;
-  border: 1px solid #f0e8e8;
-  border-radius: 12px;
+  position: relative;
+  padding: 4px 0 4px 18px;
+  background: transparent;
+  border: none;
   font-size: 15px;
   line-height: 1.8;
   color: #4a3a3a;
+}
+
+.saju_result_page .report_card .section_content ul li::before {
+  content: "•";
+  position: absolute;
+  left: 0;
+  color: #c0392b;
+  font-weight: bold;
 }
 
 .saju_result_page .report_card .section_content ol {
