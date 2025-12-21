@@ -2238,6 +2238,15 @@
   object-position: top center;
 }
 
+.saju_result_page .result_bg_image.fade_in {
+  animation: bgFadeIn 0.3s ease-out;
+}
+
+@keyframes bgFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
 /* 뒤로가기 버튼 - iOS 글래스모피즘 */
 .saju_result_page .back_btn,
 .saju_result_page .back_btn:visited,

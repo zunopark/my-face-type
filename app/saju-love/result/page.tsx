@@ -215,7 +215,7 @@ const getChapterConfig = (
     // 1장: 나만의 매력과 연애 성향
     intro: `1장에서는 ${userName}님이 가진 매력과\n연애 스타일을 알려드릴게요!`,
     outro: `어떠세요, ${userName}님의 매력이 보이시나요?\n이제 미래의 연애 운을 살펴볼게요!`,
-    introBg: "/saju-love/img/nangja-6.jpg",
+    introBg: "/saju-love/img/nangja-5.jpg",
     reportBg: "/saju-love/img/nangja-7.jpg",
     outroBg: "/saju-love/img/nangja-8.jpg",
   },
@@ -231,16 +231,16 @@ const getChapterConfig = (
     // 3장: 결국 만나게 될 운명의 상대
     intro: `3장에서는 ${userName}님이 만나게 될\n운명의 상대에 대해 알려드릴게요.`,
     outro: "이제 조심해야 할 가짜 인연에\n대해 이야기해드릴게요.",
-    introBg: "/saju-love/img/nangja-12.jpg",
-    reportBg: "/saju-love/img/nangja-13.jpg",
-    outroBg: "/saju-love/img/nangja-14.jpg",
+    introBg: "/saju-love/img/nangja-11.jpg",
+    reportBg: "/saju-love/img/nangja-11.jpg",
+    outroBg: "/saju-love/img/nangja-11.jpg",
   },
   chapter4: {
     // 4장: 운명이라 착각하는 가짜 인연
     intro: "4장에서는 운명이라 착각할 수 있는\n가짜 인연에 대해 알려드릴게요.",
     outro: "근데 피해야 할 사람,\n어떻게 생겼는지 궁금하지 않으세요?",
     introBg: "/saju-love/img/nangja-18.jpg",
-    reportBg: "/saju-love/img/nangja-19.jpg",
+    reportBg: "/saju-love/img/nangja-18.jpg",
     outroBg: "/saju-love/img/nangja-19.jpg",
   },
   chapter5: {
@@ -284,6 +284,7 @@ function SajuLoveResultContent() {
   const [showTocModal, setShowTocModal] = useState(false);
   const [showExitModal, setShowExitModal] = useState(false);
   const [isAnalyzing, setIsAnalyzing] = useState(false);
+  const [bgFadeIn, setBgFadeIn] = useState(false);
 
   // 현재 메시지의 배경 이미지
   const currentBgImage = messages[currentIndex]?.bgImage || "/saju-love/img/nangja-1.jpg";
@@ -402,7 +403,7 @@ function SajuLoveResultContent() {
         id: "saju-intro-dialogue",
         type: "dialogue",
         content: `사주란 참 신기하죠?\n그럼 이제 ${userName}님의 사주 팔자를 살펴볼까요?`,
-        bgImage: "/saju-love/img/nangja-4.jpg",
+        bgImage: "/saju-love/img/nangja-3.jpg",
       });
 
       // 5. 사주 원국 카드
@@ -486,7 +487,7 @@ function SajuLoveResultContent() {
         id: "saju-intro-dialogue",
         type: "dialogue",
         content: `이제 ${userName}님의 사주 원국을 보여드릴게요.\n이게 바로 ${userName}님의 타고난 운명이에요!`,
-        bgImage: "/saju-love/img/nangja-4.jpg",
+        bgImage: "/saju-love/img/nangja-3.jpg",
       });
 
       // 5. 사주 원국 카드
@@ -529,8 +530,8 @@ function SajuLoveResultContent() {
           result.push({
             id: "chapter5-extra",
             type: "dialogue",
-            content: `어때요? 이런 부분도 미리 알면\n더 깊은 관계를 만들 수 있어요!`,
-            bgImage: "/saju-love/img/nangja-23.jpg",
+            content: `어때요? 이런 부분도 미리 생각하면서\n더 깊은 관계를 만들어 보세요!`,
+            bgImage: "/saju-love/img/nangja-20.jpg",
           });
         }
 
@@ -588,7 +589,7 @@ function SajuLoveResultContent() {
             id: "avoid-type-outro",
             type: "dialogue",
             content: `연인이 되시지 말고 지인으로만 지내세요!\n이제 속으로 궁금했던,, 부끄러운 주제로 넘어가볼까요?`,
-            bgImage: "/saju-love/img/nangja-20.jpg",
+            bgImage: "/saju-love/img/nangja-19.jpg",
           });
         }
       });
@@ -839,12 +840,16 @@ function SajuLoveResultContent() {
           return;
         }
 
-        // 1. 먼저 다음 메시지로 이동 (배경 이미지 변경 - 보고서에 가려져서 안보임)
-        // 2. 그 다음 보고서 내림 → 새 배경 드러남
-        goToNextMessage(nextIndex);
+        // 1. 대화창/버튼 숨김 + 보고서 내려감
+        // 2. 애니메이션 완료 후 배경 fade in + 대화 시작
+        setDialogueText("");
+        setShowButtons(false);
+        setShowReport(false);
+        setBgFadeIn(true);
         setTimeout(() => {
-          setShowReport(false);
-        }, 150);
+          goToNextMessage(nextIndex);
+          setTimeout(() => setBgFadeIn(false), 300);
+        }, 250);
       }
       return;
     }
@@ -1371,7 +1376,7 @@ function SajuLoveResultContent() {
     <div className="saju_result_page chat_mode" onClick={handleScreenClick}>
       {/* 배경 이미지 */}
       <div className="result_bg">
-        <img src={currentBgImage} alt="" className="result_bg_image" />
+        <img src={currentBgImage} alt="" className={`result_bg_image ${bgFadeIn ? "fade_in" : ""}`} />
       </div>
 
       {/* 뒤로가기 버튼 */}
