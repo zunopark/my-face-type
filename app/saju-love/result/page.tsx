@@ -285,30 +285,8 @@ function SajuLoveResultContent() {
   const [showExitModal, setShowExitModal] = useState(false);
   const [isAnalyzing, setIsAnalyzing] = useState(false);
 
-  // 배경 이미지 A/B 전환 (두 이미지 레이어의 opacity만 토글)
-  const [bgImageA, setBgImageA] = useState("/saju-love/img/nangja-1.jpg");
-  const [bgImageB, setBgImageB] = useState("/saju-love/img/nangja-1.jpg");
-  const [showImageA, setShowImageA] = useState(true);
-
-  // currentIndex 변경 시 배경 전환
-  useEffect(() => {
-    if (messages.length === 0) return;
-    const currentMsg = messages[currentIndex];
-    if (!currentMsg) return;
-
-    const nextImage = currentMsg.bgImage || "/saju-love/img/nangja-1.jpg";
-    const currentImage = showImageA ? bgImageA : bgImageB;
-
-    if (nextImage !== currentImage) {
-      // 보이지 않는 레이어에 새 이미지 세팅 후 전환
-      if (showImageA) {
-        setBgImageB(nextImage);
-      } else {
-        setBgImageA(nextImage);
-      }
-      setShowImageA(!showImageA);
-    }
-  }, [currentIndex, messages]); // 의도적으로 showImageA, bgImageA, bgImageB 제외
+  // 현재 메시지의 배경 이미지
+  const currentBgImage = messages[currentIndex]?.bgImage || "/saju-love/img/nangja-1.jpg";
 
   // 결제 관련 상태
   const [showPaymentModal, setShowPaymentModal] = useState(false);
@@ -1390,20 +1368,9 @@ function SajuLoveResultContent() {
 
   return (
     <div className="saju_result_page chat_mode" onClick={handleScreenClick}>
-      {/* 배경 이미지 - A/B 레이어 crossfade */}
+      {/* 배경 이미지 */}
       <div className="result_bg">
-        <img
-          src={bgImageA}
-          alt=""
-          className="result_bg_image"
-          style={{ opacity: showImageA ? 1 : 0 }}
-        />
-        <img
-          src={bgImageB}
-          alt=""
-          className="result_bg_image"
-          style={{ opacity: showImageA ? 0 : 1 }}
-        />
+        <img src={currentBgImage} alt="" className="result_bg_image" />
       </div>
 
       {/* 뒤로가기 버튼 */}
