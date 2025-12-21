@@ -839,11 +839,12 @@ function SajuLoveResultContent() {
           return;
         }
 
-        // 리포트 먼저 닫고, 애니메이션 완료 후 메시지 이동 (0.25s transition)
-        setShowReport(false);
+        // 1. 먼저 다음 메시지로 이동 (배경 이미지 변경 - 보고서에 가려져서 안보임)
+        // 2. 그 다음 보고서 내림 → 새 배경 드러남
+        goToNextMessage(nextIndex);
         setTimeout(() => {
-          goToNextMessage(nextIndex);
-        }, 250);
+          setShowReport(false);
+        }, 150);
       }
       return;
     }
