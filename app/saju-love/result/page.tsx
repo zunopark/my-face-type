@@ -3407,13 +3407,14 @@ function SajuCard({ data }: { data: SajuLoveRecord }) {
             alt="색동낭자 가격"
             className="price_compare_img"
           />
-          {/* eslint-disable-next-line @next/next/no-img-element */}
+          
+        </div>
+        {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src="/saju-love/img/love-price2.jpg"
             alt="색동낭자 가격 상세"
             className="price_final_img"
           />
-        </div>
       </div>
     </div>
   );
