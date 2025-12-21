@@ -198,6 +198,8 @@ export interface SajuLoveRecord {
   createdAt: string;
   paidAt?: string;
   paid: boolean;
+  // 인트로 로딩 본 여부
+  seenIntro?: boolean;
   // 결제 정보
   paymentInfo?: {
     method: "toss" | "coupon";

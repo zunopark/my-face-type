@@ -9,8 +9,49 @@ import {
   updateSajuLoveRecord,
   SajuLoveRecord,
 } from "@/lib/db/sajuLoveDB";
-import { trackPageView } from "@/lib/mixpanel";
+import {
+  trackPageView,
+  trackPaymentModalOpen,
+  trackPaymentModalClose,
+  trackPaymentAttempt,
+  trackPaymentSuccess,
+} from "@/lib/mixpanel";
+import { markSajuLovePaid } from "@/lib/db/sajuLoveDB";
 import "./result.css";
+
+// TossPayments 타입 선언
+declare global {
+  interface Window {
+    PaymentWidget: (
+      clientKey: string,
+      customerKey: string
+    ) => {
+      renderPaymentMethods: (
+        selector: string,
+        options: { value: number }
+      ) => unknown;
+      renderAgreement: (selector: string) => void;
+      requestPayment: (options: {
+        orderId: string;
+        orderName: string;
+        customerName: string;
+        successUrl: string;
+        failUrl: string;
+      }) => Promise<void>;
+    };
+  }
+}
+
+// 결제 설정
+const PAYMENT_CONFIG = {
+  clientKey:
+    process.env.NEXT_PUBLIC_TOSS_CLIENT_KEY ||
+    "live_gck_yZqmkKeP8gBaRKPg1WwdrbQRxB9l",
+  price: 14900,
+  discountPrice: 9900,
+  originalPrice: 32900,
+  orderName: "AI 연애 사주 심층 분석",
+};
 
 // 연애 사주 분석 결과 타입
 interface LoveAnalysisResult {
@@ -36,7 +77,8 @@ type MessageItem = {
     | "ending"
     | "saju"
     | "intro"
-    | "waiting";
+    | "waiting"
+    | "payment"; // 결제 유도 카드
   content: string;
   chapterIndex?: number;
   imageBase64?: string;
@@ -211,11 +253,24 @@ function SajuLoveResultContent() {
   const [isBgTransitioning, setIsBgTransitioning] = useState(false);
   const [isAnalyzing, setIsAnalyzing] = useState(false);
 
+  // 결제 관련 상태
+  const [showPaymentModal, setShowPaymentModal] = useState(false);
+  const [couponCode, setCouponCode] = useState("");
+  const [couponError, setCouponError] = useState("");
+  const [appliedCoupon, setAppliedCoupon] = useState<{
+    code: string;
+    discount: number;
+  } | null>(null);
+
   const isFetchingRef = useRef(false);
   const partialStartedRef = useRef(false);
   const loadingIntervalRef = useRef<NodeJS.Timeout | null>(null);
   const typingIntervalRef = useRef<NodeJS.Timeout | null>(null);
   const reportRef = useRef<HTMLDivElement>(null);
+  const paymentWidgetRef = useRef<ReturnType<typeof window.PaymentWidget> | null>(null);
+  // handleNext에서 사용하기 위한 함수 ref (선언 순서 문제 해결)
+  const startLoadingMessagesRef = useRef<(userName: string) => void>(() => {});
+  const fetchLoveAnalysisRef = useRef<(record: SajuLoveRecord) => void>(() => {});
 
   // 이미지 프리로드 (페이지 로드 시)
   useEffect(() => {
@@ -270,17 +325,20 @@ function SajuLoveResultContent() {
     return "chapter1"; // 기본값
   };
 
-  // 부분 메시지 리스트 생성 (들어가며 + 사주원국만 - 분석 중일 때 사용)
+  // 부분 메시지 리스트 생성 (들어가며 + 사주원국만)
+  // isPaid=false: 결제 유도 카드 표시
+  // isPaid=true & 분석 중: 대기 카드 표시
   const buildPartialMessageList = useCallback(
     (record: SajuLoveRecord): MessageItem[] => {
       const result: MessageItem[] = [];
       const userName = record.input?.userName || "고객";
+      const isPaid = record.paid || false;
 
-      // 1. 첫 인사 대화 (분석 중이므로 메시지 수정)
+      // 1. 첫 인사 대화
       result.push({
         id: "opening-dialogue",
         type: "dialogue",
-        content: `안녕하세요, ${userName}님!\n보고서를 준비하는 동안 먼저 사주에 대해 알려드릴게요.`,
+        content: `안녕하세요, ${userName}님\n저는 색동낭자예요. 반가워요!`,
         bgImage: "/saju-love/img/nangja-1.jpg",
       });
 
@@ -288,7 +346,7 @@ function SajuLoveResultContent() {
       result.push({
         id: "intro-guide-dialogue",
         type: "dialogue",
-        content: `${userName}님의 사주를 알려드리기 전에,\n먼저 연애 사주에 대해 간단히 설명해드릴게요.`,
+        content: `${userName}님의 연애운을 보기 전에,\n먼저 사주에 대해 간단히 설명해드릴게요.`,
         bgImage: "/saju-love/img/nangja-2.jpg",
       });
 
@@ -304,7 +362,7 @@ function SajuLoveResultContent() {
       result.push({
         id: "saju-intro-dialogue",
         type: "dialogue",
-        content: `이제 ${userName}님의 사주 원국을 보여드릴게요.\n이게 바로 ${userName}님의 타고난 운명이에요!`,
+        content: `사주란 참 신기하죠?\n그럼 이제 ${userName}님의 사주 팔자를 살펴볼까요?`,
         bgImage: "/saju-love/img/nangja-4.jpg",
       });
 
@@ -316,13 +374,31 @@ function SajuLoveResultContent() {
         bgImage: "/saju-love/img/nangja-5.jpg",
       });
 
-      // 6. 대기 메시지 (분석 완료 대기)
-      result.push({
-        id: "waiting",
-        type: "waiting",
-        content: "",
-        bgImage: "/saju-love/img/nangja-1.jpg",
-      });
+      // 6. 미결제: 결제 유도 (다음 버튼 → 결제 모달)
+      // 결제 완료: 감사 대사 → 대기 카드 (다음 버튼 → 로딩)
+      if (!isPaid) {
+        result.push({
+          id: "payment",
+          type: "payment",
+          content: "",
+          bgImage: "/saju-love/img/nangja-1.jpg",
+        });
+      } else {
+        // 감사 대사
+        result.push({
+          id: "thank-you-dialogue",
+          type: "dialogue",
+          content: `${userName}님, 복채를 내주셔서 감사해요!\n지금부터 ${userName}님만을 위한 연애 사주 보고서를 정성껏 준비할게요.`,
+          bgImage: "/saju-love/img/nangja-1.jpg",
+        });
+        // 대기 카드 (다음 버튼 누르면 로딩 시작)
+        result.push({
+          id: "waiting",
+          type: "waiting",
+          content: "",
+          bgImage: "/saju-love/img/nangja-1.jpg",
+        });
+      }
 
       return result;
     },
@@ -544,6 +620,39 @@ function SajuLoveResultContent() {
     }, 50);
   }, []);
 
+  // 결제 모달 열기
+  const openPaymentModal = useCallback(() => {
+    if (!data) return;
+
+    trackPaymentModalOpen("saju_love", {
+      id: data.id,
+      price: PAYMENT_CONFIG.price,
+      user_name: data.input.userName,
+      gender: data.input.gender,
+      birth_date: data.input.date,
+      day_master: data.sajuData.dayMaster?.char,
+      user_concern: data.input.userConcern,
+    });
+
+    setShowPaymentModal(true);
+
+    setTimeout(() => {
+      if (typeof window !== "undefined" && window.PaymentWidget) {
+        const customerKey = `customer_${Date.now()}`;
+        const widget = window.PaymentWidget(
+          PAYMENT_CONFIG.clientKey,
+          customerKey
+        );
+        paymentWidgetRef.current = widget;
+
+        widget.renderPaymentMethods("#saju-payment-method", {
+          value: PAYMENT_CONFIG.price,
+        });
+        widget.renderAgreement("#saju-agreement");
+      }
+    }, 100);
+  }, [data]);
+
   // 이전 메시지로 이동
   const handlePrev = useCallback(() => {
     // 타이핑 중이면 무시
@@ -611,6 +720,13 @@ function SajuLoveResultContent() {
     // 다음 메시지로 이동하는 함수
     const goToNextMessage = async (nextIndex: number) => {
       const nextMsg = messages[nextIndex];
+
+      // 다음이 payment 타입이면 결제 overlay 바로 열기
+      if (nextMsg.type === "payment") {
+        openPaymentModal();
+        return;
+      }
+
       const nextImage = nextMsg.bgImage || "/saju-love/img/nangja-1.jpg";
 
       // 이미지 로드 대기 (최대 100ms)
@@ -643,9 +759,23 @@ function SajuLoveResultContent() {
 
     // 리포트 보고 있으면 닫기
     if (showReport) {
+      const currentMsg = messages[currentIndex];
       const nextIndex = currentIndex + 1;
+
+      // 현재가 waiting 카드면 → 이미 분석 중이므로 무시
+      if (currentMsg.type === "waiting") {
+        return;
+      }
+
       if (nextIndex < messages.length) {
         const nextMsg = messages[nextIndex];
+
+        // 다음이 payment 타입이면 결제 overlay 바로 열기
+        if (nextMsg.type === "payment") {
+          openPaymentModal();
+          return;
+        }
+
         const nextImage = nextMsg.bgImage || "/saju-love/img/nangja-1.jpg";
 
         // 이미지가 다르면: 이미지 먼저 바꾸고 딜레이 후 전환
@@ -668,7 +798,7 @@ function SajuLoveResultContent() {
     if (nextIndex < messages.length) {
       goToNextMessage(nextIndex);
     }
-  }, [currentIndex, messages, isTyping, showReport, typeText, currentBgImage]);
+  }, [currentIndex, messages, isTyping, showReport, typeText, currentBgImage, openPaymentModal, data]);
 
   // 로딩 메시지 순환
   const startLoadingMessages = useCallback((userName: string) => {
@@ -694,6 +824,110 @@ function SajuLoveResultContent() {
       loadingIntervalRef.current = null;
     }
   }, []);
+
+  // 쿠폰 확인
+  const handleCouponSubmit = useCallback(async () => {
+    if (!data) return;
+
+    // 무료 쿠폰 (전액 할인)
+    if (couponCode === "1234" || couponCode === "chaerin") {
+      setCouponError("");
+
+      // 쿠폰 결제 성공 추적
+      trackPaymentSuccess("saju_love", {
+        id: data.id,
+        price: 0,
+        payment_method: "coupon",
+        coupon_code: couponCode,
+        user_name: data.input.userName,
+        gender: data.input.gender,
+        birth_date: data.input.date,
+        day_master: data.sajuData.dayMaster?.char,
+        user_concern: data.input.userConcern,
+      });
+
+      // 결제 완료 처리
+      await markSajuLovePaid(data.id, {
+        method: "coupon",
+        price: 0,
+        couponCode: couponCode,
+      });
+
+      // 페이지 새로고침하여 결제 완료 상태로 다시 로드
+      window.location.reload();
+    }
+    // 할인 쿠폰 (5000원 할인)
+    else if (couponCode === "boniiii" || couponCode === "차세린") {
+      setCouponError("");
+      setAppliedCoupon({ code: couponCode, discount: 5000 });
+
+      // 결제 위젯 금액 업데이트
+      if (paymentWidgetRef.current) {
+        const newPrice = PAYMENT_CONFIG.price - 5000;
+        paymentWidgetRef.current.renderPaymentMethods("#saju-payment-method", {
+          value: newPrice,
+        });
+      }
+    } else {
+      setCouponError("유효하지 않은 쿠폰입니다");
+    }
+  }, [data, couponCode]);
+
+  // 결제 요청
+  const handlePaymentRequest = useCallback(async () => {
+    if (!paymentWidgetRef.current || !data) return;
+
+    const finalPrice = appliedCoupon
+      ? PAYMENT_CONFIG.price - appliedCoupon.discount
+      : PAYMENT_CONFIG.price;
+
+    trackPaymentAttempt("saju_love", {
+      id: data.id,
+      price: finalPrice,
+      is_discount: !!appliedCoupon,
+      coupon_code: appliedCoupon?.code,
+      user_name: data.input.userName,
+      gender: data.input.gender,
+      birth_date: data.input.date,
+      day_master: data.sajuData.dayMaster?.char,
+      user_concern: data.input.userConcern,
+    });
+
+    try {
+      await paymentWidgetRef.current.requestPayment({
+        orderId: `saju-love${
+          appliedCoupon ? `-${appliedCoupon.code}` : ""
+        }_${Date.now()}`,
+        orderName: appliedCoupon
+          ? `${PAYMENT_CONFIG.orderName} - ${appliedCoupon.code} 할인`
+          : PAYMENT_CONFIG.orderName,
+        customerName: data.input.userName || "고객",
+        successUrl: `${
+          window.location.origin
+        }/payment/success?type=saju&id=${encodeURIComponent(data.id)}`,
+        failUrl: `${
+          window.location.origin
+        }/payment/fail?id=${encodeURIComponent(data.id)}&type=saju`,
+      });
+    } catch (err) {
+      console.error("결제 오류:", err);
+    }
+  }, [data, appliedCoupon]);
+
+  // 결제 모달 닫기
+  const closePaymentModal = useCallback(() => {
+    setShowPaymentModal(false);
+    paymentWidgetRef.current = null;
+
+    trackPaymentModalClose("saju_love", {
+      id: data?.id,
+      reason: "user_close",
+    });
+
+    // 쿠폰 상태 리셋
+    setAppliedCoupon(null);
+    setCouponCode("");
+  }, [data]);
 
   // 연애 사주 분석 API 호출
   const fetchLoveAnalysis = useCallback(
@@ -801,6 +1035,12 @@ function SajuLoveResultContent() {
     [startLoadingMessages, stopLoadingMessages, buildMessageList, typeText]
   );
 
+  // ref에 함수 할당 (handleNext에서 사용)
+  useEffect(() => {
+    startLoadingMessagesRef.current = startLoadingMessages;
+    fetchLoveAnalysisRef.current = fetchLoveAnalysis;
+  }, [startLoadingMessages, fetchLoveAnalysis]);
+
   // 초기화
   useEffect(() => {
     if (!resultId) {
@@ -817,13 +1057,7 @@ function SajuLoveResultContent() {
         return;
       }
 
-      // 결제 여부 체크 - 미결제 시 detail 페이지로 리다이렉트
-      if (!record.paid) {
-        router.push(`/saju-love/detail?id=${resultId}`);
-        return;
-      }
-
-      // 결과 페이지 방문 추적 (결제 완료된 사용자)
+      // 결과 페이지 방문 추적
       trackPageView("saju_love_result", {
         id: record.id,
         user_name: record.input.userName,
@@ -834,7 +1068,7 @@ function SajuLoveResultContent() {
         user_concern: record.input.userConcern,
         day_master: record.sajuData.dayMaster?.char,
         day_master_title: record.sajuData.dayMaster?.title,
-        paid: true,
+        paid: record.paid || false,
         // 결제 정보
         payment_method: record.paymentInfo?.method,
         payment_price: record.paymentInfo?.price,
@@ -842,6 +1076,40 @@ function SajuLoveResultContent() {
         is_discount: record.paymentInfo?.isDiscount,
       });
 
+      // 미결제 상태: 들어가며 + 사주 원국까지만 보여주고 결제 유도
+      if (!record.paid) {
+        setData(record);
+        const userName = record.input?.userName || "고객";
+
+        // 이미 인트로를 본 적 있으면 가라 로딩 스킵
+        if (record.seenIntro) {
+          const partialMessages = buildPartialMessageList(record);
+          setMessages(partialMessages);
+          setIsLoading(false);
+          setTimeout(() => {
+            typeText(partialMessages[0].content, () => setShowButtons(true));
+          }, 500);
+          return;
+        }
+
+        // 첫 방문: 10초 가라 로딩 후 partial 메시지 시작
+        startLoadingMessages(userName);
+        setTimeout(async () => {
+          stopLoadingMessages();
+          // seenIntro 플래그 저장
+          await updateSajuLoveRecord(record.id, { seenIntro: true });
+          const partialMessages = buildPartialMessageList(record);
+          setMessages(partialMessages);
+          setIsLoading(false);
+          setTimeout(() => {
+            typeText(partialMessages[0].content, () => setShowButtons(true));
+          }, 500);
+        }, 10000); // 10초
+
+        return;
+      }
+
+      // 결제 완료 & 분석 완료: 전체 메시지 보여주기
       if (record.loveAnalysis) {
         setData(record);
         const messageList = buildMessageList(record);
@@ -853,24 +1121,28 @@ function SajuLoveResultContent() {
         return;
       }
 
-      // 분석 필요 - 데이터 설정 후 분석 시작
+      // 결제 완료 & 분석 필요: 감사 대사 보여주고 바로 분석 시작
       setData(record);
       setIsAnalyzing(true);
-      fetchLoveAnalysis(record);
+      const partialMessages = buildPartialMessageList(record);
+      setMessages(partialMessages);
 
-      // 10초 후 partial 메시지로 먼저 시작
+      // 감사 대사(thank-you-dialogue) 인덱스 찾기
+      const thankYouIndex = partialMessages.findIndex(m => m.id === "thank-you-dialogue");
+      if (thankYouIndex >= 0) {
+        setCurrentIndex(thankYouIndex);
+        setCurrentBgImage(partialMessages[thankYouIndex].bgImage || "/saju-love/img/nangja-1.jpg");
+      }
+
+      setIsLoading(false);
       setTimeout(() => {
-        // 아직 분석 중이고, partial 시작 전이면
-        if (!partialStartedRef.current && isFetchingRef.current) {
-          partialStartedRef.current = true;
-          const partialMessages = buildPartialMessageList(record);
-          setMessages(partialMessages);
-          setIsLoading(false);
-          setTimeout(() => {
-            typeText(partialMessages[0].content, () => setShowButtons(true));
-          }, 500);
-        }
-      }, 10000); // 10초
+        const startIdx = thankYouIndex >= 0 ? thankYouIndex : 0;
+        typeText(partialMessages[startIdx].content, () => setShowButtons(true));
+      }, 500);
+
+      // 백그라운드에서 분석 시작
+      partialStartedRef.current = true;
+      fetchLoveAnalysis(record);
     };
 
     loadData();
@@ -880,7 +1152,8 @@ function SajuLoveResultContent() {
     buildMessageList,
     buildPartialMessageList,
     typeText,
-    router,
+    startLoadingMessages,
+    stopLoadingMessages,
   ]);
 
   // 로딩 화면
@@ -949,7 +1222,7 @@ function SajuLoveResultContent() {
 
   // 버튼 텍스트 결정
   const getButtonText = () => {
-    if (showReport) return "확인했어";
+    if (showReport) return "다음";
     if (currentMsg?.type === "dialogue") return "다음";
     return "확인하기";
   };
@@ -1083,7 +1356,7 @@ function SajuLoveResultContent() {
           </div>
 
           {/* 스크롤 힌트 */}
-          {showScrollHint && !canProceed && (
+          {showScrollHint && !canProceed && currentMsg.type !== "payment" && (
             <div className="scroll_hint">
               <span className="material-icons">keyboard_arrow_down</span>
               아래로 스크롤해주세요
@@ -1093,7 +1366,7 @@ function SajuLoveResultContent() {
           {/* 하단 다음 버튼 */}
           <div
             className={`report_bottom_btn_wrap ${
-              canProceed && currentMsg.type !== "waiting" ? "visible" : ""
+              canProceed && currentMsg.type !== "waiting" && currentMsg.type !== "payment" ? "visible" : ""
             }`}
           >
             {currentMsg.type === "ending" ? (
@@ -1115,6 +1388,8 @@ function SajuLoveResultContent() {
               <div className="waiting_info">
                 <p>분석이 완료되면 자동으로 다음으로 넘어갑니다</p>
               </div>
+            ) : currentMsg.type === "payment" ? (
+              null // 결제 카드는 자체 버튼 사용
             ) : (
               <div className="report_nav_buttons">
                 {currentIndex > 0 && (
@@ -1123,7 +1398,7 @@ function SajuLoveResultContent() {
                   </button>
                 )}
                 <button className="report_next_btn" onClick={handleNext}>
-                  확인했어
+                  다음
                 </button>
               </div>
             )}
@@ -1155,6 +1430,104 @@ function SajuLoveResultContent() {
           </button>
         </div>
       </div>
+
+      {/* 결제 모달 */}
+      {showPaymentModal && (
+        <div className="payment-overlay" style={{ display: "flex" }}>
+          <div className="payment-fullscreen">
+            <div className="modal-content">
+              <div className="payment-header">
+                <div className="payment-title">색동낭자 연애 사주 복채</div>
+                <div className="payment-close" onClick={closePaymentModal}>
+                  ✕
+                </div>
+              </div>
+
+              {/* 결제 금액 섹션 */}
+              <div className="payment-amount-section">
+                <h3 className="payment-amount-title">복채</h3>
+
+                {/* 정가 */}
+                <div className="payment-row">
+                  <span className="payment-row-label">색동낭자 연애 사주 15,000자 보고서</span>
+                  <span className="payment-row-value">{PAYMENT_CONFIG.originalPrice.toLocaleString()}원</span>
+                </div>
+
+                {/* 할인 */}
+                <div className="payment-row discount">
+                  <span className="payment-row-label">출시 기념 특별 할인</span>
+                  <div className="payment-row-discount-value">
+                    <span className="discount-badge">
+                      {Math.floor((1 - PAYMENT_CONFIG.price / PAYMENT_CONFIG.originalPrice) * 100)}%
+                    </span>
+                    <span className="discount-amount">
+                      -{(PAYMENT_CONFIG.originalPrice - PAYMENT_CONFIG.price).toLocaleString()}원
+                    </span>
+                  </div>
+                </div>
+
+                {/* 쿠폰 할인 적용 표시 */}
+                {appliedCoupon && (
+                  <div className="payment-row discount">
+                    <span className="payment-row-label">{appliedCoupon.code} 쿠폰</span>
+                    <span className="discount-amount">-{appliedCoupon.discount.toLocaleString()}원</span>
+                  </div>
+                )}
+
+                {/* 구분선 */}
+                <div className="payment-divider" />
+
+                {/* 최종 금액 */}
+                <div className="payment-row final">
+                  <span className="payment-row-label">최종 결제금액</span>
+                  <span className="payment-row-final-value">
+                    {appliedCoupon
+                      ? (PAYMENT_CONFIG.price - appliedCoupon.discount).toLocaleString()
+                      : PAYMENT_CONFIG.price.toLocaleString()}원
+                  </span>
+                </div>
+              </div>
+
+              {/* 쿠폰 입력 */}
+              <div className="coupon-section">
+                <div className="coupon-input-row">
+                  <input
+                    type="text"
+                    className="coupon-input"
+                    placeholder="쿠폰 코드 입력"
+                    value={couponCode}
+                    onChange={(e) => {
+                      setCouponCode(e.target.value);
+                      setCouponError("");
+                    }}
+                    disabled={!!appliedCoupon}
+                  />
+                  <button
+                    className="coupon-submit-btn"
+                    onClick={handleCouponSubmit}
+                    disabled={!!appliedCoupon}
+                  >
+                    {appliedCoupon ? "적용됨" : "적용"}
+                  </button>
+                </div>
+                {couponError && (
+                  <div className="coupon-error">{couponError}</div>
+                )}
+              </div>
+
+              <div id="saju-payment-method" style={{ padding: 0, margin: 0 }} />
+              <div id="saju-agreement" />
+              <button
+                className="payment-final-btn-saju"
+                onClick={handlePaymentRequest}
+              >
+                복채 결제하기
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
     </div>
   );
 }
@@ -2888,19 +3261,19 @@ function SajuCard({ data }: { data: SajuLoveRecord }) {
           })()}
         </div>
 
-        {/* 분석 기반 설명 */}
-        <div className="nangja_comment" style={{ marginTop: "20px" }}>
+        {/* 분석 기반 설명 - 마지막 강조 멘트 */}
+        <div className="nangja_comment nangja_final">
           <p className="nangja_text">
-            점점 사주가 어려워지지 않나요?
-            <br />
-            <br />
+            <span className="nangja_question">점점 사주가 어려워지지 않나요?</span>
+          </p>
+          <p className="nangja_text nangja_reassure">
             걱정 마세요.
             <br />
             샤로수길 사주 전문가들과 함께 만들고 검증한
             <br />
             AI 사주 분석 전문가가 이 모든 걸 종합해서
             <br />
-            {userName}님만의 연애 보고서를 만들어 드릴게요.
+            <strong>{userName}님만의 연애 보고서</strong>를 만들어 드릴게요.
           </p>
         </div>
 
@@ -2992,6 +3365,55 @@ function SajuCard({ data }: { data: SajuLoveRecord }) {
               </ul>
             </div>
           </div>
+
+        {/* 고민 유도 섹션 */}
+        <div className="hesitate_section">
+          <p className="hesitate_question">아직 고민하고 계신가요?</p>
+          <p className="hesitate_hint">사실 이미 보고서는 작성하고 있어요!</p>
+        </div>
+
+        {/* 가격 비교 섹션 */}
+        <div className="price_compare_section">
+          {/* 다른 곳 가격 비교 */}
+          <p className="price_compare_title">색동낭자 연애 사주 분석 보고서 복채</p>
+          <div className="price_compare_cards">
+            <div className="price_card">
+              <span className="price_card_badge">오프라인 사주</span>
+              <span className="price_card_value">5만원</span>
+              <span className="price_card_sep">~</span>
+              <span className="price_card_value">30만원</span>
+            </div>
+            <div className="price_card">
+              <span className="price_card_badge">AI 온라인 사주</span>
+              <span className="price_card_value">3만원</span>
+              <span className="price_card_sep">~</span>
+              <span className="price_card_value">5만원</span>
+            </div>
+            <div className="price_card">
+              <span className="price_card_badge">신점</span>
+              <span className="price_card_value">20만원</span>
+              <span className="price_card_sep">~</span>
+              <span className="price_card_value">400만원</span>
+            </div>
+          </div>
+
+          {/* VS */}
+          <div className="price_vs">VS</div>
+
+          {/* 우리 가격 이미지 */}
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src="/saju-love/img/love-price.jpg"
+            alt="색동낭자 가격"
+            className="price_compare_img"
+          />
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src="/saju-love/img/love-price2.jpg"
+            alt="색동낭자 가격 상세"
+            className="price_final_img"
+          />
+        </div>
       </div>
     </div>
   );

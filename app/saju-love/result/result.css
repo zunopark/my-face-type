@@ -5472,6 +5472,36 @@
   margin: 0;
 }
 
+/* 마지막 강조 멘트 */
+.saju_result_page .nangja_final {
+  margin-top: 32px;
+  margin-bottom: 28px;
+  padding: 24px 20px;
+  background: linear-gradient(135deg, rgba(184, 90, 133, 0.08) 0%, rgba(255, 255, 255, 0) 100%);
+  border-radius: 16px;
+}
+
+.saju_result_page .nangja_final .nangja_question {
+  display: block;
+  font-size: 15px;
+  font-weight: 500;
+  color: #a04878;
+  margin-bottom: 16px;
+  opacity: 0.9;
+}
+
+.saju_result_page .nangja_final .nangja_reassure {
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1.9;
+  color: #b85a85;
+}
+
+.saju_result_page .nangja_final .nangja_reassure strong {
+  color: #9a3d6a;
+  font-weight: 700;
+}
+
 /* 사주 원국 마무리 섹션 */
 .saju_result_page .saju_outro_section {
   margin-top: 24px;
@@ -6731,4 +6761,762 @@
   font-size: 12px;
   font-weight: 600;
   color: #c0392b;
+}
+
+/* ===== 가격 비교 섹션 ===== */
+.saju_result_page .price_compare_section {
+  margin-top: 32px;
+  padding: 28px 20px ;
+  text-align: center;
+  background: #fff;
+}
+
+.saju_result_page .price_compare_title {
+  font-size: 15px;
+  font-weight: 500;
+  color: #666;
+  margin: 0 0 20px 0;
+}
+
+.saju_result_page .price_compare_cards {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+}
+
+.saju_result_page .price_card {
+  flex: 1;
+  max-width: 110px;
+  padding: 16px 10px;
+  background: #fff;
+  border-radius: 12px;
+  border: 1px solid #f0e0dc;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.saju_result_page .price_card_badge {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 600;
+  color: #c0392b;
+  background: #fce8e6;
+  padding: 4px 10px;
+  border-radius: 20px;
+  margin-bottom: 8px;
+}
+
+.saju_result_page .price_card_value {
+  font-size: 15px;
+  font-weight: 700;
+  color: #333;
+}
+
+.saju_result_page .price_card_sep {
+  font-size: 12px;
+  color: #999;
+}
+
+.saju_result_page .price_vs {
+  font-size: 32px;
+  font-weight: 800;
+  color: #c0392b;
+  margin: 28px 0 0 0;
+}
+
+.saju_result_page .price_compare_img {
+  width: 100%;
+  max-width: none;
+  display: block;
+  text-align: center;
+}
+
+.saju_result_page .price_final_img {
+   width: 100%;
+  max-width: none;
+  display: block;
+  text-align: center;
+  margin-top: 40px;
+}
+
+.saju_result_page .price_card_label {
+  display: block;
+  font-size: 12px;
+  font-weight: 500;
+  color: #888;
+  margin-bottom: 8px;
+}
+
+.saju_result_page .price_card_value {
+  display: block;
+  font-size: 16px;
+  font-weight: 700;
+  color: #666;
+}
+
+.saju_result_page .price_card_desc {
+  display: block;
+  font-size: 11px;
+  color: #aaa;
+  margin-top: 6px;
+}
+
+/* 색동낭자 강조 카드 */
+.saju_result_page .price_card_ours {
+  position: relative;
+  background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+  border-radius: 16px;
+  padding: 24px 20px 20px;
+  text-align: center;
+  box-shadow: 0 4px 20px rgba(231, 76, 60, 0.3);
+}
+
+.saju_result_page .price_card_ours_badge {
+  position: absolute;
+  top: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #ffd700;
+  color: #333;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 4px 14px;
+  border-radius: 20px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.saju_result_page .price_card_ours_content {
+  margin-bottom: 0;
+}
+
+.saju_result_page .price_card_ours_label {
+  display: block;
+  font-size: 14px;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.9);
+  margin-bottom: 8px;
+}
+
+.saju_result_page .price_card_ours_value {
+  display: block;
+  font-size: 28px;
+  font-weight: 800;
+  color: #fff;
+}
+
+.saju_result_page .price_card_ours_benefits {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  text-align: left;
+}
+
+.saju_result_page .price_card_ours_benefits li {
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.95);
+  padding: 6px 0;
+  padding-left: 20px;
+  position: relative;
+}
+
+.saju_result_page .price_card_ours_benefits li::before {
+  content: "✓";
+  position: absolute;
+  left: 0;
+  color: #ffd700;
+  font-weight: 700;
+}
+
+/* ===== 고민 유도 섹션 ===== */
+.saju_result_page .hesitate_section {
+  margin-top: 40px;
+  padding: 28px 20px;
+  text-align: center;
+}
+
+.saju_result_page .hesitate_question {
+  font-size: 18px;
+  font-weight: 700;
+  color: #333;
+  margin: 0 0 12px 0;
+}
+
+.saju_result_page .hesitate_hint {
+  font-size: 14px;
+  font-weight: 500;
+  color: #b85a85;
+  margin: 0;
+  padding: 10px 16px;
+  background: rgba(184, 90, 133, 0.08);
+  border-radius: 20px;
+  display: inline-block;
+}
+
+/* ===== 결제 유도 카드 (PaymentCard) ===== */
+.saju_result_page .payment_card {
+  background: linear-gradient(180deg, #fff9f9 0%, #fff 20%);
+  min-height: 100%;
+}
+
+.saju_result_page .payment_card_content {
+  padding: 40px 24px 60px;
+}
+
+.saju_result_page .payment_card_header {
+  text-align: center;
+  margin-bottom: 32px;
+}
+
+.saju_result_page .payment_card_title {
+  font-size: 24px;
+  font-weight: 700;
+  color: #333;
+  margin: 0 0 12px 0;
+  line-height: 1.4;
+}
+
+.saju_result_page .payment_card_subtitle {
+  font-size: 16px;
+  font-weight: 400;
+  color: #666;
+  margin: 0;
+  line-height: 1.5;
+}
+
+/* 목차 미리보기 */
+.saju_result_page .payment_card_toc {
+  background: #fafafa;
+  border-radius: 16px;
+  padding: 20px;
+  margin-bottom: 24px;
+}
+
+.saju_result_page .payment_card_toc_header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.saju_result_page .payment_card_toc_title {
+  font-size: 14px;
+  font-weight: 600;
+  color: #333;
+}
+
+.saju_result_page .payment_card_toc_badge {
+  font-size: 11px;
+  font-weight: 600;
+  color: #b85a85;
+  background: rgba(184, 90, 133, 0.1);
+  padding: 4px 10px;
+  border-radius: 12px;
+}
+
+.saju_result_page .payment_card_toc_list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.saju_result_page .payment_card_toc_list li {
+  font-size: 13px;
+  color: #555;
+  padding: 8px 0;
+  border-bottom: 1px solid #eee;
+}
+
+.saju_result_page .payment_card_toc_list li:last-child {
+  border-bottom: none;
+}
+
+/* 가격 정보 */
+.saju_result_page .payment_card_price {
+  background: #fff;
+  border: 1px solid #eee;
+  border-radius: 16px;
+  padding: 20px;
+  margin-bottom: 24px;
+}
+
+.saju_result_page .payment_card_price_original,
+.saju_result_page .payment_card_price_discount {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 0;
+}
+
+.saju_result_page .payment_card_price_original .label,
+.saju_result_page .payment_card_price_discount .label {
+  font-size: 13px;
+  color: #888;
+}
+
+.saju_result_page .payment_card_price_original .value {
+  font-size: 14px;
+  color: #aaa;
+  text-decoration: line-through;
+}
+
+.saju_result_page .payment_card_price_discount .value {
+  font-size: 14px;
+  color: #e74c3c;
+  font-weight: 600;
+}
+
+.saju_result_page .payment_card_price_final {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 0 8px;
+  border-top: 1px dashed #ddd;
+  margin-top: 8px;
+}
+
+.saju_result_page .payment_card_price_final .label {
+  font-size: 14px;
+  font-weight: 600;
+  color: #333;
+}
+
+.saju_result_page .payment_card_price_final .discount_badge {
+  font-size: 12px;
+  font-weight: 700;
+  color: #fff;
+  background: #e74c3c;
+  padding: 4px 8px;
+  border-radius: 4px;
+  margin-left: 8px;
+}
+
+.saju_result_page .payment_card_price_final .value {
+  font-size: 22px;
+  font-weight: 800;
+  color: #333;
+}
+
+/* 결제 버튼 */
+.saju_result_page .payment_card_btn {
+  width: 100%;
+  padding: 18px 24px;
+  background: linear-gradient(135deg, #b85a85 0%, #9e4a73 100%);
+  color: #fff;
+  font-size: 17px;
+  font-weight: 700;
+  border: none;
+  border-radius: 14px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 16px rgba(184, 90, 133, 0.3);
+}
+
+.saju_result_page .payment_card_btn:active {
+  transform: scale(0.98);
+}
+
+/* 힌트 텍스트 */
+.saju_result_page .payment_card_hint {
+  text-align: center;
+  font-size: 12px;
+  color: #999;
+  margin-top: 16px;
+}
+
+/* ===== 결제 모달 스타일 (detail.css에서 복사) ===== */
+.payment-overlay {
+  position: fixed;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.6);
+  z-index: 10000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.payment-fullscreen {
+  position: relative;
+  width: 100%;
+  max-width: 500px;
+  height: 100%;
+  background: #fff;
+  z-index: 10001;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.payment-fullscreen .modal-content {
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+}
+
+/* 히어로 섹션 */
+.payment-hero {
+  position: relative;
+  background: linear-gradient(135deg, #b85a85 0%, #9e4a73 100%);
+  padding: 32px 24px;
+  text-align: center;
+  color: #fff;
+}
+
+.payment-hero .payment-close {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 24px;
+  cursor: pointer;
+  padding: 4px;
+  z-index: 10;
+}
+
+.payment-hero-icon {
+  font-size: 48px;
+  margin-bottom: 16px;
+}
+
+.payment-hero-title {
+  font-size: 22px;
+  font-weight: 700;
+  line-height: 1.4;
+  margin: 0 0 8px 0;
+}
+
+.payment-hero-subtitle {
+  font-size: 14px;
+  opacity: 0.9;
+  margin: 0 0 20px 0;
+}
+
+.payment-hero-features {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 13px;
+  opacity: 0.95;
+}
+
+.payment-hero-features span {
+  display: block;
+}
+
+.payment-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+  border-bottom: 1px solid #eee;
+  position: sticky;
+  top: 0;
+  background: #fff;
+  z-index: 10;
+}
+
+.payment-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: #333;
+}
+
+.payment-close {
+  font-size: 24px;
+  color: #999;
+  cursor: pointer;
+  padding: 4px;
+}
+
+.report-toc {
+  padding: 20px;
+  background: #fafafa;
+}
+
+.report-toc-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.report-toc-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: #333;
+}
+
+.report-toc-badge {
+  font-size: 11px;
+  font-weight: 600;
+  color: #b85a85;
+  background: rgba(184, 90, 133, 0.1);
+  padding: 4px 10px;
+  border-radius: 12px;
+}
+
+.report-toc-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.report-toc-list li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 0;
+  border-bottom: 1px solid #eee;
+  font-size: 13px;
+  color: #333;
+}
+
+.report-toc-list li:last-child {
+  border-bottom: none;
+}
+
+.toc-keywords {
+  font-size: 11px;
+  color: #999;
+}
+
+/* 결제 금액 섹션 */
+.payment-amount-section {
+  padding: 24px 20px;
+  background: #fff;
+}
+
+.payment-amount-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: #333;
+  margin: 0 0 20px 0;
+  text-align: left;
+}
+
+.payment-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 0;
+}
+
+.payment-row-label {
+  font-size: 15px;
+  color: #333;
+}
+
+.payment-row-value {
+  font-size: 15px;
+  color: #333;
+}
+
+.payment-row.discount .payment-row-label {
+  color: #e74c3c;
+}
+
+.payment-row-discount-value {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.discount-badge {
+  font-size: 12px;
+  font-weight: 600;
+  color: #fff;
+  background: #e74c3c;
+  padding: 4px 8px;
+  border-radius: 4px;
+}
+
+.discount-amount {
+  font-size: 15px;
+  font-weight: 600;
+  color: #e74c3c;
+}
+
+.payment-divider {
+  height: 1px;
+  background: #eee;
+  margin: 16px 0;
+}
+
+.payment-row.final {
+  padding: 16px 0 0 0;
+}
+
+.payment-row.final .payment-row-label {
+  font-size: 16px;
+  font-weight: 700;
+  color: #333;
+}
+
+.payment-row-final-value {
+  font-size: 24px;
+  font-weight: 800;
+  color: #333;
+}
+
+/* 쿠폰 섹션 */
+.coupon-section {
+  padding: 16px 20px;
+  background: #f8f8f8;
+  border-top: 1px solid #eee;
+}
+
+.coupon-section .coupon-input-row {
+  display: flex;
+  gap: 8px;
+}
+
+.coupon-section .coupon-input {
+  flex: 1;
+  padding: 12px 16px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 14px;
+  outline: none;
+  background: #fff;
+}
+
+.coupon-section .coupon-input:focus {
+  border-color: #999;
+}
+
+.coupon-section .coupon-submit-btn {
+  padding: 12px 20px;
+  background: #333;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.coupon-section .coupon-submit-btn:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+}
+
+.coupon-section .coupon-error {
+  margin-top: 8px;
+  font-size: 12px;
+  color: #e74c3c;
+}
+
+.payment-coupon-title {
+  font-size: 13px;
+  color: #666;
+}
+
+.payment-coupon-price {
+  font-size: 16px;
+  font-weight: 700;
+  color: #e74c3c;
+}
+
+.coupon-input-wrap {
+  padding: 16px 20px;
+  background: #f8f8f8;
+}
+
+.coupon-input-row {
+  display: flex;
+  gap: 8px;
+}
+
+.coupon-input {
+  flex: 1;
+  padding: 12px 16px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 14px;
+  outline: none;
+}
+
+.coupon-input:focus {
+  border-color: #b85a85;
+}
+
+.coupon-submit-btn {
+  padding: 12px 20px;
+  background: #333;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.coupon-submit-btn:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+}
+
+.coupon-error {
+  margin-top: 8px;
+  font-size: 12px;
+  color: #e74c3c;
+}
+
+.payment-final-price-wrap {
+  padding: 20px;
+  background: #fff;
+}
+
+.payment-final-price-title {
+  font-size: 13px;
+  color: #888;
+  margin-bottom: 8px;
+}
+
+.payment-final-price-price-wrap {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.payment-originam-price2 {
+  font-size: 14px;
+  color: #bbb;
+  text-decoration: line-through;
+}
+
+.payment-final-price {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.payment-final-price-discount {
+  font-size: 14px;
+  font-weight: 700;
+  color: #e74c3c;
+}
+
+.payment-final-price-num {
+  font-size: 24px;
+  font-weight: 800;
+  color: #333;
+}
+
+.payment-final-btn-saju {
+  width: 100%;
+  padding: 18px;
+  background: #e74c3c;
+  color: #fff;
+  font-size: 17px;
+  font-weight: 700;
+  border: none;
+  border-radius: 0;
+  cursor: pointer;
+  margin-top: auto;
 }
