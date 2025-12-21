@@ -642,7 +642,7 @@ export default function SajuLovePage() {
                   }`}
                   onClick={() => setStatus("breakup")}
                 >
-                  이별 직후
+                  이별 앓이 중
                 </button>
               </div>
             </div>
