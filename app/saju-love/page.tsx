@@ -634,7 +634,7 @@ export default function SajuLovePage() {
                   }`}
                   onClick={() => setStatus("dating")}
                 >
-                  연애중
+                  연애 중
                 </button>
                 <button
                   className={`status_btn ${
@@ -642,7 +642,7 @@ export default function SajuLovePage() {
                   }`}
                   onClick={() => setStatus("breakup")}
                 >
-                  이별 정리중
+                  이별 정리 중
                 </button>
               </div>
             </div>
