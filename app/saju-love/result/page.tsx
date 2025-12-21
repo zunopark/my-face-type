@@ -283,28 +283,32 @@ function SajuLoveResultContent() {
   const [showScrollHint, setShowScrollHint] = useState(false);
   const [showTocModal, setShowTocModal] = useState(false);
   const [showExitModal, setShowExitModal] = useState(false);
-  const [currentBgImage, setCurrentBgImage] = useState(
-    "/saju-love/img/nangja-1.jpg"
-  );
-  const [prevBgImage, setPrevBgImage] = useState("/saju-love/img/nangja-1.jpg");
-  const [isBgTransitioning, setIsBgTransitioning] = useState(false);
   const [isAnalyzing, setIsAnalyzing] = useState(false);
 
-  // currentIndex가 바뀔 때 자동으로 배경 이미지 crossfade 전환
+  // 배경 이미지 A/B 전환 (두 이미지 레이어의 opacity만 토글)
+  const [bgImageA, setBgImageA] = useState("/saju-love/img/nangja-1.jpg");
+  const [bgImageB, setBgImageB] = useState("/saju-love/img/nangja-1.jpg");
+  const [showImageA, setShowImageA] = useState(true);
+
+  // currentIndex 변경 시 배경 전환
   useEffect(() => {
     if (messages.length === 0) return;
     const currentMsg = messages[currentIndex];
     if (!currentMsg) return;
 
     const nextImage = currentMsg.bgImage || "/saju-love/img/nangja-1.jpg";
+    const currentImage = showImageA ? bgImageA : bgImageB;
 
-    if (nextImage !== currentBgImage) {
-      setPrevBgImage(currentBgImage);
-      setCurrentBgImage(nextImage);
-      setIsBgTransitioning(true);
-      setTimeout(() => setIsBgTransitioning(false), 400);
+    if (nextImage !== currentImage) {
+      // 보이지 않는 레이어에 새 이미지 세팅 후 전환
+      if (showImageA) {
+        setBgImageB(nextImage);
+      } else {
+        setBgImageA(nextImage);
+      }
+      setShowImageA(!showImageA);
     }
-  }, [currentIndex, messages]); // currentBgImage는 의도적으로 제외 (무한루프 방지)
+  }, [currentIndex, messages]); // 의도적으로 showImageA, bgImageA, bgImageB 제외
 
   // 결제 관련 상태
   const [showPaymentModal, setShowPaymentModal] = useState(false);
@@ -1386,21 +1390,19 @@ function SajuLoveResultContent() {
 
   return (
     <div className="saju_result_page chat_mode" onClick={handleScreenClick}>
-      {/* 배경 이미지 - crossfade */}
+      {/* 배경 이미지 - A/B 레이어 crossfade */}
       <div className="result_bg">
-        {/* 이전 이미지 (항상 뒤에 깔림) */}
         <img
-          src={prevBgImage}
+          src={bgImageA}
           alt=""
-          className="result_bg_image result_bg_prev"
+          className="result_bg_image"
+          style={{ opacity: showImageA ? 1 : 0.9 }}
         />
-        {/* 현재 이미지 */}
         <img
-          src={currentBgImage}
+          src={bgImageB}
           alt=""
-          className={`result_bg_image result_bg_current ${
-            isBgTransitioning ? "result_bg_fade_in" : ""
-          }`}
+          className="result_bg_image"
+          style={{ opacity: showImageA ? 0.2 : 1 }}
         />
       </div>
 

@@ -2225,7 +2225,7 @@
   max-width: 500px;
   height: 100%;
   z-index: 1;
-  background: #1a1a1a;
+  background: #fff;
 }
 
 .saju_result_page .result_bg_image {
@@ -2236,30 +2236,7 @@
   height: 100%;
   object-fit: cover;
   object-position: top center;
-}
-
-/* 이전 이미지 (뒤에 깔림) */
-.saju_result_page .result_bg_prev {
-  z-index: 1;
-}
-
-/* 현재 이미지 (항상 위에) */
-.saju_result_page .result_bg_current {
-  z-index: 2;
-}
-
-/* 현재 이미지 fade in */
-.saju_result_page .result_bg_fade_in {
-  animation: bgFadeIn 0.35s ease-out forwards;
-}
-
-@keyframes bgFadeIn {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
+  transition: opacity 0.4s ease-out;
 }
 
 /* 뒤로가기 버튼 - iOS 글래스모피즘 */
