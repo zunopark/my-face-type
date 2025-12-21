@@ -91,9 +91,19 @@ export default function SajuLovePage() {
     setTimeout(() => setIsImageTransitioning(false), 500);
   }, [currentImage]);
 
-  // 페이지 방문 추적
+  // 페이지 방문 추적 + 이미지 프리로드
   useEffect(() => {
     trackPageView("saju_love");
+
+    // 이미지 프리로드
+    const imagesToPreload = [
+      "/saju-love/img/nangja.jpg",
+      "/saju-love/img/nangja-1.jpg",
+    ];
+    imagesToPreload.forEach((src) => {
+      const img = new window.Image();
+      img.src = src;
+    });
   }, []);
 
   // 타이핑 효과
