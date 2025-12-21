@@ -111,35 +111,69 @@ const getColor = (element?: string): string => {
 
 // 천간 -> 오행 매핑
 const STEM_ELEMENT: Record<string, string> = {
-  "甲": "wood", "乙": "wood", "丙": "fire", "丁": "fire",
-  "戊": "earth", "己": "earth", "庚": "metal", "辛": "metal",
-  "壬": "water", "癸": "water",
+  甲: "wood",
+  乙: "wood",
+  丙: "fire",
+  丁: "fire",
+  戊: "earth",
+  己: "earth",
+  庚: "metal",
+  辛: "metal",
+  壬: "water",
+  癸: "water",
 };
 
 // 지지 -> 오행 매핑
 const BRANCH_ELEMENT: Record<string, string> = {
-  "子": "water", "丑": "earth", "寅": "wood", "卯": "wood",
-  "辰": "earth", "巳": "fire", "午": "fire", "未": "earth",
-  "申": "metal", "酉": "metal", "戌": "earth", "亥": "water",
+  子: "water",
+  丑: "earth",
+  寅: "wood",
+  卯: "wood",
+  辰: "earth",
+  巳: "fire",
+  午: "fire",
+  未: "earth",
+  申: "metal",
+  酉: "metal",
+  戌: "earth",
+  亥: "water",
 };
 
 // 지지 -> 한글 매핑
 const BRANCH_KOREAN: Record<string, string> = {
-  "子": "자", "丑": "축", "寅": "인", "卯": "묘",
-  "辰": "진", "巳": "사", "午": "오", "未": "미",
-  "申": "신", "酉": "유", "戌": "술", "亥": "해",
+  子: "자",
+  丑: "축",
+  寅: "인",
+  卯: "묘",
+  辰: "진",
+  巳: "사",
+  午: "오",
+  未: "미",
+  申: "신",
+  酉: "유",
+  戌: "술",
+  亥: "해",
 };
 
 // 천간 -> 한글 매핑
 const STEM_KOREAN: Record<string, string> = {
-  "甲": "갑", "乙": "을", "丙": "병", "丁": "정",
-  "戊": "무", "己": "기", "庚": "경", "辛": "신",
-  "壬": "임", "癸": "계",
+  甲: "갑",
+  乙: "을",
+  丙: "병",
+  丁: "정",
+  戊: "무",
+  己: "기",
+  庚: "경",
+  辛: "신",
+  壬: "임",
+  癸: "계",
 };
 
 const getStemElement = (stem: string): string => STEM_ELEMENT[stem] || "";
-const getBranchElement = (branch: string): string => BRANCH_ELEMENT[branch] || "";
-const getBranchKorean = (branch: string): string => BRANCH_KOREAN[branch] || branch;
+const getBranchElement = (branch: string): string =>
+  BRANCH_ELEMENT[branch] || "";
+const getBranchKorean = (branch: string): string =>
+  BRANCH_KOREAN[branch] || branch;
 const getStemKorean = (stem: string): string => STEM_KOREAN[stem] || stem;
 
 // 오행 한글 변환 함수 (음양 포함)
@@ -247,9 +281,7 @@ function SajuLoveResultContent() {
   const [currentBgImage, setCurrentBgImage] = useState(
     "/saju-love/img/nangja-1.jpg"
   );
-  const [prevBgImage, setPrevBgImage] = useState(
-    "/saju-love/img/nangja-1.jpg"
-  );
+  const [prevBgImage, setPrevBgImage] = useState("/saju-love/img/nangja-1.jpg");
   const [isBgTransitioning, setIsBgTransitioning] = useState(false);
   const [isAnalyzing, setIsAnalyzing] = useState(false);
 
@@ -267,10 +299,14 @@ function SajuLoveResultContent() {
   const loadingIntervalRef = useRef<NodeJS.Timeout | null>(null);
   const typingIntervalRef = useRef<NodeJS.Timeout | null>(null);
   const reportRef = useRef<HTMLDivElement>(null);
-  const paymentWidgetRef = useRef<ReturnType<typeof window.PaymentWidget> | null>(null);
+  const paymentWidgetRef = useRef<ReturnType<
+    typeof window.PaymentWidget
+  > | null>(null);
   // handleNext에서 사용하기 위한 함수 ref (선언 순서 문제 해결)
   const startLoadingMessagesRef = useRef<(userName: string) => void>(() => {});
-  const fetchLoveAnalysisRef = useRef<(record: SajuLoveRecord) => void>(() => {});
+  const fetchLoveAnalysisRef = useRef<(record: SajuLoveRecord) => void>(
+    () => {}
+  );
 
   // 이미지 프리로드 (페이지 로드 시)
   useEffect(() => {
@@ -798,7 +834,16 @@ function SajuLoveResultContent() {
     if (nextIndex < messages.length) {
       goToNextMessage(nextIndex);
     }
-  }, [currentIndex, messages, isTyping, showReport, typeText, currentBgImage, openPaymentModal, data]);
+  }, [
+    currentIndex,
+    messages,
+    isTyping,
+    showReport,
+    typeText,
+    currentBgImage,
+    openPaymentModal,
+    data,
+  ]);
 
   // 로딩 메시지 순환
   const startLoadingMessages = useCallback((userName: string) => {
@@ -1001,9 +1046,14 @@ function SajuLoveResultContent() {
             if (chapter1IntroIndex >= 0) {
               setCurrentIndex(chapter1IntroIndex);
               const nextMsg = messageList[chapter1IntroIndex];
-              setCurrentBgImage(nextMsg.bgImage || "/saju-love/img/nangja-1.jpg");
+              setCurrentBgImage(
+                nextMsg.bgImage || "/saju-love/img/nangja-1.jpg"
+              );
               setShowReport(false);
-              typeText(`오래 기다리셨죠? 분석이 완료됐어요!\n\n${nextMsg.content}`, () => setShowButtons(true));
+              typeText(
+                `오래 기다리셨죠? 분석이 완료됐어요!\n\n${nextMsg.content}`,
+                () => setShowButtons(true)
+              );
             }
           }, 300);
         } else {
@@ -1128,10 +1178,15 @@ function SajuLoveResultContent() {
       setMessages(partialMessages);
 
       // 감사 대사(thank-you-dialogue) 인덱스 찾기
-      const thankYouIndex = partialMessages.findIndex(m => m.id === "thank-you-dialogue");
+      const thankYouIndex = partialMessages.findIndex(
+        (m) => m.id === "thank-you-dialogue"
+      );
       if (thankYouIndex >= 0) {
         setCurrentIndex(thankYouIndex);
-        setCurrentBgImage(partialMessages[thankYouIndex].bgImage || "/saju-love/img/nangja-1.jpg");
+        setCurrentBgImage(
+          partialMessages[thankYouIndex].bgImage ||
+            "/saju-love/img/nangja-1.jpg"
+        );
       }
 
       setIsLoading(false);
@@ -1195,14 +1250,13 @@ function SajuLoveResultContent() {
           <div className="error_wrap">
             <div className="error_icon">!</div>
             <p className="error_text">
-              정말 죄송합니다.<br />
-              사주 분석하는데 오류가 발생해서<br />
+              정말 죄송합니다.
+              <br />
+              사주 분석하는데 오류가 발생해서
+              <br />
               다시 한 번만 더 시도해주세요.
             </p>
-            <button
-              className="error_btn"
-              onClick={handleRetry}
-            >
+            <button className="error_btn" onClick={handleRetry}>
               다시 시도하기
             </button>
           </div>
@@ -1250,7 +1304,9 @@ function SajuLoveResultContent() {
         <img
           src={currentBgImage}
           alt=""
-          className={`result_bg_image ${isBgTransitioning ? 'result_bg_fade_in' : ''}`}
+          className={`result_bg_image ${
+            isBgTransitioning ? "result_bg_fade_in" : ""
+          }`}
         />
       </div>
 
@@ -1366,7 +1422,11 @@ function SajuLoveResultContent() {
           {/* 하단 다음 버튼 */}
           <div
             className={`report_bottom_btn_wrap ${
-              canProceed && currentMsg.type !== "waiting" && currentMsg.type !== "payment" ? "visible" : ""
+              canProceed &&
+              currentMsg.type !== "waiting" &&
+              currentMsg.type !== "payment"
+                ? "visible"
+                : ""
             }`}
           >
             {currentMsg.type === "ending" ? (
@@ -1388,9 +1448,7 @@ function SajuLoveResultContent() {
               <div className="waiting_info">
                 <p>분석이 완료되면 자동으로 다음으로 넘어갑니다</p>
               </div>
-            ) : currentMsg.type === "payment" ? (
-              null // 결제 카드는 자체 버튼 사용
-            ) : (
+            ) : currentMsg.type === "payment" ? null : ( // 결제 카드는 자체 버튼 사용
               <div className="report_nav_buttons">
                 {currentIndex > 0 && (
                   <button className="report_prev_btn" onClick={handlePrev}>
@@ -1449,8 +1507,12 @@ function SajuLoveResultContent() {
 
                 {/* 정가 */}
                 <div className="payment-row">
-                  <span className="payment-row-label">색동낭자 연애 사주 15,000자 보고서</span>
-                  <span className="payment-row-value">{PAYMENT_CONFIG.originalPrice.toLocaleString()}원</span>
+                  <span className="payment-row-label">
+                    색동낭자 연애 사주 15,000자 보고서
+                  </span>
+                  <span className="payment-row-value">
+                    {PAYMENT_CONFIG.originalPrice.toLocaleString()}원
+                  </span>
                 </div>
 
                 {/* 할인 */}
@@ -1458,10 +1520,19 @@ function SajuLoveResultContent() {
                   <span className="payment-row-label">출시 기념 특별 할인</span>
                   <div className="payment-row-discount-value">
                     <span className="discount-badge">
-                      {Math.floor((1 - PAYMENT_CONFIG.price / PAYMENT_CONFIG.originalPrice) * 100)}%
+                      {Math.floor(
+                        (1 -
+                          PAYMENT_CONFIG.price / PAYMENT_CONFIG.originalPrice) *
+                          100
+                      )}
+                      %
                     </span>
                     <span className="discount-amount">
-                      -{(PAYMENT_CONFIG.originalPrice - PAYMENT_CONFIG.price).toLocaleString()}원
+                      -
+                      {(
+                        PAYMENT_CONFIG.originalPrice - PAYMENT_CONFIG.price
+                      ).toLocaleString()}
+                      원
                     </span>
                   </div>
                 </div>
@@ -1469,8 +1540,12 @@ function SajuLoveResultContent() {
                 {/* 쿠폰 할인 적용 표시 */}
                 {appliedCoupon && (
                   <div className="payment-row discount">
-                    <span className="payment-row-label">{appliedCoupon.code} 쿠폰</span>
-                    <span className="discount-amount">-{appliedCoupon.discount.toLocaleString()}원</span>
+                    <span className="payment-row-label">
+                      {appliedCoupon.code} 쿠폰
+                    </span>
+                    <span className="discount-amount">
+                      -{appliedCoupon.discount.toLocaleString()}원
+                    </span>
                   </div>
                 )}
 
@@ -1482,8 +1557,11 @@ function SajuLoveResultContent() {
                   <span className="payment-row-label">최종 결제금액</span>
                   <span className="payment-row-final-value">
                     {appliedCoupon
-                      ? (PAYMENT_CONFIG.price - appliedCoupon.discount).toLocaleString()
-                      : PAYMENT_CONFIG.price.toLocaleString()}원
+                      ? (
+                          PAYMENT_CONFIG.price - appliedCoupon.discount
+                        ).toLocaleString()
+                      : PAYMENT_CONFIG.price.toLocaleString()}
+                    원
                   </span>
                 </div>
               </div>
@@ -1515,8 +1593,10 @@ function SajuLoveResultContent() {
                 )}
               </div>
 
-              <div id="saju-payment-method" style={{ padding: 0, margin: 0 }} />
-              <div id="saju-agreement" />
+              <div style={{ padding: "0 20px" }}>
+                <div id="saju-payment-method" style={{ padding: 0, margin: 0 }} />
+                <div id="saju-agreement" />
+              </div>
               <button
                 className="payment-final-btn-saju"
                 onClick={handlePaymentRequest}
@@ -1527,7 +1607,6 @@ function SajuLoveResultContent() {
           </div>
         </div>
       )}
-
     </div>
   );
 }
@@ -1753,20 +1832,13 @@ const strengthLoveInterpretation: Record<
     title: "강하게 주도하는 스타일",
     mainRatio: "주도권 85~90%",
     traits: ["자기 확신이 강함", "결정이 빠름", "추진력 있음"],
-    pattern: [
-      "내가 결정할게",
-      "이게 맞아, 따라와",
-      "걱정 마, 내가 다 할게",
-    ],
+    pattern: ["내가 결정할게", "이게 맞아, 따라와", "걱정 마, 내가 다 할게"],
     goodPoints: [
       "결단력과 추진력",
       "상대에게 안정감을 줌",
       "흔들림 없는 리더십",
     ],
-    warning: [
-      "상대 의견을 놓칠 수 있음",
-      "융통성이 부족할 수 있음",
-    ],
+    warning: ["상대 의견을 놓칠 수 있음", "융통성이 부족할 수 있음"],
     idealType: "나를 믿고 따라와 주는 사람",
   },
   중화: {
@@ -1786,7 +1858,11 @@ const strengthLoveInterpretation: Record<
     title: "상대에게 많이 맞추는 스타일",
     mainRatio: "주도권 10~15%",
     traits: ["배려심이 매우 깊음", "맞춰주는 게 편함", "갈등 회피"],
-    pattern: ["네가 원하는 대로 할게", "난 괜찮아, 넌 어때?", "네가 행복하면 돼"],
+    pattern: [
+      "네가 원하는 대로 할게",
+      "난 괜찮아, 넌 어때?",
+      "네가 행복하면 돼",
+    ],
     goodPoints: ["헌신적", "상대를 편하게 해줌", "부드러운 성격"],
     warning: [
       "자기 의견 표현이 어려움",
@@ -1915,58 +1991,89 @@ function SajuCard({ data }: { data: SajuLoveRecord }) {
 
   // 대운/연운/월운 스크롤 위치 설정 (현재 항목이 보이도록)
   useEffect(() => {
-    const daeunData = (sajuData as Record<string, unknown>)?.daeun as Record<string, unknown>;
-    const luckCyclesData = (sajuData as Record<string, unknown>)?.luckCycles as Record<string, unknown>;
-    const daeunFromLuckCycles = luckCyclesData?.daeun as Record<string, unknown>;
-    const direction = daeunData?.direction || daeunFromLuckCycles?.direction || "";
+    const daeunData = (sajuData as Record<string, unknown>)?.daeun as Record<
+      string,
+      unknown
+    >;
+    const luckCyclesData = (sajuData as Record<string, unknown>)
+      ?.luckCycles as Record<string, unknown>;
+    const daeunFromLuckCycles = luckCyclesData?.daeun as Record<
+      string,
+      unknown
+    >;
+    const direction =
+      daeunData?.direction || daeunFromLuckCycles?.direction || "";
     const isReverse = direction === "역행";
 
-    const birthYear = data?.input?.date ? parseInt(data.input.date.split("-")[0]) : 0;
+    const birthYear = data?.input?.date
+      ? parseInt(data.input.date.split("-")[0])
+      : 0;
     const currentYear = new Date().getFullYear();
     const currentMonth = new Date().getMonth() + 1;
     const currentAge = birthYear ? currentYear - birthYear + 1 : 0;
 
-    const daeunList = (daeunData?.list || daeunFromLuckCycles?.list || []) as Array<{
+    const daeunList = (daeunData?.list ||
+      daeunFromLuckCycles?.list ||
+      []) as Array<{
       startAge: number;
       endAge: number;
       ganZhi?: string;
     }>;
-    const filteredDaeunList = daeunList.filter(d => d.ganZhi);
-    const displayList = isReverse ? [...filteredDaeunList].reverse() : filteredDaeunList;
+    const filteredDaeunList = daeunList.filter((d) => d.ganZhi);
+    const displayList = isReverse
+      ? [...filteredDaeunList].reverse()
+      : filteredDaeunList;
 
     // 대운: 현재 대운이 보이도록
     if (daeunScrollRef.current) {
-      const currentIdx = displayList.findIndex(d => currentAge >= d.startAge && currentAge <= d.endAge);
+      const currentIdx = displayList.findIndex(
+        (d) => currentAge >= d.startAge && currentAge <= d.endAge
+      );
       if (currentIdx !== -1) {
         const cardWidth = 68;
         const containerWidth = daeunScrollRef.current.clientWidth;
-        const scrollPosition = Math.max(0, (currentIdx * cardWidth) - (containerWidth / 2) + (cardWidth / 2));
+        const scrollPosition = Math.max(
+          0,
+          currentIdx * cardWidth - containerWidth / 2 + cardWidth / 2
+        );
         daeunScrollRef.current.scrollLeft = scrollPosition;
       }
     }
 
     // 연운: 현재 년도가 보이도록
     if (yeonunScrollRef.current) {
-      const yeonunList = (luckCyclesData?.yeonun as Array<Record<string, unknown>>) || [];
+      const yeonunList =
+        (luckCyclesData?.yeonun as Array<Record<string, unknown>>) || [];
       const reversedYeonun = [...yeonunList].reverse();
-      const currentIdx = reversedYeonun.findIndex(yn => (yn.year as number) === currentYear);
+      const currentIdx = reversedYeonun.findIndex(
+        (yn) => (yn.year as number) === currentYear
+      );
       if (currentIdx !== -1) {
         const cardWidth = 68;
         const containerWidth = yeonunScrollRef.current.clientWidth;
-        const scrollPosition = Math.max(0, (currentIdx * cardWidth) - (containerWidth / 2) + (cardWidth / 2));
+        const scrollPosition = Math.max(
+          0,
+          currentIdx * cardWidth - containerWidth / 2 + cardWidth / 2
+        );
         yeonunScrollRef.current.scrollLeft = scrollPosition;
       }
     }
 
     // 월운: 현재 월이 보이도록
     if (wolunScrollRef.current) {
-      const wolunList = (luckCyclesData?.wolun as Array<Record<string, unknown>>) || [];
+      const wolunList =
+        (luckCyclesData?.wolun as Array<Record<string, unknown>>) || [];
       const reversedWolun = [...wolunList].reverse();
-      const currentIdx = reversedWolun.findIndex(wn => (wn.month as number) === currentMonth);
+      const currentIdx = reversedWolun.findIndex(
+        (wn) => (wn.month as number) === currentMonth
+      );
       if (currentIdx !== -1) {
         const cardWidth = 50; // 월운 카드는 더 작음
         const containerWidth = wolunScrollRef.current.clientWidth;
-        const scrollPosition = Math.max(0, (currentIdx * cardWidth) - (containerWidth / 2) + (cardWidth / 2));
+        const scrollPosition = Math.max(
+          0,
+          currentIdx * cardWidth - containerWidth / 2 + cardWidth / 2
+        );
         wolunScrollRef.current.scrollLeft = scrollPosition;
       }
     }
@@ -2780,7 +2887,8 @@ function SajuCard({ data }: { data: SajuLoveRecord }) {
               label: "목(木)",
               color: "#2aa86c",
               keyword: "성장 · 자유 · 솔직",
-              baseDesc: "함께 성장하는 사랑을 원해요. 솔직하고 직진형이지만 구속을 싫어해요.",
+              baseDesc:
+                "함께 성장하는 사랑을 원해요. 솔직하고 직진형이지만 구속을 싫어해요.",
               overTitle: "자유로운 연애 스타일",
               overDesc:
                 "새로운 시작을 좋아하고 발전하는 관계를 추구해요. 구속을 싫어하고 상대에게도 성장을 요구하는 편이에요.",
@@ -2797,7 +2905,8 @@ function SajuCard({ data }: { data: SajuLoveRecord }) {
               label: "화(火)",
               color: "#ff6a6a",
               keyword: "열정 · 표현 · 로맨틱",
-              baseDesc: "뜨겁고 열정적인 사랑. 확실하게 표현하고 이벤트를 좋아해요.",
+              baseDesc:
+                "뜨겁고 열정적인 사랑. 확실하게 표현하고 이벤트를 좋아해요.",
               overTitle: "열정적인 연애 스타일",
               overDesc:
                 "사랑하면 올인하고 확실하게 표현해요. 다만 감정 기복이 있고 질투가 강할 수 있어요.",
@@ -2814,7 +2923,8 @@ function SajuCard({ data }: { data: SajuLoveRecord }) {
               label: "토(土)",
               color: "#caa46a",
               keyword: "안정 · 포용 · 믿음",
-              baseDesc: "느리지만 확실한 사랑. 한번 마음 주면 변치 않고 묵묵히 지켜요.",
+              baseDesc:
+                "느리지만 확실한 사랑. 한번 마음 주면 변치 않고 묵묵히 지켜요.",
               overTitle: "안정 추구 연애 스타일",
               overDesc:
                 "한번 마음 주면 변치 않고 묵묵히 챙겨줘요. 하지만 고집이 세고 변화를 싫어할 수 있어요.",
@@ -2848,7 +2958,8 @@ function SajuCard({ data }: { data: SajuLoveRecord }) {
               label: "수(水)",
               color: "#4a90d9",
               keyword: "감성 · 공감 · 배려",
-              baseDesc: "감성적이고 깊은 사랑. 상대에게 맞춰주고 공감을 잘해요.",
+              baseDesc:
+                "감성적이고 깊은 사랑. 상대에게 맞춰주고 공감을 잘해요.",
               overTitle: "감성적인 연애 스타일",
               overDesc:
                 "상대 감정에 민감하고 깊이 공감해요. 하지만 너무 맞춰주다 자기를 잃을 수 있어요.",
@@ -3105,7 +3216,6 @@ function SajuCard({ data }: { data: SajuLoveRecord }) {
             </tbody>
           </table>
         </div>
-
       </div>
 
       {/* 장면 10: 마무리 전환 */}
@@ -3117,8 +3227,7 @@ function SajuCard({ data }: { data: SajuLoveRecord }) {
             <br />
             <br />
             하지만 제대로 된 분석을 위해선
-            <br />
-            더 많은 요소들을 함께 봐야 해요.
+            <br />더 많은 요소들을 함께 봐야 해요.
           </p>
         </div>
 
@@ -3126,26 +3235,38 @@ function SajuCard({ data }: { data: SajuLoveRecord }) {
         <div className="luck_cycles_wrap">
           {/* 대운수 헤더 */}
           {(() => {
-            const daeunData = (sajuData as Record<string, unknown>)?.daeun as Record<string, unknown>;
-            const luckCyclesData = (sajuData as Record<string, unknown>)?.luckCycles as Record<string, unknown>;
-            const daeunFromLuckCycles = luckCyclesData?.daeun as Record<string, unknown>;
-            const direction = daeunData?.direction || daeunFromLuckCycles?.direction || "";
+            const daeunData = (sajuData as Record<string, unknown>)
+              ?.daeun as Record<string, unknown>;
+            const luckCyclesData = (sajuData as Record<string, unknown>)
+              ?.luckCycles as Record<string, unknown>;
+            const daeunFromLuckCycles = luckCyclesData?.daeun as Record<
+              string,
+              unknown
+            >;
+            const direction =
+              daeunData?.direction || daeunFromLuckCycles?.direction || "";
             const isReverse = direction === "역행";
 
             // 현재 나이 계산
-            const birthYear = data?.input?.date ? parseInt(data.input.date.split("-")[0]) : 0;
+            const birthYear = data?.input?.date
+              ? parseInt(data.input.date.split("-")[0])
+              : 0;
             const currentYear = new Date().getFullYear();
             const currentAge = birthYear ? currentYear - birthYear + 1 : 0;
 
             // 현재 대운 찾기
-            const daeunList = (daeunData?.list || daeunFromLuckCycles?.list || []) as Array<{
+            const daeunList = (daeunData?.list ||
+              daeunFromLuckCycles?.list ||
+              []) as Array<{
               index?: number;
               startAge: number;
               endAge: number;
               ganZhi?: string;
               ganZhiKor?: string;
             }>;
-            const currentDaeun = daeunList.find(d => currentAge >= d.startAge && currentAge <= d.endAge);
+            const currentDaeun = daeunList.find(
+              (d) => currentAge >= d.startAge && currentAge <= d.endAge
+            );
 
             return (
               <>
@@ -3153,39 +3274,70 @@ function SajuCard({ data }: { data: SajuLoveRecord }) {
                 <div className="luck_section">
                   <h5 className="luck_section_title">대운</h5>
                   <div className="luck_scroll_wrap" ref={daeunScrollRef}>
-                    <div className={`luck_scroll ${isReverse ? "reverse" : ""}`}>
-                      {(isReverse ? [...daeunList].reverse() : daeunList).filter(dy => dy.ganZhi).map((dy, idx) => {
-                        const ganZhi = dy.ganZhi || "";
-                        const stem = ganZhi[0] || "";
-                        const branch = ganZhi[1] || "";
-                        const stemElement = getStemElement(stem);
-                        const branchElement = getBranchElement(branch);
-                        const daeunItem = (daeunFromLuckCycles?.list as Array<Record<string, unknown>>)?.[isReverse ? daeunList.length - 1 - idx : idx];
-                        const tenGodStem = daeunItem?.tenGodStem as string || "";
-                        const twelveStage = daeunItem?.twelveStage as string || "";
-                        const isCurrentDaeun = dy === currentDaeun;
+                    <div
+                      className={`luck_scroll ${isReverse ? "reverse" : ""}`}
+                    >
+                      {(isReverse ? [...daeunList].reverse() : daeunList)
+                        .filter((dy) => dy.ganZhi)
+                        .map((dy, idx) => {
+                          const ganZhi = dy.ganZhi || "";
+                          const stem = ganZhi[0] || "";
+                          const branch = ganZhi[1] || "";
+                          const stemElement = getStemElement(stem);
+                          const branchElement = getBranchElement(branch);
+                          const daeunItem = (
+                            daeunFromLuckCycles?.list as Array<
+                              Record<string, unknown>
+                            >
+                          )?.[isReverse ? daeunList.length - 1 - idx : idx];
+                          const tenGodStem =
+                            (daeunItem?.tenGodStem as string) || "";
+                          const twelveStage =
+                            (daeunItem?.twelveStage as string) || "";
+                          const isCurrentDaeun = dy === currentDaeun;
 
-                        return (
-                          <div key={idx} className={`luck_card ${isCurrentDaeun ? "current" : ""}`}>
-                            <div className="luck_card_top">
-                              <span className="luck_card_age">{dy.startAge}</span>
-                              <span className="luck_card_tengod">{tenGodStem || "-"}</span>
+                          return (
+                            <div
+                              key={idx}
+                              className={`luck_card ${
+                                isCurrentDaeun ? "current" : ""
+                              }`}
+                            >
+                              <div className="luck_card_top">
+                                <span className="luck_card_age">
+                                  {dy.startAge}
+                                </span>
+                                <span className="luck_card_tengod">
+                                  {tenGodStem || "-"}
+                                </span>
+                              </div>
+                              <div
+                                className={`luck_card_stem elem_${stemElement}`}
+                              >
+                                <span className="char_hanja">{stem}</span>
+                                <span className="char_korean">
+                                  {getStemKorean(stem)}
+                                </span>
+                              </div>
+                              <div
+                                className={`luck_card_branch elem_${branchElement}`}
+                              >
+                                <span className="char_hanja">{branch}</span>
+                                <span className="char_korean">
+                                  {getBranchKorean(branch)}
+                                </span>
+                              </div>
+                              <div className="luck_card_bottom">
+                                <span className="luck_card_tengod_branch">
+                                  {(daeunItem?.tenGodBranch as string) || "-"}
+                                </span>
+                                <span className="luck_card_stage">
+                                  {twelveStage || "-"}
+                                </span>
+                              </div>
                             </div>
-                            <div className={`luck_card_stem elem_${stemElement}`}>
-                              <span className="char_hanja">{stem}</span>
-                              <span className="char_korean">{getStemKorean(stem)}</span>
-                            </div>
-                            <div className={`luck_card_branch elem_${branchElement}`}>
-                              <span className="char_hanja">{branch}</span>
-                              <span className="char_korean">{getBranchKorean(branch)}</span>
-                            </div>
-                            <div className="luck_card_bottom">
-                              <span className="luck_card_tengod_branch">{(daeunItem?.tenGodBranch as string) || "-"}</span>
-                              <span className="luck_card_stage">{twelveStage || "-"}</span>
-                            </div>
-                          </div>
-                        );
-                      })}
+                          );
+                        })}
                     </div>
                   </div>
                 </div>
@@ -3196,35 +3348,62 @@ function SajuCard({ data }: { data: SajuLoveRecord }) {
                     <h5 className="luck_section_title">연운</h5>
                     <div className="luck_scroll_wrap" ref={yeonunScrollRef}>
                       <div className="luck_scroll reverse">
-                        {[...(luckCyclesData.yeonun as Array<Record<string, unknown>>)].reverse().map((yn, idx) => {
-                          const ganZhi = (yn.ganZhi as string) || "";
-                          const stem = ganZhi[0] || "";
-                          const branch = ganZhi[1] || "";
-                          const stemElement = getStemElement(stem);
-                          const branchElement = getBranchElement(branch);
-                          const isCurrentYear = yn.year === currentYear;
+                        {[
+                          ...(luckCyclesData.yeonun as Array<
+                            Record<string, unknown>
+                          >),
+                        ]
+                          .reverse()
+                          .map((yn, idx) => {
+                            const ganZhi = (yn.ganZhi as string) || "";
+                            const stem = ganZhi[0] || "";
+                            const branch = ganZhi[1] || "";
+                            const stemElement = getStemElement(stem);
+                            const branchElement = getBranchElement(branch);
+                            const isCurrentYear = yn.year === currentYear;
 
-                          return (
-                            <div key={idx} className={`luck_card ${isCurrentYear ? "current" : ""}`}>
-                              <div className="luck_card_top">
-                                <span className="luck_card_year">{String(yn.year)}</span>
-                                <span className="luck_card_tengod">{(yn.tenGodStem as string) || "-"}</span>
+                            return (
+                              <div
+                                key={idx}
+                                className={`luck_card ${
+                                  isCurrentYear ? "current" : ""
+                                }`}
+                              >
+                                <div className="luck_card_top">
+                                  <span className="luck_card_year">
+                                    {String(yn.year)}
+                                  </span>
+                                  <span className="luck_card_tengod">
+                                    {(yn.tenGodStem as string) || "-"}
+                                  </span>
+                                </div>
+                                <div
+                                  className={`luck_card_stem elem_${stemElement}`}
+                                >
+                                  <span className="char_hanja">{stem}</span>
+                                  <span className="char_korean">
+                                    {getStemKorean(stem)}
+                                  </span>
+                                </div>
+                                <div
+                                  className={`luck_card_branch elem_${branchElement}`}
+                                >
+                                  <span className="char_hanja">{branch}</span>
+                                  <span className="char_korean">
+                                    {getBranchKorean(branch)}
+                                  </span>
+                                </div>
+                                <div className="luck_card_bottom">
+                                  <span className="luck_card_tengod_branch">
+                                    {(yn.tenGodBranch as string) || "-"}
+                                  </span>
+                                  <span className="luck_card_stage">
+                                    {(yn.twelveStage as string) || "-"}
+                                  </span>
+                                </div>
                               </div>
-                              <div className={`luck_card_stem elem_${stemElement}`}>
-                                <span className="char_hanja">{stem}</span>
-                                <span className="char_korean">{getStemKorean(stem)}</span>
-                              </div>
-                              <div className={`luck_card_branch elem_${branchElement}`}>
-                                <span className="char_hanja">{branch}</span>
-                                <span className="char_korean">{getBranchKorean(branch)}</span>
-                              </div>
-                              <div className="luck_card_bottom">
-                                <span className="luck_card_tengod_branch">{(yn.tenGodBranch as string) || "-"}</span>
-                                <span className="luck_card_stage">{(yn.twelveStage as string) || "-"}</span>
-                              </div>
-                            </div>
-                          );
-                        })}
+                            );
+                          })}
                       </div>
                     </div>
                   </div>
@@ -3236,17 +3415,32 @@ function SajuCard({ data }: { data: SajuLoveRecord }) {
                     <h5 className="luck_section_title">월운</h5>
                     <div className="luck_scroll_wrap" ref={wolunScrollRef}>
                       <div className="luck_scroll reverse">
-                        {[...(luckCyclesData.wolun as Array<Record<string, unknown>>)].reverse().map((wn, idx) => {
-                          const currentMonth = new Date().getMonth() + 1;
-                          const isCurrentMonth = wn.month === currentMonth;
+                        {[
+                          ...(luckCyclesData.wolun as Array<
+                            Record<string, unknown>
+                          >),
+                        ]
+                          .reverse()
+                          .map((wn, idx) => {
+                            const currentMonth = new Date().getMonth() + 1;
+                            const isCurrentMonth = wn.month === currentMonth;
 
-                          return (
-                            <div key={idx} className={`luck_card_mini ${isCurrentMonth ? "current" : ""}`}>
-                              <span className="luck_mini_month">{String(wn.month)}월</span>
-                              <span className="luck_mini_tengod">{(wn.tenGodStem as string) || "-"}</span>
-                            </div>
-                          );
-                        })}
+                            return (
+                              <div
+                                key={idx}
+                                className={`luck_card_mini ${
+                                  isCurrentMonth ? "current" : ""
+                                }`}
+                              >
+                                <span className="luck_mini_month">
+                                  {String(wn.month)}월
+                                </span>
+                                <span className="luck_mini_tengod">
+                                  {(wn.tenGodStem as string) || "-"}
+                                </span>
+                              </div>
+                            );
+                          })}
                       </div>
                     </div>
                   </div>
@@ -3258,9 +3452,30 @@ function SajuCard({ data }: { data: SajuLoveRecord }) {
                   <div className="extra_info_row">
                     <span className="extra_label">태원/명궁/신궁</span>
                     <div className="extra_values">
-                      <span className="extra_ganzi">{String(((sajuData as Record<string, unknown>)?.taiYuan as Record<string, unknown>)?.ganZhi || "-")}</span>
-                      <span className="extra_ganzi">{String(((sajuData as Record<string, unknown>)?.mingGong as Record<string, unknown>)?.ganZhi || "-")}</span>
-                      <span className="extra_ganzi">{String(((sajuData as Record<string, unknown>)?.shenGong as Record<string, unknown>)?.ganZhi || "-")}</span>
+                      <span className="extra_ganzi">
+                        {String(
+                          (
+                            (sajuData as Record<string, unknown>)
+                              ?.taiYuan as Record<string, unknown>
+                          )?.ganZhi || "-"
+                        )}
+                      </span>
+                      <span className="extra_ganzi">
+                        {String(
+                          (
+                            (sajuData as Record<string, unknown>)
+                              ?.mingGong as Record<string, unknown>
+                          )?.ganZhi || "-"
+                        )}
+                      </span>
+                      <span className="extra_ganzi">
+                        {String(
+                          (
+                            (sajuData as Record<string, unknown>)
+                              ?.shenGong as Record<string, unknown>
+                          )?.ganZhi || "-"
+                        )}
+                      </span>
                     </div>
                     <span className="extra_usage">선천기질·운명</span>
                   </div>
@@ -3268,15 +3483,40 @@ function SajuCard({ data }: { data: SajuLoveRecord }) {
                   <div className="extra_info_row">
                     <span className="extra_label">득력</span>
                     <div className="extra_values">
-                      <span className={`extra_indicator small ${(fiveElements as Record<string, unknown>)?.deukryung ? "on" : ""}`}>령</span>
-                      <span className={`extra_indicator small ${(fiveElements as Record<string, unknown>)?.deukji ? "on" : ""}`}>지</span>
-                      <span className={`extra_indicator small ${(fiveElements as Record<string, unknown>)?.deukse ? "on" : ""}`}>세</span>
+                      <span
+                        className={`extra_indicator small ${
+                          (fiveElements as Record<string, unknown>)?.deukryung
+                            ? "on"
+                            : ""
+                        }`}
+                      >
+                        령
+                      </span>
+                      <span
+                        className={`extra_indicator small ${
+                          (fiveElements as Record<string, unknown>)?.deukji
+                            ? "on"
+                            : ""
+                        }`}
+                      >
+                        지
+                      </span>
+                      <span
+                        className={`extra_indicator small ${
+                          (fiveElements as Record<string, unknown>)?.deukse
+                            ? "on"
+                            : ""
+                        }`}
+                      >
+                        세
+                      </span>
                     </div>
                     <span className="extra_usage">연애주도권</span>
                   </div>
                   {/* 납음(일주) */}
                   {(() => {
-                    const nayinData = (sajuData as Record<string, unknown>)?.nayin as Record<string, string> | undefined;
+                    const nayinData = (sajuData as Record<string, unknown>)
+                      ?.nayin as Record<string, string> | undefined;
                     const dayNayin = nayinData?.day;
                     return dayNayin ? (
                       <div className="extra_info_row">
@@ -3290,17 +3530,33 @@ function SajuCard({ data }: { data: SajuLoveRecord }) {
                   })()}
                   {/* 배우자성 - 남:재성(정재/편재), 여:관성(정관/편관) */}
                   {(() => {
-                    const loveFactsData = (sajuData as Record<string, unknown>)?.loveFacts as Record<string, unknown> | undefined;
-                    const spouseStars = loveFactsData?.spouseStars as Record<string, unknown> | undefined;
-                    const hitCount = spouseStars?.hitCount as number | undefined;
-                    const positions = spouseStars?.positions as string[] | undefined;
-                    const targetStars = spouseStars?.targetStars as string[] | undefined;
+                    const loveFactsData = (sajuData as Record<string, unknown>)
+                      ?.loveFacts as Record<string, unknown> | undefined;
+                    const spouseStars = loveFactsData?.spouseStars as
+                      | Record<string, unknown>
+                      | undefined;
+                    const hitCount = spouseStars?.hitCount as
+                      | number
+                      | undefined;
+                    const positions = spouseStars?.positions as
+                      | string[]
+                      | undefined;
+                    const targetStars = spouseStars?.targetStars as
+                      | string[]
+                      | undefined;
 
                     // 영어 → 한글 변환 및 시→일→월→년 순서 정렬
-                    const positionMap: Record<string, string> = { hour: "시", day: "일", month: "월", year: "년" };
+                    const positionMap: Record<string, string> = {
+                      hour: "시",
+                      day: "일",
+                      month: "월",
+                      year: "년",
+                    };
                     const positionOrder = ["hour", "day", "month", "year"];
                     const sortedPositions = positions
-                      ? positionOrder.filter(p => positions.includes(p)).map(p => positionMap[p])
+                      ? positionOrder
+                          .filter((p) => positions.includes(p))
+                          .map((p) => positionMap[p])
                       : [];
 
                     return (
@@ -3308,11 +3564,17 @@ function SajuCard({ data }: { data: SajuLoveRecord }) {
                         <span className="extra_label">배우자성</span>
                         <div className="extra_values">
                           {targetStars && targetStars.length > 0 && (
-                            <span className="extra_text">{targetStars.join("/")}</span>
+                            <span className="extra_text">
+                              {targetStars.join("/")}
+                            </span>
                           )}
-                          <span className="extra_count">{hitCount !== undefined ? `${hitCount}개` : "-"}</span>
+                          <span className="extra_count">
+                            {hitCount !== undefined ? `${hitCount}개` : "-"}
+                          </span>
                           {sortedPositions.length > 0 && (
-                            <span className="extra_positions">({sortedPositions.join("/")})</span>
+                            <span className="extra_positions">
+                              ({sortedPositions.join("/")})
+                            </span>
                           )}
                         </div>
                         <span className="extra_usage">연애기회·관심</span>
@@ -3328,7 +3590,9 @@ function SajuCard({ data }: { data: SajuLoveRecord }) {
         {/* 분석 기반 설명 - 마지막 강조 멘트 */}
         <div className="nangja_comment nangja_final">
           <p className="nangja_text">
-            <span className="nangja_question">점점 사주가 어려워지지 않나요?</span>
+            <span className="nangja_question">
+              점점 사주가 어려워지지 않나요?
+            </span>
           </p>
           <p className="nangja_text nangja_reassure">
             걱정 마세요.
@@ -3343,92 +3607,197 @@ function SajuCard({ data }: { data: SajuLoveRecord }) {
 
         {/* 보고서 목차 */}
         <div className="report_toc_card">
-            {/* 1장 */}
-            <div className="toc_chapter">
-              <div className="toc_chapter_header">
-                <span className="toc_chapter_num">1장</span>
-                <h3 className="toc_chapter_title">나만의 매력과<br />연애 성향</h3>
-              </div>
-              <ul className="toc_list">
-                <li>풀이 1&nbsp;&nbsp;처음 본 순간 이성이 느끼는 나의 매력<br /><span className="toc_sub">- 겉으로 보이는 모습과 내면의 반전</span></li>
-                <li>풀이 2&nbsp;&nbsp;내 연애 스타일 장점과 숨겨진 반전 매력<br /><span className="toc_sub">- 오래 만날수록 빠지게 되는 포인트</span></li>
-                <li>풀이 3&nbsp;&nbsp;인만추 vs 자만추 vs 결정사, 나에게 맞는 방식은<br /><span className="toc_sub">- 성공 확률 높은 만남 방식과 실전 팁</span></li>
-                <li>풀이 4&nbsp;&nbsp;내가 끌리는 사람 vs 나에게 끌리는 사람<br /><span className="toc_sub">- 어떤 사람을 만나야 행복하게 연애할 수 있을까?</span></li>
-              </ul>
+          {/* 1장 */}
+          <div className="toc_chapter">
+            <div className="toc_chapter_header">
+              <span className="toc_chapter_num">1장</span>
+              <h3 className="toc_chapter_title">
+                나만의 매력과
+                <br />
+                연애 성향
+              </h3>
             </div>
+            <ul className="toc_list">
+              <li>
+                풀이 1&nbsp;&nbsp;처음 본 순간 이성이 느끼는 나의 매력
+                <br />
+                <span className="toc_sub">
+                  - 겉으로 보이는 모습과 내면의 반전
+                </span>
+              </li>
+              <li>
+                풀이 2&nbsp;&nbsp;내 연애 스타일 장점과 숨겨진 반전 매력
+                <br />
+                <span className="toc_sub">
+                  - 오래 만날수록 빠지게 되는 포인트
+                </span>
+              </li>
+              <li>
+                풀이 3&nbsp;&nbsp;인만추 vs 자만추 vs 결정사, 나에게 맞는 방식은
+                <br />
+                <span className="toc_sub">
+                  - 성공 확률 높은 만남 방식과 실전 팁
+                </span>
+              </li>
+              <li>
+                풀이 4&nbsp;&nbsp;내가 끌리는 사람 vs 나에게 끌리는 사람
+                <br />
+                <span className="toc_sub">
+                  - 어떤 사람을 만나야 행복하게 연애할 수 있을까?
+                </span>
+              </li>
+            </ul>
+          </div>
 
-            {/* 2장 */}
-            <div className="toc_chapter">
-              <div className="toc_chapter_header">
-                <span className="toc_chapter_num">2장</span>
-                <h3 className="toc_chapter_title">앞으로 펼쳐질<br />사랑의 흐름</h3>
-              </div>
-              <ul className="toc_list">
-                <li>풀이 1&nbsp;&nbsp;올해의 연애 총운 흐름<br /><span className="toc_sub">- 연애 활발기 vs 조용기 구분</span></li>
-                <li>풀이 2&nbsp;&nbsp;앞으로 3년간 연애 기회가 오는 시기<br /><span className="toc_sub">- 인연이 집중되는 달과 상대의 특징</span></li>
-                <li>풀이 3&nbsp;&nbsp;이번 달 주차별 연애 운세<br /><span className="toc_sub">- 이성 기운이 들어오는 타이밍</span></li>
-              </ul>
+          {/* 2장 */}
+          <div className="toc_chapter">
+            <div className="toc_chapter_header">
+              <span className="toc_chapter_num">2장</span>
+              <h3 className="toc_chapter_title">
+                앞으로 펼쳐질
+                <br />
+                사랑의 흐름
+              </h3>
             </div>
+            <ul className="toc_list">
+              <li>
+                풀이 1&nbsp;&nbsp;올해의 연애 총운 흐름
+                <br />
+                <span className="toc_sub">- 연애 활발기 vs 조용기 구분</span>
+              </li>
+              <li>
+                풀이 2&nbsp;&nbsp;앞으로 3년간 연애 기회가 오는 시기
+                <br />
+                <span className="toc_sub">
+                  - 인연이 집중되는 달과 상대의 특징
+                </span>
+              </li>
+              <li>
+                풀이 3&nbsp;&nbsp;이번 달 주차별 연애 운세
+                <br />
+                <span className="toc_sub">- 이성 기운이 들어오는 타이밍</span>
+              </li>
+            </ul>
+          </div>
 
-            {/* 3장 */}
-            <div className="toc_chapter">
-              <div className="toc_chapter_header">
-                <span className="toc_chapter_num">3장</span>
-                <h3 className="toc_chapter_title">결국 만나게 될<br />운명의 상대</h3>
-              </div>
-              <ul className="toc_list">
-                <li>풀이 1&nbsp;&nbsp;운명의 상대, 그 사람의 외모와 성격<br /><span className="toc_sub">- 길에서 마주친 것처럼 생생하게</span></li>
-                <li>풀이 2&nbsp;&nbsp;그 사람을 만나는 시기와 장소<br /><span className="toc_sub">- 영화의 한 장면처럼 묘사</span></li>
-                <li>풀이 3&nbsp;&nbsp;그 사람 마음 사로잡는 공략법<br /><span className="toc_sub">- 나만의 무기를 활용한 맞춤 전략</span></li>
-                <li>풀이 4&nbsp;&nbsp;이별 위기 극복법<br /><span className="toc_sub">- 위험 패턴과 회복 필살기</span></li>
-              </ul>
+          {/* 3장 */}
+          <div className="toc_chapter">
+            <div className="toc_chapter_header">
+              <span className="toc_chapter_num">3장</span>
+              <h3 className="toc_chapter_title">
+                결국 만나게 될<br />
+                운명의 상대
+              </h3>
             </div>
+            <ul className="toc_list">
+              <li>
+                풀이 1&nbsp;&nbsp;운명의 상대, 그 사람의 외모와 성격
+                <br />
+                <span className="toc_sub">- 길에서 마주친 것처럼 생생하게</span>
+              </li>
+              <li>
+                풀이 2&nbsp;&nbsp;그 사람을 만나는 시기와 장소
+                <br />
+                <span className="toc_sub">- 영화의 한 장면처럼 묘사</span>
+              </li>
+              <li>
+                풀이 3&nbsp;&nbsp;그 사람 마음 사로잡는 공략법
+                <br />
+                <span className="toc_sub">
+                  - 나만의 무기를 활용한 맞춤 전략
+                </span>
+              </li>
+              <li>
+                풀이 4&nbsp;&nbsp;이별 위기 극복법
+                <br />
+                <span className="toc_sub">- 위험 패턴과 회복 필살기</span>
+              </li>
+            </ul>
+          </div>
 
-            {/* 보너스 */}
-            <div className="toc_chapter bonus">
-              <div className="toc_chapter_header">
-                <span className="toc_chapter_num bonus">보너스</span>
-                <h3 className="toc_chapter_title">운명의 상대 이미지</h3>
-              </div>
-            </div>
-
-            {/* 4장 */}
-            <div className="toc_chapter">
-              <div className="toc_chapter_header">
-                <span className="toc_chapter_num">4장</span>
-                <h3 className="toc_chapter_title">운명으로 착각하는<br />가짜 인연</h3>
-              </div>
-              <ul className="toc_list">
-                <li>풀이 1&nbsp;&nbsp;내가 약해지는 위험 유형 2가지<br /><span className="toc_sub">- 왜 유독 그런 타입에게 끌리는지</span></li>
-                <li>풀이 2&nbsp;&nbsp;운명이라 착각하는 이유<br /><span className="toc_sub">- 첫 만남의 끌림, 그 정체를 폭로</span></li>
-                <li>풀이 3&nbsp;&nbsp;진짜 vs 가짜 구별법<br /><span className="toc_sub">- 구체적인 필터링 체크 포인트</span></li>
-              </ul>
-            </div>
-
-            {/* 5장 */}
-            <div className="toc_chapter">
-              <div className="toc_chapter_header">
-                <span className="toc_chapter_num">5장</span>
-                <h3 className="toc_chapter_title">누구에게도 말 못할,<br />19금 사주 풀이</h3>
-              </div>
-              <ul className="toc_list">
-                <li>풀이 1&nbsp;&nbsp;낮과 밤이 다른 성적 매력<br /><span className="toc_sub">- 낮저밤이? 낮이밤저? 나의 갭</span></li>
-                <li>풀이 2&nbsp;&nbsp;은밀한 성감대<br /><span className="toc_sub">- 본인도 몰랐던 민감 포인트</span></li>
-                <li>풀이 3&nbsp;&nbsp;나를 만족시킬 상대 조건<br /><span className="toc_sub">- 리드/팔로우, 템포, 킬링 포인트</span></li>
-              </ul>
-            </div>
-
-            {/* 6장 */}
-            <div className="toc_chapter">
-              <div className="toc_chapter_header">
-                <span className="toc_chapter_num">6장</span>
-                <h3 className="toc_chapter_title">색동낭자의 귀띔</h3>
-              </div>
-              <ul className="toc_list">
-                <li>{userName}님의 고민에 대한 사주 기반 맞춤 조언</li>
-              </ul>
+          {/* 보너스 */}
+          <div className="toc_chapter bonus">
+            <div className="toc_chapter_header">
+              <span className="toc_chapter_num bonus">보너스</span>
+              <h3 className="toc_chapter_title">운명의 상대 이미지</h3>
             </div>
           </div>
+
+          {/* 4장 */}
+          <div className="toc_chapter">
+            <div className="toc_chapter_header">
+              <span className="toc_chapter_num">4장</span>
+              <h3 className="toc_chapter_title">
+                운명으로 착각하는
+                <br />
+                가짜 인연
+              </h3>
+            </div>
+            <ul className="toc_list">
+              <li>
+                풀이 1&nbsp;&nbsp;내가 약해지는 위험 유형 2가지
+                <br />
+                <span className="toc_sub">
+                  - 왜 유독 그런 타입에게 끌리는지
+                </span>
+              </li>
+              <li>
+                풀이 2&nbsp;&nbsp;운명이라 착각하는 이유
+                <br />
+                <span className="toc_sub">
+                  - 첫 만남의 끌림, 그 정체를 폭로
+                </span>
+              </li>
+              <li>
+                풀이 3&nbsp;&nbsp;진짜 vs 가짜 구별법
+                <br />
+                <span className="toc_sub">- 구체적인 필터링 체크 포인트</span>
+              </li>
+            </ul>
+          </div>
+
+          {/* 5장 */}
+          <div className="toc_chapter">
+            <div className="toc_chapter_header">
+              <span className="toc_chapter_num">5장</span>
+              <h3 className="toc_chapter_title">
+                누구에게도 말 못할,
+                <br />
+                19금 사주 풀이
+              </h3>
+            </div>
+            <ul className="toc_list">
+              <li>
+                풀이 1&nbsp;&nbsp;낮과 밤이 다른 성적 매력
+                <br />
+                <span className="toc_sub">- 낮저밤이? 낮이밤저? 나의 갭</span>
+              </li>
+              <li>
+                풀이 2&nbsp;&nbsp;은밀한 성감대
+                <br />
+                <span className="toc_sub">- 본인도 몰랐던 민감 포인트</span>
+              </li>
+              <li>
+                풀이 3&nbsp;&nbsp;나를 만족시킬 상대 조건
+                <br />
+                <span className="toc_sub">
+                  - 리드/팔로우, 템포, 킬링 포인트
+                </span>
+              </li>
+            </ul>
+          </div>
+
+          {/* 6장 */}
+          <div className="toc_chapter">
+            <div className="toc_chapter_header">
+              <span className="toc_chapter_num">6장</span>
+              <h3 className="toc_chapter_title">색동낭자의 귀띔</h3>
+            </div>
+            <ul className="toc_list">
+              <li>{userName}님의 고민에 대한 사주 기반 맞춤 조언</li>
+            </ul>
+          </div>
+        </div>
 
         {/* 고민 유도 섹션 */}
         <div className="hesitate_section">
@@ -3439,7 +3808,9 @@ function SajuCard({ data }: { data: SajuLoveRecord }) {
         {/* 가격 비교 섹션 */}
         <div className="price_compare_section">
           {/* 다른 곳 가격 비교 */}
-          <p className="price_compare_title">색동낭자 연애 사주 분석 보고서 복채</p>
+          <p className="price_compare_title">
+            색동낭자 연애 사주 분석 보고서 복채
+          </p>
           <div className="price_compare_cards">
             <div className="price_card">
               <span className="price_card_badge">오프라인 사주</span>
@@ -3471,14 +3842,13 @@ function SajuCard({ data }: { data: SajuLoveRecord }) {
             alt="색동낭자 가격"
             className="price_compare_img"
           />
-          
         </div>
         {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src="/saju-love/img/love-price2.jpg"
-            alt="색동낭자 가격 상세"
-            className="price_final_img"
-          />
+        <img
+          src="/saju-love/img/love-price2.jpg"
+          alt="색동낭자 가격 상세"
+          className="price_final_img"
+        />
       </div>
     </div>
   );

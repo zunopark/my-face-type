@@ -7152,10 +7152,8 @@
 }
 
 .payment-fullscreen .modal-content {
-  min-height: 100%;
-  display: flex;
-  flex-direction: column;
   padding: 0;
+  padding-bottom: 40px;
 }
 
 /* 히어로 섹션 */
@@ -7509,14 +7507,14 @@
 }
 
 .payment-final-btn-saju {
-  width: 100%;
+  width: calc(100% - 40px);
+  margin: 20px;
   padding: 18px;
   background: #e74c3c;
   color: #fff;
   font-size: 17px;
   font-weight: 700;
   border: none;
-  border-radius: 0;
+  border-radius: 8px;
   cursor: pointer;
-  margin-top: auto;
 }
