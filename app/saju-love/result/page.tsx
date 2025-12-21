@@ -1396,13 +1396,13 @@ function SajuLoveResultContent() {
           src={bgImageA}
           alt=""
           className="result_bg_image"
-          style={{ opacity: showImageA ? 1 : 0.9 }}
+          style={{ opacity: showImageA ? 1 : 0 }}
         />
         <img
           src={bgImageB}
           alt=""
           className="result_bg_image"
-          style={{ opacity: showImageA ? 0.2 : 1 }}
+          style={{ opacity: showImageA ? 0 : 1 }}
         />
       </div>
 
