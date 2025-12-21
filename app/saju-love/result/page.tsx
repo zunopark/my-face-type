@@ -2190,8 +2190,8 @@ function SajuCard({ data }: { data: SajuLoveRecord }) {
     if (yeonunScrollRef.current) {
       const yeonunList =
         (luckCyclesData?.yeonun as Array<Record<string, unknown>>) || [];
-      const reversedYeonun = [...yeonunList].reverse();
-      const currentIdx = reversedYeonun.findIndex(
+      const displayYeonun = isReverse ? [...yeonunList].reverse() : yeonunList;
+      const currentIdx = displayYeonun.findIndex(
         (yn) => (yn.year as number) === currentYear
       );
       if (currentIdx !== -1) {
@@ -2209,8 +2209,8 @@ function SajuCard({ data }: { data: SajuLoveRecord }) {
     if (wolunScrollRef.current) {
       const wolunList =
         (luckCyclesData?.wolun as Array<Record<string, unknown>>) || [];
-      const reversedWolun = [...wolunList].reverse();
-      const currentIdx = reversedWolun.findIndex(
+      const displayWolun = isReverse ? [...wolunList].reverse() : wolunList;
+      const currentIdx = displayWolun.findIndex(
         (wn) => (wn.month as number) === currentMonth
       );
       if (currentIdx !== -1) {
@@ -3493,14 +3493,17 @@ function SajuCard({ data }: { data: SajuLoveRecord }) {
                   <div className="luck_section">
                     <h5 className="luck_section_title">연운</h5>
                     <div className="luck_scroll_wrap" ref={yeonunScrollRef}>
-                      <div className="luck_scroll reverse">
-                        {[
-                          ...(luckCyclesData.yeonun as Array<
-                            Record<string, unknown>
-                          >),
-                        ]
-                          .reverse()
-                          .map((yn, idx) => {
+                      <div className={`luck_scroll ${isReverse ? "reverse" : ""}`}>
+                        {(isReverse
+                          ? [
+                              ...(luckCyclesData.yeonun as Array<
+                                Record<string, unknown>
+                              >),
+                            ].reverse()
+                          : (luckCyclesData.yeonun as Array<
+                              Record<string, unknown>
+                            >)
+                        ).map((yn, idx) => {
                             const ganZhi = (yn.ganZhi as string) || "";
                             const stem = ganZhi[0] || "";
                             const branch = ganZhi[1] || "";
@@ -3560,14 +3563,17 @@ function SajuCard({ data }: { data: SajuLoveRecord }) {
                   <div className="luck_section">
                     <h5 className="luck_section_title">월운</h5>
                     <div className="luck_scroll_wrap" ref={wolunScrollRef}>
-                      <div className="luck_scroll reverse">
-                        {[
-                          ...(luckCyclesData.wolun as Array<
-                            Record<string, unknown>
-                          >),
-                        ]
-                          .reverse()
-                          .map((wn, idx) => {
+                      <div className={`luck_scroll ${isReverse ? "reverse" : ""}`}>
+                        {(isReverse
+                          ? [
+                              ...(luckCyclesData.wolun as Array<
+                                Record<string, unknown>
+                              >),
+                            ].reverse()
+                          : (luckCyclesData.wolun as Array<
+                              Record<string, unknown>
+                            >)
+                        ).map((wn, idx) => {
                             const currentMonth = new Date().getMonth() + 1;
                             const isCurrentMonth = wn.month === currentMonth;
 
