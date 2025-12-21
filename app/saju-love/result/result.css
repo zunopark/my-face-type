@@ -2196,10 +2196,14 @@
   z-index: 1;
 }
 
+/* 현재 이미지 (항상 위에) */
+.saju_result_page .result_bg_current {
+  z-index: 2;
+}
+
 /* 현재 이미지 fade in */
 .saju_result_page .result_bg_fade_in {
-  z-index: 2;
-  animation: bgFadeIn 0.4s ease-out forwards;
+  animation: bgFadeIn 0.35s ease-out forwards;
 }
 
 @keyframes bgFadeIn {

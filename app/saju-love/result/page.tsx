@@ -1292,19 +1292,17 @@ function SajuLoveResultContent() {
     <div className="saju_result_page chat_mode" onClick={handleScreenClick}>
       {/* 배경 이미지 - crossfade */}
       <div className="result_bg">
-        {/* 이전 이미지 (전환 중에만 보임) */}
-        {isBgTransitioning && (
-          <img
-            src={prevBgImage}
-            alt=""
-            className="result_bg_image result_bg_prev"
-          />
-        )}
+        {/* 이전 이미지 (항상 뒤에 깔림) */}
+        <img
+          src={prevBgImage}
+          alt=""
+          className="result_bg_image result_bg_prev"
+        />
         {/* 현재 이미지 */}
         <img
           src={currentBgImage}
           alt=""
-          className={`result_bg_image ${
+          className={`result_bg_image result_bg_current ${
             isBgTransitioning ? "result_bg_fade_in" : ""
           }`}
         />
