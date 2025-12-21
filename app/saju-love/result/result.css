@@ -2236,7 +2236,12 @@
   height: 100%;
   object-fit: cover;
   object-position: top center;
-  transition: opacity 0.4s ease-out;
+  transition: opacity 0.3s ease-out;
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
+  will-change: opacity;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
 }
 
 /* 뒤로가기 버튼 - iOS 글래스모피즘 */
