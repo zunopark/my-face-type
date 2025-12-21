@@ -290,6 +290,18 @@ function SajuLoveResultContent() {
   const [isBgTransitioning, setIsBgTransitioning] = useState(false);
   const [isAnalyzing, setIsAnalyzing] = useState(false);
 
+  // 배경 이미지 crossfade 전환 함수
+  const changeBgImage = useCallback((nextImage: string) => {
+    setCurrentBgImage((prev) => {
+      if (nextImage !== prev) {
+        setPrevBgImage(prev);
+        setIsBgTransitioning(true);
+        setTimeout(() => setIsBgTransitioning(false), 400);
+      }
+      return nextImage;
+    });
+  }, []);
+
   // 결제 관련 상태
   const [showPaymentModal, setShowPaymentModal] = useState(false);
   const [couponCode, setCouponCode] = useState("");
@@ -749,9 +761,9 @@ function SajuLoveResultContent() {
     setCurrentIndex(prevIndex);
     const prevMsg = messages[prevIndex];
 
-    // 이미지 업데이트
+    // 이미지 업데이트 (crossfade)
     const prevImage = prevMsg.bgImage || "/saju-love/img/nangja-1.jpg";
-    setCurrentBgImage(prevImage);
+    changeBgImage(prevImage);
 
     if (prevMsg.type === "dialogue") {
       // 이전 대화는 타이핑 효과 없이 바로 보여주기
@@ -761,7 +773,7 @@ function SajuLoveResultContent() {
       setShowReport(true);
       setShowButtons(true);
     }
-  }, [currentIndex, messages, isTyping, showReport]);
+  }, [currentIndex, messages, isTyping, showReport, changeBgImage]);
 
   // 다음 메시지로 이동
   const handleNext = useCallback(() => {
@@ -814,13 +826,7 @@ function SajuLoveResultContent() {
       ]);
 
       // 이미지가 바뀌는 경우: crossfade 전환
-      if (nextImage !== currentBgImage) {
-        setPrevBgImage(currentBgImage);
-        setCurrentBgImage(nextImage);
-        setIsBgTransitioning(true);
-        // 전환 완료 후 상태 리셋
-        setTimeout(() => setIsBgTransitioning(false), 400);
-      }
+      changeBgImage(nextImage);
 
       setCurrentIndex(nextIndex);
 
@@ -856,17 +862,10 @@ function SajuLoveResultContent() {
 
         const nextImage = nextMsg.bgImage || "/saju-love/img/nangja-1.jpg";
 
-        // 이미지가 다르면: 이미지 먼저 바꾸고 딜레이 후 전환
-        if (nextImage !== currentBgImage) {
-          setCurrentBgImage(nextImage);
-          setTimeout(() => {
-            setShowReport(false);
-            goToNextMessage(nextIndex);
-          }, 100);
-        } else {
-          setShowReport(false);
-          goToNextMessage(nextIndex);
-        }
+        // crossfade 전환
+        changeBgImage(nextImage);
+        setShowReport(false);
+        goToNextMessage(nextIndex);
       }
       return;
     }
@@ -882,7 +881,7 @@ function SajuLoveResultContent() {
     isTyping,
     showReport,
     typeText,
-    currentBgImage,
+    changeBgImage,
     openPaymentModal,
     data,
   ]);
@@ -1096,7 +1095,7 @@ function SajuLoveResultContent() {
             const nextMsg = messageList[chapter1IntroIndex];
             // 상태를 먼저 모두 설정한 후 메시지 표시
             setCurrentIndex(chapter1IntroIndex);
-            setCurrentBgImage(nextMsg.bgImage || "/saju-love/img/nangja-1.jpg");
+            changeBgImage(nextMsg.bgImage || "/saju-love/img/nangja-1.jpg");
             setShowReport(false);
             setMessages(messageList);
             setIsLoading(false);
@@ -1243,7 +1242,7 @@ function SajuLoveResultContent() {
       );
       if (thankYouIndex >= 0) {
         setCurrentIndex(thankYouIndex);
-        setCurrentBgImage(
+        changeBgImage(
           partialMessages[thankYouIndex].bgImage ||
             "/saju-love/img/nangja-1.jpg"
         );
@@ -1286,7 +1285,7 @@ function SajuLoveResultContent() {
             if (chapter1IntroIndex >= 0) {
               const nextMsg = messageList[chapter1IntroIndex];
               setCurrentIndex(chapter1IntroIndex);
-              setCurrentBgImage(nextMsg.bgImage || "/saju-love/img/nangja-1.jpg");
+              changeBgImage(nextMsg.bgImage || "/saju-love/img/nangja-1.jpg");
               setShowReport(false);
               setMessages(messageList);
               setTimeout(() => {
@@ -1474,10 +1473,10 @@ function SajuLoveResultContent() {
           onNavigate={(index) => {
             setCurrentIndex(index);
             const targetMsg = messages[index];
-            // 이미지 업데이트
+            // 이미지 업데이트 (crossfade)
             const targetImage =
               targetMsg.bgImage || "/saju-love/img/nangja-1.jpg";
-            setCurrentBgImage(targetImage);
+            changeBgImage(targetImage);
             if (targetMsg.type === "dialogue") {
               setShowReport(false);
               setDialogueText(targetMsg.content);
