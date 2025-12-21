@@ -65,6 +65,10 @@ interface LoveAnalysisResult {
     image_base64: string;
     prompt?: string;
   };
+  avoid_type_image?: {
+    image_base64: string;
+    prompt?: string;
+  };
 }
 
 // 메시지 타입 정의
@@ -82,6 +86,7 @@ type MessageItem = {
   content: string;
   chapterIndex?: number;
   imageBase64?: string;
+  imageVariant?: "ideal" | "avoid"; // 이미지 타입 구분
   bgImage?: string;
 };
 
@@ -233,14 +238,14 @@ const getChapterConfig = (
   chapter4: {
     // 4장: 운명이라 착각하는 가짜 인연
     intro: "4장에서는 운명이라 착각할 수 있는\n가짜 인연에 대해 알려드릴게요.",
-    outro: "자, 이제 조금 민감한 주제로\n넘어가볼까요?",
+    outro: "근데 피해야 할 사람,\n어떻게 생겼는지 궁금하지 않으세요?",
     introBg: "/saju-love/img/nangja-18.jpg",
     reportBg: "/saju-love/img/nangja-19.jpg",
     outroBg: "/saju-love/img/nangja-20.jpg",
   },
   chapter5: {
     // 5장: 누구에게도 말 못할, 19금 사주 풀이
-    intro: "5장에서는 누구에게도 말 못할,\n스킨십에 대해 이야기해드릴게요.",
+    intro: "5장에서는 누구에게도 말 못할,\n속궁합에 대해 알려드릴게요.",
     outro: `마지막으로 제가 ${userName}님께\n전해드릴 귀띔이 있어요.`,
     introBg: "/saju-love/img/nangja-21.jpg",
     reportBg: "/saju-love/img/nangja-22.jpg",
@@ -442,7 +447,7 @@ function SajuLoveResultContent() {
   );
 
   // 메시지 리스트 생성 (전체 - 분석 완료 후)
-  // 흐름: 첫 인사 → [1장] → [2장] → [3장] → 운명의 상대 이미지 → [4장] → [5장] → [6장] → 엔딩
+  // 흐름: 첫 인사 → [1장] → [2장] → [3장] → 운명의 상대 이미지 → [4장] → 피해야 할 인연 이미지 → [5장] → [6장] → 엔딩
   const buildMessageList = useCallback(
     (record: SajuLoveRecord): MessageItem[] => {
       const result: MessageItem[] = [];
@@ -451,12 +456,14 @@ function SajuLoveResultContent() {
       const chapters = record.loveAnalysis?.chapters || [];
       const hasIdealImage =
         !!record.loveAnalysis?.ideal_partner_image?.image_base64;
+      const hasAvoidImage =
+        !!record.loveAnalysis?.avoid_type_image?.image_base64;
 
       // 1. 첫 인사 대화
       result.push({
         id: "opening-dialogue",
         type: "dialogue",
-        content: `안녕하세요, ${userName}님!\n드디어 분석이 완료됐어요. 천천히 살펴볼까요?`,
+        content: `${userName}님, 안녕하세요?\n이제부터 연애 사주를 천천히 살펴볼까요?`,
         bgImage: "/saju-love/img/nangja-1.jpg",
       });
 
@@ -464,7 +471,7 @@ function SajuLoveResultContent() {
       result.push({
         id: "intro-guide-dialogue",
         type: "dialogue",
-        content: `${userName}님의 사주를 알려드리기 전에,\n먼저 연애 사주에 대해 간단히 설명해드릴게요.`,
+        content: `${userName}님의 연애 사주를 알려드리기 전에,\n먼저 사주팔자에 대해 간단하게 설명을 해드릴게요.`,
         bgImage: "/saju-love/img/nangja-2.jpg",
       });
 
@@ -519,6 +526,16 @@ function SajuLoveResultContent() {
           bgImage: config?.reportBg || "/saju-love/img/nangja-1.jpg",
         });
 
+        // 5장인 경우 outro 전에 추가 대화 삽입
+        if (chapterNum === 5) {
+          result.push({
+            id: "chapter5-extra",
+            type: "dialogue",
+            content: `어때요? 이런 부분도 미리 알면\n더 깊은 관계를 만들 수 있어요!`,
+            bgImage: "/saju-love/img/nangja-23.jpg",
+          });
+        }
+
         // 챕터 outro 대화 (있는 경우에만)
         if (config?.outro) {
           result.push({
@@ -542,6 +559,7 @@ function SajuLoveResultContent() {
             type: "image",
             content: `${userName}님의 운명의 상대`,
             imageBase64: record.loveAnalysis!.ideal_partner_image!.image_base64,
+            imageVariant: "ideal",
             bgImage: "/saju-love/img/nangja-16.jpg",
           });
           result.push({
@@ -551,13 +569,37 @@ function SajuLoveResultContent() {
             bgImage: "/saju-love/img/nangja-17.jpg",
           });
         }
+
+        // 4장 이후에 피해야 할 인연 이미지 삽입
+        if (chapterNum === 4 && hasAvoidImage) {
+          result.push({
+            id: "avoid-type-dialogue",
+            type: "dialogue",
+            content: `실제로 이렇게 생겼을거에요.`,
+            bgImage: "/saju-love/img/nangja-19.jpg",
+          });
+          result.push({
+            id: "avoid-type-image",
+            type: "image",
+            content: `${userName}님의 가짜 인연`,
+            imageBase64: record.loveAnalysis!.avoid_type_image!.image_base64,
+            imageVariant: "avoid",
+            bgImage: "/saju-love/img/nangja-19.jpg",
+          });
+          result.push({
+            id: "avoid-type-outro",
+            type: "dialogue",
+            content: `연인이 되시지 말고 지인으로만 지내세요!\n이제 속으로 궁금했던,, 부끄러운 주제로 넘어가볼까요?`,
+            bgImage: "/saju-love/img/nangja-20.jpg",
+          });
+        }
       });
 
       // 26. 마무리 전 대화
       result.push({
         id: "ending-intro",
         type: "dialogue",
-        content: `${userName}님, 여기까지 긴 여정 함께해주셔서 감사해요.\n어떠셨어요? 연애 사주를 보니 조금은 마음이 풀리셨나요?`,
+        content: `${userName}님, 정말 마지막이었어요. 여기까지 긴 여정 함께해주셔서 감사해요.\n어떠셨어요? 연애 사주를 보니 조금 나에 대해 더 아셨나요?`,
         bgImage: "/saju-love/img/nangja-1.jpg",
       });
 
@@ -565,7 +607,7 @@ function SajuLoveResultContent() {
       result.push({
         id: "ending-outro",
         type: "dialogue",
-        content: `앞으로의 인연 길에\n늘 좋은 일만 가득하시길 바랄게요.\n\n그럼, 마지막 인사를 담아드릴게요.`,
+        content: `앞으로의 인연 길에\n늘 좋은 일만 가득하시길 바랄게요.\n\n그럼, 마지막으로 정리된 보고서를 전달 드릴게요.`,
         bgImage: "/saju-love/img/nangja-1.jpg",
       });
 
@@ -984,6 +1026,12 @@ function SajuLoveResultContent() {
         if (isFetchingRef.current) return;
         isFetchingRef.current = true;
         startLoadingMessages(userName);
+
+        // 분석 시작 상태 저장 (중복 호출 방지)
+        await updateSajuLoveRecord(storedData.id, {
+          isAnalyzing: true,
+          analysisStartedAt: new Date().toISOString(),
+        });
       }
 
       try {
@@ -1025,8 +1073,12 @@ function SajuLoveResultContent() {
         const updatedData: SajuLoveRecord = {
           ...storedData,
           loveAnalysis: loveResult,
+          isAnalyzing: false,
         };
-        await updateSajuLoveRecord(storedData.id, { loveAnalysis: loveResult });
+        await updateSajuLoveRecord(storedData.id, {
+          loveAnalysis: loveResult,
+          isAnalyzing: false,
+        });
 
         stopLoadingMessages();
         setIsAnalyzing(false);
@@ -1034,30 +1086,34 @@ function SajuLoveResultContent() {
 
         // 메시지 리스트 생성
         const messageList = buildMessageList(updatedData);
-        setMessages(messageList);
-        setIsLoading(false);
 
         // 이미 partial로 시작했다면 → 1장으로 이동하며 "기다리셨죠" 메시지
         if (partialStartedRef.current) {
-          setTimeout(() => {
-            const chapter1IntroIndex = messageList.findIndex(
-              (m) => m.id === "chapter-chapter1-intro"
-            );
-            if (chapter1IntroIndex >= 0) {
-              setCurrentIndex(chapter1IntroIndex);
-              const nextMsg = messageList[chapter1IntroIndex];
-              setCurrentBgImage(
-                nextMsg.bgImage || "/saju-love/img/nangja-1.jpg"
-              );
-              setShowReport(false);
+          const chapter1IntroIndex = messageList.findIndex(
+            (m) => m.id === "chapter-chapter1-intro"
+          );
+          if (chapter1IntroIndex >= 0) {
+            const nextMsg = messageList[chapter1IntroIndex];
+            // 상태를 먼저 모두 설정한 후 메시지 표시
+            setCurrentIndex(chapter1IntroIndex);
+            setCurrentBgImage(nextMsg.bgImage || "/saju-love/img/nangja-1.jpg");
+            setShowReport(false);
+            setMessages(messageList);
+            setIsLoading(false);
+            setTimeout(() => {
               typeText(
                 `오래 기다리셨죠? 분석이 완료됐어요!\n\n${nextMsg.content}`,
                 () => setShowButtons(true)
               );
-            }
-          }, 300);
+            }, 100);
+          } else {
+            setMessages(messageList);
+            setIsLoading(false);
+          }
         } else {
           // 아직 partial 시작 전이면 → 첫 번째 메시지 자동 시작
+          setMessages(messageList);
+          setIsLoading(false);
           setTimeout(() => {
             typeText(messageList[0].content, () => setShowButtons(true));
           }, 500);
@@ -1065,6 +1121,10 @@ function SajuLoveResultContent() {
       } catch (err) {
         stopLoadingMessages();
         setIsAnalyzing(false);
+
+        // 에러 시 분석 상태 해제 (재시도 허용)
+        await updateSajuLoveRecord(storedData.id, { isAnalyzing: false });
+
         console.error("분석 API 실패:", err);
         if (err instanceof Error) {
           if (err.message === "TIMEOUT") {
@@ -1171,7 +1231,7 @@ function SajuLoveResultContent() {
         return;
       }
 
-      // 결제 완료 & 분석 필요: 감사 대사 보여주고 바로 분석 시작
+      // 결제 완료 & 분석 필요
       setData(record);
       setIsAnalyzing(true);
       const partialMessages = buildPartialMessageList(record);
@@ -1195,7 +1255,63 @@ function SajuLoveResultContent() {
         typeText(partialMessages[startIdx].content, () => setShowButtons(true));
       }, 500);
 
-      // 백그라운드에서 분석 시작
+      // 이미 분석 중인지 확인 (5분 이내)
+      const ANALYSIS_TIMEOUT = 5 * 60 * 1000; // 5분
+      const isStillAnalyzing =
+        record.isAnalyzing &&
+        record.analysisStartedAt &&
+        Date.now() - new Date(record.analysisStartedAt).getTime() < ANALYSIS_TIMEOUT;
+
+      if (isStillAnalyzing) {
+        // 이미 분석 중이면 API 호출 안하고 주기적으로 DB 체크
+        // 단, 30초 후에도 응답 없으면 다시 API 호출 (새로고침으로 이전 호출이 취소됐을 수 있음)
+        partialStartedRef.current = true;
+        let checkCount = 0;
+        const MAX_CHECKS = 10; // 3초 * 10 = 30초
+
+        const checkInterval = setInterval(async () => {
+          checkCount++;
+          const updated = await getSajuLoveRecord(record.id);
+
+          if (updated?.loveAnalysis) {
+            clearInterval(checkInterval);
+            setData(updated);
+            setIsAnalyzing(false);
+            const messageList = buildMessageList(updated);
+
+            // 1장으로 이동 - 상태를 먼저 모두 설정
+            const chapter1IntroIndex = messageList.findIndex(
+              (m) => m.id === "chapter-chapter1-intro"
+            );
+            if (chapter1IntroIndex >= 0) {
+              const nextMsg = messageList[chapter1IntroIndex];
+              setCurrentIndex(chapter1IntroIndex);
+              setCurrentBgImage(nextMsg.bgImage || "/saju-love/img/nangja-1.jpg");
+              setShowReport(false);
+              setMessages(messageList);
+              setTimeout(() => {
+                typeText(
+                  `오래 기다리셨죠? 분석이 완료됐어요!\n\n${nextMsg.content}`,
+                  () => setShowButtons(true)
+                );
+              }, 100);
+            } else {
+              setMessages(messageList);
+            }
+            return;
+          }
+
+          // 30초 후에도 응답 없으면 다시 API 호출
+          if (checkCount >= MAX_CHECKS) {
+            clearInterval(checkInterval);
+            console.log("분석 응답 없음, API 재호출");
+            fetchLoveAnalysis(record);
+          }
+        }, 3000); // 3초마다 체크
+        return;
+      }
+
+      // 분석 시작
       partialStartedRef.current = true;
       fetchLoveAnalysis(record);
     };
@@ -1229,17 +1345,9 @@ function SajuLoveResultContent() {
     );
   }
 
-  // 재시도 핸들러
+  // 재시도 핸들러 - 페이지 새로고침
   const handleRetry = () => {
-    if (data) {
-      setError(null);
-      setIsLoading(true);
-      setIsAnalyzing(true);
-      fetchLoveAnalysis(data);
-    } else {
-      // data가 없으면 페이지 새로고침
-      window.location.reload();
-    }
+    window.location.reload();
   };
 
   // 에러 화면
@@ -1401,6 +1509,8 @@ function SajuLoveResultContent() {
               <IdealTypeCard
                 imageBase64={currentMsg.imageBase64}
                 userName={userName}
+                variant={currentMsg.imageVariant || "ideal"}
+                title={currentMsg.content}
               />
             )}
             {currentMsg.type === "waiting" && (
@@ -1592,7 +1702,10 @@ function SajuLoveResultContent() {
               </div>
 
               <div style={{ padding: "0 20px" }}>
-                <div id="saju-payment-method" style={{ padding: 0, margin: 0 }} />
+                <div
+                  id="saju-payment-method"
+                  style={{ padding: 0, margin: 0 }}
+                />
                 <div id="saju-agreement" />
               </div>
               <button
@@ -1656,15 +1769,21 @@ function ReportCard({
 function IdealTypeCard({
   imageBase64,
   userName,
+  variant = "ideal",
+  title,
 }: {
   imageBase64: string;
   userName: string;
+  variant?: "ideal" | "avoid";
+  title?: string;
 }) {
   const [clickCount, setClickCount] = useState(0);
   const [isShaking, setIsShaking] = useState(false);
   const maxClicks = 5;
   const blurLevel = Math.max(0, 30 - clickCount * 6);
   const isRevealed = clickCount >= maxClicks;
+
+  const isAvoid = variant === "avoid";
 
   // 클릭 횟수에 따른 힌트 문구
   const hintMessages = [
@@ -1683,10 +1802,39 @@ function IdealTypeCard({
     }
   };
 
+  const cardTitle =
+    title ||
+    (isAvoid ? `${userName}님의 가짜 인연` : `${userName}님의 운명의 상대`);
+
+  // 피해야 할 인연은 바로 보여주기
+  if (isAvoid) {
+    return (
+      <div className="report_card ideal_type_card avoid_variant">
+        <div className="card_header">
+          <h3 className="card_title">{cardTitle}</h3>
+        </div>
+        <div className="ideal_image_wrap revealed">
+          <img
+            src={`data:image/png;base64,${imageBase64}`}
+            alt="가짜 인연 이미지"
+            className="ideal_image"
+          />
+        </div>
+        <div className="ideal_revealed_message">
+          <p>
+            아무리 매력적으로 느껴져도,
+            <br />
+            이런 느낌의 사람은 조심하세요!
+          </p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="report_card ideal_type_card">
       <div className="card_header">
-        <h3 className="card_title">{userName}님의 운명의 상대</h3>
+        <h3 className="card_title">{cardTitle}</h3>
       </div>
       <div
         className={`ideal_image_wrap ${isRevealed ? "revealed" : "blurred"} ${
@@ -3754,6 +3902,14 @@ function SajuCard({ data }: { data: SajuLoveRecord }) {
             </ul>
           </div>
 
+          {/* 보너스: 피해야 할 인연 */}
+          <div className="toc_chapter bonus">
+            <div className="toc_chapter_header">
+              <span className="toc_chapter_num bonus">보너스</span>
+              <h3 className="toc_chapter_title">피해야 할 인연 이미지</h3>
+            </div>
+          </div>
+
           {/* 5장 */}
           <div className="toc_chapter">
             <div className="toc_chapter_header">
@@ -4435,6 +4591,7 @@ function TocModal({
       label: "4장: 운명이라 착각하는 가짜 인연",
       targetId: "chapter-chapter4-report",
     },
+    { label: "보너스: 피해야 할 인연 이미지", targetId: "avoid-type-image" },
     {
       label: "5장: 누구에게도 말 못할, 19금 사주 풀이",
       targetId: "chapter-chapter5-report",
@@ -4495,6 +4652,7 @@ function EndingCard({ data }: { data: SajuLoveRecord | null }) {
   const chapters = data?.loveAnalysis?.chapters || [];
   const idealPartnerImage =
     data?.loveAnalysis?.ideal_partner_image?.image_base64;
+  const avoidTypeImage = data?.loveAnalysis?.avoid_type_image?.image_base64;
 
   return (
     <div className="report_card ending_card">
@@ -4542,6 +4700,7 @@ function EndingCard({ data }: { data: SajuLoveRecord | null }) {
               ? parseInt(chapterMatch[1])
               : index + 1;
             const isChapter3 = chapterNum === 3;
+            const isChapter4 = chapterNum === 4;
 
             // 타이틀 정리
             const titleText = chapter.title
@@ -4575,6 +4734,21 @@ function EndingCard({ data }: { data: SajuLoveRecord | null }) {
                       <img
                         src={`data:image/png;base64,${idealPartnerImage}`}
                         alt="운명의 상대 이미지"
+                        className="ideal_image_full"
+                      />
+                    </div>
+                  </div>
+                )}
+                {/* 4장 뒤에 피해야 할 인연 이미지 표시 */}
+                {isChapter4 && avoidTypeImage && (
+                  <div className="report_card summary_ideal_card summary_avoid_card">
+                    <div className="card_header">
+                      <h3 className="card_title">{userName}님의 가짜 인연</h3>
+                    </div>
+                    <div className="summary_ideal_image">
+                      <img
+                        src={`data:image/png;base64,${avoidTypeImage}`}
+                        alt="가짜 인연 이미지"
                         className="ideal_image_full"
                       />
                     </div>

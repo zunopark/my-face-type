@@ -200,6 +200,9 @@ export interface SajuLoveRecord {
   paid: boolean;
   // 인트로 로딩 본 여부
   seenIntro?: boolean;
+  // 분석 중 상태 (중복 API 호출 방지)
+  isAnalyzing?: boolean;
+  analysisStartedAt?: string;
   // 결제 정보
   paymentInfo?: {
     method: "toss" | "coupon";
@@ -299,6 +302,7 @@ export interface SajuLoveRecord {
     user_name: string;
     chapters: { number: number; title: string; content: string }[];
     ideal_partner_image?: { image_base64: string; prompt?: string };
+    avoid_type_image?: { image_base64: string; prompt?: string };
   } | null;
 }
 

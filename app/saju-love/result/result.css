@@ -1520,6 +1520,34 @@
   font-family: "KimjungchulMyungjo", serif;
 }
 
+/* 피해야 할 인연 카드 */
+.saju_result_page .ideal_type_card.avoid_variant {
+  background: linear-gradient(180deg, #f5f0f8 0%, #ebe4f0 100%);
+}
+
+.saju_result_page .ideal_type_card.avoid_variant .card_header {
+  background: rgba(120, 90, 140, 0.15);
+  border-bottom: 1px solid rgba(120, 90, 140, 0.2);
+}
+
+.saju_result_page .ideal_type_card.avoid_variant .card_title {
+  color: #6a5078;
+}
+
+.saju_result_page .ideal_type_card.avoid_variant .ideal_image_wrap {
+  box-shadow: 0 8px 32px rgba(100, 70, 120, 0.2);
+  border: 2px solid rgba(120, 90, 140, 0.25);
+}
+
+.saju_result_page .ideal_type_card.avoid_variant .ideal_revealed_message {
+  background: rgba(120, 90, 140, 0.1);
+  border: 1px solid rgba(120, 90, 140, 0.2);
+}
+
+.saju_result_page .ideal_type_card.avoid_variant .ideal_revealed_message p {
+  color: #6a5078;
+}
+
 /* ========================================
    마무리 카드 - 전체 리포트 요약
    ======================================== */
@@ -1694,6 +1722,20 @@
   object-fit: cover;
   border-radius: 12px;
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+}
+
+/* 피해야 할 인연 카드 */
+.saju_result_page .ending_summary .summary_avoid_card {
+  background: linear-gradient(180deg, #f8f5fa 0%, #f0eaf5 100%);
+  border: 1px solid rgba(120, 90, 140, 0.2);
+}
+
+.saju_result_page .ending_summary .summary_avoid_card .card_header {
+  border-bottom: 1px solid rgba(120, 90, 140, 0.15);
+}
+
+.saju_result_page .ending_summary .summary_avoid_card .card_title {
+  color: #6a5078;
 }
 
 /* 들어가며 요약 */
@@ -1993,8 +2035,13 @@
 /* 리스트 스타일 - 심플 */
 .saju_result_page .report_card .section_content ul {
   list-style: none;
-  margin: 12px 0;
+  margin: 8px 0;
   padding: 0;
+}
+
+/* ul 바로 뒤에 오는 br 숨기기 */
+.saju_result_page .report_card .section_content ul + br {
+  display: none;
 }
 
 .saju_result_page .report_card .section_content ul li {
