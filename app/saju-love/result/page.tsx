@@ -241,7 +241,7 @@ const getChapterConfig = (
     outro: "근데 피해야 할 사람,\n어떻게 생겼는지 궁금하지 않으세요?",
     introBg: "/saju-love/img/nangja-18.jpg",
     reportBg: "/saju-love/img/nangja-19.jpg",
-    outroBg: "/saju-love/img/nangja-20.jpg",
+    outroBg: "/saju-love/img/nangja-19.jpg",
   },
   chapter5: {
     // 5장: 누구에게도 말 못할, 19금 사주 풀이
@@ -839,11 +839,11 @@ function SajuLoveResultContent() {
           return;
         }
 
-        // 리포트 먼저 닫고, 약간의 딜레이 후 메시지 이동
+        // 리포트 먼저 닫고, 애니메이션 완료 후 메시지 이동 (0.5s transition)
         setShowReport(false);
         setTimeout(() => {
           goToNextMessage(nextIndex);
-        }, 50);
+        }, 500);
       }
       return;
     }
