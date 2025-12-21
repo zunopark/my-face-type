@@ -6834,9 +6834,9 @@
 }
 
 .saju_result_page .price_final_img {
-  width: calc(100% + 50px);
+  width: calc(100% + 48px);
   max-width: none;
-  margin-left: -25px;
+  margin-left: -24px;
   display: block;
   margin-top: 40px;
 }

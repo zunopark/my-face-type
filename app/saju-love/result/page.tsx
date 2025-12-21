@@ -1841,6 +1841,11 @@ function SajuCard({ data }: { data: SajuLoveRecord }) {
   const loveFacts = data.sajuData?.loveFacts;
   const input = data.input;
 
+  // 대운/연운/월운 스크롤 ref
+  const daeunScrollRef = useRef<HTMLDivElement>(null);
+  const yeonunScrollRef = useRef<HTMLDivElement>(null);
+  const wolunScrollRef = useRef<HTMLDivElement>(null);
+
   // 태어난 시간을 시진으로 변환 (시간 범위 포함)
   const formatTimeToSi = (time: string | null | undefined): string | null => {
     if (!time) return null;
@@ -1907,6 +1912,65 @@ function SajuCard({ data }: { data: SajuLoveRecord }) {
   // 오행 퍼센트
   const elementPercent =
     loveFacts?.fiveElementsHanjaPercent || fiveElements?.percent || {};
+
+  // 대운/연운/월운 스크롤 위치 설정 (현재 항목이 보이도록)
+  useEffect(() => {
+    const daeunData = (sajuData as Record<string, unknown>)?.daeun as Record<string, unknown>;
+    const luckCyclesData = (sajuData as Record<string, unknown>)?.luckCycles as Record<string, unknown>;
+    const daeunFromLuckCycles = luckCyclesData?.daeun as Record<string, unknown>;
+    const direction = daeunData?.direction || daeunFromLuckCycles?.direction || "";
+    const isReverse = direction === "역행";
+
+    const birthYear = data?.input?.date ? parseInt(data.input.date.split("-")[0]) : 0;
+    const currentYear = new Date().getFullYear();
+    const currentMonth = new Date().getMonth() + 1;
+    const currentAge = birthYear ? currentYear - birthYear + 1 : 0;
+
+    const daeunList = (daeunData?.list || daeunFromLuckCycles?.list || []) as Array<{
+      startAge: number;
+      endAge: number;
+      ganZhi?: string;
+    }>;
+    const filteredDaeunList = daeunList.filter(d => d.ganZhi);
+    const displayList = isReverse ? [...filteredDaeunList].reverse() : filteredDaeunList;
+
+    // 대운: 현재 대운이 보이도록
+    if (daeunScrollRef.current) {
+      const currentIdx = displayList.findIndex(d => currentAge >= d.startAge && currentAge <= d.endAge);
+      if (currentIdx !== -1) {
+        const cardWidth = 68;
+        const containerWidth = daeunScrollRef.current.clientWidth;
+        const scrollPosition = Math.max(0, (currentIdx * cardWidth) - (containerWidth / 2) + (cardWidth / 2));
+        daeunScrollRef.current.scrollLeft = scrollPosition;
+      }
+    }
+
+    // 연운: 현재 년도가 보이도록
+    if (yeonunScrollRef.current) {
+      const yeonunList = (luckCyclesData?.yeonun as Array<Record<string, unknown>>) || [];
+      const reversedYeonun = [...yeonunList].reverse();
+      const currentIdx = reversedYeonun.findIndex(yn => (yn.year as number) === currentYear);
+      if (currentIdx !== -1) {
+        const cardWidth = 68;
+        const containerWidth = yeonunScrollRef.current.clientWidth;
+        const scrollPosition = Math.max(0, (currentIdx * cardWidth) - (containerWidth / 2) + (cardWidth / 2));
+        yeonunScrollRef.current.scrollLeft = scrollPosition;
+      }
+    }
+
+    // 월운: 현재 월이 보이도록
+    if (wolunScrollRef.current) {
+      const wolunList = (luckCyclesData?.wolun as Array<Record<string, unknown>>) || [];
+      const reversedWolun = [...wolunList].reverse();
+      const currentIdx = reversedWolun.findIndex(wn => (wn.month as number) === currentMonth);
+      if (currentIdx !== -1) {
+        const cardWidth = 50; // 월운 카드는 더 작음
+        const containerWidth = wolunScrollRef.current.clientWidth;
+        const scrollPosition = Math.max(0, (currentIdx * cardWidth) - (containerWidth / 2) + (cardWidth / 2));
+        wolunScrollRef.current.scrollLeft = scrollPosition;
+      }
+    }
+  }, [data, sajuData]);
 
   return (
     <div className="report_card intro_card saju_card_simple">
@@ -3088,7 +3152,7 @@ function SajuCard({ data }: { data: SajuLoveRecord }) {
                 {/* 대운 */}
                 <div className="luck_section">
                   <h5 className="luck_section_title">대운</h5>
-                  <div className="luck_scroll_wrap">
+                  <div className="luck_scroll_wrap" ref={daeunScrollRef}>
                     <div className={`luck_scroll ${isReverse ? "reverse" : ""}`}>
                       {(isReverse ? [...daeunList].reverse() : daeunList).filter(dy => dy.ganZhi).map((dy, idx) => {
                         const ganZhi = dy.ganZhi || "";
@@ -3130,7 +3194,7 @@ function SajuCard({ data }: { data: SajuLoveRecord }) {
                 {luckCyclesData?.yeonun && (
                   <div className="luck_section">
                     <h5 className="luck_section_title">연운</h5>
-                    <div className="luck_scroll_wrap">
+                    <div className="luck_scroll_wrap" ref={yeonunScrollRef}>
                       <div className="luck_scroll reverse">
                         {[...(luckCyclesData.yeonun as Array<Record<string, unknown>>)].reverse().map((yn, idx) => {
                           const ganZhi = (yn.ganZhi as string) || "";
@@ -3170,7 +3234,7 @@ function SajuCard({ data }: { data: SajuLoveRecord }) {
                 {luckCyclesData?.wolun && (
                   <div className="luck_section">
                     <h5 className="luck_section_title">월운</h5>
-                    <div className="luck_scroll_wrap">
+                    <div className="luck_scroll_wrap" ref={wolunScrollRef}>
                       <div className="luck_scroll reverse">
                         {[...(luckCyclesData.wolun as Array<Record<string, unknown>>)].reverse().map((wn, idx) => {
                           const currentMonth = new Date().getMonth() + 1;
