@@ -839,11 +839,11 @@ function SajuLoveResultContent() {
           return;
         }
 
-        // 리포트 먼저 닫고, 애니메이션 완료 후 메시지 이동 (0.5s transition)
+        // 리포트 먼저 닫고, 애니메이션 완료 후 메시지 이동 (0.25s transition)
         setShowReport(false);
         setTimeout(() => {
           goToNextMessage(nextIndex);
-        }, 500);
+        }, 250);
       }
       return;
     }
@@ -1445,9 +1445,9 @@ function SajuLoveResultContent() {
       )}
 
       {/* 리포트 카드 (오버레이) */}
-      {showReport && currentMsg && (
+      {currentMsg && (
         <div
-          className={`report_overlay active ${isAnimating ? "animating" : ""}`}
+          className={`report_overlay ${showReport ? "active" : ""} ${isAnimating ? "animating" : ""}`}
         >
           <div className="report_scroll" ref={reportRef}>
             {currentMsg.type === "intro" && <IntroCard userName={userName} />}
