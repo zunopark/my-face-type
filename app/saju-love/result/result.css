@@ -1522,30 +1522,34 @@
 
 /* 피해야 할 인연 카드 */
 .saju_result_page .ideal_type_card.avoid_variant {
-  background: linear-gradient(180deg, #f5f0f8 0%, #ebe4f0 100%);
+  background: linear-gradient(180deg, #2a1a1a 0%, #4a1a1a 50%, #2a1a1a 100%);
 }
 
 .saju_result_page .ideal_type_card.avoid_variant .card_header {
-  background: rgba(120, 90, 140, 0.15);
-  border-bottom: 1px solid rgba(120, 90, 140, 0.2);
+  background: transparent;
+  border-bottom: none;
 }
 
 .saju_result_page .ideal_type_card.avoid_variant .card_title {
-  color: #6a5078;
+  color: #fff;
+}
+
+.saju_result_page .ideal_type_card.avoid_variant .card_subtitle {
+  color: rgba(255, 255, 255, 0.7);
 }
 
 .saju_result_page .ideal_type_card.avoid_variant .ideal_image_wrap {
-  box-shadow: 0 8px 32px rgba(100, 70, 120, 0.2);
-  border: 2px solid rgba(120, 90, 140, 0.25);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+  border: 3px solid rgba(255, 255, 255, 0.1);
 }
 
 .saju_result_page .ideal_type_card.avoid_variant .ideal_revealed_message {
-  background: rgba(120, 90, 140, 0.1);
-  border: 1px solid rgba(120, 90, 140, 0.2);
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .saju_result_page .ideal_type_card.avoid_variant .ideal_revealed_message p {
-  color: #6a5078;
+  color: rgba(255, 255, 255, 0.8);
 }
 
 /* ========================================
