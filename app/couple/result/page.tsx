@@ -621,7 +621,7 @@ function CoupleResultContent() {
               </div>
               <div className="payment-coupon-price-wrap">
                 <div className="payment-coupon-title">
-                  궁합 관상 보고서 런칭 특별가<br />(~07.27 단 7일간)
+                  궁합 관상 보고서 2025년 연말 특별가<br />(~12.31)
                 </div>
                 <div className="payment-coupon-price">-11,240원</div>
               </div>
