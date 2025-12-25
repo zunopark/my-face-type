@@ -658,7 +658,7 @@ function CoupleResultContent() {
           <div className="payment-fullscreen">
             <div className="modal-content">
               <div className="payment-header">
-                <div className="payment-title">🎁 깜짝 선물! 2,000원 추가 할인</div>
+                <div className="payment-title">🎁 깜짝 선물! 1,000원 추가 할인</div>
                 <div className="payment-close" onClick={closeDiscountModal}>
                   ✕
                 </div>
