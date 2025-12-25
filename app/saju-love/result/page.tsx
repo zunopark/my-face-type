@@ -415,7 +415,7 @@ function SajuLoveResultContent() {
       });
 
       // 6. 미결제: 결제 유도 (다음 버튼 → 결제 모달)
-      // 결제 완료: 감사 대사 → 대기 카드 (다음 버튼 → 로딩)
+      // 결제 완료: 대기 카드 (보고서 작성중 - 분석 완료되면 자동 전환)
       if (!isPaid) {
         result.push({
           id: "payment",
@@ -424,14 +424,7 @@ function SajuLoveResultContent() {
           bgImage: "/saju-love/img/nangja-1.jpg",
         });
       } else {
-        // 감사 대사
-        result.push({
-          id: "thank-you-dialogue",
-          type: "dialogue",
-          content: `${userName}님, 복채를 내주셔서 감사해요!\n지금부터 ${userName}님만을 위한 연애 사주 보고서를 정성껏 준비할게요.`,
-          bgImage: "/saju-love/img/nangja-1.jpg",
-        });
-        // 대기 카드 (다음 버튼 누르면 로딩 시작)
+        // 대기 카드 (보고서 작성중)
         result.push({
           id: "waiting",
           type: "waiting",
@@ -1212,24 +1205,44 @@ function SajuLoveResultContent() {
         return;
       }
 
-      // 결제 완료 & 분석 필요
+      // detail 페이지에서 결제 후 진입 (paid=true 쿼리 파라미터)
+      // 10초 가라 로딩 → 들어가며 + 사주원국 → 분석 미완료시 대기 카드
+      const paidFromDetail = searchParams.get("paid") === "true";
+      const userName = record.input?.userName || "고객";
+
+      if (paidFromDetail && !record.seenIntro) {
+        setData(record);
+        setIsAnalyzing(true);
+
+        // 백그라운드에서 분석 시작
+        partialStartedRef.current = true;
+        fetchLoveAnalysis(record);
+
+        // 10초 가라 로딩 후 partial 메시지 시작
+        startLoadingMessages(userName);
+        setTimeout(async () => {
+          stopLoadingMessages();
+          // seenIntro 플래그 저장
+          await updateSajuLoveRecord(record.id, { seenIntro: true });
+          const partialMessages = buildPartialMessageList(record);
+          setMessages(partialMessages);
+          setIsLoading(false);
+          setTimeout(() => {
+            typeText(partialMessages[0].content, () => setShowButtons(true));
+          }, 500);
+        }, 10000); // 10초
+
+        return;
+      }
+
+      // 결제 완료 & 분석 필요 (이미 인트로를 본 경우)
       setData(record);
       setIsAnalyzing(true);
       const partialMessages = buildPartialMessageList(record);
       setMessages(partialMessages);
-
-      // 감사 대사(thank-you-dialogue) 인덱스 찾기
-      const thankYouIndex = partialMessages.findIndex(
-        (m) => m.id === "thank-you-dialogue"
-      );
-      if (thankYouIndex >= 0) {
-        setCurrentIndex(thankYouIndex);
-      }
-
       setIsLoading(false);
       setTimeout(() => {
-        const startIdx = thankYouIndex >= 0 ? thankYouIndex : 0;
-        typeText(partialMessages[startIdx].content, () => setShowButtons(true));
+        typeText(partialMessages[0].content, () => setShowButtons(true));
       }, 500);
 
       // 이미 분석 중인지 확인 (5분 이내)

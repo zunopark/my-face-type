@@ -1,11 +1,51 @@
 "use client";
 
-import { useEffect, useState, Suspense } from "react";
+import { useEffect, useState, useCallback, useRef, Suspense } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import Link from "next/link";
-import { trackPageView } from "@/lib/mixpanel";
-import { getSajuLoveRecord, SajuLoveRecord } from "@/lib/db/sajuLoveDB";
+import {
+  trackPageView,
+  trackPaymentModalOpen,
+  trackPaymentModalClose,
+  trackPaymentAttempt,
+  trackPaymentSuccess,
+} from "@/lib/mixpanel";
+import { getSajuLoveRecord, SajuLoveRecord, markSajuLovePaid } from "@/lib/db/sajuLoveDB";
 import "./detail.css";
+
+// TossPayments 타입 선언
+declare global {
+  interface Window {
+    PaymentWidget: (
+      clientKey: string,
+      customerKey: string
+    ) => {
+      renderPaymentMethods: (
+        selector: string,
+        options: { value: number }
+      ) => unknown;
+      renderAgreement: (selector: string) => void;
+      requestPayment: (options: {
+        orderId: string;
+        orderName: string;
+        customerName: string;
+        successUrl: string;
+        failUrl: string;
+      }) => Promise<void>;
+    };
+  }
+}
+
+// 결제 설정
+const PAYMENT_CONFIG = {
+  clientKey:
+    process.env.NEXT_PUBLIC_TOSS_CLIENT_KEY ||
+    "live_gck_yZqmkKeP8gBaRKPg1WwdrbQRxB9l",
+  price: 14900,
+  discountPrice: 9900,
+  originalPrice: 32900,
+  orderName: "AI 연애 사주 심층 분석",
+};
 
 // 일간별 성향 데이터
 const dayMasterData: Record<
@@ -158,6 +198,16 @@ function SajuDetailContent() {
   const [data, setData] = useState<SajuLoveRecord | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
+  // 결제 관련 상태
+  const [showPaymentModal, setShowPaymentModal] = useState(false);
+  const [couponCode, setCouponCode] = useState("");
+  const [couponError, setCouponError] = useState("");
+  const [appliedCoupon, setAppliedCoupon] = useState<{
+    code: string;
+    discount: number;
+  } | null>(null);
+  const paymentWidgetRef = useRef<ReturnType<typeof window.PaymentWidget> | null>(null);
+
   // 데이터 로드 (IndexedDB에서)
   useEffect(() => {
     if (!resultId) {
@@ -210,11 +260,143 @@ function SajuDetailContent() {
     return timeMap[timeStr] || "";
   };
 
-  // 결과 페이지로 바로 이동 (결제 없이)
-  const goToResult = () => {
+  // 결제 모달 열기
+  const openPaymentModal = useCallback(() => {
     if (!data) return;
-    router.push(`/saju-love/result?id=${encodeURIComponent(data.id)}`);
-  };
+
+    trackPaymentModalOpen("saju_love", {
+      id: data.id,
+      price: PAYMENT_CONFIG.price,
+      user_name: data.input.userName,
+      gender: data.input.gender,
+      birth_date: data.input.date,
+      day_master: data.sajuData.dayMaster?.char,
+      user_concern: data.input.userConcern,
+    });
+
+    setShowPaymentModal(true);
+
+    setTimeout(() => {
+      if (typeof window !== "undefined" && window.PaymentWidget) {
+        const customerKey = `customer_${Date.now()}`;
+        const widget = window.PaymentWidget(
+          PAYMENT_CONFIG.clientKey,
+          customerKey
+        );
+        paymentWidgetRef.current = widget;
+
+        widget.renderPaymentMethods("#saju-payment-method", {
+          value: PAYMENT_CONFIG.price,
+        });
+        widget.renderAgreement("#saju-agreement");
+      }
+    }, 100);
+  }, [data]);
+
+  // 쿠폰 적용
+  const handleCouponSubmit = useCallback(async () => {
+    if (!data || !couponCode.trim()) return;
+
+    // 무료 쿠폰 (전액 할인)
+    if (couponCode === "1234" || couponCode === "chaerin") {
+      setCouponError("");
+
+      // 쿠폰 결제 성공 추적
+      trackPaymentSuccess("saju_love", {
+        id: data.id,
+        price: 0,
+        payment_method: "coupon",
+        coupon_code: couponCode,
+        user_name: data.input.userName,
+        gender: data.input.gender,
+        birth_date: data.input.date,
+        day_master: data.sajuData.dayMaster?.char,
+        user_concern: data.input.userConcern,
+      });
+
+      // 결제 완료 처리
+      await markSajuLovePaid(data.id, {
+        method: "coupon",
+        price: 0,
+        couponCode: couponCode,
+      });
+
+      // 결제 완료 후 result 페이지로 이동 (paid=true 상태로)
+      router.push(`/saju-love/result?id=${encodeURIComponent(data.id)}&paid=true`);
+    }
+    // 할인 쿠폰 (5000원 할인)
+    else if (couponCode === "boniiii" || couponCode === "차세린") {
+      setCouponError("");
+      setAppliedCoupon({ code: couponCode, discount: 5000 });
+
+      // 결제 위젯 금액 업데이트
+      if (paymentWidgetRef.current) {
+        const newPrice = PAYMENT_CONFIG.price - 5000;
+        paymentWidgetRef.current.renderPaymentMethods("#saju-payment-method", {
+          value: newPrice,
+        });
+      }
+    } else {
+      setCouponError("유효하지 않은 쿠폰입니다");
+    }
+  }, [data, couponCode, router]);
+
+  // 결제 요청
+  const handlePaymentRequest = useCallback(async () => {
+    if (!paymentWidgetRef.current || !data) return;
+
+    const finalPrice = appliedCoupon
+      ? PAYMENT_CONFIG.price - appliedCoupon.discount
+      : PAYMENT_CONFIG.price;
+
+    trackPaymentAttempt("saju_love", {
+      id: data.id,
+      price: finalPrice,
+      is_discount: !!appliedCoupon,
+      coupon_code: appliedCoupon?.code,
+      user_name: data.input.userName,
+      gender: data.input.gender,
+      birth_date: data.input.date,
+      day_master: data.sajuData.dayMaster?.char,
+      user_concern: data.input.userConcern,
+    });
+
+    try {
+      await paymentWidgetRef.current.requestPayment({
+        orderId: `saju-love${
+          appliedCoupon ? `-${appliedCoupon.code}` : ""
+        }_${Date.now()}`,
+        orderName: appliedCoupon
+          ? `${PAYMENT_CONFIG.orderName} - ${appliedCoupon.code} 할인`
+          : PAYMENT_CONFIG.orderName,
+        customerName: data.input.userName || "고객",
+        successUrl: `${
+          window.location.origin
+        }/payment/success?type=saju&id=${encodeURIComponent(data.id)}`,
+        failUrl: `${
+          window.location.origin
+        }/payment/fail?id=${encodeURIComponent(data.id)}&type=saju`,
+      });
+    } catch (err) {
+      console.error("결제 오류:", err);
+    }
+  }, [data, appliedCoupon]);
+
+  // 결제 모달 닫기
+  const closePaymentModal = useCallback(() => {
+    setShowPaymentModal(false);
+    paymentWidgetRef.current = null;
+
+    trackPaymentModalClose("saju_love", {
+      id: data?.id,
+      reason: "user_close",
+    });
+
+    // 쿠폰 상태 리셋
+    setAppliedCoupon(null);
+    setCouponCode("");
+    setCouponError("");
+  }, [data]);
 
   const getColor = (element: string | undefined) => {
     if (!element) return "#333";
@@ -459,10 +641,132 @@ function SajuDetailContent() {
 
       {/* 하단 고정 버튼 */}
       <div className="bottom_fixed_btn">
-        <button className="analyze_btn" onClick={goToResult}>
+        <button className="analyze_btn" onClick={openPaymentModal}>
           내 연애 사주 분석 받기
         </button>
       </div>
+
+      {/* 결제 모달 */}
+      {showPaymentModal && (
+        <div className="payment-overlay" style={{ display: "flex" }}>
+          <div className="payment-fullscreen">
+            <div className="modal-content">
+              <div className="payment-header">
+                <div className="payment-title">색동낭자 연애 사주 복채</div>
+                <div className="payment-close" onClick={closePaymentModal}>
+                  ✕
+                </div>
+              </div>
+
+              {/* 결제 금액 섹션 */}
+              <div className="payment-amount-section">
+                <h3 className="payment-amount-title">복채</h3>
+
+                {/* 정가 */}
+                <div className="payment-row">
+                  <span className="payment-row-label">
+                    색동낭자 연애 사주 15,000자 보고서
+                  </span>
+                  <span className="payment-row-value">
+                    {PAYMENT_CONFIG.originalPrice.toLocaleString()}원
+                  </span>
+                </div>
+
+                {/* 할인 */}
+                <div className="payment-row discount">
+                  <span className="payment-row-label">출시 기념 특별 할인</span>
+                  <div className="payment-row-discount-value">
+                    <span className="discount-badge">
+                      {Math.floor(
+                        (1 -
+                          PAYMENT_CONFIG.price / PAYMENT_CONFIG.originalPrice) *
+                          100
+                      )}
+                      %
+                    </span>
+                    <span className="discount-amount">
+                      -
+                      {(
+                        PAYMENT_CONFIG.originalPrice - PAYMENT_CONFIG.price
+                      ).toLocaleString()}
+                      원
+                    </span>
+                  </div>
+                </div>
+
+                {/* 쿠폰 할인 적용 표시 */}
+                {appliedCoupon && (
+                  <div className="payment-row discount">
+                    <span className="payment-row-label">
+                      {appliedCoupon.code} 쿠폰
+                    </span>
+                    <span className="discount-amount">
+                      -{appliedCoupon.discount.toLocaleString()}원
+                    </span>
+                  </div>
+                )}
+
+                {/* 구분선 */}
+                <div className="payment-divider" />
+
+                {/* 최종 금액 */}
+                <div className="payment-row final">
+                  <span className="payment-row-label">최종 결제금액</span>
+                  <span className="payment-row-final-value">
+                    {appliedCoupon
+                      ? (
+                          PAYMENT_CONFIG.price - appliedCoupon.discount
+                        ).toLocaleString()
+                      : PAYMENT_CONFIG.price.toLocaleString()}
+                    원
+                  </span>
+                </div>
+              </div>
+
+              {/* 쿠폰 입력 */}
+              <div className="coupon-section">
+                <div className="coupon-input-row">
+                  <input
+                    type="text"
+                    className="coupon-input"
+                    placeholder="쿠폰 코드 입력"
+                    value={couponCode}
+                    onChange={(e) => {
+                      setCouponCode(e.target.value);
+                      setCouponError("");
+                    }}
+                    disabled={!!appliedCoupon}
+                  />
+                  <button
+                    className="coupon-submit-btn"
+                    onClick={handleCouponSubmit}
+                    disabled={!!appliedCoupon}
+                  >
+                    {appliedCoupon ? "적용됨" : "적용"}
+                  </button>
+                </div>
+                {couponError && (
+                  <div className="coupon-error">{couponError}</div>
+                )}
+              </div>
+
+              <div style={{ padding: "0 20px" }}>
+                <div
+                  id="saju-payment-method"
+                  style={{ padding: 0, margin: 0 }}
+                />
+                <div id="saju-agreement" />
+              </div>
+              <button
+                className="payment-final-btn"
+                onClick={handlePaymentRequest}
+              >
+                복채 결제하기
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

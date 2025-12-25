@@ -1057,3 +1057,129 @@
   text-align: right;
   flex-shrink: 0;
 }
+
+/* 결제 금액 섹션 */
+.payment-amount-section {
+  padding: 24px 20px;
+  background: #fff;
+}
+
+.payment-amount-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: #333;
+  margin: 0 0 20px 0;
+  text-align: left;
+}
+
+.payment-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 0;
+}
+
+.payment-row-label {
+  font-size: 15px;
+  color: #333;
+}
+
+.payment-row-value {
+  font-size: 15px;
+  color: #333;
+}
+
+.payment-row.discount .payment-row-label {
+  color: #e74c3c;
+}
+
+.payment-row-discount-value {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.discount-badge {
+  font-size: 12px;
+  font-weight: 600;
+  color: #fff;
+  background: #e74c3c;
+  padding: 4px 8px;
+  border-radius: 4px;
+}
+
+.discount-amount {
+  font-size: 15px;
+  font-weight: 600;
+  color: #e74c3c;
+}
+
+.payment-divider {
+  height: 1px;
+  background: #eee;
+  margin: 16px 0;
+}
+
+.payment-row.final {
+  padding: 16px 0 0 0;
+}
+
+.payment-row.final .payment-row-label {
+  font-size: 16px;
+  font-weight: 700;
+  color: #333;
+}
+
+.payment-row-final-value {
+  font-size: 24px;
+  font-weight: 800;
+  color: #333;
+}
+
+/* 쿠폰 섹션 */
+.coupon-section {
+  padding: 16px 20px;
+  background: #f8f8f8;
+  border-top: 1px solid #eee;
+}
+
+.coupon-section .coupon-input-row {
+  display: flex;
+  gap: 8px;
+}
+
+.coupon-section .coupon-input {
+  flex: 1;
+  padding: 12px 16px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 14px;
+  outline: none;
+  background: #fff;
+}
+
+.coupon-section .coupon-input:focus {
+  border-color: #999;
+}
+
+.coupon-section .coupon-submit-btn {
+  padding: 12px 20px;
+  background: #333;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.coupon-section .coupon-submit-btn:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+}
+
+.coupon-section .coupon-error {
+  margin-top: 8px;
+  font-size: 12px;
+  color: #e74c3c;
+}

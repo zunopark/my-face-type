@@ -57,8 +57,8 @@ const PAYMENT_CONFIG = {
   clientKey:
     process.env.NEXT_PUBLIC_TOSS_CLIENT_KEY ||
     "live_gck_yZqmkKeP8gBaRKPg1WwdrbQRxB9l",
-  price: 2900,
-  discountPrice: 1900,
+  price: 9900,
+  discountPrice: 7900,
   originalPrice: 29900,
   orderName: "관상 상세 분석 서비스",
 };
@@ -683,9 +683,9 @@ function ResultContent() {
                 </div>
                 <div className="payment-coupon-price-wrap">
                   <div className="payment-coupon-title">
-                    2025년 크리스마스 당일 한정 특별 할인 (12.25)
+                    판매 100,000건 돌파 기념 2만원 할인
                   </div>
-                  <div className="payment-coupon-price">-27,000원</div>
+                  <div className="payment-coupon-price">-20,000원</div>
                 </div>
 
                 <div id="payment-method" />
@@ -726,7 +726,7 @@ function ResultContent() {
             <div className="payment-fullscreen">
               <div className="modal-content">
                 <div className="payment-header">
-                  <div className="payment-title">🎁 깜짝 선물! 1,000원 추가 할인</div>
+                  <div className="payment-title">🎁 깜짝 선물! 2,000원 추가 할인</div>
                   <div className="payment-close" onClick={closeDiscountModal}>
                     ✕
                   </div>
@@ -773,9 +773,9 @@ function ResultContent() {
                 </div>
                 <div className="payment-coupon-price-wrap">
                   <div className="payment-coupon-title">
-                    2025년 크리스마스 당일 특별가 + 추가 1천원 할인
+                    프리미엄 보고서 특별가 + 추가 2천원 할인
                   </div>
-                  <div className="payment-coupon-price">-28,000원</div>
+                  <div className="payment-coupon-price">-22,000원</div>
                 </div>
 
                 <div id="discount-method" />

@@ -46,8 +46,8 @@ const PAYMENT_CONFIG = {
   clientKey:
     process.env.NEXT_PUBLIC_TOSS_CLIENT_KEY ||
     "live_gck_yZqmkKeP8gBaRKPg1WwdrbQRxB9l",
-  price: 2900,
-  discountPrice: 1900,
+  price: 9900,
+  discountPrice: 7900,
   originalPrice: 21140,
   orderName: "AI 커플 궁합 관상 보고서",
 };
@@ -621,9 +621,9 @@ function CoupleResultContent() {
               </div>
               <div className="payment-coupon-price-wrap">
                 <div className="payment-coupon-title">
-                  2025년 크리스마스 당일 한정 특별 할인 (12.25)
+                  궁합 관상 보고서 2025년 연말 특별가<br />(~12.31)
                 </div>
-                <div className="payment-coupon-price">-18,240원</div>
+                <div className="payment-coupon-price">-11,240원</div>
               </div>
 
               <div id="love-method" style={{ padding: 0, margin: 0 }} />
@@ -658,7 +658,7 @@ function CoupleResultContent() {
           <div className="payment-fullscreen">
             <div className="modal-content">
               <div className="payment-header">
-                <div className="payment-title">🎁 깜짝 선물! 1,000원 추가 할인</div>
+                <div className="payment-title">🎁 깜짝 선물! 2,000원 추가 할인</div>
                 <div className="payment-close" onClick={closeDiscountModal}>
                   ✕
                 </div>
@@ -705,9 +705,9 @@ function CoupleResultContent() {
               </div>
               <div className="payment-coupon-price-wrap">
                 <div className="payment-coupon-title">
-                  궁합 관상 보고서 특별가 + 추가 1천원 할인
+                  궁합 관상 보고서 특별가 + 추가 2천원 할인
                 </div>
-                <div className="payment-coupon-price">-19,240원</div>
+                <div className="payment-coupon-price">-13,240원</div>
               </div>
 
               <div id="discount-method" />
