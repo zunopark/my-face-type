@@ -683,9 +683,9 @@ function ResultContent() {
                 </div>
                 <div className="payment-coupon-price-wrap">
                   <div className="payment-coupon-title">
-                    2025년 크리스마스 당일 특별가 (12.25)
+                    2025년 크리스마스 당일 한정 특별가 (12.25)
                   </div>
-                  <div className="payment-coupon-price">-20,000원</div>
+                  <div className="payment-coupon-price">-27,000원</div>
                 </div>
 
                 <div id="payment-method" />
