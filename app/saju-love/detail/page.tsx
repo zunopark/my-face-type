@@ -637,6 +637,57 @@ function SajuDetailContent() {
             <img src="/saju-love/img/detail2.jpg" alt="운명의 상대" />
           </div>
         </section>
+
+         {/* 고민 유도 섹션 */}
+        <div className="hesitate_section">
+          <p className="hesitate_question">아직 고민하고 계신가요?</p>
+          <p className="hesitate_hint">사실 이미 보고서는 작성하고 있어요!</p>
+        </div>
+
+        {/* 가격 비교 섹션 */}
+        <div className="price_compare_section">
+          {/* 다른 곳 가격 비교 */}
+          <p className="price_compare_title">
+            색동낭자 연애 사주 분석 보고서 복채
+          </p>
+          <div className="price_compare_cards">
+            <div className="price_card">
+              <span className="price_card_badge">오프라인 사주</span>
+              <span className="price_card_value">5만원</span>
+              <span className="price_card_sep">~</span>
+              <span className="price_card_value">30만원</span>
+            </div>
+            <div className="price_card">
+              <span className="price_card_badge">AI 온라인 사주</span>
+              <span className="price_card_value">3만원</span>
+              <span className="price_card_sep">~</span>
+              <span className="price_card_value">5만원</span>
+            </div>
+            <div className="price_card">
+              <span className="price_card_badge">신점</span>
+              <span className="price_card_value">20만원</span>
+              <span className="price_card_sep">~</span>
+              <span className="price_card_value">400만원</span>
+            </div>
+          </div>
+
+          {/* VS */}
+          <div className="price_vs">VS</div>
+
+          {/* 우리 가격 이미지 */}
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src="/saju-love/img/love-price.jpg"
+            alt="색동낭자 가격"
+            className="price_compare_img"
+          />
+        </div>
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src="/saju-love/img/love-price2.jpg"
+          alt="색동낭자 가격 상세"
+          className="price_final_img"
+        />
       </div>
 
       {/* 하단 고정 버튼 */}
