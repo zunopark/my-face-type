@@ -1233,7 +1233,7 @@
 .price_card {
   flex: 1;
   max-width: 110px;
-  padding: 16px 10px;
+  padding: 0px 0px 12px 0 ; 
   background: #fff;
   border-radius: 12px;
   border: 1px solid #f0e0dc;
@@ -1246,11 +1246,13 @@
 .price_card_badge {
   display: inline-block;
   font-size: 11px;
+  width: 100%;
   font-weight: 600;
   color: #c0392b;
   background: #fce8e6;
   padding: 4px 10px;
-  border-radius: 20px;
+  border-radius: 12px 12px 0 0;
+
   margin-bottom: 8px;
 }
 

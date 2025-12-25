@@ -641,7 +641,7 @@ function SajuDetailContent() {
          {/* 고민 유도 섹션 */}
         <div className="hesitate_section">
           <p className="hesitate_question">아직 고민하고 계신가요?</p>
-          <p className="hesitate_hint">사실 이미 보고서는 작성하고 있어요!</p>
+          <p className="hesitate_hint">사실 이미 사주 분석은 하고 있어요!</p>
         </div>
 
         {/* 가격 비교 섹션 */}
@@ -652,19 +652,19 @@ function SajuDetailContent() {
           </p>
           <div className="price_compare_cards">
             <div className="price_card">
-              <span className="price_card_badge">오프라인 사주</span>
+              <span className="price_card_badge">오프라인<br/>사주</span>
               <span className="price_card_value">5만원</span>
               <span className="price_card_sep">~</span>
               <span className="price_card_value">30만원</span>
             </div>
             <div className="price_card">
-              <span className="price_card_badge">AI 온라인 사주</span>
+              <span className="price_card_badge">온라인<br/>사주</span>
               <span className="price_card_value">3만원</span>
               <span className="price_card_sep">~</span>
               <span className="price_card_value">5만원</span>
             </div>
             <div className="price_card">
-              <span className="price_card_badge">신점</span>
+              <span className="price_card_badge">프리미엄<br/>신점</span>
               <span className="price_card_value">20만원</span>
               <span className="price_card_sep">~</span>
               <span className="price_card_value">400만원</span>
