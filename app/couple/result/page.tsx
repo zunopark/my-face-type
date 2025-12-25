@@ -621,7 +621,7 @@ function CoupleResultContent() {
               </div>
               <div className="payment-coupon-price-wrap">
                 <div className="payment-coupon-title">
-                  2025년 크리스마스 당일 한정 특별가 (12.25)
+                  2025년 크리스마스 당일 한정 특별 할인 (12.25)
                 </div>
                 <div className="payment-coupon-price">-18,240원</div>
               </div>
