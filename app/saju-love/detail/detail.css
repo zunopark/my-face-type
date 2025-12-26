@@ -1187,26 +1187,144 @@
 /* ===== 고민 유도 섹션 ===== */
 .hesitate_section {
   margin-top: 40px;
-  padding: 28px 20px;
+  padding: 40px 20px;
   text-align: center;
+  background: linear-gradient(180deg, #fff8f8 0%, #fff0f5 50%, #fff8f8 100%);
+  position: relative;
+  overflow: hidden;
+}
+
+.hesitate_section::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -50%;
+  width: 200%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.4),
+    transparent
+  );
+  animation: shimmer 3s ease-in-out infinite;
+}
+
+@keyframes shimmer {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
 }
 
 .hesitate_question {
-  font-size: 18px;
+  font-size: 20px;
   font-weight: 700;
   color: #333;
-  margin: 0 0 12px 0;
+  margin: 0 0 20px 0;
+  position: relative;
+}
+
+.hesitate_hint_box {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 20px;
+  position: relative;
+}
+
+.hesitate_sparkle {
+  font-size: 20px;
+  color: #e74c3c;
+  animation: sparkle 1.5s ease-in-out infinite;
+}
+
+.hesitate_sparkle:last-child {
+  animation-delay: 0.75s;
+}
+
+@keyframes sparkle {
+  0%, 100% {
+    opacity: 0.4;
+    transform: scale(0.8) rotate(0deg);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.2) rotate(180deg);
+  }
 }
 
 .hesitate_hint {
-  font-size: 14px;
+  font-size: 18px;
   font-weight: 500;
-  color: #b85a85;
+  color: #c0392b;
   margin: 0;
-  padding: 10px 16px;
-  background: rgba(184, 90, 133, 0.08);
-  border-radius: 20px;
+  padding: 16px 28px;
+  background: linear-gradient(135deg, #fff 0%, #fff8f5 100%);
+  border-radius: 30px;
   display: inline-block;
+  box-shadow:
+    0 4px 20px rgba(231, 76, 60, 0.15),
+    0 0 0 2px rgba(231, 76, 60, 0.1),
+    inset 0 -2px 0 rgba(231, 76, 60, 0.05);
+  position: relative;
+  animation: pulse-border 2s ease-in-out infinite;
+}
+
+.hesitate_hint strong {
+  color: #e74c3c;
+  font-weight: 700;
+}
+
+@keyframes pulse-border {
+  0%, 100% {
+    box-shadow:
+      0 4px 20px rgba(231, 76, 60, 0.15),
+      0 0 0 2px rgba(231, 76, 60, 0.1),
+      inset 0 -2px 0 rgba(231, 76, 60, 0.05);
+  }
+  50% {
+    box-shadow:
+      0 6px 30px rgba(231, 76, 60, 0.25),
+      0 0 0 4px rgba(231, 76, 60, 0.15),
+      inset 0 -2px 0 rgba(231, 76, 60, 0.05);
+  }
+}
+
+.hesitate_progress {
+  width: 200px;
+  height: 6px;
+  background: rgba(231, 76, 60, 0.15);
+  border-radius: 3px;
+  margin: 0 auto 16px;
+  overflow: hidden;
+  position: relative;
+}
+
+.hesitate_progress_bar {
+  width: 75%;
+  height: 100%;
+  background: linear-gradient(90deg, #e74c3c, #ff6b6b, #e74c3c);
+  background-size: 200% 100%;
+  border-radius: 3px;
+  animation: progress-glow 2s ease-in-out infinite;
+}
+
+@keyframes progress-glow {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.hesitate_subtext {
+  font-size: 14px;
+  color: #888;
+  margin: 0;
+  animation: fade-pulse 2s ease-in-out infinite;
+}
+
+@keyframes fade-pulse {
+  0%, 100% { opacity: 0.6; }
+  50% { opacity: 1; }
 }
 
 /* ===== 가격 비교 섹션 ===== */

@@ -10,7 +10,11 @@ import {
   trackPaymentAttempt,
   trackPaymentSuccess,
 } from "@/lib/mixpanel";
-import { getSajuLoveRecord, SajuLoveRecord, markSajuLovePaid } from "@/lib/db/sajuLoveDB";
+import {
+  getSajuLoveRecord,
+  SajuLoveRecord,
+  markSajuLovePaid,
+} from "@/lib/db/sajuLoveDB";
 import "./detail.css";
 
 // TossPayments 타입 선언
@@ -206,7 +210,9 @@ function SajuDetailContent() {
     code: string;
     discount: number;
   } | null>(null);
-  const paymentWidgetRef = useRef<ReturnType<typeof window.PaymentWidget> | null>(null);
+  const paymentWidgetRef = useRef<ReturnType<
+    typeof window.PaymentWidget
+  > | null>(null);
 
   // 데이터 로드 (IndexedDB에서)
   useEffect(() => {
@@ -322,7 +328,9 @@ function SajuDetailContent() {
       });
 
       // 결제 완료 후 result 페이지로 이동 (paid=true 상태로)
-      router.push(`/saju-love/result?id=${encodeURIComponent(data.id)}&paid=true`);
+      router.push(
+        `/saju-love/result?id=${encodeURIComponent(data.id)}&paid=true`
+      );
     }
     // 할인 쿠폰 (5000원 할인)
     else if (couponCode === "boniiii" || couponCode === "차세린") {
@@ -583,7 +591,6 @@ function SajuDetailContent() {
               </table>
             </div>
           </div>
-
         </section>
 
         {/* 섹션 2: 나의 결정적 매력 */}
@@ -636,12 +643,24 @@ function SajuDetailContent() {
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img src="/saju-love/img/detail2.jpg" alt="운명의 상대" />
           </div>
+          <div className="hero_image">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/saju-love/img/detail3.jpg" alt="연애 사주 분석" />
+          </div>
+          <div className="hero_image">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/saju-love/img/detail4.jpg" alt="사주 상세 분석" />
+          </div>
         </section>
 
-         {/* 고민 유도 섹션 */}
+        {/* 고민 유도 섹션 */}
         <div className="hesitate_section">
           <p className="hesitate_question">아직 고민하고 계신가요?</p>
-          <p className="hesitate_hint">사실 이미 사주 분석은 하고 있어요!</p>
+          <div className="hesitate_hint_box">
+            <p className="hesitate_hint">
+              <strong>색동낭자가 이미 연애 사주를 분석하고 있어요!</strong>
+            </p>
+          </div>
         </div>
 
         {/* 가격 비교 섹션 */}
@@ -652,19 +671,31 @@ function SajuDetailContent() {
           </p>
           <div className="price_compare_cards">
             <div className="price_card">
-              <span className="price_card_badge">오프라인<br/>사주</span>
+              <span className="price_card_badge">
+                오프라인
+                <br />
+                사주
+              </span>
               <span className="price_card_value">5만원</span>
               <span className="price_card_sep">~</span>
               <span className="price_card_value">30만원</span>
             </div>
             <div className="price_card">
-              <span className="price_card_badge">온라인<br/>사주</span>
+              <span className="price_card_badge">
+                온라인
+                <br />
+                사주
+              </span>
               <span className="price_card_value">3만원</span>
               <span className="price_card_sep">~</span>
               <span className="price_card_value">5만원</span>
             </div>
             <div className="price_card">
-              <span className="price_card_badge">프리미엄<br/>신점</span>
+              <span className="price_card_badge">
+                프리미엄
+                <br />
+                신점
+              </span>
               <span className="price_card_value">20만원</span>
               <span className="price_card_sep">~</span>
               <span className="price_card_value">400만원</span>
