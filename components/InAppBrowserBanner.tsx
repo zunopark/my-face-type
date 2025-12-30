@@ -48,16 +48,16 @@ function detectInAppBrowser(): InAppBrowserInfo {
 // 앱별 안내 메시지
 const getHintMessage = (type: InAppBrowserType, isIOS: boolean) => {
   if (type === "instagram") {
-    return "또는 우측 상단 ··· → 외부 브라우저로 열기";
+    return "우측 상단 ··· → 외부 브라우저로 열기";
   }
   if (type === "kakaotalk") {
     return isIOS
-      ? "또는 우측 하단 ··· → 기본 브라우저로 열기"
-      : "또는 우측 상단 ⋮ → 다른 브라우저로 열기";
+      ? "우측 하단 ··· → 기본 브라우저로 열기"
+      : "우측 상단 ⋮ → 다른 브라우저로 열기";
   }
   return isIOS
-    ? "또는 우측 하단 ··· → Safari로 열기"
-    : "또는 우측 상단 ⋮ → 외부 브라우저로 열기";
+    ? "우측 하단 ··· → Safari로 열기"
+    : "우측 상단 ⋮ → 외부 브라우저로 열기";
 };
 
 export default function InAppBrowserBanner() {
@@ -153,17 +153,13 @@ const styles: Record<string, React.CSSProperties> = {
     lineHeight: 1.4,
   },
   instructionBox: {
-    margin: "14px 0",
-    padding: "12px 16px",
-    background: "#FFF8E1",
-    borderRadius: "8px",
-    border: "1px solid #FFE082",
+    margin: "12px 0",
   },
   instruction: {
     margin: 0,
-    fontSize: "14px",
-    fontWeight: 600,
-    color: "#E65100",
+    fontSize: "15px",
+    fontWeight: 700,
+    color: "#333",
     lineHeight: 1.4,
   },
   copyBtn: {
