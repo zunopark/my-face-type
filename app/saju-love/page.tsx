@@ -371,10 +371,12 @@ export default function SajuLovePage() {
         status,
         birth_date: birthDate,
         birth_time: birthTime === "unknown" ? "모름" : birthTime,
-        user_name: name,
+        user_name: userName,
         user_concern: userConcern.trim(),
         day_master: fullSajuData.dayMaster?.char,
         day_master_title: fullSajuData.dayMaster?.title,
+        day_master_element: fullSajuData.dayMaster?.element,
+        day_master_yinyang: fullSajuData.dayMaster?.yinYang,
       });
 
       router.push(`/saju-love/detail?id=${resultId}`);
