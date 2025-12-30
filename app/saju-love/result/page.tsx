@@ -47,7 +47,7 @@ const PAYMENT_CONFIG = {
   clientKey:
     process.env.NEXT_PUBLIC_TOSS_CLIENT_KEY ||
     "live_gck_yZqmkKeP8gBaRKPg1WwdrbQRxB9l",
-  price: 14900,
+  price: 18900,
   discountPrice: 9900,
   originalPrice: 32900,
   orderName: "AI 연애 사주 심층 분석",
@@ -287,7 +287,8 @@ function SajuLoveResultContent() {
   const [bgFadeIn, setBgFadeIn] = useState(false);
 
   // 현재 메시지의 배경 이미지
-  const currentBgImage = messages[currentIndex]?.bgImage || "/saju-love/img/nangja-1.jpg";
+  const currentBgImage =
+    messages[currentIndex]?.bgImage || "/saju-love/img/nangja-1.jpg";
 
   // 결제 관련 상태
   const [showPaymentModal, setShowPaymentModal] = useState(false);
@@ -921,7 +922,7 @@ function SajuLoveResultContent() {
     // 할인 쿠폰 (5000원 할인)
     else if (couponCode === "boniiii" || couponCode === "차세린") {
       setCouponError("");
-      setAppliedCoupon({ code: couponCode, discount: 5000 });
+      setAppliedCoupon({ code: couponCode, discount: 6000 });
 
       // 결제 위젯 금액 업데이트
       if (paymentWidgetRef.current) {
@@ -1250,7 +1251,8 @@ function SajuLoveResultContent() {
       const isStillAnalyzing =
         record.isAnalyzing &&
         record.analysisStartedAt &&
-        Date.now() - new Date(record.analysisStartedAt).getTime() < ANALYSIS_TIMEOUT;
+        Date.now() - new Date(record.analysisStartedAt).getTime() <
+          ANALYSIS_TIMEOUT;
 
       if (isStillAnalyzing) {
         // 이미 분석 중이면 API 호출 안하고 주기적으로 DB 체크
@@ -1389,7 +1391,11 @@ function SajuLoveResultContent() {
     <div className="saju_result_page chat_mode" onClick={handleScreenClick}>
       {/* 배경 이미지 */}
       <div className="result_bg">
-        <img src={currentBgImage} alt="" className={`result_bg_image ${bgFadeIn ? "fade_in" : ""}`} />
+        <img
+          src={currentBgImage}
+          alt=""
+          className={`result_bg_image ${bgFadeIn ? "fade_in" : ""}`}
+        />
       </div>
 
       {/* 뒤로가기 버튼 */}
@@ -1466,7 +1472,9 @@ function SajuLoveResultContent() {
       {/* 리포트 카드 (오버레이) */}
       {currentMsg && (
         <div
-          className={`report_overlay ${showReport ? "active" : ""} ${isAnimating ? "animating" : ""}`}
+          className={`report_overlay ${showReport ? "active" : ""} ${
+            isAnimating ? "animating" : ""
+          }`}
         >
           <div className="report_scroll" ref={reportRef}>
             {currentMsg.type === "intro" && <IntroCard userName={userName} />}
@@ -3465,7 +3473,9 @@ function SajuCard({ data }: { data: SajuLoveRecord }) {
                   <div className="luck_section">
                     <h5 className="luck_section_title">연운</h5>
                     <div className="luck_scroll_wrap" ref={yeonunScrollRef}>
-                      <div className={`luck_scroll ${isReverse ? "reverse" : ""}`}>
+                      <div
+                        className={`luck_scroll ${isReverse ? "reverse" : ""}`}
+                      >
                         {(isReverse
                           ? [
                               ...(luckCyclesData.yeonun as Array<
@@ -3476,55 +3486,55 @@ function SajuCard({ data }: { data: SajuLoveRecord }) {
                               Record<string, unknown>
                             >)
                         ).map((yn, idx) => {
-                            const ganZhi = (yn.ganZhi as string) || "";
-                            const stem = ganZhi[0] || "";
-                            const branch = ganZhi[1] || "";
-                            const stemElement = getStemElement(stem);
-                            const branchElement = getBranchElement(branch);
-                            const isCurrentYear = yn.year === currentYear;
+                          const ganZhi = (yn.ganZhi as string) || "";
+                          const stem = ganZhi[0] || "";
+                          const branch = ganZhi[1] || "";
+                          const stemElement = getStemElement(stem);
+                          const branchElement = getBranchElement(branch);
+                          const isCurrentYear = yn.year === currentYear;
 
-                            return (
-                              <div
-                                key={idx}
-                                className={`luck_card ${
-                                  isCurrentYear ? "current" : ""
-                                }`}
-                              >
-                                <div className="luck_card_top">
-                                  <span className="luck_card_year">
-                                    {String(yn.year)}
-                                  </span>
-                                  <span className="luck_card_tengod">
-                                    {(yn.tenGodStem as string) || "-"}
-                                  </span>
-                                </div>
-                                <div
-                                  className={`luck_card_stem elem_${stemElement}`}
-                                >
-                                  <span className="char_hanja">{stem}</span>
-                                  <span className="char_korean">
-                                    {getStemKorean(stem)}
-                                  </span>
-                                </div>
-                                <div
-                                  className={`luck_card_branch elem_${branchElement}`}
-                                >
-                                  <span className="char_hanja">{branch}</span>
-                                  <span className="char_korean">
-                                    {getBranchKorean(branch)}
-                                  </span>
-                                </div>
-                                <div className="luck_card_bottom">
-                                  <span className="luck_card_tengod_branch">
-                                    {(yn.tenGodBranch as string) || "-"}
-                                  </span>
-                                  <span className="luck_card_stage">
-                                    {(yn.twelveStage as string) || "-"}
-                                  </span>
-                                </div>
+                          return (
+                            <div
+                              key={idx}
+                              className={`luck_card ${
+                                isCurrentYear ? "current" : ""
+                              }`}
+                            >
+                              <div className="luck_card_top">
+                                <span className="luck_card_year">
+                                  {String(yn.year)}
+                                </span>
+                                <span className="luck_card_tengod">
+                                  {(yn.tenGodStem as string) || "-"}
+                                </span>
                               </div>
-                            );
-                          })}
+                              <div
+                                className={`luck_card_stem elem_${stemElement}`}
+                              >
+                                <span className="char_hanja">{stem}</span>
+                                <span className="char_korean">
+                                  {getStemKorean(stem)}
+                                </span>
+                              </div>
+                              <div
+                                className={`luck_card_branch elem_${branchElement}`}
+                              >
+                                <span className="char_hanja">{branch}</span>
+                                <span className="char_korean">
+                                  {getBranchKorean(branch)}
+                                </span>
+                              </div>
+                              <div className="luck_card_bottom">
+                                <span className="luck_card_tengod_branch">
+                                  {(yn.tenGodBranch as string) || "-"}
+                                </span>
+                                <span className="luck_card_stage">
+                                  {(yn.twelveStage as string) || "-"}
+                                </span>
+                              </div>
+                            </div>
+                          );
+                        })}
                       </div>
                     </div>
                   </div>
@@ -3535,7 +3545,9 @@ function SajuCard({ data }: { data: SajuLoveRecord }) {
                   <div className="luck_section">
                     <h5 className="luck_section_title">월운</h5>
                     <div className="luck_scroll_wrap" ref={wolunScrollRef}>
-                      <div className={`luck_scroll ${isReverse ? "reverse" : ""}`}>
+                      <div
+                        className={`luck_scroll ${isReverse ? "reverse" : ""}`}
+                      >
                         {(isReverse
                           ? [
                               ...(luckCyclesData.wolun as Array<
@@ -3546,25 +3558,25 @@ function SajuCard({ data }: { data: SajuLoveRecord }) {
                               Record<string, unknown>
                             >)
                         ).map((wn, idx) => {
-                            const currentMonth = new Date().getMonth() + 1;
-                            const isCurrentMonth = wn.month === currentMonth;
+                          const currentMonth = new Date().getMonth() + 1;
+                          const isCurrentMonth = wn.month === currentMonth;
 
-                            return (
-                              <div
-                                key={idx}
-                                className={`luck_card_mini ${
-                                  isCurrentMonth ? "current" : ""
-                                }`}
-                              >
-                                <span className="luck_mini_month">
-                                  {String(wn.month)}월
-                                </span>
-                                <span className="luck_mini_tengod">
-                                  {(wn.tenGodStem as string) || "-"}
-                                </span>
-                              </div>
-                            );
-                          })}
+                          return (
+                            <div
+                              key={idx}
+                              className={`luck_card_mini ${
+                                isCurrentMonth ? "current" : ""
+                              }`}
+                            >
+                              <span className="luck_mini_month">
+                                {String(wn.month)}월
+                              </span>
+                              <span className="luck_mini_tengod">
+                                {(wn.tenGodStem as string) || "-"}
+                              </span>
+                            </div>
+                          );
+                        })}
                       </div>
                     </div>
                   </div>
@@ -3930,8 +3942,6 @@ function SajuCard({ data }: { data: SajuLoveRecord }) {
             </ul>
           </div>
         </div>
-
-       
       </div>
     </div>
   );
