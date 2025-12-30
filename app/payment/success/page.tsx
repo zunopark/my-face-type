@@ -4,7 +4,7 @@ import { useEffect, useState, Suspense } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { trackPaymentSuccess, trackPaymentFail, ServiceType } from "@/lib/mixpanel";
 import { confirmPayment as confirmPaymentAction } from "@/app/actions/analyze";
-import { markSajuLovePaid } from "@/lib/db/sajuLoveDB";
+import { markSajuLovePaid, getSajuLoveRecord } from "@/lib/db/sajuLoveDB";
 import { markFaceReportPaid } from "@/lib/db/faceAnalysisDB";
 import { markCoupleAnalysisPaid } from "@/lib/db/coupleAnalysisDB";
 
@@ -87,12 +87,45 @@ function SuccessContent() {
       };
       const serviceType = serviceTypeMap[reportType] || "face";
 
-      trackPaymentSuccess(serviceType, {
-        order_id: orderId,
-        amount: Number(amount),
-        result_id: resultId,
-        report_type: reportType,
-      });
+      // 사주 결제인 경우 상세 정보 추가
+      if (reportType === "saju" && resultId) {
+        const sajuRecord = await getSajuLoveRecord(resultId);
+        if (sajuRecord) {
+          trackPaymentSuccess(serviceType, {
+            order_id: orderId,
+            amount: Number(amount),
+            result_id: resultId,
+            report_type: reportType,
+            // 유저 입력 정보
+            user_name: sajuRecord.input.userName,
+            gender: sajuRecord.input.gender,
+            birth_date: sajuRecord.input.date,
+            birth_time: sajuRecord.input.time || "모름",
+            calendar: sajuRecord.input.calendar,
+            status: sajuRecord.input.status,
+            user_concern: sajuRecord.input.userConcern,
+            // 사주 정보
+            day_master: sajuRecord.sajuData.dayMaster?.char,
+            day_master_title: sajuRecord.sajuData.dayMaster?.title,
+            day_master_element: sajuRecord.sajuData.dayMaster?.element,
+            day_master_yinyang: sajuRecord.sajuData.dayMaster?.yinYang,
+          });
+        } else {
+          trackPaymentSuccess(serviceType, {
+            order_id: orderId,
+            amount: Number(amount),
+            result_id: resultId,
+            report_type: reportType,
+          });
+        }
+      } else {
+        trackPaymentSuccess(serviceType, {
+          order_id: orderId,
+          amount: Number(amount),
+          result_id: resultId,
+          report_type: reportType,
+        });
+      }
 
       // 결제 정보 업데이트
       if (resultId) {

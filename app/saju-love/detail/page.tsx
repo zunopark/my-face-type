@@ -313,11 +313,19 @@ function SajuDetailContent() {
         price: 0,
         payment_method: "coupon",
         coupon_code: couponCode,
+        // 유저 입력 정보
         user_name: data.input.userName,
         gender: data.input.gender,
         birth_date: data.input.date,
-        day_master: data.sajuData.dayMaster?.char,
+        birth_time: data.input.time || "모름",
+        calendar: data.input.calendar,
+        status: data.input.status,
         user_concern: data.input.userConcern,
+        // 사주 정보
+        day_master: data.sajuData.dayMaster?.char,
+        day_master_title: data.sajuData.dayMaster?.title,
+        day_master_element: data.sajuData.dayMaster?.element,
+        day_master_yinyang: data.sajuData.dayMaster?.yinYang,
       });
 
       // 결제 완료 처리
