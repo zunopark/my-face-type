@@ -46,50 +46,24 @@ function detectInAppBrowser(): InAppBrowserInfo {
 }
 
 // 앱별 안내 메시지
-const getInstructions = (type: InAppBrowserType, isIOS: boolean) => {
-  const browser = isIOS ? "Safari" : "Chrome";
-
-  switch (type) {
-    case "instagram":
-      return {
-        title: "인스타그램 앱에서 접속하셨네요",
-        instruction: isIOS
-          ? "우측 하단 ··· → Safari로 열기"
-          : "우측 상단 ⋮ → Chrome에서 열기",
-      };
-    case "kakaotalk":
-      return {
-        title: "카카오톡 앱에서 접속하셨네요",
-        instruction: isIOS
-          ? "우측 하단 ··· → 기본 브라우저로 열기"
-          : "우측 상단 ⋮ → 다른 브라우저로 열기",
-      };
-    case "facebook":
-      return {
-        title: "페이스북 앱에서 접속하셨네요",
-        instruction: `우측 하단 ··· → ${browser}로 열기`,
-      };
-    case "naver":
-      return {
-        title: "네이버 앱에서 접속하셨네요",
-        instruction: `우측 상단 ⋮ → ${browser}로 열기`,
-      };
-    case "line":
-      return {
-        title: "라인 앱에서 접속하셨네요",
-        instruction: `우측 하단 ··· → ${browser}로 열기`,
-      };
-    default:
-      return {
-        title: "인앱 브라우저에서 접속하셨네요",
-        instruction: `메뉴에서 ${browser}로 열기를 선택해주세요`,
-      };
+const getHintMessage = (type: InAppBrowserType, isIOS: boolean) => {
+  if (type === "instagram") {
+    return "또는 우측 상단 ··· → 외부 브라우저로 열기";
   }
+  if (type === "kakaotalk") {
+    return isIOS
+      ? "또는 우측 하단 ··· → 기본 브라우저로 열기"
+      : "또는 우측 상단 ⋮ → 다른 브라우저로 열기";
+  }
+  return isIOS
+    ? "또는 우측 하단 ··· → Safari로 열기"
+    : "또는 우측 상단 ⋮ → 외부 브라우저로 열기";
 };
 
 export default function InAppBrowserBanner() {
   const [browserInfo, setBrowserInfo] = useState<InAppBrowserInfo | null>(null);
   const [dismissed, setDismissed] = useState(false);
+  const [copied, setCopied] = useState(false);
 
   useEffect(() => {
     const info = detectInAppBrowser();
@@ -107,32 +81,51 @@ export default function InAppBrowserBanner() {
     sessionStorage.setItem("inapp_banner_dismissed", "true");
   };
 
+  // 외부 브라우저로 열기
+  const openExternalBrowser = () => {
+    const currentUrl = window.location.href;
+
+    if (!browserInfo?.isIOS) {
+      // Android: intent:// 스킴으로 Chrome 열기
+      const intentUrl = `intent://${currentUrl.replace(
+        /^https?:\/\//,
+        ""
+      )}#Intent;scheme=https;package=com.android.chrome;end`;
+      window.location.href = intentUrl;
+    } else {
+      // iOS: 클립보드에 복사
+      navigator.clipboard.writeText(currentUrl).then(() => {
+        setCopied(true);
+        setTimeout(() => setCopied(false), 2000);
+      });
+    }
+  };
+
   // 인앱 브라우저가 아니거나 이미 닫았으면 표시 안 함
   if (!browserInfo?.isInApp || dismissed) {
     return null;
   }
 
-  const { title, instruction } = getInstructions(
-    browserInfo.type,
-    browserInfo.isIOS
-  );
+  const isIOS = browserInfo.isIOS;
+  const hintMessage = getHintMessage(browserInfo.type, isIOS);
 
   return (
     <div style={styles.overlay}>
       <div style={styles.banner}>
-        <div style={styles.iconWrap}>
-          <span style={styles.icon}>🔒</span>
-        </div>
-        <div style={styles.content}>
-          <p style={styles.title}>{title}</p>
-          <p style={styles.desc}>원활한 결제를 위해 기본 브라우저로 열어주세요</p>
-          <div style={styles.instructionBox}>
-            <span style={styles.instruction}>{instruction}</span>
-          </div>
-        </div>
         <button style={styles.closeBtn} onClick={handleDismiss}>
           ✕
         </button>
+        <p style={styles.title}>원활한 사주 풀이를 위해</p>
+        <p style={styles.title}>기본 브라우저에서 열어주세요</p>
+        <p style={styles.desc}>
+          {isIOS
+            ? "아래 버튼을 눌러 링크를 복사한 후 Safari에 붙여넣기 해주세요"
+            : "아래 버튼을 누르면 Chrome으로 이동합니다"}
+        </p>
+        <button style={styles.openBtn} onClick={openExternalBrowser}>
+          {isIOS ? (copied ? "복사 완료!" : "링크 복사하기") : "Chrome으로 열기"}
+        </button>
+        <p style={styles.hint}>{hintMessage}</p>
       </div>
     </div>
   );
@@ -144,64 +137,59 @@ const styles: Record<string, React.CSSProperties> = {
     top: 0,
     left: 0,
     right: 0,
+    bottom: 0,
     zIndex: 9999,
-    padding: "12px",
-    background: "rgba(0,0,0,0.5)",
-  },
-  banner: {
-    background: "#fff",
-    borderRadius: "12px",
-    padding: "16px",
-    display: "flex",
-    alignItems: "flex-start",
-    gap: "12px",
-    boxShadow: "0 4px 20px rgba(0,0,0,0.15)",
-    position: "relative",
-  },
-  iconWrap: {
-    width: "40px",
-    height: "40px",
-    borderRadius: "50%",
-    background: "#FFF3E0",
+    background: "rgba(0,0,0,0.7)",
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
-    flexShrink: 0,
+    padding: "20px",
   },
-  icon: {
-    fontSize: "20px",
-  },
-  content: {
-    flex: 1,
+  banner: {
+    background: "#fff",
+    borderRadius: "16px",
+    padding: "28px 20px 24px",
+    textAlign: "center",
+    maxWidth: "320px",
+    width: "100%",
+    position: "relative",
   },
   title: {
     margin: 0,
-    fontSize: "14px",
+    fontSize: "17px",
     fontWeight: 700,
     color: "#333",
+    lineHeight: 1.4,
   },
   desc: {
-    margin: "4px 0 8px",
-    fontSize: "12px",
-    color: "#666",
-  },
-  instructionBox: {
-    background: "#F5F5F5",
-    borderRadius: "8px",
-    padding: "8px 12px",
-  },
-  instruction: {
+    margin: "16px 0 20px",
     fontSize: "13px",
+    color: "#666",
+    lineHeight: 1.5,
+  },
+  openBtn: {
+    width: "100%",
+    padding: "14px",
+    fontSize: "15px",
     fontWeight: 600,
-    color: "#E65100",
+    color: "#fff",
+    background: "#E65100",
+    border: "none",
+    borderRadius: "10px",
+    cursor: "pointer",
+  },
+  hint: {
+    margin: "16px 0 0",
+    fontSize: "13px",
+    color: "#888",
   },
   closeBtn: {
     position: "absolute",
-    top: "8px",
-    right: "8px",
+    top: "12px",
+    right: "12px",
     background: "none",
     border: "none",
-    fontSize: "18px",
+    fontSize: "20px",
     color: "#999",
     cursor: "pointer",
     padding: "4px",
