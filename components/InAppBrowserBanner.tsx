@@ -66,7 +66,7 @@ const getTitleMessage = (type: InAppBrowserType) => {
 // 앱별 안내 메시지
 const getHintMessage = (type: InAppBrowserType, isIOS: boolean) => {
   if (type === "instagram") {
-    return "우측 상단 ··· → 외부 브라우저로 열기";
+    return "우측 상단 ··· → 외부 브라우저에서 열기";
   }
   if (type === "kakaotalk") {
     return isIOS
