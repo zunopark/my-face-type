@@ -3,6 +3,7 @@ import localFont from "next/font/local";
 import Script from "next/script";
 import "./globals.css";
 import MixpanelProvider from "@/components/providers/MixpanelProvider";
+import InAppBrowserBanner from "@/components/InAppBrowserBanner";
 
 // 한글 폰트 (김정철명조)
 const kimjungchul = localFont({
@@ -112,7 +113,10 @@ export default function RootLayout({
         className={`${kimjungchul.variable} antialiased bg-gray-50`}
         suppressHydrationWarning
       >
-        <MixpanelProvider>{children}</MixpanelProvider>
+        <MixpanelProvider>
+          <InAppBrowserBanner />
+          {children}
+        </MixpanelProvider>
 
         {/* Google Analytics */}
         {process.env.NEXT_PUBLIC_GA_ID && (
