@@ -117,15 +117,12 @@ export default function InAppBrowserBanner() {
         </button>
         <p style={styles.title}>원활한 사주 풀이를 위해</p>
         <p style={styles.title}>기본 브라우저에서 열어주세요</p>
-        <p style={styles.desc}>
-          {isIOS
-            ? "아래 버튼을 눌러 링크를 복사한 후 Safari에 붙여넣기 해주세요"
-            : "아래 버튼을 누르면 Chrome으로 이동합니다"}
-        </p>
-        <button style={styles.openBtn} onClick={openExternalBrowser}>
-          {isIOS ? (copied ? "복사 완료!" : "링크 복사하기") : "Chrome으로 열기"}
+        <div style={styles.instructionBox}>
+          <p style={styles.instruction}>{hintMessage}</p>
+        </div>
+        <button style={styles.copyBtn} onClick={openExternalBrowser}>
+          {isIOS ? (copied ? "복사 완료!" : "링크 복사") : "Chrome으로 열기"}
         </button>
-        <p style={styles.hint}>{hintMessage}</p>
       </div>
     </div>
   );
@@ -155,27 +152,28 @@ const styles: Record<string, React.CSSProperties> = {
     color: "#333",
     lineHeight: 1.4,
   },
-  desc: {
-    margin: "8px 0 12px",
-    fontSize: "12px",
-    color: "#666",
-    lineHeight: 1.4,
+  instructionBox: {
+    margin: "14px 0",
+    padding: "12px 16px",
+    background: "#FFF8E1",
+    borderRadius: "8px",
+    border: "1px solid #FFE082",
   },
-  openBtn: {
-    width: "100%",
-    padding: "12px",
+  instruction: {
+    margin: 0,
     fontSize: "14px",
     fontWeight: 600,
-    color: "#fff",
-    background: "#E65100",
-    border: "none",
-    borderRadius: "8px",
-    cursor: "pointer",
+    color: "#E65100",
+    lineHeight: 1.4,
   },
-  hint: {
-    margin: "10px 0 0",
+  copyBtn: {
+    background: "none",
+    border: "none",
     fontSize: "12px",
-    color: "#888",
+    color: "#999",
+    cursor: "pointer",
+    textDecoration: "underline",
+    padding: "4px",
   },
   closeBtn: {
     position: "absolute",
