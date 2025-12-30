@@ -45,6 +45,24 @@ function detectInAppBrowser(): InAppBrowserInfo {
   return { isInApp: false, type: "unknown", isIOS };
 }
 
+// 앱별 타이틀 메시지
+const getTitleMessage = (type: InAppBrowserType) => {
+  switch (type) {
+    case "instagram":
+      return "인스타그램에서 여셨나요?";
+    case "kakaotalk":
+      return "카카오톡에서 여셨나요?";
+    case "facebook":
+      return "페이스북에서 여셨나요?";
+    case "naver":
+      return "네이버에서 여셨나요?";
+    case "line":
+      return "라인에서 여셨나요?";
+    default:
+      return "앱에서 여셨나요?";
+  }
+};
+
 // 앱별 안내 메시지
 const getHintMessage = (type: InAppBrowserType, isIOS: boolean) => {
   if (type === "instagram") {
@@ -107,6 +125,7 @@ export default function InAppBrowserBanner() {
   }
 
   const isIOS = browserInfo.isIOS;
+  const titleMessage = getTitleMessage(browserInfo.type);
   const hintMessage = getHintMessage(browserInfo.type, isIOS);
 
   return (
@@ -115,9 +134,10 @@ export default function InAppBrowserBanner() {
         <button style={styles.closeBtn} onClick={handleDismiss}>
           ✕
         </button>
-        <p style={styles.title}>원활한 사주 풀이를 위해</p>
-        <p style={styles.title}>기본 브라우저에서 열어주세요</p>
+        <p style={styles.title}>{titleMessage}</p>
+        <p style={styles.subtitle}>원활한 사주 풀이를 위해 기본 브라우저에서 열어주세요</p>
         <div style={styles.instructionBox}>
+          <div style={styles.stepNumber}>1</div>
           <p style={styles.instruction}>{hintMessage}</p>
         </div>
         <button style={styles.copyBtn} onClick={openExternalBrowser}>
@@ -140,27 +160,56 @@ const styles: Record<string, React.CSSProperties> = {
   banner: {
     background: "#fff",
     borderRadius: "12px",
-    padding: "16px 16px 14px",
-    textAlign: "center",
+    padding: "16px",
     position: "relative",
     boxShadow: "0 4px 20px rgba(0,0,0,0.15)",
   },
   title: {
-    margin: 0,
+    margin: "0 0 4px 0",
     fontSize: "15px",
     fontWeight: 700,
     color: "#333",
     lineHeight: 1.4,
+    textAlign: "left",
+    paddingRight: "24px",
+  },
+  subtitle: {
+    margin: "0 0 14px 0",
+    fontSize: "13px",
+    fontWeight: 400,
+    color: "#666",
+    lineHeight: 1.4,
+    textAlign: "left",
   },
   instructionBox: {
-    margin: "12px 0",
+    display: "flex",
+    alignItems: "center",
+    gap: "10px",
+    padding: "12px",
+    background: "#f5f5f5",
+    borderRadius: "8px",
+    marginBottom: "10px",
+  },
+  stepNumber: {
+    width: "22px",
+    height: "22px",
+    borderRadius: "50%",
+    background: "#333",
+    color: "#fff",
+    fontSize: "12px",
+    fontWeight: 700,
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    flexShrink: 0,
   },
   instruction: {
     margin: 0,
-    fontSize: "15px",
-    fontWeight: 700,
+    fontSize: "14px",
+    fontWeight: 600,
     color: "#333",
     lineHeight: 1.4,
+    textAlign: "left",
   },
   copyBtn: {
     background: "none",
@@ -170,15 +219,17 @@ const styles: Record<string, React.CSSProperties> = {
     cursor: "pointer",
     textDecoration: "underline",
     padding: "4px",
+    width: "100%",
+    textAlign: "center",
   },
   closeBtn: {
     position: "absolute",
-    top: "8px",
-    right: "8px",
+    top: "12px",
+    right: "12px",
     background: "none",
     border: "none",
     fontSize: "18px",
-    color: "#999",
+    color: "#bbb",
     cursor: "pointer",
     padding: "4px",
   },
