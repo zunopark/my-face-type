@@ -270,6 +270,7 @@ function SajuLoveResultContent() {
   const [loadingMessage, setLoadingMessage] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [data, setData] = useState<SajuLoveRecord | null>(null);
+  const MAX_AUTO_RETRY = 2; // 자동 재시도 최대 횟수
 
   // 대화형 UI 상태
   const [messages, setMessages] = useState<MessageItem[]>([]);
@@ -1068,6 +1069,9 @@ function SajuLoveResultContent() {
         setIsAnalyzing(false);
         setData(updatedData);
 
+        // 성공 시 재시도 카운트 리셋
+        sessionStorage.removeItem(`saju_retry_${storedData.id}`);
+
         // 메시지 리스트 생성
         const messageList = buildMessageList(updatedData);
 
@@ -1109,6 +1113,24 @@ function SajuLoveResultContent() {
         await updateSajuLoveRecord(storedData.id, { isAnalyzing: false });
 
         console.error("분석 API 실패:", err);
+
+        // 자동 재시도 로직 (sessionStorage로 횟수 관리)
+        const retryKey = `saju_retry_${storedData.id}`;
+        const currentRetry = parseInt(sessionStorage.getItem(retryKey) || "0", 10);
+
+        if (currentRetry < MAX_AUTO_RETRY) {
+          console.log(`자동 재시도 ${currentRetry + 1}/${MAX_AUTO_RETRY}...`);
+          sessionStorage.setItem(retryKey, String(currentRetry + 1));
+          // 2초 후 자동 재시도
+          setTimeout(() => {
+            window.location.reload();
+          }, 2000);
+          return;
+        }
+
+        // 최대 재시도 횟수 초과 시 에러 표시 & 카운트 리셋
+        sessionStorage.removeItem(retryKey);
+
         if (err instanceof Error) {
           if (err.message === "TIMEOUT") {
             setError(
@@ -1125,7 +1147,7 @@ function SajuLoveResultContent() {
         setIsLoading(false);
       }
     },
-    [startLoadingMessages, stopLoadingMessages, buildMessageList, typeText]
+    [startLoadingMessages, stopLoadingMessages, buildMessageList, typeText, MAX_AUTO_RETRY]
   );
 
   // ref에 함수 할당 (handleNext에서 사용)
