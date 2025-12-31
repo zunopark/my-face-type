@@ -47,9 +47,9 @@ const PAYMENT_CONFIG = {
   clientKey:
     process.env.NEXT_PUBLIC_TOSS_CLIENT_KEY ||
     "live_gck_yZqmkKeP8gBaRKPg1WwdrbQRxB9l",
-  price: 18900,
+  price: 23900,
   discountPrice: 9900,
-  originalPrice: 32900,
+  originalPrice: 44800,
   orderName: "AI 연애 사주 심층 분석",
 };
 
@@ -931,7 +931,7 @@ function SajuLoveResultContent() {
     // 할인 쿠폰 (5000원 할인)
     else if (couponCode === "boniiii" || couponCode === "차세린") {
       setCouponError("");
-      setAppliedCoupon({ code: couponCode, discount: 6000 });
+      setAppliedCoupon({ code: couponCode, discount: 2000 });
 
       // 결제 위젯 금액 업데이트
       if (paymentWidgetRef.current) {
