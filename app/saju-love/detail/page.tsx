@@ -764,7 +764,7 @@ function SajuDetailContent() {
 
                 {/* 할인 */}
                 <div className="payment-row discount">
-                  <span className="payment-row-label">출시 기념 특별 할인</span>
+                  <span className="payment-row-label">병오년(丙午年) 1월 특가 할인</span>
                   <div className="payment-row-discount-value">
                     <span className="discount-badge">
                       {Math.floor(
