@@ -1626,7 +1626,7 @@ function SajuLoveResultContent() {
                 {/* 정가 */}
                 <div className="payment-row">
                   <span className="payment-row-label">
-                    색동낭자 연애 사주 15,000자 보고서
+                    색동낭자 연애 사주 20,000자 보고서
                   </span>
                   <span className="payment-row-value">
                     {PAYMENT_CONFIG.originalPrice.toLocaleString()}원
