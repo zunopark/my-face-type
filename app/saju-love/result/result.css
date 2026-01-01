@@ -2075,7 +2075,8 @@
   color: #4a3a3a;
   padding: 8px 0 0 0;
   text-align: justify;
-  word-break: keep-all;
+  text-align-last: left;
+  word-break: break-word;
 }
 
 .saju_result_page .report_card .section_content p {
