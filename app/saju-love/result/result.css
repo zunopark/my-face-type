@@ -1401,7 +1401,9 @@
   font-size: 16px;
   line-height: 2;
   color: #4a3a3a;
-  word-break: keep-all;
+  text-align: justify;
+  text-align-last: left;
+  word-break: break-word;
 }
 
 /* 섹션 제목 (줄 전체가 **제목**인 경우) */
@@ -2045,7 +2047,8 @@
   font-size: 17px;
   font-weight: 700;
   color: #c0392b;
-  text-align: center;
+  text-align: center !important;
+  text-align-last: center !important;
   margin: 0 0 24px 0;
   padding: 16px 0;
   display: block;
@@ -2365,9 +2368,7 @@
 }
 
 /* 뒤로가기 버튼 - iOS 글래스모피즘 */
-.saju_result_page .back_btn,
-.saju_result_page .back_btn:visited,
-.saju_result_page .back_btn:active {
+.saju_result_page .back_btn {
   position: fixed;
   top: 16px;
   left: calc(50% - 250px + 16px);
@@ -2382,11 +2383,20 @@
   align-items: center;
   justify-content: center;
   gap: 4px;
-  z-index: 200;
+  z-index: 9999;
   text-decoration: none;
-  transition: all 0.2s ease;
   color: #333;
   box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+  pointer-events: auto;
+  transition: none;
+  animation: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  font-family: inherit;
 }
 
 @media (max-width: 500px) {
@@ -2395,9 +2405,13 @@
   }
 }
 
-.saju_result_page .back_btn:hover {
-  background: rgba(255, 255, 255, 0.55);
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+.saju_result_page .back_btn:hover,
+.saju_result_page .back_btn:active,
+.saju_result_page .back_btn:focus {
+  background: rgba(255, 255, 255, 0.4);
+  transition: none;
+  animation: none;
+  outline: none;
 }
 
 .saju_result_page .back_btn .material-icons {
@@ -3414,13 +3428,66 @@
 }
 
 /* ============================================
+   공유 버튼 스타일
+   ============================================ */
+
+.saju_result_page .share_btn {
+  position: fixed;
+  top: 16px;
+  right: calc(50% - 250px + 84px);
+  height: 40px;
+  padding: 0 16px;
+  background: rgba(255, 255, 255, 0.4);
+  -webkit-backdrop-filter: blur(16px);
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 200;
+  text-decoration: none;
+  color: #333;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+  pointer-events: auto;
+  transition: none;
+  animation: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  font-family: inherit;
+}
+
+@media (max-width: 500px) {
+  .saju_result_page .share_btn {
+    right: 84px;
+  }
+}
+
+.saju_result_page .share_btn:hover,
+.saju_result_page .share_btn:active,
+.saju_result_page .share_btn:focus {
+  background: rgba(255, 255, 255, 0.4);
+  transition: none;
+  animation: none;
+  outline: none;
+}
+
+.saju_result_page .share_btn_text {
+  color: #333;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+/* ============================================
    목차 버튼 & 모달 스타일
    ============================================ */
 
 /* 목차 버튼 - 홈으로 버튼과 같은 스타일 */
-.saju_result_page .toc_btn,
-.saju_result_page .toc_btn:visited,
-.saju_result_page .toc_btn:active {
+.saju_result_page .toc_btn {
   position: fixed;
   top: 16px;
   right: calc(50% - 250px + 16px);
@@ -3436,10 +3503,18 @@
   justify-content: center;
   z-index: 200;
   text-decoration: none;
-  transition: all 0.2s ease;
   color: #333;
   box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
   cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+  pointer-events: auto;
+  transition: none;
+  animation: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  font-family: inherit;
 }
 
 @media (max-width: 500px) {
@@ -3448,9 +3523,13 @@
   }
 }
 
-.saju_result_page .toc_btn:hover {
-  background: rgba(255, 255, 255, 0.55);
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+.saju_result_page .toc_btn:hover,
+.saju_result_page .toc_btn:active,
+.saju_result_page .toc_btn:focus {
+  background: rgba(255, 255, 255, 0.4);
+  transition: none;
+  animation: none;
+  outline: none;
 }
 
 .saju_result_page .toc_btn .material-icons {

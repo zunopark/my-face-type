@@ -7,6 +7,8 @@ import { confirmPayment as confirmPaymentAction } from "@/app/actions/analyze";
 import { markSajuLovePaid, getSajuLoveRecord } from "@/lib/db/sajuLoveDB";
 import { markFaceReportPaid } from "@/lib/db/faceAnalysisDB";
 import { markCoupleAnalysisPaid } from "@/lib/db/coupleAnalysisDB";
+import { createSajuAnalysis, getSajuAnalysisByShareId } from "@/lib/db/sajuAnalysisDB";
+import { uploadSajuLoveImages } from "@/lib/storage/imageStorage";
 
 const MAX_RETRY = 3;
 const BASE_DELAY = 1500;
@@ -133,11 +135,70 @@ function SuccessContent() {
           if (reportType === "saju") {
             // 사주 결제인 경우
             const isDiscount = orderId?.includes("discount") || false;
-            await markSajuLovePaid(resultId, {
-              method: "toss",
+            const paymentInfo = {
+              method: "toss" as const,
               price: Number(amount),
               isDiscount,
-            });
+            };
+
+            // IndexedDB 업데이트
+            await markSajuLovePaid(resultId, paymentInfo);
+
+            // Supabase에 저장 (이미 저장되어 있지 않은 경우만)
+            const sajuRecord = await getSajuLoveRecord(resultId);
+            if (sajuRecord) {
+              const existsInSupabase = await getSajuAnalysisByShareId(resultId);
+              if (!existsInSupabase) {
+                // 이미지 Storage에 업로드
+                const imagePaths: string[] = [];
+                if (sajuRecord.loveAnalysis?.ideal_partner_image?.image_base64 ||
+                    sajuRecord.loveAnalysis?.avoid_type_image?.image_base64) {
+                  try {
+                    const uploadedImages = await uploadSajuLoveImages(resultId, {
+                      idealPartner: sajuRecord.loveAnalysis?.ideal_partner_image?.image_base64,
+                      avoidType: sajuRecord.loveAnalysis?.avoid_type_image?.image_base64,
+                    });
+                    if (uploadedImages.idealPartner) imagePaths.push(uploadedImages.idealPartner.path);
+                    if (uploadedImages.avoidType) imagePaths.push(uploadedImages.avoidType.path);
+                  } catch (imgErr) {
+                    console.error("이미지 업로드 실패:", imgErr);
+                  }
+                }
+
+                // Supabase DB에 저장
+                await createSajuAnalysis({
+                  service_type: "saju_love",
+                  id: resultId,
+                  user_info: {
+                    userName: sajuRecord.input.userName,
+                    gender: sajuRecord.input.gender,
+                    date: sajuRecord.input.date,
+                    calendar: sajuRecord.input.calendar as "solar" | "lunar",
+                    time: sajuRecord.input.time,
+                    userConcern: sajuRecord.input.userConcern,
+                    status: sajuRecord.input.status,
+                  },
+                  raw_saju_data: sajuRecord.rawSajuData || null,
+                  analysis_result: sajuRecord.loveAnalysis ? {
+                    ...sajuRecord.loveAnalysis,
+                    // base64 이미지 제거 (Storage에 저장됨)
+                    ideal_partner_image: sajuRecord.loveAnalysis.ideal_partner_image ? {
+                      prompt: sajuRecord.loveAnalysis.ideal_partner_image.prompt,
+                      storage_path: imagePaths[0],
+                    } : undefined,
+                    avoid_type_image: sajuRecord.loveAnalysis.avoid_type_image ? {
+                      prompt: sajuRecord.loveAnalysis.avoid_type_image.prompt,
+                      storage_path: imagePaths[1],
+                    } : undefined,
+                  } : null,
+                  image_paths: imagePaths,
+                  is_paid: true,
+                  paid_at: new Date().toISOString(),
+                  payment_info: paymentInfo,
+                });
+                console.log("✅ Supabase에 사주 분석 결과 저장 완료");
+              }
+            }
           } else if (reportType === "couple") {
             // 궁합 결제인 경우
             await markCoupleAnalysisPaid(resultId);

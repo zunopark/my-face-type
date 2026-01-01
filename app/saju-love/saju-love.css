@@ -9,9 +9,7 @@
   overflow: hidden;
 }
 
-.back_btn,
-.back_btn:visited,
-.back_btn:active {
+.back_btn {
   position: fixed;
   top: 16px;
   left: calc(50% - 250px + 16px);
@@ -26,11 +24,20 @@
   align-items: center;
   justify-content: center;
   gap: 4px;
-  z-index: 200;
+  z-index: 9999;
   text-decoration: none;
-  transition: all 0.2s ease;
   color: #333;
   box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+  pointer-events: auto;
+  transition: none;
+  animation: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  font-family: inherit;
 }
 
 @media (max-width: 500px) {
@@ -39,9 +46,13 @@
   }
 }
 
-.back_btn:hover {
-  background: rgba(255, 255, 255, 0.55);
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+.back_btn:hover,
+.back_btn:active,
+.back_btn:focus {
+  background: rgba(255, 255, 255, 0.4);
+  transition: none;
+  animation: none;
+  outline: none;
 }
 
 .back_btn .material-icons {

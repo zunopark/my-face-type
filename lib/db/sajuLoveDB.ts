@@ -301,8 +301,8 @@ export interface SajuLoveRecord {
   loveAnalysis?: {
     user_name: string;
     chapters: { number: number; title: string; content: string }[];
-    ideal_partner_image?: { image_base64: string; prompt?: string };
-    avoid_type_image?: { image_base64: string; prompt?: string };
+    ideal_partner_image?: { image_base64: string; image_url?: string; prompt?: string };
+    avoid_type_image?: { image_base64: string; image_url?: string; prompt?: string };
   } | null;
 }
 
