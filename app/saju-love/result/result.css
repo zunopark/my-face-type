@@ -1,6 +1,58 @@
 /* 연애 사주 결과 페이지 스타일 */
 
+/* 프리텐다드 폰트 (UI용) */
+@font-face {
+  font-family: 'Pretendard';
+  src: url('/fonts/Pretendard-Regular.otf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Pretendard';
+  src: url('/fonts/Pretendard-Medium.otf') format('opentype');
+  font-weight: 500;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Pretendard';
+  src: url('/fonts/Pretendard-SemiBold.otf') format('opentype');
+  font-weight: 600;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Pretendard';
+  src: url('/fonts/Pretendard-Bold.otf') format('opentype');
+  font-weight: 700;
+  font-style: normal;
+}
+
+/* 마루 부리 폰트 (본문용) */
+@font-face {
+  font-family: 'MaruBuri';
+  src: url('/fonts/MaruBuri-Regular.otf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'MaruBuri';
+  src: url('/fonts/MaruBuri-SemiBold.otf') format('opentype');
+  font-weight: 600;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'MaruBuri';
+  src: url('/fonts/MaruBuri-Bold.otf') format('opentype');
+  font-weight: 700;
+  font-style: normal;
+}
+
 .saju_result_page {
+  font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, sans-serif;
   background: #fff9f9 url('/saju-love/img/nangja.jpg') center top / 100% auto no-repeat;
   background-attachment: fixed;
   min-height: 100vh;
@@ -1317,11 +1369,41 @@
   letter-spacing: 1px;
 }
 
+/* 본문 텍스트 공통 (MaruBuri) */
+.saju_result_page .card_content,
+.saju_result_page .intro_section_content,
+.saju_result_page .saju_explain_text,
+.saju_result_page .welcome_text,
+.saju_result_page .nangja_text,
+.saju_result_page .intro_quote {
+  font-family: 'MaruBuri', serif;
+}
+
 .saju_result_page .card_content {
-  font-size: 15px;
+  font-size: 16px;
   line-height: 2;
   color: #4a3a3a;
   word-break: keep-all;
+}
+
+/* 섹션 제목 (줄 전체가 **제목**인 경우) */
+.saju_result_page .card_content .section-heading {
+  display: block;
+  margin-top: 2.5em;
+  margin-bottom: 0.5em;
+  font-size: 1.05em;
+}
+
+.saju_result_page .card_content p:first-child .section-heading:first-child {
+  margin-top: 0;
+}
+
+.saju_result_page .card_content p:has(> .section-heading:only-child) {
+  margin-bottom: 0;
+}
+
+.saju_result_page .card_content .section-heading + br {
+  display: none;
 }
 
 /* 사주 인트로 카드 */
@@ -7557,4 +7639,476 @@
   border: none;
   border-radius: 8px;
   cursor: pointer;
+}
+
+/* ========== 리뷰 섹션 ========== */
+.review_section {
+  background: linear-gradient(135deg, #fff5f5 0%, #fff0f0 100%);
+  border: 1px solid #ffe0e0;
+  border-radius: 16px;
+  padding: 24px 20px;
+  margin: 24px 0;
+}
+
+.review_header {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.review_title {
+  font-size: 17px;
+  font-weight: 700;
+  color: #333;
+  margin: 0 0 8px 0;
+}
+
+.review_subtitle {
+  font-size: 13px;
+  color: #888;
+  margin: 0;
+}
+
+/* 별점 */
+.review_rating {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.rating_label {
+  font-size: 13px;
+  color: #666;
+  margin: 0;
+}
+
+.rating_stars {
+  display: flex;
+  gap: 8px;
+}
+
+.star_btn {
+  background: none;
+  border: none;
+  font-size: 32px;
+  color: #ddd;
+  cursor: pointer;
+  transition: transform 0.15s, color 0.15s;
+  padding: 0;
+}
+
+.star_btn.active {
+  color: #ffc107;
+}
+
+.star_btn:hover {
+  transform: scale(1.15);
+}
+
+/* 리뷰 내용 입력 */
+.review_content_input {
+  position: relative;
+  margin-bottom: 12px;
+}
+
+.review_textarea {
+  width: 100%;
+  min-height: 100px;
+  padding: 14px;
+  border: 1px solid #e0e0e0;
+  border-radius: 12px;
+  font-size: 14px;
+  line-height: 1.6;
+  resize: none;
+  box-sizing: border-box;
+  font-family: inherit;
+}
+
+.review_textarea:focus {
+  outline: none;
+  border-color: #e74c3c;
+}
+
+.review_textarea::placeholder {
+  color: #aaa;
+}
+
+.review_char_count {
+  position: absolute;
+  bottom: 10px;
+  right: 14px;
+  font-size: 11px;
+  color: #999;
+}
+
+/* 닉네임 입력 */
+.review_name_input {
+  margin-bottom: 16px;
+}
+
+.review_name_field {
+  width: 100%;
+  padding: 12px 14px;
+  border: 1px solid #e0e0e0;
+  border-radius: 10px;
+  font-size: 14px;
+  box-sizing: border-box;
+}
+
+.review_name_field:focus {
+  outline: none;
+  border-color: #e74c3c;
+}
+
+/* 제출 버튼 */
+.review_submit_btn {
+  width: 100%;
+  padding: 14px;
+  background: #e74c3c;
+  color: #fff;
+  font-size: 15px;
+  font-weight: 600;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background 0.2s, opacity 0.2s;
+}
+
+.review_submit_btn:hover {
+  background: #d63c2c;
+}
+
+.review_submit_btn:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+}
+
+/* 리뷰 제출 완료 상태 */
+.review_submitted {
+  text-align: center;
+}
+
+.review_thank_you {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.review_check_icon {
+  width: 48px;
+  height: 48px;
+  background: #e74c3c;
+  color: #fff;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.review_thank_text {
+  font-size: 16px;
+  font-weight: 600;
+  color: #333;
+  margin: 0;
+}
+
+.review_submitted_content {
+  background: #fff;
+  border-radius: 12px;
+  padding: 16px;
+  margin-top: 8px;
+  width: 100%;
+}
+
+.review_stars_display {
+  margin-bottom: 8px;
+}
+
+.review_stars_display .star {
+  font-size: 20px;
+  color: #ddd;
+}
+
+.review_stars_display .star.filled {
+  color: #ffc107;
+}
+
+.review_text_display {
+  font-size: 14px;
+  color: #555;
+  line-height: 1.5;
+  margin: 0;
+  text-align: left;
+}
+
+/* ========== 리뷰 모달 ========== */
+.review_modal_overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 20px;
+}
+
+.review_modal {
+  background: #fff;
+  border-radius: 20px;
+  width: 100%;
+  max-width: 400px;
+  max-height: 90vh;
+  overflow-y: auto;
+  padding: 24px 20px;
+  position: relative;
+}
+
+.review_modal_close {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  width: 32px;
+  height: 32px;
+  border: none;
+  background: #f5f5f5;
+  border-radius: 50%;
+  font-size: 16px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.review_modal_header {
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+.review_modal_title {
+  font-size: 18px;
+  font-weight: 700;
+  color: #333;
+  margin: 0 0 8px 0;
+}
+
+.review_modal_subtitle {
+  font-size: 14px;
+  color: #888;
+  margin: 0;
+}
+
+.review_modal_buttons {
+  display: flex;
+  gap: 10px;
+  margin-top: 16px;
+}
+
+.review_skip_btn {
+  flex: 1;
+  padding: 14px;
+  background: #f5f5f5;
+  color: #666;
+  font-size: 14px;
+  font-weight: 600;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.review_modal_buttons .review_submit_btn {
+  flex: 1;
+}
+
+/* ========== 리뷰 오버레이 (saju-love 스타일 그대로) ========== */
+.review_overlay {
+  position: fixed;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  max-width: 500px;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.75);
+  display: none;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 20px;
+  padding-bottom: calc(20px + env(safe-area-inset-bottom));
+  box-sizing: border-box;
+  z-index: 999;
+}
+
+.review_overlay.active {
+  display: flex;
+}
+
+.review_form_wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+/* 감사 메시지 */
+.review_thanks_wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 200px;
+}
+
+.review_thanks_text {
+  font-size: 24px;
+  font-weight: 600;
+  color: white;
+  text-align: center;
+  margin: 0;
+}
+
+/* saju-love 입력 스타일 (그대로 사용) */
+.review_overlay .input_group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.review_overlay .input_label {
+  font-size: 14px;
+  font-weight: 600;
+  color: white;
+}
+
+.review_overlay .input_optional {
+  font-size: 12px;
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.5);
+  margin-left: 6px;
+}
+
+.review_overlay .input_field {
+  width: 100%;
+  padding: 14px 16px;
+  border: none;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 0;
+  font-size: 15px;
+  color: white;
+  background: transparent;
+  transition: border-color 0.2s ease;
+  box-sizing: border-box;
+}
+
+.review_overlay .input_field:focus {
+  outline: none;
+  border-bottom-color: white;
+}
+
+.review_overlay .input_field::placeholder {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.review_overlay .input_field.textarea {
+  resize: none;
+  line-height: 1.6;
+  min-height: 100px;
+  font-family: inherit;
+}
+
+/* 별점 선택 (status_options 스타일) */
+.review_overlay .status_options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.review_overlay .status_btn {
+  padding: 6px 14px;
+  border: none;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.15);
+  font-size: 13px;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.7);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.review_overlay .status_btn.active {
+  background: rgba(255, 255, 255, 0.95);
+  color: #8b4a5e;
+}
+
+/* 버튼들 */
+.review_overlay .input_buttons {
+  display: flex;
+  gap: 10px;
+}
+
+.review_overlay .input_prev_btn {
+  padding: 16px 24px;
+  font-size: 16px;
+  font-weight: 700;
+  background: white;
+  color: #333;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+}
+
+.review_overlay .input_submit_btn {
+  flex: 1;
+  padding: 16px 32px;
+  font-size: 16px;
+  font-weight: 700;
+  background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+  color: white;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  box-shadow: 0 4px 15px rgba(231, 76, 60, 0.3);
+}
+
+.review_overlay .input_submit_btn:disabled {
+  background: #666;
+  box-shadow: none;
+  cursor: not-allowed;
+}
+
+/* 만족도 UI */
+.review_rating_options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: center;
+  padding: 8px 0;
+}
+
+.review_rating_btn {
+  padding: 8px 14px;
+  border: none;
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.15);
+  font-size: 14px;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.7);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.review_rating_btn:hover {
+  background: rgba(255, 255, 255, 0.25);
+}
+
+.review_rating_btn.active {
+  background: rgba(255, 255, 255, 0.95);
+  color: #8b4a5e;
+  font-weight: 600;
 }

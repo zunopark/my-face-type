@@ -17,6 +17,7 @@ import {
   trackPaymentSuccess,
 } from "@/lib/mixpanel";
 import { markSajuLovePaid } from "@/lib/db/sajuLoveDB";
+import { createReview, getReviewByRecordId, Review } from "@/lib/db/reviewDB";
 import "./result.css";
 
 // TossPayments 타입 선언
@@ -82,7 +83,8 @@ type MessageItem = {
     | "saju"
     | "intro"
     | "waiting"
-    | "payment"; // 결제 유도 카드
+    | "payment"
+    | "review_prompt"; // 리뷰 유도 카드
   content: string;
   chapterIndex?: number;
   imageBase64?: string;
@@ -290,6 +292,9 @@ function SajuLoveResultContent() {
   // 현재 메시지의 배경 이미지
   const currentBgImage =
     messages[currentIndex]?.bgImage || "/saju-love/img/nangja-1.jpg";
+
+  // 리뷰 모달 상태
+  const [showReviewModal, setShowReviewModal] = useState(false);
 
   // 결제 관련 상태
   const [showPaymentModal, setShowPaymentModal] = useState(false);
@@ -537,6 +542,16 @@ function SajuLoveResultContent() {
             type: "dialogue",
             content: config.outro,
             bgImage: config.outroBg || "/saju-love/img/nangja-1.jpg",
+          });
+        }
+
+        // 5장 끝난 후 리뷰 유도
+        if (chapterNum === 5) {
+          result.push({
+            id: "review-prompt",
+            type: "review_prompt",
+            content: `${userName}님, 여기까지 어떠셨어요?\n잠깐, 소중한 후기를 남겨주시면\n더 좋은 서비스를 만드는 데 큰 힘이 됩니다!`,
+            bgImage: "/saju-love/img/nangja-20.jpg",
           });
         }
 
@@ -931,11 +946,11 @@ function SajuLoveResultContent() {
     // 할인 쿠폰 (5000원 할인)
     else if (couponCode === "boniiii" || couponCode === "차세린") {
       setCouponError("");
-      setAppliedCoupon({ code: couponCode, discount: 2000 });
+      setAppliedCoupon({ code: couponCode, discount: 3000 });
 
       // 결제 위젯 금액 업데이트
       if (paymentWidgetRef.current) {
-        const newPrice = PAYMENT_CONFIG.price - 5000;
+        const newPrice = PAYMENT_CONFIG.price - 3000;
         paymentWidgetRef.current.renderPaymentMethods("#saju-payment-method", {
           value: newPrice,
         });
@@ -1116,7 +1131,10 @@ function SajuLoveResultContent() {
 
         // 자동 재시도 로직 (sessionStorage로 횟수 관리)
         const retryKey = `saju_retry_${storedData.id}`;
-        const currentRetry = parseInt(sessionStorage.getItem(retryKey) || "0", 10);
+        const currentRetry = parseInt(
+          sessionStorage.getItem(retryKey) || "0",
+          10
+        );
 
         if (currentRetry < MAX_AUTO_RETRY) {
           console.log(`자동 재시도 ${currentRetry + 1}/${MAX_AUTO_RETRY}...`);
@@ -1147,7 +1165,13 @@ function SajuLoveResultContent() {
         setIsLoading(false);
       }
     },
-    [startLoadingMessages, stopLoadingMessages, buildMessageList, typeText, MAX_AUTO_RETRY]
+    [
+      startLoadingMessages,
+      stopLoadingMessages,
+      buildMessageList,
+      typeText,
+      MAX_AUTO_RETRY,
+    ]
   );
 
   // ref에 함수 할당 (handleNext에서 사용)
@@ -1542,7 +1566,8 @@ function SajuLoveResultContent() {
             className={`report_bottom_btn_wrap ${
               canProceed &&
               currentMsg.type !== "waiting" &&
-              currentMsg.type !== "payment"
+              currentMsg.type !== "payment" &&
+              currentMsg.type !== "review_prompt"
                 ? "visible"
                 : ""
             }`}
@@ -1607,6 +1632,15 @@ function SajuLoveResultContent() {
         </div>
       </div>
 
+      {/* 리뷰 입력 (5장 후) */}
+      {currentMsg?.type === "review_prompt" && data?.id && (
+        <ReviewInlineCard
+          recordId={data.id}
+          userName={userName}
+          onDone={handleNext}
+        />
+      )}
+
       {/* 결제 모달 */}
       {showPaymentModal && (
         <div className="payment-overlay" style={{ display: "flex" }}>
@@ -1635,7 +1669,9 @@ function SajuLoveResultContent() {
 
                 {/* 할인 */}
                 <div className="payment-row discount">
-                  <span className="payment-row-label">병오년(丙午年) 1월 특가 할인</span>
+                  <span className="payment-row-label">
+                    병오년(丙午年) 1월 특가 할인
+                  </span>
                   <div className="payment-row-discount-value">
                     <span className="discount-badge">
                       {Math.floor(
@@ -4614,6 +4650,354 @@ function TocModal({
   );
 }
 
+// 리뷰 섹션 컴포넌트
+function ReviewSection({
+  recordId,
+  userName,
+}: {
+  recordId: string;
+  userName: string;
+}) {
+  const [rating, setRating] = useState(5);
+  const [content, setContent] = useState("");
+  const [displayName, setDisplayName] = useState(userName);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
+  const [existingReview, setExistingReview] = useState<Review | null>(null);
+
+  // 이미 리뷰를 남겼는지 확인
+  useEffect(() => {
+    const checkExistingReview = async () => {
+      const review = await getReviewByRecordId("saju_love", recordId);
+      if (review) {
+        setExistingReview(review);
+        setSubmitted(true);
+      }
+    };
+    checkExistingReview();
+  }, [recordId]);
+
+  const handleSubmit = async () => {
+    if (!content.trim()) return;
+
+    setIsSubmitting(true);
+    const review = await createReview({
+      service_type: "saju_love",
+      record_id: recordId,
+      user_name: displayName || "익명",
+      rating,
+      content: content.trim(),
+      is_public: true,
+    });
+
+    if (review) {
+      setExistingReview(review);
+      setSubmitted(true);
+    }
+    setIsSubmitting(false);
+  };
+
+  // 이미 리뷰를 남긴 경우
+  if (submitted && existingReview) {
+    return (
+      <div className="review_section review_submitted">
+        <div className="review_thank_you">
+          <span className="review_check_icon">✓</span>
+          <p className="review_thank_text">소중한 후기 감사합니다!</p>
+          <div className="review_submitted_content">
+            <div className="review_stars_display">
+              {[1, 2, 3, 4, 5].map((star) => (
+                <span
+                  key={star}
+                  className={`star ${
+                    star <= existingReview.rating ? "filled" : ""
+                  }`}
+                >
+                  ★
+                </span>
+              ))}
+            </div>
+            <p className="review_text_display">{existingReview.content}</p>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="review_section">
+      <div className="review_header">
+        <h4 className="review_title">색동낭자에게 후기를 남겨주세요</h4>
+        <p className="review_subtitle">
+          {userName}님의 소중한 의견이 더 나은 서비스를 만듭니다
+        </p>
+      </div>
+
+      {/* 별점 */}
+      <div className="review_rating">
+        <p className="rating_label">만족도</p>
+        <div className="rating_stars">
+          {[1, 2, 3, 4, 5].map((star) => (
+            <button
+              key={star}
+              type="button"
+              className={`star_btn ${star <= rating ? "active" : ""}`}
+              onClick={() => setRating(star)}
+            >
+              ★
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {/* 리뷰 내용 */}
+      <div className="review_content_input">
+        <textarea
+          className="review_textarea"
+          placeholder="연애 사주 리포트는 어떠셨나요? 솔직한 후기를 남겨주세요."
+          value={content}
+          onChange={(e) => setContent(e.target.value)}
+          maxLength={500}
+        />
+        <span className="review_char_count">{content.length}/500</span>
+      </div>
+
+      {/* 닉네임 */}
+      <div className="review_name_input">
+        <input
+          type="text"
+          className="review_name_field"
+          placeholder="닉네임 (선택)"
+          value={displayName}
+          onChange={(e) => setDisplayName(e.target.value)}
+          maxLength={20}
+        />
+      </div>
+
+      {/* 제출 버튼 */}
+      <button
+        className="review_submit_btn"
+        onClick={handleSubmit}
+        disabled={isSubmitting || !content.trim()}
+      >
+        {isSubmitting ? "등록 중..." : "후기 남기기"}
+      </button>
+    </div>
+  );
+}
+
+// 리뷰 모달 컴포넌트
+function ReviewModal({
+  recordId,
+  userName,
+  onClose,
+}: {
+  recordId: string;
+  userName: string;
+  onClose: () => void;
+}) {
+  const [rating, setRating] = useState(5);
+  const [content, setContent] = useState("");
+  const [displayName, setDisplayName] = useState(userName);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const handleSubmit = async () => {
+    if (!content.trim()) return;
+
+    setIsSubmitting(true);
+    const review = await createReview({
+      service_type: "saju_love",
+      record_id: recordId,
+      user_name: displayName || "익명",
+      rating,
+      content: content.trim(),
+      is_public: true,
+    });
+
+    if (review) {
+      onClose();
+    }
+    setIsSubmitting(false);
+  };
+
+  return (
+    <div className="review_modal_overlay" onClick={onClose}>
+      <div className="review_modal" onClick={(e) => e.stopPropagation()}>
+        <button className="review_modal_close" onClick={onClose}>
+          ✕
+        </button>
+
+        <div className="review_modal_header">
+          <h3 className="review_modal_title">색동낭자에게 후기 남기기</h3>
+          <p className="review_modal_subtitle">
+            {userName}님의 소중한 의견을 들려주세요
+          </p>
+        </div>
+
+        {/* 별점 */}
+        <div className="review_rating">
+          <p className="rating_label">만족도</p>
+          <div className="rating_stars">
+            {[1, 2, 3, 4, 5].map((star) => (
+              <button
+                key={star}
+                type="button"
+                className={`star_btn ${star <= rating ? "active" : ""}`}
+                onClick={() => setRating(star)}
+              >
+                ★
+              </button>
+            ))}
+          </div>
+        </div>
+
+        {/* 리뷰 내용 */}
+        <div className="review_content_input">
+          <textarea
+            className="review_textarea"
+            placeholder="연애 사주 리포트는 어떠셨나요?"
+            value={content}
+            onChange={(e) => setContent(e.target.value)}
+            maxLength={500}
+          />
+          <span className="review_char_count">{content.length}/500</span>
+        </div>
+
+        {/* 닉네임 */}
+        <div className="review_name_input">
+          <input
+            type="text"
+            className="review_name_field"
+            placeholder="닉네임 (선택)"
+            value={displayName}
+            onChange={(e) => setDisplayName(e.target.value)}
+            maxLength={20}
+          />
+        </div>
+
+        {/* 버튼들 */}
+        <div className="review_modal_buttons">
+          <button className="review_skip_btn" onClick={onClose}>
+            다음에 할게요
+          </button>
+          <button
+            className="review_submit_btn"
+            onClick={handleSubmit}
+            disabled={isSubmitting || !content.trim()}
+          >
+            {isSubmitting ? "등록 중..." : "후기 남기기"}
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// 리뷰 입력 카드 (5장 후, saju-love 입력 스타일 그대로)
+function ReviewInlineCard({
+  recordId,
+  userName,
+  onDone,
+}: {
+  recordId: string;
+  userName: string;
+  onDone: () => void;
+}) {
+  const [rating, setRating] = useState(4);
+  const [content, setContent] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
+
+  const handleSubmit = async () => {
+    if (!content.trim()) return;
+    setIsSubmitting(true);
+    await createReview({
+      service_type: "saju_love",
+      record_id: recordId,
+      user_name: userName,
+      rating,
+      content: content.trim(),
+      is_public: true,
+    });
+    setSubmitted(true);
+    setIsSubmitting(false);
+    setTimeout(onDone, 1200);
+  };
+
+  if (submitted) {
+    return (
+      <div className="review_overlay active">
+        <div className="review_form_wrap">
+          <div className="review_thanks_wrap">
+            <p className="review_thanks_text">고마워요! 💕</p>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="review_overlay active">
+      <div className="review_form_wrap">
+        {/* 만족도 */}
+        <div className="input_group">
+          <label className="input_label">
+            {userName}님, 풀이는 어떠셨나요?
+          </label>
+          <div className="review_rating_options">
+            {[
+              { value: 1, label: "아쉬워요" },
+              { value: 2, label: "보통" },
+              { value: 3, label: "좋았어요" },
+              { value: 4, label: "고마워요" },
+            ].map((option) => (
+              <button
+                key={option.value}
+                type="button"
+                className={`review_rating_btn ${
+                  rating === option.value ? "active" : ""
+                }`}
+                onClick={() => setRating(option.value)}
+              >
+                {option.label}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        {/* 후기 입력 */}
+        <div className="input_group">
+          <label className="input_label">의견을 알려주세요</label>
+          <textarea
+            className="input_field textarea"
+            placeholder={
+              "색동낭자의 풀이에 대해 솔직한 의견을 남겨주세요.\n의견을 참고하여 계속해서 공부할게요!"
+            }
+            rows={4}
+            value={content}
+            onChange={(e) => setContent(e.target.value)}
+            maxLength={200}
+          />
+        </div>
+      </div>
+
+      {/* 버튼들 */}
+      <div className="input_buttons">
+        <button className="input_prev_btn" onClick={onDone}>
+          건너뛰기
+        </button>
+        <button
+          className="input_submit_btn"
+          onClick={handleSubmit}
+          disabled={isSubmitting || !content.trim()}
+        >
+          {isSubmitting ? "등록 중..." : "후기 남기기"}
+        </button>
+      </div>
+    </div>
+  );
+}
+
 // 마무리 카드
 function EndingCard({ data }: { data: SajuLoveRecord | null }) {
   const userName =
@@ -4638,6 +5022,9 @@ function EndingCard({ data }: { data: SajuLoveRecord | null }) {
           <p>당신의 사랑이 더 깊어지고, 더 따뜻해지길 진심으로 응원합니다.</p>
           <p className="ending_sign">- 색동낭자 드림</p>
         </div>
+
+        {/* 리뷰 섹션 */}
+        {data?.id && <ReviewSection recordId={data.id} userName={userName} />}
 
         {/* 보고서 전체 */}
         <div className="ending_summary">
@@ -4846,6 +5233,10 @@ function simpleMD(src: string = ""): string {
   src = src
     .replace(/\*\*\*([^*]+)\*\*\*/g, "<strong><em>$1</em></strong>")
     .replace(/___([^_]+)___/g, "<strong><em>$1</em></strong>")
+    .replace(
+      /^(\s*)\*\*([^*]+)\*\*$/gm,
+      '$1<strong class="section-heading">$2</strong>'
+    )
     .replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>")
     .replace(/__([^_]+)__/g, "<strong>$1</strong>");
   src = src
@@ -4853,6 +5244,10 @@ function simpleMD(src: string = ""): string {
     .replace(
       /\[([^\]]+?)\]\((.*?)\)/g,
       '<a href="$2" target="_blank" rel="noopener">$1</a>'
+    )
+    .replace(
+      /^(\s*)\[([^\]]+)\]$/gm,
+      '$1<strong class="section-heading">$2</strong>'
     );
   src = src.replace(/(?:^|\n)((?:\|[^\n]+\|\n)+)/g, (match, tableBlock) => {
     const rows = tableBlock.trim().split("\n");

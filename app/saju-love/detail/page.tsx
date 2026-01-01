@@ -340,14 +340,15 @@ function SajuDetailContent() {
         `/saju-love/result?id=${encodeURIComponent(data.id)}&paid=true`
       );
     }
-    // 할인 쿠폰 (5000원 할인)
+    // 할인 쿠폰 (3000원 할인)
     else if (couponCode === "boniiii" || couponCode === "차세린") {
+      const discount = 4000;
       setCouponError("");
-      setAppliedCoupon({ code: couponCode, discount: 2000 });
+      setAppliedCoupon({ code: couponCode, discount });
 
       // 결제 위젯 금액 업데이트
       if (paymentWidgetRef.current) {
-        const newPrice = PAYMENT_CONFIG.price - 5000;
+        const newPrice = PAYMENT_CONFIG.price - discount;
         paymentWidgetRef.current.renderPaymentMethods("#saju-payment-method", {
           value: newPrice,
         });
@@ -764,7 +765,9 @@ function SajuDetailContent() {
 
                 {/* 할인 */}
                 <div className="payment-row discount">
-                  <span className="payment-row-label">병오년(丙午年) 1월 특가 할인</span>
+                  <span className="payment-row-label">
+                    병오년(丙午年) 1월 특가 할인
+                  </span>
                   <div className="payment-row-discount-value">
                     <span className="discount-badge">
                       {Math.floor(
