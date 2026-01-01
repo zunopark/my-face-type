@@ -1343,34 +1343,48 @@
 }
 
 .saju_result_page .card_header {
-  margin-bottom: 28px;
-  padding-bottom: 0;
-  border-bottom: none;
+  margin-bottom: 48px;
+  padding: 0;
   text-align: center;
+  background: transparent;
+  position: relative;
+}
+
+.saju_result_page .card_header::after {
+  content: "";
+  display: block;
+  width: 40px;
+  height: 2px;
+  background: #d4a5a5;
+  margin: 24px auto 0;
 }
 
 .saju_result_page .card_label {
   display: inline-block;
-  padding: 6px 16px;
-  background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
-  color: #fff;
+  padding: 0;
+  background: none;
+  color: #c0392b;
+  font-family: 'Pretendard', sans-serif;
   font-size: 13px;
-  font-weight: 700;
-  border-radius: 16px;
+  font-weight: 600;
+  letter-spacing: 3px;
   margin-bottom: 12px;
+  text-transform: uppercase;
 }
 
 .saju_result_page .card_title {
   font-family: "KimjungchulMyungjo-Bold", serif;
-  font-size: 20px;
+  font-size: 24px;
   font-weight: 700;
-  color: #3a2a2a;
+  color: #2a2a2a;
   margin: 0;
   letter-spacing: 1px;
+  line-height: 1.6;
 }
 
 /* 본문 텍스트 공통 (MaruBuri) */
 .saju_result_page .card_content,
+.saju_result_page .section_content,
 .saju_result_page .intro_section_content,
 .saju_result_page .saju_explain_text,
 .saju_result_page .welcome_text,
@@ -2009,9 +2023,9 @@
   }
 }
 
-/* 카드 내 섹션 스타일 (인트로 스타일과 통일) */
+/* 카드 내 섹션 스타일 (보고서 스타일) */
 .saju_result_page .report_card .chapter_section {
-  margin: 0 0 48px 0;
+  margin: 0 0 56px 0;
   padding: 0;
   background: transparent;
   border: none;
@@ -2024,15 +2038,19 @@
 
 .saju_result_page .report_card .section_title {
   font-family: "KimjungchulMyungjo-Bold", serif;
-  font-size: 18px;
+  font-size: 17px;
   font-weight: 700;
-  color: #3a2a2a;
+  color: #c0392b;
   text-align: center;
-  margin: 0 0 8px 0;
-  border: none;
-  padding: 0;
+  margin: 0 0 24px 0;
+  padding: 16px 0;
   display: block;
   gap: 0;
+  letter-spacing: 1px;
+  position: relative;
+  background: linear-gradient(to right, transparent, #fff8f6 20%, #fff8f6 80%, transparent);
+  border-top: 1px solid #f0d8d8;
+  border-bottom: 1px solid #f0d8d8;
 }
 
 .saju_result_page .report_card .section_number {
@@ -2055,10 +2073,18 @@
   font-size: 15px;
   line-height: 2;
   color: #4a3a3a;
+  padding: 8px 0 0 0;
+  text-align: justify;
+  word-break: keep-all;
 }
 
 .saju_result_page .report_card .section_content p {
-  margin: 0 0 20px 0;
+  margin: 0 0 24px 0;
+  text-indent: 0.5em;
+}
+
+.saju_result_page .report_card .section_content p:first-child {
+  margin-top: 8px;
 }
 
 .saju_result_page .report_card .section_content p:last-child {
