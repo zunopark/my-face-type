@@ -287,7 +287,9 @@ function SajuLoveResultContent() {
   const [showTocModal, setShowTocModal] = useState(false);
   const [showExitModal, setShowExitModal] = useState(false);
   const [isAnalyzing, setIsAnalyzing] = useState(false);
+  const [analysisComplete, setAnalysisComplete] = useState(false);
   const [bgFadeIn, setBgFadeIn] = useState(false);
+  const pendingDataRef = useRef<SajuLoveRecord | null>(null);
 
   // 현재 메시지의 배경 이미지
   const currentBgImage =
@@ -1082,38 +1084,19 @@ function SajuLoveResultContent() {
 
         stopLoadingMessages();
         setIsAnalyzing(false);
-        setData(updatedData);
 
         // 성공 시 재시도 카운트 리셋
         sessionStorage.removeItem(`saju_retry_${storedData.id}`);
 
-        // 메시지 리스트 생성
-        const messageList = buildMessageList(updatedData);
-
-        // 이미 partial로 시작했다면 → 1장으로 이동하며 "기다리셨죠" 메시지
+        // WaitingCard가 있으면 100% 애니메이션 후 전환 (pendingData에 저장)
         if (partialStartedRef.current) {
-          const chapter1IntroIndex = messageList.findIndex(
-            (m) => m.id === "chapter-chapter1-intro"
-          );
-          if (chapter1IntroIndex >= 0) {
-            const nextMsg = messageList[chapter1IntroIndex];
-            // 상태를 먼저 모두 설정한 후 메시지 표시
-            setMessages(messageList);
-            setCurrentIndex(chapter1IntroIndex);
-            setShowReport(false);
-            setIsLoading(false);
-            setTimeout(() => {
-              typeText(
-                `오래 기다리셨죠? 분석이 완료됐어요!\n\n${nextMsg.content}`,
-                () => setShowButtons(true)
-              );
-            }, 100);
-          } else {
-            setMessages(messageList);
-            setIsLoading(false);
-          }
+          pendingDataRef.current = updatedData;
+          setAnalysisComplete(true);
+          // WaitingCard의 onTransition 콜백에서 실제 전환 처리
         } else {
-          // 아직 partial 시작 전이면 → 첫 번째 메시지 자동 시작
+          // 아직 partial 시작 전이면 → 바로 전환
+          setData(updatedData);
+          const messageList = buildMessageList(updatedData);
           setMessages(messageList);
           setIsLoading(false);
           setTimeout(() => {
@@ -1548,7 +1531,38 @@ function SajuLoveResultContent() {
               />
             )}
             {currentMsg.type === "waiting" && (
-              <WaitingCard userName={userName} />
+              <WaitingCard
+                userName={userName}
+                isComplete={analysisComplete}
+                onTransition={() => {
+                  if (pendingDataRef.current) {
+                    const updatedData = pendingDataRef.current;
+                    setData(updatedData);
+                    const messageList = buildMessageList(updatedData);
+                    const chapter1IntroIndex = messageList.findIndex(
+                      (m) => m.id === "chapter-chapter1-intro"
+                    );
+                    if (chapter1IntroIndex >= 0) {
+                      const nextMsg = messageList[chapter1IntroIndex];
+                      setMessages(messageList);
+                      setCurrentIndex(chapter1IntroIndex);
+                      setShowReport(false);
+                      setIsLoading(false);
+                      setTimeout(() => {
+                        typeText(
+                          `오래 기다리셨죠? 분석이 완료됐어요!\n\n${nextMsg.content}`,
+                          () => setShowButtons(true)
+                        );
+                      }, 100);
+                    } else {
+                      setMessages(messageList);
+                      setIsLoading(false);
+                    }
+                    pendingDataRef.current = null;
+                    setAnalysisComplete(false);
+                  }
+                }}
+              />
             )}
             {currentMsg.type === "ending" && <EndingCard data={data} />}
           </div>
@@ -4014,11 +4028,93 @@ function SajuCard({ data }: { data: SajuLoveRecord }) {
 }
 
 // 분석 대기 카드
-function WaitingCard({ userName }: { userName: string }) {
+function WaitingCard({
+  userName,
+  isComplete,
+  onTransition,
+}: {
+  userName: string;
+  isComplete?: boolean;
+  onTransition?: () => void;
+}) {
+  const [progress, setProgress] = useState(0);
+  const [isTransitioning, setIsTransitioning] = useState(false);
+  const progressIntervalRef = useRef<NodeJS.Timeout | null>(null);
+  const startTimeRef = useRef<number>(Date.now());
+
+  // 4분(240초) 동안 0-99% 불균일하게 진행
+  useEffect(() => {
+    const totalDuration = 240000; // 4분
+    const maxProgress = 99;
+
+    const updateProgress = () => {
+      const elapsed = Date.now() - startTimeRef.current;
+      const ratio = Math.min(elapsed / totalDuration, 1);
+
+      // 이징 함수: 처음엔 빠르고 점점 느려짐 (easeOutQuart)
+      const eased = 1 - Math.pow(1 - ratio, 4);
+      const newProgress = Math.floor(eased * maxProgress);
+
+      setProgress((prev) => Math.max(prev, newProgress));
+    };
+
+    progressIntervalRef.current = setInterval(updateProgress, 500);
+
+    return () => {
+      if (progressIntervalRef.current) {
+        clearInterval(progressIntervalRef.current);
+      }
+    };
+  }, []);
+
+  // API 완료 시 100%로 채우고 1초 뒤 전환
+  useEffect(() => {
+    if (isComplete && !isTransitioning) {
+      setIsTransitioning(true);
+
+      // 현재 진행률에서 100%까지 빠르게 채우기
+      const animateTo100 = () => {
+        const duration = 500; // 0.5초 동안 100%까지
+        const startProgress = progress;
+        const startTime = Date.now();
+
+        const animate = () => {
+          const elapsed = Date.now() - startTime;
+          const ratio = Math.min(elapsed / duration, 1);
+          const newProgress = Math.floor(
+            startProgress + (100 - startProgress) * ratio
+          );
+          setProgress(newProgress);
+
+          if (ratio < 1) {
+            requestAnimationFrame(animate);
+          } else {
+            // 100% 도달 후 1초 뒤 전환
+            setTimeout(() => {
+              onTransition?.();
+            }, 1000);
+          }
+        };
+
+        requestAnimationFrame(animate);
+      };
+
+      animateTo100();
+    }
+  }, [isComplete, isTransitioning, progress, onTransition]);
+
   return (
     <div className="report_card waiting_card">
       <div className="waiting_content">
-        <div className="waiting_spinner"></div>
+        <div className="waiting_progress_wrap">
+          <div className="waiting_progress_bar">
+            <div
+              className="waiting_progress_fill"
+              style={{ width: `${progress}%` }}
+            />
+          </div>
+          <span className="waiting_progress_text">{progress}%</span>
+        </div>
         <h2 className="waiting_title">보고서 작성 중...</h2>
         <p className="waiting_text">
           색동낭자가 {userName}님의
@@ -4026,15 +4122,10 @@ function WaitingCard({ userName }: { userName: string }) {
           연애 사주를 열심히 분석하고 있어요.
         </p>
         <p className="waiting_subtext">
-          조금만 기다려주세요!
+          잠시만 기다려주세요,
           <br />
-          완료되면 바로 알려드릴게요.
+          페이지를 나가면 처음부터 다시 시작해야 할 수 있어요!
         </p>
-        <div className="waiting_dots">
-          <span></span>
-          <span></span>
-          <span></span>
-        </div>
       </div>
     </div>
   );
