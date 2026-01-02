@@ -303,6 +303,8 @@ function SajuLoveResultContent() {
 
   // 리뷰 모달 상태
   const [showReviewModal, setShowReviewModal] = useState(false);
+  // 기존 리뷰 존재 여부 (미리 확인해서 review_prompt 카드 생성 여부 결정)
+  const [hasExistingReview, setHasExistingReview] = useState(false);
 
   // 결제 관련 상태
   const [showPaymentModal, setShowPaymentModal] = useState(false);
@@ -456,7 +458,7 @@ function SajuLoveResultContent() {
   // 메시지 리스트 생성 (전체 - 분석 완료 후)
   // 흐름: 첫 인사 → [1장] → [2장] → [3장] → 운명의 상대 이미지 → [4장] → 피해야 할 인연 이미지 → [5장] → [6장] → 엔딩
   const buildMessageList = useCallback(
-    (record: SajuLoveRecord): MessageItem[] => {
+    (record: SajuLoveRecord, skipReviewPrompt = false): MessageItem[] => {
       const result: MessageItem[] = [];
       const userName =
         record.loveAnalysis?.user_name || record.input?.userName || "고객";
@@ -555,8 +557,8 @@ function SajuLoveResultContent() {
           });
         }
 
-        // 5장 끝난 후 리뷰 유도
-        if (chapterNum === 5) {
+        // 5장 끝난 후 리뷰 유도 (이미 리뷰가 있으면 스킵)
+        if (chapterNum === 5 && !skipReviewPrompt) {
           result.push({
             id: "review-prompt",
             type: "review_prompt",
@@ -1261,7 +1263,7 @@ function SajuLoveResultContent() {
         } else {
           // 아직 partial 시작 전이면 → 바로 전환
           setData(updatedData);
-          const messageList = buildMessageList(updatedData);
+          const messageList = buildMessageList(updatedData, hasExistingReview);
           setMessages(messageList);
           setIsLoading(false);
           setTimeout(() => {
@@ -1447,6 +1449,12 @@ function SajuLoveResultContent() {
         return;
       }
 
+      // 기존 리뷰 존재 여부 미리 확인 (review_prompt 카드 표시 여부 결정)
+      const existingReview = await getReviewByRecordId("saju_love", record.id);
+      if (existingReview) {
+        setHasExistingReview(true);
+      }
+
       // 결과 페이지 방문 추적
       trackPageView("saju_love_result", {
         id: record.id,
@@ -1502,7 +1510,7 @@ function SajuLoveResultContent() {
       // 결제 완료 & 분석 완료: 전체 메시지 보여주기
       if (record.loveAnalysis) {
         setData(record);
-        const messageList = buildMessageList(record);
+        const messageList = buildMessageList(record, hasExistingReview);
         setMessages(messageList);
         setIsLoading(false);
         setTimeout(() => {
@@ -1574,7 +1582,7 @@ function SajuLoveResultContent() {
             clearInterval(checkInterval);
             setData(updated);
             setIsAnalyzing(false);
-            const messageList = buildMessageList(updated);
+            const messageList = buildMessageList(updated, hasExistingReview);
 
             // 1장으로 이동 - 상태를 먼저 모두 설정
             const chapter1IntroIndex = messageList.findIndex(
@@ -1845,7 +1853,7 @@ function SajuLoveResultContent() {
                   if (pendingDataRef.current) {
                     const updatedData = pendingDataRef.current;
                     setData(updatedData);
-                    const messageList = buildMessageList(updatedData);
+                    const messageList = buildMessageList(updatedData, hasExistingReview);
                     const chapter1IntroIndex = messageList.findIndex(
                       (m) => m.id === "chapter-chapter1-intro"
                     );
@@ -5354,6 +5362,9 @@ function ReviewInlineCard({
   const [content, setContent] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+
+  // 상위에서 이미 리뷰 존재 여부를 확인하고 review_prompt 카드를 생성하지 않으므로
+  // 여기까지 도달하면 리뷰가 없는 상태임
 
   const handleSubmit = async () => {
     if (!content.trim()) return;

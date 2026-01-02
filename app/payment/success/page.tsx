@@ -7,7 +7,7 @@ import { confirmPayment as confirmPaymentAction } from "@/app/actions/analyze";
 import { markSajuLovePaid, getSajuLoveRecord } from "@/lib/db/sajuLoveDB";
 import { markFaceReportPaid } from "@/lib/db/faceAnalysisDB";
 import { markCoupleAnalysisPaid } from "@/lib/db/coupleAnalysisDB";
-import { createSajuAnalysis, getSajuAnalysisByShareId } from "@/lib/db/sajuAnalysisDB";
+import { createSajuAnalysis, getSajuAnalysisByShareId, updateSajuAnalysis } from "@/lib/db/sajuAnalysisDB";
 import { uploadSajuLoveImages } from "@/lib/storage/imageStorage";
 
 const MAX_RETRY = 3;
@@ -144,11 +144,20 @@ function SuccessContent() {
             // IndexedDB 업데이트
             await markSajuLovePaid(resultId, paymentInfo);
 
-            // Supabase에 저장 (이미 저장되어 있지 않은 경우만)
+            // Supabase 결제 상태 업데이트
             const sajuRecord = await getSajuLoveRecord(resultId);
             if (sajuRecord) {
               const existsInSupabase = await getSajuAnalysisByShareId(resultId);
-              if (!existsInSupabase) {
+              if (existsInSupabase) {
+                // 이미 있으면 결제 상태만 업데이트
+                await updateSajuAnalysis(resultId, {
+                  is_paid: true,
+                  paid_at: new Date().toISOString(),
+                  payment_info: paymentInfo,
+                });
+                console.log("✅ Supabase 결제 상태 업데이트 완료");
+              } else {
+                // 없으면 새로 생성
                 // 이미지 Storage에 업로드
                 const imagePaths: string[] = [];
                 if (sajuRecord.loveAnalysis?.ideal_partner_image?.image_base64 ||

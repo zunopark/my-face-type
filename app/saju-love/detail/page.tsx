@@ -7,18 +7,15 @@ import {
   trackPaymentModalOpen,
   trackPaymentModalClose,
   trackPaymentAttempt,
-  trackPaymentSuccess,
 } from "@/lib/mixpanel";
 import {
   getSajuLoveRecord,
   SajuLoveRecord,
-  markSajuLovePaid,
   saveSajuLoveRecord,
 } from "@/lib/db/sajuLoveDB";
 import {
   getSajuAnalysisByShareId,
   createSajuAnalysis,
-  updateSajuAnalysis,
 } from "@/lib/db/sajuAnalysisDB";
 import "./detail.css";
 
@@ -393,59 +390,15 @@ function SajuDetailContent() {
   const handleCouponSubmit = useCallback(async () => {
     if (!data || !couponCode.trim()) return;
 
-    // 무료 쿠폰 (전액 할인)
+    // 할인 쿠폰 설정
+    let discount = 0;
     if (couponCode === "1234" || couponCode === "chaerin") {
-      setCouponError("");
-
-      // 쿠폰 결제 성공 추적
-      trackPaymentSuccess("saju_love", {
-        id: data.id,
-        price: 0,
-        payment_method: "coupon",
-        coupon_code: couponCode,
-        // 유저 입력 정보
-        user_name: data.input.userName,
-        gender: data.input.gender,
-        birth_date: data.input.date,
-        birth_time: data.input.time || "모름",
-        calendar: data.input.calendar,
-        status: data.input.status,
-        user_concern: data.input.userConcern,
-        // 사주 정보
-        day_master: data.sajuData.dayMaster?.char,
-        day_master_title: data.sajuData.dayMaster?.title,
-        day_master_element: data.sajuData.dayMaster?.element,
-        day_master_yinyang: data.sajuData.dayMaster?.yinYang,
-      });
-
-      // 결제 완료 처리
-      const paymentInfo = {
-        method: "coupon" as const,
-        price: 0,
-        couponCode: couponCode,
-      };
-      await markSajuLovePaid(data.id, paymentInfo);
-
-      // Supabase 업데이트 (결제 완료)
-      try {
-        await updateSajuAnalysis(data.id, {
-          is_paid: true,
-          paid_at: new Date().toISOString(),
-          payment_info: paymentInfo,
-        });
-        console.log("✅ Supabase 결제 상태 업데이트 완료 (쿠폰)");
-      } catch (err) {
-        console.error("Supabase 업데이트 실패:", err);
-      }
-
-      // 결제 완료 후 result 페이지로 이동 (paid=true 상태로)
-      router.push(
-        `/saju-love/result?id=${encodeURIComponent(data.id)}&paid=true`
-      );
+      discount = 23800; // 14,000원 할인
+    } else if (couponCode === "boniiii" || couponCode === "차세린") {
+      discount = 4000; // 4,000원 할인
     }
-    // 할인 쿠폰 (3000원 할인)
-    else if (couponCode === "boniiii" || couponCode === "차세린") {
-      const discount = 4000;
+
+    if (discount > 0) {
       setCouponError("");
       setAppliedCoupon({ code: couponCode, discount });
 
@@ -459,7 +412,7 @@ function SajuDetailContent() {
     } else {
       setCouponError("유효하지 않은 쿠폰입니다");
     }
-  }, [data, couponCode, router]);
+  }, [data, couponCode]);
 
   // 결제 요청
   const handlePaymentRequest = useCallback(async () => {
