@@ -1416,3 +1416,147 @@
   display: block;
   margin-top: 40px;
 }
+
+/* ============================================
+   학생 할인 모달
+   ============================================ */
+
+.student_modal_overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 20px;
+}
+
+.student_modal {
+  background: #fffcf8;
+  border-radius: 16px;
+  padding: 28px 24px;
+  max-width: 300px;
+  width: 100%;
+  text-align: center;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+}
+
+.student_modal_title {
+  font-size: 17px;
+  font-weight: 600;
+  color: #3a2a2a;
+  margin: 0 0 12px 0;
+}
+
+.student_modal_desc {
+  font-size: 14px;
+  color: #666;
+  margin: 0 0 24px 0;
+  line-height: 1.6;
+}
+
+.student_modal_desc strong {
+  color: #e74c3c;
+  font-weight: 700;
+}
+
+.student_modal_list {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 20px 0;
+  text-align: left;
+}
+
+.student_modal_list li {
+  font-size: 13px;
+  color: #666;
+  padding: 6px 0;
+  padding-left: 20px;
+  position: relative;
+}
+
+.student_modal_list li::before {
+  content: "✓";
+  position: absolute;
+  left: 0;
+  color: #e74c3c;
+  font-weight: 600;
+}
+
+.student_modal_list li.bonus {
+  margin-top: 8px;
+  padding-top: 10px;
+  border-top: 1px dashed #e8e0d8;
+  color: #c0392b;
+  font-weight: 500;
+}
+
+.student_modal_list li.bonus::before {
+  content: "🎁";
+}
+
+.student_modal_confirm {
+  width: 100%;
+  padding: 16px 20px;
+  border-radius: 12px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  background: #e74c3c;
+  border: none;
+  color: #fff;
+}
+
+/* 하단 버튼 - 학생 할인 적용됨 배지 */
+.student_applied_badge {
+  font-size: 12px;
+  color: #e74c3c;
+  text-align: center;
+  margin: 8px 0 0 0;
+  font-weight: 500;
+}
+
+/* 하단 버튼 커피 아이콘 */
+.btn_coffee_icon {
+  margin-right: 6px;
+}
+
+/* ============================================
+   결제 모달 - 학생 할인 스타일
+   ============================================ */
+
+.student-payment-banner {
+  padding: 12px 20px;
+  background: #fff5f5;
+  border: 1px solid #ffe0e0;
+  border-radius: 8px;
+  margin-top: 16px;
+  text-align: center;
+}
+
+.student-payment-banner .banner-emoji {
+  display: none;
+}
+
+.student-payment-banner .banner-text {
+  font-size: 14px;
+  font-weight: 500;
+  color: #e74c3c;
+  margin: 0;
+}
+
+.payment-row.discount.student-discount .payment-row-label {
+  color: #e74c3c;
+}
+
+.discount-badge.student {
+  background: #e74c3c;
+}
+
+.payment-row-final-value.student-price {
+  color: #e74c3c;
+}
