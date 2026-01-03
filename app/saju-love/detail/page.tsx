@@ -60,7 +60,10 @@ const calculateAge = (birthDateStr: string): number => {
   const birthDate = new Date(birthDateStr.replace(/-/g, "/"));
   let age = today.getFullYear() - birthDate.getFullYear();
   const monthDiff = today.getMonth() - birthDate.getMonth();
-  if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+  if (
+    monthDiff < 0 ||
+    (monthDiff === 0 && today.getDate() < birthDate.getDate())
+  ) {
     age--;
   }
   return age;
@@ -265,23 +268,40 @@ function SajuDetailContent() {
               userConcern: supabaseRecord.user_info?.userConcern || "",
               status: supabaseRecord.user_info?.status || "",
             },
-            rawSajuData: supabaseRecord.raw_saju_data as SajuLoveRecord["rawSajuData"],
+            rawSajuData:
+              supabaseRecord.raw_saju_data as SajuLoveRecord["rawSajuData"],
             sajuData: {
-              dayMaster: (supabaseRecord.raw_saju_data as Record<string, unknown>)?.dayMaster as SajuLoveRecord["sajuData"]["dayMaster"] || { char: "", title: "" },
-              pillars: (supabaseRecord.raw_saju_data as Record<string, unknown>)?.pillars as SajuLoveRecord["sajuData"]["pillars"] || {},
-              fiveElements: (supabaseRecord.raw_saju_data as Record<string, unknown>)?.fiveElements as SajuLoveRecord["sajuData"]["fiveElements"],
-              loveFacts: (supabaseRecord.raw_saju_data as Record<string, unknown>)?.loveFacts as SajuLoveRecord["sajuData"]["loveFacts"],
-              sinsal: (supabaseRecord.raw_saju_data as Record<string, unknown>)?.sinsal as SajuLoveRecord["sajuData"]["sinsal"],
-              daeun: (supabaseRecord.raw_saju_data as Record<string, unknown>)?.daeun as SajuLoveRecord["sajuData"]["daeun"],
-              zodiac: (supabaseRecord.raw_saju_data as Record<string, unknown>)?.zodiac as SajuLoveRecord["sajuData"]["zodiac"],
+              dayMaster: ((
+                supabaseRecord.raw_saju_data as Record<string, unknown>
+              )?.dayMaster as SajuLoveRecord["sajuData"]["dayMaster"]) || {
+                char: "",
+                title: "",
+              },
+              pillars:
+                ((supabaseRecord.raw_saju_data as Record<string, unknown>)
+                  ?.pillars as SajuLoveRecord["sajuData"]["pillars"]) || {},
+              fiveElements: (
+                supabaseRecord.raw_saju_data as Record<string, unknown>
+              )?.fiveElements as SajuLoveRecord["sajuData"]["fiveElements"],
+              loveFacts: (
+                supabaseRecord.raw_saju_data as Record<string, unknown>
+              )?.loveFacts as SajuLoveRecord["sajuData"]["loveFacts"],
+              sinsal: (supabaseRecord.raw_saju_data as Record<string, unknown>)
+                ?.sinsal as SajuLoveRecord["sajuData"]["sinsal"],
+              daeun: (supabaseRecord.raw_saju_data as Record<string, unknown>)
+                ?.daeun as SajuLoveRecord["sajuData"]["daeun"],
+              zodiac: (supabaseRecord.raw_saju_data as Record<string, unknown>)
+                ?.zodiac as SajuLoveRecord["sajuData"]["zodiac"],
             },
             loveAnalysis: null, // detail 페이지에서는 분석 결과 필요 없음
-            paymentInfo: supabaseRecord.payment_info ? {
-              method: supabaseRecord.payment_info.method,
-              price: supabaseRecord.payment_info.price,
-              couponCode: supabaseRecord.payment_info.couponCode,
-              isDiscount: supabaseRecord.payment_info.isDiscount,
-            } : undefined,
+            paymentInfo: supabaseRecord.payment_info
+              ? {
+                  method: supabaseRecord.payment_info.method,
+                  price: supabaseRecord.payment_info.price,
+                  couponCode: supabaseRecord.payment_info.couponCode,
+                  isDiscount: supabaseRecord.payment_info.isDiscount,
+                }
+              : undefined,
           };
 
           // IndexedDB에도 저장 (다음 방문 시 로컬에서 빠르게 로드)
@@ -316,10 +336,12 @@ function SajuDetailContent() {
                 status: record.input.status,
               },
               raw_saju_data: record.rawSajuData || null,
-              analysis_result: record.loveAnalysis ? {
-                user_name: record.loveAnalysis.user_name,
-                chapters: record.loveAnalysis.chapters,
-              } : null,
+              analysis_result: record.loveAnalysis
+                ? {
+                    user_name: record.loveAnalysis.user_name,
+                    chapters: record.loveAnalysis.chapters,
+                  }
+                : null,
               image_paths: [],
               is_paid: record.paid || false,
               paid_at: record.paidAt || null,
@@ -390,7 +412,9 @@ function SajuDetailContent() {
     if (!data) return;
 
     // 학생 쿠폰 적용 여부에 따라 가격 결정
-    const paymentPrice = studentCouponApplied ? PAYMENT_CONFIG.studentPrice : PAYMENT_CONFIG.price;
+    const paymentPrice = studentCouponApplied
+      ? PAYMENT_CONFIG.studentPrice
+      : PAYMENT_CONFIG.price;
 
     trackPaymentModalOpen("saju_love", {
       id: data.id,
@@ -428,8 +452,8 @@ function SajuDetailContent() {
 
     // 할인 쿠폰 설정
     let discount = 0;
-    if (couponCode === "1234" || couponCode === "chaerin") {
-      discount = 23800; // 14,000원 할인
+    if (couponCode === "coupon10000" || couponCode === "chaerin") {
+      discount = 10000; // 14,000원 할인
     } else if (couponCode === "boniiii" || couponCode === "차세린") {
       discount = 4000; // 4,000원 할인
     }
@@ -455,7 +479,9 @@ function SajuDetailContent() {
     if (!paymentWidgetRef.current || !data) return;
 
     // 학생 쿠폰 적용 여부에 따라 가격 결정
-    const basePrice = studentCouponApplied ? PAYMENT_CONFIG.studentPrice : PAYMENT_CONFIG.price;
+    const basePrice = studentCouponApplied
+      ? PAYMENT_CONFIG.studentPrice
+      : PAYMENT_CONFIG.price;
 
     const finalPrice = appliedCoupon
       ? basePrice - appliedCoupon.discount
@@ -475,8 +501,16 @@ function SajuDetailContent() {
     });
 
     try {
-      const orderSuffix = studentCouponApplied ? "-student" : (appliedCoupon ? `-${appliedCoupon.code}` : "");
-      const orderNameSuffix = studentCouponApplied ? " - 학생 할인" : (appliedCoupon ? ` - ${appliedCoupon.code} 할인` : "");
+      const orderSuffix = studentCouponApplied
+        ? "-student"
+        : appliedCoupon
+        ? `-${appliedCoupon.code}`
+        : "";
+      const orderNameSuffix = studentCouponApplied
+        ? " - 학생 할인"
+        : appliedCoupon
+        ? ` - ${appliedCoupon.code} 할인`
+        : "";
 
       await paymentWidgetRef.current.requestPayment({
         orderId: `saju-love${orderSuffix}_${Date.now()}`,
@@ -537,7 +571,9 @@ function SajuDetailContent() {
   const birthTime = formatTimeToSi(input.time);
 
   // 학생 할인율 계산
-  const studentDiscount = Math.floor((1 - PAYMENT_CONFIG.studentPrice / PAYMENT_CONFIG.originalPrice) * 100);
+  const studentDiscount = Math.floor(
+    (1 - PAYMENT_CONFIG.studentPrice / PAYMENT_CONFIG.originalPrice) * 100
+  );
 
   // 오행 한자 맵
   const elementHanjaMap: Record<string, string> = {
@@ -840,11 +876,15 @@ function SajuDetailContent() {
 
       {/* 학생 할인 모달 */}
       {showStudentModal && (
-        <div className="student_modal_overlay" onClick={() => setShowStudentModal(false)}>
+        <div
+          className="student_modal_overlay"
+          onClick={() => setShowStudentModal(false)}
+        >
           <div className="student_modal" onClick={(e) => e.stopPropagation()}>
             <p className="student_modal_title">혹시 학생이신가요?</p>
             <p className="student_modal_desc">
-              학생분들의 연애를 응원해요!<br />
+              학생분들의 연애를 응원해요!
+              <br />
               학생이시면 <strong>커피 한 잔</strong>에 풀이하고 있어요
             </p>
             <ul className="student_modal_list">
@@ -873,7 +913,9 @@ function SajuDetailContent() {
             <div className="modal-content">
               <div className="payment-header">
                 <div className="payment-title">
-                  {studentCouponApplied ? "🎓 학생 특별 복채" : "색동낭자 연애 사주 복채"}
+                  {studentCouponApplied
+                    ? "🎓 학생 특별 복채"
+                    : "색동낭자 연애 사주 복채"}
                 </div>
                 <div className="payment-close" onClick={closePaymentModal}>
                   ✕
@@ -904,9 +946,7 @@ function SajuDetailContent() {
                 {/* 할인 - 학생/일반 분기 */}
                 {studentCouponApplied ? (
                   <div className="payment-row discount student-discount">
-                    <span className="payment-row-label">
-                      🎓 학생 특별 할인
-                    </span>
+                    <span className="payment-row-label">🎓 학생 특별 할인</span>
                     <div className="payment-row-discount-value">
                       <span className="discount-badge student">
                         {studentDiscount}%
@@ -914,7 +954,8 @@ function SajuDetailContent() {
                       <span className="discount-amount">
                         -
                         {(
-                          PAYMENT_CONFIG.originalPrice - PAYMENT_CONFIG.studentPrice
+                          PAYMENT_CONFIG.originalPrice -
+                          PAYMENT_CONFIG.studentPrice
                         ).toLocaleString()}
                         원
                       </span>
@@ -929,7 +970,8 @@ function SajuDetailContent() {
                       <span className="discount-badge">
                         {Math.floor(
                           (1 -
-                            PAYMENT_CONFIG.price / PAYMENT_CONFIG.originalPrice) *
+                            PAYMENT_CONFIG.price /
+                              PAYMENT_CONFIG.originalPrice) *
                             100
                         )}
                         %
@@ -963,14 +1005,18 @@ function SajuDetailContent() {
                 {/* 최종 금액 */}
                 <div className="payment-row final">
                   <span className="payment-row-label">최종 결제금액</span>
-                  <span className={`payment-row-final-value ${studentCouponApplied ? "student-price" : ""}`}>
+                  <span
+                    className={`payment-row-final-value ${
+                      studentCouponApplied ? "student-price" : ""
+                    }`}
+                  >
                     {studentCouponApplied
                       ? PAYMENT_CONFIG.studentPrice.toLocaleString()
                       : appliedCoupon
-                        ? (
-                            PAYMENT_CONFIG.price - appliedCoupon.discount
-                          ).toLocaleString()
-                        : PAYMENT_CONFIG.price.toLocaleString()}
+                      ? (
+                          PAYMENT_CONFIG.price - appliedCoupon.discount
+                        ).toLocaleString()
+                      : PAYMENT_CONFIG.price.toLocaleString()}
                     원
                   </span>
                 </div>
