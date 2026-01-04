@@ -106,10 +106,9 @@ export async function getReviewByRecordId(
     .select("*")
     .eq("service_type", serviceType)
     .eq("record_id", recordId)
-    .single();
+    .maybeSingle();
 
   if (error) {
-    if (error.code === "PGRST116") return null; // 결과 없음
     console.error("리뷰 조회 실패:", error);
     return null;
   }

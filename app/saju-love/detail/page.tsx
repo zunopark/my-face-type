@@ -456,6 +456,8 @@ function SajuDetailContent() {
       discount = 10000; // 14,000원 할인
     } else if (couponCode === "boniiii" || couponCode === "차세린") {
       discount = 4000; // 4,000원 할인
+    } else if (couponCode === "free-" || couponCode === "차세린") {
+      discount = 23800; // 4,000원 할인
     }
 
     if (discount > 0) {
