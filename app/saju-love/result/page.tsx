@@ -1339,6 +1339,7 @@ function SajuLoveResultContent() {
     }
 
     const loadData = async () => {
+      try {
       let record = await getSajuLoveRecord(resultId);
 
       // IndexedDB에 없으면 Supabase에서 조회 (공유 링크로 접근한 경우)
@@ -1403,16 +1404,24 @@ function SajuLoveResultContent() {
 
           // 이미지를 base64로 변환해서 IndexedDB에 저장 (다음 방문 시 빠르게 로드)
           try {
-            // Storage URL에서 이미지를 가져와서 base64로 변환
+            // Storage URL에서 이미지를 가져와서 base64로 변환 (5초 타임아웃)
             const fetchImageAsBase64 = async (url: string): Promise<string> => {
-              const response = await fetch(url);
-              const blob = await response.blob();
-              return new Promise((resolve, reject) => {
-                const reader = new FileReader();
-                reader.onloadend = () => resolve(reader.result as string);
-                reader.onerror = reject;
-                reader.readAsDataURL(blob);
-              });
+              const controller = new AbortController();
+              const timeoutId = setTimeout(() => controller.abort(), 5000);
+              try {
+                const response = await fetch(url, { signal: controller.signal });
+                clearTimeout(timeoutId);
+                const blob = await response.blob();
+                return new Promise((resolve, reject) => {
+                  const reader = new FileReader();
+                  reader.onloadend = () => resolve(reader.result as string);
+                  reader.onerror = reject;
+                  reader.readAsDataURL(blob);
+                });
+              } catch {
+                clearTimeout(timeoutId);
+                throw new Error("이미지 로드 타임아웃");
+              }
             };
 
             // 이미지 base64 변환
@@ -1618,6 +1627,11 @@ function SajuLoveResultContent() {
       // 분석 시작
       partialStartedRef.current = true;
       fetchLoveAnalysis(record);
+      } catch (err) {
+        console.error("loadData 에러:", err);
+        setError("데이터를 불러오는 중 오류가 발생했습니다.");
+        setIsLoading(false);
+      }
     };
 
     loadData();
