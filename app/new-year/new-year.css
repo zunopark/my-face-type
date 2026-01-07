@@ -466,3 +466,233 @@ textarea.input_field {
   padding: 40px 20px;
   color: #ff6b6b;
 }
+
+/* 사주 정보 카드 */
+.info_card {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 215, 0, 0.3);
+  border-radius: 16px;
+  padding: 20px;
+  margin-bottom: 24px;
+}
+
+.info_row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.info_row:last-child {
+  border-bottom: none;
+}
+
+.info_label {
+  font-size: 14px;
+  color: #b8b8b8;
+}
+
+.info_value {
+  font-size: 15px;
+  font-weight: 600;
+  color: #fff;
+}
+
+/* 사주 팔자 테이블 섹션 */
+.pillars_section {
+  margin-bottom: 24px;
+}
+
+.pillars_title {
+  font-size: 16px;
+  font-weight: 600;
+  color: #ffd700;
+  margin-bottom: 16px;
+  text-align: center;
+}
+
+.saju_table_wrap {
+  overflow-x: auto;
+}
+
+.saju_table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: center;
+}
+
+.saju_table th {
+  font-size: 12px;
+  font-weight: 500;
+  color: #b8b8b8;
+  padding: 8px 4px;
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.saju_table td {
+  padding: 12px 4px;
+  vertical-align: middle;
+}
+
+.saju_table .row_label {
+  font-size: 12px;
+  color: #b8b8b8;
+  background: rgba(255, 255, 255, 0.05);
+  width: 50px;
+}
+
+.saju_table .cell_empty {
+  color: #666;
+}
+
+.saju_table .char_main {
+  display: block;
+  font-size: 20px;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+
+.saju_table .char_element {
+  display: block;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.row_cheongan td,
+.row_jiji td {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* 2026년 소원 섹션 */
+.wish_section {
+  background: rgba(255, 107, 107, 0.1);
+  border: 1px solid rgba(255, 107, 107, 0.3);
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 24px;
+}
+
+.wish_title {
+  font-size: 14px;
+  font-weight: 600;
+  color: #ff6b6b;
+  margin-bottom: 8px;
+}
+
+.wish_content {
+  font-size: 14px;
+  color: #e8e8e8;
+  line-height: 1.6;
+}
+
+/* 분석 버튼 */
+.analyze_btn {
+  width: 100%;
+  padding: 18px;
+  font-size: 18px;
+  font-weight: 700;
+  color: #1a1a2e;
+  background: linear-gradient(135deg, #ffd700 0%, #ffaa00 100%);
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  box-shadow: 0 4px 20px rgba(255, 215, 0, 0.4);
+  transition: transform 0.2s, opacity 0.2s;
+  margin-bottom: 12px;
+}
+
+.analyze_btn:hover {
+  transform: translateY(-2px);
+}
+
+.analyze_btn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.back_btn_small {
+  width: 100%;
+  padding: 14px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #b8b8b8;
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.back_btn_small:hover {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+/* 로딩 프로그레스 */
+.loading_content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  max-width: 320px;
+  padding: 0 20px;
+}
+
+.progress_wrap {
+  width: 100%;
+  margin-top: 32px;
+}
+
+.progress_bar {
+  width: 100%;
+  height: 8px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.progress_fill {
+  height: 100%;
+  background: linear-gradient(90deg, #ffd700 0%, #ffaa00 100%);
+  border-radius: 4px;
+  transition: width 0.5s ease-out;
+}
+
+.progress_text {
+  text-align: center;
+  font-size: 24px;
+  font-weight: 700;
+  color: #ffd700;
+  margin-top: 12px;
+}
+
+/* 로딩 팁 */
+.loading_tips {
+  margin-top: 40px;
+  text-align: center;
+  width: 100%;
+}
+
+.tips_title {
+  font-size: 14px;
+  color: #b8b8b8;
+  margin-bottom: 16px;
+}
+
+.tips_list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.tips_list li {
+  font-size: 14px;
+  color: #e8e8e8;
+  padding: 8px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.tips_list li:last-child {
+  border-bottom: none;
+}

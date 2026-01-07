@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="AI 연애 사주 분석 결과 | 당신의 연애운을 확인하세요"
+    />
+    <meta name="author" content="관상가 양반 | Nmax" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="AI 연애 사주 분석 결과" />
+    <link rel="stylesheet" href="styles/style.css" />
+    <link
+      href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=favorite"
+    />
+
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=East+Sea+Dokdo&display=swap");
+      @import url("https://fonts.googleapis.com/css2?family=Yeon+Sung&display=swap");
+      @font-face {
+        font-family: "KimjungchulMyungjo-Bold";
+        src: url("https://gcore.jsdelivr.net/gh/projectnoonnu/noonfonts_2302_01@1.0/KimjungchulMyungjo-Bold.woff2")
+          format("woff2");
+        font-style: normal;
+      }
+    </style>
+
+    <title>연애 사주 분석 결과 | AI 사주</title>
+
+    <link
+      rel="shortcut icon"
+      href="https://keen-poitras-075b07.netlify.app/favicon.ico"
+      type="image/x-icon"
+    />
+  </head>
+  <body>
+    <div class="main_body_wrap">
+      <header id="saju" class="header_chat_wrap"></header>
+
+      <div class="main_content_wrap">
+        <!-- 로딩 상태 -->
+        <div class="loading_wrap" id="loadingWrap">
+          <div class="loading_spinner"></div>
+          <div class="loading_text">분석 결과를 불러오는 중...</div>
+        </div>
+
+        <!-- 에러 상태 -->
+        <div class="error_wrap hidden" id="errorWrap">
+          <span class="material-icons error_icon">error_outline</span>
+          <div class="error_text">결과를 불러올 수 없습니다</div>
+          <a href="/saju_love/" class="error_btn">다시 분석하기</a>
+        </div>
+
+        <!-- 결과 컨텐츠 -->
+        <div class="result_wrap hidden" id="resultWrap">
+          <!-- 헤더 섹션 -->
+          <div class="result_header">
+            <div class="result_icon">
+              <span class="material-symbols-outlined">favorite</span>
+            </div>
+            <h1 class="result_title">연애 사주 분석 결과</h1>
+            <p class="result_date" id="resultDate"></p>
+          </div>
+
+          <!-- 사용자 정보 -->
+          <div class="user_info_card">
+            <div class="info_row">
+              <span class="info_label">이름</span>
+              <span class="info_value" id="userNameDisplay"></span>
+            </div>
+            <div class="info_row">
+              <span class="info_label">성별</span>
+              <span class="info_value" id="userGender"></span>
+            </div>
+            <div class="info_row">
+              <span class="info_label">생년월일</span>
+              <span class="info_value" id="userBirthDate"></span>
+            </div>
+            <div class="info_row" id="birthTimeRow">
+              <span class="info_label">태어난 시간</span>
+              <span class="info_value" id="userBirthTime"></span>
+            </div>
+          </div>
+
+          <!-- 일간 정보 -->
+          <div class="section_card">
+            <h2 class="section_title">
+              <span class="material-icons">stars</span>
+              일간 (나의 본질)
+            </h2>
+            <div class="daymaster_wrap">
+              <div class="daymaster_char" id="dayMasterChar"></div>
+              <div class="daymaster_info">
+                <div class="daymaster_title" id="dayMasterTitle"></div>
+                <div class="daymaster_detail">
+                  <span id="dayMasterElement"></span> |
+                  <span id="dayMasterYinYang"></span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 사주 팔자 -->
+          <div class="section_card">
+            <h2 class="section_title">
+              <span class="material-icons">view_column</span>
+              사주 팔자
+            </h2>
+            <div class="pillars_wrap" id="pillarsWrap"></div>
+          </div>
+
+          <!-- 오행 분포 -->
+          <div class="section_card">
+            <h2 class="section_title">
+              <span class="material-icons">pie_chart</span>
+              오행 분포
+            </h2>
+            <div class="five_elements_wrap" id="fiveElementsWrap"></div>
+            <div class="strength_info">
+              <span class="strength_label">신강/신약:</span>
+              <span class="strength_value" id="strengthValue"></span>
+            </div>
+          </div>
+
+          <!-- 연애 관련 정보 -->
+          <div class="section_card">
+            <h2 class="section_title">
+              <span class="material-icons">favorite</span>
+              연애 사주 요소
+            </h2>
+
+            <div class="love_fact_item">
+              <div class="love_fact_label">도화살 (이성 매력)</div>
+              <div class="love_fact_value" id="peachBlossom"></div>
+            </div>
+
+            <div class="love_fact_item">
+              <div class="love_fact_label">배우자 별</div>
+              <div class="love_fact_value" id="spouseStars"></div>
+            </div>
+          </div>
+
+          <!-- 고민 내용 (있을 경우) -->
+          <div class="section_card hidden" id="concernSection">
+            <h2 class="section_title">
+              <span class="material-icons">chat_bubble</span>
+              나의 연애 고민
+            </h2>
+            <div class="concern_text" id="userConcern"></div>
+          </div>
+
+          <!-- 액션 버튼 -->
+          <div class="action_buttons">
+            <button class="action_btn primary" id="analyzeLoveBtn">
+              <span class="material-icons">favorite</span>
+              연애 사주 분석하기
+            </button>
+            <a href="/saju_love/" class="action_btn secondary">
+              <span class="material-icons">refresh</span>
+              다시 분석하기
+            </a>
+          </div>
+        </div>
+
+        <!-- 분석 중 로딩 오버레이 -->
+        <div class="analyze_overlay" id="analyzeOverlay">
+          <div class="analyze_content">
+            <div class="analyze_spinner"></div>
+            <div class="analyze_text">연애 사주를 분석하고 있습니다</div>
+            <div class="analyze_subtext">잠시만 기다려주세요...</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 토스 결제 오버레이 -->
+      <div id="paymentOverlay" class="payment-overlay" style="display: none">
+        <div id="paymentFull" class="payment-fullscreen">
+          <div class="modal-content">
+            <div class="payment-header">
+              <div class="payment-title">당신의 사주에서 읽어낸 것들</div>
+              <div class="payment-close" id="closePaymentBtn">✕</div>
+            </div>
+
+            <!-- 사주 요약 -->
+            <div class="payment-saju-summary">
+              <div class="saju-summary-row">
+                <span class="saju-summary-label">일간</span>
+                <span class="saju-summary-value" id="paymentDayMaster">—</span>
+              </div>
+              <div class="saju-summary-row">
+                <span class="saju-summary-label">신강/신약</span>
+                <span class="saju-summary-value" id="paymentStrength">—</span>
+              </div>
+              <div class="saju-summary-row">
+                <span class="saju-summary-label">도화살</span>
+                <span class="saju-summary-value" id="paymentPeach">—</span>
+              </div>
+              <div class="saju-summary-row">
+                <span class="saju-summary-label">배우자별</span>
+                <span class="saju-summary-value" id="paymentSpouse">—</span>
+              </div>
+            </div>
+
+            <div class="payment-intro">
+              <p>위 사주 원국을 바탕으로 <strong>10,000자 이상</strong>의 심층 분석을 제공합니다.</p>
+            </div>
+
+            <div class="report-wrap">
+              <div class="report-section">
+                <div class="report-section-title">1. 연애 성향 분석</div>
+                <div class="report-section-desc">
+                  일간과 오행 구성으로 파악하는 당신만의 연애 패턴.
+                  무의식적으로 끌리는 유형, 연애에서 보이는 장점과 주의해야 할 습관까지.
+                </div>
+              </div>
+
+              <div class="report-section">
+                <div class="report-section-title">2. 이상형 분석</div>
+                <div class="report-section-desc">
+                  배우자별 위치와 십성 관계를 통해 알아보는 운명적 상대의 특징.
+                  외모, 성격, 직업군까지 구체적으로 풀이합니다.
+                </div>
+              </div>
+
+              <div class="report-section">
+                <div class="report-section-title">3. 2025년 연애운 시기</div>
+                <div class="report-section-desc">
+                  대운과 세운의 흐름에서 찾아낸 인연이 들어오는 시기.
+                  월별 연애운 변화와 적극적으로 움직여야 할 타이밍을 알려드립니다.
+                </div>
+              </div>
+
+              <div class="report-section">
+                <div class="report-section-title">4. 궁합과 결혼운</div>
+                <div class="report-section-desc">
+                  어떤 오행의 사람과 궁합이 좋은지, 결혼 시기는 언제가 적합한지.
+                  장기적인 관계 운세까지 상세하게 분석합니다.
+                </div>
+              </div>
+
+              <div class="report-section">
+                <div class="report-section-title">5. 맞춤 조언</div>
+                <div class="report-section-desc">
+                  당신이 입력한 고민을 바탕으로 사주 관점에서 드리는 현실적인 조언.
+                  지금 상황에서 어떻게 행동해야 할지 방향을 제시합니다.
+                </div>
+              </div>
+            </div>
+
+            <div class="payment-price-wrap">
+              <div class="payment-original-price-title">정가</div>
+              <div class="payment-original-price">19,900원</div>
+            </div>
+
+            <div class="payment-coupon-wrap">
+              <div class="payment-coupon">오픈 기념 할인</div>
+            </div>
+            <div class="payment-coupon-price-wrap">
+              <div class="payment-coupon-title">
+                첫 서비스 오픈 기념 50% 할인 (기간 한정)
+              </div>
+              <div class="payment-coupon-price">-10,000원</div>
+            </div>
+
+            <div id="payment-method"></div>
+            <div id="agreement"></div>
+
+            <div class="payment-final-price-wrap">
+              <div class="payment-final-price-title">최종 결제 금액</div>
+              <div class="payment-final-price-price-wrap">
+                <div class="payment-originam-price2">19,900원</div>
+                <div class="payment-final-price">
+                  <div class="payment-final-price-discount">50%</div>
+                  <div class="payment-final-price-num">9,900원</div>
+                </div>
+              </div>
+            </div>
+            <button id="payment-button" class="payment-final-btn">
+              심층 분석 받기
+            </button>
+            <div class="payment-empty"></div>
+          </div>
+        </div>
+      </div>
+
+      <footer class="footer"></footer>
+      <div class="nav_wrap">
+        <a href="/" class="nav_content">
+          <span class="material-icons nav_icon">home</span>
+          <div class="nav_title">전체 보기</div>
+        </a>
+        <a href="/history/" class="nav_content">
+          <span class="material-icons nav_icon">person</span>
+          <div class="nav_title">마이 페이지</div>
+        </a>
+      </div>
+    </div>
+
+    <script src="https://js.tosspayments.com/v1/payment-widget"></script>
+    <script src="../../commonJs/footer.js"></script>
+    <script src="../../commonJs/headerCopy.js"></script>
+    <script src="js/main.js"></script>
+  </body>
+</html>

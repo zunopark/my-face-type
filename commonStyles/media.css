@@ -1,0 +1,57 @@
+@media screen and (min-width: 500px) {
+  .footer,
+  .header_chat_wrap,
+  .header_fixed,
+  .main_body_wrap,
+  .nav_wrap,
+  .main_content_wrap,
+  #uploadModal,
+  .payment-overlay,
+  .bottom-sheet,
+  .reunion-bottom-sheet,
+  .result_btn_wrap {
+    width: 500px;
+  }
+
+  .payment-header-wrap {
+    width: 456px;
+  }
+
+  .border,
+  .modal-content,
+  .label-container,
+  .reunion-sheet-inner {
+    width: 350px;
+  }
+
+  .result {
+    width: 480px;
+  }
+}
+@media screen and (max-width: 499px) {
+  .footer,
+  .header_chat_wrap,
+  .header_fixed,
+  .main_body_wrap,
+  .nav_wrap,
+  .main_content_wrap,
+  #uploadModal,
+  .payment-overlay,
+  .bottom-sheet,
+  .reunion-bottom-sheet,
+  .result_btn_wrap {
+    width: 100%;
+  }
+
+  .border,
+  .test__upper,
+  .submitForm,
+  .label-container,
+  .reunion-sheet-inner {
+    width: 320px;
+  }
+
+  .payment-header-wrap {
+    width: 90%;
+  }
+}

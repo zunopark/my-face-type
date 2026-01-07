@@ -1,0 +1,30 @@
+.nav_wrap {
+  position: fixed;
+  bottom: 0px;
+  background-color: white;
+  display: flex;
+  justify-content: space-around;
+  padding: 12px 0;
+  border-top: 1px solid rgba(128, 128, 128, 0.2);
+}
+
+.nav_content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: rgb(205, 205, 205);
+  text-decoration: none;
+}
+
+.nav_seleted {
+  color: #ff5121;
+}
+
+.nav_icon {
+  padding-bottom: 4px;
+  font-size: 24px;
+}
+
+.nav_title {
+  font-size: 12px;
+}

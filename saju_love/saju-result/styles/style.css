@@ -1,0 +1,451 @@
+@import "../../../commonStyles/common.css";
+
+body {
+  background: #fff9f9;
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+}
+
+.main_body_wrap {
+  background: white;
+  min-height: 100vh;
+  width: 100%;
+  max-width: 500px;
+  margin: 0 auto;
+  position: relative;
+}
+
+/* 로딩 */
+.loading_wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  gap: 20px;
+}
+
+.loading_spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid #ffe0e0;
+  border-top-color: #e74c3c;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.loading_text {
+  font-size: 16px;
+  color: #666;
+}
+
+/* 에러 */
+.error_wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  gap: 16px;
+}
+
+.error_icon {
+  font-size: 48px;
+  color: #e74c3c;
+}
+
+.error_text {
+  font-size: 16px;
+  color: #666;
+}
+
+.error_btn {
+  padding: 12px 24px;
+  background: #e74c3c;
+  color: white;
+  text-decoration: none;
+  border-radius: 8px;
+  font-weight: 600;
+}
+
+/* 결과 래퍼 */
+.result_wrap {
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* 상단 네비게이션 */
+.chapter_nav {
+  position: fixed;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  max-width: 500px;
+  height: 56px;
+  background: white;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 8px;
+  z-index: 100;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.nav_arrow {
+  width: 44px;
+  height: 44px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: background 0.2s;
+}
+
+.nav_arrow:hover {
+  background: #f5f5f5;
+}
+
+.nav_arrow:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.nav_arrow .material-icons {
+  font-size: 28px;
+  color: #333;
+}
+
+.chapter_indicator {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 15px;
+  color: #666;
+}
+
+.current_chapter {
+  font-weight: 700;
+  color: #e74c3c;
+  font-size: 18px;
+}
+
+.separator {
+  color: #ccc;
+}
+
+.total_chapters {
+  color: #999;
+}
+
+/* 프로그레스 바 */
+.chapter_progress {
+  position: fixed;
+  top: 56px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  max-width: 500px;
+  height: 3px;
+  background: #f0f0f0;
+  z-index: 100;
+}
+
+.chapter_progress_fill {
+  height: 100%;
+  background: linear-gradient(90deg, #e74c3c, #c0392b);
+  transition: width 0.3s ease;
+  width: 0%;
+}
+
+/* 챕터 컨테이너 */
+.chapters_container {
+  flex: 1;
+  margin-top: 59px;
+  position: relative;
+  overflow: hidden;
+}
+
+.chapters_track {
+  display: flex;
+  transition: transform 0.4s ease;
+  height: 100%;
+}
+
+.chapter_slide {
+  min-width: 100%;
+  width: 100%;
+  height: calc(100vh - 59px);
+  overflow-y: auto;
+  overflow-x: hidden;
+  flex-shrink: 0;
+}
+
+.chapter_content_wrap {
+  padding: 24px 20px 40px;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+/* 챕터 헤더 */
+.chapter_header {
+  text-align: center;
+  padding-bottom: 24px;
+  margin-bottom: 24px;
+  border-bottom: 2px solid #ffe0e0;
+}
+
+.chapter_number {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+  color: white;
+  font-size: 18px;
+  font-weight: 700;
+  border-radius: 50%;
+  margin-bottom: 12px;
+}
+
+.chapter_title {
+  font-family: "KimjungchulMyungjo-Bold";
+  font-size: 22px;
+  font-weight: 700;
+  color: #1a1a1a;
+  line-height: 1.4;
+}
+
+/* 챕터 본문 */
+.chapter_body {
+  line-height: 1.9;
+  color: #333;
+  word-break: keep-all;
+}
+
+.chapter_body h2 {
+  margin-top: 32px;
+  padding-top: 20px;
+  border-top: 1px dashed #eee;
+}
+
+.chapter_body h3 {
+  color: #e74c3c;
+}
+
+.chapter_body h6 {
+  font-size: 0.95em;
+  color: #555;
+}
+
+.chapter_body strong {
+  color: #e74c3c;
+}
+
+.chapter_body blockquote {
+  border-left: 3px solid #e74c3c;
+  padding-left: 16px;
+  margin: 16px 0;
+  color: #666;
+  font-style: italic;
+}
+
+.chapter_body hr {
+  border: none;
+  border-top: 1px dashed #ddd;
+  margin: 24px 0;
+}
+
+/* 인트로 슬라이드 */
+.intro_slide .chapter_content_wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: calc(100vh - 120px);
+  text-align: center;
+}
+
+.intro_icon {
+  font-size: 64px;
+  color: #e74c3c;
+  margin-bottom: 24px;
+}
+
+.intro_icon .material-symbols-outlined {
+  font-size: 64px;
+  font-variation-settings: "FILL" 1, "wght" 400, "GRAD" 0, "opsz" 48;
+}
+
+.intro_title {
+  font-family: "KimjungchulMyungjo-Bold";
+  font-size: 26px;
+  font-weight: 700;
+  color: #1a1a1a;
+  margin-bottom: 8px;
+}
+
+.intro_subtitle {
+  font-size: 18px;
+  color: #e74c3c;
+  font-weight: 600;
+  margin-bottom: 48px;
+}
+
+.intro_guide {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #888;
+  font-size: 14px;
+  animation: swipe_hint 2s ease-in-out infinite;
+}
+
+.intro_guide .material-icons {
+  font-size: 24px;
+}
+
+@keyframes swipe_hint {
+  0%,
+  100% {
+    opacity: 0.5;
+    transform: translateX(0);
+  }
+  50% {
+    opacity: 1;
+    transform: translateX(8px);
+  }
+}
+
+/* 마지막 슬라이드 */
+.ending_slide .chapter_content_wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: calc(100vh - 120px);
+  text-align: center;
+}
+
+.ending_icon {
+  font-size: 64px;
+  margin-bottom: 24px;
+}
+
+.ending_title {
+  font-family: "KimjungchulMyungjo-Bold";
+  font-size: 22px;
+  color: #1a1a1a;
+  margin-bottom: 12px;
+}
+
+.ending_subtitle {
+  font-size: 15px;
+  color: #666;
+  line-height: 1.8;
+  margin-bottom: 40px;
+}
+
+.ending_buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+  max-width: 280px;
+}
+
+.action_btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 14px 24px;
+  font-size: 15px;
+  font-weight: 600;
+  border-radius: 12px;
+  text-decoration: none;
+  border: none;
+  cursor: pointer;
+}
+
+.action_btn.primary {
+  background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+  color: white;
+  box-shadow: 0 4px 15px rgba(231, 76, 60, 0.3);
+}
+
+.action_btn.secondary {
+  background: #f5f5f5;
+  color: #333;
+  border: 1px solid #ddd;
+}
+
+.action_btn .material-icons {
+  font-size: 18px;
+}
+
+/* 이상형 슬라이드 */
+.ideal_type_slide .chapter_content_wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: calc(100vh - 120px);
+  text-align: center;
+}
+
+.ideal_type_icon {
+  background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%) !important;
+}
+
+.ideal_type_icon .material-icons {
+  font-size: 20px;
+  color: white;
+}
+
+.ideal_type_content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  width: 100%;
+}
+
+.ideal_type_image_wrap {
+  width: 100%;
+  max-width: 280px;
+  aspect-ratio: 3/4;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 8px 32px rgba(231, 76, 60, 0.2);
+}
+
+.ideal_type_image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.ideal_type_desc {
+  font-size: 14px;
+  color: #666;
+  line-height: 1.7;
+  margin-top: 8px;
+}
+
+/* 유틸리티 */
+.hidden {
+  display: none !important;
+}

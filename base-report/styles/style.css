@@ -1,0 +1,162 @@
+@import "../../commonStyles/common.css";
+@import "../../commonStyles/reset.css";
+@import "../../commonStyles/header.css";
+@import "../../commonStyles/footer.css";
+@import "../../commonStyles/media.css";
+@import "../../commonStyles/styles.css";
+
+@import "picture.css";
+@import "faceResult.css";
+@import "payment.css";
+@import "product.css";
+@import "main.css";
+
+:root {
+  --bg: #0b0c10;
+  --card: #111426;
+  --muted: #9fb0c7;
+  --txt: #eef3fb;
+  --pri: #6aa7ff;
+  --wood: #2aa86c;
+  --fire: #ff6a6a;
+  --earth: #caa46a;
+  --metal: #b8bec6;
+  --water: #6aa7ff;
+  --ink: #0b1020;
+  --line: #1a2035;
+}
+
+/* 섹션 카드 래퍼 */
+.saju-section {
+  max-width: 380px; /* 👉 기존 320px → 360px */
+  color: var(--txt);
+  font: 16px/1.5 system-ui, "Apple SD Gothic Neo", "Malgun Gothic", Arial;
+}
+.card {
+  background: var(--card);
+  padding: 16px;
+  border: 1px solid var(--line);
+}
+.card-head {
+  padding: 12px 20px;
+}
+
+.card-head .title {
+  font-size: 16px;
+  color: #cfe1ff;
+  font-weight: 700;
+}
+.card-head .subtitle {
+  margin-top: 6px;
+  font-size: 20px;
+  font-weight: 800;
+}
+
+/* 표 그리드 */
+.table-wrap {
+  padding: 10px;
+}
+.table.grid {
+  display: grid;
+  grid-template-columns: 40px repeat(4, 1fr);
+  gap: 4px;
+}
+
+.cell {
+  background: var(--ink);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 10px;
+  min-height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+.cell.head {
+  background: transparent;
+  border: 0;
+  font-weight: 700;
+  color: #bcd0ff;
+}
+.cell.head.stub {
+  opacity: 0;
+}
+.cell.rowhead {
+  background: transparent;
+  border: 0;
+  color: #a8b9d4;
+  font-weight: 700;
+}
+.cell.big {
+  font-size: 22px;
+  font-weight: 800;
+}
+
+/* 태그(천간/지지 타일) */
+.tag {
+  display: inline-grid;
+  place-items: center;
+  border-radius: 4px;
+  padding: 8px 10px;
+  font-weight: 800;
+}
+.tag .han {
+  font-size: 22px;
+  line-height: 1;
+}
+.tag .ko {
+  font-size: 12px;
+  font-weight: 700;
+  opacity: 0.9;
+  margin-top: 2px;
+}
+
+/* 오행 막대 */
+.bars {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 12px;
+  margin-top: 8px;
+}
+.bar {
+  height: 96px;
+  background: #0d1122;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  overflow: hidden;
+}
+.bar > div {
+  width: 100%;
+}
+.bar .label {
+  text-align: center;
+  padding: 6px 0;
+  color: white;
+  font-size: 12px;
+}
+.bar[data-el="wood"] > div {
+  background: var(--wood);
+}
+.bar[data-el="fire"] > div {
+  background: var(--fire);
+}
+.bar[data-el="earth"] > div {
+  background: var(--earth);
+}
+.bar[data-el="metal"] > div {
+  background: var(--metal);
+}
+.bar[data-el="water"] > div {
+  background: var(--water);
+}
+
+.muted {
+  color: var(--muted);
+}
+.fe-note {
+  margin-top: 6px;
+}
