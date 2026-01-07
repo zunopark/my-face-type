@@ -410,3 +410,54 @@ export async function analyzeSajuLove(input: SajuLoveAnalyzeInput) {
     };
   }
 }
+
+/**
+ * 신년 사주 분석 입력 타입
+ */
+interface NewYearAnalyzeInput {
+  saju_data: Record<string, unknown>;
+  user_name: string;
+  user_job_status: string;
+  user_relationship_status: string;
+  user_wish_2026: string;
+  year: number;
+}
+
+/**
+ * 신년 사주 분석 (2026 병오년)
+ * - /saju_new_year/analyze 엔드포인트 호출
+ */
+export async function analyzeNewYear(input: NewYearAnalyzeInput) {
+  try {
+    const payload = {
+      saju_data: input.saju_data,
+      user_name: input.user_name,
+      user_job_status: input.user_job_status,
+      user_relationship_status: input.user_relationship_status,
+      user_wish_2026: input.user_wish_2026,
+      year: input.year,
+    };
+
+    const response = await fetch(`${SAJU_API_URL}/saju_new_year/analyze`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(payload),
+    });
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      throw new Error(errorText || "신년 사주 분석에 실패했습니다.");
+    }
+
+    const data = await response.json();
+    return { success: true, data };
+  } catch (error) {
+    console.error("New year saju analysis error:", error);
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : "서버 오류가 발생했습니다.",
+    };
+  }
+}
