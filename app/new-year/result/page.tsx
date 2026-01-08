@@ -7,8 +7,10 @@ import {
   updateNewYearRecord,
   NewYearRecord,
 } from "@/lib/db/newYearDB";
-import { analyzeNewYear } from "@/app/actions/analyze";
 import "../new-year.css";
+
+// 클라이언트에서 직접 FastAPI 호출 (Vercel 타임아웃 우회)
+const SAJU_API_URL = process.env.NEXT_PUBLIC_SAJU_API_URL;
 
 // 직업 상태 한글 변환
 const JOB_STATUS_KR: Record<string, string> = {
@@ -154,22 +156,31 @@ function ResultContent() {
         analysisStartedAt: new Date().toISOString(),
       });
 
-      // 신년 사주 분석 API 호출
-      const analysisResult = await analyzeNewYear({
-        saju_data: data.rawSajuData || {},
-        user_name: data.input.userName,
-        user_job_status: data.input.jobStatus,
-        user_relationship_status: data.input.relationshipStatus,
-        user_wish_2026: data.input.wish2026,
-        year: 2026,
+      // 클라이언트에서 직접 FastAPI 호출 (Vercel 타임아웃 우회)
+      const response = await fetch(`${SAJU_API_URL}/saju_new_year/analyze`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          saju_data: data.rawSajuData || {},
+          user_name: data.input.userName,
+          user_job_status: data.input.jobStatus,
+          user_relationship_status: data.input.relationshipStatus,
+          user_wish_2026: data.input.wish2026,
+          year: 2026,
+        }),
       });
 
-      if (!analysisResult.success || !analysisResult.data) {
-        throw new Error(analysisResult.error || "분석 실패");
+      if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(errorText || "분석에 실패했습니다.");
       }
 
-      // API 응답에서 analysis 추출 (응답 구조: { success, analysis: { chapters, full_text }, ... })
-      const analysisData = analysisResult.data.analysis || analysisResult.data;
+      const analysisResult = await response.json();
+
+      // API 응답에서 analysis 추출
+      const analysisData = analysisResult.analysis || analysisResult;
 
       // 결과 저장
       const updatedRecord = {
