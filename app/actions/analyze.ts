@@ -438,6 +438,8 @@ export async function analyzeNewYear(input: NewYearAnalyzeInput) {
       year: input.year,
     };
 
+    console.log("Calling API:", `${SAJU_API_URL}/saju_new_year/analyze`);
+
     const response = await fetch(`${SAJU_API_URL}/saju_new_year/analyze`, {
       method: "POST",
       headers: {
@@ -446,12 +448,25 @@ export async function analyzeNewYear(input: NewYearAnalyzeInput) {
       body: JSON.stringify(payload),
     });
 
+    console.log("Response status:", response.status, response.statusText);
+
     if (!response.ok) {
       const errorText = await response.text();
+      console.error("API Error response:", errorText);
       throw new Error(errorText || "신년 사주 분석에 실패했습니다.");
     }
 
-    const data = await response.json();
+    const responseText = await response.text();
+    console.log("Response text (first 500 chars):", responseText.substring(0, 500));
+
+    let data;
+    try {
+      data = JSON.parse(responseText);
+    } catch (parseError) {
+      console.error("JSON parse error:", parseError);
+      throw new Error("서버 응답을 파싱할 수 없습니다.");
+    }
+
     return { success: true, data };
   } catch (error) {
     console.error("New year saju analysis error:", error);

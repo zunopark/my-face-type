@@ -96,10 +96,8 @@ export default function NewYearPage() {
         throw new Error("사주 계산 실패");
       }
 
-      // 레코드 생성
-      const recordId = `newyear_${Date.now()}_${Math.random()
-        .toString(36)
-        .substring(2, 9)}`;
+      // 레코드 생성 (saju-love와 동일한 형식)
+      const recordId = crypto.randomUUID();
 
       const record = {
         id: recordId,

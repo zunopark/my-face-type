@@ -187,9 +187,12 @@ function ResultContent() {
       setData(updatedRecord);
       setIsAnalyzing(false);
     } catch (err) {
+      const errorMessage = err instanceof Error ? err.message : "알 수 없는 오류";
       console.error("분석 에러:", err);
+      console.error("에러 상세:", errorMessage);
       stopProgress();
-      setError("분석 중 오류가 발생했습니다. 다시 시도해주세요.");
+      // 더 자세한 에러 메시지 표시
+      setError(`분석 중 오류가 발생했습니다.\n(${errorMessage})`);
       setIsAnalyzing(false);
 
       await updateNewYearRecord(data.id, { isAnalyzing: false });
@@ -208,7 +211,7 @@ function ResultContent() {
     return (
       <div className="new_year_wrap">
         <div className="error_message">
-          <p>{error}</p>
+          <p style={{ whiteSpace: "pre-wrap" }}>{error}</p>
           <button
             className="submit_btn"
             style={{ marginTop: 20, maxWidth: 200 }}
