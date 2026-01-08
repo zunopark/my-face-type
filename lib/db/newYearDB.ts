@@ -45,6 +45,13 @@ export interface NewYearAnalysis {
   }>;
 }
 
+// 부적 이미지 타입
+export interface TalismanImage {
+  success: boolean;
+  image_base64?: string;
+  error?: string;
+}
+
 // 신년 사주 레코드 타입
 export interface NewYearRecord {
   id: string;
@@ -53,6 +60,7 @@ export interface NewYearRecord {
   rawSajuData?: Record<string, unknown>;
   sajuData: NewYearSajuData;
   analysis: NewYearAnalysis | null;
+  talismanImage?: TalismanImage | null;
   isAnalyzing?: boolean;
   analysisStartedAt?: string;
 }

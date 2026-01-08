@@ -696,3 +696,52 @@ textarea.input_field {
 .tips_list li:last-child {
   border-bottom: none;
 }
+
+/* 부적 이미지 섹션 */
+.talisman_section {
+  margin-top: 32px;
+  padding: 24px;
+  background: linear-gradient(135deg, rgba(255, 215, 0, 0.1) 0%, rgba(255, 107, 107, 0.1) 100%);
+  border: 1px solid rgba(255, 215, 0, 0.3);
+  border-radius: 16px;
+  text-align: center;
+}
+
+.talisman_header {
+  margin-bottom: 20px;
+}
+
+.talisman_title {
+  font-size: 20px;
+  font-weight: 700;
+  color: #ffd700;
+  margin-bottom: 8px;
+}
+
+.talisman_subtitle {
+  font-size: 14px;
+  color: #b8b8b8;
+}
+
+.talisman_image_wrap {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 16px;
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 12px;
+  margin-bottom: 16px;
+}
+
+.talisman_image {
+  max-width: 100%;
+  max-height: 400px;
+  border-radius: 8px;
+  box-shadow: 0 8px 32px rgba(255, 215, 0, 0.2);
+}
+
+.talisman_tip {
+  font-size: 12px;
+  color: #888;
+  font-style: italic;
+}

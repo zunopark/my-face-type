@@ -182,15 +182,20 @@ function ResultContent() {
       // API 응답에서 analysis 추출
       const analysisData = analysisResult.analysis || analysisResult;
 
+      // 부적 이미지 추출
+      const talismanData = analysisResult.talisman_image || null;
+
       // 결과 저장
       const updatedRecord = {
         ...data,
         analysis: analysisData,
+        talismanImage: talismanData,
         isAnalyzing: false,
       };
 
       await updateNewYearRecord(data.id, {
         analysis: analysisData,
+        talismanImage: talismanData,
         isAnalyzing: false,
       });
 
@@ -258,7 +263,7 @@ function ResultContent() {
     );
   }
 
-  const { input, sajuData, analysis } = data;
+  const { input, sajuData, analysis, talismanImage } = data;
   const dayMaster = sajuData.dayMaster;
   // pillars 타입 정의
   type PillarData = {
@@ -475,6 +480,28 @@ function ResultContent() {
             />
           </div>
         ))}
+
+        {/* 부적 이미지 */}
+        {talismanImage?.success && talismanImage.image_base64 && (
+          <div className="talisman_section">
+            <div className="talisman_header">
+              <p className="talisman_title">2026년 수호 부적</p>
+              <p className="talisman_subtitle">
+                {input.userName}님을 위한 특별한 부적이에요
+              </p>
+            </div>
+            <div className="talisman_image_wrap">
+              <img
+                src={`data:image/png;base64,${talismanImage.image_base64}`}
+                alt="2026년 수호 부적"
+                className="talisman_image"
+              />
+            </div>
+            <p className="talisman_tip">
+              이미지를 길게 눌러 저장하거나, 핸드폰 배경으로 설정해보세요
+            </p>
+          </div>
+        )}
       </div>
 
       {/* 하단 버튼 */}
