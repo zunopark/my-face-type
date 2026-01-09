@@ -358,7 +358,7 @@ function ResultContent() {
     let isFree = false;
 
     // 관상 전용 쿠폰 코드
-    if (code === "FREECOUPON") {
+    if (code === "freehanhun") {
       isFree = true;
       discount = PAYMENT_CONFIG.price;
     } else if (code === "FACE10000") {
