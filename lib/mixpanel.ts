@@ -34,6 +34,9 @@ export const EVENTS = {
   PAYMENT_SUCCESS: "payment_success",
   PAYMENT_FAIL: "payment_fail",
 
+  // 쿠폰
+  COUPON_APPLIED: "coupon_applied",
+
   // 기타
   FORM_SUBMIT: "form_submit",
   SHARE: "share",
@@ -240,6 +243,20 @@ export function trackPaymentFail(
   properties?: Record<string, unknown>
 ) {
   track(EVENTS.PAYMENT_FAIL, {
+    type,
+    ...properties,
+  });
+}
+
+/**
+ * 쿠폰 적용 추적
+ * @example trackCouponApplied("face", { coupon_code: "FACE5000", discount: 5000, is_free: false })
+ */
+export function trackCouponApplied(
+  type: ServiceType,
+  properties?: Record<string, unknown>
+) {
+  track(EVENTS.COUPON_APPLIED, {
     type,
     ...properties,
   });

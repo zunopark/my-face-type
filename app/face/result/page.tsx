@@ -22,6 +22,8 @@ import {
   trackPaymentModalOpen,
   trackPaymentModalClose,
   trackPaymentAttempt,
+  trackPaymentSuccess,
+  trackCouponApplied,
 } from "@/lib/mixpanel";
 import {
   getFaceAnalysisRecord,
@@ -358,7 +360,7 @@ function ResultContent() {
     let isFree = false;
 
     // 관상 전용 쿠폰 코드
-    if (code === "freehanhun") {
+    if (code === "FREEHANHUN") {
       isFree = true;
       discount = PAYMENT_CONFIG.price;
     } else if (code === "FACE10000") {
@@ -373,9 +375,32 @@ function ResultContent() {
       setCouponError("");
       setAppliedCoupon({ code, discount, isFree });
 
+      // 쿠폰 적용 이벤트 트래킹
+      trackCouponApplied("face", {
+        id: result?.id,
+        coupon_code: code,
+        discount,
+        is_free: isFree,
+        original_price: PAYMENT_CONFIG.price,
+        final_price: isFree
+          ? 0
+          : Math.max(PAYMENT_CONFIG.price - discount, 100),
+      });
+
       if (isFree) {
         // 무료 쿠폰: 결제 없이 바로 완료 처리
         await handleFreeCouponPayment();
+
+        // 무료 쿠폰 결제 성공 이벤트 트래킹
+        trackPaymentSuccess("face", {
+          id: result?.id,
+          order_id: `free_coupon_${Date.now()}`,
+          amount: 0,
+          original_price: PAYMENT_CONFIG.price,
+          coupon_code: code,
+          is_free_coupon: true,
+          report_type: "base",
+        });
       } else {
         // 일반 쿠폰: 결제 위젯 금액 업데이트
         if (paymentWidgetRef.current) {
@@ -388,7 +413,7 @@ function ResultContent() {
     } else {
       setCouponError("유효하지 않은 쿠폰입니다");
     }
-  }, [couponCode, handleFreeCouponPayment]);
+  }, [couponCode, handleFreeCouponPayment, result?.id]);
 
   // 결제 모달 열기
   const openPaymentModal = () => {
