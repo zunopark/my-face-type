@@ -144,6 +144,15 @@ function ResultContent() {
   // 결과 렌더링 상태
   const [showResult, setShowResult] = useState(false);
 
+  // 쿠폰 관련 상태
+  const [couponCode, setCouponCode] = useState("");
+  const [couponError, setCouponError] = useState("");
+  const [appliedCoupon, setAppliedCoupon] = useState<{
+    code: string;
+    discount: number;
+    isFree: boolean;
+  } | null>(null);
+
   // IndexedDB에서 결과 가져오기
   useEffect(() => {
     if (!resultId) {
@@ -161,9 +170,12 @@ function ResultContent() {
           features: stored.features,
           paid: stored.paid || false,
           timestamp: stored.timestamp,
-          summary: (stored.reports?.base?.data as { summary?: string })?.summary,
+          summary: (stored.reports?.base?.data as { summary?: string })
+            ?.summary,
           detail: (stored.reports?.base?.data as { detail?: string })?.detail,
-          sections: (stored.reports?.base?.data as { sections?: FaceResult["sections"] })?.sections,
+          sections: (
+            stored.reports?.base?.data as { sections?: FaceResult["sections"] }
+          )?.sections,
           reports: stored.reports as FaceResult["reports"],
         };
         setResult(parsed);
@@ -307,6 +319,77 @@ function ResultContent() {
     }
   }, []);
 
+  // 무료 쿠폰 결제 처리
+  const handleFreeCouponPayment = useCallback(async () => {
+    if (!result) return;
+
+    try {
+      // IndexedDB에 결제 완료 표시
+      await updateFaceAnalysisRecord(result.id, {
+        paid: true,
+        reports: {
+          ...result.reports,
+          base: { paid: true, data: result.reports?.base?.data || null },
+        } as FaceAnalysisRecord["reports"],
+      });
+
+      // 모달 닫고 분석 시작
+      setShowPaymentModal(false);
+      setShowPaymentPage(false);
+
+      // 결과 업데이트
+      const updatedResult = { ...result, paid: true };
+      setResult(updatedResult);
+
+      // 실제 분석 시작
+      startRealAnalysis(updatedResult);
+    } catch (error) {
+      console.error("무료 쿠폰 처리 오류:", error);
+      setCouponError("쿠폰 처리 중 오류가 발생했습니다");
+    }
+  }, [result, startRealAnalysis]);
+
+  // 쿠폰 검증 및 적용
+  const handleCouponSubmit = useCallback(async () => {
+    if (!couponCode.trim()) return;
+
+    const code = couponCode.toUpperCase();
+    let discount = 0;
+    let isFree = false;
+
+    // 관상 전용 쿠폰 코드
+    if (code === "FREECOUPON") {
+      isFree = true;
+      discount = PAYMENT_CONFIG.price;
+    } else if (code === "FACE10000") {
+      discount = 10000;
+    } else if (code === "FACE5000") {
+      discount = 5000;
+    } else if (code === "FACE2000") {
+      discount = 2000;
+    }
+
+    if (discount > 0 || isFree) {
+      setCouponError("");
+      setAppliedCoupon({ code, discount, isFree });
+
+      if (isFree) {
+        // 무료 쿠폰: 결제 없이 바로 완료 처리
+        await handleFreeCouponPayment();
+      } else {
+        // 일반 쿠폰: 결제 위젯 금액 업데이트
+        if (paymentWidgetRef.current) {
+          const newPrice = Math.max(PAYMENT_CONFIG.price - discount, 100);
+          paymentWidgetRef.current.renderPaymentMethods("#payment-method", {
+            value: newPrice,
+          });
+        }
+      }
+    } else {
+      setCouponError("유효하지 않은 쿠폰입니다");
+    }
+  }, [couponCode, handleFreeCouponPayment]);
+
   // 결제 모달 열기
   const openPaymentModal = () => {
     if (!result) return;
@@ -341,16 +424,26 @@ function ResultContent() {
   const handlePaymentRequest = async () => {
     if (!paymentWidgetRef.current || !result) return;
 
+    const finalPrice = appliedCoupon
+      ? Math.max(PAYMENT_CONFIG.price - appliedCoupon.discount, 100)
+      : PAYMENT_CONFIG.price;
+
+    const orderSuffix = appliedCoupon ? `-${appliedCoupon.code}` : "";
+    const orderNameSuffix = appliedCoupon
+      ? ` - ${appliedCoupon.code} 할인`
+      : "";
+
     try {
       trackPaymentAttempt("face", {
         id: result.id,
-        price: PAYMENT_CONFIG.price,
-        is_discount: false,
+        price: finalPrice,
+        is_discount: !!appliedCoupon,
+        coupon_code: appliedCoupon?.code,
       });
 
       await paymentWidgetRef.current.requestPayment({
-        orderId: `order_${Date.now()}`,
-        orderName: PAYMENT_CONFIG.orderName,
+        orderId: `order${orderSuffix}_${Date.now()}`,
+        orderName: `${PAYMENT_CONFIG.orderName}${orderNameSuffix}`,
         customerName: "고객",
         successUrl: `${
           window.location.origin
@@ -361,7 +454,10 @@ function ResultContent() {
       });
     } catch (err) {
       console.error("결제 오류:", err);
-      trackPaymentModalClose("face", { id: result.id, reason: "payment_error" });
+      trackPaymentModalClose("face", {
+        id: result.id,
+        reason: "payment_error",
+      });
     }
   };
 
@@ -370,6 +466,11 @@ function ResultContent() {
     setShowPaymentModal(false);
     paymentWidgetRef.current = null;
     trackPaymentModalClose("face", { id: result?.id, reason: "user_close" });
+
+    // 쿠폰 상태 초기화
+    setAppliedCoupon(null);
+    setCouponCode("");
+    setCouponError("");
 
     // 1초 후 깜짝 할인 모달 열기
     setTimeout(() => {
@@ -393,7 +494,10 @@ function ResultContent() {
     setTimeout(() => {
       if (typeof window !== "undefined" && window.PaymentWidget) {
         const customerKey = `customer_${Date.now()}`;
-        const widget = window.PaymentWidget(PAYMENT_CONFIG.clientKey, customerKey);
+        const widget = window.PaymentWidget(
+          PAYMENT_CONFIG.clientKey,
+          customerKey
+        );
         discountWidgetRef.current = widget;
 
         widget.renderPaymentMethods("#discount-method", {
@@ -419,8 +523,12 @@ function ResultContent() {
         orderId: `discount_${Date.now()}`,
         orderName: "AI 관상 프리미엄 보고서 - 할인 특가",
         customerName: "고객",
-        successUrl: `${window.location.origin}/payment/success?id=${encodeURIComponent(result.id)}&type=base`,
-        failUrl: `${window.location.origin}/payment/fail?id=${encodeURIComponent(result.id)}&type=base`,
+        successUrl: `${
+          window.location.origin
+        }/payment/success?id=${encodeURIComponent(result.id)}&type=base`,
+        failUrl: `${
+          window.location.origin
+        }/payment/fail?id=${encodeURIComponent(result.id)}&type=base`,
       });
     } catch (err) {
       console.error("할인 결제 오류:", err);
@@ -431,7 +539,11 @@ function ResultContent() {
   const closeDiscountModal = () => {
     setShowDiscountModal(false);
     discountWidgetRef.current = null;
-    trackPaymentModalClose("face", { id: result?.id, reason: "user_close", is_discount: true });
+    trackPaymentModalClose("face", {
+      id: result?.id,
+      reason: "user_close",
+      is_discount: true,
+    });
   };
 
   // 간단한 마크다운 파서
@@ -455,7 +567,10 @@ function ResultContent() {
     // 이미지, 링크
     src = src
       .replace(/!\[([^\]]*?)\]\((.*?)\)/g, '<img src="$2" alt="$1">')
-      .replace(/\[([^\]]+?)\]\((.*?)\)/g, '<a href="$2" target="_blank" rel="noopener">$1</a>');
+      .replace(
+        /\[([^\]]+?)\]\((.*?)\)/g,
+        '<a href="$2" target="_blank" rel="noopener">$1</a>'
+      );
     // 테이블
     src = src.replace(/(?:^|\n)((?:\|[^\n]+\|\n)+)/g, (match, tableBlock) => {
       const rows = tableBlock.trim().split("\n");
@@ -463,10 +578,16 @@ function ResultContent() {
       let html = '<table class="md-table">';
       rows.forEach((row: string, idx: number) => {
         if (/^\|[\s\-:|]+\|$/.test(row.trim()) && row.includes("-")) return;
-        const cells = row.split("|").filter((_: string, i: number, arr: string[]) => i > 0 && i < arr.length - 1);
+        const cells = row
+          .split("|")
+          .filter(
+            (_: string, i: number, arr: string[]) => i > 0 && i < arr.length - 1
+          );
         const tag = idx === 0 ? "th" : "td";
         html += "<tr>";
-        cells.forEach((cell: string) => { html += `<${tag}>${cell.trim()}</${tag}>`; });
+        cells.forEach((cell: string) => {
+          html += `<${tag}>${cell.trim()}</${tag}>`;
+        });
         html += "</tr>";
       });
       html += "</table>";
@@ -476,7 +597,11 @@ function ResultContent() {
     src = src.replace(/^\s*(\*\s*\*\s*\*|-{3,}|_{3,})\s*$/gm, "<hr>");
     // 인용문
     src = src.replace(/(^>\s?.*$\n?)+/gm, (match) => {
-      const content = match.split("\n").map((line) => line.replace(/^>\s?/, "").trim()).filter((line) => line).join("<br>");
+      const content = match
+        .split("\n")
+        .map((line) => line.replace(/^>\s?/, "").trim())
+        .filter((line) => line)
+        .join("<br>");
       return `<blockquote>${content}</blockquote>`;
     });
     // 리스트
@@ -688,6 +813,45 @@ function ResultContent() {
                   <div className="payment-coupon-price">-20,000원</div>
                 </div>
 
+                {/* 쿠폰 입력 섹션 */}
+                <div className="coupon-section">
+                  <div className="coupon-input-row">
+                    <input
+                      type="text"
+                      className="coupon-input"
+                      placeholder="쿠폰 코드 입력"
+                      value={couponCode}
+                      onChange={(e) => {
+                        setCouponCode(e.target.value);
+                        setCouponError("");
+                      }}
+                      disabled={!!appliedCoupon}
+                    />
+                    <button
+                      className="coupon-submit-btn"
+                      onClick={handleCouponSubmit}
+                      disabled={!!appliedCoupon}
+                    >
+                      {appliedCoupon ? "적용됨" : "적용"}
+                    </button>
+                  </div>
+                  {couponError && (
+                    <div className="coupon-error">{couponError}</div>
+                  )}
+                </div>
+
+                {/* 쿠폰 할인 적용 표시 */}
+                {appliedCoupon && !appliedCoupon.isFree && (
+                  <div className="payment-coupon-price-wrap">
+                    <div className="payment-coupon-title">
+                      {appliedCoupon.code} 쿠폰 적용
+                    </div>
+                    <div className="payment-coupon-price">
+                      -{appliedCoupon.discount.toLocaleString()}원
+                    </div>
+                  </div>
+                )}
+
                 <div id="payment-method" />
                 <div id="agreement" />
 
@@ -700,9 +864,25 @@ function ResultContent() {
                       {PAYMENT_CONFIG.originalPrice.toLocaleString()}원
                     </div>
                     <div className="payment-final-price">
-                      <div className="payment-final-price-discount">{Math.floor((1 - PAYMENT_CONFIG.price / PAYMENT_CONFIG.originalPrice) * 100)}%</div>
+                      <div className="payment-final-price-discount">
+                        {Math.floor(
+                          (1 -
+                            (appliedCoupon
+                              ? PAYMENT_CONFIG.price - appliedCoupon.discount
+                              : PAYMENT_CONFIG.price) /
+                              PAYMENT_CONFIG.originalPrice) *
+                            100
+                        )}
+                        %
+                      </div>
                       <div className="payment-final-price-num">
-                        {PAYMENT_CONFIG.price.toLocaleString()}원
+                        {appliedCoupon
+                          ? Math.max(
+                              PAYMENT_CONFIG.price - appliedCoupon.discount,
+                              0
+                            ).toLocaleString()
+                          : PAYMENT_CONFIG.price.toLocaleString()}
+                        원
                       </div>
                     </div>
                   </div>
@@ -726,7 +906,9 @@ function ResultContent() {
             <div className="payment-fullscreen">
               <div className="modal-content">
                 <div className="payment-header">
-                  <div className="payment-title">🎁 깜짝 선물! 2,000원 추가 할인</div>
+                  <div className="payment-title">
+                    🎁 깜짝 선물! 2,000원 추가 할인
+                  </div>
                   <div className="payment-close" onClick={closeDiscountModal}>
                     ✕
                   </div>
@@ -743,16 +925,24 @@ function ResultContent() {
                     <div className="report-num">총 10,000자+ 심층 분석</div>
                   </div>
                   <div className="report-contents-wrap">
-                    <div className="report-contents">1. 총운 분석 - 성격 & 인상 / 평생 운세 흐름</div>
+                    <div className="report-contents">
+                      1. 총운 분석 - 성격 & 인상 / 평생 운세 흐름
+                    </div>
                   </div>
                   <div className="report-contents-wrap">
-                    <div className="report-contents">2. 연애운 심층 풀이 - 연애 스타일 & 이상형</div>
+                    <div className="report-contents">
+                      2. 연애운 심층 풀이 - 연애 스타일 & 이상형
+                    </div>
                   </div>
                   <div className="report-contents-wrap">
-                    <div className="report-contents">3. 직업운 심층 풀이 - 적성과 장단점</div>
+                    <div className="report-contents">
+                      3. 직업운 심층 풀이 - 적성과 장단점
+                    </div>
                   </div>
                   <div className="report-contents-wrap">
-                    <div className="report-contents">4. 재물운 심층 풀이 - 평생 모을 재산</div>
+                    <div className="report-contents">
+                      4. 재물운 심층 풀이 - 평생 모을 재산
+                    </div>
                   </div>
                   <div className="report-contents-wrap">
                     <div className="report-contents">
@@ -762,7 +952,9 @@ function ResultContent() {
                 </div>
 
                 <div className="payment-price-wrap">
-                  <div className="payment-original-price-title">보고서 금액</div>
+                  <div className="payment-original-price-title">
+                    보고서 금액
+                  </div>
                   <div className="payment-original-price">
                     {PAYMENT_CONFIG.originalPrice.toLocaleString()}원
                   </div>
@@ -782,20 +974,33 @@ function ResultContent() {
                 <div id="discount-agreement" />
 
                 <div className="payment-final-price-wrap">
-                  <div className="payment-final-price-title">최종 결제 금액</div>
+                  <div className="payment-final-price-title">
+                    최종 결제 금액
+                  </div>
                   <div className="payment-final-price-price-wrap">
                     <div className="payment-originam-price2">
                       {PAYMENT_CONFIG.originalPrice.toLocaleString()}원
                     </div>
                     <div className="payment-final-price">
-                      <div className="payment-final-price-discount">{Math.floor((1 - PAYMENT_CONFIG.discountPrice / PAYMENT_CONFIG.originalPrice) * 100)}%</div>
+                      <div className="payment-final-price-discount">
+                        {Math.floor(
+                          (1 -
+                            PAYMENT_CONFIG.discountPrice /
+                              PAYMENT_CONFIG.originalPrice) *
+                            100
+                        )}
+                        %
+                      </div>
                       <div className="payment-final-price-num">
                         {PAYMENT_CONFIG.discountPrice.toLocaleString()}원
                       </div>
                     </div>
                   </div>
                 </div>
-                <button className="payment-final-btn" onClick={handleDiscountPaymentRequest}>
+                <button
+                  className="payment-final-btn"
+                  onClick={handleDiscountPaymentRequest}
+                >
                   할인가로 보고서 확인하기
                 </button>
                 <div className="payment-empty" />

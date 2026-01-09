@@ -107,6 +107,15 @@ function CoupleResultContent() {
   // 하단 고정 버튼 표시 여부
   const [showFloatingBtn, setShowFloatingBtn] = useState(false);
 
+  // 쿠폰 관련 상태
+  const [couponCode, setCouponCode] = useState("");
+  const [couponError, setCouponError] = useState("");
+  const [appliedCoupon, setAppliedCoupon] = useState<{
+    code: string;
+    discount: number;
+    isFree: boolean;
+  } | null>(null);
+
   // IndexedDB에서 결과 가져오기
   useEffect(() => {
     if (!resultId) {
@@ -267,6 +276,80 @@ function CoupleResultContent() {
     }
   }, []);
 
+  // 무료 쿠폰 결제 처리
+  const handleFreeCouponPayment = useCallback(async () => {
+    if (!result) return;
+
+    try {
+      // IndexedDB에 결제 완료 표시
+      await updateCoupleAnalysisRecord(result.id, {
+        paid: true,
+        paidAt: new Date().toISOString(),
+        report: {
+          ...result.reports,
+          couple: { ...result.reports.couple, paid: true },
+        },
+      });
+
+      // 모달 닫기
+      setShowPaymentModal(false);
+
+      // 결과 업데이트
+      const updatedResult = {
+        ...result,
+        reports: {
+          ...result.reports,
+          couple: { ...result.reports.couple, paid: true },
+        },
+      };
+      setResult(updatedResult);
+    } catch (error) {
+      console.error("무료 쿠폰 처리 오류:", error);
+      setCouponError("쿠폰 처리 중 오류가 발생했습니다");
+    }
+  }, [result]);
+
+  // 쿠폰 검증 및 적용
+  const handleCouponSubmit = useCallback(async () => {
+    if (!couponCode.trim()) return;
+
+    const code = couponCode.toUpperCase();
+    let discount = 0;
+    let isFree = false;
+
+    // 궁합 전용 쿠폰 코드
+    if (code === "COUPLEFREE") {
+      isFree = true;
+      discount = PAYMENT_CONFIG.price;
+    } else if (code === "COUPLE10000") {
+      discount = 10000;
+    } else if (code === "COUPLE5000") {
+      discount = 5000;
+    } else if (code === "COUPLE2000") {
+      discount = 2000;
+    }
+
+    if (discount > 0 || isFree) {
+      setCouponError("");
+      setAppliedCoupon({ code, discount, isFree });
+
+      if (isFree) {
+        // 무료 쿠폰: 결제 없이 바로 완료 처리
+        await handleFreeCouponPayment();
+      } else {
+        // 일반 쿠폰: 결제 위젯 금액 업데이트
+        if (paymentWidgetRef.current) {
+          const newPrice = Math.max(PAYMENT_CONFIG.price - discount, 100);
+          paymentWidgetRef.current.renderPaymentMethods("#love-method", {
+            value: newPrice,
+          });
+        }
+      }
+    } else {
+      setCouponError("유효하지 않은 쿠폰입니다");
+    }
+  }, [couponCode, handleFreeCouponPayment]);
+
   // 결제 모달 열기
   const openPaymentModal = () => {
     if (!result) return;
@@ -298,10 +381,24 @@ function CoupleResultContent() {
   const handlePaymentRequest = async () => {
     if (!paymentWidgetRef.current || !result) return;
 
+    const finalPrice = appliedCoupon
+      ? Math.max(PAYMENT_CONFIG.price - appliedCoupon.discount, 100)
+      : PAYMENT_CONFIG.price;
+
+    const orderSuffix = appliedCoupon ? `-${appliedCoupon.code}` : "";
+    const orderNameSuffix = appliedCoupon ? ` - ${appliedCoupon.code} 할인` : "";
+
     try {
+      trackPaymentAttempt("couple", {
+        id: result.id,
+        price: finalPrice,
+        is_discount: !!appliedCoupon,
+        coupon_code: appliedCoupon?.code,
+      });
+
       await paymentWidgetRef.current.requestPayment({
-        orderId: `order_${Date.now()}`,
-        orderName: PAYMENT_CONFIG.orderName,
+        orderId: `order${orderSuffix}_${Date.now()}`,
+        orderName: `${PAYMENT_CONFIG.orderName}${orderNameSuffix}`,
         customerName: "고객",
         successUrl: `${window.location.origin}/payment/success?id=${encodeURIComponent(result.id)}&type=couple`,
         failUrl: `${window.location.origin}/payment/fail?id=${encodeURIComponent(result.id)}&type=couple`,
@@ -320,6 +417,11 @@ function CoupleResultContent() {
       id: result?.id,
       reason: "user_close",
     });
+
+    // 쿠폰 상태 초기화
+    setAppliedCoupon(null);
+    setCouponCode("");
+    setCouponError("");
 
     // 1초 후 깜짝 할인 모달 열기
     setTimeout(() => {
@@ -626,6 +728,43 @@ function CoupleResultContent() {
                 <div className="payment-coupon-price">-11,240원</div>
               </div>
 
+              {/* 쿠폰 입력 섹션 */}
+              <div className="coupon-section">
+                <div className="coupon-input-row">
+                  <input
+                    type="text"
+                    className="coupon-input"
+                    placeholder="쿠폰 코드 입력"
+                    value={couponCode}
+                    onChange={(e) => {
+                      setCouponCode(e.target.value);
+                      setCouponError("");
+                    }}
+                    disabled={!!appliedCoupon}
+                  />
+                  <button
+                    className="coupon-submit-btn"
+                    onClick={handleCouponSubmit}
+                    disabled={!!appliedCoupon}
+                  >
+                    {appliedCoupon ? "적용됨" : "적용"}
+                  </button>
+                </div>
+                {couponError && <div className="coupon-error">{couponError}</div>}
+              </div>
+
+              {/* 쿠폰 할인 적용 표시 */}
+              {appliedCoupon && !appliedCoupon.isFree && (
+                <div className="payment-coupon-price-wrap">
+                  <div className="payment-coupon-title">
+                    {appliedCoupon.code} 쿠폰 적용
+                  </div>
+                  <div className="payment-coupon-price">
+                    -{appliedCoupon.discount.toLocaleString()}원
+                  </div>
+                </div>
+              )}
+
               <div id="love-method" style={{ padding: 0, margin: 0 }} />
               <div id="love-agreement" />
 
@@ -636,9 +775,13 @@ function CoupleResultContent() {
                     {PAYMENT_CONFIG.originalPrice.toLocaleString()}원
                   </div>
                   <div className="payment-final-price">
-                    <div className="payment-final-price-discount">{Math.floor((1 - PAYMENT_CONFIG.price / PAYMENT_CONFIG.originalPrice) * 100)}%</div>
+                    <div className="payment-final-price-discount">
+                      {Math.floor((1 - (appliedCoupon ? PAYMENT_CONFIG.price - appliedCoupon.discount : PAYMENT_CONFIG.price) / PAYMENT_CONFIG.originalPrice) * 100)}%
+                    </div>
                     <div className="payment-final-price-num">
-                      {PAYMENT_CONFIG.price.toLocaleString()}원
+                      {appliedCoupon
+                        ? Math.max(PAYMENT_CONFIG.price - appliedCoupon.discount, 0).toLocaleString()
+                        : PAYMENT_CONFIG.price.toLocaleString()}원
                     </div>
                   </div>
                 </div>

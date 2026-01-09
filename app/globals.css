@@ -2892,3 +2892,57 @@ body {
     font-size: 18px;
   }
 }
+
+/* 쿠폰 섹션 - 관상/궁합 결제 모달용 */
+.coupon-section {
+  padding: 16px 20px;
+  background: #f8f8f8;
+  border-top: 1px solid #eee;
+}
+
+.coupon-section .coupon-input-row {
+  display: flex;
+  gap: 8px;
+}
+
+.coupon-section .coupon-input {
+  flex: 1;
+  padding: 12px 16px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 14px;
+  outline: none;
+  background: #fff;
+}
+
+.coupon-section .coupon-input:focus {
+  border-color: #999;
+}
+
+.coupon-section .coupon-input:disabled {
+  background: #f5f5f5;
+  color: #999;
+}
+
+.coupon-section .coupon-submit-btn {
+  padding: 12px 20px;
+  background: #333;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.coupon-section .coupon-submit-btn:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+}
+
+.coupon-section .coupon-error {
+  margin-top: 8px;
+  font-size: 12px;
+  color: #e74c3c;
+}
