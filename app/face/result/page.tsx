@@ -808,7 +808,7 @@ function ResultContent() {
                 </div>
                 <div className="payment-coupon-price-wrap">
                   <div className="payment-coupon-title">
-                    판매 100,000건 돌파 기념 2만원 할인
+                    판매 10,000건 돌파 기념 2만원 할인
                   </div>
                   <div className="payment-coupon-price">-20,000원</div>
                 </div>
