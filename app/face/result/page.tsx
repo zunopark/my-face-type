@@ -360,7 +360,7 @@ function ResultContent() {
     let isFree = false;
 
     // 관상 전용 쿠폰 코드
-    if (code === "FREEHANHUN") {
+    if (code === "FREETICKET") {
       isFree = true;
       discount = PAYMENT_CONFIG.price;
     } else if (code === "FACE10000") {
@@ -470,12 +470,10 @@ function ResultContent() {
         orderId: `order${orderSuffix}_${Date.now()}`,
         orderName: `${PAYMENT_CONFIG.orderName}${orderNameSuffix}`,
         customerName: "고객",
-        successUrl: `${
-          window.location.origin
-        }/payment/success?id=${encodeURIComponent(result.id)}&type=base`,
-        failUrl: `${
-          window.location.origin
-        }/payment/fail?id=${encodeURIComponent(result.id)}&type=base`,
+        successUrl: `${window.location.origin
+          }/payment/success?id=${encodeURIComponent(result.id)}&type=base`,
+        failUrl: `${window.location.origin
+          }/payment/fail?id=${encodeURIComponent(result.id)}&type=base`,
       });
     } catch (err) {
       console.error("결제 오류:", err);
@@ -548,12 +546,10 @@ function ResultContent() {
         orderId: `discount_${Date.now()}`,
         orderName: "AI 관상 프리미엄 보고서 - 할인 특가",
         customerName: "고객",
-        successUrl: `${
-          window.location.origin
-        }/payment/success?id=${encodeURIComponent(result.id)}&type=base`,
-        failUrl: `${
-          window.location.origin
-        }/payment/fail?id=${encodeURIComponent(result.id)}&type=base`,
+        successUrl: `${window.location.origin
+          }/payment/success?id=${encodeURIComponent(result.id)}&type=base`,
+        failUrl: `${window.location.origin
+          }/payment/fail?id=${encodeURIComponent(result.id)}&type=base`,
       });
     } catch (err) {
       console.error("할인 결제 오류:", err);
@@ -895,17 +891,17 @@ function ResultContent() {
                             (appliedCoupon
                               ? PAYMENT_CONFIG.price - appliedCoupon.discount
                               : PAYMENT_CONFIG.price) /
-                              PAYMENT_CONFIG.originalPrice) *
-                            100
+                            PAYMENT_CONFIG.originalPrice) *
+                          100
                         )}
                         %
                       </div>
                       <div className="payment-final-price-num">
                         {appliedCoupon
                           ? Math.max(
-                              PAYMENT_CONFIG.price - appliedCoupon.discount,
-                              0
-                            ).toLocaleString()
+                            PAYMENT_CONFIG.price - appliedCoupon.discount,
+                            0
+                          ).toLocaleString()
                           : PAYMENT_CONFIG.price.toLocaleString()}
                         원
                       </div>
@@ -1011,8 +1007,8 @@ function ResultContent() {
                         {Math.floor(
                           (1 -
                             PAYMENT_CONFIG.discountPrice /
-                              PAYMENT_CONFIG.originalPrice) *
-                            100
+                            PAYMENT_CONFIG.originalPrice) *
+                          100
                         )}
                         %
                       </div>
@@ -1160,7 +1156,7 @@ function ResultContent() {
                       dangerouslySetInnerHTML={{
                         __html: simpleMD(
                           result.sections?.[
-                            sec.key as keyof typeof result.sections
+                          sec.key as keyof typeof result.sections
                           ] || ""
                         ),
                       }}
