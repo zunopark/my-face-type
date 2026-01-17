@@ -4,6 +4,7 @@ import { useState, useEffect, useCallback, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { computeSaju } from "@/app/actions/analyze";
 import { saveNewYearRecord } from "@/lib/db/newYearDB";
+import { trackPageView, trackFormSubmit } from "@/lib/mixpanel";
 import "./new-year.css";
 
 // 대화 내용
@@ -97,8 +98,9 @@ export default function NewYearPage() {
   // 타이핑 인터벌 ref
   const typingIntervalRef = useRef<NodeJS.Timeout | null>(null);
 
-  // 이미지 프리로드
+  // 페이지 뷰 트래킹 & 이미지 프리로드
   useEffect(() => {
+    trackPageView("new_year");
     const img = new window.Image();
     img.src = "/new-year/img/doryung.png";
   }, []);
@@ -307,6 +309,19 @@ export default function NewYearPage() {
 
       await saveNewYearRecord(record);
 
+      // 폼 제출 트래킹
+      trackFormSubmit("new_year", {
+        user_name: userName,
+        gender: gender,
+        birth_date: birthDate,
+        birth_time: birthTime || "unknown",
+        calendar: calendar,
+        job_status: jobStatus,
+        relationship_status: relationshipStatus,
+        has_wish: !!wish2026,
+        day_master: sajuResult.data.dayMaster?.char,
+      });
+
       // detail 페이지로 이동 (결제 전)
       router.push(`/new-year/detail?id=${recordId}`);
     } catch (error) {
@@ -344,10 +359,10 @@ export default function NewYearPage() {
       {/* 랜딩 타이틀 */}
       {showLanding && (
         <>
-          <div className="landing_title_wrap">
-            <h1 className="landing_title">
-              <span className="title_line title_name">까치도령</span>
-              <span className="title_line title_saju">신년운세</span>
+          <div className="newyear_title_wrap">
+            <h1 className="newyear_title">
+              <span className="newyear_title_line newyear_title_name">까치도령</span>
+              <span className="newyear_title_line newyear_title_saju">신년운세</span>
             </h1>
             <p className="landing_subtitle">2026년 병오년 운세를 알려드립니다</p>
           </div>

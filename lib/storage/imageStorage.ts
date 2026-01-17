@@ -315,3 +315,172 @@ export async function uploadSajuLoveImages(
 
   return results;
 }
+
+// Face 서비스 타입 (정통 관상, 궁합 관상)
+export type FaceStorageServiceType = "face" | "couple";
+
+/**
+ * Face 이미지 Storage 경로 생성
+ */
+function getFaceStoragePath(
+  serviceType: FaceStorageServiceType,
+  resultId: string,
+  imageName: string,
+  extension = "webp"
+): string {
+  return `${serviceType}/${resultId}/${imageName}.${extension}`;
+}
+
+/**
+ * Face(정통 관상) 이미지 업로드
+ */
+export async function uploadFaceImage(
+  resultId: string,
+  imageBase64: string
+): Promise<{ path: string; url: string } | null> {
+  try {
+    // Base64를 Blob으로 변환
+    let blob = base64ToBlob(imageBase64);
+
+    // WebP로 압축
+    if (typeof window !== "undefined") {
+      try {
+        blob = await compressToWebP(blob, 0.8, 1024);
+      } catch (err) {
+        console.warn("WebP 압축 실패, 원본 사용:", err);
+      }
+    }
+
+    const path = getFaceStoragePath("face", resultId, "main");
+
+    // 기존 파일 삭제 (덮어쓰기 위해)
+    await supabase.storage.from(BUCKET_NAME).remove([path]);
+
+    // 업로드
+    const { error } = await supabase.storage
+      .from(BUCKET_NAME)
+      .upload(path, blob, {
+        contentType: "image/webp",
+        upsert: true,
+      });
+
+    if (error) {
+      console.error("Face 이미지 업로드 실패:", error);
+      return null;
+    }
+
+    // Public URL 가져오기
+    const { data: urlData } = supabase.storage
+      .from(BUCKET_NAME)
+      .getPublicUrl(path);
+
+    return {
+      path,
+      url: urlData.publicUrl,
+    };
+  } catch (err) {
+    console.error("Face 이미지 업로드 예외:", err);
+    return null;
+  }
+}
+
+/**
+ * Couple(궁합 관상) 이미지 업로드 (2장)
+ */
+export async function uploadCoupleImages(
+  resultId: string,
+  images: {
+    image1: string;  // base64
+    image2: string;  // base64
+  }
+): Promise<{
+  image1Path?: string;
+  image1Url?: string;
+  image2Path?: string;
+  image2Url?: string;
+}> {
+  const results: {
+    image1Path?: string;
+    image1Url?: string;
+    image2Path?: string;
+    image2Url?: string;
+  } = {};
+
+  // 첫 번째 이미지 업로드
+  if (images.image1) {
+    try {
+      let blob1 = base64ToBlob(images.image1);
+
+      if (typeof window !== "undefined") {
+        try {
+          blob1 = await compressToWebP(blob1, 0.8, 1024);
+        } catch (err) {
+          console.warn("WebP 압축 실패 (image1), 원본 사용:", err);
+        }
+      }
+
+      const path1 = getFaceStoragePath("couple", resultId, "person1");
+
+      await supabase.storage.from(BUCKET_NAME).remove([path1]);
+
+      const { error: error1 } = await supabase.storage
+        .from(BUCKET_NAME)
+        .upload(path1, blob1, {
+          contentType: "image/webp",
+          upsert: true,
+        });
+
+      if (!error1) {
+        const { data: urlData1 } = supabase.storage
+          .from(BUCKET_NAME)
+          .getPublicUrl(path1);
+        results.image1Path = path1;
+        results.image1Url = urlData1.publicUrl;
+      } else {
+        console.error("Couple 이미지1 업로드 실패:", error1);
+      }
+    } catch (err) {
+      console.error("Couple 이미지1 업로드 예외:", err);
+    }
+  }
+
+  // 두 번째 이미지 업로드
+  if (images.image2) {
+    try {
+      let blob2 = base64ToBlob(images.image2);
+
+      if (typeof window !== "undefined") {
+        try {
+          blob2 = await compressToWebP(blob2, 0.8, 1024);
+        } catch (err) {
+          console.warn("WebP 압축 실패 (image2), 원본 사용:", err);
+        }
+      }
+
+      const path2 = getFaceStoragePath("couple", resultId, "person2");
+
+      await supabase.storage.from(BUCKET_NAME).remove([path2]);
+
+      const { error: error2 } = await supabase.storage
+        .from(BUCKET_NAME)
+        .upload(path2, blob2, {
+          contentType: "image/webp",
+          upsert: true,
+        });
+
+      if (!error2) {
+        const { data: urlData2 } = supabase.storage
+          .from(BUCKET_NAME)
+          .getPublicUrl(path2);
+        results.image2Path = path2;
+        results.image2Url = urlData2.publicUrl;
+      } else {
+        console.error("Couple 이미지2 업로드 실패:", error2);
+      }
+    } catch (err) {
+      console.error("Couple 이미지2 업로드 예외:", err);
+    }
+  }
+
+  return results;
+}

@@ -5,11 +5,12 @@ import { useSearchParams, useRouter } from "next/navigation";
 import { trackPaymentSuccess, trackPaymentFail, ServiceType } from "@/lib/mixpanel";
 import { confirmPayment as confirmPaymentAction } from "@/app/actions/analyze";
 import { markSajuLovePaid, getSajuLoveRecord } from "@/lib/db/sajuLoveDB";
-import { markFaceReportPaid } from "@/lib/db/faceAnalysisDB";
-import { markCoupleAnalysisPaid } from "@/lib/db/coupleAnalysisDB";
+import { markFaceReportPaid, getFaceAnalysisRecord } from "@/lib/db/faceAnalysisDB";
+import { markCoupleAnalysisPaid, getCoupleAnalysisRecord } from "@/lib/db/coupleAnalysisDB";
 import { markNewYearPaid, getNewYearRecord } from "@/lib/db/newYearDB";
 import { createSajuAnalysis, getSajuAnalysisByShareId, updateSajuAnalysis } from "@/lib/db/sajuAnalysisDB";
-import { uploadSajuLoveImages } from "@/lib/storage/imageStorage";
+import { upsertFaceAnalysisSupabase, getFaceAnalysisSupabase } from "@/lib/db/faceSupabaseDB";
+import { uploadSajuLoveImages, uploadFaceImage, uploadCoupleImages } from "@/lib/storage/imageStorage";
 
 const MAX_RETRY = 3;
 const BASE_DELAY = 1500;
@@ -294,9 +295,64 @@ function SuccessContent() {
           } else if (reportType === "couple") {
             // 궁합 결제인 경우
             await markCoupleAnalysisPaid(resultId);
+
+            // Supabase 저장 (궁합 관상)
+            const coupleRecord = await getCoupleAnalysisRecord(resultId);
+            if (coupleRecord) {
+              try {
+                // 이미지 Storage 업로드
+                const uploadedImages = await uploadCoupleImages(resultId, {
+                  image1: coupleRecord.image1Base64,
+                  image2: coupleRecord.image2Base64,
+                });
+
+                // Supabase에 저장/업데이트
+                await upsertFaceAnalysisSupabase({
+                  id: resultId,
+                  service_type: "couple",
+                  features1: coupleRecord.features1,
+                  features2: coupleRecord.features2,
+                  image1_path: uploadedImages.image1Path,
+                  image2_path: uploadedImages.image2Path,
+                  relationship_type: coupleRecord.relationshipType,
+                  relationship_feeling: coupleRecord.relationshipFeeling,
+                  couple_report: coupleRecord.report as Record<string, unknown>,
+                  is_paid: true,
+                  paid_at: new Date().toISOString(),
+                  payment_info: { method: "toss", price: Number(amount) },
+                });
+                console.log("✅ Supabase에 궁합 관상 결과 저장 완료");
+              } catch (err) {
+                console.error("Supabase 궁합 관상 저장 실패:", err);
+              }
+            }
           } else {
             // 관상 결제인 경우 (base, wealth, love, marriage, career)
             await markFaceReportPaid(resultId, reportType as "base" | "wealth" | "love" | "marriage" | "career");
+
+            // Supabase 저장 (정통 관상)
+            const faceRecord = await getFaceAnalysisRecord(resultId);
+            if (faceRecord) {
+              try {
+                // 이미지 Storage 업로드
+                const uploadedImage = await uploadFaceImage(resultId, faceRecord.imageBase64);
+
+                // Supabase에 저장/업데이트
+                await upsertFaceAnalysisSupabase({
+                  id: resultId,
+                  service_type: "face",
+                  features: faceRecord.features,
+                  image_path: uploadedImage?.path,
+                  analysis_result: faceRecord.reports as Record<string, unknown>,
+                  is_paid: true,
+                  paid_at: new Date().toISOString(),
+                  payment_info: { method: "toss", price: Number(amount) },
+                });
+                console.log("✅ Supabase에 정통 관상 결과 저장 완료");
+              } catch (err) {
+                console.error("Supabase 정통 관상 저장 실패:", err);
+              }
+            }
           }
         } catch (e) {
           console.error("결제 정보 업데이트 실패:", e);

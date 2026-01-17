@@ -84,7 +84,7 @@
 }
 
 /* 랜딩 타이틀 */
-.landing_title_wrap {
+.newyear_title_wrap {
   position: absolute;
   top: 8%;
   left: 0;
@@ -94,11 +94,11 @@
   padding: 0 20px;
 }
 
-.landing_title_wrap.hidden {
+.newyear_title_wrap.hidden {
   display: none;
 }
 
-.landing_title {
+.newyear_title {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -106,17 +106,17 @@
   margin-bottom: 16px;
 }
 
-.title_line {
+.newyear_title_line {
   font-family: "Danjo", serif;
   display: block;
   color: #4A90D9;
-  -webkit-text-stroke: 8px rgba(0, 0, 0, 0.6);
+  -webkit-text-stroke: 8px rgba(255, 255, 255, 0.8);
   paint-order: stroke fill;
   line-height: 1.1;
 }
 
-.title_name,
-.title_saju {
+.newyear_title_name,
+.newyear_title_saju {
   font-size: 56px;
 }
 

@@ -30,6 +30,8 @@ import {
   updateFaceAnalysisRecord,
   FaceAnalysisRecord,
 } from "@/lib/db/faceAnalysisDB";
+import { upsertFaceAnalysisSupabase } from "@/lib/db/faceSupabaseDB";
+import { uploadFaceImage } from "@/lib/storage/imageStorage";
 
 // TossPayments 타입 선언
 declare global {
@@ -335,6 +337,27 @@ function ResultContent() {
         } as FaceAnalysisRecord["reports"],
       });
 
+      // Supabase 저장 (정통 관상 - 무료 쿠폰)
+      try {
+        // 이미지 Storage 업로드
+        const uploadedImage = await uploadFaceImage(result.id, result.imageBase64);
+
+        // Supabase에 저장/업데이트
+        await upsertFaceAnalysisSupabase({
+          id: result.id,
+          service_type: "face",
+          features: result.features,
+          image_path: uploadedImage?.path,
+          analysis_result: result.reports as Record<string, unknown>,
+          is_paid: true,
+          paid_at: new Date().toISOString(),
+          payment_info: { method: "coupon", price: 0, couponCode: appliedCoupon?.code },
+        });
+        console.log("✅ Supabase에 정통 관상 결과 저장 완료 (무료 쿠폰)");
+      } catch (supabaseErr) {
+        console.error("Supabase 정통 관상 저장 실패:", supabaseErr);
+      }
+
       // 모달 닫고 분석 시작
       setShowPaymentModal(false);
       setShowPaymentPage(false);
@@ -349,7 +372,7 @@ function ResultContent() {
       console.error("무료 쿠폰 처리 오류:", error);
       setCouponError("쿠폰 처리 중 오류가 발생했습니다");
     }
-  }, [result, startRealAnalysis]);
+  }, [result, startRealAnalysis, appliedCoupon]);
 
   // 쿠폰 검증 및 적용
   const handleCouponSubmit = useCallback(async () => {

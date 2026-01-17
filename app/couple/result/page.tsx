@@ -19,6 +19,8 @@ import {
   updateCoupleAnalysisRecord,
   CoupleAnalysisRecord,
 } from "@/lib/db/coupleAnalysisDB";
+import { upsertFaceAnalysisSupabase } from "@/lib/db/faceSupabaseDB";
+import { uploadCoupleImages } from "@/lib/storage/imageStorage";
 
 // TossPayments 타입 선언
 declare global {
@@ -293,6 +295,34 @@ function CoupleResultContent() {
         },
       });
 
+      // Supabase 저장 (궁합 관상 - 무료 쿠폰)
+      try {
+        // 이미지 Storage 업로드
+        const uploadedImages = await uploadCoupleImages(result.id, {
+          image1: result.image1Base64,
+          image2: result.image2Base64,
+        });
+
+        // Supabase에 저장/업데이트
+        await upsertFaceAnalysisSupabase({
+          id: result.id,
+          service_type: "couple",
+          features1: result.features1,
+          features2: result.features2,
+          image1_path: uploadedImages.image1Path,
+          image2_path: uploadedImages.image2Path,
+          relationship_type: result.relationshipType,
+          relationship_feeling: result.relationshipFeeling,
+          couple_report: result.reports.couple as unknown as Record<string, unknown>,
+          is_paid: true,
+          paid_at: new Date().toISOString(),
+          payment_info: { method: "coupon", price: 0, couponCode: appliedCoupon?.code },
+        });
+        console.log("✅ Supabase에 궁합 관상 결과 저장 완료 (무료 쿠폰)");
+      } catch (supabaseErr) {
+        console.error("Supabase 궁합 관상 저장 실패:", supabaseErr);
+      }
+
       // 모달 닫기
       setShowPaymentModal(false);
 
@@ -309,7 +339,7 @@ function CoupleResultContent() {
       console.error("무료 쿠폰 처리 오류:", error);
       setCouponError("쿠폰 처리 중 오류가 발생했습니다");
     }
-  }, [result]);
+  }, [result, appliedCoupon]);
 
   // 쿠폰 검증 및 적용
   const handleCouponSubmit = useCallback(async () => {
