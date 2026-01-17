@@ -299,7 +299,7 @@
   cursor: not-allowed;
 }
 
-.saju_result_page .nav_arrow .material-icons {
+.saju_result_page .nav_arrow :global(.material-icons) {
   font-size: 24px;
   color: #333;
 }
@@ -680,7 +680,7 @@
   margin-bottom: 16px;
 }
 
-.saju_result_page .pillars_header .material-icons {
+.saju_result_page .pillars_header :global(.material-icons) {
   font-size: 20px;
   color: #e74c3c;
 }
@@ -761,7 +761,7 @@
   margin-bottom: 16px;
 }
 
-.saju_result_page .love_facts_header .material-icons {
+.saju_result_page .love_facts_header :global(.material-icons) {
   font-size: 20px;
   color: #e74c3c;
 }
@@ -1978,7 +1978,7 @@
   transform: scale(0.98);
 }
 
-.saju_result_page .chat_next_btn .material-icons {
+.saju_result_page .chat_next_btn :global(.material-icons) {
   font-size: 20px;
 }
 
@@ -2414,7 +2414,7 @@
   outline: none;
 }
 
-.saju_result_page .back_btn .material-icons {
+.saju_result_page .back_btn :global(.material-icons) {
   color: #333;
   font-size: 22px;
 }
@@ -2541,7 +2541,7 @@
   margin: 0;
 }
 
-.saju_result_page .dialogue_text .typing-cursor {
+.saju_result_page .dialogue_text .typing_cursor {
   display: inline-block;
   width: 2px;
   height: 1em;
@@ -2673,7 +2673,7 @@
   animation: bounce 1.5s infinite;
 }
 
-.saju_result_page .scroll_hint .material-icons {
+.saju_result_page .scroll_hint :global(.material-icons) {
   font-size: 18px;
   animation: arrow-bounce 1.5s infinite;
 }
@@ -3353,7 +3353,7 @@
   margin-bottom: 12px;
 }
 
-.saju_result_page .sinsal_header .material-icons {
+.saju_result_page .sinsal_header :global(.material-icons) {
   font-size: 20px;
   color: #e74c3c;
 }
@@ -3532,7 +3532,7 @@
   outline: none;
 }
 
-.saju_result_page .toc_btn .material-icons {
+.saju_result_page .toc_btn :global(.material-icons) {
   color: #333;
   font-size: 20px;
 }
@@ -3622,7 +3622,7 @@
   background: rgba(0, 0, 0, 0.1);
 }
 
-.saju_result_page .toc_modal_close .material-icons {
+.saju_result_page .toc_modal_close :global(.material-icons) {
   font-size: 20px;
   color: #666;
 }
@@ -3857,7 +3857,7 @@
   margin-bottom: 16px;
 }
 
-.saju_result_page .pillars_header .material-icons {
+.saju_result_page .pillars_header :global(.material-icons) {
   font-size: 20px;
   color: #e74c3c;
 }
@@ -4345,7 +4345,7 @@
   margin-bottom: 12px;
 }
 
-.saju_result_page .sinsal_header .material-icons {
+.saju_result_page .sinsal_header :global(.material-icons) {
   font-size: 20px;
   color: #e74c3c;
 }
@@ -4458,7 +4458,7 @@
   background: #f0ebe5;
 }
 
-.saju_result_page .saju_tip_toggle .material-icons {
+.saju_result_page .saju_tip_toggle :global(.material-icons) {
   font-size: 20px;
   color: #8a7a6a;
 }

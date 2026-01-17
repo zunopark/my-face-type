@@ -1,0 +1,683 @@
+/* ========================================
+   Face Result 페이지 - CSS Module
+   ======================================== */
+
+/* face.module.css에서 공유 스타일 가져오기 */
+
+/* === 가라 분석 오버레이 === */
+.fake_analysis_overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: #f8f7f1;
+  z-index: 9999;
+  justify-content: center;
+  align-items: center;
+}
+
+.fake_analysis_overlay.active {
+  display: flex;
+}
+
+.fake_analysis_content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+  padding: 40px 20px;
+}
+
+.fake_analysis_spinner {
+  width: 48px;
+  height: 48px;
+  border: 4px solid rgba(85, 57, 0, 0.2);
+  border-top-color: #553900;
+  border-radius: 50%;
+  animation: fakeAnalysisSpin 1s linear infinite;
+}
+
+@keyframes fakeAnalysisSpin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.fake_analysis_text {
+  font-family: "KimjungchulMyungjo-Bold", serif;
+  font-size: 16px;
+  color: #171717;
+  text-align: center;
+  animation: fakeAnalysisPulse 2s ease-in-out infinite;
+}
+
+@keyframes fakeAnalysisPulse {
+  0%,
+  100% {
+    opacity: 0.6;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+.fake_analysis_progress_wrap {
+  width: 240px;
+  height: 6px;
+  background: rgba(85, 57, 0, 0.15);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.fake_analysis_progress_bar {
+  width: 0%;
+  height: 100%;
+  background: linear-gradient(90deg, #553900, #8b7355);
+  border-radius: 3px;
+  transition: width 0.3s ease;
+}
+
+/* active 클래스 */
+.active {
+  /* Used as compound class */
+}
+
+/* === 메인 레이아웃 === */
+.main_body_wrap {
+  background: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+/* 공통 뒤로가기 버튼 (유리 스타일) */
+.back_btn_glass {
+  position: fixed;
+  top: 16px;
+  left: 16px;
+  height: 40px;
+  padding: 0 14px 0 10px;
+  background: rgba(255, 255, 255, 0.4);
+  -webkit-backdrop-filter: blur(16px);
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  z-index: 200;
+  text-decoration: none;
+}
+
+.back_btn_glass :global(.material-icons) {
+  color: #333;
+  font-size: 22px;
+}
+
+.back_btn_glass span:last-child {
+  color: #333;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+@media screen and (min-width: 500px) {
+  .back_btn_glass {
+    left: calc(50% - 250px + 16px);
+  }
+}
+
+/* === 사진 프레임 === */
+.border {
+  box-sizing: border-box;
+  position: relative;
+  background: #272727;
+  background-image: linear-gradient(to top right, #5d5d5b, #383838);
+  box-shadow: -1px 1px 2px 1px rgba(0, 0, 0, 0.1),
+    -2px 2px 2px 1px rgba(0, 0, 0, 0.09), -3px 3px 2px 1px rgba(0, 0, 0, 0.08),
+    -4px 4px 2px 1px rgba(0, 0, 0, 0.07), -5px 5px 2px 1px rgba(0, 0, 0, 0.06),
+    -6px 6px 2px 1px rgba(0, 0, 0, 0.05), -7px 7px 2px 1px rgba(0, 0, 0, 0.04),
+    -8px 8px 2px 1px rgba(0, 0, 0, 0.03), -9px 9px 2px 1px rgba(0, 0, 0, 0.03),
+    -10px 10px 2px 1px rgba(0, 0, 0, 0.03),
+    -11px 11px 2px 1px rgba(0, 0, 0, 0.03),
+    -12px 12px 2px 1px rgba(0, 0, 0, 0.02),
+    -13px 13px 2px 1px rgba(0, 0, 0, 0.02),
+    -14px 14px 2px 1px rgba(0, 0, 0, 0.01),
+    -15px 15px 2px 1px rgba(0, 0, 0, 0.01),
+    -16px 16px 2px 1px rgba(0, 0, 0, 0.01);
+}
+
+.border:before {
+  content: "";
+  display: block;
+  padding-bottom: 125%;
+}
+
+.frame {
+  left: 3%;
+  top: 2.5%;
+  width: 94%;
+  height: 95%;
+  background: white;
+  align-items: center;
+  display: flex;
+  box-sizing: border-box;
+  position: absolute;
+}
+
+.image {
+  box-shadow: inset 0 0 1px 0 rgba(0, 0, 0, 0.2);
+  height: 100%;
+  width: 100%;
+  background-size: cover;
+  background-position: center center;
+}
+
+/* === faceteller 이미지 === */
+.face_teller_wrap {
+  width: 350px;
+  margin-top: 40px;
+}
+
+.face_teller_img {
+  width: 100%;
+}
+
+/* === 결과 페이지 스타일 === */
+.result {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0 32px;
+}
+
+.face_summary_section {
+  padding: 24px 40px;
+  background: #fdfcf8;
+  border: 1px solid #d4c5a9;
+  margin-bottom: 32px;
+  margin-top: 40px;
+  position: relative;
+}
+
+.face_summary {
+  font-size: 17px;
+  color: #4a3c2a;
+  line-height: 1.8;
+  font-family: "KimjungchulMyungjo-Bold";
+  text-align: center;
+  margin-bottom: 0;
+}
+
+.face_detail_section {
+  padding: 0 10px;
+  margin-bottom: 80px;
+}
+
+.face_detail {
+  font-size: 16px;
+  color: rgb(50, 50, 50);
+  line-height: 1.8;
+  text-align: justify;
+}
+
+/* === 보고서 카드 스타일 === */
+.report_cards_container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  padding-bottom: 60px;
+}
+
+.report_card {
+  background: #fdfcf8;
+  border: 1px solid #d4c5a9;
+  overflow: hidden;
+}
+
+.report_card_header {
+  display: flex;
+  align-items: center;
+  padding: 16px 20px;
+  background: #f5f0e6;
+  border-bottom: 1px solid #d4c5a9;
+}
+
+.report_card_title {
+  font-size: 17px;
+  font-weight: 700;
+  color: #4a3c2a;
+  margin: 0;
+  font-family: "KimjungchulMyungjo-Bold", serif;
+  letter-spacing: 1px;
+}
+
+.report_card_content {
+  padding: 24px 20px;
+  font-size: 15px;
+  line-height: 1.9;
+  color: #3d3d3d;
+  text-align: justify;
+  word-break: keep-all;
+}
+
+/* === 결제 버튼 영역 === */
+.result_btn_wrap {
+  position: fixed;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 32px 20px 24px;
+  background: linear-gradient(to top, #fff 85%, transparent);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  text-align: center;
+}
+
+.result_btn_status {
+  font-size: 14px;
+  color: #888;
+  font-weight: 500;
+}
+
+.result_btn_wrap[data-state="loading"] .result_btn_status {
+  color: #c68800;
+}
+
+.result_btn_wrap[data-state="ready"] .result_btn_status {
+  font-weight: 600;
+  color: #1a1a1a;
+}
+
+.result_btn {
+  width: 100%;
+  max-width: 340px;
+  padding: 16px 24px;
+  font-size: 17px;
+  font-weight: 700;
+  border: none;
+  border-radius: 12px;
+  background: #ccc;
+  color: #fff;
+  cursor: not-allowed;
+  transition: all 0.2s ease;
+  font-family: "KimjungchulMyungjo-Bold", sans-serif;
+}
+
+.result_btn_wrap[data-state="ready"] .result_btn {
+  background: linear-gradient(135deg, #d4a017 0%, #b8860b 100%);
+  box-shadow: 0 4px 16px rgba(184, 134, 11, 0.35);
+  cursor: pointer;
+  animation: pulse_gold 2s infinite;
+}
+
+.result_btn_wrap[data-state="ready"] .result_btn:active {
+  transform: scale(0.98);
+  box-shadow: 0 2px 8px rgba(184, 134, 11, 0.3);
+}
+
+@keyframes pulse_gold {
+  0%,
+  100% {
+    box-shadow: 0 4px 16px rgba(184, 134, 11, 0.35);
+  }
+  50% {
+    box-shadow: 0 4px 24px rgba(212, 160, 23, 0.5);
+  }
+}
+
+/* === 로딩 박스 === */
+.loading_box {
+  padding: 24px;
+  text-align: center;
+  margin-top: 40px;
+}
+
+.loading_box.dark_mode {
+  background: #1a1a1a;
+  border-radius: 12px;
+  color: white;
+}
+
+.loading_text {
+  font-size: 16px;
+  margin-bottom: 16px;
+}
+
+.progress_bar_container {
+  width: 100%;
+  height: 8px;
+  background: #333;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.progress_bar_fill {
+  height: 100%;
+  background: linear-gradient(90deg, #c68800, #d4a017);
+  transition: width 0.3s linear;
+}
+
+/* === 결제 모달 스타일 === */
+.payment_overlay {
+  position: fixed;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  height: 400vh;
+  background: rgba(0, 0, 0, 0.9);
+  z-index: 99999;
+  text-align: center;
+  overflow-y: auto;
+}
+
+.modal_content {
+  width: 100%;
+  height: 100vh;
+  background: #fff;
+  padding: 34px 22px 28px 22px;
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.19);
+  position: relative;
+  max-height: 100vh;
+  overflow-y: auto;
+}
+
+.payment_fullscreen {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.payment_header {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.payment_title {
+  font-size: 20px;
+  font-weight: 700;
+  color: #343434;
+  text-align: left;
+}
+
+.payment_close {
+  color: #343434;
+  font-size: 20px;
+  font-weight: bold;
+  cursor: pointer;
+  z-index: 10000;
+  margin-left: 12px;
+}
+
+.payment_subtitle {
+  color: #2f3846;
+  font-weight: 600;
+}
+
+.payment_price_wrap {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 8px;
+  padding-top: 16px;
+  font-weight: 600;
+  font-size: 14px;
+  border-top: 1px solid rgb(207, 207, 207);
+}
+
+.payment_original_price_title {
+}
+
+.payment_original_price {
+}
+
+.payment_coupon_wrap {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 20px;
+  font-weight: 600;
+  font-size: 16px;
+}
+
+.payment_coupon {
+}
+
+.payment_coupon_price_wrap {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: top;
+  margin-top: 4px;
+  font-weight: 500;
+  font-size: 14px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid rgb(207, 207, 207);
+}
+
+.payment_coupon_title {
+  text-align: left;
+  color: #181818;
+}
+
+.payment_coupon_price {
+  color: #ff5121;
+}
+
+.report_wrap {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  margin-top: 20px;
+  background: #fffaf0;
+  border-radius: 12px;
+  padding: 16px;
+  border: 1px solid #ffe4b5;
+}
+
+.report_title_wrap {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+  padding-bottom: 12px;
+  border-bottom: 1px dashed #e0c080;
+}
+
+.report_title {
+  font-size: 15px;
+  font-weight: 700;
+  color: #333;
+}
+
+.report_num {
+  font-size: 13px;
+  font-weight: 600;
+  color: #fff;
+  background: linear-gradient(135deg, #ff6b00, #ff8c00);
+  padding: 4px 10px;
+  border-radius: 20px;
+}
+
+.report_contents_wrap {
+  width: 100%;
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 10px;
+}
+
+.report_contents_wrap:last-child {
+  margin-bottom: 0;
+}
+
+.report_contents {
+  font-size: 13px;
+  line-height: 1.5;
+  color: #444;
+  text-align: left;
+  padding-left: 8px;
+}
+
+.payment_final_price_wrap {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-top: 4px;
+  font-weight: 500;
+  border-top: 1px solid rgb(207, 207, 207);
+  padding-top: 24px;
+}
+
+.payment_final_price_title {
+  text-align: left;
+  font-size: 14px;
+}
+
+.payment_final_price_price_wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.payment_originam_price2 {
+  color: #9d9d9d;
+  text-decoration: line-through;
+  font-size: 14px;
+}
+
+.payment_final_price {
+  display: flex;
+  justify-content: flex-end;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.payment_final_price_discount {
+  color: #ff5121;
+  margin-right: 8px;
+}
+
+.payment_final_price_num {
+  color: #181818;
+}
+
+.payment_final_btn {
+  margin-top: 16px;
+  width: 100%;
+  padding: 12px;
+  background-color: #ffbe0a;
+  color: rgb(13, 13, 13);
+  font-weight: 700;
+  border: none;
+  border-radius: 6px;
+  font-size: 14px;
+  margin-bottom: 60px;
+  cursor: pointer;
+}
+
+.payment_final_btn:hover {
+  background-color: #f5aa00;
+}
+
+.payment_empty {
+}
+
+/* === 쿠폰 섹션 === */
+.coupon_section {
+  padding: 16px 20px;
+  background: #f8f8f8;
+  border-top: 1px solid #eee;
+}
+
+.coupon_input_row {
+  display: flex;
+  gap: 8px;
+}
+
+.coupon_input {
+  flex: 1;
+  padding: 12px 16px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 14px;
+  outline: none;
+  background: #fff;
+}
+
+.coupon_input:focus {
+  border-color: #999;
+}
+
+.coupon_input:disabled {
+  background: #f5f5f5;
+  color: #999;
+}
+
+.coupon_submit_btn {
+  padding: 12px 20px;
+  background: #333;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.coupon_submit_btn:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+}
+
+.coupon_error {
+  margin-top: 8px;
+  font-size: 12px;
+  color: #e74c3c;
+}
+
+/* === 미디어 쿼리 === */
+@media screen and (min-width: 500px) {
+  .main_body_wrap,
+  .payment_overlay,
+  .result_btn_wrap {
+    width: 500px;
+  }
+
+  .border,
+  .modal_content {
+    width: 350px;
+  }
+
+  .result {
+    width: 480px;
+  }
+}
+
+@media screen and (max-width: 499px) {
+  .main_body_wrap,
+  .payment_overlay,
+  .result_btn_wrap {
+    width: 100%;
+  }
+
+  .border {
+    width: 320px;
+  }
+}

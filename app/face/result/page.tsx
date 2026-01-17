@@ -18,6 +18,7 @@ function base64ToBlob(base64: string, mimeType: string = "image/jpeg"): Blob {
   return new Blob([byteArray], { type: mimeType });
 }
 import Footer from "@/components/layout/Footer";
+import styles from "./result.module.css";
 import {
   trackPaymentModalOpen,
   trackPaymentModalClose,
@@ -678,18 +679,18 @@ function ResultContent() {
   // 가라 분석 오버레이
   if (showFakeAnalysis) {
     return (
-      <div className="fake_analysis_overlay active">
-        <div className="fake_analysis_content">
-          <div className="main_content_wrap">
-            <div className="border">
-              <div className="frame">
-                <div className="image">
-                  <div className="file-upload">
+      <div className={`${styles.fake_analysis_overlay} ${styles.active}`}>
+        <div className={styles.fake_analysis_content}>
+          <div className={styles.main_content_wrap}>
+            <div className={styles.border}>
+              <div className={styles.frame}>
+                <div className={styles.image}>
+                  <div className={styles.file_upload}>
                     <div
-                      className="file-upload-content"
+                      className={styles.file_upload_content}
                       style={{ display: "block" }}
                     >
-                      <div className="image-square-frame">
+                      <div className={styles.image_square_frame}>
                         <Image
                           src={result.imageBase64}
                           alt="분석 중인 사진"
@@ -704,11 +705,11 @@ function ResultContent() {
               </div>
             </div>
           </div>
-          <div className="fake_analysis_spinner" />
-          <div className="fake_analysis_text">{fakeMessage}</div>
-          <div className="fake_analysis_progress_wrap">
+          <div className={styles.fake_analysis_spinner} />
+          <div className={styles.fake_analysis_text}>{fakeMessage}</div>
+          <div className={styles.fake_analysis_progress_wrap}>
             <div
-              className="fake_analysis_progress_bar"
+              className={styles.fake_analysis_progress_bar}
               style={{ width: `${fakeProgress}%` }}
             />
           </div>
@@ -720,29 +721,29 @@ function ResultContent() {
   // 결제 유도 페이지
   if (showPaymentPage) {
     return (
-      <div className="main_body_wrap">
+      <div className={styles.main_body_wrap}>
         {/* 다른 사진으로 버튼 */}
-        <Link href="/face" className="back-btn-glass">
+        <Link href="/face" className={styles.back_btn_glass}>
           <span className="material-icons">arrow_back</span>
           <span>다른 사진으로</span>
         </Link>
 
-        <div className="main_content_wrap">
-          <div className="main_title_wrap">
-            <div className="main_title">인공지능이 알려주는 관상 테스트</div>
-            <div className="main_subtitle">AI 관상 | 관상가 양반</div>
+        <div className={styles.main_content_wrap}>
+          <div className={styles.main_title_wrap}>
+            <div className={styles.main_title}>인공지능이 알려주는 관상 테스트</div>
+            <div className={styles.main_subtitle}>AI 관상 | 관상가 양반</div>
           </div>
 
           {/* 업로드된 이미지 */}
-          <div className="border">
-            <div className="frame">
-              <div className="image">
-                <div className="file-upload">
+          <div className={styles.border}>
+            <div className={styles.frame}>
+              <div className={styles.image}>
+                <div className={styles.file_upload}>
                   <div
-                    className="file-upload-content"
+                    className={styles.file_upload_content}
                     style={{ display: "block" }}
                   >
-                    <div className="image-square-frame">
+                    <div className={styles.image_square_frame}>
                       <Image
                         src={result.imageBase64}
                         alt="분석된 사진"
@@ -758,13 +759,13 @@ function ResultContent() {
           </div>
 
           {/* faceteller 이미지 */}
-          <div className="face_teller_wrap">
+          <div className={styles.face_teller_wrap}>
             <Image
               src="/img/faceteller.jpg"
               alt="관상 분석 완료"
               width={350}
               height={500}
-              className="face_teller_img"
+              className={styles.face_teller_img}
               unoptimized
             />
           </div>

@@ -6,7 +6,7 @@ import { computeSaju } from "@/app/actions/analyze";
 import { trackPageView, trackFormSubmit } from "@/lib/mixpanel";
 import { saveSajuLoveRecord } from "@/lib/db/sajuLoveDB";
 import { createSajuAnalysis } from "@/lib/db/sajuAnalysisDB";
-import "./saju-love.css";
+import styles from "./saju-love.module.css";
 
 // 대화 내용
 const DIALOGUES = [
@@ -447,22 +447,22 @@ export default function SajuLovePage() {
   };
 
   return (
-    <div className="main_body_wrap landing_page">
+    <div className={`${styles.main_body_wrap} ${styles.landing_page}`}>
       {/* 뒤로가기 버튼 */}
-      <button className="back_btn" onClick={() => router.push("/")}>
+      <button className={styles.back_btn} onClick={() => router.push("/")}>
         <span className="material-icons">arrow_back</span>
-        <span className="back_btn_text">홈으로</span>
+        <span className={styles.back_btn_text}>홈으로</span>
       </button>
 
       {/* 배경 이미지 - crossfade */}
-      <div className="landing_bg">
+      <div className={styles.landing_bg}>
         {/* 이전 이미지 (전환 중에만 보임) */}
         {isImageTransitioning && (
           // eslint-disable-next-line @next/next/no-img-element
           <img
             src={prevImage}
             alt=""
-            className="landing_image landing_image_prev"
+            className={`${styles.landing_image} ${styles.landing_image_prev}`}
           />
         )}
         {/* 현재 이미지 */}
@@ -470,8 +470,8 @@ export default function SajuLovePage() {
         <img
           src={currentImage}
           alt="색동낭자 연애사주"
-          className={`landing_image ${
-            isImageTransitioning ? "landing_image_fade_in" : ""
+          className={`${styles.landing_image} ${
+            isImageTransitioning ? styles.landing_image_fade_in : ""
           }`}
         />
       </div>
@@ -479,16 +479,16 @@ export default function SajuLovePage() {
       {/* 랜딩 타이틀 */}
       {showLanding && (
         <>
-          <div className="landing_title_wrap">
-            <h1 className="landing_title">
-              <span className="title_line title_name">색동낭자</span>
-              <span className="title_line title_saju">연애사주</span>
+          <div className={styles.landing_title_wrap}>
+            <h1 className={styles.landing_title}>
+              <span className={`${styles.title_line} ${styles.title_name}`}>색동낭자</span>
+              <span className={`${styles.title_line} ${styles.title_saju}`}>연애사주</span>
             </h1>
-            <p className="landing_subtitle">당신의 인연을 찾아드립니다</p>
+            <p className={styles.landing_subtitle}>당신의 인연을 찾아드립니다</p>
           </div>
 
-          <div className="landing_bottom">
-            <button className="landing_start_btn" onClick={handleStart}>
+          <div className={styles.landing_bottom}>
+            <button className={styles.landing_start_btn} onClick={handleStart}>
               시작하기
             </button>
           </div>
@@ -499,26 +499,26 @@ export default function SajuLovePage() {
       {showDialogue && (
         <>
           <div
-            className="dialogue_overlay active"
+            className={`${styles.dialogue_overlay} ${styles.active}`}
             onClick={handleNextDialogue}
           />
-          <div className="dialogue_wrap active" onClick={handleNextDialogue}>
-            <div className="dialogue_box">
-              <div className="dialogue_speaker">색동낭자</div>
-              <div className="dialogue_text">
+          <div className={`${styles.dialogue_wrap} ${styles.active}`} onClick={handleNextDialogue}>
+            <div className={styles.dialogue_box}>
+              <div className={styles.dialogue_speaker}>색동낭자</div>
+              <div className={styles.dialogue_text}>
                 {dialogueText.split("\n").map((line, i) => (
                   <span key={i}>
                     {line}
                     {i < dialogueText.split("\n").length - 1 && <br />}
                   </span>
                 ))}
-                {isTyping && <span className="typing-cursor" />}
+                {isTyping && <span className={styles.typing_cursor} />}
               </div>
             </div>
             {showButtons && (
-              <div className="dialogue_buttons visible">
+              <div className={`${styles.dialogue_buttons} ${styles.visible}`}>
                 <button
-                  className="dialogue_prev_btn"
+                  className={styles.dialogue_prev_btn}
                   onClick={(e) => {
                     e.stopPropagation();
                     handlePrevDialogue();
@@ -527,7 +527,7 @@ export default function SajuLovePage() {
                   이전
                 </button>
                 <button
-                  className="dialogue_next_btn"
+                  className={styles.dialogue_next_btn}
                   onClick={(e) => {
                     e.stopPropagation();
                     handleNextDialogue();
@@ -543,14 +543,14 @@ export default function SajuLovePage() {
 
       {/* 기본 정보 입력 폼 */}
       {showInputForm && (
-        <div className="input_overlay active">
-          <div className="input_form_wrap">
+        <div className={`${styles.input_overlay} ${styles.active}`}>
+          <div className={styles.input_form_wrap}>
             {/* 이름 */}
-            <div className="input_group">
-              <label className="input_label">이름</label>
+            <div className={styles.input_group}>
+              <label className={styles.input_label}>이름</label>
               <input
                 type="text"
-                className="input_field"
+                className={styles.input_field}
                 placeholder="이름을 입력해주세요."
                 value={userName}
                 onChange={(e) => setUserName(e.target.value)}
@@ -558,29 +558,29 @@ export default function SajuLovePage() {
             </div>
 
             {/* 생년월일 + 양력/음력 */}
-            <div className="input_group">
-              <div className="input_row">
-                <label className="input_label">생년월일</label>
-                <div className="calendar_options">
+            <div className={styles.input_group}>
+              <div className={styles.input_row}>
+                <label className={styles.input_label}>생년월일</label>
+                <div className={styles.calendar_options}>
                   <button
-                    className={`calendar_btn ${
-                      calendar === "solar" ? "active" : ""
+                    className={`${styles.calendar_btn} ${
+                      calendar === "solar" ? styles.active : ""
                     }`}
                     onClick={() => setCalendar("solar")}
                   >
                     {calendar === "solar" && (
-                      <span className="check_icon">✓</span>
+                      <span className={styles.check_icon}>✓</span>
                     )}{" "}
                     양력
                   </button>
                   <button
-                    className={`calendar_btn ${
-                      calendar === "lunar" ? "active" : ""
+                    className={`${styles.calendar_btn} ${
+                      calendar === "lunar" ? styles.active : ""
                     }`}
                     onClick={() => setCalendar("lunar")}
                   >
                     {calendar === "lunar" && (
-                      <span className="check_icon">✓</span>
+                      <span className={styles.check_icon}>✓</span>
                     )}{" "}
                     음력
                   </button>
@@ -588,7 +588,7 @@ export default function SajuLovePage() {
               </div>
               <input
                 type="text"
-                className="input_field"
+                className={styles.input_field}
                 placeholder="예: 20040312"
                 inputMode="numeric"
                 maxLength={10}
@@ -598,25 +598,25 @@ export default function SajuLovePage() {
             </div>
 
             {/* 태어난 시간 */}
-            <div className="input_group">
-              <div className="input_row">
-                <label className="input_label">태어난 시간</label>
+            <div className={styles.input_group}>
+              <div className={styles.input_row}>
+                <label className={styles.input_label}>태어난 시간</label>
                 <button
-                  className={`time_unknown_btn ${
-                    birthTime === "unknown" ? "active" : ""
+                  className={`${styles.time_unknown_btn} ${
+                    birthTime === "unknown" ? styles.active : ""
                   }`}
                   onClick={() =>
                     setBirthTime(birthTime === "unknown" ? "" : "unknown")
                   }
                 >
                   {birthTime === "unknown" && (
-                    <span className="check_icon">✓</span>
+                    <span className={styles.check_icon}>✓</span>
                   )}{" "}
                   시간 모름
                 </button>
               </div>
               <select
-                className="input_field"
+                className={styles.input_field}
                 value={birthTime}
                 onChange={(e) => setBirthTime(e.target.value)}
               >
@@ -629,19 +629,19 @@ export default function SajuLovePage() {
             </div>
 
             {/* 성별 */}
-            <div className="input_group">
-              <label className="input_label">성별</label>
-              <div className="gender_options">
+            <div className={styles.input_group}>
+              <label className={styles.input_label}>성별</label>
+              <div className={styles.gender_options}>
                 <button
-                  className={`gender_btn ${
-                    gender === "female" ? "active" : ""
+                  className={`${styles.gender_btn} ${
+                    gender === "female" ? styles.active : ""
                   }`}
                   onClick={() => setGender("female")}
                 >
                   여성
                 </button>
                 <button
-                  className={`gender_btn ${gender === "male" ? "active" : ""}`}
+                  className={`${styles.gender_btn} ${gender === "male" ? styles.active : ""}`}
                   onClick={() => setGender("male")}
                 >
                   남성
@@ -650,12 +650,12 @@ export default function SajuLovePage() {
             </div>
           </div>
 
-          <div className="input_buttons">
-            <button className="input_prev_btn" onClick={handleInputPrev}>
+          <div className={styles.input_buttons}>
+            <button className={styles.input_prev_btn} onClick={handleInputPrev}>
               이전
             </button>
             <button
-              className="input_submit_btn"
+              className={styles.input_submit_btn}
               onClick={handleInputNext}
               disabled={!isBasicFormValid}
             >
@@ -667,37 +667,37 @@ export default function SajuLovePage() {
 
       {/* 추가 정보 입력 폼 */}
       {showAdditionalForm && (
-        <div className="input_overlay active">
-          <div className="input_form_wrap">
+        <div className={`${styles.input_overlay} ${styles.active}`}>
+          <div className={styles.input_form_wrap}>
             {/* 연애 상태 */}
-            <div className="input_group">
-              <label className="input_label">현재 연애 상태</label>
-              <div className="status_options">
+            <div className={styles.input_group}>
+              <label className={styles.input_label}>현재 연애 상태</label>
+              <div className={styles.status_options}>
                 <button
-                  className={`status_btn ${
-                    status === "single" ? "active" : ""
+                  className={`${styles.status_btn} ${
+                    status === "single" ? styles.active : ""
                   }`}
                   onClick={() => setStatus("single")}
                 >
                   솔로
                 </button>
                 <button
-                  className={`status_btn ${status === "some" ? "active" : ""}`}
+                  className={`${styles.status_btn} ${status === "some" ? styles.active : ""}`}
                   onClick={() => setStatus("some")}
                 >
                   썸 타는 중
                 </button>
                 <button
-                  className={`status_btn ${
-                    status === "dating" ? "active" : ""
+                  className={`${styles.status_btn} ${
+                    status === "dating" ? styles.active : ""
                   }`}
                   onClick={() => setStatus("dating")}
                 >
                   연애 중
                 </button>
                 <button
-                  className={`status_btn ${
-                    status === "breakup" ? "active" : ""
+                  className={`${styles.status_btn} ${
+                    status === "breakup" ? styles.active : ""
                   }`}
                   onClick={() => setStatus("breakup")}
                 >
@@ -707,13 +707,13 @@ export default function SajuLovePage() {
             </div>
 
             {/* 연애 고민 */}
-            <div className="input_group">
-              <label className="input_label">
+            <div className={styles.input_group}>
+              <label className={styles.input_label}>
                 요즘 연애 고민이 있나요?
-                <span className="input_optional">(선택)</span>
+                <span className={styles.input_optional}>(선택)</span>
               </label>
               <textarea
-                className="input_field textarea"
+                className={`${styles.input_field} ${styles.textarea}`}
                 placeholder={
                   "적지 않아도 괜찮아요!\n고민이 있다면 더 맞춤형 답변을 드릴게요."
                 }
@@ -724,12 +724,12 @@ export default function SajuLovePage() {
             </div>
           </div>
 
-          <div className="input_buttons">
-            <button className="input_prev_btn" onClick={handleAdditionalPrev}>
+          <div className={styles.input_buttons}>
+            <button className={styles.input_prev_btn} onClick={handleAdditionalPrev}>
               이전
             </button>
             <button
-              className="input_submit_btn"
+              className={styles.input_submit_btn}
               onClick={handleSubmit}
               disabled={!isAdditionalFormValid || isLoading}
             >
@@ -741,11 +741,11 @@ export default function SajuLovePage() {
 
       {/* 분석 중 로딩 */}
       {isLoading && (
-        <div className="analyze_overlay active">
-          <div className="analyze_content">
-            <div className="analyze_spinner" />
-            <div className="analyze_text">사주 분석중</div>
-            <div className="analyze_subtext">잠시만 기다려주세요...</div>
+        <div className={`${styles.analyze_overlay} ${styles.active}`}>
+          <div className={styles.analyze_content}>
+            <div className={styles.analyze_spinner} />
+            <div className={styles.analyze_text}>사주 분석중</div>
+            <div className={styles.analyze_subtext}>잠시만 기다려주세요...</div>
           </div>
         </div>
       )}

@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { computeSaju } from "@/app/actions/analyze";
 import { saveNewYearRecord } from "@/lib/db/newYearDB";
 import { trackPageView, trackFormSubmit } from "@/lib/mixpanel";
-import "./new-year.css";
+import styles from "./new-year.module.css";
 
 // 대화 내용
 const DIALOGUES = [
@@ -339,36 +339,36 @@ export default function NewYearPage() {
   };
 
   return (
-    <div className="main_body_wrap landing_page">
+    <div className={`main_body_wrap ${styles.landing_page}`}>
       {/* 뒤로가기 버튼 */}
-      <button className="back_btn" onClick={() => router.push("/")}>
+      <button className={styles.back_btn} onClick={() => router.push("/")}>
         <span className="material-icons">arrow_back</span>
-        <span className="back_btn_text">홈으로</span>
+        <span className={styles.back_btn_text}>홈으로</span>
       </button>
 
       {/* 배경 이미지 */}
-      <div className="landing_bg">
+      <div className={styles.landing_bg}>
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           src={currentImage}
           alt="도령 신년운세"
-          className="landing_image"
+          className={styles.landing_image}
         />
       </div>
 
       {/* 랜딩 타이틀 */}
       {showLanding && (
         <>
-          <div className="newyear_title_wrap">
-            <h1 className="newyear_title">
-              <span className="newyear_title_line newyear_title_name">까치도령</span>
-              <span className="newyear_title_line newyear_title_saju">신년운세</span>
+          <div className={styles.newyear_title_wrap}>
+            <h1 className={styles.newyear_title}>
+              <span className={`${styles.newyear_title_line} ${styles.newyear_title_name}`}>까치도령</span>
+              <span className={`${styles.newyear_title_line} ${styles.newyear_title_saju}`}>신년운세</span>
             </h1>
-            <p className="landing_subtitle">2026년 병오년 운세를 알려드립니다</p>
+            <p className={styles.landing_subtitle}>2026년 병오년 운세를 알려드립니다</p>
           </div>
 
-          <div className="landing_bottom">
-            <button className="landing_start_btn" onClick={handleStart}>
+          <div className={styles.landing_bottom}>
+            <button className={styles.landing_start_btn} onClick={handleStart}>
               시작하기
             </button>
           </div>
@@ -379,26 +379,26 @@ export default function NewYearPage() {
       {showDialogue && (
         <>
           <div
-            className="dialogue_overlay active"
+            className={`${styles.dialogue_overlay} ${styles.active}`}
             onClick={handleNextDialogue}
           />
-          <div className="dialogue_wrap active" onClick={handleNextDialogue}>
-            <div className="dialogue_box">
-              <div className="dialogue_speaker">까치도령</div>
-              <div className="dialogue_text">
+          <div className={`${styles.dialogue_wrap} ${styles.active}`} onClick={handleNextDialogue}>
+            <div className={styles.dialogue_box}>
+              <div className={styles.dialogue_speaker}>까치도령</div>
+              <div className={styles.dialogue_text}>
                 {dialogueText.split("\n").map((line, i) => (
                   <span key={i}>
                     {line}
                     {i < dialogueText.split("\n").length - 1 && <br />}
                   </span>
                 ))}
-                {isTyping && <span className="typing-cursor" />}
+                {isTyping && <span className={styles.typing_cursor} />}
               </div>
             </div>
             {showButtons && (
-              <div className="dialogue_buttons visible">
+              <div className={`${styles.dialogue_buttons} ${styles.visible}`}>
                 <button
-                  className="dialogue_prev_btn"
+                  className={styles.dialogue_prev_btn}
                   onClick={(e) => {
                     e.stopPropagation();
                     handlePrevDialogue();
@@ -407,7 +407,7 @@ export default function NewYearPage() {
                   이전
                 </button>
                 <button
-                  className="dialogue_next_btn"
+                  className={styles.dialogue_next_btn}
                   onClick={(e) => {
                     e.stopPropagation();
                     handleNextDialogue();
@@ -423,14 +423,14 @@ export default function NewYearPage() {
 
       {/* 기본 정보 입력 폼 */}
       {showInputForm && (
-        <div className="input_overlay active">
-          <div className="input_form_wrap">
+        <div className={`${styles.input_overlay} ${styles.active}`}>
+          <div className={styles.input_form_wrap}>
             {/* 이름 */}
-            <div className="input_group">
-              <label className="input_label">이름</label>
+            <div className={styles.input_group}>
+              <label className={styles.input_label}>이름</label>
               <input
                 type="text"
-                className="input_field"
+                className={styles.input_field}
                 placeholder="이름을 입력해주세요."
                 value={userName}
                 onChange={(e) => setUserName(e.target.value)}
@@ -438,29 +438,29 @@ export default function NewYearPage() {
             </div>
 
             {/* 생년월일 + 양력/음력 */}
-            <div className="input_group">
-              <div className="input_row">
-                <label className="input_label">생년월일</label>
-                <div className="calendar_options">
+            <div className={styles.input_group}>
+              <div className={styles.input_row}>
+                <label className={styles.input_label}>생년월일</label>
+                <div className={styles.calendar_options}>
                   <button
-                    className={`calendar_btn ${
-                      calendar === "solar" ? "active" : ""
+                    className={`${styles.calendar_btn} ${
+                      calendar === "solar" ? styles.active : ""
                     }`}
                     onClick={() => setCalendar("solar")}
                   >
                     {calendar === "solar" && (
-                      <span className="check_icon">✓</span>
+                      <span className={styles.check_icon}>✓</span>
                     )}{" "}
                     양력
                   </button>
                   <button
-                    className={`calendar_btn ${
-                      calendar === "lunar" ? "active" : ""
+                    className={`${styles.calendar_btn} ${
+                      calendar === "lunar" ? styles.active : ""
                     }`}
                     onClick={() => setCalendar("lunar")}
                   >
                     {calendar === "lunar" && (
-                      <span className="check_icon">✓</span>
+                      <span className={styles.check_icon}>✓</span>
                     )}{" "}
                     음력
                   </button>
@@ -468,7 +468,7 @@ export default function NewYearPage() {
               </div>
               <input
                 type="text"
-                className="input_field"
+                className={styles.input_field}
                 placeholder="예: 20040312"
                 inputMode="numeric"
                 maxLength={10}
@@ -478,25 +478,25 @@ export default function NewYearPage() {
             </div>
 
             {/* 태어난 시간 */}
-            <div className="input_group">
-              <div className="input_row">
-                <label className="input_label">태어난 시간</label>
+            <div className={styles.input_group}>
+              <div className={styles.input_row}>
+                <label className={styles.input_label}>태어난 시간</label>
                 <button
-                  className={`time_unknown_btn ${
-                    birthTime === "unknown" ? "active" : ""
+                  className={`${styles.time_unknown_btn} ${
+                    birthTime === "unknown" ? styles.active : ""
                   }`}
                   onClick={() =>
                     setBirthTime(birthTime === "unknown" ? "" : "unknown")
                   }
                 >
                   {birthTime === "unknown" && (
-                    <span className="check_icon">✓</span>
+                    <span className={styles.check_icon}>✓</span>
                   )}{" "}
                   시간 모름
                 </button>
               </div>
               <select
-                className="input_field"
+                className={styles.input_field}
                 value={birthTime}
                 onChange={(e) => setBirthTime(e.target.value)}
               >
@@ -509,19 +509,19 @@ export default function NewYearPage() {
             </div>
 
             {/* 성별 */}
-            <div className="input_group">
-              <label className="input_label">성별</label>
-              <div className="gender_options">
+            <div className={styles.input_group}>
+              <label className={styles.input_label}>성별</label>
+              <div className={styles.gender_options}>
                 <button
-                  className={`gender_btn ${
-                    gender === "female" ? "active" : ""
+                  className={`${styles.gender_btn} ${
+                    gender === "female" ? styles.active : ""
                   }`}
                   onClick={() => setGender("female")}
                 >
                   여성
                 </button>
                 <button
-                  className={`gender_btn ${gender === "male" ? "active" : ""}`}
+                  className={`${styles.gender_btn} ${gender === "male" ? styles.active : ""}`}
                   onClick={() => setGender("male")}
                 >
                   남성
@@ -530,12 +530,12 @@ export default function NewYearPage() {
             </div>
           </div>
 
-          <div className="input_buttons">
-            <button className="input_prev_btn" onClick={handleInputPrev}>
+          <div className={styles.input_buttons}>
+            <button className={styles.input_prev_btn} onClick={handleInputPrev}>
               이전
             </button>
             <button
-              className="input_submit_btn"
+              className={styles.input_submit_btn}
               onClick={handleInputNext}
               disabled={!isBasicFormValid}
             >
@@ -547,17 +547,17 @@ export default function NewYearPage() {
 
       {/* 추가 정보 입력 폼 */}
       {showAdditionalForm && (
-        <div className="input_overlay active">
-          <div className="input_form_wrap">
+        <div className={`${styles.input_overlay} ${styles.active}`}>
+          <div className={styles.input_form_wrap}>
             {/* 직업 상태 */}
-            <div className="input_group">
-              <label className="input_label">현재 직업 상태</label>
-              <div className="status_options">
+            <div className={styles.input_group}>
+              <label className={styles.input_label}>현재 직업 상태</label>
+              <div className={styles.status_options}>
                 {JOB_STATUS_OPTIONS.map((option) => (
                   <button
                     key={option.value}
-                    className={`status_btn ${
-                      jobStatus === option.value ? "active" : ""
+                    className={`${styles.status_btn} ${
+                      jobStatus === option.value ? styles.active : ""
                     }`}
                     onClick={() => setJobStatus(option.value)}
                   >
@@ -568,14 +568,14 @@ export default function NewYearPage() {
             </div>
 
             {/* 연애 상태 */}
-            <div className="input_group">
-              <label className="input_label">현재 연애 상태</label>
-              <div className="status_options">
+            <div className={styles.input_group}>
+              <label className={styles.input_label}>현재 연애 상태</label>
+              <div className={styles.status_options}>
                 {RELATIONSHIP_OPTIONS.map((option) => (
                   <button
                     key={option.value}
-                    className={`status_btn ${
-                      relationshipStatus === option.value ? "active" : ""
+                    className={`${styles.status_btn} ${
+                      relationshipStatus === option.value ? styles.active : ""
                     }`}
                     onClick={() => setRelationshipStatus(option.value)}
                   >
@@ -586,13 +586,13 @@ export default function NewYearPage() {
             </div>
 
             {/* 2026년 소원/고민 */}
-            <div className="input_group">
-              <label className="input_label">
+            <div className={styles.input_group}>
+              <label className={styles.input_label}>
                 2026년에 이루고 싶은 것, 고민이 있다면?
-                <span className="input_optional">(선택)</span>
+                <span className={styles.input_optional}>(선택)</span>
               </label>
               <textarea
-                className="input_field textarea"
+                className={`${styles.input_field} ${styles.textarea}`}
                 placeholder={
                   "적지 않아도 괜찮아요!\n고민이 있다면 더 맞춤형 답변을 드릴게요."
                 }
@@ -603,12 +603,12 @@ export default function NewYearPage() {
             </div>
           </div>
 
-          <div className="input_buttons">
-            <button className="input_prev_btn" onClick={handleAdditionalPrev}>
+          <div className={styles.input_buttons}>
+            <button className={styles.input_prev_btn} onClick={handleAdditionalPrev}>
               이전
             </button>
             <button
-              className="input_submit_btn"
+              className={styles.input_submit_btn}
               onClick={handleSubmit}
               disabled={!isAdditionalFormValid || isLoading}
             >
@@ -620,11 +620,11 @@ export default function NewYearPage() {
 
       {/* 분석 중 로딩 */}
       {isLoading && (
-        <div className="analyze_overlay active">
-          <div className="analyze_content">
-            <div className="analyze_spinner" />
-            <div className="analyze_text">사주 분석중</div>
-            <div className="analyze_subtext">잠시만 기다려주세요...</div>
+        <div className={`${styles.analyze_overlay} ${styles.active}`}>
+          <div className={styles.analyze_content}>
+            <div className={styles.analyze_spinner} />
+            <div className={styles.analyze_text}>사주 분석중</div>
+            <div className={styles.analyze_subtext}>잠시만 기다려주세요...</div>
           </div>
         </div>
       )}

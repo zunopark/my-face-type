@@ -1,0 +1,566 @@
+/* ========================================
+   Face 페이지 공통 스타일 - CSS Module
+   ======================================== */
+
+/* === 메인 레이아웃 === */
+.main_body_wrap {
+  background: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+/* 공통 뒤로가기 버튼 (유리 스타일) */
+.back_btn_glass {
+  position: fixed;
+  top: 16px;
+  left: 16px;
+  height: 40px;
+  padding: 0 14px 0 10px;
+  background: rgba(255, 255, 255, 0.4);
+  -webkit-backdrop-filter: blur(16px);
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  z-index: 200;
+  text-decoration: none;
+}
+
+.back_btn_glass :global(.material-icons) {
+  color: #333;
+  font-size: 22px;
+}
+
+.back_btn_glass span:last-child {
+  color: #333;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+@media screen and (min-width: 500px) {
+  .back_btn_glass {
+    left: calc(50% - 250px + 16px);
+  }
+}
+
+.main_content_wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.main_title_wrap {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 10px;
+  color: #171717;
+  margin-top: 100px;
+}
+
+.main_title {
+  font-family: "KimjungchulMyungjo-Bold";
+  font-size: 24px;
+  font-weight: 700;
+  text-align: center;
+  line-height: 40px;
+}
+
+.main_subtitle {
+  font-size: 16px;
+  color: #2b2b2b;
+}
+
+/* === 카테고리 탭 === */
+.category_wrap {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.category_btn {
+  padding: 8px 20px;
+  border: 1px solid #bababa;
+  border-radius: 9999px;
+  background: #fff;
+  color: gray;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.2s, color 0.2s;
+}
+
+.category_btn.active,
+.active.category_btn {
+  background: #222;
+  color: #fff;
+  border: 1px solid #222;
+}
+
+.tab_content {
+  display: none;
+}
+
+.tab_content.active,
+.active.tab_content {
+  display: block;
+}
+
+/* 공통 active/selected 클래스 */
+.active {
+  /* Used as compound class */
+}
+
+.selected {
+  /* Used for option selection */
+}
+
+/* === 사진 프레임 === */
+.border {
+  box-sizing: border-box;
+  position: relative;
+  background: #272727;
+  background-image: linear-gradient(to top right, #5d5d5b, #383838);
+  box-shadow: -1px 1px 2px 1px rgba(0, 0, 0, 0.1),
+    -2px 2px 2px 1px rgba(0, 0, 0, 0.09), -3px 3px 2px 1px rgba(0, 0, 0, 0.08),
+    -4px 4px 2px 1px rgba(0, 0, 0, 0.07), -5px 5px 2px 1px rgba(0, 0, 0, 0.06),
+    -6px 6px 2px 1px rgba(0, 0, 0, 0.05), -7px 7px 2px 1px rgba(0, 0, 0, 0.04),
+    -8px 8px 2px 1px rgba(0, 0, 0, 0.03), -9px 9px 2px 1px rgba(0, 0, 0, 0.03),
+    -10px 10px 2px 1px rgba(0, 0, 0, 0.03),
+    -11px 11px 2px 1px rgba(0, 0, 0, 0.03),
+    -12px 12px 2px 1px rgba(0, 0, 0, 0.02),
+    -13px 13px 2px 1px rgba(0, 0, 0, 0.02),
+    -14px 14px 2px 1px rgba(0, 0, 0, 0.01),
+    -15px 15px 2px 1px rgba(0, 0, 0, 0.01),
+    -16px 16px 2px 1px rgba(0, 0, 0, 0.01);
+}
+
+.border:before {
+  content: "";
+  display: block;
+  padding-bottom: 125%;
+}
+
+.frame {
+  left: 3%;
+  top: 2.5%;
+  width: 94%;
+  height: 95%;
+  background: white;
+  align-items: center;
+  display: flex;
+  box-sizing: border-box;
+  position: absolute;
+}
+
+.image {
+  box-shadow: inset 0 0 1px 0 rgba(0, 0, 0, 0.2);
+  height: 100%;
+  width: 100%;
+  background-size: cover;
+  background-position: center center;
+}
+
+/* === 파일 업로드 === */
+.file_upload {
+  background-color: #fffae3;
+  width: 100%;
+  margin: 0 auto;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.file_upload_content {
+  text-align: center;
+  line-height: 100%;
+}
+
+.file_upload_content img {
+  vertical-align: middle;
+}
+
+.file_upload_input {
+  position: absolute;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  outline: none;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.image_upload_wrap {
+  position: relative;
+  height: 80%;
+  width: 80%;
+  background: linear-gradient(
+      to bottom,
+      rgba(44, 44, 44, 0.5) 0%,
+      rgba(44, 44, 44, 0.5) 100%
+    ),
+    url(https://i.ibb.co/B2kj8Pk/man.png);
+  background-size: cover;
+}
+
+.image_upload_wrap:hover {
+  opacity: 0.7;
+}
+
+.image_title_wrap {
+  color: #222;
+}
+
+.drag_text {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  font-size: 10px;
+  font-family: KimjungchulMyungjo-Bold;
+}
+
+.drag_text span {
+  font-size: 40px;
+  color: white;
+  margin-bottom: 10px;
+}
+
+.drag_text h2 {
+  margin-top: 3px;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: white;
+  font-size: 15px;
+}
+
+.drag_text h3 {
+  margin-top: 10px;
+  font-weight: 700;
+  font-size: 18px;
+  text-transform: uppercase;
+  color: white;
+}
+
+.image_square_frame {
+  width: 240px;
+  height: 280px;
+  overflow: hidden;
+  margin: 0 auto;
+  position: relative;
+}
+
+.file_upload_image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+}
+
+.nostore {
+  color: rgb(117, 117, 117);
+  margin-top: 12px;
+  font-size: 12px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.ai {
+  color: #222;
+}
+
+/* === 커플 업로드 === */
+.couple_container {
+  display: flex;
+  justify-content: center;
+  gap: 24px;
+  flex-wrap: wrap;
+  margin-bottom: 24px;
+}
+
+.couple_card {
+  width: 150px;
+  height: 150px;
+  background-color: rgba(196, 152, 90, 0.15);
+  border-radius: 12px;
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.couple_card:first-child {
+  background-color: rgba(206, 206, 206, 0.15);
+}
+
+.couple_input {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.couple_preview {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  color: rgb(63, 63, 63);
+}
+
+.couple_preview img {
+  width: 152px;
+  height: 152px;
+  object-fit: cover;
+  margin-bottom: 2px;
+}
+
+.couple_action {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+  margin-bottom: 40px;
+}
+
+.btn_primary {
+  background-color: #c4965a;
+  color: white;
+  padding: 12px 20px;
+  font-size: 16px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  opacity: 0.7;
+  transition: opacity 0.2s ease;
+}
+
+.btn_primary:enabled {
+  opacity: 1;
+}
+
+.couple_icon {
+  margin-bottom: 8px;
+}
+
+/* === 분석 오버레이 === */
+.analyze_overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.9);
+  z-index: 9999;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  font-weight: bold;
+  color: #333;
+}
+
+.analyze_overlay.active {
+  display: flex;
+}
+
+.analyze_text::after {
+  content: " ";
+  animation: dots 1.5s infinite;
+}
+
+@keyframes dots {
+  0% {
+    content: " ";
+  }
+  33% {
+    content: ".";
+  }
+  66% {
+    content: "..";
+  }
+  100% {
+    content: "...";
+  }
+}
+
+/* === 바텀시트 (궁합 관계 선택) === */
+.bottom_analyze_overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.bottom_analyze_overlay.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+.bottom_sheet {
+  position: fixed;
+  left: 50%;
+  bottom: 0;
+  transform: translateX(-50%) translateY(100%);
+  width: 100%;
+  max-width: 500px;
+  background: #fff;
+  border-radius: 20px 20px 0 0;
+  z-index: 1001;
+  transition: transform 0.35s ease;
+  max-height: 75vh;
+  overflow-y: auto;
+}
+
+.bottom_sheet.active {
+  transform: translateX(-50%) translateY(0);
+}
+
+.sheet_inner {
+  padding: 32px 24px 40px;
+}
+
+.sheet_inner h3 {
+  font-size: 18px;
+  font-weight: 700;
+  color: #171717;
+  margin-bottom: 20px;
+  font-family: "KimjungchulMyungjo-Bold", serif;
+}
+
+.sheet_inner h4 {
+  font-size: 16px;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 16px;
+  margin-top: 4px;
+}
+
+.relationship_options {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.relationship_options div {
+  padding: 14px 18px;
+  border-radius: 12px;
+  background-color: #f4f4f4;
+  font-size: 15px;
+  font-weight: 500;
+  color: #333;
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.relationship_options div:hover {
+  background-color: #ececec;
+}
+
+.relationship_options div.selected {
+  background-color: #c4965a;
+  color: white;
+  font-weight: 600;
+  transform: scale(1.02);
+}
+
+.sheet_followup {
+  margin-top: 28px;
+  padding-top: 24px;
+  border-top: 1px solid #e8e8e8;
+}
+
+.followup_options {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.followup_options div {
+  padding: 12px 16px;
+  border-radius: 10px;
+  background-color: #faf8f5;
+  font-size: 14px;
+  color: #444;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  border: 1px solid #e8e0d0;
+}
+
+.followup_options div:hover {
+  background-color: #f5f0e6;
+}
+
+.followup_options div.selected {
+  background-color: #553900;
+  color: white;
+  border-color: #553900;
+}
+
+.sheet_btn {
+  width: 100%;
+  margin-top: 24px;
+  padding: 16px;
+  font-size: 17px;
+  font-weight: 700;
+  background: linear-gradient(135deg, #d4a017 0%, #b8860b 100%);
+  color: #fff;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  font-family: "KimjungchulMyungjo-Bold", serif;
+  box-shadow: 0 4px 16px rgba(184, 134, 11, 0.35);
+  transition: transform 0.2s ease;
+}
+
+.sheet_btn:active {
+  transform: scale(0.98);
+}
+
+/* === 미디어 쿼리 === */
+@media screen and (min-width: 500px) {
+  .main_body_wrap,
+  .main_content_wrap,
+  .bottom_sheet {
+    width: 500px;
+  }
+
+  .border {
+    width: 350px;
+  }
+}
+
+@media screen and (max-width: 499px) {
+  .main_body_wrap,
+  .main_content_wrap,
+  .bottom_sheet {
+    width: 100%;
+  }
+
+  .border {
+    width: 320px;
+  }
+}

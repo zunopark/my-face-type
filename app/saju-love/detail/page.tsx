@@ -17,7 +17,7 @@ import {
   getSajuAnalysisByShareId,
   createSajuAnalysis,
 } from "@/lib/db/sajuAnalysisDB";
-import "./detail.css";
+import styles from "./detail.module.css";
 
 // TossPayments 타입 선언
 declare global {
@@ -555,10 +555,10 @@ function SajuDetailContent() {
 
   if (isLoading) {
     return (
-      <div className="main_body_wrap">
-        <div className="loading_wrap">
-          <div className="loading_spinner" />
-          <div className="loading_text">분석 결과를 불러오는 중...</div>
+      <div className={styles.main_body_wrap}>
+        <div className={styles.loading_wrap}>
+          <div className={styles.loading_spinner} />
+          <div className={styles.loading_text}>분석 결과를 불러오는 중...</div>
         </div>
       </div>
     );
@@ -589,44 +589,44 @@ function SajuDetailContent() {
   const elementHanja = elementKey ? elementHanjaMap[elementKey] || "" : "";
 
   return (
-    <div className="main_body_wrap">
+    <div className={styles.main_body_wrap}>
       {/* 뒤로가기 */}
-      <button className="back_btn" onClick={() => router.push("/saju-love")}>
+      <button className={styles.back_btn} onClick={() => router.push("/saju-love")}>
         <span className="material-icons">arrow_back</span>
-        <span className="back_btn_text">사주 다시 입력</span>
+        <span className={styles.back_btn_text}>사주 다시 입력</span>
       </button>
 
       {/* 결과 컨텐츠 */}
-      <div className="result_wrap">
+      <div className={styles.result_wrap}>
         {/* 섹션 1: 상단 이미지 + 정보 */}
-        <section className="detail_section section_1">
-          <div className="hero_image">
+        <section className={`${styles.detail_section} ${styles.section_1}`}>
+          <div className={styles.hero_image}>
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img src="/saju-love/img/detail.jpg" alt="연애 사주" />
           </div>
 
-          <div className="info_card">
-            <div className="info_main">
-              <span className="info_name">{input.userName}</span>
-              <span className="info_birth">
+          <div className={styles.info_card}>
+            <div className={styles.info_main}>
+              <span className={styles.info_name}>{input.userName}</span>
+              <span className={styles.info_birth}>
                 {input.date}
                 {birthTime ? ` | ${birthTime}` : ""}
               </span>
             </div>
-            <div className="info_ilju">
-              <span className="ilju_char">{dayMaster.char}</span>
-              <span className="ilju_title">{dayMaster.title}</span>
+            <div className={styles.info_ilju}>
+              <span className={styles.ilju_char}>{dayMaster.char}</span>
+              <span className={styles.ilju_title}>{dayMaster.title}</span>
             </div>
           </div>
 
           {/* 사주 팔자 테이블 */}
-          <div className="pillars_section">
-            <div className="pillars_header">
+          <div className={styles.pillars_section}>
+            <div className={styles.pillars_header}>
               <span className="material-icons">view_column</span>
               사주 팔자
             </div>
-            <div className="saju_table_wrap">
-              <table className="saju_table">
+            <div className={styles.saju_table_wrap}>
+              <table className={styles.saju_table}>
                 <thead>
                   <tr>
                     <th></th>
@@ -638,27 +638,27 @@ function SajuDetailContent() {
                 </thead>
                 <tbody>
                   {/* 천간 */}
-                  <tr className="row_cheongan">
-                    <td className="row_label">천간</td>
+                  <tr className={styles.row_cheongan}>
+                    <td className={styles.row_label}>천간</td>
                     {(["hour", "day", "month", "year"] as const).map((key) => {
                       const p = pillars[key];
                       if (!p?.stem?.char)
                         return (
-                          <td key={key} className="cell_empty">
+                          <td key={key} className={styles.cell_empty}>
                             —
                           </td>
                         );
                       return (
                         <td key={key}>
                           <span
-                            className="char_main"
+                            className={styles.char_main}
                             style={{ color: getColor(p.stem.element) }}
                           >
                             {p.stem.char}
                             {p.stem.korean}
                           </span>
                           <span
-                            className="char_element"
+                            className={styles.char_element}
                             style={{ color: getColor(p.stem.element) }}
                           >
                             {getElementKorean(p.stem.element, p.stem.yinYang)}
@@ -668,14 +668,14 @@ function SajuDetailContent() {
                     })}
                   </tr>
                   {/* 십성 (천간) */}
-                  <tr className="row_sipsung">
-                    <td className="row_label">십성</td>
+                  <tr className={styles.row_sipsung}>
+                    <td className={styles.row_label}>십성</td>
                     {(["hour", "day", "month", "year"] as const).map((key) => {
                       const p = pillars[key];
                       return (
                         <td
                           key={key}
-                          className="cell_sipsung"
+                          className={styles.cell_sipsung}
                           style={{ color: getColor(p?.stem?.element) }}
                         >
                           {p?.tenGodStem || "—"}
@@ -684,27 +684,27 @@ function SajuDetailContent() {
                     })}
                   </tr>
                   {/* 지지 */}
-                  <tr className="row_jiji">
-                    <td className="row_label">지지</td>
+                  <tr className={styles.row_jiji}>
+                    <td className={styles.row_label}>지지</td>
                     {(["hour", "day", "month", "year"] as const).map((key) => {
                       const p = pillars[key];
                       if (!p?.branch?.char)
                         return (
-                          <td key={key} className="cell_empty">
+                          <td key={key} className={styles.cell_empty}>
                             —
                           </td>
                         );
                       return (
                         <td key={key}>
                           <span
-                            className="char_main"
+                            className={styles.char_main}
                             style={{ color: getColor(p.branch.element) }}
                           >
                             {p.branch.char}
                             {p.branch.korean}
                           </span>
                           <span
-                            className="char_element"
+                            className={styles.char_element}
                             style={{ color: getColor(p.branch.element) }}
                           >
                             {getElementKorean(
@@ -717,14 +717,14 @@ function SajuDetailContent() {
                     })}
                   </tr>
                   {/* 십성 (지지) */}
-                  <tr className="row_sipsung">
-                    <td className="row_label">십성</td>
+                  <tr className={styles.row_sipsung}>
+                    <td className={styles.row_label}>십성</td>
                     {(["hour", "day", "month", "year"] as const).map((key) => {
                       const p = pillars[key];
                       return (
                         <td
                           key={key}
-                          className="cell_sipsung"
+                          className={styles.cell_sipsung}
                           style={{ color: getColor(p?.branch?.element) }}
                         >
                           {p?.tenGodBranchMain || "—"}
@@ -739,41 +739,41 @@ function SajuDetailContent() {
         </section>
 
         {/* 섹션 2: 나의 결정적 매력 */}
-        <section className="detail_section section_2">
-          <div className="section_label">이성을 사로잡는</div>
-          <div className="section_main_title">나의 결정적 매력</div>
+        <section className={`${styles.detail_section} ${styles.section_2}`}>
+          <div className={styles.section_label}>이성을 사로잡는</div>
+          <div className={styles.section_main_title}>나의 결정적 매력</div>
 
           {dmData && (
             <>
-              <div className="charm_headline_wrap">
-                <span className="charm_quote">&ldquo;</span>
-                <div className="charm_headline">{dmData.headline}</div>
-                <span className="charm_quote">&rdquo;</span>
+              <div className={styles.charm_headline_wrap}>
+                <span className={styles.charm_quote}>&ldquo;</span>
+                <div className={styles.charm_headline}>{dmData.headline}</div>
+                <span className={styles.charm_quote}>&rdquo;</span>
               </div>
-              <div className="charm_ilgan_info">
+              <div className={styles.charm_ilgan_info}>
                 {dayMaster.title} | {dayMaster.char}
                 {elementHanja}
               </div>
 
-              <div className="charm_detail_wrap">
-                <h3 className="charm_detail_title">내 일간 성향</h3>
-                <p className="charm_detail_desc">{dmData.summary}</p>
+              <div className={styles.charm_detail_wrap}>
+                <h3 className={styles.charm_detail_title}>내 일간 성향</h3>
+                <p className={styles.charm_detail_desc}>{dmData.summary}</p>
 
-                <div className="charm_appearance_wrap">
-                  <h3 className="charm_detail_title">내 일간의 분위기</h3>
-                  <ul className="charm_appearance_list">
+                <div className={styles.charm_appearance_wrap}>
+                  <h3 className={styles.charm_detail_title}>내 일간의 분위기</h3>
+                  <ul className={styles.charm_appearance_list}>
                     {dmData.appearance.map((item, i) => (
                       <li key={i}>{item}</li>
                     ))}
                   </ul>
-                  <div className="charm_appearance_fade" />
+                  <div className={styles.charm_appearance_fade} />
                 </div>
               </div>
             </>
           )}
 
           {/* 이런 내용을 알려드려요 */}
-          <div className="info_preview_box">
+          <div className={styles.info_preview_box}>
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src="/saju-love/img/info_preview_box.jpg"
@@ -783,120 +783,120 @@ function SajuDetailContent() {
         </section>
 
         {/* 섹션 3: 하단 이미지 */}
-        <section className="detail_section section_3">
-          <div className="hero_image">
+        <section className={`${styles.detail_section} ${styles.section_3}`}>
+          <div className={styles.hero_image}>
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img src="/saju-love/img/detail2.jpg" alt="운명의 상대" />
           </div>
-          <div className="hero_image">
+          <div className={styles.hero_image}>
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img src="/saju-love/img/detail3.jpg" alt="연애 사주 분석" />
           </div>
-          <div className="hero_image">
+          <div className={styles.hero_image}>
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img src="/saju-love/img/detail4.jpg" alt="사주 상세 분석" />
           </div>
         </section>
 
         {/* 고민 유도 섹션 */}
-        <div className="hesitate_section">
-          <p className="hesitate_question">아직 고민하고 계신가요?</p>
-          <div className="hesitate_hint_box">
-            <p className="hesitate_hint">
+        <div className={styles.hesitate_section}>
+          <p className={styles.hesitate_question}>아직 고민하고 계신가요?</p>
+          <div className={styles.hesitate_hint_box}>
+            <p className={styles.hesitate_hint}>
               <strong>색동낭자가 이미 연애 사주를 분석하고 있어요!</strong>
             </p>
           </div>
         </div>
 
         {/* 가격 비교 섹션 */}
-        <div className="price_compare_section">
+        <div className={styles.price_compare_section}>
           {/* 다른 곳 가격 비교 */}
-          <p className="price_compare_title">
+          <p className={styles.price_compare_title}>
             색동낭자 연애 사주 분석 보고서 복채
           </p>
-          <div className="price_compare_cards">
-            <div className="price_card">
-              <span className="price_card_badge">
+          <div className={styles.price_compare_cards}>
+            <div className={styles.price_card}>
+              <span className={styles.price_card_badge}>
                 오프라인
                 <br />
                 사주
               </span>
-              <span className="price_card_value">5만원</span>
-              <span className="price_card_sep">~</span>
-              <span className="price_card_value">30만원</span>
+              <span className={styles.price_card_value}>5만원</span>
+              <span className={styles.price_card_sep}>~</span>
+              <span className={styles.price_card_value}>30만원</span>
             </div>
-            <div className="price_card">
-              <span className="price_card_badge">
+            <div className={styles.price_card}>
+              <span className={styles.price_card_badge}>
                 온라인
                 <br />
                 사주
               </span>
-              <span className="price_card_value">3만원</span>
-              <span className="price_card_sep">~</span>
-              <span className="price_card_value">5만원</span>
+              <span className={styles.price_card_value}>3만원</span>
+              <span className={styles.price_card_sep}>~</span>
+              <span className={styles.price_card_value}>5만원</span>
             </div>
-            <div className="price_card">
-              <span className="price_card_badge">
+            <div className={styles.price_card}>
+              <span className={styles.price_card_badge}>
                 프리미엄
                 <br />
                 신점
               </span>
-              <span className="price_card_value">20만원</span>
-              <span className="price_card_sep">~</span>
-              <span className="price_card_value">400만원</span>
+              <span className={styles.price_card_value}>20만원</span>
+              <span className={styles.price_card_sep}>~</span>
+              <span className={styles.price_card_value}>400만원</span>
             </div>
           </div>
 
           {/* VS */}
-          <div className="price_vs">VS</div>
+          <div className={styles.price_vs}>VS</div>
 
           {/* 우리 가격 이미지 */}
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src="/saju-love/img/love-price.jpg"
             alt="색동낭자 가격"
-            className="price_compare_img"
+            className={styles.price_compare_img}
           />
         </div>
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           src="/saju-love/img/love-price2.jpg"
           alt="색동낭자 가격 상세"
-          className="price_final_img"
+          className={styles.price_final_img}
         />
       </div>
 
       {/* 하단 고정 버튼 */}
-      <div className="bottom_fixed_btn">
-        <button className="analyze_btn" onClick={openPaymentModal}>
+      <div className={styles.bottom_fixed_btn}>
+        <button className={styles.analyze_btn} onClick={openPaymentModal}>
           내 연애 사주 분석 받기
         </button>
         {studentCouponApplied && (
-          <p className="student_applied_badge">학생 할인 적용됨</p>
+          <p className={styles.student_applied_badge}>학생 할인 적용됨</p>
         )}
       </div>
 
       {/* 학생 할인 모달 */}
       {showStudentModal && (
         <div
-          className="student_modal_overlay"
+          className={styles.student_modal_overlay}
           onClick={() => setShowStudentModal(false)}
         >
-          <div className="student_modal" onClick={(e) => e.stopPropagation()}>
-            <p className="student_modal_title">혹시 학생이신가요?</p>
-            <p className="student_modal_desc">
+          <div className={styles.student_modal} onClick={(e) => e.stopPropagation()}>
+            <p className={styles.student_modal_title}>혹시 학생이신가요?</p>
+            <p className={styles.student_modal_desc}>
               학생분들의 연애를 응원해요!
               <br />
               학생이시면 <strong>커피 한 잔</strong>에 풀이하고 있어요
             </p>
-            <ul className="student_modal_list">
+            <ul className={styles.student_modal_list}>
               <li>20,000자 연애 사주 심층 분석</li>
               <li>운명의 상대 & 피해야 할 인연 사진</li>
               <li>2026년 월별 연애운 캘린더</li>
-              <li className="bonus">보너스: 개인 연애 고민 풀이</li>
+              <li className={styles.bonus}>보너스: 개인 연애 고민 풀이</li>
             </ul>
             <button
-              className="student_modal_confirm"
+              className={styles.student_modal_confirm}
               onClick={() => {
                 setStudentCouponApplied(true);
                 setShowStudentModal(false);
@@ -910,50 +910,50 @@ function SajuDetailContent() {
 
       {/* 결제 모달 */}
       {showPaymentModal && (
-        <div className="payment-overlay" style={{ display: "flex" }}>
-          <div className="payment-fullscreen">
-            <div className="modal-content">
-              <div className="payment-header">
-                <div className="payment-title">
+        <div className={styles["payment-overlay"]} style={{ display: "flex" }}>
+          <div className={styles["payment-fullscreen"]}>
+            <div className={styles["modal-content"]}>
+              <div className={styles["payment-header"]}>
+                <div className={styles["payment-title"]}>
                   {studentCouponApplied
                     ? "🎓 학생 특별 복채"
                     : "색동낭자 연애 사주 복채"}
                 </div>
-                <div className="payment-close" onClick={closePaymentModal}>
+                <div className={styles["payment-close"]} onClick={closePaymentModal}>
                   ✕
                 </div>
               </div>
 
               {/* 학생 할인 배너 */}
               {studentCouponApplied && (
-                <div className="student-payment-banner">
-                  <p className="banner-text">학생 할인이 적용되었어요</p>
+                <div className={styles["student-payment-banner"]}>
+                  <p className={styles["banner-text"]}>학생 할인이 적용되었어요</p>
                 </div>
               )}
 
               {/* 결제 금액 섹션 */}
-              <div className="payment-amount-section">
-                <h3 className="payment-amount-title">복채</h3>
+              <div className={styles["payment-amount-section"]}>
+                <h3 className={styles["payment-amount-title"]}>복채</h3>
 
                 {/* 정가 */}
-                <div className="payment-row">
-                  <span className="payment-row-label">
+                <div className={styles["payment-row"]}>
+                  <span className={styles["payment-row-label"]}>
                     색동낭자 연애 사주 20,000자 보고서
                   </span>
-                  <span className="payment-row-value">
+                  <span className={styles["payment-row-value"]}>
                     {PAYMENT_CONFIG.originalPrice.toLocaleString()}원
                   </span>
                 </div>
 
                 {/* 할인 - 학생/일반 분기 */}
                 {studentCouponApplied ? (
-                  <div className="payment-row discount student-discount">
-                    <span className="payment-row-label">🎓 학생 특별 할인</span>
-                    <div className="payment-row-discount-value">
-                      <span className="discount-badge student">
+                  <div className={`${styles["payment-row"]} ${styles.discount} ${styles["student-discount"]}`}>
+                    <span className={styles["payment-row-label"]}>🎓 학생 특별 할인</span>
+                    <div className={styles["payment-row-discount-value"]}>
+                      <span className={`${styles["discount-badge"]} ${styles.student}`}>
                         {studentDiscount}%
                       </span>
-                      <span className="discount-amount">
+                      <span className={styles["discount-amount"]}>
                         -
                         {(
                           PAYMENT_CONFIG.originalPrice -
@@ -964,12 +964,12 @@ function SajuDetailContent() {
                     </div>
                   </div>
                 ) : (
-                  <div className="payment-row discount">
-                    <span className="payment-row-label">
+                  <div className={`${styles["payment-row"]} ${styles.discount}`}>
+                    <span className={styles["payment-row-label"]}>
                       병오년(丙午年) 1월 특가 할인
                     </span>
-                    <div className="payment-row-discount-value">
-                      <span className="discount-badge">
+                    <div className={styles["payment-row-discount-value"]}>
+                      <span className={styles["discount-badge"]}>
                         {Math.floor(
                           (1 -
                             PAYMENT_CONFIG.price /
@@ -978,7 +978,7 @@ function SajuDetailContent() {
                         )}
                         %
                       </span>
-                      <span className="discount-amount">
+                      <span className={styles["discount-amount"]}>
                         -
                         {(
                           PAYMENT_CONFIG.originalPrice - PAYMENT_CONFIG.price
@@ -991,25 +991,25 @@ function SajuDetailContent() {
 
                 {/* 쿠폰 할인 적용 표시 (학생 쿠폰 미적용 시만) */}
                 {!studentCouponApplied && appliedCoupon && (
-                  <div className="payment-row discount">
-                    <span className="payment-row-label">
+                  <div className={`${styles["payment-row"]} ${styles.discount}`}>
+                    <span className={styles["payment-row-label"]}>
                       {appliedCoupon.code} 쿠폰
                     </span>
-                    <span className="discount-amount">
+                    <span className={styles["discount-amount"]}>
                       -{appliedCoupon.discount.toLocaleString()}원
                     </span>
                   </div>
                 )}
 
                 {/* 구분선 */}
-                <div className="payment-divider" />
+                <div className={styles["payment-divider"]} />
 
                 {/* 최종 금액 */}
-                <div className="payment-row final">
-                  <span className="payment-row-label">최종 결제금액</span>
+                <div className={`${styles["payment-row"]} ${styles.final}`}>
+                  <span className={styles["payment-row-label"]}>최종 결제금액</span>
                   <span
-                    className={`payment-row-final-value ${
-                      studentCouponApplied ? "student-price" : ""
+                    className={`${styles["payment-row-final-value"]} ${
+                      studentCouponApplied ? styles["student-price"] : ""
                     }`}
                   >
                     {studentCouponApplied
@@ -1026,11 +1026,11 @@ function SajuDetailContent() {
 
               {/* 쿠폰 입력 (학생 쿠폰 미적용 시만) */}
               {!studentCouponApplied && (
-                <div className="coupon-section">
-                  <div className="coupon-input-row">
+                <div className={styles["coupon-section"]}>
+                  <div className={styles["coupon-input-row"]}>
                     <input
                       type="text"
-                      className="coupon-input"
+                      className={styles["coupon-input"]}
                       placeholder="쿠폰 코드 입력"
                       value={couponCode}
                       onChange={(e) => {
@@ -1040,7 +1040,7 @@ function SajuDetailContent() {
                       disabled={!!appliedCoupon}
                     />
                     <button
-                      className="coupon-submit-btn"
+                      className={styles["coupon-submit-btn"]}
                       onClick={handleCouponSubmit}
                       disabled={!!appliedCoupon}
                     >
@@ -1048,7 +1048,7 @@ function SajuDetailContent() {
                     </button>
                   </div>
                   {couponError && (
-                    <div className="coupon-error">{couponError}</div>
+                    <div className={styles["coupon-error"]}>{couponError}</div>
                   )}
                 </div>
               )}
@@ -1061,7 +1061,7 @@ function SajuDetailContent() {
                 <div id="saju-agreement" />
               </div>
               <button
-                className="payment-final-btn"
+                className={styles["payment-final-btn"]}
                 onClick={handlePaymentRequest}
               >
                 복채 결제하기
@@ -1078,10 +1078,10 @@ export default function SajuDetailPage() {
   return (
     <Suspense
       fallback={
-        <div className="main_body_wrap">
-          <div className="loading_wrap">
-            <div className="loading_spinner" />
-            <div className="loading_text">로딩 중...</div>
+        <div className={styles.main_body_wrap}>
+          <div className={styles.loading_wrap}>
+            <div className={styles.loading_spinner} />
+            <div className={styles.loading_text}>로딩 중...</div>
           </div>
         </div>
       }

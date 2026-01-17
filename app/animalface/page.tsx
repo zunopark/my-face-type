@@ -10,6 +10,7 @@ import {
   trackRetry,
 } from "@/lib/mixpanel";
 import Footer from "@/components/layout/Footer";
+import styles from "./animalface.module.css";
 
 // 동물상 설명 데이터
 const ANIMAL_DESCRIPTIONS = {
@@ -227,44 +228,44 @@ export default function AnimalFacePage() {
         onLoad={() => setScriptsLoaded(true)}
       />
 
-      <div className="animal-page">
+      <div className={styles.animal_page}>
         {/* 뒤로가기 버튼 */}
-        <Link href="/" className="animal-back-btn">
+        <Link href="/" className={styles.animal_back_btn}>
           <span className="material-icons">arrow_back</span>
           <span>홈으로</span>
         </Link>
 
-        <div className="animal-content">
+        <div className={styles.animal_content}>
           {/* Title */}
-          <div className="animal-title-wrap">
-            <div className="animal-subtitle">동물상 테스트</div>
-            <div className="animal-main-title">AI가 알려주는 나와 닮은 동물</div>
+          <div className={styles.animal_title_wrap}>
+            <div className={styles.animal_subtitle}>동물상 테스트</div>
+            <div className={styles.animal_main_title}>AI가 알려주는 나와 닮은 동물</div>
           </div>
 
           {/* 성별 선택 토글 - 원본 스타일 (결과 없을 때만 표시) */}
           {!result && (
             <div
-              className="animal-toggle-container"
+              className={styles.animal_toggle_container}
               onClick={handleGenderToggle}
             >
-              <div className="animal-toggle-inner animal-toggle-bg">
-                <div className="animal-toggle-item">
+              <div className={`${styles.animal_toggle_inner} ${styles.animal_toggle_bg}`}>
+                <div className={styles.animal_toggle_item}>
                   <p>남</p>
                 </div>
-                <div className="animal-toggle-item">
+                <div className={styles.animal_toggle_item}>
                   <p>여</p>
                 </div>
               </div>
               <div
-                className="animal-toggle-inner animal-toggle-active"
+                className={`${styles.animal_toggle_inner} ${styles.animal_toggle_active}`}
                 style={{
                   clipPath: gender === "male" ? "inset(0 50% 0 0)" : "inset(0 0 0 50%)"
                 }}
               >
-                <div className="animal-toggle-item">
+                <div className={styles.animal_toggle_item}>
                   <p>남</p>
                 </div>
-                <div className="animal-toggle-item">
+                <div className={styles.animal_toggle_item}>
                   <p>여</p>
                 </div>
               </div>
@@ -273,30 +274,30 @@ export default function AnimalFacePage() {
 
           {/* 이미지 업로드 영역 - 원본 스타일 */}
           {!result && (
-            <div className="animal-border">
-              <div className="animal-frame">
-                <div className="animal-image-area">
-                  <div className="animal-file-upload">
+            <div className={styles.animal_border}>
+              <div className={styles.animal_frame}>
+                <div className={styles.animal_image_area}>
+                  <div className={styles.animal_file_upload}>
                     {!image ? (
-                      <div className="animal-upload-wrap">
+                      <div className={styles.animal_upload_wrap}>
                         <input
-                          className="animal-file-input"
+                          className={styles.animal_file_input}
                           type="file"
                           accept="image/*"
                           onChange={handleImageChange}
                         />
-                        <div className="animal-drag-text">
+                        <div className={styles.animal_drag_text}>
                           <i className="material-icons">add_photo_alternate</i>
                           <h2>(사진 첨부)</h2>
                           <h3>당신의 동물상은?</h3>
                         </div>
                       </div>
                     ) : (
-                      <div className="animal-upload-content">
+                      <div className={styles.animal_upload_content}>
                         {/* eslint-disable-next-line @next/next/no-img-element */}
                         <img
                           ref={imageRef}
-                          className="animal-uploaded-image"
+                          className={styles.animal_uploaded_image}
                           src={image}
                           alt="your image"
                           onLoad={() => {
@@ -305,8 +306,8 @@ export default function AnimalFacePage() {
                             }
                           }}
                         />
-                        <div className="animal-analyzing-text">
-                          <div className="animal-ai-text">
+                        <div className={styles.animal_analyzing_text}>
+                          <div className={styles.animal_ai_text}>
                             {isAnalyzing ? "당신의 동물상을 분석중..." : "분석 완료!"}
                           </div>
                         </div>
@@ -320,30 +321,30 @@ export default function AnimalFacePage() {
 
           {/* 결과 영역 - 원본 스타일 */}
           {result && (
-            <div className="animal-result">
+            <div className={styles.animal_result}>
               {/* 업로드한 이미지 */}
-              <div className="animal-result-image-wrap">
+              <div className={styles.animal_result_image_wrap}>
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   src={image!}
                   alt="분석된 이미지"
-                  className="animal-result-image"
+                  className={styles.animal_result_image}
                 />
               </div>
 
               {/* 결과 타이틀 */}
-              <div className="animal-result-main-title">{result.description.title}</div>
-              <div className="animal-result-celebrity">{result.description.celebrities}</div>
-              <p className="animal-result-desc">{result.description.description}</p>
+              <div className={styles.animal_result_main_title}>{result.description.title}</div>
+              <div className={styles.animal_result_celebrity}>{result.description.celebrities}</div>
+              <p className={styles.animal_result_desc}>{result.description.description}</p>
 
               {/* 원형 배지 결과 - 원본 스타일 */}
-              <div className="animal-other-result">
+              <div className={styles.animal_other_result}>
                 {result.allResults.map((item) => (
-                  <div key={item.key} className="animal-star-list-wrap">
-                    <div className="animal-star-list-img">
+                  <div key={item.key} className={styles.animal_star_list_wrap}>
+                    <div className={styles.animal_star_list_img}>
                       {ANIMAL_NAMES[item.key] || item.key}
                     </div>
-                    <span className={`animal-percent ${getPercentClass(item.value)}`}>
+                    <span className={`${styles.animal_percent} ${styles[getPercentClass(item.value)]}`}>
                       {item.value}%
                     </span>
                   </div>
@@ -351,13 +352,13 @@ export default function AnimalFacePage() {
               </div>
 
               {/* 버튼들 */}
-              <button className="animal-reset-btn" onClick={handleReset}>
+              <button className={styles.animal_reset_btn} onClick={handleReset}>
                 다른 사진으로 해보기
               </button>
             </div>
           )}
 
-          <div className="animal-noti">*걱정마세요! 사진은 절대로 저장되지 않습니다.</div>
+          <div className={styles.animal_noti}>*걱정마세요! 사진은 절대로 저장되지 않습니다.</div>
         </div>
 
         <Footer />

@@ -41,7 +41,7 @@
   }
 }
 
-.back_btn .material-icons {
+.back_btn :global(.material-icons) {
   color: #333;
   font-size: 22px;
 }
@@ -171,7 +171,7 @@
   margin-bottom: 16px;
 }
 
-.pillars_header .material-icons {
+.pillars_header :global(.material-icons) {
   font-size: 20px;
   color: #2E7BC4;
 }
@@ -487,7 +487,7 @@
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
-.lock_icon .material-icons {
+.lock_icon :global(.material-icons) {
   font-size: 20px;
   color: #2E7BC4;
 }

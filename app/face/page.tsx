@@ -15,6 +15,7 @@ import {
 import { saveCoupleAnalysisRecord } from "@/lib/db/coupleAnalysisDB";
 import { saveFaceAnalysisRecord } from "@/lib/db/faceAnalysisDB";
 import Footer from "@/components/layout/Footer";
+import styles from "./face.module.css";
 
 const TITLE_MAP = {
   face: {
@@ -250,30 +251,30 @@ function FacePageContent() {
   };
 
   return (
-    <div className="main_body_wrap">
+    <div className={styles.main_body_wrap}>
       {/* 뒤로가기 버튼 - 불투명 유리 스타일 */}
-      <Link href="/" className="back-btn-glass">
+      <Link href="/" className={styles.back_btn_glass}>
         <span className="material-icons">arrow_back</span>
         <span>홈으로</span>
       </Link>
 
-      <div className="main_content_wrap" style={{ minHeight: "100vh" }}>
+      <div className={styles.main_content_wrap} style={{ minHeight: "100vh" }}>
         {/* Title */}
-        <div className="main_title_wrap">
-          <div className="main_title">{currentTitle.title}</div>
-          <div className="main_subtitle">{currentTitle.subtitle}</div>
+        <div className={styles.main_title_wrap}>
+          <div className={styles.main_title}>{currentTitle.title}</div>
+          <div className={styles.main_subtitle}>{currentTitle.subtitle}</div>
         </div>
 
         {/* Category Buttons */}
-        <div className="category_wrap">
+        <div className={styles.category_wrap}>
           <button
-            className={`category_btn ${activeTab === "face" ? "active" : ""}`}
+            className={`${styles.category_btn} ${activeTab === "face" ? styles.active : ""}`}
             onClick={() => handleTabClick("face")}
           >
             정통 관상
           </button>
           <button
-            className={`category_btn ${activeTab === "match" ? "active" : ""}`}
+            className={`${styles.category_btn} ${activeTab === "match" ? styles.active : ""}`}
             onClick={() => handleTabClick("match")}
           >
             궁합 관상
@@ -283,31 +284,31 @@ function FacePageContent() {
         {/* Face Content */}
         <div
           id="content-face"
-          className={`tab_content ${activeTab === "face" ? "active" : ""}`}
+          className={`${styles.tab_content} ${activeTab === "face" ? styles.active : ""}`}
         >
-          <div className="border">
-            <div className="frame">
-              <div className="image">
-                <div className="file-upload">
+          <div className={styles.border}>
+            <div className={styles.frame}>
+              <div className={styles.image}>
+                <div className={styles.file_upload}>
                   {!faceImage ? (
-                    <div className="image-upload-wrap">
+                    <div className={styles.image_upload_wrap}>
                       <input
-                        className="file-upload-input"
+                        className={styles.file_upload_input}
                         type="file"
                         accept="image/*"
                         onChange={handleFaceImageChange}
                       />
-                      <div className="drag-text">
+                      <div className={styles.drag_text}>
                         <span className="material-icons">add_photo_alternate</span>
                         <h2>(정면 사진 첨부)</h2>
                         <h3>관상? 얼굴 한번 봅시다</h3>
                       </div>
                     </div>
                   ) : (
-                    <div className="file-upload-content" style={{ display: "block" }}>
-                      <div className="image-square-frame">
+                    <div className={styles.file_upload_content} style={{ display: "block" }}>
+                      <div className={styles.image_square_frame}>
                         <Image
-                          className="file-upload-image"
+                          className={styles.file_upload_image}
                           src={faceImage}
                           alt="your image"
                           fill
@@ -315,8 +316,8 @@ function FacePageContent() {
                           unoptimized
                         />
                       </div>
-                      <div className="image-title-wrap">
-                        <div className="ai">
+                      <div className={styles.image_title_wrap}>
+                        <div className={styles.ai}>
                           {isAnalyzing ? "관상가가 당신의 얼굴을 분석중.." : "분석 완료!"}
                         </div>
                       </div>
@@ -326,24 +327,24 @@ function FacePageContent() {
               </div>
             </div>
           </div>
-          <div className="nostore">*걱정마세요! 사진은 절대로 저장되지 않습니다.</div>
+          <div className={styles.nostore}>*걱정마세요! 사진은 절대로 저장되지 않습니다.</div>
         </div>
 
         {/* Match Content */}
         <div
           id="content-match"
-          className={`tab_content ${activeTab === "match" ? "active" : ""}`}
+          className={`${styles.tab_content} ${activeTab === "match" ? styles.active : ""}`}
         >
-          <div className="couple-container">
+          <div className={styles.couple_container}>
             {/* Self Photo */}
-            <div className="couple-card">
+            <div className={styles.couple_card}>
               <input
-                className="couple-input"
+                className={styles.couple_input}
                 type="file"
                 accept="image/*"
                 onChange={(e) => handleCoupleImageChange(e, "self")}
               />
-              <div className="couple-preview">
+              <div className={styles.couple_preview}>
                 {selfImage ? (
                   <Image
                     src={selfImage}
@@ -355,7 +356,7 @@ function FacePageContent() {
                   />
                 ) : (
                   <>
-                    <span className="material-icons couple-icon">add_photo_alternate</span>
+                    <span className={`material-icons ${styles.couple_icon}`}>add_photo_alternate</span>
                     <span>내 사진 선택</span>
                   </>
                 )}
@@ -363,14 +364,14 @@ function FacePageContent() {
             </div>
 
             {/* Partner Photo */}
-            <div className="couple-card">
+            <div className={styles.couple_card}>
               <input
-                className="couple-input"
+                className={styles.couple_input}
                 type="file"
                 accept="image/*"
                 onChange={(e) => handleCoupleImageChange(e, "partner")}
               />
-              <div className="couple-preview">
+              <div className={styles.couple_preview}>
                 {partnerImage ? (
                   <Image
                     src={partnerImage}
@@ -382,7 +383,7 @@ function FacePageContent() {
                   />
                 ) : (
                   <>
-                    <span className="material-icons couple-icon">add_photo_alternate</span>
+                    <span className={`material-icons ${styles.couple_icon}`}>add_photo_alternate</span>
                     <span>상대 사진 선택</span>
                   </>
                 )}
@@ -390,10 +391,10 @@ function FacePageContent() {
             </div>
           </div>
 
-          <div className="nostore">*걱정마세요! 사진은 절대로 저장되지 않습니다.</div>
-          <div className="couple-action">
+          <div className={styles.nostore}>*걱정마세요! 사진은 절대로 저장되지 않습니다.</div>
+          <div className={styles.couple_action}>
             <button
-              className="btn-primary"
+              className={styles.btn_primary}
               disabled={!selfImage || !partnerImage}
               onClick={handleOpenCoupleSheet}
             >
@@ -406,19 +407,19 @@ function FacePageContent() {
 
       {/* 바텀시트 오버레이 */}
       {showBottomSheet && (
-        <div className="bottom-analyze-overlay active" onClick={handleCloseBottomSheet} />
+        <div className={`${styles.bottom_analyze_overlay} ${styles.active}`} onClick={handleCloseBottomSheet} />
       )}
 
       {/* 바텀시트 */}
-      <div className={`bottom-sheet ${showBottomSheet ? "active" : ""}`}>
-        <div className="sheet-inner">
+      <div className={`${styles.bottom_sheet} ${showBottomSheet ? styles.active : ""}`}>
+        <div className={styles.sheet_inner}>
           <h3>현재 상대방과의 관계는 어떤가요?</h3>
-          <div className="relationship-options">
+          <div className={styles.relationship_options}>
             {["관심", "짝사랑", "썸", "연애", "결혼"].map((relation) => (
               <div
                 key={relation}
                 data-type={relation}
-                className={selectedRelation === relation ? "selected" : ""}
+                className={selectedRelation === relation ? styles.selected : ""}
                 onClick={() => handleRelationSelect(relation)}
               >
                 {relation === "관심" && "👀 관심이 있어요"}
@@ -432,13 +433,13 @@ function FacePageContent() {
 
           {/* 후속 감정 선택 */}
           {selectedRelation && (
-            <div className="sheet-followup">
+            <div className={styles.sheet_followup}>
               <h4>당신의 마음은 어떤 상태인가요?</h4>
-              <div className="followup-options">
+              <div className={styles.followup_options}>
                 {FOLLOWUP_OPTIONS[selectedRelation]?.map((feeling, idx) => (
                   <div
                     key={idx}
-                    className={selectedFeeling === feeling ? "selected" : ""}
+                    className={selectedFeeling === feeling ? styles.selected : ""}
                     onClick={() => handleFeelingSelect(feeling)}
                   >
                     {feeling}
@@ -450,7 +451,7 @@ function FacePageContent() {
 
           {/* 분석 시작 버튼 */}
           {selectedFeeling && (
-            <button className="sheet-btn" onClick={handleStartCoupleAnalysis}>
+            <button className={styles.sheet_btn} onClick={handleStartCoupleAnalysis}>
               분석 시작하기
             </button>
           )}
@@ -459,15 +460,15 @@ function FacePageContent() {
 
       {/* Face Analyze Overlay */}
       {isAnalyzing && (
-        <div className="analyze-overlay" style={{ display: "flex" }}>
-          <div className="analyze-text">얼굴 특징을 분석 중입니다</div>
+        <div className={styles.analyze_overlay} style={{ display: "flex" }}>
+          <div className={styles.analyze_text}>얼굴 특징을 분석 중입니다</div>
         </div>
       )}
 
       {/* Couple Analyze Overlay */}
       {showCoupleAnalyzeOverlay && (
-        <div className="analyze-overlay" style={{ display: "flex" }}>
-          <div className="analyze-text">두 사람의 얼굴 특징을 분석 중입니다</div>
+        <div className={styles.analyze_overlay} style={{ display: "flex" }}>
+          <div className={styles.analyze_text}>두 사람의 얼굴 특징을 분석 중입니다</div>
         </div>
       )}
 

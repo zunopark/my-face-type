@@ -58,7 +58,7 @@
   outline: none;
 }
 
-.back_btn .material-icons {
+.back_btn :global(.material-icons) {
   color: #333;
   font-size: 22px;
 }
@@ -222,7 +222,7 @@
   margin-bottom: 16px;
 }
 
-.pillars_header .material-icons {
+.pillars_header :global(.material-icons) {
   font-size: 20px;
   color: #e74c3c;
 }
@@ -331,7 +331,7 @@
   margin-bottom: 12px;
 }
 
-.sinsal_header .material-icons {
+.sinsal_header :global(.material-icons) {
   font-size: 20px;
   color: #e74c3c;
 }
@@ -554,7 +554,7 @@
   margin-bottom: 12px;
 }
 
-.info_preview_lock .material-icons {
+.info_preview_lock :global(.material-icons) {
   font-size: 32px;
   color: #f5a5a5;
 }

@@ -1,0 +1,309 @@
+/* ========================================
+   메인 랜딩 페이지 - CSS Module
+   ======================================== */
+
+.landing_container {
+  min-height: 100vh;
+  background: #f8f7f1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-bottom: 100px;
+  position: relative;
+  width: 100%;
+}
+
+/* 브랜드 로고 */
+.landing_brand {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.brand_name {
+  font-family: "KimjungchulMyungjo-Bold", serif;
+  font-size: 20px;
+  font-weight: 700;
+  color: #fff;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+}
+
+/* 메인 히어로 이미지 */
+.landing_hero {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  background: url("/img/main-bg.png") center center / cover no-repeat;
+  position: relative;
+}
+
+.landing_hero::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 80px;
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.5), transparent);
+  z-index: 5;
+}
+
+.landing_hero_image {
+  width: 100%;
+  max-width: 500px;
+  height: 350px;
+  object-fit: cover;
+  object-position: center;
+}
+
+/* 서비스 카드 섹션 - 2x2 그리드 */
+.landing_cards {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  width: 100%;
+  max-width: 500px;
+  padding: 0 16px;
+  margin-top: 24px;
+  position: relative;
+  z-index: 1;
+  box-sizing: border-box;
+}
+
+.service_card {
+  flex: 1;
+  background: #fff;
+  border: 1px solid #e5e0d5;
+  padding: 0;
+  text-decoration: none;
+  position: relative;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  text-align: center;
+  border-radius: 8px;
+  min-height: 280px;
+  overflow: visible;
+}
+
+.service_card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+  border-color: #8b6914;
+}
+
+.service_card:active {
+  transform: translateY(0);
+}
+
+.card_title_wrap {
+  width: 100%;
+  padding: 12px 12px;
+  background: linear-gradient(transparent, rgba(0, 0, 0, 0.85));
+  text-align: center;
+  border-radius: 8px;
+}
+
+.card_subtitle {
+  display: block;
+  font-family: "Danjo", serif;
+  font-size: 20px;
+  font-weight: 600;
+  color: #fff;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.7);
+}
+
+.card_title {
+  font-family: "Danjo", serif;
+  font-size: 28px;
+  font-weight: 700;
+  color: #fff;
+  margin: 0;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.7);
+}
+
+.card_wrapper {
+  display: flex;
+  flex-direction: column;
+  text-decoration: none;
+}
+
+.card_info {
+  padding: 4px 4px 12px 4px;
+}
+
+.card_info_title {
+  font-size: 18px;
+  font-weight: 600;
+  color: #171717;
+  margin-bottom: 4px;
+}
+
+.card_info_desc {
+  font-size: 14px;
+  color: #575757;
+}
+
+/* 카드 개별 스타일 */
+.card_face {
+  background: url("/img/faceyangban.jpg") center center / cover no-repeat;
+  position: relative;
+}
+
+.card_face::before {
+  display: none;
+}
+
+.card_face > * {
+  position: relative;
+  z-index: 1;
+}
+
+.card_saju {
+  background: url("/img/nangja.jpg") center center / cover no-repeat;
+  position: relative;
+}
+
+.card_saju::before {
+  display: none;
+}
+
+.card_saju > * {
+  position: relative;
+  z-index: 1;
+}
+
+.card_newyear {
+  background: url("/new-year/img/doryung.png") center center / cover no-repeat;
+  position: relative;
+}
+
+.card_newyear::before {
+  display: none;
+}
+
+.card_newyear > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* 동물상 테스트 배너 */
+.animal_banner {
+  display: block;
+  width: calc(100% - 32px);
+  margin: 20px 16px 0;
+  padding: 16px 20px;
+  background: linear-gradient(135deg, #FFE5B4 0%, #FFDAB9 50%, #FFD1A9 100%);
+  border-radius: 16px;
+  text-decoration: none;
+  box-sizing: border-box;
+  border: none;
+}
+
+.animal_banner_content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.animal_banner_text {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.animal_banner_label {
+  font-size: 12px;
+  color: #8B6914;
+  font-weight: 500;
+}
+
+.animal_banner_title {
+  font-size: 18px;
+  font-weight: 700;
+  color: #5D4E37;
+}
+
+.animal_banner_arrow {
+  width: 36px;
+  height: 36px;
+  background: rgba(255, 255, 255, 0.6);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.animal_banner_arrow :global(.material-icons) {
+  color: #8B6914;
+  font-size: 20px;
+}
+
+/* 하단 네비게이션 */
+.nav_wrap {
+  position: fixed;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  max-width: 500px;
+  background: #fff;
+  border-top: 1px solid #e5e0d5;
+  display: flex;
+  z-index: 100;
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+.nav_content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 12px 0;
+  text-decoration: none;
+  color: #9a9590;
+  transition: color 0.2s ease;
+}
+
+.nav_content:hover {
+  color: #6b6560;
+}
+
+.nav_seleted {
+  color: #171717;
+}
+
+.nav_icon {
+  font-size: 24px;
+  margin-bottom: 4px;
+}
+
+.nav_title {
+  font-size: 11px;
+  font-weight: 500;
+}
+
+/* 반응형 */
+@media screen and (min-width: 500px) {
+  .landing_container {
+    width: 500px;
+    margin: 0 auto;
+  }
+}
+
+@media screen and (max-width: 360px) {
+  .service_card {
+    padding: 20px;
+  }
+
+  .card_title {
+    font-size: 18px;
+  }
+}

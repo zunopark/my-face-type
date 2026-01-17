@@ -55,7 +55,7 @@
   outline: none;
 }
 
-.back_btn .material-icons {
+.back_btn :global(.material-icons) {
   color: #333;
   font-size: 22px;
 }
@@ -242,7 +242,7 @@
   white-space: pre-line;
 }
 
-.dialogue_text .typing-cursor {
+.typing_cursor {
   display: inline-block;
   width: 2px;
   height: 1em;

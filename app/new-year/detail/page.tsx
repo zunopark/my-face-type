@@ -13,7 +13,7 @@ import {
   NewYearRecord,
   saveNewYearRecord,
 } from "@/lib/db/newYearDB";
-import "./detail.css";
+import styles from "./detail.module.css";
 
 // TossPayments 타입 선언
 declare global {
@@ -424,10 +424,10 @@ function NewYearDetailContent() {
 
   if (isLoading) {
     return (
-      <div className="main_body_wrap">
-        <div className="loading_wrap">
-          <div className="loading_spinner" />
-          <div className="loading_text">분석 결과를 불러오는 중...</div>
+      <div className={styles.main_body_wrap}>
+        <div className={styles.loading_wrap}>
+          <div className={styles.loading_spinner} />
+          <div className={styles.loading_text}>분석 결과를 불러오는 중...</div>
         </div>
       </div>
     );
@@ -463,44 +463,44 @@ function NewYearDetailContent() {
   const elementHanja = elementKey ? elementHanjaMap[elementKey] || "" : "";
 
   return (
-    <div className="main_body_wrap">
+    <div className={styles.main_body_wrap}>
       {/* 뒤로가기 */}
-      <button className="back_btn" onClick={() => router.push("/new-year")}>
+      <button className={styles.back_btn} onClick={() => router.push("/new-year")}>
         <span className="material-icons">arrow_back</span>
-        <span className="back_btn_text">정보 다시 입력</span>
+        <span className={styles.back_btn_text}>정보 다시 입력</span>
       </button>
 
       {/* 결과 컨텐츠 */}
-      <div className="result_wrap">
+      <div className={styles.result_wrap}>
         {/* 섹션 1: 상단 이미지 + 정보 */}
-        <section className="detail_section section_1">
-          <div className="hero_image">
+        <section className={`${styles.detail_section} ${styles.section_1}`}>
+          <div className={styles.hero_image}>
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img src="/new-year/img/detail.png" alt="2026 신년 운세" />
           </div>
 
-          <div className="info_card">
-            <div className="info_main">
-              <span className="info_name">{input.userName}</span>
-              <span className="info_birth">
+          <div className={styles.info_card}>
+            <div className={styles.info_main}>
+              <span className={styles.info_name}>{input.userName}</span>
+              <span className={styles.info_birth}>
                 {input.date}
                 {birthTime ? ` | ${birthTime}` : ""}
               </span>
             </div>
-            <div className="info_ilju">
-              <span className="ilju_char">{dayMaster.char}</span>
-              <span className="ilju_title">{dayMaster.title}</span>
+            <div className={styles.info_ilju}>
+              <span className={styles.ilju_char}>{dayMaster.char}</span>
+              <span className={styles.ilju_title}>{dayMaster.title}</span>
             </div>
           </div>
 
           {/* 사주 팔자 테이블 */}
-          <div className="pillars_section">
-            <div className="pillars_header">
+          <div className={styles.pillars_section}>
+            <div className={styles.pillars_header}>
               <span className="material-icons">view_column</span>
               사주 팔자
             </div>
-            <div className="saju_table_wrap">
-              <table className="saju_table">
+            <div className={styles.saju_table_wrap}>
+              <table className={styles.saju_table}>
                 <thead>
                   <tr>
                     <th></th>
@@ -512,27 +512,27 @@ function NewYearDetailContent() {
                 </thead>
                 <tbody>
                   {/* 천간 */}
-                  <tr className="row_cheongan">
-                    <td className="row_label">천간</td>
+                  <tr className={styles.row_cheongan}>
+                    <td className={styles.row_label}>천간</td>
                     {(["hour", "day", "month", "year"] as const).map((key) => {
                       const p = pillars[key];
                       if (!p?.stem?.char)
                         return (
-                          <td key={key} className="cell_empty">
+                          <td key={key} className={styles.cell_empty}>
                             —
                           </td>
                         );
                       return (
                         <td key={key}>
                           <span
-                            className="char_main"
+                            className={styles.char_main}
                             style={{ color: getColor(p.stem.element) }}
                           >
                             {p.stem.char}
                             {p.stem.korean}
                           </span>
                           <span
-                            className="char_element"
+                            className={styles.char_element}
                             style={{ color: getColor(p.stem.element) }}
                           >
                             {getElementKorean(p.stem.element, p.stem.yinYang)}
@@ -542,14 +542,14 @@ function NewYearDetailContent() {
                     })}
                   </tr>
                   {/* 십성 (천간) */}
-                  <tr className="row_sipsung">
-                    <td className="row_label">십성</td>
+                  <tr className={styles.row_sipsung}>
+                    <td className={styles.row_label}>십성</td>
                     {(["hour", "day", "month", "year"] as const).map((key) => {
                       const p = pillars[key];
                       return (
                         <td
                           key={key}
-                          className="cell_sipsung"
+                          className={styles.cell_sipsung}
                           style={{ color: getColor(p?.stem?.element) }}
                         >
                           {p?.tenGodStem || "—"}
@@ -558,27 +558,27 @@ function NewYearDetailContent() {
                     })}
                   </tr>
                   {/* 지지 */}
-                  <tr className="row_jiji">
-                    <td className="row_label">지지</td>
+                  <tr className={styles.row_jiji}>
+                    <td className={styles.row_label}>지지</td>
                     {(["hour", "day", "month", "year"] as const).map((key) => {
                       const p = pillars[key];
                       if (!p?.branch?.char)
                         return (
-                          <td key={key} className="cell_empty">
+                          <td key={key} className={styles.cell_empty}>
                             —
                           </td>
                         );
                       return (
                         <td key={key}>
                           <span
-                            className="char_main"
+                            className={styles.char_main}
                             style={{ color: getColor(p.branch.element) }}
                           >
                             {p.branch.char}
                             {p.branch.korean}
                           </span>
                           <span
-                            className="char_element"
+                            className={styles.char_element}
                             style={{ color: getColor(p.branch.element) }}
                           >
                             {getElementKorean(
@@ -591,14 +591,14 @@ function NewYearDetailContent() {
                     })}
                   </tr>
                   {/* 십성 (지지) */}
-                  <tr className="row_sipsung">
-                    <td className="row_label">십성</td>
+                  <tr className={styles.row_sipsung}>
+                    <td className={styles.row_label}>십성</td>
                     {(["hour", "day", "month", "year"] as const).map((key) => {
                       const p = pillars[key];
                       return (
                         <td
                           key={key}
-                          className="cell_sipsung"
+                          className={styles.cell_sipsung}
                           style={{ color: getColor(p?.branch?.element) }}
                         >
                           {p?.tenGodBranchMain || "—"}
@@ -613,21 +613,21 @@ function NewYearDetailContent() {
         </section>
 
         {/* 섹션 2: 내 사주와 2026년 궁합 */}
-        <section className="detail_section section_2">
-          <div className="section_label">60년에 한번, 불기둥의 해</div>
-          <div className="section_main_title">내 사주와 2026년 궁합</div>
+        <section className={`${styles.detail_section} ${styles.section_2}`}>
+          <div className={styles.section_label}>60년에 한번, 불기둥의 해</div>
+          <div className={styles.section_main_title}>내 사주와 2026년 궁합</div>
 
           {/* 사주 궁합 테이블 */}
-          <div className="compatibility_table_wrap">
-            <div className="compatibility_left">
-              <div className="compatibility_label">내 사주 팔자</div>
-              <div className="compatibility_pillars">
+          <div className={styles.compatibility_table_wrap}>
+            <div className={styles.compatibility_left}>
+              <div className={styles.compatibility_label}>내 사주 팔자</div>
+              <div className={styles.compatibility_pillars}>
                 {(["hour", "day", "month", "year"] as const).map((key) => {
                   const p = pillars[key];
                   return (
-                    <div key={key} className="compatibility_pillar">
+                    <div key={key} className={styles.compatibility_pillar}>
                       <div
-                        className="compat_stem"
+                        className={styles.compat_stem}
                         style={{
                           backgroundColor: p?.stem?.char
                             ? `${getColor(p.stem.element)}20`
@@ -638,21 +638,21 @@ function NewYearDetailContent() {
                         }}
                       >
                         <span
-                          className="compat_char"
+                          className={styles.compat_char}
                           style={{ color: getColor(p?.stem?.element) }}
                         >
                           {p?.stem?.char || "—"}
                           {p?.stem?.korean || ""}
                         </span>
                         <span
-                          className="compat_element"
+                          className={styles.compat_element}
                           style={{ color: getColor(p?.stem?.element) }}
                         >
                           {getElementKorean(p?.stem?.element, p?.stem?.yinYang) || ""}
                         </span>
                       </div>
                       <div
-                        className="compat_branch"
+                        className={styles.compat_branch}
                         style={{
                           backgroundColor: p?.branch?.char
                             ? `${getColor(p.branch.element)}20`
@@ -663,14 +663,14 @@ function NewYearDetailContent() {
                         }}
                       >
                         <span
-                          className="compat_char"
+                          className={styles.compat_char}
                           style={{ color: getColor(p?.branch?.element) }}
                         >
                           {p?.branch?.char || "—"}
                           {p?.branch?.korean || ""}
                         </span>
                         <span
-                          className="compat_element"
+                          className={styles.compat_element}
                           style={{ color: getColor(p?.branch?.element) }}
                         >
                           {getElementKorean(p?.branch?.element, p?.branch?.yinYang) || ""}
@@ -682,37 +682,37 @@ function NewYearDetailContent() {
               </div>
             </div>
 
-            <div className="compatibility_plus">+</div>
+            <div className={styles.compatibility_plus}>+</div>
 
-            <div className="compatibility_right">
-              <div className="compatibility_label">2026년</div>
-              <div className="compatibility_pillars">
-                <div className="compatibility_pillar year_2026">
+            <div className={styles.compatibility_right}>
+              <div className={styles.compatibility_label}>2026년</div>
+              <div className={styles.compatibility_pillars}>
+                <div className={`${styles.compatibility_pillar} ${styles.year_2026}`}>
                   <div
-                    className="compat_stem"
+                    className={styles.compat_stem}
                     style={{
                       backgroundColor: "rgba(255, 106, 106, 0.15)",
                       borderColor: "#ff6a6a",
                     }}
                   >
-                    <span className="compat_char" style={{ color: "#ff6a6a" }}>
+                    <span className={styles.compat_char} style={{ color: "#ff6a6a" }}>
                       병丙
                     </span>
-                    <span className="compat_element" style={{ color: "#ff6a6a" }}>
+                    <span className={styles.compat_element} style={{ color: "#ff6a6a" }}>
                       +화
                     </span>
                   </div>
                   <div
-                    className="compat_branch"
+                    className={styles.compat_branch}
                     style={{
                       backgroundColor: "rgba(255, 106, 106, 0.15)",
                       borderColor: "#ff6a6a",
                     }}
                   >
-                    <span className="compat_char" style={{ color: "#ff6a6a" }}>
+                    <span className={styles.compat_char} style={{ color: "#ff6a6a" }}>
                       오午
                     </span>
-                    <span className="compat_element" style={{ color: "#ff6a6a" }}>
+                    <span className={styles.compat_element} style={{ color: "#ff6a6a" }}>
                       -화
                     </span>
                   </div>
@@ -722,53 +722,53 @@ function NewYearDetailContent() {
           </div>
 
           {/* 블러 처리된 궁합 설명 */}
-          <div className="blurred_content_section">
-            <p className="blurred_intro">
+          <div className={styles.blurred_content_section}>
+            <p className={styles.blurred_intro}>
               <strong>불의 기운이 강한</strong> 올 해는 당신의
             </p>
-            <div className="blurred_text_block">
+            <div className={styles.blurred_text_block}>
               <p>창의력과 표현력이 극대화되는 시기입니다. 특히 화(火)의 에너지가 당신의 사주와 만나 새로운 가능성을 열어줄 것입니다.</p>
             </div>
           </div>
 
           {/* 생존 필살기 섹션 */}
-          <div className="survival_section">
-            <p className="survival_subtitle">당신의 사주에 나타난,</p>
-            <h3 className="survival_title">2026년 나의 생존 필살기</h3>
+          <div className={styles.survival_section}>
+            <p className={styles.survival_subtitle}>당신의 사주에 나타난,</p>
+            <h3 className={styles.survival_title}>2026년 나의 생존 필살기</h3>
 
             {dmData && (
-              <div className="charm_headline_wrap">
-                <span className="charm_quote">"</span>
-                <div className="charm_headline">{dmData.headline}</div>
-                <span className="charm_quote">"</span>
+              <div className={styles.charm_headline_wrap}>
+                <span className={styles.charm_quote}>"</span>
+                <div className={styles.charm_headline}>{dmData.headline}</div>
+                <span className={styles.charm_quote}>"</span>
               </div>
             )}
 
             {/* 블러 처리된 콘텐츠들 */}
-            <div className="blurred_content_section">
-              <p className="blurred_intro">올해는 당신의 재능 중,</p>
-              <div className="blurred_text_block">
+            <div className={styles.blurred_content_section}>
+              <p className={styles.blurred_intro}>올해는 당신의 재능 중,</p>
+              <div className={styles.blurred_text_block}>
                 <p>숨겨져 있던 리더십과 커뮤니케이션 능력이 빛을 발하게 됩니다. 주변 사람들에게 영향력을 미치는 역할을 맡게 될 가능성이 높아요.</p>
               </div>
             </div>
 
-            <div className="blurred_content_section">
-              <p className="blurred_intro">
+            <div className={styles.blurred_content_section}>
+              <p className={styles.blurred_intro}>
                 <strong>나에게 맞는 돈 버는 수단:</strong> 투자 vs 사업
               </p>
-              <div className="blurred_text_block">
+              <div className={styles.blurred_text_block}>
                 <p>당신의 사주 구성을 보면 안정적인 수입원을 기반으로 부수입을 늘려가는 전략이 유리합니다. 무리한 투자보다는 실력을 쌓는 데 집중하세요.</p>
               </div>
             </div>
           </div>
 
           {/* 잠금 미리보기 박스 */}
-          <div className="info_preview_box locked">
-            <div className="lock_icon">
+          <div className={`${styles.info_preview_box} ${styles.locked}`}>
+            <div className={styles.lock_icon}>
               <span className="material-icons">lock</span>
             </div>
-            <div className="preview_title">이런 내용을 알려드려요!</div>
-            <ul className="preview_list">
+            <div className={styles.preview_title}>이런 내용을 알려드려요!</div>
+            <ul className={styles.preview_list}>
               <li>2026년 병오년과 내 사주의 오행 궁합 분석</li>
               <li>올해 발현될 나의 역량, 일잘러 포인트</li>
               <li>나에게 맞는 돈 버는 수단 (직장 vs 투자 vs 부업)</li>
@@ -778,64 +778,64 @@ function NewYearDetailContent() {
         </section>
 
         {/* 고민 유도 섹션 */}
-        <div className="hesitate_section">
-          <p className="hesitate_question">아직 고민하고 계신가요?</p>
-          <div className="hesitate_hint_box">
-            <p className="hesitate_hint">
+        <div className={styles.hesitate_section}>
+          <p className={styles.hesitate_question}>아직 고민하고 계신가요?</p>
+          <div className={styles.hesitate_hint_box}>
+            <p className={styles.hesitate_hint}>
               <strong>까치도령이 이미 2026년 운세를 분석하고 있어요!</strong>
             </p>
           </div>
         </div>
 
         {/* 가격 비교 섹션 */}
-        <div className="price_compare_section">
-          <p className="price_compare_title">
+        <div className={styles.price_compare_section}>
+          <p className={styles.price_compare_title}>
             까치도령 신년 운세 분석 보고서 복채
           </p>
-          <div className="price_compare_cards">
-            <div className="price_card">
-              <span className="price_card_badge">
+          <div className={styles.price_compare_cards}>
+            <div className={styles.price_card}>
+              <span className={styles.price_card_badge}>
                 오프라인
                 <br />
                 사주
               </span>
-              <span className="price_card_value">5만원</span>
-              <span className="price_card_sep">~</span>
-              <span className="price_card_value">30만원</span>
+              <span className={styles.price_card_value}>5만원</span>
+              <span className={styles.price_card_sep}>~</span>
+              <span className={styles.price_card_value}>30만원</span>
             </div>
-            <div className="price_card">
-              <span className="price_card_badge">
+            <div className={styles.price_card}>
+              <span className={styles.price_card_badge}>
                 온라인
                 <br />
                 사주
               </span>
-              <span className="price_card_value">3만원</span>
-              <span className="price_card_sep">~</span>
-              <span className="price_card_value">5만원</span>
+              <span className={styles.price_card_value}>3만원</span>
+              <span className={styles.price_card_sep}>~</span>
+              <span className={styles.price_card_value}>5만원</span>
             </div>
-            <div className="price_card">
-              <span className="price_card_badge">
+            <div className={styles.price_card}>
+              <span className={styles.price_card_badge}>
                 프리미엄
                 <br />
                 신점
               </span>
-              <span className="price_card_value">20만원</span>
-              <span className="price_card_sep">~</span>
-              <span className="price_card_value">400만원</span>
+              <span className={styles.price_card_value}>20만원</span>
+              <span className={styles.price_card_sep}>~</span>
+              <span className={styles.price_card_value}>400만원</span>
             </div>
           </div>
 
-          <div className="price_vs">VS</div>
+          <div className={styles.price_vs}>VS</div>
 
-          <div className="our_price_section">
-            <div className="our_price_badge">까치도령 신년 운세</div>
-            <div className="our_price_original">
+          <div className={styles.our_price_section}>
+            <div className={styles.our_price_badge}>까치도령 신년 운세</div>
+            <div className={styles.our_price_original}>
               정가 <s>{PAYMENT_CONFIG.originalPrice.toLocaleString()}원</s>
             </div>
-            <div className="our_price_final">
+            <div className={styles.our_price_final}>
               {PAYMENT_CONFIG.price.toLocaleString()}원
             </div>
-            <div className="our_price_discount">
+            <div className={styles.our_price_discount}>
               {Math.floor(
                 (1 - PAYMENT_CONFIG.price / PAYMENT_CONFIG.originalPrice) * 100
               )}
@@ -846,8 +846,8 @@ function NewYearDetailContent() {
       </div>
 
       {/* 하단 고정 버튼 */}
-      <div className="bottom_fixed_btn">
-        <button className="analyze_btn" disabled style={{ opacity: 0.6, cursor: 'not-allowed' }}>
+      <div className={styles.bottom_fixed_btn}>
+        <button className={styles.analyze_btn} disabled style={{ opacity: 0.6, cursor: 'not-allowed' }}>
           준비중입니다
         </button>
       </div>
@@ -855,24 +855,24 @@ function NewYearDetailContent() {
       {/* 학생 할인 모달 */}
       {showStudentModal && (
         <div
-          className="student_modal_overlay"
+          className={styles.student_modal_overlay}
           onClick={() => setShowStudentModal(false)}
         >
-          <div className="student_modal" onClick={(e) => e.stopPropagation()}>
-            <p className="student_modal_title">혹시 학생이신가요?</p>
-            <p className="student_modal_desc">
+          <div className={styles.student_modal} onClick={(e) => e.stopPropagation()}>
+            <p className={styles.student_modal_title}>혹시 학생이신가요?</p>
+            <p className={styles.student_modal_desc}>
               학생분들의 새해를 응원해요!
               <br />
               학생이시면 <strong>커피 한 잔</strong>에 풀이하고 있어요
             </p>
-            <ul className="student_modal_list">
+            <ul className={styles.student_modal_list}>
               <li>20,000자 신년 운세 심층 분석</li>
               <li>2026년 월별 운세 캘린더</li>
               <li>재물운, 직장운, 건강운, 연애운</li>
-              <li className="bonus">보너스: 나만의 행운 부적</li>
+              <li className={styles.bonus}>보너스: 나만의 행운 부적</li>
             </ul>
             <button
-              className="student_modal_confirm"
+              className={styles.student_modal_confirm}
               onClick={() => {
                 setStudentCouponApplied(true);
                 setShowStudentModal(false);
@@ -886,50 +886,50 @@ function NewYearDetailContent() {
 
       {/* 결제 모달 */}
       {showPaymentModal && (
-        <div className="payment-overlay" style={{ display: "flex" }}>
-          <div className="payment-fullscreen">
-            <div className="modal-content">
-              <div className="payment-header">
-                <div className="payment-title">
+        <div className={styles["payment-overlay"]} style={{ display: "flex" }}>
+          <div className={styles["payment-fullscreen"]}>
+            <div className={styles["modal-content"]}>
+              <div className={styles["payment-header"]}>
+                <div className={styles["payment-title"]}>
                   {studentCouponApplied
                     ? "🎓 학생 특별 복채"
                     : "까치도령 신년 운세 복채"}
                 </div>
-                <div className="payment-close" onClick={closePaymentModal}>
+                <div className={styles["payment-close"]} onClick={closePaymentModal}>
                   ✕
                 </div>
               </div>
 
               {/* 학생 할인 배너 */}
               {studentCouponApplied && (
-                <div className="student-payment-banner">
-                  <p className="banner-text">학생 할인이 적용되었어요</p>
+                <div className={styles["student-payment-banner"]}>
+                  <p className={styles["banner-text"]}>학생 할인이 적용되었어요</p>
                 </div>
               )}
 
               {/* 결제 금액 섹션 */}
-              <div className="payment-amount-section">
-                <h3 className="payment-amount-title">복채</h3>
+              <div className={styles["payment-amount-section"]}>
+                <h3 className={styles["payment-amount-title"]}>복채</h3>
 
                 {/* 정가 */}
-                <div className="payment-row">
-                  <span className="payment-row-label">
+                <div className={styles["payment-row"]}>
+                  <span className={styles["payment-row-label"]}>
                     까치도령 신년 운세 20,000자 보고서
                   </span>
-                  <span className="payment-row-value">
+                  <span className={styles["payment-row-value"]}>
                     {PAYMENT_CONFIG.originalPrice.toLocaleString()}원
                   </span>
                 </div>
 
                 {/* 할인 */}
                 {studentCouponApplied ? (
-                  <div className="payment-row discount student-discount">
-                    <span className="payment-row-label">🎓 학생 특별 할인</span>
-                    <div className="payment-row-discount-value">
-                      <span className="discount-badge student">
+                  <div className={`${styles["payment-row"]} ${styles.discount} ${styles["student-discount"]}`}>
+                    <span className={styles["payment-row-label"]}>🎓 학생 특별 할인</span>
+                    <div className={styles["payment-row-discount-value"]}>
+                      <span className={`${styles["discount-badge"]} ${styles.student}`}>
                         {studentDiscount}%
                       </span>
-                      <span className="discount-amount">
+                      <span className={styles["discount-amount"]}>
                         -
                         {(
                           PAYMENT_CONFIG.originalPrice -
@@ -940,12 +940,12 @@ function NewYearDetailContent() {
                     </div>
                   </div>
                 ) : (
-                  <div className="payment-row discount">
-                    <span className="payment-row-label">
+                  <div className={`${styles["payment-row"]} ${styles.discount}`}>
+                    <span className={styles["payment-row-label"]}>
                       병오년(丙午年) 1월 특가 할인
                     </span>
-                    <div className="payment-row-discount-value">
-                      <span className="discount-badge">
+                    <div className={styles["payment-row-discount-value"]}>
+                      <span className={styles["discount-badge"]}>
                         {Math.floor(
                           (1 -
                             PAYMENT_CONFIG.price /
@@ -954,7 +954,7 @@ function NewYearDetailContent() {
                         )}
                         %
                       </span>
-                      <span className="discount-amount">
+                      <span className={styles["discount-amount"]}>
                         -
                         {(
                           PAYMENT_CONFIG.originalPrice - PAYMENT_CONFIG.price
@@ -967,24 +967,24 @@ function NewYearDetailContent() {
 
                 {/* 쿠폰 할인 */}
                 {!studentCouponApplied && appliedCoupon && (
-                  <div className="payment-row discount">
-                    <span className="payment-row-label">
+                  <div className={`${styles["payment-row"]} ${styles.discount}`}>
+                    <span className={styles["payment-row-label"]}>
                       {appliedCoupon.code} 쿠폰
                     </span>
-                    <span className="discount-amount">
+                    <span className={styles["discount-amount"]}>
                       -{appliedCoupon.discount.toLocaleString()}원
                     </span>
                   </div>
                 )}
 
-                <div className="payment-divider" />
+                <div className={styles["payment-divider"]} />
 
                 {/* 최종 금액 */}
-                <div className="payment-row final">
-                  <span className="payment-row-label">최종 결제금액</span>
+                <div className={`${styles["payment-row"]} ${styles.final}`}>
+                  <span className={styles["payment-row-label"]}>최종 결제금액</span>
                   <span
-                    className={`payment-row-final-value ${
-                      studentCouponApplied ? "student-price" : ""
+                    className={`${styles["payment-row-final-value"]} ${
+                      studentCouponApplied ? styles["student-price"] : ""
                     }`}
                   >
                     {studentCouponApplied
@@ -1001,11 +1001,11 @@ function NewYearDetailContent() {
 
               {/* 쿠폰 입력 */}
               {!studentCouponApplied && (
-                <div className="coupon-section">
-                  <div className="coupon-input-row">
+                <div className={styles["coupon-section"]}>
+                  <div className={styles["coupon-input-row"]}>
                     <input
                       type="text"
-                      className="coupon-input"
+                      className={styles["coupon-input"]}
                       placeholder="쿠폰 코드 입력"
                       value={couponCode}
                       onChange={(e) => {
@@ -1015,7 +1015,7 @@ function NewYearDetailContent() {
                       disabled={!!appliedCoupon}
                     />
                     <button
-                      className="coupon-submit-btn"
+                      className={styles["coupon-submit-btn"]}
                       onClick={handleCouponSubmit}
                       disabled={!!appliedCoupon}
                     >
@@ -1023,7 +1023,7 @@ function NewYearDetailContent() {
                     </button>
                   </div>
                   {couponError && (
-                    <div className="coupon-error">{couponError}</div>
+                    <div className={styles["coupon-error"]}>{couponError}</div>
                   )}
                 </div>
               )}
@@ -1036,7 +1036,7 @@ function NewYearDetailContent() {
                 <div id="new-year-agreement" />
               </div>
               <button
-                className="payment-final-btn"
+                className={styles["payment-final-btn"]}
                 onClick={handlePaymentRequest}
               >
                 복채 결제하기
@@ -1053,10 +1053,10 @@ export default function NewYearDetailPage() {
   return (
     <Suspense
       fallback={
-        <div className="main_body_wrap">
-          <div className="loading_wrap">
-            <div className="loading_spinner" />
-            <div className="loading_text">로딩 중...</div>
+        <div className={styles.main_body_wrap}>
+          <div className={styles.loading_wrap}>
+            <div className={styles.loading_spinner} />
+            <div className={styles.loading_text}>로딩 중...</div>
           </div>
         </div>
       }

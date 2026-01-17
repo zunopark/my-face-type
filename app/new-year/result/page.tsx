@@ -8,7 +8,7 @@ import {
   NewYearRecord,
 } from "@/lib/db/newYearDB";
 import { trackPageView } from "@/lib/mixpanel";
-import "./result.css";
+import styles from "./result.module.css";
 
 // 클라이언트에서 직접 FastAPI 호출
 const SAJU_API_URL = process.env.NEXT_PUBLIC_SAJU_API_URL;
@@ -883,13 +883,13 @@ function NewYearResultContent() {
   // 로딩 화면
   if (isLoading) {
     return (
-      <div className="newyear_result_page">
-        <div className="main_body_wrap">
-          <div className="loading_wrap">
-            <div className="loading_progress_bar">
-              <div className="loading_progress_fill"></div>
+      <div className={styles.newyear_result_page}>
+        <div className={styles.main_body_wrap}>
+          <div className={styles.loading_wrap}>
+            <div className={styles.loading_progress_bar}>
+              <div className={styles.loading_progress_fill}></div>
             </div>
-            <p className="loading_text">
+            <p className={styles.loading_text}>
               {loadingMessage || "분석 결과를 불러오는 중..."}
             </p>
           </div>
@@ -905,18 +905,18 @@ function NewYearResultContent() {
   // 에러 화면
   if (error) {
     return (
-      <div className="newyear_result_page">
-        <div className="main_body_wrap">
-          <div className="error_wrap">
-            <div className="error_icon">!</div>
-            <p className="error_text">
+      <div className={styles.newyear_result_page}>
+        <div className={styles.main_body_wrap}>
+          <div className={styles.error_wrap}>
+            <div className={styles.error_icon}>!</div>
+            <p className={styles.error_text}>
               정말 죄송합니다.
               <br />
               사주 분석하는데 오류가 발생해서
               <br />
               다시 한 번만 더 시도해주세요.
             </p>
-            <button className="error_btn" onClick={handleRetry}>
+            <button className={styles.error_btn} onClick={handleRetry}>
               다시 시도하기
             </button>
           </div>
@@ -945,38 +945,38 @@ function NewYearResultContent() {
   };
 
   return (
-    <div className="newyear_result_page chat_mode" onClick={handleScreenClick}>
+    <div className={`${styles.newyear_result_page} ${styles.chat_mode}`} onClick={handleScreenClick}>
       {/* 배경 이미지 */}
-      <div className="result_bg">
+      <div className={styles.result_bg}>
         <img
           src={currentBgImage}
           alt=""
-          className={`result_bg_image ${bgFadeIn ? "fade_in" : ""}`}
+          className={`${styles.result_bg_image} ${bgFadeIn ? styles.fade_in : ""}`}
         />
       </div>
 
       {/* 뒤로가기 버튼 */}
       <button
-        className="back_btn"
+        className={styles.back_btn}
         onClick={(e) => {
           e.stopPropagation();
           setShowExitModal(true);
         }}
       >
         <span className="material-icons">arrow_back</span>
-        <span className="back_btn_text">홈으로</span>
+        <span className={styles.back_btn_text}>홈으로</span>
       </button>
 
       {/* 홈으로 돌아가기 확인 모달 */}
       {showExitModal && (
-        <div className="exit_modal_overlay" onClick={() => setShowExitModal(false)}>
-          <div className="exit_modal" onClick={(e) => e.stopPropagation()}>
-            <p className="exit_modal_text">홈으로 돌아갈까요?</p>
-            <div className="exit_modal_buttons">
-              <button className="exit_modal_cancel" onClick={() => setShowExitModal(false)}>
+        <div className={styles.exit_modal_overlay} onClick={() => setShowExitModal(false)}>
+          <div className={styles.exit_modal} onClick={(e) => e.stopPropagation()}>
+            <p className={styles.exit_modal_text}>홈으로 돌아갈까요?</p>
+            <div className={styles.exit_modal_buttons}>
+              <button className={styles.exit_modal_cancel} onClick={() => setShowExitModal(false)}>
                 아니요
               </button>
-              <button className="exit_modal_confirm" onClick={() => router.push("/new-year")}>
+              <button className={styles.exit_modal_confirm} onClick={() => router.push("/new-year")}>
                 네, 돌아갈게요
               </button>
             </div>
@@ -986,13 +986,13 @@ function NewYearResultContent() {
 
       {/* 목차 버튼 */}
       <button
-        className="toc_btn"
+        className={styles.toc_btn}
         onClick={(e) => {
           e.stopPropagation();
           setShowTocModal(true);
         }}
       >
-        <span className="toc_btn_text">목차</span>
+        <span className={styles.toc_btn_text}>목차</span>
       </button>
 
       {/* 목차 모달 */}
@@ -1019,8 +1019,8 @@ function NewYearResultContent() {
 
       {/* 리포트 카드 (오버레이) */}
       {currentMsg && (
-        <div className={`report_overlay ${showReport ? "active" : ""} ${isAnimating ? "animating" : ""}`}>
-          <div className="report_scroll" ref={reportRef}>
+        <div className={`${styles.report_overlay} ${showReport ? styles.active : ""} ${isAnimating ? styles.animating : ""}`}>
+          <div className={styles.report_scroll} ref={reportRef}>
             {currentMsg.type === "intro" && <IntroCard userName={userName} />}
             {currentMsg.type === "saju" && <SajuCard data={data} />}
             {currentMsg.type === "report" && data.analysis && (
@@ -1076,7 +1076,7 @@ function NewYearResultContent() {
 
           {/* 스크롤 힌트 */}
           {showScrollHint && !canProceed && (
-            <div className="scroll_hint">
+            <div className={styles.scroll_hint}>
               <span className="material-icons">keyboard_arrow_down</span>
               아래로 스크롤해주세요
             </div>
@@ -1084,33 +1084,33 @@ function NewYearResultContent() {
 
           {/* 하단 다음 버튼 */}
           <div
-            className={`report_bottom_btn_wrap ${
+            className={`${styles.report_bottom_btn_wrap} ${
               canProceed && currentMsg.type !== "waiting"
-                ? "visible"
+                ? styles.visible
                 : ""
             }`}
           >
             {currentMsg.type === "ending" ? (
-              <div className="end_buttons">
-                <button className="dialogue_next_btn" onClick={() => window.location.reload()}>
+              <div className={styles.end_buttons}>
+                <button className={styles.dialogue_next_btn} onClick={() => window.location.reload()}>
                   처음부터 다시 보기
                 </button>
-                <button className="dialogue_secondary_btn" onClick={() => setShowExitModal(true)}>
+                <button className={styles.dialogue_secondary_btn} onClick={() => setShowExitModal(true)}>
                   홈으로
                 </button>
               </div>
             ) : currentMsg.type === "waiting" ? (
-              <div className="waiting_info">
+              <div className={styles.waiting_info}>
                 <p>분석이 완료되면 자동으로 다음으로 넘어갑니다</p>
               </div>
             ) : (
-              <div className="report_nav_buttons">
+              <div className={styles.report_nav_buttons}>
                 {currentIndex > 0 && (
-                  <button className="report_prev_btn" onClick={handlePrev}>
+                  <button className={styles.report_prev_btn} onClick={handlePrev}>
                     이전
                   </button>
                 )}
-                <button className="report_next_btn" onClick={handleNext}>
+                <button className={styles.report_next_btn} onClick={handleNext}>
                   다음
                 </button>
               </div>
@@ -1120,22 +1120,22 @@ function NewYearResultContent() {
       )}
 
       {/* 대화 UI (하단 고정) */}
-      <div className={`dialogue_wrap ${!showReport ? "active" : ""}`} onClick={(e) => e.stopPropagation()}>
-        <div className="dialogue_box" onClick={handleNext}>
-          <div className="dialogue_speaker">까치도령</div>
-          <p className="dialogue_text">
+      <div className={`${styles.dialogue_wrap} ${!showReport ? styles.active : ""}`} onClick={(e) => e.stopPropagation()}>
+        <div className={styles.dialogue_box} onClick={handleNext}>
+          <div className={styles.dialogue_speaker}>까치도령</div>
+          <p className={styles.dialogue_text}>
             {dialogueText}
-            {isTyping && <span className="typing-cursor"></span>}
+            {isTyping && <span className={styles.typing_cursor}></span>}
           </p>
         </div>
 
-        <div className={`dialogue_buttons ${showButtons ? "visible" : ""}`}>
+        <div className={`${styles.dialogue_buttons} ${showButtons ? styles.visible : ""}`}>
           {currentIndex > 0 && (
-            <button className="dialogue_prev_btn" onClick={handlePrev}>
+            <button className={styles.dialogue_prev_btn} onClick={handlePrev}>
               이전
             </button>
           )}
-          <button className="dialogue_next_btn" onClick={handleNext}>
+          <button className={styles.dialogue_next_btn} onClick={handleNext}>
             {getButtonText()}
           </button>
         </div>
@@ -1197,20 +1197,20 @@ function TocModal({
   };
 
   return (
-    <div className="toc_modal_overlay" onClick={onClose}>
-      <div className="toc_modal" onClick={(e) => e.stopPropagation()}>
-        <div className="toc_modal_header">
-          <span className="toc_modal_title">목차</span>
-          <button className="toc_modal_close" onClick={onClose}>
+    <div className={styles.toc_modal_overlay} onClick={onClose}>
+      <div className={styles.toc_modal} onClick={(e) => e.stopPropagation()}>
+        <div className={styles.toc_modal_header}>
+          <span className={styles.toc_modal_title}>목차</span>
+          <button className={styles.toc_modal_close} onClick={onClose}>
             ✕
           </button>
         </div>
-        <div className="toc_modal_list">
+        <div className={styles.toc_modal_list}>
           {tocItems.map((item) => (
             <button
               key={item.id}
-              className={`toc_modal_item ${item.index === currentIndex ? "active" : ""} ${
-                item.index <= currentIndex ? "visited" : ""
+              className={`${styles.toc_modal_item} ${item.index === currentIndex ? styles.active : ""} ${
+                item.index <= currentIndex ? styles.visited : ""
               }`}
               onClick={() => item.index <= currentIndex && onNavigate(item.index)}
               disabled={item.index > currentIndex}
@@ -1227,33 +1227,33 @@ function TocModal({
 // 인트로 카드 컴포넌트
 function IntroCard({ userName }: { userName: string }) {
   return (
-    <div className="report_card intro_card">
-      <div className="card_header">
-        <span className="card_label">INTRO</span>
-        <h2 className="card_title">
+    <div className={`${styles.report_card} ${styles.intro_card}`}>
+      <div className={styles.card_header}>
+        <span className={styles.card_label}>INTRO</span>
+        <h2 className={styles.card_title}>
           {userName}님의 2026년
           <br />
           신년 운세를 알려드릴게요
         </h2>
       </div>
-      <div className="card_content intro_content">
-        <div className="intro_section">
-          <h3 className="intro_section_title">사주(四柱)란?</h3>
-          <p className="intro_section_content">
+      <div className={`${styles.card_content} ${styles.intro_content}`}>
+        <div className={styles.intro_section}>
+          <h3 className={styles.intro_section_title}>사주(四柱)란?</h3>
+          <p className={styles.intro_section_content}>
             사주는 태어난 해(年), 월(月), 일(日), 시(時)를 나타내는 네 개의 기둥이에요.
             각 기둥은 천간과 지지로 이루어져 있어 총 8글자, 이것이 바로 &apos;사주팔자&apos;예요.
           </p>
         </div>
-        <div className="intro_section">
-          <h3 className="intro_section_title">일간(日干)이란?</h3>
-          <p className="intro_section_content">
+        <div className={styles.intro_section}>
+          <h3 className={styles.intro_section_title}>일간(日干)이란?</h3>
+          <p className={styles.intro_section_content}>
             일간은 태어난 날의 천간으로, 나 자신을 의미해요.
             일간을 통해 성격, 재능, 그리고 운의 흐름을 알 수 있어요.
           </p>
         </div>
-        <div className="intro_section">
-          <h3 className="intro_section_title">2026년 병오년(丙午年)</h3>
-          <p className="intro_section_content">
+        <div className={styles.intro_section}>
+          <h3 className={styles.intro_section_title}>2026년 병오년(丙午年)</h3>
+          <p className={styles.intro_section_content}>
             2026년은 붉은 말의 해, 병오년이에요. 강한 불의 기운이 가득한 해로,
             열정과 도전의 에너지가 넘치는 한 해가 될 거예요.
           </p>
@@ -1273,39 +1273,39 @@ function SajuCard({ data }: { data: NewYearRecord }) {
   const dayMaster = data.sajuData?.dayMaster;
 
   return (
-    <div className="report_card saju_card">
-      <div className="card_header">
-        <span className="card_label">사주 원국</span>
-        <h2 className="card_title">
+    <div className={`${styles.report_card} ${styles.saju_card}`}>
+      <div className={styles.card_header}>
+        <span className={styles.card_label}>사주 원국</span>
+        <h2 className={styles.card_title}>
           {data.input?.userName}님의 사주 팔자
         </h2>
       </div>
 
-      <div className="saju_info_row">
-        <div className="saju_info_main">
-          <span className="saju_info_name">{data.input?.userName}</span>
-          <span className="saju_info_birth">
+      <div className={styles.saju_info_row}>
+        <div className={styles.saju_info_main}>
+          <span className={styles.saju_info_name}>{data.input?.userName}</span>
+          <span className={styles.saju_info_birth}>
             {data.input?.date} ({data.input?.calendar === "lunar" ? "음력" : "양력"})
           </span>
         </div>
-        <div className="saju_info_ilju">
-          <span className="ilju_char" style={{ color: getColor(dayMaster?.element) }}>
+        <div className={styles.saju_info_ilju}>
+          <span className={styles.ilju_char} style={{ color: getColor(dayMaster?.element) }}>
             {dayMaster?.char}
           </span>
-          <span className="ilju_title">{dayMaster?.title}</span>
+          <span className={styles.ilju_title}>{dayMaster?.title}</span>
         </div>
       </div>
 
-      <div className="pillars_mini">
+      <div className={styles.pillars_mini}>
         {(["hour", "day", "month", "year"] as const).map((key) => {
           const p = pillars[key];
           const labels = { hour: "시주", day: "일주", month: "월주", year: "년주" };
           return (
-            <div key={key} className="pillar_mini_item">
-              <div className="pillar_mini_label">{labels[key]}</div>
-              <div className="pillar_mini_chars">
+            <div key={key} className={styles.pillar_mini_item}>
+              <div className={styles.pillar_mini_label}>{labels[key]}</div>
+              <div className={styles.pillar_mini_chars}>
                 <span
-                  className="pillar_mini_stem"
+                  className={styles.pillar_mini_stem}
                   style={{
                     color: p?.stem?.char ? getColor(getStemElement(p.stem.char)) : "#ccc",
                   }}
@@ -1313,7 +1313,7 @@ function SajuCard({ data }: { data: NewYearRecord }) {
                   {p?.stem?.char || "—"}
                 </span>
                 <span
-                  className="pillar_mini_branch"
+                  className={styles.pillar_mini_branch}
                   style={{
                     color: p?.branch?.char ? getColor(getBranchElement(p.branch.char)) : "#ccc",
                   }}
@@ -1358,13 +1358,13 @@ function ReportCard({
   };
 
   return (
-    <div className="report_card">
-      <div className="card_header">
-        <span className="card_label">{chapter.number || chapterIndex + 1}장</span>
-        <h2 className="card_title">{chapter.title}</h2>
+    <div className={styles.report_card}>
+      <div className={styles.card_header}>
+        <span className={styles.card_label}>{chapter.number || chapterIndex + 1}장</span>
+        <h2 className={styles.card_title}>{chapter.title}</h2>
       </div>
       <div
-        className="card_content"
+        className={styles.card_content}
         dangerouslySetInnerHTML={{ __html: formatContent(chapter.content) }}
       />
     </div>
@@ -1382,19 +1382,19 @@ function TalismanCard({
   title: string;
 }) {
   return (
-    <div className="report_card talisman_card">
-      <div className="card_header">
-        <span className="card_label">수호 부적</span>
-        <h2 className="card_title">{title}</h2>
+    <div className={`${styles.report_card} ${styles.talisman_card}`}>
+      <div className={styles.card_header}>
+        <span className={styles.card_label}>수호 부적</span>
+        <h2 className={styles.card_title}>{title}</h2>
       </div>
-      <div className="talisman_image_wrap">
+      <div className={styles.talisman_image_wrap}>
         <img
           src={`data:image/png;base64,${imageBase64}`}
           alt="2026년 수호 부적"
-          className="talisman_image"
+          className={styles.talisman_image}
         />
       </div>
-      <p className="talisman_tip">이미지를 길게 눌러 저장하거나, 배경으로 설정해보세요</p>
+      <p className={styles.talisman_tip}>이미지를 길게 눌러 저장하거나, 배경으로 설정해보세요</p>
     </div>
   );
 }
@@ -1438,50 +1438,50 @@ function WaitingCard({
   }, [isComplete, analysisStartedAt, onTransition]);
 
   return (
-    <div className="report_card waiting_card">
-      <div className="card_header">
-        <span className="card_label">분석 중</span>
-        <h2 className="card_title">
+    <div className={`${styles.report_card} ${styles.waiting_card}`}>
+      <div className={styles.card_header}>
+        <span className={styles.card_label}>분석 중</span>
+        <h2 className={styles.card_title}>
           {userName}님의 2026년 운세를
           <br />
           분석하고 있어요
         </h2>
       </div>
-      <div className="waiting_content">
-        <div className="waiting_progress_wrap">
-          <div className="waiting_progress_bar">
-            <div className="waiting_progress_fill" style={{ width: `${progress}%` }} />
+      <div className={styles.waiting_content}>
+        <div className={styles.waiting_progress_wrap}>
+          <div className={styles.waiting_progress_bar}>
+            <div className={styles.waiting_progress_fill} style={{ width: `${progress}%` }} />
           </div>
-          <span className="waiting_progress_text">{Math.floor(progress)}%</span>
+          <span className={styles.waiting_progress_text}>{Math.floor(progress)}%</span>
         </div>
-        <div className="waiting_steps">
-          <div className={`waiting_step ${progress > 5 ? "active" : ""}`}>
-            <span className="waiting_step_icon">🔮</span>
-            <span className="waiting_step_text">사주 팔자 분석</span>
+        <div className={styles.waiting_steps}>
+          <div className={`${styles.waiting_step} ${progress > 5 ? styles.active : ""}`}>
+            <span className={styles.waiting_step_icon}>🔮</span>
+            <span className={styles.waiting_step_text}>사주 팔자 분석</span>
           </div>
-          <div className={`waiting_step ${progress > 15 ? "active" : ""}`}>
-            <span className="waiting_step_icon">📊</span>
-            <span className="waiting_step_text">2026년 총운·재물운 분석</span>
+          <div className={`${styles.waiting_step} ${progress > 15 ? styles.active : ""}`}>
+            <span className={styles.waiting_step_icon}>📊</span>
+            <span className={styles.waiting_step_text}>2026년 총운·재물운 분석</span>
           </div>
-          <div className={`waiting_step ${progress > 30 ? "active" : ""}`}>
-            <span className="waiting_step_icon">💪</span>
-            <span className="waiting_step_text">건강운·애정운 분석</span>
+          <div className={`${styles.waiting_step} ${progress > 30 ? styles.active : ""}`}>
+            <span className={styles.waiting_step_icon}>💪</span>
+            <span className={styles.waiting_step_text}>건강운·애정운 분석</span>
           </div>
-          <div className={`waiting_step ${progress > 45 ? "active" : ""}`}>
-            <span className="waiting_step_icon">💼</span>
-            <span className="waiting_step_text">직장운·관계운 분석</span>
+          <div className={`${styles.waiting_step} ${progress > 45 ? styles.active : ""}`}>
+            <span className={styles.waiting_step_icon}>💼</span>
+            <span className={styles.waiting_step_text}>직장운·관계운 분석</span>
           </div>
-          <div className={`waiting_step ${progress > 55 ? "active" : ""}`}>
-            <span className="waiting_step_icon">🧘</span>
-            <span className="waiting_step_text">감정관리·월별운세 분석</span>
+          <div className={`${styles.waiting_step} ${progress > 55 ? styles.active : ""}`}>
+            <span className={styles.waiting_step_icon}>🧘</span>
+            <span className={styles.waiting_step_text}>감정관리·월별운세 분석</span>
           </div>
-          <div className={`waiting_step ${progress > 70 ? "active" : ""}`}>
-            <span className="waiting_step_icon">📔</span>
-            <span className="waiting_step_text">미래일기 작성</span>
+          <div className={`${styles.waiting_step} ${progress > 70 ? styles.active : ""}`}>
+            <span className={styles.waiting_step_icon}>📔</span>
+            <span className={styles.waiting_step_text}>미래일기 작성</span>
           </div>
-          <div className={`waiting_step ${progress > 85 ? "active" : ""}`}>
-            <span className="waiting_step_icon">✨</span>
-            <span className="waiting_step_text">개운법·부적 생성</span>
+          <div className={`${styles.waiting_step} ${progress > 85 ? styles.active : ""}`}>
+            <span className={styles.waiting_step_icon}>✨</span>
+            <span className={styles.waiting_step_text}>개운법·부적 생성</span>
           </div>
         </div>
       </div>
@@ -1494,9 +1494,9 @@ function EndingCard({ data }: { data: NewYearRecord }) {
   const userName = data.analysis?.user_name || data.input?.userName || "고객";
 
   return (
-    <div className="report_card ending_card">
-      <div className="ending_greeting">
-        <p className="greeting_main">
+    <div className={`${styles.report_card} ${styles.ending_card}`}>
+      <div className={styles.ending_greeting}>
+        <p className={styles.greeting_main}>
           {userName}님, 여기까지 함께해주셔서
           <br />
           정말 감사해요!
@@ -1508,19 +1508,19 @@ function EndingCard({ data }: { data: NewYearRecord }) {
           <br />
           가득한 해가 되길 바랄게요.
         </p>
-        <p className="ending_sign">- 까치도령 드림 🐴</p>
+        <p className={styles.ending_sign}>- 까치도령 드림 🐴</p>
       </div>
 
-      <div className="ending_summary">
-        <h3 className="summary_title">2026년 신년 운세 요약</h3>
+      <div className={styles.ending_summary}>
+        <h3 className={styles.summary_title}>2026년 신년 운세 요약</h3>
 
         {data.analysis?.chapters?.map((chapter, index) => (
-          <div key={index} className="summary_report_card">
-            <div className="card_header">
-              <span className="card_label">{chapter.number || index + 1}장</span>
-              <span className="card_title">{chapter.title}</span>
+          <div key={index} className={styles.summary_report_card}>
+            <div className={styles.card_header}>
+              <span className={styles.card_label}>{chapter.number || index + 1}장</span>
+              <span className={styles.card_title}>{chapter.title}</span>
             </div>
-            <div className="card_content">
+            <div className={styles.card_content}>
               {chapter.content.slice(0, 200)}...
             </div>
           </div>
@@ -1534,13 +1534,13 @@ export default function NewYearResultPage() {
   return (
     <Suspense
       fallback={
-        <div className="newyear_result_page">
-          <div className="main_body_wrap">
-            <div className="loading_wrap">
-              <div className="loading_progress_bar">
-                <div className="loading_progress_fill"></div>
+        <div className={styles.newyear_result_page}>
+          <div className={styles.main_body_wrap}>
+            <div className={styles.loading_wrap}>
+              <div className={styles.loading_progress_bar}>
+                <div className={styles.loading_progress_fill}></div>
               </div>
-              <p className="loading_text">로딩 중...</p>
+              <p className={styles.loading_text}>로딩 중...</p>
             </div>
           </div>
         </div>

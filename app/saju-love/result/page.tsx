@@ -14,7 +14,7 @@ import { trackPageView } from "@/lib/mixpanel";
 import { createReview, getReviewByRecordId, Review } from "@/lib/db/reviewDB";
 import { getSajuAnalysisByShareId, createSajuAnalysis, updateSajuAnalysis } from "@/lib/db/sajuAnalysisDB";
 import { uploadSajuLoveImages, getImageUrl } from "@/lib/storage/imageStorage";
-import "./result.css";
+import styles from "./result.module.css";
 
 // 연애 사주 분석 결과 타입
 interface LoveAnalysisResult {
@@ -1361,13 +1361,13 @@ function SajuLoveResultContent() {
   // 로딩 화면
   if (isLoading) {
     return (
-      <div className="saju_result_page">
-        <div className="main_body_wrap">
-          <div className="loading_wrap">
-            <div className="loading_progress_bar">
-              <div className="loading_progress_fill"></div>
+      <div className={styles.saju_result_page}>
+        <div className={styles.main_body_wrap}>
+          <div className={styles.loading_wrap}>
+            <div className={styles.loading_progress_bar}>
+              <div className={styles.loading_progress_fill}></div>
             </div>
-            <p className="loading_text">
+            <p className={styles.loading_text}>
               {loadingMessage || "분석 결과를 불러오는 중..."}
             </p>
           </div>
@@ -1384,18 +1384,18 @@ function SajuLoveResultContent() {
   // 에러 화면
   if (error) {
     return (
-      <div className="saju_result_page">
-        <div className="main_body_wrap">
-          <div className="error_wrap">
-            <div className="error_icon">!</div>
-            <p className="error_text">
+      <div className={styles.saju_result_page}>
+        <div className={styles.main_body_wrap}>
+          <div className={styles.error_wrap}>
+            <div className={styles.error_icon}>!</div>
+            <p className={styles.error_text}>
               정말 죄송합니다.
               <br />
               사주 분석하는데 오류가 발생해서
               <br />
               다시 한 번만 더 시도해주세요.
             </p>
-            <button className="error_btn" onClick={handleRetry}>
+            <button className={styles.error_btn} onClick={handleRetry}>
               다시 시도하기
             </button>
           </div>
@@ -1428,45 +1428,45 @@ function SajuLoveResultContent() {
   };
 
   return (
-    <div className="saju_result_page chat_mode" onClick={handleScreenClick}>
+    <div className={`${styles.saju_result_page} ${styles.chat_mode}`} onClick={handleScreenClick}>
       {/* 배경 이미지 */}
-      <div className="result_bg">
+      <div className={styles.result_bg}>
         <img
           src={currentBgImage}
           alt=""
-          className={`result_bg_image ${bgFadeIn ? "fade_in" : ""}`}
+          className={`${styles.result_bg_image} ${bgFadeIn ? styles.fade_in : ""}`}
         />
       </div>
 
       {/* 뒤로가기 버튼 */}
       <button
-        className="back_btn"
+        className={styles.back_btn}
         onClick={(e) => {
           e.stopPropagation();
           setShowExitModal(true);
         }}
       >
         <span className="material-icons">arrow_back</span>
-        <span className="back_btn_text">홈으로</span>
+        <span className={styles.back_btn_text}>홈으로</span>
       </button>
 
       {/* 홈으로 돌아가기 확인 모달 */}
       {showExitModal && (
         <div
-          className="exit_modal_overlay"
+          className={styles.exit_modal_overlay}
           onClick={() => setShowExitModal(false)}
         >
-          <div className="exit_modal" onClick={(e) => e.stopPropagation()}>
-            <p className="exit_modal_text">홈으로 돌아갈까요?</p>
-            <div className="exit_modal_buttons">
+          <div className={styles.exit_modal} onClick={(e) => e.stopPropagation()}>
+            <p className={styles.exit_modal_text}>홈으로 돌아갈까요?</p>
+            <div className={styles.exit_modal_buttons}>
               <button
-                className="exit_modal_cancel"
+                className={styles.exit_modal_cancel}
                 onClick={() => setShowExitModal(false)}
               >
                 아니요
               </button>
               <button
-                className="exit_modal_confirm"
+                className={styles.exit_modal_confirm}
                 onClick={() => router.push("/saju-love")}
               >
                 네, 돌아갈게요
@@ -1479,7 +1479,7 @@ function SajuLoveResultContent() {
       {/* 공유 버튼 */}
       {data?.paid && (
         <button
-          className="share_btn"
+          className={styles.share_btn}
           onClick={async (e) => {
             e.stopPropagation();
             const shareUrl = `${window.location.origin}/saju-love/result?id=${resultId}`;
@@ -1509,19 +1509,19 @@ function SajuLoveResultContent() {
             }
           }}
         >
-          <span className="share_btn_text">공유</span>
+          <span className={styles.share_btn_text}>공유</span>
         </button>
       )}
 
       {/* 목차 버튼 */}
       <button
-        className="toc_btn"
+        className={styles.toc_btn}
         onClick={(e) => {
           e.stopPropagation();
           setShowTocModal(true);
         }}
       >
-        <span className="toc_btn_text">목차</span>
+        <span className={styles.toc_btn_text}>목차</span>
       </button>
 
       {/* 목차 모달 */}
@@ -1549,10 +1549,10 @@ function SajuLoveResultContent() {
       {/* 리포트 카드 (오버레이) */}
       {currentMsg && (
         <div
-          className={`report_overlay ${showReport ? "active" : ""} ${isAnimating ? "animating" : ""
+          className={`${styles.report_overlay} ${showReport ? styles.active : ""} ${isAnimating ? styles.animating : ""
             }`}
         >
-          <div className="report_scroll" ref={reportRef}>
+          <div className={styles.report_scroll} ref={reportRef}>
             {currentMsg.type === "intro" && <IntroCard userName={userName} />}
             {currentMsg.type === "saju" && <SajuCard data={data} />}
             {currentMsg.type === "report" && data.loveAnalysis && (
@@ -1610,7 +1610,7 @@ function SajuLoveResultContent() {
 
           {/* 스크롤 힌트 */}
           {showScrollHint && !canProceed && (
-            <div className="scroll_hint">
+            <div className={styles.scroll_hint}>
               <span className="material-icons">keyboard_arrow_down</span>
               아래로 스크롤해주세요
             </div>
@@ -1618,40 +1618,40 @@ function SajuLoveResultContent() {
 
           {/* 하단 다음 버튼 */}
           <div
-            className={`report_bottom_btn_wrap ${canProceed &&
+            className={`${styles.report_bottom_btn_wrap} ${canProceed &&
                 currentMsg.type !== "waiting" &&
                 currentMsg.type !== "review_prompt"
-                ? "visible"
+                ? styles.visible
                 : ""
               }`}
           >
             {currentMsg.type === "ending" ? (
-              <div className="end_buttons">
+              <div className={styles.end_buttons}>
                 <button
-                  className="dialogue_next_btn"
+                  className={styles.dialogue_next_btn}
                   onClick={() => window.location.reload()}
                 >
                   처음부터 다시 보기
                 </button>
                 <button
-                  className="dialogue_secondary_btn"
+                  className={styles.dialogue_secondary_btn}
                   onClick={() => setShowExitModal(true)}
                 >
                   홈으로
                 </button>
               </div>
             ) : currentMsg.type === "waiting" ? (
-              <div className="waiting_info">
+              <div className={styles.waiting_info}>
                 <p>분석이 완료되면 자동으로 다음으로 넘어갑니다</p>
               </div>
             ) : (
-              <div className="report_nav_buttons">
+              <div className={styles.report_nav_buttons}>
                 {currentIndex > 0 && (
-                  <button className="report_prev_btn" onClick={handlePrev}>
+                  <button className={styles.report_prev_btn} onClick={handlePrev}>
                     이전
                   </button>
                 )}
-                <button className="report_next_btn" onClick={handleNext}>
+                <button className={styles.report_next_btn} onClick={handleNext}>
                   다음
                 </button>
               </div>
@@ -1662,24 +1662,24 @@ function SajuLoveResultContent() {
 
       {/* 대화 UI (하단 고정) */}
       <div
-        className={`dialogue_wrap ${!showReport ? "active" : ""}`}
+        className={`${styles.dialogue_wrap} ${!showReport ? styles.active : ""}`}
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="dialogue_box" onClick={handleNext}>
-          <div className="dialogue_speaker">색동낭자</div>
-          <p className="dialogue_text">
+        <div className={styles.dialogue_box} onClick={handleNext}>
+          <div className={styles.dialogue_speaker}>색동낭자</div>
+          <p className={styles.dialogue_text}>
             {dialogueText}
-            {isTyping && <span className="typing-cursor"></span>}
+            {isTyping && <span className={styles.typing_cursor}></span>}
           </p>
         </div>
 
-        <div className={`dialogue_buttons ${showButtons ? "visible" : ""}`}>
+        <div className={`${styles.dialogue_buttons} ${showButtons ? styles.visible : ""}`}>
           {currentIndex > 0 && (
-            <button className="dialogue_prev_btn" onClick={handlePrev}>
+            <button className={styles.dialogue_prev_btn} onClick={handlePrev}>
               이전
             </button>
           )}
-          <button className="dialogue_next_btn" onClick={handleNext}>
+          <button className={styles.dialogue_next_btn} onClick={handleNext}>
             {getButtonText()}
           </button>
         </div>
@@ -1725,14 +1725,14 @@ function ReportCard({
     .trim();
 
   return (
-    <div className="report_card">
-      <div className="card_header">
-        <span className="card_label">{labelText}</span>
-        <h3 className="card_title">{titleText}</h3>
+    <div className={styles.report_card}>
+      <div className={styles.card_header}>
+        <span className={styles.card_label}>{labelText}</span>
+        <h3 className={styles.card_title}>{titleText}</h3>
       </div>
 
       <div
-        className="card_content"
+        className={styles.card_content}
         dangerouslySetInnerHTML={{
           __html: formatChapterContent(chapter.content || ""),
         }}

@@ -231,7 +231,7 @@
   }
 }
 
-.newyear_result_page .back_btn .material-icons {
+.newyear_result_page .back_btn :global(.material-icons) {
   color: #333;
   font-size: 22px;
 }
@@ -1028,7 +1028,7 @@
   margin: 0;
 }
 
-.newyear_result_page .dialogue_text .typing-cursor {
+.typing_cursor {
   display: inline-block;
   width: 2px;
   height: 1em;
