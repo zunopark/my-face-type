@@ -7,6 +7,7 @@ import { confirmPayment as confirmPaymentAction } from "@/app/actions/analyze";
 import { markSajuLovePaid, getSajuLoveRecord } from "@/lib/db/sajuLoveDB";
 import { markFaceReportPaid } from "@/lib/db/faceAnalysisDB";
 import { markCoupleAnalysisPaid } from "@/lib/db/coupleAnalysisDB";
+import { markNewYearPaid, getNewYearRecord } from "@/lib/db/newYearDB";
 import { createSajuAnalysis, getSajuAnalysisByShareId, updateSajuAnalysis } from "@/lib/db/sajuAnalysisDB";
 import { uploadSajuLoveImages } from "@/lib/storage/imageStorage";
 
@@ -80,6 +81,7 @@ function SuccessContent() {
       // 결제 성공 추적
       const serviceTypeMap: Record<string, ServiceType> = {
         saju: "saju_love",
+        new_year: "new_year",
         couple: "couple",
         base: "face",
         wealth: "face",
@@ -111,6 +113,38 @@ function SuccessContent() {
             day_master_title: sajuRecord.sajuData.dayMaster?.title,
             day_master_element: sajuRecord.sajuData.dayMaster?.element,
             day_master_yinyang: sajuRecord.sajuData.dayMaster?.yinYang,
+          });
+        } else {
+          trackPaymentSuccess(serviceType, {
+            order_id: orderId,
+            amount: Number(amount),
+            result_id: resultId,
+            report_type: reportType,
+          });
+        }
+      } else if (reportType === "new_year" && resultId) {
+        // 신년 사주 결제인 경우 상세 정보 추가
+        const newYearRecord = await getNewYearRecord(resultId);
+        if (newYearRecord) {
+          trackPaymentSuccess(serviceType, {
+            order_id: orderId,
+            amount: Number(amount),
+            result_id: resultId,
+            report_type: reportType,
+            // 유저 입력 정보
+            user_name: newYearRecord.input.userName,
+            gender: newYearRecord.input.gender,
+            birth_date: newYearRecord.input.date,
+            birth_time: newYearRecord.input.time || "모름",
+            calendar: newYearRecord.input.calendar,
+            job_status: newYearRecord.input.jobStatus,
+            relationship_status: newYearRecord.input.relationshipStatus,
+            wish_2026: newYearRecord.input.wish2026,
+            // 사주 정보
+            day_master: newYearRecord.sajuData.dayMaster?.char,
+            day_master_title: newYearRecord.sajuData.dayMaster?.title,
+            day_master_element: newYearRecord.sajuData.dayMaster?.element,
+            day_master_yinyang: newYearRecord.sajuData.dayMaster?.yinYang,
           });
         } else {
           trackPaymentSuccess(serviceType, {
@@ -208,6 +242,55 @@ function SuccessContent() {
                 console.log("✅ Supabase에 사주 분석 결과 저장 완료");
               }
             }
+          } else if (reportType === "new_year") {
+            // 신년 사주 결제인 경우
+            const isDiscount = orderId?.includes("discount") || false;
+            const paymentInfo = {
+              method: "toss" as const,
+              price: Number(amount),
+              isDiscount,
+            };
+
+            // IndexedDB 업데이트
+            await markNewYearPaid(resultId, paymentInfo);
+
+            // Supabase 저장 (신년사주)
+            const newYearRecord = await getNewYearRecord(resultId);
+            if (newYearRecord) {
+              const existsInSupabase = await getSajuAnalysisByShareId(resultId);
+              if (existsInSupabase) {
+                // 이미 있으면 결제 상태만 업데이트
+                await updateSajuAnalysis(resultId, {
+                  is_paid: true,
+                  paid_at: new Date().toISOString(),
+                  payment_info: paymentInfo,
+                });
+                console.log("✅ Supabase 신년사주 결제 상태 업데이트 완료");
+              } else {
+                // 없으면 새로 생성
+                await createSajuAnalysis({
+                  service_type: "new_year",
+                  id: resultId,
+                  user_info: {
+                    userName: newYearRecord.input.userName,
+                    gender: newYearRecord.input.gender,
+                    date: newYearRecord.input.date,
+                    calendar: newYearRecord.input.calendar as "solar" | "lunar",
+                    time: newYearRecord.input.time,
+                    jobStatus: newYearRecord.input.jobStatus,
+                    relationshipStatus: newYearRecord.input.relationshipStatus,
+                    wish2026: newYearRecord.input.wish2026,
+                  },
+                  raw_saju_data: newYearRecord.rawSajuData || null,
+                  analysis_result: newYearRecord.analysis as unknown as import("@/lib/db/sajuAnalysisDB").AnalysisResult | null,
+                  image_paths: [],
+                  is_paid: true,
+                  paid_at: new Date().toISOString(),
+                  payment_info: paymentInfo,
+                });
+                console.log("✅ Supabase에 신년사주 분석 결과 저장 완료");
+              }
+            }
           } else if (reportType === "couple") {
             // 궁합 결제인 경우
             await markCoupleAnalysisPaid(resultId);
@@ -224,6 +307,8 @@ function SuccessContent() {
       setTimeout(() => {
         if (reportType === "saju") {
           router.push(`/saju-love/result?id=${resultId}`);
+        } else if (reportType === "new_year") {
+          router.push(`/new-year/result?id=${resultId}`);
         } else if (reportType === "couple") {
           router.push(`/couple/result?id=${resultId}`);
         } else {
@@ -244,6 +329,7 @@ function SuccessContent() {
         // 결제 실패 추적
         const serviceTypeMap: Record<string, ServiceType> = {
           saju: "saju_love",
+          new_year: "new_year",
           couple: "couple",
           base: "face",
         };

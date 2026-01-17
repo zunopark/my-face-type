@@ -9,7 +9,7 @@ const MIXPANEL_TOKEN = "d7d8d6afc10a92f911ea59901164605b";
 // ============================================
 
 // 서비스 타입
-export type ServiceType = "face" | "couple" | "saju_love" | "animalface";
+export type ServiceType = "face" | "couple" | "saju_love" | "new_year" | "animalface";
 
 // 이벤트 이름 (영문, 일관된 네이밍)
 export const EVENTS = {

@@ -2061,7 +2061,7 @@ body {
 }
 
 /* ========================================
-   양반家 랜딩 페이지 스타일 (밝은 테마)
+   양반가 랜딩 페이지 스타일 (밝은 테마)
    ======================================== */
 
 .landing-container {
@@ -2816,6 +2816,20 @@ body {
 }
 
 .card-saju > * {
+  position: relative;
+  z-index: 1;
+}
+
+.card-newyear {
+  background: url("/new-year/img/doryung.png") center center / cover no-repeat;
+  position: relative;
+}
+
+.card-newyear::before {
+  display: none;
+}
+
+.card-newyear > * {
   position: relative;
   z-index: 1;
 }

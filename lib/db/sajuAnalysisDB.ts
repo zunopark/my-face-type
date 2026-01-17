@@ -6,7 +6,8 @@ export type SajuServiceType =
   | "saju_career"    // 직업/적성
   | "saju_wealth"    // 재물운
   | "saju_health"    // 건강운
-  | "saju_year"      // 신년운세
+  | "saju_year"      // 신년운세 (legacy)
+  | "new_year"       // 2026 신년운세
   | "saju_couple";   // 궁합
 
 // 사용자 정보 타입
@@ -18,6 +19,10 @@ export interface UserInfo {
   time: string | null;
   userConcern?: string;
   status?: string;
+  // 신년사주 전용 필드
+  jobStatus?: string;
+  relationshipStatus?: string;
+  wish2026?: string;
 }
 
 // 결제 정보 타입

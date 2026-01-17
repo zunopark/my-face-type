@@ -1,0 +1,1075 @@
+/* 신년 사주 상세 페이지 스타일 - 연애사주 기반 + 블루 테마 */
+
+.main_body_wrap {
+  background: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100vh;
+  width: 100%;
+  max-width: 500px;
+  position: relative;
+}
+
+/* 뒤로가기 버튼 */
+.back_btn {
+  position: fixed;
+  top: 16px;
+  left: calc(50% - 250px + 16px);
+  height: 40px;
+  padding: 0 14px 0 10px;
+  background: rgba(255, 255, 255, 0.4);
+  -webkit-backdrop-filter: blur(16px);
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  z-index: 9999;
+  text-decoration: none;
+  color: #333;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  font-family: inherit;
+}
+
+@media (max-width: 500px) {
+  .back_btn {
+    left: 16px;
+  }
+}
+
+.back_btn .material-icons {
+  color: #333;
+  font-size: 22px;
+}
+
+.back_btn_text {
+  color: #333;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+/* 로딩 */
+.loading_wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  min-width: 100%;
+  gap: 20px;
+}
+
+.loading_spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid #E8F4FD;
+  border-top-color: #4A90D9;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.loading_text {
+  font-size: 16px;
+  color: #666;
+}
+
+/* 결과 래퍼 */
+.result_wrap {
+  width: 100%;
+  padding-bottom: 140px;
+}
+
+/* 섹션 공통 */
+.detail_section {
+  width: 100%;
+}
+
+/* 히어로 이미지 */
+.hero_image {
+  width: 100%;
+}
+
+.hero_image img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* 섹션 1: 기본 정보 + 사주팔자 */
+.section_1 {
+  background: linear-gradient(180deg, #F5FAFF 0%, #ffffff 100%);
+}
+
+.info_card {
+  padding: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #E8F4FD;
+}
+
+.info_main {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.info_name {
+  font-size: 18px;
+  font-weight: 700;
+  color: #1a1a1a;
+}
+
+.info_birth {
+  font-size: 14px;
+  color: #888;
+}
+
+.info_ilju {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #F5FAFF;
+  padding: 8px 14px;
+  border-radius: 20px;
+  border: 1px solid #4A90D9;
+}
+
+.ilju_char {
+  font-size: 20px;
+  font-weight: 700;
+  color: #2E7BC4;
+}
+
+.ilju_title {
+  font-size: 14px;
+  color: #666;
+}
+
+/* 사주 팔자 섹션 */
+.pillars_section {
+  padding: 20px;
+}
+
+.pillars_header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 15px;
+  font-weight: 700;
+  color: #1a1a1a;
+  margin-bottom: 16px;
+}
+
+.pillars_header .material-icons {
+  font-size: 20px;
+  color: #2E7BC4;
+}
+
+/* 사주 테이블 */
+.saju_table_wrap {
+  overflow-x: auto;
+  margin-bottom: 8px;
+}
+
+.saju_table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+  table-layout: fixed;
+}
+
+.saju_table th,
+.saju_table td {
+  padding: 10px 4px;
+  text-align: center;
+  border-bottom: 1px solid #D4E8F8;
+}
+
+.saju_table th {
+  font-size: 12px;
+  font-weight: 500;
+  color: #999;
+  background: #fafafa;
+}
+
+.saju_table th:first-child,
+.saju_table td:first-child {
+  width: 50px;
+}
+
+.saju_table .row_label {
+  font-size: 11px;
+  color: #999;
+  font-weight: 500;
+  text-align: left;
+  padding-left: 8px;
+}
+
+.saju_table .row_cheongan td,
+.saju_table .row_jiji td {
+  padding: 12px 4px;
+}
+
+.saju_table .char_main {
+  display: block;
+  font-size: 22px;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.saju_table .char_element {
+  display: block;
+  font-size: 11px;
+  font-weight: 500;
+  margin-top: 2px;
+}
+
+.saju_table .row_sipsung td {
+  background: #fafafa;
+}
+
+.saju_table .cell_sipsung {
+  font-size: 12px;
+  color: #666;
+}
+
+.saju_table .cell_empty {
+  color: #ccc;
+}
+
+/* 섹션 2: 신년운세 키워드 */
+.section_2 {
+  padding: 40px 20px;
+  background: linear-gradient(180deg, #F5FAFF 0%, #EDF6FF 100%);
+  text-align: center;
+}
+
+.section_label {
+  font-weight: 400;
+  font-size: 14px;
+  color: #1a1a1a;
+}
+
+.section_main_title {
+  font-family: "Danjo", serif;
+  font-size: 26px;
+  font-weight: 500;
+  color: #1a1a1a;
+  margin-bottom: 24px;
+}
+
+/* 일간 헤드라인 */
+.charm_headline_wrap {
+  padding: 20px 0;
+  margin-bottom: 8px;
+}
+
+.charm_quote {
+  font-family: "East Sea Dokdo", cursive;
+  font-size: 28px;
+  color: #333;
+  line-height: 1;
+}
+
+.charm_headline {
+  font-family: "Danjo", serif;
+  font-size: 20px;
+  color: #717171;
+  line-height: 1.5;
+  padding: 8px 0;
+  padding-bottom: 20px;
+}
+
+.charm_ilgan_info {
+  font-size: 13px;
+  font-weight: 500;
+  color: #999;
+  margin-bottom: 28px;
+}
+
+/* 내 일간 성향 */
+.charm_detail_wrap {
+  text-align: left;
+  margin-bottom: 20px;
+  padding: 0 24px;
+  color: #999;
+}
+
+.charm_detail_title {
+  font-size: 15px;
+  font-weight: 700;
+  margin-bottom: 12px;
+  margin-top: 24px;
+  color: #606060;
+}
+
+.charm_detail_title:first-child {
+  margin-top: 0;
+}
+
+.charm_detail_desc {
+  font-size: 14px;
+  color: #606060;
+  line-height: 1.8;
+  word-break: keep-all;
+}
+
+/* 사주 궁합 테이블 */
+.compatibility_table_wrap {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 12px;
+  margin: 24px 0;
+  padding: 20px 16px;
+  background: #fff;
+  border-radius: 16px;
+  border: 1px solid #E8F4FD;
+}
+
+.compatibility_left,
+.compatibility_right {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.compatibility_label {
+  font-size: 12px;
+  font-weight: 600;
+  color: #666;
+  margin-bottom: 12px;
+  padding: 4px 12px;
+  background: #f5f5f5;
+  border-radius: 12px;
+}
+
+.compatibility_pillars {
+  display: flex;
+  gap: 6px;
+}
+
+.compatibility_pillar {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.compat_stem,
+.compat_branch {
+  width: 52px;
+  height: 52px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  border: 1px solid #ddd;
+  background: #f5f5f5;
+}
+
+.compat_char {
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.compat_element {
+  font-size: 10px;
+  font-weight: 500;
+}
+
+.compatibility_plus {
+  font-size: 24px;
+  font-weight: 300;
+  color: #ccc;
+  margin-top: 40px;
+}
+
+.compatibility_right .compatibility_pillars {
+  gap: 0;
+}
+
+.year_2026 .compat_stem,
+.year_2026 .compat_branch {
+  width: 56px;
+  height: 56px;
+}
+
+/* 블러 처리된 콘텐츠 */
+.blurred_content_section {
+  margin: 24px 0;
+  text-align: left;
+}
+
+.blurred_intro {
+  font-size: 14px;
+  color: #666;
+  margin: 0 0 12px 0;
+}
+
+.blurred_intro strong {
+  color: #ff6a6a;
+  font-weight: 600;
+}
+
+.blurred_text_block {
+  position: relative;
+  padding: 16px;
+  background: #f8f8f8;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.blurred_text_block p {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.8;
+  color: #555;
+  filter: blur(5px);
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+/* 생존 필살기 섹션 */
+.survival_section {
+  margin-top: 40px;
+  padding-top: 32px;
+  border-top: 1px dashed #E8F4FD;
+  text-align: center;
+}
+
+.survival_subtitle {
+  font-size: 14px;
+  color: #888;
+  margin: 0 0 8px 0;
+}
+
+.survival_title {
+  font-family: "Danjo", serif;
+  font-size: 24px;
+  font-weight: 500;
+  color: #1a1a1a;
+  margin: 0 0 24px 0;
+}
+
+/* 잠금 미리보기 박스 */
+.info_preview_box.locked {
+  position: relative;
+  background: linear-gradient(180deg, #F5FAFF 0%, #EDF6FF 100%);
+  border: none;
+  padding-top: 48px;
+}
+
+.lock_icon {
+  position: absolute;
+  top: -20px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 40px;
+  height: 40px;
+  background: #fff;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.lock_icon .material-icons {
+  font-size: 20px;
+  color: #2E7BC4;
+}
+
+.info_preview_box.locked .preview_title {
+  color: #2E7BC4;
+  font-size: 14px;
+  margin-bottom: 12px;
+}
+
+.info_preview_box.locked .preview_list li {
+  background: transparent;
+  border-bottom: none;
+  padding: 6px 0 6px 20px;
+  font-size: 13px;
+  color: #666;
+}
+
+.info_preview_box.locked .preview_list li::before {
+  content: "♦";
+  color: #ff6a6a;
+  font-size: 8px;
+}
+
+/* 미리보기 박스 */
+.info_preview_box {
+  margin-top: 32px;
+  padding: 24px;
+  background: #fff;
+  border: 1px solid #4A90D9;
+  border-radius: 16px;
+  text-align: left;
+}
+
+.preview_title {
+  font-size: 16px;
+  font-weight: 700;
+  color: #333;
+  margin-bottom: 16px;
+  text-align: center;
+}
+
+.preview_list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.preview_list li {
+  font-size: 14px;
+  color: #555;
+  padding: 8px 0;
+  padding-left: 24px;
+  position: relative;
+  border-bottom: 1px solid #E8F4FD;
+}
+
+.preview_list li:last-child {
+  border-bottom: none;
+}
+
+.preview_list li::before {
+  content: "✓";
+  position: absolute;
+  left: 0;
+  color: #2E7BC4;
+  font-weight: 600;
+}
+
+/* 하단 고정 버튼 */
+.bottom_fixed_btn {
+  position: fixed;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  max-width: 500px;
+  padding: 16px 20px 32px 20px;
+  background: linear-gradient(180deg, transparent 0%, white 20%);
+  z-index: 100;
+}
+
+.analyze_btn {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 18px 24px;
+  background: linear-gradient(135deg, #4A90D9 0%, #3A7BC8 100%);
+  color: #ffffff;
+  font-size: 17px;
+  font-weight: 700;
+  border: none;
+  border-radius: 14px;
+  cursor: pointer;
+  box-shadow: 0 4px 20px rgba(74, 144, 217, 0.4);
+  transition: all 0.2s ease;
+}
+
+.analyze_btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 25px rgba(74, 144, 217, 0.5);
+}
+
+/* 고민 유도 섹션 */
+.hesitate_section {
+  margin-top: 40px;
+  padding: 40px 20px;
+  text-align: center;
+  background: linear-gradient(180deg, #F5FAFF 0%, #EDF6FF 50%, #F5FAFF 100%);
+  position: relative;
+  overflow: hidden;
+}
+
+.hesitate_question {
+  font-size: 20px;
+  font-weight: 700;
+  color: #333;
+  margin: 0 0 20px 0;
+  position: relative;
+}
+
+.hesitate_hint_box {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 20px;
+  position: relative;
+}
+
+.hesitate_hint {
+  font-size: 18px;
+  font-weight: 500;
+  color: #1E5A99;
+  margin: 0;
+  padding: 16px 28px;
+  background: linear-gradient(135deg, #fff 0%, #F5FAFF 100%);
+  border-radius: 30px;
+  display: inline-block;
+  box-shadow:
+    0 4px 20px rgba(46, 123, 196, 0.15),
+    0 0 0 2px rgba(46, 123, 196, 0.1);
+}
+
+.hesitate_hint strong {
+  color: #2E7BC4;
+  font-weight: 700;
+}
+
+/* 가격 비교 섹션 */
+.price_compare_section {
+  margin-top: 32px;
+  padding: 28px 20px;
+  text-align: center;
+  background: #fff;
+}
+
+.price_compare_title {
+  font-size: 15px;
+  font-weight: 500;
+  color: #666;
+  margin: 0 0 20px 0;
+}
+
+.price_compare_cards {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+}
+
+.price_card {
+  flex: 1;
+  max-width: 110px;
+  padding: 0px 0px 12px 0;
+  background: #fff;
+  border-radius: 12px;
+  border: 1px solid #D4E8F8;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.price_card_badge {
+  display: inline-block;
+  font-size: 11px;
+  width: 100%;
+  font-weight: 600;
+  color: #1E5A99;
+  background: #EDF6FF;
+  padding: 4px 10px;
+  border-radius: 12px 12px 0 0;
+  margin-bottom: 8px;
+}
+
+.price_card_value {
+  font-size: 15px;
+  font-weight: 700;
+  color: #333;
+}
+
+.price_card_sep {
+  font-size: 12px;
+  color: #999;
+}
+
+.price_vs {
+  font-size: 32px;
+  font-weight: 800;
+  color: #2E7BC4;
+  margin: 28px 0 20px 0;
+}
+
+/* 우리 가격 */
+.our_price_section {
+  padding: 24px;
+  background: linear-gradient(135deg, #F5FAFF 0%, #EDF6FF 100%);
+  border-radius: 16px;
+  border: 2px solid #4A90D9;
+}
+
+.our_price_badge {
+  font-size: 14px;
+  font-weight: 600;
+  color: #1E5A99;
+  margin-bottom: 8px;
+}
+
+.our_price_original {
+  font-size: 14px;
+  color: #999;
+  margin-bottom: 4px;
+}
+
+.our_price_original s {
+  color: #999;
+}
+
+.our_price_final {
+  font-size: 32px;
+  font-weight: 800;
+  color: #1a1a1a;
+  margin-bottom: 4px;
+}
+
+.our_price_discount {
+  font-size: 14px;
+  font-weight: 600;
+  color: #2E7BC4;
+}
+
+/* 학생 할인 모달 */
+.student_modal_overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 20px;
+}
+
+.student_modal {
+  background: #F8FCFF;
+  border-radius: 16px;
+  padding: 28px 24px;
+  max-width: 300px;
+  width: 100%;
+  text-align: center;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+}
+
+.student_modal_title {
+  font-size: 17px;
+  font-weight: 600;
+  color: #3a2a2a;
+  margin: 0 0 12px 0;
+}
+
+.student_modal_desc {
+  font-size: 14px;
+  color: #666;
+  margin: 0 0 24px 0;
+  line-height: 1.6;
+}
+
+.student_modal_desc strong {
+  color: #2E7BC4;
+  font-weight: 700;
+}
+
+.student_modal_list {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 20px 0;
+  text-align: left;
+}
+
+.student_modal_list li {
+  font-size: 13px;
+  color: #666;
+  padding: 6px 0;
+  padding-left: 20px;
+  position: relative;
+}
+
+.student_modal_list li::before {
+  content: "✓";
+  position: absolute;
+  left: 0;
+  color: #2E7BC4;
+  font-weight: 600;
+}
+
+.student_modal_list li.bonus {
+  margin-top: 8px;
+  padding-top: 10px;
+  border-top: 1px dashed #D4E8F8;
+  color: #1E5A99;
+  font-weight: 500;
+}
+
+.student_modal_list li.bonus::before {
+  content: "🎁";
+}
+
+.student_modal_confirm {
+  width: 100%;
+  padding: 16px 20px;
+  border-radius: 12px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  background: linear-gradient(135deg, #4A90D9 0%, #3A7BC8 100%);
+  border: none;
+  color: #ffffff;
+}
+
+.student_applied_badge {
+  font-size: 12px;
+  color: #2E7BC4;
+  text-align: center;
+  margin: 8px 0 0 0;
+  font-weight: 500;
+}
+
+/* 결제 오버레이 */
+.payment-overlay {
+  position: fixed;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  max-width: 500px;
+  height: 100%;
+  background: whitesmoke;
+  z-index: 99999;
+  overflow-y: auto;
+}
+
+.payment-fullscreen {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  min-height: 100%;
+  width: 100%;
+}
+
+.modal-content {
+  width: 100%;
+  max-width: 500px;
+  background: #fff;
+  padding: 34px 22px 28px 22px;
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.19);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+.payment-header {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.payment-title {
+  font-size: 20px;
+  font-weight: 700;
+  color: #343434;
+  text-align: left;
+}
+
+.payment-close {
+  color: #343434;
+  font-size: 20px;
+  font-weight: bold;
+  cursor: pointer;
+  z-index: 10000;
+  margin-left: 12px;
+}
+
+/* 결제 금액 섹션 */
+.payment-amount-section {
+  padding: 24px 20px;
+  background: #fff;
+}
+
+.payment-amount-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: #333;
+  margin: 0 0 20px 0;
+  text-align: left;
+}
+
+.payment-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 0;
+}
+
+.payment-row-label {
+  font-size: 15px;
+  color: #333;
+}
+
+.payment-row-value {
+  font-size: 15px;
+  color: #333;
+}
+
+.payment-row.discount .payment-row-label {
+  color: #2E7BC4;
+}
+
+.payment-row-discount-value {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.discount-badge {
+  font-size: 12px;
+  font-weight: 600;
+  color: #fff;
+  background: #2E7BC4;
+  padding: 4px 8px;
+  border-radius: 4px;
+}
+
+.discount-amount {
+  font-size: 15px;
+  font-weight: 600;
+  color: #2E7BC4;
+}
+
+.payment-divider {
+  height: 1px;
+  background: #eee;
+  margin: 16px 0;
+}
+
+.payment-row.final {
+  padding: 16px 0 0 0;
+}
+
+.payment-row.final .payment-row-label {
+  font-size: 16px;
+  font-weight: 700;
+  color: #333;
+}
+
+.payment-row-final-value {
+  font-size: 24px;
+  font-weight: 800;
+  color: #333;
+}
+
+.payment-row-final-value.student-price {
+  color: #2E7BC4;
+}
+
+/* 쿠폰 섹션 */
+.coupon-section {
+  padding: 16px 20px;
+  background: #f8f8f8;
+  border-top: 1px solid #eee;
+}
+
+.coupon-input-row {
+  display: flex;
+  gap: 8px;
+}
+
+.coupon-input {
+  flex: 1;
+  padding: 12px 16px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 14px;
+  outline: none;
+  background: #fff;
+}
+
+.coupon-input:focus {
+  border-color: #2E7BC4;
+}
+
+.coupon-submit-btn {
+  padding: 12px 20px;
+  background: #333;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.coupon-submit-btn:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+}
+
+.coupon-error {
+  margin-top: 8px;
+  font-size: 12px;
+  color: #2E7BC4;
+}
+
+#new-year-payment-method,
+#new-year-agreement {
+  width: 100%;
+  padding: 0;
+  display: block;
+  clear: both;
+  flex-shrink: 0;
+}
+
+.payment-final-btn {
+  margin-top: 16px;
+  width: 100%;
+  padding: 15px 0;
+  background: linear-gradient(135deg, #4A90D9 0%, #3A7BC8 100%);
+  color: #ffffff;
+  font-weight: 700;
+  border: none;
+  border-radius: 8px;
+  font-size: 17px;
+  cursor: pointer;
+  box-shadow: 0 4px 15px rgba(74, 144, 217, 0.3);
+}
+
+/* 학생 할인 배너 */
+.student-payment-banner {
+  padding: 12px 20px;
+  background: #F5FAFF;
+  border: 1px solid #4A90D9;
+  border-radius: 8px;
+  margin-top: 16px;
+  text-align: center;
+}
+
+.student-payment-banner .banner-text {
+  font-size: 14px;
+  font-weight: 500;
+  color: #2E7BC4;
+  margin: 0;
+}
+
+.payment-row.discount.student-discount .payment-row-label {
+  color: #2E7BC4;
+}
+
+.discount-badge.student {
+  background: #2E7BC4;
+}

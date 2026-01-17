@@ -10,52 +10,11 @@ import {
   saveSajuLoveRecord,
   SajuLoveRecord,
 } from "@/lib/db/sajuLoveDB";
-import {
-  trackPageView,
-  trackPaymentModalOpen,
-  trackPaymentModalClose,
-  trackPaymentAttempt,
-  trackPaymentSuccess,
-} from "@/lib/mixpanel";
-import { markSajuLovePaid } from "@/lib/db/sajuLoveDB";
+import { trackPageView } from "@/lib/mixpanel";
 import { createReview, getReviewByRecordId, Review } from "@/lib/db/reviewDB";
 import { getSajuAnalysisByShareId, createSajuAnalysis, updateSajuAnalysis } from "@/lib/db/sajuAnalysisDB";
 import { uploadSajuLoveImages, getImageUrl } from "@/lib/storage/imageStorage";
 import "./result.css";
-
-// TossPayments 타입 선언
-declare global {
-  interface Window {
-    PaymentWidget: (
-      clientKey: string,
-      customerKey: string
-    ) => {
-      renderPaymentMethods: (
-        selector: string,
-        options: { value: number }
-      ) => unknown;
-      renderAgreement: (selector: string) => void;
-      requestPayment: (options: {
-        orderId: string;
-        orderName: string;
-        customerName: string;
-        successUrl: string;
-        failUrl: string;
-      }) => Promise<void>;
-    };
-  }
-}
-
-// 결제 설정
-const PAYMENT_CONFIG = {
-  clientKey:
-    process.env.NEXT_PUBLIC_TOSS_CLIENT_KEY ||
-    "live_gck_yZqmkKeP8gBaRKPg1WwdrbQRxB9l",
-  price: 23900,
-  discountPrice: 9900,
-  originalPrice: 44800,
-  orderName: "AI 연애 사주 심층 분석",
-};
 
 // 연애 사주 분석 결과 타입
 interface LoveAnalysisResult {
@@ -81,15 +40,14 @@ interface LoveAnalysisResult {
 type MessageItem = {
   id: string;
   type:
-    | "dialogue"
-    | "report"
-    | "image"
-    | "ending"
-    | "saju"
-    | "intro"
-    | "waiting"
-    | "payment"
-    | "review_prompt"; // 리뷰 유도 카드
+  | "dialogue"
+  | "report"
+  | "image"
+  | "ending"
+  | "saju"
+  | "intro"
+  | "waiting"
+  | "review_prompt"; // 리뷰 유도 카드
   content: string;
   chapterIndex?: number;
   imageBase64?: string;
@@ -306,27 +264,15 @@ function SajuLoveResultContent() {
   // 기존 리뷰 존재 여부 (미리 확인해서 review_prompt 카드 생성 여부 결정)
   const [hasExistingReview, setHasExistingReview] = useState(false);
 
-  // 결제 관련 상태
-  const [showPaymentModal, setShowPaymentModal] = useState(false);
-  const [couponCode, setCouponCode] = useState("");
-  const [couponError, setCouponError] = useState("");
-  const [appliedCoupon, setAppliedCoupon] = useState<{
-    code: string;
-    discount: number;
-  } | null>(null);
-
   const isFetchingRef = useRef(false);
   const partialStartedRef = useRef(false);
   const loadingIntervalRef = useRef<NodeJS.Timeout | null>(null);
   const typingIntervalRef = useRef<NodeJS.Timeout | null>(null);
   const reportRef = useRef<HTMLDivElement>(null);
-  const paymentWidgetRef = useRef<ReturnType<
-    typeof window.PaymentWidget
-  > | null>(null);
   // handleNext에서 사용하기 위한 함수 ref (선언 순서 문제 해결)
-  const startLoadingMessagesRef = useRef<(userName: string) => void>(() => {});
+  const startLoadingMessagesRef = useRef<(userName: string) => void>(() => { });
   const fetchLoveAnalysisRef = useRef<(record: SajuLoveRecord) => void>(
-    () => {}
+    () => { }
   );
 
   // 이미지 프리로드 (페이지 로드 시)
@@ -383,13 +329,10 @@ function SajuLoveResultContent() {
   };
 
   // 부분 메시지 리스트 생성 (들어가며 + 사주원국만)
-  // isPaid=false: 결제 유도 카드 표시
-  // isPaid=true & 분석 중: 대기 카드 표시
   const buildPartialMessageList = useCallback(
     (record: SajuLoveRecord): MessageItem[] => {
       const result: MessageItem[] = [];
       const userName = record.input?.userName || "고객";
-      const isPaid = record.paid || false;
 
       // 1. 첫 인사 대화
       result.push({
@@ -431,24 +374,13 @@ function SajuLoveResultContent() {
         bgImage: "/saju-love/img/nangja-5.jpg",
       });
 
-      // 6. 미결제: 결제 유도 (다음 버튼 → 결제 모달)
-      // 결제 완료: 대기 카드 (보고서 작성중 - 분석 완료되면 자동 전환)
-      if (!isPaid) {
-        result.push({
-          id: "payment",
-          type: "payment",
-          content: "",
-          bgImage: "/saju-love/img/nangja-1.jpg",
-        });
-      } else {
-        // 대기 카드 (보고서 작성중)
-        result.push({
-          id: "waiting",
-          type: "waiting",
-          content: "",
-          bgImage: "/saju-love/img/nangja-1.jpg",
-        });
-      }
+      // 결제 완료 후 대기 카드 (보고서 작성중 - 분석 완료되면 자동 전환)
+      result.push({
+        id: "waiting",
+        type: "waiting",
+        content: "",
+        bgImage: "/saju-love/img/nangja-1.jpg",
+      });
 
       return result;
     },
@@ -465,10 +397,10 @@ function SajuLoveResultContent() {
       const chapters = record.loveAnalysis?.chapters || [];
       const hasIdealImage =
         !!(record.loveAnalysis?.ideal_partner_image?.image_base64 ||
-           record.loveAnalysis?.ideal_partner_image?.image_url);
+          record.loveAnalysis?.ideal_partner_image?.image_url);
       const hasAvoidImage =
         !!(record.loveAnalysis?.avoid_type_image?.image_base64 ||
-           record.loveAnalysis?.avoid_type_image?.image_url);
+          record.loveAnalysis?.avoid_type_image?.image_url);
 
       // 1. 첫 인사 대화
       result.push({
@@ -721,39 +653,6 @@ function SajuLoveResultContent() {
     }, 50);
   }, []);
 
-  // 결제 모달 열기
-  const openPaymentModal = useCallback(() => {
-    if (!data) return;
-
-    trackPaymentModalOpen("saju_love", {
-      id: data.id,
-      price: PAYMENT_CONFIG.price,
-      user_name: data.input.userName,
-      gender: data.input.gender,
-      birth_date: data.input.date,
-      day_master: data.sajuData.dayMaster?.char,
-      user_concern: data.input.userConcern,
-    });
-
-    setShowPaymentModal(true);
-
-    setTimeout(() => {
-      if (typeof window !== "undefined" && window.PaymentWidget) {
-        const customerKey = `customer_${Date.now()}`;
-        const widget = window.PaymentWidget(
-          PAYMENT_CONFIG.clientKey,
-          customerKey
-        );
-        paymentWidgetRef.current = widget;
-
-        widget.renderPaymentMethods("#saju-payment-method", {
-          value: PAYMENT_CONFIG.price,
-        });
-        widget.renderAgreement("#saju-agreement");
-      }
-    }, 100);
-  }, [data]);
-
   // 이전 메시지로 이동
   const handlePrev = useCallback(() => {
     // 타이핑 중이면 무시
@@ -818,12 +717,6 @@ function SajuLoveResultContent() {
     const goToNextMessage = async (nextIndex: number) => {
       const nextMsg = messages[nextIndex];
 
-      // 다음이 payment 타입이면 결제 overlay 바로 열기
-      if (nextMsg.type === "payment") {
-        openPaymentModal();
-        return;
-      }
-
       const nextImage = nextMsg.bgImage || "/saju-love/img/nangja-1.jpg";
 
       // 이미지 로드 대기 (최대 100ms)
@@ -856,14 +749,6 @@ function SajuLoveResultContent() {
       }
 
       if (nextIndex < messages.length) {
-        const nextMsg = messages[nextIndex];
-
-        // 다음이 payment 타입이면 결제 overlay 바로 열기
-        if (nextMsg.type === "payment") {
-          openPaymentModal();
-          return;
-        }
-
         // 1. 대화창/버튼 숨김 + 보고서 내려감
         // 2. 애니메이션 완료 후 배경 fade in + 대화 시작
         setDialogueText("");
@@ -889,7 +774,6 @@ function SajuLoveResultContent() {
     isTyping,
     showReport,
     typeText,
-    openPaymentModal,
     data,
   ]);
 
@@ -918,177 +802,6 @@ function SajuLoveResultContent() {
     }
   }, []);
 
-  // 쿠폰 확인
-  const handleCouponSubmit = useCallback(async () => {
-    if (!data) return;
-
-    // 무료 쿠폰 (전액 할인)
-    if (couponCode === "1234" || couponCode === "chaerin") {
-      setCouponError("");
-
-      // 쿠폰 결제 성공 추적
-      trackPaymentSuccess("saju_love", {
-        id: data.id,
-        price: 0,
-        payment_method: "coupon",
-        coupon_code: couponCode,
-        // 유저 입력 정보
-        user_name: data.input.userName,
-        gender: data.input.gender,
-        birth_date: data.input.date,
-        birth_time: data.input.time || "모름",
-        calendar: data.input.calendar,
-        status: data.input.status,
-        user_concern: data.input.userConcern,
-        // 사주 정보
-        day_master: data.sajuData.dayMaster?.char,
-        day_master_title: data.sajuData.dayMaster?.title,
-        day_master_element: data.sajuData.dayMaster?.element,
-        day_master_yinyang: data.sajuData.dayMaster?.yinYang,
-      });
-
-      // 결제 완료 처리
-      const paymentInfo = {
-        method: "coupon" as const,
-        price: 0,
-        couponCode: couponCode,
-      };
-      await markSajuLovePaid(data.id, paymentInfo);
-
-      // Supabase에 저장 (이미 저장되어 있지 않은 경우만)
-      console.log("🔍 Supabase 저장 시도:", {
-        dataId: data.id,
-        hasLoveAnalysis: !!data.loveAnalysis,
-        loveAnalysisChapters: data.loveAnalysis?.chapters?.length,
-      });
-      const existsInSupabase = await getSajuAnalysisByShareId(data.id);
-      console.log("🔍 Supabase 존재 여부:", existsInSupabase);
-
-      if (!existsInSupabase && data.loveAnalysis) {
-        // 이미지 Storage에 업로드
-        const imagePaths: string[] = [];
-        if (data.loveAnalysis?.ideal_partner_image?.image_base64 ||
-            data.loveAnalysis?.avoid_type_image?.image_base64) {
-          try {
-            const uploadedImages = await uploadSajuLoveImages(data.id, {
-              idealPartner: data.loveAnalysis?.ideal_partner_image?.image_base64,
-              avoidType: data.loveAnalysis?.avoid_type_image?.image_base64,
-            });
-            if (uploadedImages.idealPartner) imagePaths.push(uploadedImages.idealPartner.path);
-            if (uploadedImages.avoidType) imagePaths.push(uploadedImages.avoidType.path);
-          } catch (imgErr) {
-            console.error("이미지 업로드 실패:", imgErr);
-          }
-        }
-
-        // Supabase DB에 저장
-        await createSajuAnalysis({
-          service_type: "saju_love",
-          id: data.id,
-          user_info: {
-            userName: data.input.userName,
-            gender: data.input.gender,
-            date: data.input.date,
-            calendar: data.input.calendar as "solar" | "lunar",
-            time: data.input.time,
-            userConcern: data.input.userConcern,
-            status: data.input.status,
-          },
-          raw_saju_data: data.rawSajuData || null,
-          analysis_result: {
-            ...data.loveAnalysis,
-            ideal_partner_image: data.loveAnalysis.ideal_partner_image ? {
-              prompt: data.loveAnalysis.ideal_partner_image.prompt,
-              storage_path: imagePaths[0],
-            } : undefined,
-            avoid_type_image: data.loveAnalysis.avoid_type_image ? {
-              prompt: data.loveAnalysis.avoid_type_image.prompt,
-              storage_path: imagePaths[1],
-            } : undefined,
-          },
-          image_paths: imagePaths,
-          is_paid: true,
-          paid_at: new Date().toISOString(),
-          payment_info: paymentInfo,
-        });
-        console.log("✅ Supabase에 사주 분석 결과 저장 완료 (쿠폰)");
-      }
-
-      // 페이지 새로고침하여 결제 완료 상태로 다시 로드
-      window.location.reload();
-    }
-    // 할인 쿠폰 (5000원 할인)
-    else if (couponCode === "boniiii" || couponCode === "차세린") {
-      setCouponError("");
-      setAppliedCoupon({ code: couponCode, discount: 3000 });
-
-      // 결제 위젯 금액 업데이트
-      if (paymentWidgetRef.current) {
-        const newPrice = PAYMENT_CONFIG.price - 3000;
-        paymentWidgetRef.current.renderPaymentMethods("#saju-payment-method", {
-          value: newPrice,
-        });
-      }
-    } else {
-      setCouponError("유효하지 않은 쿠폰입니다");
-    }
-  }, [data, couponCode]);
-
-  // 결제 요청
-  const handlePaymentRequest = useCallback(async () => {
-    if (!paymentWidgetRef.current || !data) return;
-
-    const finalPrice = appliedCoupon
-      ? PAYMENT_CONFIG.price - appliedCoupon.discount
-      : PAYMENT_CONFIG.price;
-
-    trackPaymentAttempt("saju_love", {
-      id: data.id,
-      price: finalPrice,
-      is_discount: !!appliedCoupon,
-      coupon_code: appliedCoupon?.code,
-      user_name: data.input.userName,
-      gender: data.input.gender,
-      birth_date: data.input.date,
-      day_master: data.sajuData.dayMaster?.char,
-      user_concern: data.input.userConcern,
-    });
-
-    try {
-      await paymentWidgetRef.current.requestPayment({
-        orderId: `saju-love${
-          appliedCoupon ? `-${appliedCoupon.code}` : ""
-        }_${Date.now()}`,
-        orderName: appliedCoupon
-          ? `${PAYMENT_CONFIG.orderName} - ${appliedCoupon.code} 할인`
-          : PAYMENT_CONFIG.orderName,
-        customerName: data.input.userName || "고객",
-        successUrl: `${
-          window.location.origin
-        }/payment/success?type=saju&id=${encodeURIComponent(data.id)}`,
-        failUrl: `${
-          window.location.origin
-        }/payment/fail?id=${encodeURIComponent(data.id)}&type=saju`,
-      });
-    } catch (err) {
-      console.error("결제 오류:", err);
-    }
-  }, [data, appliedCoupon]);
-
-  // 결제 모달 닫기
-  const closePaymentModal = useCallback(() => {
-    setShowPaymentModal(false);
-    paymentWidgetRef.current = null;
-
-    trackPaymentModalClose("saju_love", {
-      id: data?.id,
-      reason: "user_close",
-    });
-
-    // 쿠폰 상태 리셋
-    setAppliedCoupon(null);
-    setCouponCode("");
-  }, [data]);
 
   // 연애 사주 분석 API 호출
   const fetchLoveAnalysis = useCallback(
@@ -1162,7 +875,7 @@ function SajuLoveResultContent() {
             // 이미지 Storage에 업로드
             const imagePaths: string[] = [];
             if (loveResult.ideal_partner_image?.image_base64 ||
-                loveResult.avoid_type_image?.image_base64) {
+              loveResult.avoid_type_image?.image_base64) {
               try {
                 const uploadedImages = await uploadSajuLoveImages(storedData.id, {
                   idealPartner: loveResult.ideal_partner_image?.image_base64,
@@ -1215,7 +928,7 @@ function SajuLoveResultContent() {
             // 이미지 Storage에 업로드
             const updateImagePaths: string[] = [];
             if (loveResult.ideal_partner_image?.image_base64 ||
-                loveResult.avoid_type_image?.image_base64) {
+              loveResult.avoid_type_image?.image_base64) {
               try {
                 const uploadedImages = await uploadSajuLoveImages(storedData.id, {
                   idealPartner: loveResult.ideal_partner_image?.image_base64,
@@ -1340,293 +1053,293 @@ function SajuLoveResultContent() {
 
     const loadData = async () => {
       try {
-      let record = await getSajuLoveRecord(resultId);
+        let record = await getSajuLoveRecord(resultId);
 
-      // IndexedDB에 없으면 Supabase에서 조회 (공유 링크로 접근한 경우)
-      if (!record) {
-        const supabaseRecord = await getSajuAnalysisByShareId(resultId);
-        if (supabaseRecord && supabaseRecord.is_paid) {
-          // Supabase 데이터를 SajuLoveRecord 형태로 변환
-          const analysisResult = supabaseRecord.analysis_result as {
-            user_name?: string;
-            chapters?: Array<{ number: number; title: string; content: string }>;
-            ideal_partner_image?: { prompt?: string; storage_path?: string };
-            avoid_type_image?: { prompt?: string; storage_path?: string };
-          } | null;
+        // IndexedDB에 없으면 Supabase에서 조회 (공유 링크로 접근한 경우)
+        if (!record) {
+          const supabaseRecord = await getSajuAnalysisByShareId(resultId);
+          if (supabaseRecord && supabaseRecord.is_paid) {
+            // Supabase 데이터를 SajuLoveRecord 형태로 변환
+            const analysisResult = supabaseRecord.analysis_result as {
+              user_name?: string;
+              chapters?: Array<{ number: number; title: string; content: string }>;
+              ideal_partner_image?: { prompt?: string; storage_path?: string };
+              avoid_type_image?: { prompt?: string; storage_path?: string };
+            } | null;
 
-          record = {
-            id: supabaseRecord.id,
-            createdAt: supabaseRecord.created_at || new Date().toISOString(),
-            paid: supabaseRecord.is_paid || false,
-            paidAt: supabaseRecord.paid_at || undefined,
-            seenIntro: true, // 공유로 접근하면 인트로 스킵
-            input: {
-              userName: supabaseRecord.user_info?.userName || "",
-              gender: supabaseRecord.user_info?.gender || "",
-              date: supabaseRecord.user_info?.date || "",
-              calendar: supabaseRecord.user_info?.calendar || "solar",
-              time: supabaseRecord.user_info?.time || null,
-              userConcern: supabaseRecord.user_info?.userConcern || "",
-              status: supabaseRecord.user_info?.status || "",
-            },
-            rawSajuData: supabaseRecord.raw_saju_data as SajuLoveRecord["rawSajuData"],
-            sajuData: {
-              dayMaster: (supabaseRecord.raw_saju_data as Record<string, unknown>)?.dayMaster as SajuLoveRecord["sajuData"]["dayMaster"] || { char: "", title: "" },
-              pillars: (supabaseRecord.raw_saju_data as Record<string, unknown>)?.pillars as SajuLoveRecord["sajuData"]["pillars"] || {},
-              fiveElements: (supabaseRecord.raw_saju_data as Record<string, unknown>)?.fiveElements as SajuLoveRecord["sajuData"]["fiveElements"],
-              loveFacts: (supabaseRecord.raw_saju_data as Record<string, unknown>)?.loveFacts as SajuLoveRecord["sajuData"]["loveFacts"],
-              sinsal: (supabaseRecord.raw_saju_data as Record<string, unknown>)?.sinsal as SajuLoveRecord["sajuData"]["sinsal"],
-              daeun: (supabaseRecord.raw_saju_data as Record<string, unknown>)?.daeun as SajuLoveRecord["sajuData"]["daeun"],
-              zodiac: (supabaseRecord.raw_saju_data as Record<string, unknown>)?.zodiac as SajuLoveRecord["sajuData"]["zodiac"],
-            },
-            loveAnalysis: analysisResult ? {
-              user_name: analysisResult.user_name || "",
-              chapters: analysisResult.chapters || [],
-              // Storage URL로 변환
-              ideal_partner_image: analysisResult.ideal_partner_image?.storage_path ? {
-                image_base64: "", // base64 대신 빈 문자열
-                image_url: getImageUrl(analysisResult.ideal_partner_image.storage_path), // URL 사용
-                prompt: analysisResult.ideal_partner_image.prompt,
+            record = {
+              id: supabaseRecord.id,
+              createdAt: supabaseRecord.created_at || new Date().toISOString(),
+              paid: supabaseRecord.is_paid || false,
+              paidAt: supabaseRecord.paid_at || undefined,
+              seenIntro: true, // 공유로 접근하면 인트로 스킵
+              input: {
+                userName: supabaseRecord.user_info?.userName || "",
+                gender: supabaseRecord.user_info?.gender || "",
+                date: supabaseRecord.user_info?.date || "",
+                calendar: supabaseRecord.user_info?.calendar || "solar",
+                time: supabaseRecord.user_info?.time || null,
+                userConcern: supabaseRecord.user_info?.userConcern || "",
+                status: supabaseRecord.user_info?.status || "",
+              },
+              rawSajuData: supabaseRecord.raw_saju_data as SajuLoveRecord["rawSajuData"],
+              sajuData: {
+                dayMaster: (supabaseRecord.raw_saju_data as Record<string, unknown>)?.dayMaster as SajuLoveRecord["sajuData"]["dayMaster"] || { char: "", title: "" },
+                pillars: (supabaseRecord.raw_saju_data as Record<string, unknown>)?.pillars as SajuLoveRecord["sajuData"]["pillars"] || {},
+                fiveElements: (supabaseRecord.raw_saju_data as Record<string, unknown>)?.fiveElements as SajuLoveRecord["sajuData"]["fiveElements"],
+                loveFacts: (supabaseRecord.raw_saju_data as Record<string, unknown>)?.loveFacts as SajuLoveRecord["sajuData"]["loveFacts"],
+                sinsal: (supabaseRecord.raw_saju_data as Record<string, unknown>)?.sinsal as SajuLoveRecord["sajuData"]["sinsal"],
+                daeun: (supabaseRecord.raw_saju_data as Record<string, unknown>)?.daeun as SajuLoveRecord["sajuData"]["daeun"],
+                zodiac: (supabaseRecord.raw_saju_data as Record<string, unknown>)?.zodiac as SajuLoveRecord["sajuData"]["zodiac"],
+              },
+              loveAnalysis: analysisResult ? {
+                user_name: analysisResult.user_name || "",
+                chapters: analysisResult.chapters || [],
+                // Storage URL로 변환
+                ideal_partner_image: analysisResult.ideal_partner_image?.storage_path ? {
+                  image_base64: "", // base64 대신 빈 문자열
+                  image_url: getImageUrl(analysisResult.ideal_partner_image.storage_path), // URL 사용
+                  prompt: analysisResult.ideal_partner_image.prompt,
+                } : undefined,
+                avoid_type_image: analysisResult.avoid_type_image?.storage_path ? {
+                  image_base64: "",
+                  image_url: getImageUrl(analysisResult.avoid_type_image.storage_path),
+                  prompt: analysisResult.avoid_type_image.prompt,
+                } : undefined,
+              } : null,
+              paymentInfo: supabaseRecord.payment_info ? {
+                method: supabaseRecord.payment_info.method,
+                price: supabaseRecord.payment_info.price,
+                couponCode: supabaseRecord.payment_info.couponCode,
+                isDiscount: supabaseRecord.payment_info.isDiscount,
               } : undefined,
-              avoid_type_image: analysisResult.avoid_type_image?.storage_path ? {
-                image_base64: "",
-                image_url: getImageUrl(analysisResult.avoid_type_image.storage_path),
-                prompt: analysisResult.avoid_type_image.prompt,
-              } : undefined,
-            } : null,
-            paymentInfo: supabaseRecord.payment_info ? {
-              method: supabaseRecord.payment_info.method,
-              price: supabaseRecord.payment_info.price,
-              couponCode: supabaseRecord.payment_info.couponCode,
-              isDiscount: supabaseRecord.payment_info.isDiscount,
-            } : undefined,
-          };
-
-          // 이미지를 base64로 변환해서 IndexedDB에 저장 (다음 방문 시 빠르게 로드)
-          try {
-            // Storage URL에서 이미지를 가져와서 base64로 변환 (5초 타임아웃)
-            const fetchImageAsBase64 = async (url: string): Promise<string> => {
-              const controller = new AbortController();
-              const timeoutId = setTimeout(() => controller.abort(), 5000);
-              try {
-                const response = await fetch(url, { signal: controller.signal });
-                clearTimeout(timeoutId);
-                const blob = await response.blob();
-                return new Promise((resolve, reject) => {
-                  const reader = new FileReader();
-                  reader.onloadend = () => resolve(reader.result as string);
-                  reader.onerror = reject;
-                  reader.readAsDataURL(blob);
-                });
-              } catch {
-                clearTimeout(timeoutId);
-                throw new Error("이미지 로드 타임아웃");
-              }
             };
 
-            // 이미지 base64 변환
-            if (record.loveAnalysis?.ideal_partner_image?.image_url) {
-              try {
-                const base64 = await fetchImageAsBase64(record.loveAnalysis.ideal_partner_image.image_url);
-                record.loveAnalysis.ideal_partner_image.image_base64 = base64;
-                console.log("✅ ideal_partner 이미지 base64 변환 완료");
-              } catch (imgErr) {
-                console.warn("ideal_partner 이미지 변환 실패:", imgErr);
-              }
-            }
-            if (record.loveAnalysis?.avoid_type_image?.image_url) {
-              try {
-                const base64 = await fetchImageAsBase64(record.loveAnalysis.avoid_type_image.image_url);
-                record.loveAnalysis.avoid_type_image.image_base64 = base64;
-                console.log("✅ avoid_type 이미지 base64 변환 완료");
-              } catch (imgErr) {
-                console.warn("avoid_type 이미지 변환 실패:", imgErr);
-              }
-            }
+            // 이미지를 base64로 변환해서 IndexedDB에 저장 (다음 방문 시 빠르게 로드)
+            try {
+              // Storage URL에서 이미지를 가져와서 base64로 변환 (5초 타임아웃)
+              const fetchImageAsBase64 = async (url: string): Promise<string> => {
+                const controller = new AbortController();
+                const timeoutId = setTimeout(() => controller.abort(), 5000);
+                try {
+                  const response = await fetch(url, { signal: controller.signal });
+                  clearTimeout(timeoutId);
+                  const blob = await response.blob();
+                  return new Promise((resolve, reject) => {
+                    const reader = new FileReader();
+                    reader.onloadend = () => resolve(reader.result as string);
+                    reader.onerror = reject;
+                    reader.readAsDataURL(blob);
+                  });
+                } catch {
+                  clearTimeout(timeoutId);
+                  throw new Error("이미지 로드 타임아웃");
+                }
+              };
 
-            await saveSajuLoveRecord(record);
-            console.log("✅ 외부 공유 데이터 IndexedDB에 캐싱 완료 (이미지 포함)");
-          } catch (cacheErr) {
-            console.warn("IndexedDB 캐싱 실패:", cacheErr);
+              // 이미지 base64 변환
+              if (record.loveAnalysis?.ideal_partner_image?.image_url) {
+                try {
+                  const base64 = await fetchImageAsBase64(record.loveAnalysis.ideal_partner_image.image_url);
+                  record.loveAnalysis.ideal_partner_image.image_base64 = base64;
+                  console.log("✅ ideal_partner 이미지 base64 변환 완료");
+                } catch (imgErr) {
+                  console.warn("ideal_partner 이미지 변환 실패:", imgErr);
+                }
+              }
+              if (record.loveAnalysis?.avoid_type_image?.image_url) {
+                try {
+                  const base64 = await fetchImageAsBase64(record.loveAnalysis.avoid_type_image.image_url);
+                  record.loveAnalysis.avoid_type_image.image_base64 = base64;
+                  console.log("✅ avoid_type 이미지 base64 변환 완료");
+                } catch (imgErr) {
+                  console.warn("avoid_type 이미지 변환 실패:", imgErr);
+                }
+              }
+
+              await saveSajuLoveRecord(record);
+              console.log("✅ 외부 공유 데이터 IndexedDB에 캐싱 완료 (이미지 포함)");
+            } catch (cacheErr) {
+              console.warn("IndexedDB 캐싱 실패:", cacheErr);
+            }
           }
         }
-      }
 
-      if (!record) {
-        setError("데이터를 찾을 수 없습니다.");
-        setIsLoading(false);
-        return;
-      }
+        if (!record) {
+          setError("데이터를 찾을 수 없습니다.");
+          setIsLoading(false);
+          return;
+        }
 
-      // 기존 리뷰 존재 여부 미리 확인 (review_prompt 카드 표시 여부 결정)
-      const existingReview = await getReviewByRecordId("saju_love", record.id);
-      if (existingReview) {
-        setHasExistingReview(true);
-      }
+        // 기존 리뷰 존재 여부 미리 확인 (review_prompt 카드 표시 여부 결정)
+        const existingReview = await getReviewByRecordId("saju_love", record.id);
+        if (existingReview) {
+          setHasExistingReview(true);
+        }
 
-      // 결과 페이지 방문 추적
-      trackPageView("saju_love_result", {
-        id: record.id,
-        user_name: record.input.userName,
-        gender: record.input.gender,
-        birth_date: record.input.date,
-        birth_time: record.input.time || "모름",
-        status: record.input.status,
-        user_concern: record.input.userConcern,
-        day_master: record.sajuData.dayMaster?.char,
-        day_master_title: record.sajuData.dayMaster?.title,
-        paid: record.paid || false,
-        // 결제 정보
-        payment_method: record.paymentInfo?.method,
-        payment_price: record.paymentInfo?.price,
-        coupon_code: record.paymentInfo?.couponCode,
-        is_discount: record.paymentInfo?.isDiscount,
-      });
+        // 결과 페이지 방문 추적
+        trackPageView("saju_love_result", {
+          id: record.id,
+          user_name: record.input.userName,
+          gender: record.input.gender,
+          birth_date: record.input.date,
+          birth_time: record.input.time || "모름",
+          status: record.input.status,
+          user_concern: record.input.userConcern,
+          day_master: record.sajuData.dayMaster?.char,
+          day_master_title: record.sajuData.dayMaster?.title,
+          paid: record.paid || false,
+          // 결제 정보
+          payment_method: record.paymentInfo?.method,
+          payment_price: record.paymentInfo?.price,
+          coupon_code: record.paymentInfo?.couponCode,
+          is_discount: record.paymentInfo?.isDiscount,
+        });
 
-      // 미결제 상태: 들어가며 + 사주 원국까지만 보여주고 결제 유도
-      if (!record.paid) {
-        setData(record);
-        const userName = record.input?.userName || "고객";
+        // 미결제 상태: 들어가며 + 사주 원국까지만 보여주고 결제 유도
+        if (!record.paid) {
+          setData(record);
+          const userName = record.input?.userName || "고객";
 
-        // 이미 인트로를 본 적 있으면 가라 로딩 스킵
-        if (record.seenIntro) {
-          const partialMessages = buildPartialMessageList(record);
-          setMessages(partialMessages);
+          // 이미 인트로를 본 적 있으면 가라 로딩 스킵
+          if (record.seenIntro) {
+            const partialMessages = buildPartialMessageList(record);
+            setMessages(partialMessages);
+            setIsLoading(false);
+            setTimeout(() => {
+              typeText(partialMessages[0].content, () => setShowButtons(true));
+            }, 500);
+            return;
+          }
+
+          // 첫 방문: 10초 가라 로딩 후 partial 메시지 시작
+          startLoadingMessages(userName);
+          setTimeout(async () => {
+            stopLoadingMessages();
+            // seenIntro 플래그 저장
+            await updateSajuLoveRecord(record.id, { seenIntro: true });
+            const partialMessages = buildPartialMessageList(record);
+            setMessages(partialMessages);
+            setIsLoading(false);
+            setTimeout(() => {
+              typeText(partialMessages[0].content, () => setShowButtons(true));
+            }, 500);
+          }, 10000); // 10초
+
+          return;
+        }
+
+        // 결제 완료 & 분석 완료: 전체 메시지 보여주기
+        if (record.loveAnalysis) {
+          setData(record);
+          const messageList = buildMessageList(record, hasExistingReview);
+          setMessages(messageList);
           setIsLoading(false);
           setTimeout(() => {
-            typeText(partialMessages[0].content, () => setShowButtons(true));
+            typeText(messageList[0].content, () => setShowButtons(true));
           }, 500);
           return;
         }
 
-        // 첫 방문: 10초 가라 로딩 후 partial 메시지 시작
-        startLoadingMessages(userName);
-        setTimeout(async () => {
-          stopLoadingMessages();
-          // seenIntro 플래그 저장
-          await updateSajuLoveRecord(record.id, { seenIntro: true });
-          const partialMessages = buildPartialMessageList(record);
-          setMessages(partialMessages);
-          setIsLoading(false);
-          setTimeout(() => {
-            typeText(partialMessages[0].content, () => setShowButtons(true));
-          }, 500);
-        }, 10000); // 10초
+        // detail 페이지에서 결제 후 진입 (paid=true 쿼리 파라미터)
+        // 10초 가라 로딩 → 들어가며 + 사주원국 → 분석 미완료시 대기 카드
+        const paidFromDetail = searchParams.get("paid") === "true";
+        const userName = record.input?.userName || "고객";
 
-        return;
-      }
+        if (paidFromDetail && !record.seenIntro) {
+          setData(record);
+          setIsAnalyzing(true);
 
-      // 결제 완료 & 분석 완료: 전체 메시지 보여주기
-      if (record.loveAnalysis) {
-        setData(record);
-        const messageList = buildMessageList(record, hasExistingReview);
-        setMessages(messageList);
-        setIsLoading(false);
-        setTimeout(() => {
-          typeText(messageList[0].content, () => setShowButtons(true));
-        }, 500);
-        return;
-      }
+          // 백그라운드에서 분석 시작
+          partialStartedRef.current = true;
+          fetchLoveAnalysis(record);
 
-      // detail 페이지에서 결제 후 진입 (paid=true 쿼리 파라미터)
-      // 10초 가라 로딩 → 들어가며 + 사주원국 → 분석 미완료시 대기 카드
-      const paidFromDetail = searchParams.get("paid") === "true";
-      const userName = record.input?.userName || "고객";
+          // 10초 가라 로딩 후 partial 메시지 시작
+          startLoadingMessages(userName);
+          setTimeout(async () => {
+            stopLoadingMessages();
+            // seenIntro 플래그 저장
+            await updateSajuLoveRecord(record.id, { seenIntro: true });
+            const partialMessages = buildPartialMessageList(record);
+            setMessages(partialMessages);
+            setIsLoading(false);
+            setTimeout(() => {
+              typeText(partialMessages[0].content, () => setShowButtons(true));
+            }, 500);
+          }, 10000); // 10초
 
-      if (paidFromDetail && !record.seenIntro) {
+          return;
+        }
+
+        // 결제 완료 & 분석 필요 (이미 인트로를 본 경우)
         setData(record);
         setIsAnalyzing(true);
+        const partialMessages = buildPartialMessageList(record);
+        setMessages(partialMessages);
+        setIsLoading(false);
+        setTimeout(() => {
+          typeText(partialMessages[0].content, () => setShowButtons(true));
+        }, 500);
 
-        // 백그라운드에서 분석 시작
-        partialStartedRef.current = true;
-        fetchLoveAnalysis(record);
-
-        // 10초 가라 로딩 후 partial 메시지 시작
-        startLoadingMessages(userName);
-        setTimeout(async () => {
-          stopLoadingMessages();
-          // seenIntro 플래그 저장
-          await updateSajuLoveRecord(record.id, { seenIntro: true });
-          const partialMessages = buildPartialMessageList(record);
-          setMessages(partialMessages);
-          setIsLoading(false);
-          setTimeout(() => {
-            typeText(partialMessages[0].content, () => setShowButtons(true));
-          }, 500);
-        }, 10000); // 10초
-
-        return;
-      }
-
-      // 결제 완료 & 분석 필요 (이미 인트로를 본 경우)
-      setData(record);
-      setIsAnalyzing(true);
-      const partialMessages = buildPartialMessageList(record);
-      setMessages(partialMessages);
-      setIsLoading(false);
-      setTimeout(() => {
-        typeText(partialMessages[0].content, () => setShowButtons(true));
-      }, 500);
-
-      // 이미 분석 중인지 확인 (5분 이내)
-      const ANALYSIS_TIMEOUT = 5 * 60 * 1000; // 5분
-      const isStillAnalyzing =
-        record.isAnalyzing &&
-        record.analysisStartedAt &&
-        Date.now() - new Date(record.analysisStartedAt).getTime() <
+        // 이미 분석 중인지 확인 (5분 이내)
+        const ANALYSIS_TIMEOUT = 5 * 60 * 1000; // 5분
+        const isStillAnalyzing =
+          record.isAnalyzing &&
+          record.analysisStartedAt &&
+          Date.now() - new Date(record.analysisStartedAt).getTime() <
           ANALYSIS_TIMEOUT;
 
-      if (isStillAnalyzing) {
-        // 이미 분석 중이면 API 호출 안하고 주기적으로 DB 체크
-        // 단, 30초 후에도 응답 없으면 다시 API 호출 (새로고침으로 이전 호출이 취소됐을 수 있음)
-        partialStartedRef.current = true;
-        let checkCount = 0;
-        const MAX_CHECKS = 10; // 3초 * 10 = 30초
+        if (isStillAnalyzing) {
+          // 이미 분석 중이면 API 호출 안하고 주기적으로 DB 체크
+          // 단, 30초 후에도 응답 없으면 다시 API 호출 (새로고침으로 이전 호출이 취소됐을 수 있음)
+          partialStartedRef.current = true;
+          let checkCount = 0;
+          const MAX_CHECKS = 10; // 3초 * 10 = 30초
 
-        const checkInterval = setInterval(async () => {
-          checkCount++;
-          const updated = await getSajuLoveRecord(record.id);
+          const checkInterval = setInterval(async () => {
+            checkCount++;
+            const updated = await getSajuLoveRecord(record.id);
 
-          if (updated?.loveAnalysis) {
-            clearInterval(checkInterval);
-            setData(updated);
-            setIsAnalyzing(false);
-            const messageList = buildMessageList(updated, hasExistingReview);
+            if (updated?.loveAnalysis) {
+              clearInterval(checkInterval);
+              setData(updated);
+              setIsAnalyzing(false);
+              const messageList = buildMessageList(updated, hasExistingReview);
 
-            // 1장으로 이동 - 상태를 먼저 모두 설정
-            const chapter1IntroIndex = messageList.findIndex(
-              (m) => m.id === "chapter-chapter1-intro"
-            );
-            if (chapter1IntroIndex >= 0) {
-              const nextMsg = messageList[chapter1IntroIndex];
-              setMessages(messageList);
-              setCurrentIndex(chapter1IntroIndex);
-              setShowReport(false);
-              setTimeout(() => {
-                typeText(
-                  `오래 기다리셨죠? 분석이 완료됐어요!\n\n${nextMsg.content}`,
-                  () => setShowButtons(true)
-                );
-              }, 100);
-            } else {
-              setMessages(messageList);
+              // 1장으로 이동 - 상태를 먼저 모두 설정
+              const chapter1IntroIndex = messageList.findIndex(
+                (m) => m.id === "chapter-chapter1-intro"
+              );
+              if (chapter1IntroIndex >= 0) {
+                const nextMsg = messageList[chapter1IntroIndex];
+                setMessages(messageList);
+                setCurrentIndex(chapter1IntroIndex);
+                setShowReport(false);
+                setTimeout(() => {
+                  typeText(
+                    `오래 기다리셨죠? 분석이 완료됐어요!\n\n${nextMsg.content}`,
+                    () => setShowButtons(true)
+                  );
+                }, 100);
+              } else {
+                setMessages(messageList);
+              }
+              return;
             }
-            return;
-          }
 
-          // 30초 후에도 응답 없으면 다시 API 호출
-          if (checkCount >= MAX_CHECKS) {
-            clearInterval(checkInterval);
-            console.log("분석 응답 없음, API 재호출");
-            fetchLoveAnalysis(record);
-          }
-        }, 3000); // 3초마다 체크
-        return;
-      }
+            // 30초 후에도 응답 없으면 다시 API 호출
+            if (checkCount >= MAX_CHECKS) {
+              clearInterval(checkInterval);
+              console.log("분석 응답 없음, API 재호출");
+              fetchLoveAnalysis(record);
+            }
+          }, 3000); // 3초마다 체크
+          return;
+        }
 
-      // 분석 시작
-      partialStartedRef.current = true;
-      fetchLoveAnalysis(record);
+        // 분석 시작
+        partialStartedRef.current = true;
+        fetchLoveAnalysis(record);
       } catch (err) {
         console.error("loadData 에러:", err);
         setError("데이터를 불러오는 중 오류가 발생했습니다.");
@@ -1836,9 +1549,8 @@ function SajuLoveResultContent() {
       {/* 리포트 카드 (오버레이) */}
       {currentMsg && (
         <div
-          className={`report_overlay ${showReport ? "active" : ""} ${
-            isAnimating ? "animating" : ""
-          }`}
+          className={`report_overlay ${showReport ? "active" : ""} ${isAnimating ? "animating" : ""
+            }`}
         >
           <div className="report_scroll" ref={reportRef}>
             {currentMsg.type === "intro" && <IntroCard userName={userName} />}
@@ -1897,7 +1609,7 @@ function SajuLoveResultContent() {
           </div>
 
           {/* 스크롤 힌트 */}
-          {showScrollHint && !canProceed && currentMsg.type !== "payment" && (
+          {showScrollHint && !canProceed && (
             <div className="scroll_hint">
               <span className="material-icons">keyboard_arrow_down</span>
               아래로 스크롤해주세요
@@ -1906,14 +1618,12 @@ function SajuLoveResultContent() {
 
           {/* 하단 다음 버튼 */}
           <div
-            className={`report_bottom_btn_wrap ${
-              canProceed &&
-              currentMsg.type !== "waiting" &&
-              currentMsg.type !== "payment" &&
-              currentMsg.type !== "review_prompt"
+            className={`report_bottom_btn_wrap ${canProceed &&
+                currentMsg.type !== "waiting" &&
+                currentMsg.type !== "review_prompt"
                 ? "visible"
                 : ""
-            }`}
+              }`}
           >
             {currentMsg.type === "ending" ? (
               <div className="end_buttons">
@@ -1934,7 +1644,7 @@ function SajuLoveResultContent() {
               <div className="waiting_info">
                 <p>분석이 완료되면 자동으로 다음으로 넘어갑니다</p>
               </div>
-            ) : currentMsg.type === "payment" ? null : ( // 결제 카드는 자체 버튼 사용
+            ) : (
               <div className="report_nav_buttons">
                 {currentIndex > 0 && (
                   <button className="report_prev_btn" onClick={handlePrev}>
@@ -1984,129 +1694,6 @@ function SajuLoveResultContent() {
         />
       )}
 
-      {/* 결제 모달 */}
-      {showPaymentModal && (
-        <div className="payment-overlay" style={{ display: "flex" }}>
-          <div className="payment-fullscreen">
-            <div className="modal-content">
-              <div className="payment-header">
-                <div className="payment-title">색동낭자 연애 사주 복채</div>
-                <div className="payment-close" onClick={closePaymentModal}>
-                  ✕
-                </div>
-              </div>
-
-              {/* 결제 금액 섹션 */}
-              <div className="payment-amount-section">
-                <h3 className="payment-amount-title">복채</h3>
-
-                {/* 정가 */}
-                <div className="payment-row">
-                  <span className="payment-row-label">
-                    색동낭자 연애 사주 20,000자 보고서
-                  </span>
-                  <span className="payment-row-value">
-                    {PAYMENT_CONFIG.originalPrice.toLocaleString()}원
-                  </span>
-                </div>
-
-                {/* 할인 */}
-                <div className="payment-row discount">
-                  <span className="payment-row-label">
-                    병오년(丙午年) 1월 특가 할인
-                  </span>
-                  <div className="payment-row-discount-value">
-                    <span className="discount-badge">
-                      {Math.floor(
-                        (1 -
-                          PAYMENT_CONFIG.price / PAYMENT_CONFIG.originalPrice) *
-                          100
-                      )}
-                      %
-                    </span>
-                    <span className="discount-amount">
-                      -
-                      {(
-                        PAYMENT_CONFIG.originalPrice - PAYMENT_CONFIG.price
-                      ).toLocaleString()}
-                      원
-                    </span>
-                  </div>
-                </div>
-
-                {/* 쿠폰 할인 적용 표시 */}
-                {appliedCoupon && (
-                  <div className="payment-row discount">
-                    <span className="payment-row-label">
-                      {appliedCoupon.code} 쿠폰
-                    </span>
-                    <span className="discount-amount">
-                      -{appliedCoupon.discount.toLocaleString()}원
-                    </span>
-                  </div>
-                )}
-
-                {/* 구분선 */}
-                <div className="payment-divider" />
-
-                {/* 최종 금액 */}
-                <div className="payment-row final">
-                  <span className="payment-row-label">최종 결제금액</span>
-                  <span className="payment-row-final-value">
-                    {appliedCoupon
-                      ? (
-                          PAYMENT_CONFIG.price - appliedCoupon.discount
-                        ).toLocaleString()
-                      : PAYMENT_CONFIG.price.toLocaleString()}
-                    원
-                  </span>
-                </div>
-              </div>
-
-              {/* 쿠폰 입력 */}
-              <div className="coupon-section">
-                <div className="coupon-input-row">
-                  <input
-                    type="text"
-                    className="coupon-input"
-                    placeholder="쿠폰 코드 입력"
-                    value={couponCode}
-                    onChange={(e) => {
-                      setCouponCode(e.target.value);
-                      setCouponError("");
-                    }}
-                    disabled={!!appliedCoupon}
-                  />
-                  <button
-                    className="coupon-submit-btn"
-                    onClick={handleCouponSubmit}
-                    disabled={!!appliedCoupon}
-                  >
-                    {appliedCoupon ? "적용됨" : "적용"}
-                  </button>
-                </div>
-                {couponError && (
-                  <div className="coupon-error">{couponError}</div>
-                )}
-              </div>
-
-              <div style={{ padding: "0 20px" }}>
-                <div
-                  id="saju-payment-method"
-                  style={{ padding: 0, margin: 0 }}
-                />
-                <div id="saju-agreement" />
-              </div>
-              <button
-                className="payment-final-btn-saju"
-                onClick={handlePaymentRequest}
-              >
-                복채 결제하기
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   );
 }
@@ -2232,9 +1819,8 @@ function IdealTypeCard({
         <h3 className="card_title">{cardTitle}</h3>
       </div>
       <div
-        className={`ideal_image_wrap ${isRevealed ? "revealed" : "blurred"} ${
-          isShaking ? "shake" : ""
-        }`}
+        className={`ideal_image_wrap ${isRevealed ? "revealed" : "blurred"} ${isShaking ? "shake" : ""
+          }`}
         onClick={handleClick}
       >
         <img
@@ -2556,10 +2142,10 @@ function SajuCard({ data }: { data: SajuLoveRecord }) {
     const daeunList = (daeunData?.list ||
       daeunFromLuckCycles?.list ||
       []) as Array<{
-      startAge: number;
-      endAge: number;
-      ganZhi?: string;
-    }>;
+        startAge: number;
+        endAge: number;
+        ganZhi?: string;
+      }>;
     const filteredDaeunList = daeunList.filter((d) => d.ganZhi);
     const displayList = isReverse
       ? [...filteredDaeunList].reverse()
@@ -2717,9 +2303,9 @@ function SajuCard({ data }: { data: SajuLoveRecord }) {
                           {p?.branch?.korean || ""}
                           {p?.branch?.element
                             ? getElementKorean(
-                                p.branch.element,
-                                p.branch.yinYang
-                              )
+                              p.branch.element,
+                              p.branch.yinYang
+                            )
                             : ""}
                         </span>
                       </div>
@@ -2755,7 +2341,7 @@ function SajuCard({ data }: { data: SajuLoveRecord }) {
                     typeof twelveStage === "string"
                       ? twelveStage
                       : (twelveStage as unknown as { display?: string })
-                          ?.display || "—";
+                        ?.display || "—";
                   return (
                     <td key={key} className={isDay ? "highlight" : ""}>
                       {displayValue}
@@ -2774,15 +2360,14 @@ function SajuCard({ data }: { data: SajuLoveRecord }) {
                     typeof twelveSinsal === "string"
                       ? twelveSinsal
                       : (twelveSinsal as unknown as { display?: string })
-                          ?.display || "—";
+                        ?.display || "—";
                   // 도화살 강조
                   const isSinsalHighlight = displayValue === "도화살";
                   return (
                     <td
                       key={key}
-                      className={`${isDay ? "highlight" : ""} ${
-                        isSinsalHighlight ? "cell_sinsal_highlight" : ""
-                      }`}
+                      className={`${isDay ? "highlight" : ""} ${isSinsalHighlight ? "cell_sinsal_highlight" : ""
+                        }`}
                     >
                       {displayValue}
                     </td>
@@ -3169,9 +2754,8 @@ function SajuCard({ data }: { data: SajuLoveRecord }) {
                 return (
                   <div
                     key={key}
-                    className={`mini_pillar ${
-                      isHighlight ? "highlight" : "dimmed"
-                    }`}
+                    className={`mini_pillar ${isHighlight ? "highlight" : "dimmed"
+                      }`}
                   >
                     <span
                       className="mini_stem"
@@ -3218,9 +2802,8 @@ function SajuCard({ data }: { data: SajuLoveRecord }) {
                 return (
                   <div
                     key={key}
-                    className={`mini_pillar ${
-                      isHighlight ? "highlight" : "dimmed"
-                    }`}
+                    className={`mini_pillar ${isHighlight ? "highlight" : "dimmed"
+                      }`}
                   >
                     <span
                       className="mini_stem"
@@ -3267,9 +2850,8 @@ function SajuCard({ data }: { data: SajuLoveRecord }) {
                 return (
                   <div
                     key={key}
-                    className={`mini_pillar ${
-                      isHighlight ? "highlight" : "dimmed"
-                    }`}
+                    className={`mini_pillar ${isHighlight ? "highlight" : "dimmed"
+                      }`}
                   >
                     <span
                       className="mini_stem"
@@ -3317,9 +2899,8 @@ function SajuCard({ data }: { data: SajuLoveRecord }) {
                 return (
                   <div
                     key={key}
-                    className={`mini_pillar ${
-                      isHighlight ? "highlight" : "dimmed"
-                    }`}
+                    className={`mini_pillar ${isHighlight ? "highlight" : "dimmed"
+                      }`}
                   >
                     <span
                       className="mini_stem"
@@ -3393,10 +2974,10 @@ function SajuCard({ data }: { data: SajuLoveRecord }) {
                 pct >= 30
                   ? "과다"
                   : pct >= 10
-                  ? "적정"
-                  : pct > 0
-                  ? "부족"
-                  : "결핍";
+                    ? "적정"
+                    : pct > 0
+                      ? "부족"
+                      : "결핍";
               return (
                 <div key={key} className="ohang_bar_row">
                   <span className="ohang_label" style={{ color }}>
@@ -3531,10 +3112,10 @@ function SajuCard({ data }: { data: SajuLoveRecord }) {
                 pct >= 30
                   ? "과다"
                   : pct >= 10
-                  ? "적정"
-                  : pct > 0
-                  ? "부족"
-                  : "결핍";
+                    ? "적정"
+                    : pct > 0
+                      ? "부족"
+                      : "결핍";
               const isOver = status === "과다";
               const isNormal = status === "적정";
               return (
@@ -3553,8 +3134,8 @@ function SajuCard({ data }: { data: SajuLoveRecord }) {
                           {isOver
                             ? "과다"
                             : status === "결핍"
-                            ? "결핍"
-                            : "부족"}
+                              ? "결핍"
+                              : "부족"}
                         </span>
                         → {isOver ? overTitle : lackTitle}
                       </p>
@@ -3700,9 +3281,8 @@ function SajuCard({ data }: { data: SajuLoveRecord }) {
               (level) => (
                 <div
                   key={level}
-                  className={`gauge_dot ${
-                    level === strengthLevel ? "active" : ""
-                  }`}
+                  className={`gauge_dot ${level === strengthLevel ? "active" : ""
+                    }`}
                 />
               )
             )}
@@ -3799,12 +3379,12 @@ function SajuCard({ data }: { data: SajuLoveRecord }) {
             const daeunList = (daeunData?.list ||
               daeunFromLuckCycles?.list ||
               []) as Array<{
-              index?: number;
-              startAge: number;
-              endAge: number;
-              ganZhi?: string;
-              ganZhiKor?: string;
-            }>;
+                index?: number;
+                startAge: number;
+                endAge: number;
+                ganZhi?: string;
+                ganZhiKor?: string;
+              }>;
             const currentDaeun = daeunList.find(
               (d) => currentAge >= d.startAge && currentAge <= d.endAge
             );
@@ -3840,9 +3420,8 @@ function SajuCard({ data }: { data: SajuLoveRecord }) {
                           return (
                             <div
                               key={idx}
-                              className={`luck_card ${
-                                isCurrentDaeun ? "current" : ""
-                              }`}
+                              className={`luck_card ${isCurrentDaeun ? "current" : ""
+                                }`}
                             >
                               <div className="luck_card_top">
                                 <span className="luck_card_age">
@@ -3893,13 +3472,13 @@ function SajuCard({ data }: { data: SajuLoveRecord }) {
                       >
                         {(isReverse
                           ? [
-                              ...(luckCyclesData.yeonun as Array<
-                                Record<string, unknown>
-                              >),
-                            ].reverse()
-                          : (luckCyclesData.yeonun as Array<
+                            ...(luckCyclesData.yeonun as Array<
                               Record<string, unknown>
-                            >)
+                            >),
+                          ].reverse()
+                          : (luckCyclesData.yeonun as Array<
+                            Record<string, unknown>
+                          >)
                         ).map((yn, idx) => {
                           const ganZhi = (yn.ganZhi as string) || "";
                           const stem = ganZhi[0] || "";
@@ -3911,9 +3490,8 @@ function SajuCard({ data }: { data: SajuLoveRecord }) {
                           return (
                             <div
                               key={idx}
-                              className={`luck_card ${
-                                isCurrentYear ? "current" : ""
-                              }`}
+                              className={`luck_card ${isCurrentYear ? "current" : ""
+                                }`}
                             >
                               <div className="luck_card_top">
                                 <span className="luck_card_year">
@@ -3965,13 +3543,13 @@ function SajuCard({ data }: { data: SajuLoveRecord }) {
                       >
                         {(isReverse
                           ? [
-                              ...(luckCyclesData.wolun as Array<
-                                Record<string, unknown>
-                              >),
-                            ].reverse()
-                          : (luckCyclesData.wolun as Array<
+                            ...(luckCyclesData.wolun as Array<
                               Record<string, unknown>
-                            >)
+                            >),
+                          ].reverse()
+                          : (luckCyclesData.wolun as Array<
+                            Record<string, unknown>
+                          >)
                         ).map((wn, idx) => {
                           const currentMonth = new Date().getMonth() + 1;
                           const isCurrentMonth = wn.month === currentMonth;
@@ -3979,9 +3557,8 @@ function SajuCard({ data }: { data: SajuLoveRecord }) {
                           return (
                             <div
                               key={idx}
-                              className={`luck_card_mini ${
-                                isCurrentMonth ? "current" : ""
-                              }`}
+                              className={`luck_card_mini ${isCurrentMonth ? "current" : ""
+                                }`}
                             >
                               <span className="luck_mini_month">
                                 {String(wn.month)}월
@@ -4035,29 +3612,26 @@ function SajuCard({ data }: { data: SajuLoveRecord }) {
                     <span className="extra_label">득력</span>
                     <div className="extra_values">
                       <span
-                        className={`extra_indicator small ${
-                          (fiveElements as Record<string, unknown>)?.deukryung
+                        className={`extra_indicator small ${(fiveElements as Record<string, unknown>)?.deukryung
                             ? "on"
                             : ""
-                        }`}
+                          }`}
                       >
                         령
                       </span>
                       <span
-                        className={`extra_indicator small ${
-                          (fiveElements as Record<string, unknown>)?.deukji
+                        className={`extra_indicator small ${(fiveElements as Record<string, unknown>)?.deukji
                             ? "on"
                             : ""
-                        }`}
+                          }`}
                       >
                         지
                       </span>
                       <span
-                        className={`extra_indicator small ${
-                          (fiveElements as Record<string, unknown>)?.deukse
+                        className={`extra_indicator small ${(fiveElements as Record<string, unknown>)?.deukse
                             ? "on"
                             : ""
-                        }`}
+                          }`}
                       >
                         세
                       </span>
@@ -4106,8 +3680,8 @@ function SajuCard({ data }: { data: SajuLoveRecord }) {
                     const positionOrder = ["hour", "day", "month", "year"];
                     const sortedPositions = positions
                       ? positionOrder
-                          .filter((p) => positions.includes(p))
-                          .map((p) => positionMap[p])
+                        .filter((p) => positions.includes(p))
+                        .map((p) => positionMap[p])
                       : [];
 
                     return (
@@ -4516,14 +4090,14 @@ function IntroCard({ userName }: { userName: string }) {
       {/* 장면 1: 인사 */}
       <div className="intro_section intro_welcome">
         <p className="welcome_main">어서 오세요</p>
-        <p className="welcome_sub">양반家에 오신 것을 환영해요</p>
+        <p className="welcome_sub">양반가에 오신 것을 환영해요</p>
         <div className="welcome_divider">❀</div>
         <p className="welcome_text">
           저는 이곳에서 연애 사주를 봐드리는 <strong>색동낭자</strong>예요.
         </p>
         <p className="welcome_text">
           미래가 궁금해서, 마음속 고민이 쉽게 풀리지 않아서, 혹은 인생의 중요한
-          갈림길 앞에서 방향을 찾고 싶어서... 이런 여러 가지 이유로 양반家에
+          갈림길 앞에서 방향을 찾고 싶어서... 이런 여러 가지 이유로 양반가에
           오셨겠죠?
         </p>
         <p className="welcome_text">
@@ -5099,9 +4673,8 @@ function TocModal({
             return (
               <li
                 key={i}
-                className={`toc_modal_item ${isCurrent ? "current" : ""} ${
-                  !isAvailable ? "disabled" : ""
-                }`}
+                className={`toc_modal_item ${isCurrent ? "current" : ""} ${!isAvailable ? "disabled" : ""
+                  }`}
                 onClick={() => {
                   if (isAvailable) {
                     onNavigate(targetIndex);
@@ -5178,9 +4751,8 @@ function ReviewSection({
               {[1, 2, 3, 4, 5].map((star) => (
                 <span
                   key={star}
-                  className={`star ${
-                    star <= existingReview.rating ? "filled" : ""
-                  }`}
+                  className={`star ${star <= existingReview.rating ? "filled" : ""
+                    }`}
                 >
                   ★
                 </span>
@@ -5426,9 +4998,8 @@ function ReviewInlineCard({
               <button
                 key={option.value}
                 type="button"
-                className={`review_rating_btn ${
-                  rating === option.value ? "active" : ""
-                }`}
+                className={`review_rating_btn ${rating === option.value ? "active" : ""
+                  }`}
                 onClick={() => setRating(option.value)}
               >
                 {option.label}

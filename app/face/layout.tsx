@@ -22,7 +22,7 @@ export const metadata: Metadata = {
         url: "https://i.ibb.co/pVwxWdq/gvv.png",
         width: 1200,
         height: 630,
-        alt: "양반家 관상 테스트",
+        alt: "양반가 관상 테스트",
       },
     ],
   },

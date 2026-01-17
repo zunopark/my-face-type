@@ -20,14 +20,14 @@ export default function LandingPage() {
     <div className="landing-container">
       {/* 브랜드 로고 */}
       <div className="landing-brand">
-        <span className="brand-name">양반家</span>
+        <span className="brand-name">양반가</span>
       </div>
 
       {/* 메인 히어로 이미지 */}
       <div className="landing-hero">
         <Image
           src="/img/main-bg.jpg"
-          alt="양반家 - 정통 운세"
+          alt="양반가 - 정통 운세"
           width={500}
           height={350}
           className="landing-hero-image"
@@ -60,7 +60,7 @@ export default function LandingPage() {
         <Link
           href="/saju-love"
           className="card-wrapper"
-          onClick={() => handleCardClick("saju")}
+          onClick={() => handleCardClick("saju_love")}
         >
           <div className="service-card card-saju">
             <div className="card-title-wrap">
@@ -71,6 +71,24 @@ export default function LandingPage() {
           <div className="card-info">
             <div className="card-info-title">색동낭자 연애 사주</div>
             <div className="card-info-desc">당신의 연애가 어려운 이유는?</div>
+          </div>
+        </Link>
+
+        {/* 2026 신년 사주 */}
+        <Link
+          href="/new-year"
+          className="card-wrapper"
+          onClick={() => handleCardClick("new_year")}
+        >
+          <div className="service-card card-newyear">
+            <div className="card-title-wrap">
+              <span className="card-subtitle">까치도령</span>
+              <h2 className="card-title">신년 운세</h2>
+            </div>
+          </div>
+          <div className="card-info">
+            <div className="card-info-title">까치도령 2026 신년운세</div>
+            <div className="card-info-desc">병오년, 당신의 한 해 운세는?</div>
           </div>
         </Link>
       </section>

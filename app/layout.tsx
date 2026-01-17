@@ -54,7 +54,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "ko_KR",
-    siteName: "양반家",
+    siteName: "양반가",
     title: "관상 테스트 | 관상가 양반 | AI 관상 | AI 사주",
     description:
       "AI 관상 테스트로 나의 얼굴을 분석해보세요. 관상가 양반이 알려주는 관상, 동물상, 궁합, 연애 사주까지 한 번에!",

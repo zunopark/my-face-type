@@ -1,10 +1,34 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { computeSaju } from "@/app/actions/analyze";
 import { saveNewYearRecord } from "@/lib/db/newYearDB";
 import "./new-year.css";
+
+// 대화 내용
+const DIALOGUES = [
+  {
+    text: "어서오세요,\n2026년 운세를 보러 오셨군요!",
+    nextBtnText: "다음",
+  },
+  {
+    text: "신년 운세를 보기 위해\n생년월일을 알려주시겠어요?",
+    nextBtnText: "좋아, 내 이름은..",
+  },
+];
+
+// 추가 대화 (기본 정보 입력 후)
+const ADDITIONAL_DIALOGUES = [
+  {
+    text: "기본 정보 감사합니다!\n조금만 더 알려주시면...",
+    nextBtnText: "다음",
+  },
+  {
+    text: "훨씬 정확한 2026년 운세를\n알려드릴 수 있어요",
+    nextBtnText: "응, 어떤걸 알려줄까?",
+  },
+];
 
 // 시간 옵션
 const TIME_OPTIONS = [
@@ -46,49 +70,205 @@ export default function NewYearPage() {
   const router = useRouter();
 
   // UI 상태
+  const [currentImage] = useState("/new-year/img/doryung.png");
   const [showLanding, setShowLanding] = useState(true);
+  const [showDialogue, setShowDialogue] = useState(false);
+  const [showInputForm, setShowInputForm] = useState(false);
+  const [showAdditionalForm, setShowAdditionalForm] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
-  // 기본 사주 입력
+  // 대화 상태
+  const [currentDialogue, setCurrentDialogue] = useState(0);
+  const [isAdditionalDialogue, setIsAdditionalDialogue] = useState(false);
+  const [dialogueText, setDialogueText] = useState("");
+  const [isTyping, setIsTyping] = useState(false);
+  const [showButtons, setShowButtons] = useState(false);
+
+  // 폼 상태
   const [userName, setUserName] = useState("");
   const [birthDate, setBirthDate] = useState("");
   const [birthTime, setBirthTime] = useState("");
   const [gender, setGender] = useState<string | null>(null);
   const [calendar, setCalendar] = useState("solar");
-
-  // 신년 사주 추가 입력
   const [jobStatus, setJobStatus] = useState<string | null>(null);
-  const [relationshipStatus, setRelationshipStatus] = useState<string | null>(
-    null
-  );
+  const [relationshipStatus, setRelationshipStatus] = useState<string | null>(null);
   const [wish2026, setWish2026] = useState("");
 
-  // 폼 유효성 검사
-  const isFormValid =
-    userName.trim() &&
-    birthDate &&
-    birthTime &&
-    gender &&
-    jobStatus &&
-    relationshipStatus;
+  // 타이핑 인터벌 ref
+  const typingIntervalRef = useRef<NodeJS.Timeout | null>(null);
 
-  // 시작하기
+  // 이미지 프리로드
+  useEffect(() => {
+    const img = new window.Image();
+    img.src = "/new-year/img/doryung.png";
+  }, []);
+
+  // 타이핑 효과
+  const typeText = useCallback((text: string, onComplete: () => void) => {
+    if (typingIntervalRef.current) {
+      clearInterval(typingIntervalRef.current);
+    }
+
+    setIsTyping(true);
+    setShowButtons(false);
+    setDialogueText("");
+
+    let i = 0;
+    typingIntervalRef.current = setInterval(() => {
+      if (i < text.length) {
+        setDialogueText(text.substring(0, i + 1));
+        i++;
+      } else {
+        if (typingIntervalRef.current) {
+          clearInterval(typingIntervalRef.current);
+          typingIntervalRef.current = null;
+        }
+        setIsTyping(false);
+        onComplete();
+      }
+    }, 50);
+  }, []);
+
+  // 타이핑 스킵
+  const skipTyping = useCallback(() => {
+    if (typingIntervalRef.current) {
+      clearInterval(typingIntervalRef.current);
+      typingIntervalRef.current = null;
+    }
+  }, []);
+
+  // 시작하기 버튼
   const handleStart = () => {
     setShowLanding(false);
+    setTimeout(() => {
+      setShowDialogue(true);
+      typeText(DIALOGUES[0].text, () => setShowButtons(true));
+    }, 300);
   };
+
+  // 다음 대화
+  const handleNextDialogue = () => {
+    if (isTyping) {
+      skipTyping();
+      const dialogues = isAdditionalDialogue ? ADDITIONAL_DIALOGUES : DIALOGUES;
+      setDialogueText(dialogues[currentDialogue].text);
+      setIsTyping(false);
+      setShowButtons(true);
+      return;
+    }
+
+    if (isAdditionalDialogue) {
+      if (currentDialogue < ADDITIONAL_DIALOGUES.length - 1) {
+        setCurrentDialogue((prev) => prev + 1);
+        setShowButtons(false);
+        typeText(ADDITIONAL_DIALOGUES[currentDialogue + 1].text, () =>
+          setShowButtons(true)
+        );
+      } else {
+        setShowDialogue(false);
+        setShowAdditionalForm(true);
+      }
+    } else {
+      if (currentDialogue < DIALOGUES.length - 1) {
+        setCurrentDialogue((prev) => prev + 1);
+        setShowButtons(false);
+        typeText(DIALOGUES[currentDialogue + 1].text, () =>
+          setShowButtons(true)
+        );
+      } else {
+        setShowDialogue(false);
+        setShowInputForm(true);
+      }
+    }
+  };
+
+  // 이전 대화
+  const handlePrevDialogue = () => {
+    if (isAdditionalDialogue) {
+      if (currentDialogue > 0) {
+        setCurrentDialogue((prev) => prev - 1);
+        setShowButtons(false);
+        typeText(ADDITIONAL_DIALOGUES[currentDialogue - 1].text, () =>
+          setShowButtons(true)
+        );
+      } else {
+        setIsAdditionalDialogue(false);
+        setCurrentDialogue(0);
+        setShowDialogue(false);
+        setShowInputForm(true);
+      }
+    } else {
+      if (currentDialogue > 0) {
+        setCurrentDialogue((prev) => prev - 1);
+        setShowButtons(false);
+        typeText(DIALOGUES[currentDialogue - 1].text, () =>
+          setShowButtons(true)
+        );
+      } else {
+        setShowDialogue(false);
+        setShowLanding(true);
+        setCurrentDialogue(0);
+      }
+    }
+  };
+
+  // 기본 폼 이전 버튼
+  const handleInputPrev = () => {
+    setShowInputForm(false);
+    setShowDialogue(true);
+    setCurrentDialogue(DIALOGUES.length - 1);
+    typeText(DIALOGUES[DIALOGUES.length - 1].text, () => setShowButtons(true));
+  };
+
+  // 기본 폼 다음 버튼 -> 추가 대화
+  const handleInputNext = () => {
+    setShowInputForm(false);
+    setIsAdditionalDialogue(true);
+    setCurrentDialogue(0);
+    setShowDialogue(true);
+    typeText(ADDITIONAL_DIALOGUES[0].text, () => setShowButtons(true));
+  };
+
+  // 추가 폼 이전 버튼
+  const handleAdditionalPrev = () => {
+    setShowAdditionalForm(false);
+    setShowDialogue(true);
+    setCurrentDialogue(ADDITIONAL_DIALOGUES.length - 1);
+    typeText(ADDITIONAL_DIALOGUES[ADDITIONAL_DIALOGUES.length - 1].text, () =>
+      setShowButtons(true)
+    );
+  };
+
+  // 생년월일 포맷팅
+  const handleBirthDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    let value = e.target.value.replace(/\D/g, "");
+    if (value.length > 8) value = value.slice(0, 8);
+
+    let formatted = "";
+    if (value.length > 0) formatted = value.slice(0, 4);
+    if (value.length > 4) formatted += "-" + value.slice(4, 6);
+    if (value.length > 6) formatted += "-" + value.slice(6, 8);
+
+    setBirthDate(formatted);
+  };
+
+  // 폼 유효성 검사
+  const isBasicFormValid =
+    userName.trim() && birthDate.replace(/\D/g, "").length === 8 && gender;
+
+  const isAdditionalFormValid = jobStatus && relationshipStatus;
 
   // 제출
   const handleSubmit = async () => {
-    if (!isFormValid) return;
+    if (!isAdditionalFormValid) return;
 
     setIsLoading(true);
 
     try {
-      // 사주 계산
       const sajuResult = await computeSaju({
         gender: gender!,
         date: birthDate,
-        time: birthTime === "unknown" ? null : birthTime,
+        time: birthTime === "unknown" ? null : birthTime || null,
         calendar,
       });
 
@@ -96,7 +276,6 @@ export default function NewYearPage() {
         throw new Error("사주 계산 실패");
       }
 
-      // 레코드 생성 (saju-love와 동일한 형식)
       const recordId = crypto.randomUUID();
 
       const record = {
@@ -107,7 +286,7 @@ export default function NewYearPage() {
           gender: gender!,
           date: birthDate,
           calendar: calendar as "solar" | "lunar",
-          time: birthTime === "unknown" ? null : birthTime,
+          time: birthTime === "unknown" ? null : birthTime || null,
           jobStatus: jobStatus!,
           relationshipStatus: relationshipStatus!,
           wish2026,
@@ -123,13 +302,13 @@ export default function NewYearPage() {
         },
         analysis: null,
         isAnalyzing: false,
+        paid: false,
       };
 
-      // IndexedDB 저장
       await saveNewYearRecord(record);
 
-      // 결과 페이지로 이동
-      router.push(`/new-year/result?id=${recordId}`);
+      // detail 페이지로 이동 (결제 전)
+      router.push(`/new-year/detail?id=${recordId}`);
     } catch (error) {
       console.error("에러:", error);
       alert("오류가 발생했습니다. 다시 시도해주세요.");
@@ -137,198 +316,301 @@ export default function NewYearPage() {
     }
   };
 
-  // 랜딩 화면
-  if (showLanding) {
-    return (
-      <div className="new_year_wrap">
-        <div className="landing_screen">
-          <p className="landing_title">천기동자의</p>
-          <p className="landing_subtitle">
-            새해 운세를 미리 엿보고
-            <br />
-            한 해를 준비하세요
-          </p>
-          <p className="landing_year">2026</p>
-          <p className="landing_year_label">병오년 신년 운세</p>
-          <button className="landing_start_btn" onClick={handleStart}>
-            신년 운세 보기
-          </button>
-        </div>
-      </div>
-    );
-  }
+  const getCurrentBtnText = () => {
+    if (isAdditionalDialogue) {
+      return ADDITIONAL_DIALOGUES[currentDialogue]?.nextBtnText || "다음";
+    }
+    return DIALOGUES[currentDialogue]?.nextBtnText || "다음";
+  };
 
-  // 입력 폼 화면
   return (
-    <div className="new_year_wrap">
-      <div className="input_screen">
-        <div className="input_header">
-          <p className="input_header_title">2026 신년 사주</p>
-          <p className="input_header_subtitle">
-            정확한 분석을 위해 정보를 입력해주세요
-          </p>
-        </div>
+    <div className="main_body_wrap landing_page">
+      {/* 뒤로가기 버튼 */}
+      <button className="back_btn" onClick={() => router.push("/")}>
+        <span className="material-icons">arrow_back</span>
+        <span className="back_btn_text">홈으로</span>
+      </button>
 
-        {/* 섹션 1: 기본 정보 */}
-        <div className="input_section">
-          <p className="section_title">
-            <span className="section_number">1</span>
-            기본 정보
-          </p>
-
-          <div className="input_group">
-            <label className="input_label">이름</label>
-            <input
-              type="text"
-              className="input_field"
-              placeholder="이름을 입력해주세요"
-              value={userName}
-              onChange={(e) => setUserName(e.target.value)}
-              maxLength={10}
-            />
-          </div>
-
-          <div className="input_group">
-            <label className="input_label">성별</label>
-            <div className="radio_group">
-              <button
-                className={`radio_btn ${gender === "male" ? "active" : ""}`}
-                onClick={() => setGender("male")}
-              >
-                남성
-              </button>
-              <button
-                className={`radio_btn ${gender === "female" ? "active" : ""}`}
-                onClick={() => setGender("female")}
-              >
-                여성
-              </button>
-            </div>
-          </div>
-
-          <div className="input_group">
-            <label className="input_label">생년월일</label>
-            <input
-              type="date"
-              className="input_field"
-              value={birthDate}
-              onChange={(e) => setBirthDate(e.target.value)}
-            />
-          </div>
-
-          <div className="input_group">
-            <label className="input_label">역법</label>
-            <div className="radio_group">
-              <button
-                className={`radio_btn ${calendar === "solar" ? "active" : ""}`}
-                onClick={() => setCalendar("solar")}
-              >
-                양력
-              </button>
-              <button
-                className={`radio_btn ${calendar === "lunar" ? "active" : ""}`}
-                onClick={() => setCalendar("lunar")}
-              >
-                음력
-              </button>
-            </div>
-          </div>
-
-          <div className="input_group">
-            <label className="input_label">태어난 시간</label>
-            <select
-              className="input_field"
-              value={birthTime}
-              onChange={(e) => setBirthTime(e.target.value)}
-            >
-              {TIME_OPTIONS.map((option) => (
-                <option key={option.value} value={option.value}>
-                  {option.label}
-                </option>
-              ))}
-            </select>
-          </div>
-        </div>
-
-        {/* 섹션 2: 현재 상황 */}
-        <div className="input_section">
-          <p className="section_title">
-            <span className="section_number">2</span>
-            현재 상황
-          </p>
-
-          <div className="input_group">
-            <label className="input_label">현재 직업 상태</label>
-            <div className="option_group">
-              {JOB_STATUS_OPTIONS.map((option) => (
-                <button
-                  key={option.value}
-                  className={`option_btn ${
-                    jobStatus === option.value ? "active" : ""
-                  }`}
-                  onClick={() => setJobStatus(option.value)}
-                >
-                  {option.label}
-                </button>
-              ))}
-            </div>
-          </div>
-
-          <div className="input_group">
-            <label className="input_label">현재 연애 상태</label>
-            <div className="option_group">
-              {RELATIONSHIP_OPTIONS.map((option) => (
-                <button
-                  key={option.value}
-                  className={`option_btn ${
-                    relationshipStatus === option.value ? "active" : ""
-                  }`}
-                  onClick={() => setRelationshipStatus(option.value)}
-                >
-                  {option.label}
-                </button>
-              ))}
-            </div>
-          </div>
-        </div>
-
-        {/* 섹션 3: 2026년 소원/고민 */}
-        <div className="input_section">
-          <p className="section_title">
-            <span className="section_number">3</span>
-            2026년 소원
-          </p>
-
-          <div className="input_group">
-            <label className="input_label">
-              2026년에 이루고 싶은 것, 고민이 있다면?
-            </label>
-            <textarea
-              className="input_field"
-              placeholder="올해 꼭 이루고 싶은 목표나 고민을 자유롭게 적어주세요. (선택)"
-              value={wish2026}
-              onChange={(e) => setWish2026(e.target.value)}
-              maxLength={200}
-            />
-          </div>
-        </div>
-
-        {/* 제출 버튼 */}
-        <button
-          className="submit_btn"
-          onClick={handleSubmit}
-          disabled={!isFormValid || isLoading}
-        >
-          {isLoading ? "사주 계산 중..." : "2026 신년 운세 보기"}
-        </button>
+      {/* 배경 이미지 */}
+      <div className="landing_bg">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src={currentImage}
+          alt="도령 신년운세"
+          className="landing_image"
+        />
       </div>
 
-      {/* 로딩 오버레이 */}
+      {/* 랜딩 타이틀 */}
+      {showLanding && (
+        <>
+          <div className="landing_title_wrap">
+            <h1 className="landing_title">
+              <span className="title_line title_name">까치도령</span>
+              <span className="title_line title_saju">신년운세</span>
+            </h1>
+            <p className="landing_subtitle">2026년 병오년 운세를 알려드립니다</p>
+          </div>
+
+          <div className="landing_bottom">
+            <button className="landing_start_btn" onClick={handleStart}>
+              시작하기
+            </button>
+          </div>
+        </>
+      )}
+
+      {/* 대화 UI */}
+      {showDialogue && (
+        <>
+          <div
+            className="dialogue_overlay active"
+            onClick={handleNextDialogue}
+          />
+          <div className="dialogue_wrap active" onClick={handleNextDialogue}>
+            <div className="dialogue_box">
+              <div className="dialogue_speaker">까치도령</div>
+              <div className="dialogue_text">
+                {dialogueText.split("\n").map((line, i) => (
+                  <span key={i}>
+                    {line}
+                    {i < dialogueText.split("\n").length - 1 && <br />}
+                  </span>
+                ))}
+                {isTyping && <span className="typing-cursor" />}
+              </div>
+            </div>
+            {showButtons && (
+              <div className="dialogue_buttons visible">
+                <button
+                  className="dialogue_prev_btn"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handlePrevDialogue();
+                  }}
+                >
+                  이전
+                </button>
+                <button
+                  className="dialogue_next_btn"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleNextDialogue();
+                  }}
+                >
+                  {getCurrentBtnText()}
+                </button>
+              </div>
+            )}
+          </div>
+        </>
+      )}
+
+      {/* 기본 정보 입력 폼 */}
+      {showInputForm && (
+        <div className="input_overlay active">
+          <div className="input_form_wrap">
+            {/* 이름 */}
+            <div className="input_group">
+              <label className="input_label">이름</label>
+              <input
+                type="text"
+                className="input_field"
+                placeholder="이름을 입력해주세요."
+                value={userName}
+                onChange={(e) => setUserName(e.target.value)}
+              />
+            </div>
+
+            {/* 생년월일 + 양력/음력 */}
+            <div className="input_group">
+              <div className="input_row">
+                <label className="input_label">생년월일</label>
+                <div className="calendar_options">
+                  <button
+                    className={`calendar_btn ${
+                      calendar === "solar" ? "active" : ""
+                    }`}
+                    onClick={() => setCalendar("solar")}
+                  >
+                    {calendar === "solar" && (
+                      <span className="check_icon">✓</span>
+                    )}{" "}
+                    양력
+                  </button>
+                  <button
+                    className={`calendar_btn ${
+                      calendar === "lunar" ? "active" : ""
+                    }`}
+                    onClick={() => setCalendar("lunar")}
+                  >
+                    {calendar === "lunar" && (
+                      <span className="check_icon">✓</span>
+                    )}{" "}
+                    음력
+                  </button>
+                </div>
+              </div>
+              <input
+                type="text"
+                className="input_field"
+                placeholder="예: 20040312"
+                inputMode="numeric"
+                maxLength={10}
+                value={birthDate}
+                onChange={handleBirthDateChange}
+              />
+            </div>
+
+            {/* 태어난 시간 */}
+            <div className="input_group">
+              <div className="input_row">
+                <label className="input_label">태어난 시간</label>
+                <button
+                  className={`time_unknown_btn ${
+                    birthTime === "unknown" ? "active" : ""
+                  }`}
+                  onClick={() =>
+                    setBirthTime(birthTime === "unknown" ? "" : "unknown")
+                  }
+                >
+                  {birthTime === "unknown" && (
+                    <span className="check_icon">✓</span>
+                  )}{" "}
+                  시간 모름
+                </button>
+              </div>
+              <select
+                className="input_field"
+                value={birthTime}
+                onChange={(e) => setBirthTime(e.target.value)}
+              >
+                {TIME_OPTIONS.map((opt) => (
+                  <option key={opt.value} value={opt.value}>
+                    {opt.label}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            {/* 성별 */}
+            <div className="input_group">
+              <label className="input_label">성별</label>
+              <div className="gender_options">
+                <button
+                  className={`gender_btn ${
+                    gender === "female" ? "active" : ""
+                  }`}
+                  onClick={() => setGender("female")}
+                >
+                  여성
+                </button>
+                <button
+                  className={`gender_btn ${gender === "male" ? "active" : ""}`}
+                  onClick={() => setGender("male")}
+                >
+                  남성
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div className="input_buttons">
+            <button className="input_prev_btn" onClick={handleInputPrev}>
+              이전
+            </button>
+            <button
+              className="input_submit_btn"
+              onClick={handleInputNext}
+              disabled={!isBasicFormValid}
+            >
+              다 입력했어!
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* 추가 정보 입력 폼 */}
+      {showAdditionalForm && (
+        <div className="input_overlay active">
+          <div className="input_form_wrap">
+            {/* 직업 상태 */}
+            <div className="input_group">
+              <label className="input_label">현재 직업 상태</label>
+              <div className="status_options">
+                {JOB_STATUS_OPTIONS.map((option) => (
+                  <button
+                    key={option.value}
+                    className={`status_btn ${
+                      jobStatus === option.value ? "active" : ""
+                    }`}
+                    onClick={() => setJobStatus(option.value)}
+                  >
+                    {option.label}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* 연애 상태 */}
+            <div className="input_group">
+              <label className="input_label">현재 연애 상태</label>
+              <div className="status_options">
+                {RELATIONSHIP_OPTIONS.map((option) => (
+                  <button
+                    key={option.value}
+                    className={`status_btn ${
+                      relationshipStatus === option.value ? "active" : ""
+                    }`}
+                    onClick={() => setRelationshipStatus(option.value)}
+                  >
+                    {option.label}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* 2026년 소원/고민 */}
+            <div className="input_group">
+              <label className="input_label">
+                2026년에 이루고 싶은 것, 고민이 있다면?
+                <span className="input_optional">(선택)</span>
+              </label>
+              <textarea
+                className="input_field textarea"
+                placeholder={
+                  "적지 않아도 괜찮아요!\n고민이 있다면 더 맞춤형 답변을 드릴게요."
+                }
+                rows={4}
+                value={wish2026}
+                onChange={(e) => setWish2026(e.target.value)}
+              />
+            </div>
+          </div>
+
+          <div className="input_buttons">
+            <button className="input_prev_btn" onClick={handleAdditionalPrev}>
+              이전
+            </button>
+            <button
+              className="input_submit_btn"
+              onClick={handleSubmit}
+              disabled={!isAdditionalFormValid || isLoading}
+            >
+              {isLoading ? "분석 중..." : "분석 시작!"}
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* 분석 중 로딩 */}
       {isLoading && (
-        <div className="loading_overlay">
-          <div className="loading_spinner" />
-          <p className="loading_text">사주를 계산하고 있어요</p>
-          <p className="loading_subtext">잠시만 기다려주세요...</p>
+        <div className="analyze_overlay active">
+          <div className="analyze_content">
+            <div className="analyze_spinner" />
+            <div className="analyze_text">사주 분석중</div>
+            <div className="analyze_subtext">잠시만 기다려주세요...</div>
+          </div>
         </div>
       )}
     </div>

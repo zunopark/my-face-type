@@ -63,6 +63,16 @@ export interface NewYearRecord {
   talismanImage?: TalismanImage | null;
   isAnalyzing?: boolean;
   analysisStartedAt?: string;
+  // 결제 관련 필드
+  paid?: boolean;
+  paidAt?: string;
+  seenIntro?: boolean;
+  paymentInfo?: {
+    method: "toss" | "coupon";
+    price: number;
+    couponCode?: string;
+    isDiscount?: boolean;
+  };
 }
 
 // DB 열기
@@ -146,5 +156,22 @@ export async function deleteNewYearRecord(id: string): Promise<void> {
 
     request.onerror = () => reject(request.error);
     request.onsuccess = () => resolve();
+  });
+}
+
+// 결제 완료 처리
+export async function markNewYearPaid(
+  id: string,
+  paymentInfo?: {
+    method: "toss" | "coupon";
+    price: number;
+    couponCode?: string;
+    isDiscount?: boolean;
+  }
+): Promise<void> {
+  await updateNewYearRecord(id, {
+    paid: true,
+    paidAt: new Date().toISOString(),
+    paymentInfo,
   });
 }
