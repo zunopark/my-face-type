@@ -109,11 +109,11 @@ const FAKE_ANALYSIS_MESSAGES = [
 
 // 섹션 설정
 const SECTION_CONFIG = [
-  { key: "face_reading", title: "부위별 관상 심층 풀이", icon: "👤" },
-  { key: "love", title: "연애운 심층 풀이", icon: "💕" },
-  { key: "career", title: "직업운 심층 풀이", icon: "💼" },
-  { key: "wealth", title: "재물운 심층 풀이", icon: "💰" },
-  { key: "health", title: "건강운 심층 풀이", icon: "🏥" },
+  { key: "face_reading", title: "부위별 관상 심층 풀이" },
+  { key: "love", title: "연애운 심층 풀이" },
+  { key: "career", title: "직업운 심층 풀이" },
+  { key: "wealth", title: "재물운 심층 풀이" },
+  { key: "health", title: "건강운 심층 풀이" },
 ];
 
 function ResultContent() {
@@ -1186,7 +1186,6 @@ function ResultContent() {
                 ).map((sec) => (
                   <div key={sec.key} className={styles.report_card}>
                     <div className={styles.report_card_header}>
-                      <span className={styles.report_card_icon}>{sec.icon}</span>
                       <h3 className={styles.report_card_title}>{sec.title}</h3>
                     </div>
                     <div
