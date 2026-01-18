@@ -208,6 +208,25 @@
   background-position: center center;
 }
 
+.file_upload {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.file_upload_content {
+  width: 100%;
+  height: 100%;
+}
+
+.image_square_frame {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
 /* === faceteller 이미지 === */
 .face_teller_wrap {
   width: 350px;
@@ -397,7 +416,7 @@
   transition: width 0.3s linear;
 }
 
-/* === 결제 모달 스타일 (연애 사주 스타일) === */
+/* === 결제 모달 스타일 (연애 사주 스타일과 동일) === */
 .payment_overlay {
   position: fixed;
   top: 0;
@@ -405,7 +424,7 @@
   transform: translateX(-50%);
   width: 100%;
   max-width: 500px;
-  height: 100%;
+  height: 100vh;
   background: whitesmoke;
   z-index: 99999;
   overflow-y: auto;
@@ -415,15 +434,17 @@
   display: flex;
   justify-content: center;
   align-items: flex-start;
-  min-height: 100%;
+  min-height: 100vh;
   width: 100%;
 }
 
 .modal_content {
   width: 100%;
   max-width: 500px;
+  min-height: 100vh;
   background: #fff;
-  padding: 24px 20px 40px;
+  padding: 34px 22px 28px 22px;
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.19);
   position: relative;
   display: flex;
   flex-direction: column;
@@ -434,7 +455,6 @@
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  margin-bottom: 20px;
 }
 
 .payment_title {
@@ -455,7 +475,7 @@
 
 /* 금액 섹션 */
 .payment_amount_section {
-  padding: 20px 0;
+  padding: 24px 20px;
   background: #fff;
 }
 
@@ -533,87 +553,6 @@
 
 /* 쿠폰 섹션 */
 .coupon_section {
-  padding: 16px 0;
-  background: #f8f8f8;
-  margin: 0 -20px;
-  padding-left: 20px;
-  padding-right: 20px;
-  border-top: 1px solid #eee;
-}
-
-.coupon_input_row {
-  display: flex;
-  gap: 8px;
-}
-
-.coupon_input {
-  flex: 1;
-  padding: 12px 16px;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  font-size: 14px;
-  outline: none;
-  background: #fff;
-}
-
-.coupon_input:focus {
-  border-color: #c68800;
-}
-
-.coupon_input:disabled {
-  background: #f5f5f5;
-  color: #999;
-}
-
-.coupon_submit_btn {
-  padding: 12px 20px;
-  background: linear-gradient(135deg, #c68800, #b8860b);
-  color: #fff;
-  border: none;
-  border-radius: 8px;
-  font-size: 14px;
-  font-weight: 600;
-  cursor: pointer;
-  white-space: nowrap;
-}
-
-.coupon_submit_btn:disabled {
-  background: #ccc;
-  cursor: not-allowed;
-}
-
-.coupon_error {
-  margin-top: 8px;
-  font-size: 12px;
-  color: #e74c3c;
-}
-
-/* 결제 버튼 */
-.payment_final_btn {
-  margin-top: 20px;
-  width: 100%;
-  padding: 16px;
-  background: linear-gradient(135deg, #d4a017 0%, #b8860b 100%);
-  color: #fff;
-  font-weight: 700;
-  border: none;
-  border-radius: 10px;
-  font-size: 16px;
-  cursor: pointer;
-  box-shadow: 0 4px 12px rgba(184, 134, 11, 0.3);
-  margin-bottom: 60px;
-  cursor: pointer;
-}
-
-.payment_final_btn:hover {
-  background-color: #f5aa00;
-}
-
-.payment_empty {
-}
-
-/* === 쿠폰 섹션 === */
-.coupon_section {
   padding: 16px 20px;
   background: #f8f8f8;
   border-top: 1px solid #eee;
@@ -666,6 +605,29 @@
   color: #e74c3c;
 }
 
+/* 결제 버튼 */
+.payment_final_btn {
+  margin-top: 16px;
+  width: 100%;
+  padding: 15px 0;
+  background: linear-gradient(135deg, #d4a017 0%, #b8860b 100%);
+  color: #fff;
+  font-weight: 700;
+  border: none;
+  border-radius: 8px;
+  font-size: 17px;
+  cursor: pointer;
+  box-shadow: 0 4px 15px rgba(184, 134, 11, 0.3);
+}
+
+.payment_final_btn:hover {
+  opacity: 0.95;
+}
+
+.payment_empty {
+  height: 60px;
+}
+
 /* === 미디어 쿼리 === */
 @media screen and (min-width: 500px) {
   .main_body_wrap,
@@ -674,9 +636,13 @@
     width: 500px;
   }
 
-  .border,
-  .modal_content {
+  .border {
     width: 350px;
+  }
+
+  .modal_content {
+    width: 100%;
+    max-width: 500px;
   }
 
   .result {
@@ -694,4 +660,374 @@
   .border {
     width: 320px;
   }
+
+  .modal_content {
+    width: 100%;
+  }
+}
+
+/* ========================================
+   마크다운 & 보고서 스타일 (양반 테마)
+   ======================================== */
+
+/* === 섹션 헤딩 === */
+.report_card_content :global(h3.section-heading) {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 16px;
+  font-weight: 700;
+  color: #4a3c2a;
+  margin: 24px 0 16px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #e8dcc8;
+  font-family: "KimjungchulMyungjo-Bold", serif;
+}
+
+.report_card_content :global(.section-num) {
+  color: #c68800;
+  font-weight: 800;
+}
+
+/* === 챕터 헤딩 (##[1장] 형식) === */
+.report_card_content :global(h2.chapter-heading) {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 17px;
+  font-weight: 700;
+  color: #4a3c2a;
+  margin: 0 0 20px;
+  padding: 14px 16px;
+  background: linear-gradient(135deg, #f5f0e6 0%, #ede5d8 100%);
+  border: 1px solid #d4c5a9;
+  border-radius: 8px;
+  font-family: "KimjungchulMyungjo-Bold", serif;
+}
+
+.report_card_content :global(.chapter-num) {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 40px;
+  padding: 4px 10px;
+  background: linear-gradient(135deg, #d4a017 0%, #b8860b 100%);
+  color: #fff;
+  font-size: 13px;
+  font-weight: 700;
+  border-radius: 4px;
+  letter-spacing: 1px;
+}
+
+/* === 마크다운 기본 요소 === */
+.report_card_content :global(h2) {
+  font-size: 18px;
+  font-weight: 700;
+  color: #4a3c2a;
+  margin: 28px 0 16px;
+  padding-bottom: 10px;
+  border-bottom: 2px solid #d4a017;
+  font-family: "KimjungchulMyungjo-Bold", serif;
+}
+
+.report_card_content :global(h3) {
+  font-size: 16px;
+  font-weight: 700;
+  color: #4a3c2a;
+  margin: 20px 0 12px;
+  font-family: "KimjungchulMyungjo-Bold", serif;
+}
+
+.report_card_content :global(h4) {
+  font-size: 15px;
+  font-weight: 700;
+  color: #5a4a3a;
+  margin: 16px 0 10px;
+}
+
+.report_card_content :global(p) {
+  margin: 0 0 12px;
+  line-height: 1.9;
+}
+
+.report_card_content :global(strong) {
+  color: #4a3c2a;
+  font-weight: 700;
+}
+
+.report_card_content :global(em) {
+  color: #6a5a4a;
+  font-style: italic;
+}
+
+.report_card_content :global(.underline) {
+  text-decoration: underline;
+  text-decoration-color: #d4a017;
+  text-underline-offset: 3px;
+}
+
+/* === 인용문 기본 스타일 === */
+.report_card_content :global(blockquote) {
+  background: rgba(212, 160, 23, 0.08);
+  border-left: 4px solid #d4a017;
+  padding: 16px 20px;
+  margin: 20px 0;
+  border-radius: 0 8px 8px 0;
+  font-size: 15px;
+  line-height: 1.8;
+  color: #4a3c2a;
+}
+
+/* === 천기선생 인용문 스타일 === */
+.report_card_content :global(blockquote.quote-tip),
+.report_card_content :global(blockquote.quote-pinch),
+.report_card_content :global(blockquote.quote-comfort) {
+  background: #fffcf5;
+  border: 1px solid #e8dcc8;
+  border-left: 4px solid #d4a017;
+  padding: 20px;
+  margin: 24px 0;
+  border-radius: 0 12px 12px 0;
+}
+
+.report_card_content :global(.quote-header) {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 14px;
+  padding-bottom: 12px;
+  border-bottom: 1px dashed #e8dcc8;
+}
+
+.report_card_content :global(.quote-icon) {
+  font-size: 20px;
+  line-height: 1;
+}
+
+.report_card_content :global(.quote-header strong) {
+  font-size: 14px;
+  font-weight: 700;
+  color: #c68800;
+  font-family: "KimjungchulMyungjo-Bold", serif;
+  letter-spacing: 0.5px;
+}
+
+.report_card_content :global(.quote-body) {
+  font-size: 15px;
+  line-height: 1.9;
+  color: #4a3c2a;
+}
+
+/* quote-tip 특별 스타일 */
+.report_card_content :global(blockquote.quote-tip) {
+  background: linear-gradient(135deg, #fffcf5 0%, #fff9eb 100%);
+}
+
+/* quote-pinch 특별 스타일 */
+.report_card_content :global(blockquote.quote-pinch) {
+  background: linear-gradient(135deg, #fffcf5 0%, #fef8e8 100%);
+  border-left-color: #b8860b;
+}
+
+/* quote-comfort 특별 스타일 */
+.report_card_content :global(blockquote.quote-comfort) {
+  background: linear-gradient(135deg, #fefcf8 0%, #fff8f0 100%);
+  border-left-color: #daa520;
+}
+
+/* === 리스트 스타일 === */
+.report_card_content :global(ul) {
+  list-style: none;
+  margin: 16px 0;
+  padding: 0;
+}
+
+.report_card_content :global(ul + br) {
+  display: none;
+}
+
+.report_card_content :global(ul li) {
+  position: relative;
+  padding: 6px 0 6px 20px;
+  font-size: 15px;
+  line-height: 1.8;
+  color: #4a3c2a;
+}
+
+.report_card_content :global(ul li::before) {
+  content: "•";
+  position: absolute;
+  left: 0;
+  color: #c68800;
+  font-weight: bold;
+  font-size: 16px;
+}
+
+.report_card_content :global(ol) {
+  list-style: none;
+  margin: 20px 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  counter-reset: list-counter;
+}
+
+.report_card_content :global(ol li) {
+  position: relative;
+  padding: 14px 14px 14px 48px;
+  background: #fffcf5;
+  border: 1px solid #e8dcc8;
+  border-radius: 10px;
+  font-size: 15px;
+  line-height: 1.8;
+  color: #4a3c2a;
+  counter-increment: list-counter;
+}
+
+.report_card_content :global(ol li::before) {
+  content: counter(list-counter);
+  position: absolute;
+  left: 12px;
+  top: 12px;
+  width: 24px;
+  height: 24px;
+  background: linear-gradient(135deg, #d4a017 0%, #b8860b 100%);
+  color: #fff;
+  font-size: 13px;
+  font-weight: 700;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* === 테이블 스타일 === */
+.report_card_content :global(table.md-table) {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 20px 0;
+  font-size: 14px;
+  border: 1px solid #e8dcc8;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.report_card_content :global(table.md-table th) {
+  background: linear-gradient(135deg, #f5f0e6 0%, #ede5d8 100%);
+  padding: 12px 14px;
+  text-align: left;
+  font-weight: 700;
+  color: #4a3c2a;
+  border-bottom: 2px solid #d4c5a9;
+  font-family: "KimjungchulMyungjo-Bold", serif;
+}
+
+.report_card_content :global(table.md-table td) {
+  padding: 12px 14px;
+  border-bottom: 1px solid #e8dcc8;
+  color: #4a3c2a;
+  background: #fdfcf8;
+}
+
+.report_card_content :global(table.md-table tr:last-child td) {
+  border-bottom: none;
+}
+
+.report_card_content :global(table.md-table tr:nth-child(even) td) {
+  background: #f8f5ed;
+}
+
+/* === 수평선 === */
+.report_card_content :global(hr) {
+  border: none;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, #d4c5a9, transparent);
+  margin: 28px 0;
+}
+
+/* === 링크 스타일 === */
+.report_card_content :global(a) {
+  color: #c68800;
+  text-decoration: underline;
+  text-decoration-color: rgba(198, 136, 0, 0.3);
+  text-underline-offset: 3px;
+  transition: all 0.2s ease;
+}
+
+.report_card_content :global(a:hover) {
+  color: #b8860b;
+  text-decoration-color: #b8860b;
+}
+
+/* === Summary 섹션 마크다운 === */
+.face_summary :global(p) {
+  margin: 0;
+  line-height: 1.8;
+}
+
+.face_summary :global(strong) {
+  color: #c68800;
+}
+
+/* === Detail 섹션 마크다운 === */
+.face_detail :global(h2) {
+  font-size: 18px;
+  font-weight: 700;
+  color: #4a3c2a;
+  margin: 28px 0 16px;
+  padding-bottom: 10px;
+  border-bottom: 2px solid #d4a017;
+  font-family: "KimjungchulMyungjo-Bold", serif;
+}
+
+.face_detail :global(h3) {
+  font-size: 16px;
+  font-weight: 700;
+  color: #4a3c2a;
+  margin: 20px 0 12px;
+  font-family: "KimjungchulMyungjo-Bold", serif;
+}
+
+.face_detail :global(p) {
+  margin: 0 0 12px;
+  line-height: 1.9;
+}
+
+.face_detail :global(strong) {
+  color: #4a3c2a;
+  font-weight: 700;
+}
+
+.face_detail :global(blockquote) {
+  background: rgba(212, 160, 23, 0.08);
+  border-left: 4px solid #d4a017;
+  padding: 16px 20px;
+  margin: 20px 0;
+  border-radius: 0 8px 8px 0;
+  font-size: 15px;
+  line-height: 1.8;
+  color: #4a3c2a;
+}
+
+.face_detail :global(ul) {
+  list-style: none;
+  margin: 16px 0;
+  padding: 0;
+}
+
+.face_detail :global(ul li) {
+  position: relative;
+  padding: 6px 0 6px 20px;
+  font-size: 15px;
+  line-height: 1.8;
+  color: #4a3c2a;
+}
+
+.face_detail :global(ul li::before) {
+  content: "•";
+  position: absolute;
+  left: 0;
+  color: #c68800;
+  font-weight: bold;
 }

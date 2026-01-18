@@ -342,11 +342,22 @@ function ResultContent() {
       }
 
       const apiResult = await response.json();
+      console.log("🔍 API 전체 응답:", JSON.stringify(apiResult, null, 2).substring(0, 1000));
+
+      // 에러 체크 (error 키가 존재하면 에러)
+      if ("error" in apiResult) {
+        throw new Error(apiResult.error || "서버에서 알 수 없는 오류가 발생했습니다.");
+      }
 
       clearInterval(progressTimer);
       setAnalysisProgress(100);
 
       const { summary, detail, sections, features } = apiResult;
+      console.log("🔍 summary 존재:", !!summary, "길이:", summary?.length);
+      console.log("🔍 detail 존재:", !!detail, "길이:", detail?.length);
+      console.log("🔍 sections 존재:", !!sections);
+      console.log("🔍 sections 내용:", sections);
+      console.log("🔍 features 존재:", !!features);
 
       // 결과 업데이트
       const updatedResult: FaceResult = {
@@ -383,8 +394,16 @@ function ResultContent() {
         console.error("Supabase 분석 결과 저장 실패:", supabaseErr);
       }
 
+      console.log("🔍 updatedResult:", {
+        summary: updatedResult.summary?.substring(0, 50),
+        detail: updatedResult.detail?.substring(0, 50),
+        sections: updatedResult.sections,
+        hasSections: !!updatedResult.sections && Object.values(updatedResult.sections).some(v => v)
+      });
+
       setResult(updatedResult);
       setShowResult(true);
+      console.log("✅ setResult, setShowResult 완료");
     } catch (error) {
       console.error("분석 오류:", error);
       alert("분석 중 오류가 발생했습니다. 다시 시도해주세요.");
@@ -661,18 +680,23 @@ function ResultContent() {
     });
   };
 
-  // 간단한 마크다운 파서
+  // 간단한 마크다운 파서 (양반 테마)
   const simpleMD = (src: string = ""): string => {
     // 코드 블록 제거
     src = src.replace(/```[\s\S]*?```/g, "");
+    // "정통 심층 관상 보고서" 제목 라인 제거
+    src = src.replace(/^#\s*정통\s*심층\s*관상\s*보고서\s*$/gim, "");
     // 헤딩
     src = src
       .replace(/^###### (.*$)/gim, "<h6>$1</h6>")
       .replace(/^##### (.*$)/gim, "<h5>$1</h5>")
       .replace(/^#### (.*$)/gim, "<h4>$1</h4>")
+      .replace(/^###\s*풀이\s*(\d+)\.\s*(.+)$/gim, '<h3 class="section-heading"><span class="section-num">풀이 $1.</span> $2</h3>')
       .replace(/^### (.*$)/gim, "<h3>$1</h3>")
-      .replace(/^## (.*$)/gim, "<h2>$1</h2>")
-      .replace(/^# (.*$)/gim, "<h1>$1</h1>");
+      // ##[1장] 부위별 관상 심층 풀이 -> 챕터 헤딩
+      .replace(/^##\s*\[(\d+)장\]\s*(.+)$/gim, '<h2 class="chapter-heading"><span class="chapter-num">$1장</span> $2</h2>')
+      .replace(/^##\s?(.*$)/gim, "<h2>$1</h2>")
+      .replace(/^#\s?(.*$)/gim, "<h1>$1</h1>");
     // 굵게/기울임 (복합)
     src = src
       .replace(/\*\*\*([^*]+)\*\*\*/g, "<strong><em>$1</em></strong>")
@@ -719,6 +743,21 @@ function ResultContent() {
         .join("<br>");
       return `<blockquote>${content}</blockquote>`;
     });
+    // 천기선생 인용문 스타일 적용
+    src = src.replace(
+      /<blockquote><strong>천기선생 귀띔<\/strong>/g,
+      '<blockquote class="quote-tip"><div class="quote-header"><span class="quote-icon">💡</span><strong>천기선생 귀띔</strong></div><div class="quote-body">'
+    );
+    src = src.replace(
+      /<blockquote><strong>천기선생 콕 찍기<\/strong>/g,
+      '<blockquote class="quote-pinch"><div class="quote-header"><span class="quote-icon">👆</span><strong>천기선생 콕 찍기</strong></div><div class="quote-body">'
+    );
+    src = src.replace(
+      /<blockquote><strong>천기선생 토닥토닥<\/strong>/g,
+      '<blockquote class="quote-comfort"><div class="quote-header"><span class="quote-icon">🤗</span><strong>천기선생 토닥토닥</strong></div><div class="quote-body">'
+    );
+    // 인용문 닫기 태그 수정
+    src = src.replace(/<\/blockquote>/g, "</div></blockquote>");
     // 리스트
     src = src
       .replace(/^\s*[*+-]\s+(.+)$/gm, "<ul><li>$1</li></ul>")
@@ -731,6 +770,8 @@ function ResultContent() {
       .replace(/(?<!_)_([^_\n]+)_(?!_)/g, "<em>$1</em>");
     // 취소선
     src = src.replace(/~~(.+?)~~/g, "<del>$1</del>");
+    // 밑줄 (<u> 태그)
+    src = src.replace(/<u>([^<]+)<\/u>/g, '<span class="underline">$1</span>');
     // 줄바꿈
     src = src.replace(/\n{2,}/g, "</p><p>").replace(/\n/g, "<br>");
     return `<p>${src}</p>`;
@@ -1046,28 +1087,28 @@ function ResultContent() {
   // 분석 중
   if (isAnalyzing) {
     return (
-      <div className="main_body_wrap">
+      <div className={styles.main_body_wrap}>
         {/* 다른 사진으로 버튼 */}
-        <Link href="/face" className="back-btn-glass">
+        <Link href="/face" className={styles.back_btn_glass}>
           <span className="material-icons">arrow_back</span>
           <span>다른 사진으로</span>
         </Link>
 
-        <div className="main_content_wrap" style={{ paddingTop: "60px" }}>
-          <div className="main_title_wrap">
-            <div className="main_title">인공지능이 알려주는 관상 테스트</div>
-            <div className="main_subtitle">AI 관상 | 관상가 양반</div>
+        <div className={styles.main_content_wrap} style={{ paddingTop: "60px" }}>
+          <div className={styles.main_title_wrap}>
+            <div className={styles.main_title}>인공지능이 알려주는 관상 테스트</div>
+            <div className={styles.main_subtitle}>AI 관상 | 관상가 양반</div>
           </div>
 
-          <div className="border">
-            <div className="frame">
-              <div className="image">
-                <div className="file-upload">
+          <div className={styles.border}>
+            <div className={styles.frame}>
+              <div className={styles.image}>
+                <div className={styles.file_upload}>
                   <div
-                    className="file-upload-content"
+                    className={styles.file_upload_content}
                     style={{ display: "block" }}
                   >
-                    <div className="image-square-frame">
+                    <div className={styles.image_square_frame}>
                       <Image
                         src={result.imageBase64}
                         alt="분석 중인 사진"
@@ -1082,7 +1123,7 @@ function ResultContent() {
             </div>
           </div>
 
-          <div id="label-container" className="result">
+          <div className={styles.result}>
             <div className="loading-box dark-mode">
               <div className="loading-text">보고서를 생성 중입니다...</div>
               <div className="progress-bar-container">
@@ -1101,30 +1142,30 @@ function ResultContent() {
   }
 
   // 결과 표시
-  if (showResult && result.summary) {
+  if (showResult && (result.summary || result.sections || result.detail)) {
     return (
-      <div className="main_body_wrap">
+      <div className={styles.main_body_wrap}>
         {/* 다른 사진으로 버튼 */}
-        <Link href="/face" className="back-btn-glass">
+        <Link href="/face" className={styles.back_btn_glass}>
           <span className="material-icons">arrow_back</span>
           <span>다른 사진으로</span>
         </Link>
 
-        <div className="main_content_wrap" style={{ paddingTop: "60px" }}>
-          <div className="main_title_wrap">
-            <div className="main_title">인공지능이 알려주는 관상 테스트</div>
-            <div className="main_subtitle">AI 관상 | 관상가 양반</div>
+        <div className={styles.main_content_wrap} style={{ paddingTop: "60px" }}>
+          <div className={styles.main_title_wrap}>
+            <div className={styles.main_title}>인공지능이 알려주는 관상 테스트</div>
+            <div className={styles.main_subtitle}>AI 관상 | 관상가 양반</div>
           </div>
 
-          <div className="border">
-            <div className="frame">
-              <div className="image">
-                <div className="file-upload">
+          <div className={styles.border}>
+            <div className={styles.frame}>
+              <div className={styles.image}>
+                <div className={styles.file_upload}>
                   <div
-                    className="file-upload-content"
+                    className={styles.file_upload_content}
                     style={{ display: "block" }}
                   >
-                    <div className="image-square-frame">
+                    <div className={styles.image_square_frame}>
                       <Image
                         src={result.imageBase64}
                         alt="분석된 사진"
@@ -1139,28 +1180,30 @@ function ResultContent() {
             </div>
           </div>
 
-          <div id="label-container" className="result">
+          <div className={styles.result}>
             {/* Summary */}
-            <div className="face-summary-section">
-              <div
-                className="face-summary"
-                dangerouslySetInnerHTML={{ __html: simpleMD(result.summary) }}
-              />
-            </div>
+            {result.summary && (
+              <div className={styles.face_summary_section}>
+                <div
+                  className={styles.face_summary}
+                  dangerouslySetInnerHTML={{ __html: simpleMD(result.summary) }}
+                />
+              </div>
+            )}
 
             {/* Sections */}
-            {result.sections && (
-              <div className="report-cards-container">
+            {result.sections && Object.values(result.sections).some(v => v) && (
+              <div className={styles.report_cards_container}>
                 {SECTION_CONFIG.filter(
                   (sec) =>
                     result.sections?.[sec.key as keyof typeof result.sections]
                 ).map((sec) => (
-                  <div key={sec.key} className="report-card">
-                    <div className="report-card-header">
-                      <h3 className="report-card-title">{sec.title}</h3>
+                  <div key={sec.key} className={styles.report_card}>
+                    <div className={styles.report_card_header}>
+                      <h3 className={styles.report_card_title}>{sec.title}</h3>
                     </div>
                     <div
-                      className="report-card-content"
+                      className={styles.report_card_content}
                       dangerouslySetInnerHTML={{
                         __html: simpleMD(
                           result.sections?.[
@@ -1174,11 +1217,11 @@ function ResultContent() {
               </div>
             )}
 
-            {/* Detail fallback */}
-            {!result.sections && result.detail && (
-              <div className="face-detail-section">
+            {/* Detail fallback - sections가 없거나 비어있으면 detail 표시 */}
+            {result.detail && (!result.sections || !Object.values(result.sections).some(v => v)) && (
+              <div className={styles.face_detail_section}>
                 <div
-                  className="face-detail"
+                  className={styles.face_detail}
                   dangerouslySetInnerHTML={{ __html: simpleMD(result.detail) }}
                 />
               </div>
