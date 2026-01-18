@@ -109,11 +109,11 @@ const FAKE_ANALYSIS_MESSAGES = [
 
 // 섹션 설정
 const SECTION_CONFIG = [
-  { key: "face_reading", title: "부위별 관상 심층 풀이" },
-  { key: "love", title: "연애운 심층 풀이" },
-  { key: "career", title: "직업운 심층 풀이" },
-  { key: "wealth", title: "재물운 심층 풀이" },
-  { key: "health", title: "건강운 심층 풀이" },
+  { key: "face_reading", title: "부위별 관상 심층 풀이", icon: "👤" },
+  { key: "love", title: "연애운 심층 풀이", icon: "💕" },
+  { key: "career", title: "직업운 심층 풀이", icon: "💼" },
+  { key: "wealth", title: "재물운 심층 풀이", icon: "💰" },
+  { key: "health", title: "건강운 심층 풀이", icon: "🏥" },
 ];
 
 function ResultContent() {
@@ -680,101 +680,83 @@ function ResultContent() {
     });
   };
 
-  // 간단한 마크다운 파서 (양반 테마)
+  // 마크다운 파서 (심플 버전)
   const simpleMD = (src: string = ""): string => {
-    // 코드 블록 제거
-    src = src.replace(/```[\s\S]*?```/g, "");
-    // "정통 심층 관상 보고서" 제목 라인 제거
-    src = src.replace(/^#\s*정통\s*심층\s*관상\s*보고서\s*$/gim, "");
-    // 헤딩
-    src = src
-      .replace(/^###### (.*$)/gim, "<h6>$1</h6>")
-      .replace(/^##### (.*$)/gim, "<h5>$1</h5>")
-      .replace(/^#### (.*$)/gim, "<h4>$1</h4>")
-      .replace(/^###\s*풀이\s*(\d+)\.\s*(.+)$/gim, '<h3 class="section-heading"><span class="section-num">풀이 $1.</span> $2</h3>')
-      .replace(/^### (.*$)/gim, "<h3>$1</h3>")
-      // ##[1장] 부위별 관상 심층 풀이 -> 챕터 헤딩
-      .replace(/^##\s*\[(\d+)장\]\s*(.+)$/gim, '<h2 class="chapter-heading"><span class="chapter-num">$1장</span> $2</h2>')
-      .replace(/^##\s?(.*$)/gim, "<h2>$1</h2>")
-      .replace(/^#\s?(.*$)/gim, "<h1>$1</h1>");
-    // 굵게/기울임 (복합)
-    src = src
-      .replace(/\*\*\*([^*]+)\*\*\*/g, "<strong><em>$1</em></strong>")
-      .replace(/___([^_]+)___/g, "<strong><em>$1</em></strong>")
-      .replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>")
-      .replace(/__([^_]+)__/g, "<strong>$1</strong>");
-    // 이미지, 링크
-    src = src
-      .replace(/!\[([^\]]*?)\]\((.*?)\)/g, '<img src="$2" alt="$1">')
-      .replace(
-        /\[([^\]]+?)\]\((.*?)\)/g,
-        '<a href="$2" target="_blank" rel="noopener">$1</a>'
-      );
-    // 테이블
-    src = src.replace(/(?:^|\n)((?:\|[^\n]+\|\n)+)/g, (match, tableBlock) => {
-      const rows = tableBlock.trim().split("\n");
-      if (rows.length < 2) return match;
-      let html = '<table class="md-table">';
-      rows.forEach((row: string, idx: number) => {
-        if (/^\|[\s\-:|]+\|$/.test(row.trim()) && row.includes("-")) return;
-        const cells = row
-          .split("|")
-          .filter(
-            (_: string, i: number, arr: string[]) => i > 0 && i < arr.length - 1
-          );
-        const tag = idx === 0 ? "th" : "td";
-        html += "<tr>";
-        cells.forEach((cell: string) => {
-          html += `<${tag}>${cell.trim()}</${tag}>`;
+    if (!src) return "";
+
+    // 1. 불필요한 제목/헤더 제거 (sections로 이미 분리됨)
+    src = src.replace(/^#{1,4}\s*\d*\.?\s*.+$/gm, "");
+    src = src.replace(/^#*\s*정통\s*심층\s*관상\s*보고서\s*$/gim, "");
+
+    // 2. 수평선 제거
+    src = src.replace(/^\s*[-_*]{3,}\s*$/gm, "");
+
+    // 3. 표(table) 파싱
+    src = src.replace(
+      /(?:^|\n)((?:\|.+\|\n?)+)/g,
+      (match, tableBlock) => {
+        const rows = tableBlock.trim().split('\n').filter((r: string) => r.trim());
+        if (rows.length < 2) return match;
+
+        // 구분선 행 제거 (|---|---|, |:---|:---|, | --- | --- | 등)
+        const dataRows = rows.filter((r: string) => {
+          const cleaned = r.replace(/\s/g, '');
+          return !/^\|[-:]+(\|[-:]+)+\|?$/.test(cleaned);
         });
-        html += "</tr>";
-      });
-      html += "</table>";
-      return html;
-    });
-    // 수평선
-    src = src.replace(/^\s*(\*\s*\*\s*\*|-{3,}|_{3,})\s*$/gm, "<hr>");
-    // 인용문
-    src = src.replace(/(^>\s?.*$\n?)+/gm, (match) => {
-      const content = match
-        .split("\n")
-        .map((line) => line.replace(/^>\s?/, "").trim())
-        .filter((line) => line)
-        .join("<br>");
-      return `<blockquote>${content}</blockquote>`;
-    });
-    // 천기선생 인용문 스타일 적용
+        if (dataRows.length === 0) return match;
+
+        let html = '<table class="md-table">';
+        dataRows.forEach((row: string, idx: number) => {
+          const cells = row.split('|').filter((c: string) => c.trim() !== '');
+          const tag = idx === 0 ? 'th' : 'td';
+          html += '<tr>';
+          cells.forEach((cell: string) => {
+            html += `<${tag}>${cell.trim()}</${tag}>`;
+          });
+          html += '</tr>';
+        });
+        html += '</table>';
+        return '\n' + html + '\n';
+      }
+    );
+
+    // 4. 소제목: **1-1. 제목** ― 설명
     src = src.replace(
-      /<blockquote><strong>천기선생 귀띔<\/strong>/g,
-      '<blockquote class="quote-tip"><div class="quote-header"><span class="quote-icon">💡</span><strong>천기선생 귀띔</strong></div><div class="quote-body">'
+      /^\*\*(\d+-\d+)\.\s*([^*]+)\*\*\s*[―\-–]\s*(.+)$/gm,
+      '\n<div class="sub-title"><strong>$1. $2</strong> — $3</div>\n'
     );
     src = src.replace(
-      /<blockquote><strong>천기선생 콕 찍기<\/strong>/g,
-      '<blockquote class="quote-pinch"><div class="quote-header"><span class="quote-icon">👆</span><strong>천기선생 콕 찍기</strong></div><div class="quote-body">'
+      /^\*\*(\d+-\d+)\.\s*([^*]+)\*\*\s*$/gm,
+      '\n<div class="sub-title"><strong>$1. $2</strong></div>\n'
     );
+
+    // 5. 천기누설: ++ **제목** ― 설명 (그냥 소제목처럼)
     src = src.replace(
-      /<blockquote><strong>천기선생 토닥토닥<\/strong>/g,
-      '<blockquote class="quote-comfort"><div class="quote-header"><span class="quote-icon">🤗</span><strong>천기선생 토닥토닥</strong></div><div class="quote-body">'
+      /^\+\+\s*\*\*([^*]+)\*\*\s*[―\-–]\s*(.+)$/gm,
+      '\n<div class="sub-title"><strong>$1</strong> — $2</div>\n'
     );
-    // 인용문 닫기 태그 수정
-    src = src.replace(/<\/blockquote>/g, "</div></blockquote>");
-    // 리스트
-    src = src
-      .replace(/^\s*[*+-]\s+(.+)$/gm, "<ul><li>$1</li></ul>")
-      .replace(/(<\/ul>\s*)<ul>/g, "")
-      .replace(/^\s*\d+\.\s+(.+)$/gm, "<ol><li>$1</li></ol>")
-      .replace(/(<\/ol>\s*)<ol>/g, "");
-    // 기울임
-    src = src
-      .replace(/(?<!\*)\*([^*\n]+)\*(?!\*)/g, "<em>$1</em>")
-      .replace(/(?<!_)_([^_\n]+)_(?!_)/g, "<em>$1</em>");
-    // 취소선
-    src = src.replace(/~~(.+?)~~/g, "<del>$1</del>");
-    // 밑줄 (<u> 태그)
-    src = src.replace(/<u>([^<]+)<\/u>/g, '<span class="underline">$1</span>');
-    // 줄바꿈
-    src = src.replace(/\n{2,}/g, "</p><p>").replace(/\n/g, "<br>");
-    return `<p>${src}</p>`;
+
+    // 6. 인용문 > 텍스트
+    src = src.replace(/^>\s*(.+)$/gm, '<blockquote>$1</blockquote>');
+    src = src.replace(/<\/blockquote>\n<blockquote>/g, '<br>');
+
+    // 7. 굵게 **텍스트** → 형광펜 밑줄
+    src = src.replace(/\*\*([^*]+)\*\*/g, '<strong class="hl">$1</strong>');
+
+    // 8. 기울임 *텍스트*
+    src = src.replace(/(?<![*])\*([^*\n]+)\*(?![*])/g, "<em>$1</em>");
+
+    // 9. 빈 줄 정리 및 문단 처리
+    src = src.replace(/\n{3,}/g, "\n\n");
+    src = src.replace(/\n\n/g, "</p><p>");
+    src = src.replace(/\n/g, "<br>");
+
+    // 10. 빈 태그 정리
+    src = src.replace(/<p>\s*<\/p>/g, "");
+    src = src.replace(/<p><br>/g, "<p>");
+    src = src.replace(/<br><\/p>/g, "</p>");
+
+    return `<p>${src}</p>`.replace(/<p>\s*<\/p>/g, "");
   };
 
   if (isLoading) {
@@ -1200,6 +1182,7 @@ function ResultContent() {
                 ).map((sec) => (
                   <div key={sec.key} className={styles.report_card}>
                     <div className={styles.report_card_header}>
+                      <span className={styles.report_card_icon}>{sec.icon}</span>
                       <h3 className={styles.report_card_title}>{sec.title}</h3>
                     </div>
                     <div
