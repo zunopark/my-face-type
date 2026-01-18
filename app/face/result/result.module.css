@@ -397,35 +397,36 @@
   transition: width 0.3s linear;
 }
 
-/* === 결제 모달 스타일 === */
+/* === 결제 모달 스타일 (연애 사주 스타일) === */
 .payment_overlay {
   position: fixed;
   top: 0;
   left: 50%;
   transform: translateX(-50%);
-  height: 400vh;
-  background: rgba(0, 0, 0, 0.9);
-  z-index: 99999;
-  text-align: center;
-  overflow-y: auto;
-}
-
-.modal_content {
   width: 100%;
-  height: 100vh;
-  background: #fff;
-  padding: 34px 22px 28px 22px;
-  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.19);
-  position: relative;
-  max-height: 100vh;
+  max-width: 500px;
+  height: 100%;
+  background: whitesmoke;
+  z-index: 99999;
   overflow-y: auto;
 }
 
 .payment_fullscreen {
   display: flex;
   justify-content: center;
-  align-items: center;
-  height: 100vh;
+  align-items: flex-start;
+  min-height: 100%;
+  width: 100%;
+}
+
+.modal_content {
+  width: 100%;
+  max-width: 500px;
+  background: #fff;
+  padding: 24px 20px 40px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
 }
 
 .payment_header {
@@ -433,6 +434,7 @@
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
+  margin-bottom: 20px;
 }
 
 .payment_title {
@@ -451,172 +453,154 @@
   margin-left: 12px;
 }
 
-.payment_subtitle {
-  color: #2f3846;
-  font-weight: 600;
+/* 금액 섹션 */
+.payment_amount_section {
+  padding: 20px 0;
+  background: #fff;
 }
 
-.payment_price_wrap {
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-top: 8px;
-  padding-top: 16px;
-  font-weight: 600;
-  font-size: 14px;
-  border-top: 1px solid rgb(207, 207, 207);
-}
-
-.payment_original_price_title {
-}
-
-.payment_original_price {
-}
-
-.payment_coupon_wrap {
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-top: 20px;
-  font-weight: 600;
-  font-size: 16px;
-}
-
-.payment_coupon {
-}
-
-.payment_coupon_price_wrap {
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-  align-items: top;
-  margin-top: 4px;
-  font-weight: 500;
-  font-size: 14px;
-  padding-bottom: 12px;
-  border-bottom: 1px solid rgb(207, 207, 207);
-}
-
-.payment_coupon_title {
+.payment_amount_title {
+  font-size: 18px;
+  font-weight: 700;
+  color: #333;
+  margin: 0 0 20px 0;
   text-align: left;
-  color: #181818;
 }
 
-.payment_coupon_price {
-  color: #ff5121;
-}
-
-.report_wrap {
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  margin-top: 20px;
-  background: #fffaf0;
-  border-radius: 12px;
-  padding: 16px;
-  border: 1px solid #ffe4b5;
-}
-
-.report_title_wrap {
-  width: 100%;
+.payment_row {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 16px;
-  padding-bottom: 12px;
-  border-bottom: 1px dashed #e0c080;
+  padding: 12px 0;
 }
 
-.report_title {
+.payment_row_label {
   font-size: 15px;
+  color: #333;
+}
+
+.payment_row_value {
+  font-size: 15px;
+  color: #333;
+}
+
+.discount .payment_row_label {
+  color: #c68800;
+}
+
+.payment_row_discount_value {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.discount_badge {
+  font-size: 12px;
+  font-weight: 600;
+  color: #fff;
+  background: linear-gradient(135deg, #c68800, #b8860b);
+  padding: 4px 8px;
+  border-radius: 4px;
+}
+
+.discount_amount {
+  font-size: 15px;
+  font-weight: 600;
+  color: #c68800;
+}
+
+.payment_divider {
+  height: 1px;
+  background: #eee;
+  margin: 16px 0;
+}
+
+.final {
+  padding: 16px 0 0 0;
+}
+
+.final .payment_row_label {
+  font-size: 16px;
   font-weight: 700;
   color: #333;
 }
 
-.report_num {
-  font-size: 13px;
-  font-weight: 600;
+.payment_row_final_value {
+  font-size: 24px;
+  font-weight: 800;
+  color: #333;
+}
+
+/* 쿠폰 섹션 */
+.coupon_section {
+  padding: 16px 0;
+  background: #f8f8f8;
+  margin: 0 -20px;
+  padding-left: 20px;
+  padding-right: 20px;
+  border-top: 1px solid #eee;
+}
+
+.coupon_input_row {
+  display: flex;
+  gap: 8px;
+}
+
+.coupon_input {
+  flex: 1;
+  padding: 12px 16px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 14px;
+  outline: none;
+  background: #fff;
+}
+
+.coupon_input:focus {
+  border-color: #c68800;
+}
+
+.coupon_input:disabled {
+  background: #f5f5f5;
+  color: #999;
+}
+
+.coupon_submit_btn {
+  padding: 12px 20px;
+  background: linear-gradient(135deg, #c68800, #b8860b);
   color: #fff;
-  background: linear-gradient(135deg, #ff6b00, #ff8c00);
-  padding: 4px 10px;
-  border-radius: 20px;
-}
-
-.report_contents_wrap {
-  width: 100%;
-  display: flex;
-  align-items: flex-start;
-  margin-bottom: 10px;
-}
-
-.report_contents_wrap:last-child {
-  margin-bottom: 0;
-}
-
-.report_contents {
-  font-size: 13px;
-  line-height: 1.5;
-  color: #444;
-  text-align: left;
-  padding-left: 8px;
-}
-
-.payment_final_price_wrap {
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  margin-top: 4px;
-  font-weight: 500;
-  border-top: 1px solid rgb(207, 207, 207);
-  padding-top: 24px;
-}
-
-.payment_final_price_title {
-  text-align: left;
+  border: none;
+  border-radius: 8px;
   font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
 }
 
-.payment_final_price_price_wrap {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
+.coupon_submit_btn:disabled {
+  background: #ccc;
+  cursor: not-allowed;
 }
 
-.payment_originam_price2 {
-  color: #9d9d9d;
-  text-decoration: line-through;
-  font-size: 14px;
+.coupon_error {
+  margin-top: 8px;
+  font-size: 12px;
+  color: #e74c3c;
 }
 
-.payment_final_price {
-  display: flex;
-  justify-content: flex-end;
-  font-size: 18px;
-  font-weight: 700;
-}
-
-.payment_final_price_discount {
-  color: #ff5121;
-  margin-right: 8px;
-}
-
-.payment_final_price_num {
-  color: #181818;
-}
-
+/* 결제 버튼 */
 .payment_final_btn {
-  margin-top: 16px;
+  margin-top: 20px;
   width: 100%;
-  padding: 12px;
-  background-color: #ffbe0a;
-  color: rgb(13, 13, 13);
+  padding: 16px;
+  background: linear-gradient(135deg, #d4a017 0%, #b8860b 100%);
+  color: #fff;
   font-weight: 700;
   border: none;
-  border-radius: 6px;
-  font-size: 14px;
+  border-radius: 10px;
+  font-size: 16px;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(184, 134, 11, 0.3);
   margin-bottom: 60px;
   cursor: pointer;
 }

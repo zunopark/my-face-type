@@ -31,8 +31,8 @@ import {
   updateFaceAnalysisRecord,
   FaceAnalysisRecord,
 } from "@/lib/db/faceAnalysisDB";
-import { upsertFaceAnalysisSupabase } from "@/lib/db/faceSupabaseDB";
-import { uploadFaceImage } from "@/lib/storage/imageStorage";
+import { upsertFaceAnalysisSupabase, updateFaceAnalysisSupabase, getFaceAnalysisSupabase } from "@/lib/db/faceSupabaseDB";
+import { uploadFaceImage, getImageUrl } from "@/lib/storage/imageStorage";
 
 // TossPayments 타입 선언
 declare global {
@@ -158,7 +158,7 @@ function ResultContent() {
     isFree: boolean;
   } | null>(null);
 
-  // IndexedDB에서 결과 가져오기
+  // IndexedDB 또는 Supabase에서 결과 가져오기
   useEffect(() => {
     if (!resultId) {
       router.push("/");
@@ -166,6 +166,7 @@ function ResultContent() {
     }
 
     const loadData = async () => {
+      // 1. 먼저 IndexedDB에서 확인
       const stored = await getFaceAnalysisRecord(resultId);
       if (stored) {
         // FaceAnalysisRecord를 FaceResult로 변환
@@ -213,9 +214,66 @@ function ResultContent() {
           setIsLoading(false);
           startFakeAnalysis(resultId);
         }
-      } else {
-        router.push("/");
+        return;
       }
+
+      // 2. IndexedDB에 없으면 Supabase에서 확인
+      console.log("IndexedDB에 없음, Supabase에서 확인:", resultId);
+      const supabaseRecord = await getFaceAnalysisSupabase(resultId);
+
+      if (supabaseRecord && supabaseRecord.is_paid) {
+        console.log("Supabase에서 결제 완료된 기록 발견:", supabaseRecord);
+
+        // 이미지 URL 가져오기
+        let imageUrl = "";
+        if (supabaseRecord.image_path) {
+          imageUrl = getImageUrl(supabaseRecord.image_path);
+        }
+
+        // analysis_result에서 데이터 파싱
+        const analysisResult = supabaseRecord.analysis_result as {
+          base?: { data?: { summary?: string; detail?: string; sections?: FaceResult["sections"] } };
+        } | null;
+
+        const parsed: FaceResult = {
+          id: supabaseRecord.id,
+          imageBase64: imageUrl, // Storage URL 사용
+          features: supabaseRecord.features || "",
+          paid: true,
+          timestamp: supabaseRecord.created_at || new Date().toISOString(),
+          summary: analysisResult?.base?.data?.summary,
+          detail: analysisResult?.base?.data?.detail,
+          sections: analysisResult?.base?.data?.sections,
+          reports: supabaseRecord.analysis_result as FaceResult["reports"],
+        };
+
+        setResult(parsed);
+
+        // 분석 결과가 있으면 바로 표시
+        if (parsed.summary || parsed.sections) {
+          setShowResult(true);
+          setIsLoading(false);
+          return;
+        }
+
+        // 결제는 됐지만 분석 결과가 없으면 다시 분석
+        // 단, 이미지가 필요하므로 이미지가 없으면 에러
+        if (!imageUrl) {
+          console.error("이미지 URL을 가져올 수 없음");
+          alert("이미지를 불러올 수 없습니다. 다시 시도해주세요.");
+          router.push("/face");
+          return;
+        }
+
+        setIsLoading(false);
+        // 이미지 URL로는 재분석 불가 (base64 필요), 결과 없이 표시
+        setShowResult(true);
+        return;
+      }
+
+      // 3. Supabase에도 없거나 미결제 상태면 홈으로
+      console.log("데이터를 찾을 수 없음, 홈으로 이동");
+      router.push("/");
     };
 
     loadData();
@@ -313,6 +371,18 @@ function ResultContent() {
         paid: true,
         reports: updatedResult.reports as FaceAnalysisRecord["reports"],
       });
+
+      // Supabase에도 분석 결과 저장
+      try {
+        await updateFaceAnalysisSupabase(data.id, {
+          features: features || data.features,
+          analysis_result: updatedResult.reports as Record<string, unknown>,
+        });
+        console.log("✅ Supabase에 관상 분석 결과 저장 완료");
+      } catch (supabaseErr) {
+        console.error("Supabase 분석 결과 저장 실패:", supabaseErr);
+      }
+
       setResult(updatedResult);
       setShowResult(true);
     } catch (error) {
@@ -785,85 +855,82 @@ function ResultContent() {
 
         {/* 결제 모달 */}
         {showPaymentModal && (
-          <div className="payment-overlay" style={{ display: "block" }}>
-            <div className="payment-fullscreen">
-              <div className="modal-content">
-                <div className="payment-header">
-                  <div className="payment-title">
-                    프리미엄 관상 심층 분석 보고서
+          <div className={styles.payment_overlay}>
+            <div className={styles.payment_fullscreen}>
+              <div className={styles.modal_content}>
+                {/* 헤더 */}
+                <div className={styles.payment_header}>
+                  <div className={styles.payment_title}>
+                    관상가 양반 복채
                   </div>
-                  <div className="payment-close" onClick={closePaymentModal}>
+                  <div className={styles.payment_close} onClick={closePaymentModal}>
                     ✕
                   </div>
                 </div>
-                <div className="payment-header">
-                  <div className="payment-subtitle">
-                    1,500만명이 감탄한 20년 경력 관상가 보고서
-                  </div>
-                </div>
 
-                <div className="report-wrap">
-                  <div className="report-title-wrap">
-                    <div className="report-title">보고서 내용</div>
-                    <div className="report-num">총 20,000자 심층 분석</div>
-                  </div>
-                  <div className="report-contents-wrap">
-                    <div className="report-contents">
-                      1. 부위별 관상 심층 풀이 - 오관 분석 / 삼정 분석 / 12궁
-                      분석 / 천기누설
-                    </div>
-                  </div>
-                  <div className="report-contents-wrap">
-                    <div className="report-contents">
-                      2. 연애운 심층 풀이 - 타고난 인연 / 만남 오픈 타이밍 /
-                      매력 풀이 / 이상적 상대 / 천기누설
-                    </div>
-                  </div>
-                  <div className="report-contents-wrap">
-                    <div className="report-contents">
-                      3. 직업운 심층 풀이 - 적성과 장단점 / 직업 운 곡선 / 직장
-                      vs 창업 / 천기누설
-                    </div>
-                  </div>
-                  <div className="report-contents-wrap">
-                    <div className="report-contents">
-                      4. 재물운 심층 풀이 - 평생 모을 재산 / 재물운 강약점 /
-                      돈이 붙는 환경 / 천기누설
-                    </div>
-                  </div>
-                  <div className="report-contents-wrap">
-                    <div className="report-contents">
-                      5. 건강운 심층 풀이 - 타고난 체질,약점 / 건강 곡선 & 위기
-                      / 천기누설
-                    </div>
-                  </div>
-                </div>
+                {/* 금액 섹션 */}
+                <div className={styles.payment_amount_section}>
+                  <h3 className={styles.payment_amount_title}>복채</h3>
 
-                <div className="payment-price-wrap">
-                  <div className="payment-original-price-title">
-                    보고서 금액
+                  {/* 정가 */}
+                  <div className={styles.payment_row}>
+                    <span className={styles.payment_row_label}>
+                      관상 심층 분석 20,000자 보고서
+                    </span>
+                    <span className={styles.payment_row_value}>
+                      {PAYMENT_CONFIG.originalPrice.toLocaleString()}원
+                    </span>
                   </div>
-                  <div className="payment-original-price">
-                    {PAYMENT_CONFIG.originalPrice.toLocaleString()}원
-                  </div>
-                </div>
 
-                <div className="payment-coupon-wrap">
-                  <div className="payment-coupon">쿠폰 할인 💸</div>
-                </div>
-                <div className="payment-coupon-price-wrap">
-                  <div className="payment-coupon-title">
-                    판매 10,000건 돌파 기념 2만원 할인
+                  {/* 할인 */}
+                  <div className={`${styles.payment_row} ${styles.discount}`}>
+                    <span className={styles.payment_row_label}>
+                      1월 특별 할인
+                    </span>
+                    <div className={styles.payment_row_discount_value}>
+                      <span className={styles.discount_badge}>
+                        {Math.floor(
+                          (1 - PAYMENT_CONFIG.price / PAYMENT_CONFIG.originalPrice) * 100
+                        )}%
+                      </span>
+                      <span className={styles.discount_amount}>
+                        -{(PAYMENT_CONFIG.originalPrice - PAYMENT_CONFIG.price).toLocaleString()}원
+                      </span>
+                    </div>
                   </div>
-                  <div className="payment-coupon-price">-20,000원</div>
+
+                  {/* 쿠폰 할인 적용 표시 */}
+                  {appliedCoupon && !appliedCoupon.isFree && (
+                    <div className={`${styles.payment_row} ${styles.discount}`}>
+                      <span className={styles.payment_row_label}>
+                        {appliedCoupon.code} 쿠폰
+                      </span>
+                      <span className={styles.discount_amount}>
+                        -{appliedCoupon.discount.toLocaleString()}원
+                      </span>
+                    </div>
+                  )}
+
+                  {/* 구분선 */}
+                  <div className={styles.payment_divider} />
+
+                  {/* 최종 금액 */}
+                  <div className={`${styles.payment_row} ${styles.final}`}>
+                    <span className={styles.payment_row_label}>최종 결제금액</span>
+                    <span className={styles.payment_row_final_value}>
+                      {appliedCoupon
+                        ? Math.max(PAYMENT_CONFIG.price - appliedCoupon.discount, 0).toLocaleString()
+                        : PAYMENT_CONFIG.price.toLocaleString()}원
+                    </span>
+                  </div>
                 </div>
 
                 {/* 쿠폰 입력 섹션 */}
-                <div className="coupon-section">
-                  <div className="coupon-input-row">
+                <div className={styles.coupon_section}>
+                  <div className={styles.coupon_input_row}>
                     <input
                       type="text"
-                      className="coupon-input"
+                      className={styles.coupon_input}
                       placeholder="쿠폰 코드 입력"
                       value={couponCode}
                       onChange={(e) => {
@@ -873,7 +940,7 @@ function ResultContent() {
                       disabled={!!appliedCoupon}
                     />
                     <button
-                      className="coupon-submit-btn"
+                      className={styles.coupon_submit_btn}
                       onClick={handleCouponSubmit}
                       disabled={!!appliedCoupon}
                     >
@@ -881,65 +948,19 @@ function ResultContent() {
                     </button>
                   </div>
                   {couponError && (
-                    <div className="coupon-error">{couponError}</div>
+                    <div className={styles.coupon_error}>{couponError}</div>
                   )}
                 </div>
-
-                {/* 쿠폰 할인 적용 표시 */}
-                {appliedCoupon && !appliedCoupon.isFree && (
-                  <div className="payment-coupon-price-wrap">
-                    <div className="payment-coupon-title">
-                      {appliedCoupon.code} 쿠폰 적용
-                    </div>
-                    <div className="payment-coupon-price">
-                      -{appliedCoupon.discount.toLocaleString()}원
-                    </div>
-                  </div>
-                )}
 
                 <div id="payment-method" />
                 <div id="agreement" />
 
-                <div className="payment-final-price-wrap">
-                  <div className="payment-final-price-title">
-                    최종 결제 금액
-                  </div>
-                  <div className="payment-final-price-price-wrap">
-                    <div className="payment-originam-price2">
-                      {PAYMENT_CONFIG.originalPrice.toLocaleString()}원
-                    </div>
-                    <div className="payment-final-price">
-                      <div className="payment-final-price-discount">
-                        {Math.floor(
-                          (1 -
-                            (appliedCoupon
-                              ? PAYMENT_CONFIG.price - appliedCoupon.discount
-                              : PAYMENT_CONFIG.price) /
-                            PAYMENT_CONFIG.originalPrice) *
-                          100
-                        )}
-                        %
-                      </div>
-                      <div className="payment-final-price-num">
-                        {appliedCoupon
-                          ? Math.max(
-                            PAYMENT_CONFIG.price - appliedCoupon.discount,
-                            0
-                          ).toLocaleString()
-                          : PAYMENT_CONFIG.price.toLocaleString()}
-                        원
-                      </div>
-                    </div>
-                  </div>
-                </div>
                 <button
-                  id="payment-button"
-                  className="payment-final-btn"
+                  className={styles.payment_final_btn}
                   onClick={handlePaymentRequest}
                 >
-                  보고서 확인하기
+                  복채 결제하기
                 </button>
-                <div className="payment-empty" />
               </div>
             </div>
           </div>
@@ -947,108 +968,71 @@ function ResultContent() {
 
         {/* 할인 모달 */}
         {showDiscountModal && (
-          <div className="payment-overlay" style={{ display: "block" }}>
-            <div className="payment-fullscreen">
-              <div className="modal-content">
-                <div className="payment-header">
-                  <div className="payment-title">
-                    🎁 깜짝 선물! 2,000원 추가 할인
+          <div className={styles.payment_overlay}>
+            <div className={styles.payment_fullscreen}>
+              <div className={styles.modal_content}>
+                {/* 헤더 */}
+                <div className={styles.payment_header}>
+                  <div className={styles.payment_title}>
+                    🎁 깜짝 선물! 추가 2,000원 할인
                   </div>
-                  <div className="payment-close" onClick={closeDiscountModal}>
+                  <div className={styles.payment_close} onClick={closeDiscountModal}>
                     ✕
                   </div>
                 </div>
-                <div className="payment-header">
-                  <div className="payment-subtitle">
-                    AI가 분석한 당신만의 심층 관상 보고서
-                  </div>
-                </div>
 
-                <div className="report-wrap">
-                  <div className="report-title-wrap">
-                    <div className="report-title">보고서 내용</div>
-                    <div className="report-num">총 10,000자+ 심층 분석</div>
-                  </div>
-                  <div className="report-contents-wrap">
-                    <div className="report-contents">
-                      1. 총운 분석 - 성격 & 인상 / 평생 운세 흐름
-                    </div>
-                  </div>
-                  <div className="report-contents-wrap">
-                    <div className="report-contents">
-                      2. 연애운 심층 풀이 - 연애 스타일 & 이상형
-                    </div>
-                  </div>
-                  <div className="report-contents-wrap">
-                    <div className="report-contents">
-                      3. 직업운 심층 풀이 - 적성과 장단점
-                    </div>
-                  </div>
-                  <div className="report-contents-wrap">
-                    <div className="report-contents">
-                      4. 재물운 심층 풀이 - 평생 모을 재산
-                    </div>
-                  </div>
-                  <div className="report-contents-wrap">
-                    <div className="report-contents">
-                      5. 건강운 심층 풀이 - 타고난 체질 & 위기 시점
-                    </div>
-                  </div>
-                </div>
+                {/* 금액 섹션 */}
+                <div className={styles.payment_amount_section}>
+                  <h3 className={styles.payment_amount_title}>특별 할인가</h3>
 
-                <div className="payment-price-wrap">
-                  <div className="payment-original-price-title">
-                    보고서 금액
+                  {/* 정가 */}
+                  <div className={styles.payment_row}>
+                    <span className={styles.payment_row_label}>
+                      관상 심층 분석 보고서
+                    </span>
+                    <span className={styles.payment_row_value}>
+                      {PAYMENT_CONFIG.originalPrice.toLocaleString()}원
+                    </span>
                   </div>
-                  <div className="payment-original-price">
-                    {PAYMENT_CONFIG.originalPrice.toLocaleString()}원
-                  </div>
-                </div>
 
-                <div className="payment-coupon-wrap">
-                  <div className="payment-coupon">쿠폰 할인 적용 💸</div>
-                </div>
-                <div className="payment-coupon-price-wrap">
-                  <div className="payment-coupon-title">
-                    프리미엄 보고서 특별가 + 추가 2천원 할인
+                  {/* 할인 */}
+                  <div className={`${styles.payment_row} ${styles.discount}`}>
+                    <span className={styles.payment_row_label}>
+                      특별가 + 추가 2천원 할인
+                    </span>
+                    <div className={styles.payment_row_discount_value}>
+                      <span className={styles.discount_badge}>
+                        {Math.floor(
+                          (1 - PAYMENT_CONFIG.discountPrice / PAYMENT_CONFIG.originalPrice) * 100
+                        )}%
+                      </span>
+                      <span className={styles.discount_amount}>
+                        -{(PAYMENT_CONFIG.originalPrice - PAYMENT_CONFIG.discountPrice).toLocaleString()}원
+                      </span>
+                    </div>
                   </div>
-                  <div className="payment-coupon-price">-22,000원</div>
+
+                  {/* 구분선 */}
+                  <div className={styles.payment_divider} />
+
+                  {/* 최종 금액 */}
+                  <div className={`${styles.payment_row} ${styles.final}`}>
+                    <span className={styles.payment_row_label}>최종 결제금액</span>
+                    <span className={styles.payment_row_final_value}>
+                      {PAYMENT_CONFIG.discountPrice.toLocaleString()}원
+                    </span>
+                  </div>
                 </div>
 
                 <div id="discount-method" />
                 <div id="discount-agreement" />
 
-                <div className="payment-final-price-wrap">
-                  <div className="payment-final-price-title">
-                    최종 결제 금액
-                  </div>
-                  <div className="payment-final-price-price-wrap">
-                    <div className="payment-originam-price2">
-                      {PAYMENT_CONFIG.originalPrice.toLocaleString()}원
-                    </div>
-                    <div className="payment-final-price">
-                      <div className="payment-final-price-discount">
-                        {Math.floor(
-                          (1 -
-                            PAYMENT_CONFIG.discountPrice /
-                            PAYMENT_CONFIG.originalPrice) *
-                          100
-                        )}
-                        %
-                      </div>
-                      <div className="payment-final-price-num">
-                        {PAYMENT_CONFIG.discountPrice.toLocaleString()}원
-                      </div>
-                    </div>
-                  </div>
-                </div>
                 <button
-                  className="payment-final-btn"
+                  className={styles.payment_final_btn}
                   onClick={handleDiscountPaymentRequest}
                 >
-                  할인가로 보고서 확인하기
+                  할인가로 복채 결제하기
                 </button>
-                <div className="payment-empty" />
               </div>
             </div>
           </div>
