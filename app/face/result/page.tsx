@@ -755,8 +755,12 @@ function ResultContent() {
     src = src.replace(/<p>\s*<\/p>/g, "");
     src = src.replace(/<p><br>/g, "<p>");
     src = src.replace(/<br><\/p>/g, "</p>");
+    src = src.replace(/<p>\s*(<div|<table|<blockquote)/g, "$1");
+    src = src.replace(/(<\/div>|<\/table>|<\/blockquote>)\s*<\/p>/g, "$1");
+    src = src.replace(/<br>\s*(<div|<table|<blockquote)/g, "$1");
+    src = src.replace(/(<\/div>|<\/table>|<\/blockquote>)\s*<br>/g, "$1");
 
-    return `<p>${src}</p>`.replace(/<p>\s*<\/p>/g, "");
+    return `<p>${src}</p>`.replace(/<p>\s*<\/p>/g, "").replace(/^<p>\s*/, "").replace(/\s*<\/p>$/, "");
   };
 
   if (isLoading) {
