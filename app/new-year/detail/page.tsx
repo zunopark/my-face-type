@@ -703,8 +703,8 @@ function NewYearDetailContent() {
 
       {/* 하단 고정 버튼 */}
       <div className={styles.bottom_fixed_btn}>
-        <button className={styles.analyze_btn} onClick={openPaymentModal}>
-          2026 신년 운세 보기
+        <button className={`${styles.analyze_btn} ${styles.disabled}`} disabled>
+          준비중입니다
         </button>
       </div>
 

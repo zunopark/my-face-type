@@ -823,6 +823,17 @@
   box-shadow: 0 6px 25px rgba(107, 83, 68, 0.5);
 }
 
+.analyze_btn.disabled {
+  background: #ccc;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+.analyze_btn.disabled:hover {
+  transform: none;
+  box-shadow: none;
+}
+
 /* 고민 유도 섹션 */
 .hesitate_section {
   margin-top: 40px;
