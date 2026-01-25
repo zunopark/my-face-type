@@ -629,16 +629,15 @@ function NewYearDetailContent() {
           <div className={styles.our_price_section}>
             <div className={styles.our_price_badge}>까치도령 신년 운세</div>
             <div className={styles.our_price_original}>
-              정가 <s>{PAYMENT_CONFIG.originalPrice.toLocaleString()}원</s>
+              {PAYMENT_CONFIG.originalPrice.toLocaleString()}원
             </div>
             <div className={styles.our_price_final}>
               {PAYMENT_CONFIG.price.toLocaleString()}원
             </div>
-            <div className={styles.our_price_discount}>
+            <div className={styles.discount_save}>
               {Math.floor(
                 (1 - PAYMENT_CONFIG.price / PAYMENT_CONFIG.originalPrice) * 100
-              )}
-              % 할인
+              )}% 할인
             </div>
           </div>
         </div>
