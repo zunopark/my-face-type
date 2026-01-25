@@ -443,24 +443,22 @@ function NewYearDetailContent() {
       const orderSuffix = studentCouponApplied
         ? "-student"
         : appliedCoupon
-        ? `-${appliedCoupon.code}`
-        : "";
+          ? `-${appliedCoupon.code}`
+          : "";
       const orderNameSuffix = studentCouponApplied
         ? " - 학생 할인"
         : appliedCoupon
-        ? ` - ${appliedCoupon.code} 할인`
-        : "";
+          ? ` - ${appliedCoupon.code} 할인`
+          : "";
 
       await paymentWidgetRef.current.requestPayment({
         orderId: `new-year${orderSuffix}_${Date.now()}`,
         orderName: `${PAYMENT_CONFIG.orderName}${orderNameSuffix}`,
         customerName: data.input.userName || "고객",
-        successUrl: `${
-          window.location.origin
-        }/payment/success?type=new_year&id=${encodeURIComponent(data.id)}`,
-        failUrl: `${
-          window.location.origin
-        }/payment/fail?id=${encodeURIComponent(data.id)}&type=new_year`,
+        successUrl: `${window.location.origin
+          }/payment/success?type=new_year&id=${encodeURIComponent(data.id)}`,
+        failUrl: `${window.location.origin
+          }/payment/fail?id=${encodeURIComponent(data.id)}&type=new_year`,
       });
     } catch (err) {
       console.error("결제 오류:", err);
@@ -539,40 +537,100 @@ function NewYearDetailContent() {
 
       {/* 결과 컨텐츠 */}
       <div className={styles.result_wrap}>
-        {/* 섹션 1: 상단 이미지 + 정보 */}
+        {/* 섹션 1: 상단 이미지 */}
         <section className={`${styles.detail_section} ${styles.section_1}`}>
           <div className={styles.hero_image}>
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img src="/new-year/img/detail.png" alt="2026 신년 운세" />
           </div>
+        </section>
 
-          {/* 운세 날씨 카드 */}
-          {weatherData[dayMaster.char] && (
-            <div className={styles.weather_card}>
-              <div className={styles.weather_label}>60년에 한번, 불기둥의 해</div>
-              <h2 className={styles.weather_title}>2026년 병오년 운세 날씨</h2>
+        {/* 운세 날씨 카드 */}
+        {weatherData[dayMaster.char] && (
+          <section className={styles.weather_section}>
+            <p className={styles.weather_label}>60년에 한번, 불기둥의 해</p>
+            <h2 className={styles.weather_title}>2026년 병오년 운세 날씨</h2>
 
-              <div className={styles.weather_quote_section}>
-                <span className={styles.weather_quote_mark}>"</span>
-                <div className={styles.weather_emoji}>{weatherData[dayMaster.char].emoji}</div>
-                <p className={styles.weather_headline}>{weatherData[dayMaster.char].weather}</p>
-                <span className={styles.weather_quote_mark_bottom}>"</span>
-              </div>
-
-              <div className={styles.ability_section}>
-                <p className={styles.ability_label}>당신의 사주에 나타난,</p>
-                <h3 className={styles.ability_section_title}>올해 돋보일 나만의 능력</h3>
-                <div className={styles.ability_title_wrap}>
-                  <p className={styles.ability_title}>"{weatherData[dayMaster.char].abilityTitle}"</p>
-                </div>
-                <p className={styles.ability_desc}>{weatherData[dayMaster.char].abilityDesc}</p>
-              </div>
+            <div className={styles.weather_quote_section}>
+              <span className={styles.weather_quote_mark}>"</span>
+              <div className={styles.weather_emoji}>{weatherData[dayMaster.char].emoji}</div>
+              <p className={styles.weather_headline}>{weatherData[dayMaster.char].weather}</p>
+              <span className={styles.weather_quote_mark_bottom}>"</span>
             </div>
-          )}
 
+            {/* 블러 처리된 미리보기 */}
+            <div className={styles.blurred_preview}>
+              <p>불의 기운이 강한 올 해는 당신의 <span className={styles.blur_text}>숨겨진 잠재력이 빛을 발하는 시기입니다. 특히 창의적인 분야에서 두각을 나타내며</span></p>
+            </div>
+          </section>
+        )}
+
+        {/* detail2 이미지 */}
+        <section className={styles.detail_section}>
           <div className={styles.hero_image}>
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img src="/new-year/img/detail2.png" alt="2026 신년 운세 상세" />
+          </div>
+        </section>
+
+        {/* 능력 카드 */}
+        {weatherData[dayMaster.char] && (
+          <section className={styles.ability_section}>
+            <p className={styles.ability_label}>당신의 사주에 나타난,</p>
+            <h2 className={styles.ability_title_main}>올해 돋보일 나만의 능력</h2>
+
+            <div className={styles.ability_quote_section}>
+              <span className={styles.ability_quote_mark}>"</span>
+              <p className={styles.ability_headline}>
+                {weatherData[dayMaster.char].abilityTitle.split(' ').slice(0, -1).join(' ')}
+                <br />
+                <span className={styles.ability_highlight}>
+                  {weatherData[dayMaster.char].abilityTitle.split(' ').slice(-1)[0]}
+                </span>
+              </p>
+              <span className={styles.ability_quote_mark_bottom}>"</span>
+            </div>
+
+            <p className={styles.ability_desc}>{weatherData[dayMaster.char].abilityDesc}</p>
+
+            {/* 블러 처리된 미리보기 */}
+            <div className={styles.blurred_preview}>
+              <p>올해는 당신의 재능 중, <span className={styles.blur_text}>특히 리더십과 소통 능력이 빛을 발하는 시기입니다. 팀을 이끌거나 새로운 프로젝트를 시작하기에</span></p>
+            </div>
+
+            {/* 잠금 미리보기 박스 */}
+            <div className={styles.locked_preview_box}>
+              <div className={styles.lock_icon}>
+                <span className="material-icons">lock</span>
+              </div>
+              <p className={styles.locked_title}>이런 내용을 알려드려요!</p>
+              <ul className={styles.locked_list}>
+                <li>
+                  <span className={styles.bullet}>💙</span>
+                  2026년 병오년과 내 사주의 오행 궁합 분석
+                </li>
+                <li>
+                  <span className={styles.bullet}>💙</span>
+                  올해 발현될 나의 역량, 일잘러 포인트
+                </li>
+                <li>
+                  <span className={styles.bullet}>💙</span>
+                  나에게 맞는 돈 버는 수단 <span className={styles.sub_text}>(직장 vs 투자 vs 부업 vs 사업)</span>
+                </li>
+                <li>
+                  <span className={styles.bullet}>💙</span>
+                  찾아올 수 있는 위기 vs 기회 키워드
+                </li>
+              </ul>
+            </div>
+          </section>
+        )}
+
+        {/* detail3 이미지 */}
+        <section className={styles.detail_section}>
+          <div className={styles.hero_image}>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/new-year/img/detail3.png" alt="2026 신년 운세 상세" />
           </div>
         </section>
 
@@ -645,8 +703,8 @@ function NewYearDetailContent() {
 
       {/* 하단 고정 버튼 */}
       <div className={styles.bottom_fixed_btn}>
-        <button className={styles.analyze_btn} disabled style={{ opacity: 0.6, cursor: 'not-allowed' }}>
-          준비중입니다
+        <button className={styles.analyze_btn} onClick={openPaymentModal}>
+          2026 신년 운세 보기
         </button>
       </div>
 
@@ -712,7 +770,7 @@ function NewYearDetailContent() {
                 {/* 정가 */}
                 <div className={styles["payment-row"]}>
                   <span className={styles["payment-row-label"]}>
-                    까치도령 신년 운세 20,000자 보고서
+                    까치도령 2026 신년 운세 보고서
                   </span>
                   <span className={styles["payment-row-value"]}>
                     {PAYMENT_CONFIG.originalPrice.toLocaleString()}원
@@ -747,8 +805,8 @@ function NewYearDetailContent() {
                         {Math.floor(
                           (1 -
                             PAYMENT_CONFIG.price /
-                              PAYMENT_CONFIG.originalPrice) *
-                            100
+                            PAYMENT_CONFIG.originalPrice) *
+                          100
                         )}
                         %
                       </span>
@@ -781,17 +839,16 @@ function NewYearDetailContent() {
                 <div className={`${styles["payment-row"]} ${styles.final}`}>
                   <span className={styles["payment-row-label"]}>최종 결제금액</span>
                   <span
-                    className={`${styles["payment-row-final-value"]} ${
-                      studentCouponApplied ? styles["student-price"] : ""
-                    }`}
+                    className={`${styles["payment-row-final-value"]} ${studentCouponApplied ? styles["student-price"] : ""
+                      }`}
                   >
                     {studentCouponApplied
                       ? PAYMENT_CONFIG.studentPrice.toLocaleString()
                       : appliedCoupon
-                      ? (
+                        ? (
                           PAYMENT_CONFIG.price - appliedCoupon.discount
                         ).toLocaleString()
-                      : PAYMENT_CONFIG.price.toLocaleString()}
+                        : PAYMENT_CONFIG.price.toLocaleString()}
                     원
                   </span>
                 </div>

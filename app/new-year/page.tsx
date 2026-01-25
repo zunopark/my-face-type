@@ -52,11 +52,16 @@ const TIME_OPTIONS = [
 // 직업 상태 옵션
 const JOB_STATUS_OPTIONS = [
   { value: "employee", label: "직장인" },
-  { value: "job_seeker", label: "취준생" },
-  { value: "student", label: "학생" },
+  { value: "student", label: "학생(초,중,고)" },
+  { value: "university", label: "대학생" },
+  { value: "job_seeker", label: "취업준비" },
+  { value: "exam_prep", label: "고시/시험준비" },
+  { value: "civil_servant", label: "공무원" },
+  { value: "housewife", label: "주부" },
+  { value: "business_owner", label: "사업/자영업" },
   { value: "freelancer", label: "프리랜서" },
-  { value: "business_owner", label: "사업가" },
-  { value: "unemployed", label: "무직" },
+  { value: "professional", label: "전문직" },
+  { value: "other", label: "직접입력" },
 ];
 
 // 연애 상태 옵션
@@ -65,17 +70,19 @@ const RELATIONSHIP_OPTIONS = [
   { value: "some", label: "썸" },
   { value: "couple", label: "연애중" },
   { value: "married", label: "기혼" },
+  { value: "divorced", label: "돌싱" },
 ];
 
 export default function NewYearPage() {
   const router = useRouter();
 
   // UI 상태
-  const [currentImage] = useState("/new-year/img/doryung.png");
+  const [currentImage] = useState("/new-year/img/intro.png");
   const [showLanding, setShowLanding] = useState(true);
   const [showDialogue, setShowDialogue] = useState(false);
   const [showInputForm, setShowInputForm] = useState(false);
   const [showAdditionalForm, setShowAdditionalForm] = useState(false);
+  const [additionalStep, setAdditionalStep] = useState(1); // 1: 연애상태, 2: 직업, 3: 고민
   const [isLoading, setIsLoading] = useState(false);
 
   // 대화 상태
@@ -92,6 +99,7 @@ export default function NewYearPage() {
   const [gender, setGender] = useState<string | null>(null);
   const [calendar, setCalendar] = useState("solar");
   const [jobStatus, setJobStatus] = useState<string | null>(null);
+  const [jobCustom, setJobCustom] = useState("");
   const [relationshipStatus, setRelationshipStatus] = useState<string | null>(null);
   const [wish2026, setWish2026] = useState("");
 
@@ -102,7 +110,7 @@ export default function NewYearPage() {
   useEffect(() => {
     trackPageView("new_year");
     const img = new window.Image();
-    img.src = "/new-year/img/doryung.png";
+    img.src = "/new-year/img/intro.png";
   }, []);
 
   // 타이핑 효과
@@ -168,6 +176,7 @@ export default function NewYearPage() {
         );
       } else {
         setShowDialogue(false);
+        setAdditionalStep(1);
         setShowAdditionalForm(true);
       }
     } else {
@@ -289,7 +298,7 @@ export default function NewYearPage() {
           date: birthDate,
           calendar: calendar as "solar" | "lunar",
           time: birthTime === "unknown" ? null : birthTime || null,
-          jobStatus: jobStatus!,
+          jobStatus: jobStatus === "other" ? jobCustom : jobStatus!,
           relationshipStatus: relationshipStatus!,
           wish2026,
         },
@@ -301,6 +310,7 @@ export default function NewYearPage() {
           sinsal: sajuResult.data.sinsal,
           daeun: sajuResult.data.daeun,
           zodiac: sajuResult.data.zodiac,
+          yongsin: sajuResult.data.yongsin,
         },
         analysis: null,
         isAnalyzing: false,
@@ -316,7 +326,7 @@ export default function NewYearPage() {
         birth_date: birthDate,
         birth_time: birthTime || "unknown",
         calendar: calendar,
-        job_status: jobStatus,
+        job_status: jobStatus === "other" ? jobCustom : jobStatus,
         relationship_status: relationshipStatus,
         has_wish: !!wish2026,
         day_master: sajuResult.data.dayMaster?.char,
@@ -545,75 +555,113 @@ export default function NewYearPage() {
         </div>
       )}
 
-      {/* 추가 정보 입력 폼 */}
+      {/* 추가 정보 입력 폼 - 단계별 */}
       {showAdditionalForm && (
         <div className={`${styles.input_overlay} ${styles.active}`}>
           <div className={styles.input_form_wrap}>
-            {/* 직업 상태 */}
-            <div className={styles.input_group}>
-              <label className={styles.input_label}>현재 직업 상태</label>
-              <div className={styles.status_options}>
-                {JOB_STATUS_OPTIONS.map((option) => (
-                  <button
-                    key={option.value}
-                    className={`${styles.status_btn} ${
-                      jobStatus === option.value ? styles.active : ""
-                    }`}
-                    onClick={() => setJobStatus(option.value)}
-                  >
-                    {option.label}
-                  </button>
-                ))}
+            {/* Step 1: 연애 상태 */}
+            {additionalStep === 1 && (
+              <div className={styles.input_group}>
+                <label className={styles.input_label}>현재 연애 상태</label>
+                <div className={styles.status_options}>
+                  {RELATIONSHIP_OPTIONS.map((option) => (
+                    <button
+                      key={option.value}
+                      className={`${styles.status_btn} ${
+                        relationshipStatus === option.value ? styles.active : ""
+                      }`}
+                      onClick={() => setRelationshipStatus(option.value)}
+                    >
+                      {option.label}
+                    </button>
+                  ))}
+                </div>
               </div>
-            </div>
+            )}
 
-            {/* 연애 상태 */}
-            <div className={styles.input_group}>
-              <label className={styles.input_label}>현재 연애 상태</label>
-              <div className={styles.status_options}>
-                {RELATIONSHIP_OPTIONS.map((option) => (
-                  <button
-                    key={option.value}
-                    className={`${styles.status_btn} ${
-                      relationshipStatus === option.value ? styles.active : ""
-                    }`}
-                    onClick={() => setRelationshipStatus(option.value)}
-                  >
-                    {option.label}
-                  </button>
-                ))}
+            {/* Step 2: 직업 상태 */}
+            {additionalStep === 2 && (
+              <div className={styles.input_group}>
+                <label className={styles.input_label}>하시는 일</label>
+                <div className={styles.status_options}>
+                  {JOB_STATUS_OPTIONS.map((option) => (
+                    <button
+                      key={option.value}
+                      className={`${styles.status_btn} ${
+                        jobStatus === option.value ? styles.active : ""
+                      }`}
+                      onClick={() => setJobStatus(option.value)}
+                    >
+                      {option.label}
+                    </button>
+                  ))}
+                </div>
+                {jobStatus === "other" && (
+                  <input
+                    type="text"
+                    className={styles.input_field}
+                    placeholder="직접 입력해주세요"
+                    value={jobCustom}
+                    onChange={(e) => setJobCustom(e.target.value)}
+                    style={{ marginTop: "12px" }}
+                  />
+                )}
               </div>
-            </div>
+            )}
 
-            {/* 2026년 소원/고민 */}
-            <div className={styles.input_group}>
-              <label className={styles.input_label}>
-                2026년에 이루고 싶은 것, 고민이 있다면?
-                <span className={styles.input_optional}>(선택)</span>
-              </label>
-              <textarea
-                className={`${styles.input_field} ${styles.textarea}`}
-                placeholder={
-                  "적지 않아도 괜찮아요!\n고민이 있다면 더 맞춤형 답변을 드릴게요."
-                }
-                rows={4}
-                value={wish2026}
-                onChange={(e) => setWish2026(e.target.value)}
-              />
-            </div>
+            {/* Step 3: 고민/중요한 일 */}
+            {additionalStep === 3 && (
+              <div className={styles.input_group}>
+                <label className={styles.input_label}>
+                  2026년, 고민이나 중요한 일이 있으신가요?
+                  <span className={styles.input_optional}>(선택)</span>
+                </label>
+                <textarea
+                  className={`${styles.input_field} ${styles.textarea}`}
+                  placeholder={
+                    "적지 않아도 괜찮아요!\n고민이 있다면 더 맞춤형 답변을 드릴게요."
+                  }
+                  rows={4}
+                  value={wish2026}
+                  onChange={(e) => setWish2026(e.target.value)}
+                />
+              </div>
+            )}
           </div>
 
           <div className={styles.input_buttons}>
-            <button className={styles.input_prev_btn} onClick={handleAdditionalPrev}>
+            <button
+              className={styles.input_prev_btn}
+              onClick={() => {
+                if (additionalStep === 1) {
+                  handleAdditionalPrev();
+                } else {
+                  setAdditionalStep(additionalStep - 1);
+                }
+              }}
+            >
               이전
             </button>
-            <button
-              className={styles.input_submit_btn}
-              onClick={handleSubmit}
-              disabled={!isAdditionalFormValid || isLoading}
-            >
-              {isLoading ? "분석 중..." : "분석 시작!"}
-            </button>
+            {additionalStep < 3 ? (
+              <button
+                className={styles.input_submit_btn}
+                onClick={() => setAdditionalStep(additionalStep + 1)}
+                disabled={
+                  (additionalStep === 1 && !relationshipStatus) ||
+                  (additionalStep === 2 && (!jobStatus || (jobStatus === "other" && !jobCustom.trim())))
+                }
+              >
+                다음
+              </button>
+            ) : (
+              <button
+                className={styles.input_submit_btn}
+                onClick={handleSubmit}
+                disabled={!isAdditionalFormValid || isLoading}
+              >
+                {isLoading ? "분석 중..." : "분석 시작!"}
+              </button>
+            )}
           </div>
         </div>
       )}

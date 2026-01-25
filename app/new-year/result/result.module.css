@@ -1,4 +1,4 @@
-/* 신년 사주 결과 페이지 스타일 - 블루 테마 */
+/* 신년 사주 결과 페이지 스타일 - 종이 보고서 테마 */
 
 /* 프리텐다드 폰트 (UI용) */
 @font-face {
@@ -53,7 +53,7 @@
 
 .newyear_result_page {
   font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, sans-serif;
-  background: linear-gradient(180deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+  background: linear-gradient(180deg, #f5f2ed 0%, #ebe6df 50%, #e0d9d0 100%);
   min-height: 100vh;
   min-height: 100dvh;
   -webkit-user-select: none;
@@ -92,7 +92,7 @@
 .newyear_result_page .loading_progress_bar {
   width: 200px;
   height: 4px;
-  background: #E8F4FD;
+  background: #f0ebe4;
   border-radius: 2px;
   overflow: hidden;
   position: relative;
@@ -104,7 +104,7 @@
   left: 0;
   width: 40%;
   height: 100%;
-  background: linear-gradient(90deg, #4A90D9, #3A7BC8);
+  background: linear-gradient(90deg, #8B7355, #7A6449);
   border-radius: 2px;
   animation: progress-slide 1.5s ease-in-out infinite;
 }
@@ -142,14 +142,14 @@
 .newyear_result_page .error_icon {
   width: 48px;
   height: 48px;
-  background: #E8F4FD;
+  background: #f0ebe4;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 24px;
   font-weight: bold;
-  color: #2E7BC4;
+  color: #6B5344;
 }
 
 .newyear_result_page .error_text {
@@ -161,7 +161,7 @@
 
 .newyear_result_page .error_btn {
   padding: 12px 24px;
-  background: linear-gradient(135deg, #4A90D9 0%, #3A7BC8 100%);
+  background: linear-gradient(135deg, #8B7355 0%, #7A6449 100%);
   color: #ffffff;
   text-decoration: none;
   border: none;
@@ -182,7 +182,7 @@
   height: 100dvh;
   z-index: 1;
   overflow: hidden;
-  background: linear-gradient(180deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+  background: linear-gradient(180deg, #f5f2ed 0%, #ebe6df 50%, #e0d9d0 100%);
 }
 
 .newyear_result_page .result_bg_image {
@@ -309,7 +309,7 @@
 .newyear_result_page .toc_modal_title {
   font-size: 16px;
   font-weight: 700;
-  color: #1a1a2e;
+  color: #3a2a2a;
 }
 
 .newyear_result_page .toc_modal_close {
@@ -343,13 +343,13 @@
 }
 
 .newyear_result_page .toc_modal_item.visited {
-  background: #F5FAFF;
+  background: #faf8f5;
   color: #333;
   cursor: pointer;
 }
 
 .newyear_result_page .toc_modal_item.active {
-  background: linear-gradient(135deg, #4A90D9 0%, #3A7BC8 100%);
+  background: linear-gradient(135deg, #8B7355 0%, #7A6449 100%);
   color: #ffffff;
   font-weight: 600;
 }
@@ -406,7 +406,7 @@
 .newyear_result_page .exit_modal_confirm {
   flex: 1;
   padding: 12px;
-  background: linear-gradient(135deg, #4A90D9 0%, #3A7BC8 100%);
+  background: linear-gradient(135deg, #8B7355 0%, #7A6449 100%);
   border: none;
   border-radius: 8px;
   font-size: 14px;
@@ -446,16 +446,24 @@
 .newyear_result_page .report_scroll {
   flex: 1;
   overflow-y: auto;
-  padding: 70px 0 160px;
+  padding: 0;
   -webkit-overflow-scrolling: touch;
+  background: white;
+}
+
+.newyear_result_page .report_scroll > *:first-child {
+  padding-top: 70px;
+}
+
+.newyear_result_page .report_scroll > *:last-child {
+  padding-bottom: 160px;
 }
 
 /* 리포트 카드 공통 */
 .newyear_result_page .report_card {
-  background: #F8FCFF;
-  border: 1px solid #E8F4FD;
-  border-left: none;
-  border-right: none;
+  background: #fdfcfa;
+  border-top: 1px solid #f0ebe4;
+  border-bottom: 1px solid #f0ebe4;
   border-radius: 0;
   padding: 32px 24px;
   margin: 0;
@@ -474,7 +482,7 @@
   display: block;
   width: 40px;
   height: 2px;
-  background: #2E7BC4;
+  background: #6B5344;
   margin: 24px auto 0;
 }
 
@@ -482,7 +490,7 @@
   display: inline-block;
   padding: 0;
   background: none;
-  color: #2E7BC4;
+  color: #6B5344;
   font-family: 'Pretendard', sans-serif;
   font-size: 13px;
   font-weight: 600;
@@ -520,7 +528,7 @@
 }
 
 .newyear_result_page .card_content strong {
-  color: #2E7BC4;
+  color: #6B5344;
 }
 
 .newyear_result_page .card_content blockquote {
@@ -529,14 +537,14 @@
   position: relative;
   margin: 20px 0;
   padding: 20px;
-  background: #F5FAFF;
+  background: #faf8f5;
   border: none;
   border-radius: 16px;
   font-size: 14px;
   line-height: 1.8;
   color: #666;
   font-style: normal;
-  box-shadow: 0 2px 8px rgba(46, 123, 196, 0.08);
+  box-shadow: 0 2px 8px rgba(107, 83, 68, 0.08);
 }
 
 .newyear_result_page .card_content ul {
@@ -548,9 +556,9 @@
 .newyear_result_page .card_content ul li {
   position: relative;
   padding: 14px 16px 14px 44px;
-  background: linear-gradient(135deg, #F5FAFF 0%, #EDF6FF 100%);
+  background: linear-gradient(135deg, #faf8f5 0%, #f5f2ed 100%);
   border-radius: 12px;
-  border: 1px solid #E8F4FD;
+  border: 1px solid #f0ebe4;
   margin-bottom: 10px;
   font-size: 15px;
   line-height: 1.7;
@@ -561,7 +569,7 @@
   content: "•";
   position: absolute;
   left: 20px;
-  color: #2E7BC4;
+  color: #6B5344;
   font-weight: bold;
 }
 
@@ -581,7 +589,7 @@
 .newyear_result_page .intro_section_title {
   font-size: 16px;
   font-weight: 700;
-  color: #2E7BC4;
+  color: #6B5344;
   margin: 0 0 12px 0;
 }
 
@@ -595,7 +603,7 @@
 
 /* 사주 카드 */
 .newyear_result_page .saju_card {
-  background: linear-gradient(135deg, #F5FAFF 0%, #EDF6FF 100%);
+  background: linear-gradient(135deg, #faf8f5 0%, #f5f2ed 100%);
 }
 
 .newyear_result_page .saju_info_row {
@@ -603,7 +611,7 @@
   justify-content: space-between;
   align-items: center;
   padding: 12px 0;
-  border-bottom: 1px solid #E8F4FD;
+  border-bottom: 1px solid #f0ebe4;
   margin-bottom: 16px;
 }
 
@@ -631,13 +639,13 @@
   background: #fff;
   padding: 6px 12px;
   border-radius: 16px;
-  border: 1px solid #E8F4FD;
+  border: 1px solid #f0ebe4;
 }
 
 .newyear_result_page .saju_info_ilju .ilju_char {
   font-size: 18px;
   font-weight: 700;
-  color: #2E7BC4;
+  color: #6B5344;
 }
 
 .newyear_result_page .saju_info_ilju .ilju_title {
@@ -656,14 +664,14 @@
   flex: 1;
   text-align: center;
   background: #fff;
-  border: 1px solid #E8F4FD;
+  border: 1px solid #f0ebe4;
   border-radius: 10px;
   padding: 10px 4px;
 }
 
 .newyear_result_page .pillar_mini_label {
   font-size: 11px;
-  color: #2E7BC4;
+  color: #6B5344;
   font-weight: 600;
   margin-bottom: 8px;
 }
@@ -692,7 +700,7 @@
   margin: 0 auto;
   border-radius: 16px;
   overflow: hidden;
-  box-shadow: 0 8px 32px rgba(46, 123, 196, 0.2);
+  box-shadow: 0 8px 32px rgba(107, 83, 68, 0.2);
 }
 
 .newyear_result_page .talisman_image {
@@ -733,7 +741,7 @@
 
 .newyear_result_page .waiting_progress_fill {
   height: 100%;
-  background: linear-gradient(90deg, #4A90D9, #3A7BC8);
+  background: linear-gradient(90deg, #8B7355, #7A6449);
   border-radius: 4px;
   transition: width 0.5s ease;
 }
@@ -741,7 +749,7 @@
 .newyear_result_page .waiting_progress_text {
   font-size: 14px;
   font-weight: 700;
-  color: #2E7BC4;
+  color: #6B5344;
   min-width: 40px;
 }
 
@@ -764,8 +772,8 @@
 
 .newyear_result_page .waiting_step.active {
   opacity: 1;
-  background: #F5FAFF;
-  border: 1px solid #E8F4FD;
+  background: #faf8f5;
+  border: 1px solid #f0ebe4;
 }
 
 .newyear_result_page .waiting_step_icon {
@@ -780,15 +788,15 @@
 /* 엔딩 카드 */
 .newyear_result_page .ending_card {
   padding: 32px 24px;
-  background: #F8FCFF;
+  background: #fdfcfa;
 }
 
 .newyear_result_page .ending_greeting {
   text-align: center;
   padding: 24px;
-  background: linear-gradient(135deg, #F5FAFF 0%, #EDF6FF 100%);
+  background: linear-gradient(135deg, #faf8f5 0%, #f5f2ed 100%);
   border-radius: 16px;
-  border: 1px solid #E8F4FD;
+  border: 1px solid #f0ebe4;
   margin-bottom: 32px;
 }
 
@@ -809,7 +817,7 @@
 
 .newyear_result_page .ending_greeting .ending_sign {
   font-size: 14px;
-  color: #2E7BC4;
+  color: #6B5344;
   font-style: italic;
   margin-top: 16px;
   font-weight: 600;
@@ -864,7 +872,7 @@
   justify-content: center;
   min-width: 48px;
   padding: 6px 12px;
-  background: linear-gradient(135deg, #4A90D9 0%, #3A7BC8 100%);
+  background: linear-gradient(135deg, #8B7355 0%, #7A6449 100%);
   color: #ffffff;
   font-size: 12px;
   font-weight: 700;
@@ -954,12 +962,12 @@
   padding: 16px 32px;
   font-size: 16px;
   font-weight: 700;
-  background: linear-gradient(135deg, #4A90D9 0%, #3A7BC8 100%);
+  background: linear-gradient(135deg, #8B7355 0%, #7A6449 100%);
   color: #ffffff;
   border: none;
   border-radius: 12px;
   cursor: pointer;
-  box-shadow: 0 4px 20px rgba(74, 144, 217, 0.4);
+  box-shadow: 0 4px 20px rgba(107, 83, 68, 0.4);
   font-family: inherit;
 }
 
@@ -972,9 +980,9 @@
 .newyear_result_page .waiting_info {
   text-align: center;
   padding: 16px;
-  background: #F5FAFF;
+  background: #faf8f5;
   border-radius: 12px;
-  border: 1px solid #E8F4FD;
+  border: 1px solid #f0ebe4;
 }
 
 .newyear_result_page .waiting_info p {
@@ -1014,7 +1022,7 @@
 .newyear_result_page .dialogue_speaker {
   font-size: 13px;
   font-weight: 600;
-  color: #4A90D9;
+  color: #8B7355;
   margin-bottom: 12px;
   letter-spacing: 1px;
 }
@@ -1068,12 +1076,12 @@
   padding: 16px 32px;
   font-size: 16px;
   font-weight: 700;
-  background: linear-gradient(135deg, #4A90D9 0%, #3A7BC8 100%);
+  background: linear-gradient(135deg, #8B7355 0%, #7A6449 100%);
   color: #ffffff;
   border: none;
   border-radius: 12px;
   cursor: pointer;
-  box-shadow: 0 4px 20px rgba(74, 144, 217, 0.4);
+  box-shadow: 0 4px 20px rgba(107, 83, 68, 0.4);
   font-family: inherit;
 }
 
@@ -1142,7 +1150,7 @@
 .newyear_result_page .payment-title {
   font-size: 18px;
   font-weight: 700;
-  color: #1a1a2e;
+  color: #3a2a2a;
 }
 
 .newyear_result_page .payment-close {
@@ -1193,7 +1201,7 @@
 }
 
 .newyear_result_page .payment-row.discount .payment-row-label {
-  color: #2E7BC4;
+  color: #6B5344;
 }
 
 .newyear_result_page .payment-row-discount-value {
@@ -1203,7 +1211,7 @@
 }
 
 .newyear_result_page .discount-badge {
-  background: linear-gradient(135deg, #4A90D9 0%, #3A7BC8 100%);
+  background: linear-gradient(135deg, #8B7355 0%, #7A6449 100%);
   color: #ffffff;
   font-size: 12px;
   font-weight: 700;
@@ -1213,7 +1221,7 @@
 
 .newyear_result_page .discount-amount {
   font-size: 14px;
-  color: #2E7BC4;
+  color: #6B5344;
   font-weight: 600;
 }
 
@@ -1231,7 +1239,7 @@
 .newyear_result_page .payment-row-final-value {
   font-size: 20px;
   font-weight: 700;
-  color: #2E7BC4;
+  color: #6B5344;
 }
 
 .newyear_result_page .coupon-section {
@@ -1255,7 +1263,7 @@
 
 .newyear_result_page .coupon-input:focus {
   outline: none;
-  border-color: #4A90D9;
+  border-color: #8B7355;
 }
 
 .newyear_result_page .coupon-submit-btn {
@@ -1289,7 +1297,7 @@
 .newyear_result_page .payment-submit-btn {
   width: 100%;
   padding: 16px;
-  background: linear-gradient(135deg, #4A90D9 0%, #3A7BC8 100%);
+  background: linear-gradient(135deg, #8B7355 0%, #7A6449 100%);
   color: #ffffff;
   border: none;
   border-radius: 12px;
@@ -1297,5 +1305,1271 @@
   font-weight: 700;
   cursor: pointer;
   font-family: inherit;
-  box-shadow: 0 4px 20px rgba(74, 144, 217, 0.4);
+  box-shadow: 0 4px 20px rgba(107, 83, 68, 0.4);
+}
+
+/* ===== 포괄적인 인트로 카드 스타일 ===== */
+
+/* 인트로 환영 섹션 */
+.newyear_result_page .intro_welcome {
+  text-align: center;
+  padding: 32px 20px;
+  background: linear-gradient(135deg, #faf8f5 0%, #f5f2ed 100%);
+  border-radius: 16px;
+  margin-bottom: 32px;
+}
+
+.newyear_result_page .welcome_main {
+  font-family: "KimjungchulMyungjo-Bold", serif;
+  font-size: 24px;
+  font-weight: 700;
+  color: #2a2a2a;
+  margin: 0 0 8px 0;
+}
+
+.newyear_result_page .welcome_sub {
+  font-size: 14px;
+  color: #6B5344;
+  font-weight: 600;
+  margin: 0 0 16px 0;
+}
+
+.newyear_result_page .welcome_divider {
+  font-size: 20px;
+  color: #6B5344;
+  margin: 16px 0;
+}
+
+.newyear_result_page .welcome_text {
+  font-family: 'MaruBuri', serif;
+  font-size: 15px;
+  line-height: 1.9;
+  color: #555;
+  margin: 0 0 12px 0;
+}
+
+.newyear_result_page .welcome_text:last-child {
+  margin-bottom: 0;
+}
+
+/* 인트로 섹션 타이틀 */
+.newyear_result_page .intro_section_subtitle {
+  font-size: 13px;
+  color: #888;
+  margin: 0 0 16px 0;
+}
+
+/* 인트로 인용구 */
+.newyear_result_page .intro_quote {
+  text-align: center;
+  font-size: 16px;
+  font-weight: 600;
+  color: #6B5344;
+  padding: 16px;
+  background: rgba(107, 83, 68, 0.08);
+  border-radius: 12px;
+  margin-bottom: 16px;
+}
+
+/* 인트로 노트 */
+.newyear_result_page .intro_note {
+  background: linear-gradient(135deg, #faf8f5 0%, #f5f2ed 100%);
+  padding: 16px;
+  border-radius: 12px;
+  border: 1px solid #f0ebe4;
+  margin-top: 16px;
+}
+
+/* 인트로 약속 */
+.newyear_result_page .intro_promise {
+  text-align: center;
+  font-weight: 600;
+  color: #6B5344;
+  padding: 16px;
+  background: rgba(107, 83, 68, 0.08);
+  border-radius: 12px;
+  margin-top: 16px;
+}
+
+/* 인트로 전환 섹션 */
+.newyear_result_page .intro_transition {
+  text-align: center;
+  padding: 32px 0;
+}
+
+.newyear_result_page .transition_text {
+  font-family: "KimjungchulMyungjo-Bold", serif;
+  font-size: 18px;
+  font-weight: 600;
+  color: #2a2a2a;
+  line-height: 1.8;
+}
+
+/* 인트로 챕터 리스트 */
+.newyear_result_page .intro_chapters_list {
+  background: #fff;
+  border: 1px solid #f0ebe4;
+  border-radius: 12px;
+  padding: 16px 20px;
+  margin-top: 16px;
+}
+
+.newyear_result_page .intro_chapters_list p {
+  margin: 0;
+  padding: 8px 0;
+  font-size: 14px;
+  color: #555;
+  border-bottom: 1px solid #f5f5f5;
+}
+
+.newyear_result_page .intro_chapters_list p:last-child {
+  border-bottom: none;
+}
+
+.newyear_result_page .intro_chapters_list strong {
+  color: #6B5344;
+  margin-right: 8px;
+}
+
+/* ===== 사주 테이블 예시 스타일 ===== */
+.newyear_result_page .intro_saju_table {
+  margin: 20px 0;
+  overflow-x: auto;
+}
+
+.newyear_result_page .saju_pillar_row {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+}
+
+.newyear_result_page .saju_pillar {
+  background: #fff;
+  border: 1px solid #f0ebe4;
+  border-radius: 12px;
+  padding: 12px 8px;
+  min-width: 70px;
+  text-align: center;
+}
+
+.newyear_result_page .saju_pillar.highlight {
+  background: linear-gradient(135deg, #faf8f5 0%, #f5f2ed 100%);
+  border: 2px solid #6B5344;
+}
+
+.newyear_result_page .pillar_name {
+  font-size: 11px;
+  color: #888;
+  font-weight: 600;
+  display: block;
+  margin-bottom: 8px;
+}
+
+.newyear_result_page .pillar_chars {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.newyear_result_page .char_cell {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.newyear_result_page .cell_hanja {
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.newyear_result_page .cell_hanja.wood { color: #2aa86c; }
+.newyear_result_page .cell_hanja.fire { color: #ff6a6a; }
+.newyear_result_page .cell_hanja.earth { color: #caa46a; }
+.newyear_result_page .cell_hanja.metal { color: #9a9a9a; }
+.newyear_result_page .cell_hanja.water { color: #6aa7ff; }
+
+.newyear_result_page .char_meaning {
+  font-size: 10px;
+  color: #888;
+}
+
+/* ===== 천간 테이블 ===== */
+.newyear_result_page .intro_cheongan_table {
+  background: #fff;
+  border: 1px solid #f0ebe4;
+  border-radius: 12px;
+  overflow: hidden;
+  margin: 20px 0;
+}
+
+.newyear_result_page .cheongan_row {
+  display: flex;
+  justify-content: space-between;
+}
+
+.newyear_result_page .cheongan_row.header {
+  background: linear-gradient(135deg, #faf8f5 0%, #f5f2ed 100%);
+  border-bottom: 1px solid #f0ebe4;
+}
+
+.newyear_result_page .cheongan_row span {
+  flex: 1;
+  text-align: center;
+  padding: 10px 4px;
+  font-size: 13px;
+}
+
+.newyear_result_page .cheongan_row.header .element {
+  font-weight: 700;
+}
+
+.newyear_result_page .cheongan_row.chars span {
+  font-size: 18px;
+  font-weight: 700;
+  padding: 12px 4px;
+}
+
+.newyear_result_page .cheongan_row .char_kor {
+  display: block;
+  font-size: 11px;
+  font-weight: 400;
+  color: #888;
+  margin-top: 4px;
+}
+
+.newyear_result_page .cheongan_row.meaning span {
+  font-size: 11px;
+  color: #888;
+  line-height: 1.5;
+}
+
+.newyear_result_page .wood { color: #2aa86c; }
+.newyear_result_page .fire { color: #ff6a6a; }
+.newyear_result_page .earth { color: #caa46a; }
+.newyear_result_page .metal { color: #9a9a9a; }
+.newyear_result_page .water { color: #6aa7ff; }
+
+/* ===== 지지 테이블 ===== */
+.newyear_result_page .intro_jiji_table {
+  background: #fff;
+  border: 1px solid #f0ebe4;
+  border-radius: 12px;
+  padding: 16px;
+  margin: 20px 0;
+}
+
+.newyear_result_page .jiji_table_row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.newyear_result_page .jiji_table_row:last-child {
+  margin-bottom: 0;
+}
+
+.newyear_result_page .jiji_cell {
+  flex: 1;
+  text-align: center;
+}
+
+.newyear_result_page .jiji_hanja {
+  display: block;
+  font-size: 20px;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+
+.newyear_result_page .jiji_info {
+  font-size: 10px;
+  color: #888;
+}
+
+/* ===== 오행 원형 다이어그램 ===== */
+.newyear_result_page .intro_ohang_circle {
+  padding: 20px;
+  margin: 20px 0;
+}
+
+.newyear_result_page .ohang_circle_wrapper {
+  position: relative;
+  width: 200px;
+  height: 200px;
+  margin: 0 auto 24px;
+}
+
+.newyear_result_page .ohang_node {
+  position: absolute;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid;
+  background: #fff;
+}
+
+.newyear_result_page .ohang_node.fire {
+  border-color: #ff6a6a;
+  color: #ff6a6a;
+}
+
+.newyear_result_page .ohang_node.wood {
+  border-color: #2aa86c;
+  color: #2aa86c;
+}
+
+.newyear_result_page .ohang_node.earth {
+  border-color: #caa46a;
+  color: #caa46a;
+}
+
+.newyear_result_page .ohang_node.water {
+  border-color: #6aa7ff;
+  color: #6aa7ff;
+}
+
+.newyear_result_page .ohang_node.metal {
+  border-color: #9a9a9a;
+  color: #9a9a9a;
+}
+
+.newyear_result_page .ohang_node.top {
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.newyear_result_page .ohang_node.left_top {
+  top: 40px;
+  left: 0;
+}
+
+.newyear_result_page .ohang_node.right_top {
+  top: 40px;
+  right: 0;
+}
+
+.newyear_result_page .ohang_node.left_bottom {
+  bottom: 0;
+  left: 20px;
+}
+
+.newyear_result_page .ohang_node.right_bottom {
+  bottom: 0;
+  right: 20px;
+}
+
+.newyear_result_page .ohang_label {
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.newyear_result_page .ohang_desc {
+  font-size: 10px;
+  opacity: 0.8;
+}
+
+.newyear_result_page .ohang_relations {
+  text-align: center;
+}
+
+.newyear_result_page .ohang_relation {
+  font-size: 13px;
+  color: #666;
+  margin: 8px 0;
+}
+
+.newyear_result_page .ohang_relation.saeng {
+  color: #2aa86c;
+}
+
+.newyear_result_page .ohang_relation.geuk {
+  color: #ff6a6a;
+}
+
+.newyear_result_page .relation_label {
+  display: inline-block;
+  width: 50px;
+  font-weight: 600;
+}
+
+/* ===== 일주 다이어그램 ===== */
+.newyear_result_page .intro_ilju_diagram {
+  margin: 20px 0;
+  padding: 20px;
+  background: #fff;
+  border: 1px solid #f0ebe4;
+  border-radius: 12px;
+}
+
+.newyear_result_page .ilju_pillars {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+}
+
+.newyear_result_page .ilju_pillar {
+  text-align: center;
+  padding: 12px 8px;
+  min-width: 60px;
+}
+
+.newyear_result_page .ilju_pillar.highlight {
+  background: linear-gradient(135deg, #faf8f5 0%, #f5f2ed 100%);
+  border: 2px solid #6B5344;
+  border-radius: 12px;
+  position: relative;
+}
+
+.newyear_result_page .ilju_pillar_name {
+  font-size: 11px;
+  color: #888;
+  font-weight: 600;
+  display: block;
+  margin-bottom: 8px;
+}
+
+.newyear_result_page .ilju_pillar_chars {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.newyear_result_page .ilju_pillar_chars span {
+  display: block;
+  font-size: 14px;
+  color: #555;
+  padding: 8px;
+  background: rgba(0, 0, 0, 0.03);
+  border-radius: 6px;
+}
+
+.newyear_result_page .ilju_pillar.highlight .ilju_pillar_chars span {
+  background: rgba(107, 83, 68, 0.1);
+  color: #6B5344;
+  font-weight: 600;
+}
+
+.newyear_result_page .ilju_arrow {
+  display: block;
+  font-size: 11px;
+  color: #6B5344;
+  font-weight: 600;
+  margin-top: 8px;
+}
+
+/* ===== 병오년 정보 카드 ===== */
+.newyear_result_page .byungo_info_card {
+  background: linear-gradient(135deg, #FFF5F5 0%, #FFEEEE 100%);
+  border: 1px solid #FFE0E0;
+  border-radius: 16px;
+  padding: 24px;
+  margin: 20px 0;
+  text-align: center;
+}
+
+.newyear_result_page .byungo_header {
+  margin-bottom: 20px;
+}
+
+.newyear_result_page .byungo_char {
+  font-size: 36px;
+  font-weight: 700;
+  display: block;
+  margin-bottom: 4px;
+}
+
+.newyear_result_page .byungo_label {
+  font-size: 14px;
+  color: #888;
+}
+
+.newyear_result_page .byungo_details {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.newyear_result_page .byungo_detail_item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 16px;
+  background: rgba(255, 255, 255, 0.8);
+  border-radius: 8px;
+}
+
+.newyear_result_page .detail_label {
+  font-size: 13px;
+  color: #888;
+}
+
+.newyear_result_page .detail_value {
+  font-size: 14px;
+  font-weight: 600;
+  color: #333;
+}
+
+.newyear_result_page .detail_value.fire {
+  color: #ff6a6a;
+}
+
+/* ===== 포괄적인 사주 카드 스타일 ===== */
+.newyear_result_page .saju_card_full {
+  background: #fdfcfa;
+}
+
+.newyear_result_page .intro_welcome.compact {
+  padding: 24px 16px;
+  margin-bottom: 24px;
+}
+
+.newyear_result_page .intro_welcome.compact .welcome_main {
+  font-size: 20px;
+}
+
+/* 사주 정보 헤더 */
+.newyear_result_page .saju_info_header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 16px;
+  background: #fff;
+  border: 1px solid #f0ebe4;
+  border-radius: 12px;
+  margin-bottom: 16px;
+}
+
+.newyear_result_page .saju_info_date {
+  font-size: 12px;
+  color: #888;
+}
+
+/* 사주 원국표 카드 */
+.newyear_result_page .saju_table_card {
+  background: #fff;
+  border: 1px solid #f0ebe4;
+  border-radius: 12px;
+  overflow: hidden;
+  margin-bottom: 16px;
+}
+
+.newyear_result_page .saju_full_table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+
+.newyear_result_page .saju_full_table th,
+.newyear_result_page .saju_full_table td {
+  padding: 10px 4px;
+  text-align: center;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.newyear_result_page .saju_full_table th {
+  background: linear-gradient(135deg, #faf8f5 0%, #f5f2ed 100%);
+  font-weight: 600;
+  color: #6B5344;
+}
+
+.newyear_result_page .saju_full_table .highlight {
+  background: rgba(107, 83, 68, 0.08);
+}
+
+.newyear_result_page .row_label {
+  font-size: 11px;
+  color: #888;
+  font-weight: 600;
+  background: #f8f8f8;
+  width: 60px;
+}
+
+.newyear_result_page .row_sipsung_top td,
+.newyear_result_page .row_sipsung_bottom td {
+  font-size: 11px;
+  color: #666;
+}
+
+.newyear_result_page .sipsung_text {
+  font-size: 12px;
+}
+
+.newyear_result_page .row_cheongan td,
+.newyear_result_page .row_jiji td {
+  padding: 12px 4px;
+}
+
+.newyear_result_page .char_box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+
+.newyear_result_page .char_hanja {
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.newyear_result_page .char_korean {
+  font-size: 10px;
+  color: #888;
+}
+
+.newyear_result_page .row_extra td {
+  font-size: 11px;
+  color: #666;
+}
+
+/* 사주 설명 카드 */
+.newyear_result_page .saju_explain_card {
+  background: linear-gradient(135deg, #faf8f5 0%, #f5f2ed 100%);
+  border: 1px solid #f0ebe4;
+  border-radius: 12px;
+  padding: 16px;
+  text-align: center;
+}
+
+.newyear_result_page .saju_explain_title {
+  font-size: 14px;
+  font-weight: 700;
+  color: #6B5344;
+  margin: 0 0 8px 0;
+}
+
+.newyear_result_page .saju_explain_text {
+  font-size: 13px;
+  color: #666;
+  line-height: 1.7;
+  margin: 0;
+}
+
+/* 천간/지지 분리 테이블 */
+.newyear_result_page .saju_split_table {
+  background: #fff;
+  border: 1px solid #f0ebe4;
+  border-radius: 12px;
+  overflow: hidden;
+  margin: 16px 0;
+}
+
+.newyear_result_page .split_row {
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.newyear_result_page .split_row:last-child {
+  border-bottom: none;
+}
+
+.newyear_result_page .split_label {
+  width: 50px;
+  padding: 12px 8px;
+  background: #f8f8f8;
+  font-size: 11px;
+  color: #888;
+  text-align: center;
+  font-weight: 600;
+}
+
+.newyear_result_page .split_cell {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 12px 4px;
+}
+
+.newyear_result_page .split_hanja {
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.newyear_result_page .split_korean {
+  font-size: 10px;
+  color: #888;
+}
+
+/* 요소 의미 설명 */
+.newyear_result_page .saju_elements_meaning {
+  background: #fff;
+  border: 1px solid #f0ebe4;
+  border-radius: 12px;
+  padding: 16px;
+  margin-top: 16px;
+}
+
+.newyear_result_page .elements_meaning_title {
+  font-size: 14px;
+  font-weight: 700;
+  color: #6B5344;
+  margin: 0 0 16px 0;
+  text-align: center;
+}
+
+.newyear_result_page .element_meaning_list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.newyear_result_page .element_meaning_item {
+  padding: 12px;
+  background: #f8f8f8;
+  border-radius: 8px;
+}
+
+.newyear_result_page .element_meaning_item strong {
+  display: block;
+  font-size: 13px;
+  color: #6B5344;
+  margin-bottom: 4px;
+}
+
+.newyear_result_page .element_meaning_item p {
+  font-size: 12px;
+  color: #666;
+  line-height: 1.6;
+  margin: 0;
+}
+
+/* 까치도령 코멘트 */
+.newyear_result_page .doryung_comment {
+  background: linear-gradient(135deg, #faf8f5 0%, #f0ebe4 100%);
+  border: 1px solid #f0ebe4;
+  border-radius: 16px;
+  padding: 16px;
+  margin-bottom: 20px;
+  position: relative;
+}
+
+.newyear_result_page .doryung_comment::before {
+  content: "까치도령";
+  position: absolute;
+  top: -10px;
+  left: 16px;
+  background: #6B5344;
+  color: white;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 2px 10px;
+  border-radius: 10px;
+}
+
+.newyear_result_page .doryung_text {
+  font-family: 'MaruBuri', serif;
+  font-size: 14px;
+  color: #444;
+  line-height: 1.8;
+  margin: 0;
+}
+
+/* 일간 표시 */
+.newyear_result_page .ilgan_simple_display {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 24px;
+  background: #fff;
+  border: 1px solid #f0ebe4;
+  border-radius: 16px;
+  margin: 16px 0;
+}
+
+.newyear_result_page .ilgan_char {
+  font-size: 48px;
+  font-weight: 700;
+}
+
+.newyear_result_page .ilgan_label {
+  font-size: 14px;
+  color: #888;
+  margin-top: 8px;
+}
+
+/* 일간 신년 박스 */
+.newyear_result_page .ilgan_year_box {
+  background: linear-gradient(135deg, #faf8f5 0%, #f5f2ed 100%);
+  border: 1px solid #f0ebe4;
+  border-radius: 12px;
+  padding: 20px;
+  margin-top: 16px;
+}
+
+.newyear_result_page .ilgan_headline {
+  font-size: 16px;
+  font-weight: 700;
+  color: #6B5344;
+  text-align: center;
+  margin: 0 0 12px 0;
+}
+
+.newyear_result_page .ilgan_summary {
+  font-size: 14px;
+  color: #555;
+  line-height: 1.8;
+  text-align: center;
+  margin: 0 0 16px 0;
+}
+
+.newyear_result_page .ilgan_keywords {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.newyear_result_page .ilgan_keyword {
+  background: rgba(107, 83, 68, 0.15);
+  color: #6B5344;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 6px 12px;
+  border-radius: 16px;
+}
+
+.newyear_result_page .ilgan_relation {
+  font-size: 12px;
+  color: #888;
+  text-align: center;
+  margin: 0;
+  padding-top: 12px;
+  border-top: 1px solid #f0ebe4;
+}
+
+/* 기둥별 타이밍 카드 */
+.newyear_result_page .pillar_timing_cards {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.newyear_result_page .timing_card {
+  background: #fff;
+  border: 1px solid #f0ebe4;
+  border-radius: 12px;
+  padding: 16px;
+}
+
+.newyear_result_page .timing_card.highlight {
+  background: linear-gradient(135deg, #faf8f5 0%, #f5f2ed 100%);
+  border: 2px solid #6B5344;
+}
+
+/* 미니 사주 테이블 */
+.newyear_result_page .mini_saju_table {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.newyear_result_page .mini_pillar {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 6px;
+  min-width: 36px;
+  border-radius: 6px;
+}
+
+.newyear_result_page .mini_pillar.highlight {
+  background: rgba(107, 83, 68, 0.1);
+}
+
+.newyear_result_page .mini_pillar.dimmed {
+  opacity: 0.3;
+}
+
+.newyear_result_page .mini_stem,
+.newyear_result_page .mini_branch {
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.newyear_result_page .timing_header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.newyear_result_page .timing_pillar {
+  font-size: 14px;
+  font-weight: 700;
+  color: #6B5344;
+}
+
+.newyear_result_page .timing_period {
+  font-size: 12px;
+  color: #888;
+}
+
+.newyear_result_page .timing_desc {
+  font-size: 13px;
+  color: #555;
+  line-height: 1.6;
+  margin: 0 0 8px 0;
+}
+
+.newyear_result_page .timing_year {
+  font-size: 12px;
+  color: #6B5344;
+  margin: 0;
+  padding-top: 8px;
+  border-top: 1px solid #f0f0f0;
+}
+
+/* 오행 차트 카드 */
+.newyear_result_page .ohang_chart_card {
+  background: #fff;
+  border: 1px solid #f0ebe4;
+  border-radius: 12px;
+  padding: 16px;
+  margin: 16px 0;
+}
+
+.newyear_result_page .ohang_chart_title {
+  font-size: 14px;
+  font-weight: 700;
+  color: #333;
+  margin: 0 0 16px 0;
+  text-align: center;
+}
+
+.newyear_result_page .ohang_bar_row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.newyear_result_page .ohang_bar_row:last-child {
+  margin-bottom: 0;
+}
+
+.newyear_result_page .ohang_bar_label {
+  width: 50px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.newyear_result_page .ohang_bar_track {
+  flex: 1;
+  height: 8px;
+  background: #f0f0f0;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.newyear_result_page .ohang_bar_fill {
+  height: 100%;
+  border-radius: 4px;
+  transition: width 0.5s ease;
+}
+
+.newyear_result_page .ohang_pct {
+  width: 45px;
+  font-size: 12px;
+  color: #666;
+  text-align: right;
+}
+
+.newyear_result_page .ohang_status {
+  width: 30px;
+  font-size: 11px;
+  font-weight: 600;
+  text-align: center;
+}
+
+.newyear_result_page .ohang_status.과다 { color: #ff6a6a; }
+.newyear_result_page .ohang_status.적정 { color: #2aa86c; }
+.newyear_result_page .ohang_status.부족 { color: #caa46a; }
+.newyear_result_page .ohang_status.결핍 { color: #9a9a9a; }
+
+/* 2026년 오행 영향 */
+.newyear_result_page .year_ohang_effect {
+  background: linear-gradient(135deg, #FFF8F0 0%, #FFF5EA 100%);
+  border: 1px solid #FFE8D0;
+  border-radius: 12px;
+  padding: 16px;
+  margin-top: 16px;
+}
+
+.newyear_result_page .year_ohang_title {
+  font-size: 14px;
+  font-weight: 700;
+  color: #ff6a6a;
+  margin: 0 0 12px 0;
+  text-align: center;
+}
+
+.newyear_result_page .year_ohang_content {
+  font-size: 14px;
+  color: #555;
+  line-height: 1.8;
+}
+
+.newyear_result_page .year_ohang_content p {
+  margin: 0 0 8px 0;
+}
+
+.newyear_result_page .year_ohang_content p:last-child {
+  margin-bottom: 0;
+}
+
+/* ===== 귀인 텍스트 ===== */
+.newyear_result_page .guiin_text {
+  color: #6B5344;
+  font-weight: 600;
+  font-size: 10px;
+}
+
+/* ===== 용신/희신/기신 카드 ===== */
+.newyear_result_page .yongsin_cards {
+  display: flex;
+  gap: 12px;
+  margin: 20px 0;
+}
+
+.newyear_result_page .yongsin_card {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 16px 12px;
+  background: #fff;
+  border: 1px solid #f0ebe4;
+  border-radius: 12px;
+  text-align: center;
+}
+
+.newyear_result_page .yongsin_card.yongsin_main {
+  background: #fff;
+  border: 1px solid #f0ebe4;
+}
+
+.newyear_result_page .yongsin_card.yongsin_hee {
+  background: #fff;
+}
+
+.newyear_result_page .yongsin_card.yongsin_gi {
+  background: #fff;
+  border-color: #f0ebe4;
+}
+
+.newyear_result_page .yongsin_label {
+  font-size: 12px;
+  font-weight: 500;
+  color: #666;
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.newyear_result_page .yongsin_label::after {
+  content: "";
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #ddd;
+}
+
+.newyear_result_page .yongsin_card.yongsin_main .yongsin_label::after {
+  background: #ff6b6b;
+}
+
+.newyear_result_page .yongsin_card.yongsin_hee .yongsin_label::after {
+  background: #5cb85c;
+}
+
+.newyear_result_page .yongsin_card.yongsin_gi .yongsin_label::after {
+  background: #5bc0de;
+}
+
+.newyear_result_page .yongsin_circle {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 10px;
+}
+
+.newyear_result_page .yongsin_char {
+  font-size: 28px;
+  font-weight: 700;
+}
+
+.newyear_result_page .yongsin_name {
+  font-size: 13px;
+  font-weight: 500;
+  color: #333;
+}
+
+/* 용신 설명 */
+.newyear_result_page .yongsin_explain {
+  background: #fff;
+  border: 1px solid #f0ebe4;
+  border-radius: 12px;
+  padding: 16px;
+  margin-top: 16px;
+}
+
+.newyear_result_page .yongsin_explain_item {
+  padding: 12px 0;
+  border-bottom: 1px solid #f5f5f5;
+}
+
+.newyear_result_page .yongsin_explain_item:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.newyear_result_page .yongsin_explain_item:first-child {
+  padding-top: 0;
+}
+
+.newyear_result_page .yongsin_explain_item strong {
+  display: block;
+  font-size: 13px;
+  color: #6B5344;
+  margin-bottom: 6px;
+}
+
+.newyear_result_page .yongsin_explain_item p {
+  font-size: 12px;
+  color: #666;
+  line-height: 1.7;
+  margin: 0;
+}
+
+/* ===== 용신 카드 업데이트 (원형 배경) ===== */
+.newyear_result_page .yongsin_card .yongsin_circle {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 8px;
+}
+
+.newyear_result_page .yongsin_card.yongsin_main .yongsin_circle {
+  background: rgba(255, 100, 100, 0.15);
+}
+
+.newyear_result_page .yongsin_card.yongsin_hee .yongsin_circle {
+  background: rgba(100, 180, 100, 0.15);
+}
+
+.newyear_result_page .yongsin_card.yongsin_gi .yongsin_circle {
+  background: rgba(100, 150, 220, 0.15);
+}
+
+.newyear_result_page .yongsin_method_note {
+  font-size: 11px;
+  color: #888;
+  text-align: center;
+  margin-top: 12px;
+}
+
+/* ===== 신강신약 바 ===== */
+.newyear_result_page .strength_section {
+  background: #fff;
+  border: 1px solid #f0ebe4;
+  border-radius: 12px;
+  padding: 20px 16px;
+  margin-top: 20px;
+}
+
+.newyear_result_page .strength_title {
+  font-size: 13px;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.newyear_result_page .strength_bar_wrap {
+  position: relative;
+  margin-bottom: 8px;
+}
+
+.newyear_result_page .strength_bar {
+  width: 100%;
+  height: 8px;
+  background: linear-gradient(90deg,
+    #6BB5E0 0%,
+    #9ED4F0 14%,
+    #C5E8F8 28%,
+    #E8E8E8 50%,
+    #F8D8C8 72%,
+    #F0A080 86%,
+    #E07050 100%
+  );
+  border-radius: 4px;
+}
+
+.newyear_result_page .strength_marker {
+  position: absolute;
+  top: -4px;
+  width: 16px;
+  height: 16px;
+  background: #333;
+  border: 2px solid #fff;
+  border-radius: 50%;
+  transform: translateX(-50%);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+}
+
+.newyear_result_page .strength_labels {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 8px;
+}
+
+.newyear_result_page .strength_label {
+  font-size: 10px;
+  color: #999;
+  text-align: center;
+}
+
+.newyear_result_page .strength_label.active {
+  color: #333;
+  font-weight: 700;
+}
+
+.newyear_result_page .strength_result {
+  text-align: center;
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid #f0f0f0;
+}
+
+.newyear_result_page .strength_result_text {
+  font-size: 14px;
+  color: #333;
+  margin: 0;
+}
+
+.newyear_result_page .strength_result_text .highlight {
+  color: #ff6a6a;
+  font-weight: 700;
+}
+
+.newyear_result_page .strength_result_text .level {
+  color: #6B5344;
+  font-weight: 700;
 }

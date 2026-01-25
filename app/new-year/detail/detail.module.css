@@ -1,4 +1,4 @@
-/* 신년 사주 상세 페이지 스타일 - 연애사주 기반 + 블루 테마 */
+/* 신년 사주 상세 페이지 스타일 - 연애사주 기반 + 종이 보고서 테마 */
 
 .main_body_wrap {
   background: white;
@@ -66,8 +66,8 @@
 .loading_spinner {
   width: 40px;
   height: 40px;
-  border: 4px solid #E8F4FD;
-  border-top-color: #4A90D9;
+  border: 4px solid #f0ebe4;
+  border-top-color: #8B7355;
   border-radius: 50%;
   animation: spin 1s linear infinite;
 }
@@ -105,109 +105,239 @@
   display: block;
 }
 
-/* 운세 날씨 카드 */
-.weather_card {
-  background: linear-gradient(180deg, #E8F4FD 0%, #D4E8F8 100%);
-  padding: 40px 24px;
+/* ===== 운세 날씨 섹션 ===== */
+.weather_section {
+  position: relative;
+  background: linear-gradient(-22deg,
+      #C5E2FF 0%,
+      #FFFEE7 100%);
+  padding: 48px 24px 40px;
   text-align: center;
 }
 
 .weather_label {
-  font-size: 14px;
-  color: #666;
+  font-size: 16px;
+  font-weight: 400;
+  color: #555;
   margin-bottom: 8px;
 }
 
 .weather_title {
-  font-size: 24px;
-  font-weight: 700;
-  color: #1a1a2e;
-  margin: 0 0 32px 0;
+  font-family: "Danjo", serif;
+  font-size: 32px;
+  font-weight: 500;
+  color: #000;
+  margin: 0 0 40px 0;
+  letter-spacing: -0.5px;
 }
 
 .weather_quote_section {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 8px;
-  margin-bottom: 32px;
+  gap: 0;
+  margin-bottom: 48px;
 }
 
 .weather_quote_mark {
   font-size: 28px;
   color: #4A90D9;
   line-height: 1;
+  font-weight: 400;
+  margin-bottom: 16px;
 }
 
 .weather_quote_mark_bottom {
   font-size: 28px;
   color: #4A90D9;
   line-height: 1;
-  margin-top: 16px;
+  font-weight: 400;
+  margin-top: 48px;
 }
 
 .weather_emoji {
-  font-size: 32px;
-  margin: 4px 0;
+  font-size: 40px;
+  margin: 12px 0;
 }
 
 .weather_headline {
-  font-size: 18px;
-  font-weight: 600;
-  color: #2E7BC4;
+  font-family: "Danjo", serif;
+  font-size: 20px;
+  font-weight: 700;
   line-height: 1.6;
   margin: 0;
   padding: 0 16px;
-  text-shadow: 0 4px 20px rgba(46, 123, 196, 0.25), 0 8px 40px rgba(46, 123, 196, 0.15);
+  background: linear-gradient(180deg, #89E6FF 0%, #009AC4 61%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
-.ability_section {
+/* 블러 처리된 미리보기 */
+.blurred_preview {
   text-align: left;
   margin-top: 32px;
+  padding: 0 4px;
+}
+
+.blurred_preview p {
+  font-size: 15px;
+  color: #444;
+  line-height: 1.9;
+  margin: 0;
+}
+
+.blur_text {
+  filter: blur(5px);
+  -webkit-user-select: none;
+  user-select: none;
+  color: #666;
+}
+
+/* ===== 능력 섹션 ===== */
+.ability_section {
+  position: relative;
+  background: linear-gradient(-22deg,
+      #C5E2FF 0%,
+      #FFFEE7 100%);
+  padding: 48px 24px 40px;
+  text-align: center;
 }
 
 .ability_label {
-  font-size: 14px;
-  color: #666;
-  margin: 0 0 4px 0;
+  font-size: 16px;
+  font-weight: 400;
+  color: #555;
+  margin-bottom: 8px;
 }
 
-.ability_section_title {
-  font-size: 20px;
-  font-weight: 700;
-  color: #1a1a2e;
-  margin: 0 0 24px 0;
+.ability_title_main {
+  font-family: "Danjo", serif;
+  font-size: 32px;
+  font-weight: 500;
+  color: #000;
+  margin: 0 0 40px 0;
+  letter-spacing: -0.5px;
 }
 
-.ability_intro {
-  font-size: 15px;
-  color: #333;
-  margin: 0 0 8px 0;
+.ability_quote_section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
+  margin-bottom: 24px;
 }
 
-.ability_title_wrap {
+.ability_quote_mark {
+  font-size: 28px;
+  color: #4A90D9;
+  line-height: 1;
+  font-weight: 400;
   margin-bottom: 16px;
 }
 
-.ability_title {
-  font-size: 18px;
-  font-weight: 700;
-  color: #2E7BC4;
-  margin: 0;
-  line-height: 1.5;
+.ability_quote_mark_bottom {
+  font-size: 28px;
+  color: #4A90D9;
+  line-height: 1;
+  font-weight: 400;
+  margin-top: 48px;
 }
 
+.ability_headline {
+  font-family: "Danjo", serif;
+  font-size: 28px;
+  font-weight: 600;
+  display: block;
+  margin-top: 8px;
+  line-height: 2;
+  background: linear-gradient(180deg, #89E6FF 0%, #009AC4 61%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.ability_highlight {}
+
 .ability_desc {
-  font-size: 15px;
-  line-height: 1.9;
-  color: #555;
-  margin: 0;
+  font-family: "Danjo", serif;
+  font-size: 16px;
+  line-height: 2;
+  color: #5a7a8a;
+  margin: 0 0 48px 0;
   white-space: pre-line;
+  text-align: center;
+  text-shadow: 0 4px 12px #B4EFFF;
+}
+
+/* 잠금 미리보기 박스 */
+.locked_preview_box {
+  background: #fff;
+  border: 1px solid rgba(74, 144, 217, 0.2);
+  border-radius: 16px;
+  padding: 36px 20px 28px;
+  margin-top: 28px;
+  position: relative;
+  text-align: center;
+}
+
+.lock_icon {
+  position: absolute;
+  top: -20px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 44px;
+  height: 44px;
+  background: #e8f2fc;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.lock_icon .material-icons {
+  font-size: 22px;
+  color: #4A90D9;
+}
+
+.locked_title {
+  font-size: 16px;
+  font-weight: 700;
+  color: #4A90D9;
+  margin: 0 0 24px 0;
+}
+
+.locked_list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  text-align: left;
+}
+
+.locked_list li {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-size: 15px;
+  color: #222;
+  padding: 12px 0;
+  font-weight: 500;
+}
+
+.locked_list .bullet {
+  flex-shrink: 0;
+  font-size: 14px;
+}
+
+.locked_list .sub_text {
+  font-size: 13px;
+  color: #888;
+  font-weight: 400;
 }
 
 /* 섹션 1: 기본 정보 + 사주팔자 */
 .section_1 {
-  background: linear-gradient(180deg, #F5FAFF 0%, #ffffff 100%);
+  background: linear-gradient(180deg, #faf8f5 0%, #ffffff 100%);
 }
 
 .info_card {
@@ -215,7 +345,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border-bottom: 1px solid #E8F4FD;
+  border-bottom: 1px solid #f0ebe4;
 }
 
 .info_main {
@@ -239,16 +369,16 @@
   display: flex;
   align-items: center;
   gap: 8px;
-  background: #F5FAFF;
+  background: #faf8f5;
   padding: 8px 14px;
   border-radius: 20px;
-  border: 1px solid #4A90D9;
+  border: 1px solid #8B7355;
 }
 
 .ilju_char {
   font-size: 20px;
   font-weight: 700;
-  color: #2E7BC4;
+  color: #6B5344;
 }
 
 .ilju_title {
@@ -273,7 +403,7 @@
 
 .pillars_header :global(.material-icons) {
   font-size: 20px;
-  color: #2E7BC4;
+  color: #6B5344;
 }
 
 /* 사주 테이블 */
@@ -293,7 +423,7 @@
 .saju_table td {
   padding: 10px 4px;
   text-align: center;
-  border-bottom: 1px solid #D4E8F8;
+  border-bottom: 1px solid #e8e0d8;
 }
 
 .saju_table th {
@@ -351,7 +481,7 @@
 /* 섹션 2: 신년운세 키워드 */
 .section_2 {
   padding: 40px 20px;
-  background: linear-gradient(180deg, #F5FAFF 0%, #EDF6FF 100%);
+  background: linear-gradient(180deg, #faf8f5 0%, #f5f2ed 100%);
   text-align: center;
 }
 
@@ -435,7 +565,7 @@
   padding: 20px 16px;
   background: #fff;
   border-radius: 16px;
-  border: 1px solid #E8F4FD;
+  border: 1px solid #f0ebe4;
 }
 
 .compatibility_left,
@@ -546,7 +676,7 @@
 .survival_section {
   margin-top: 40px;
   padding-top: 32px;
-  border-top: 1px dashed #E8F4FD;
+  border-top: 1px dashed #f0ebe4;
   text-align: center;
 }
 
@@ -567,7 +697,7 @@
 /* 잠금 미리보기 박스 */
 .info_preview_box.locked {
   position: relative;
-  background: linear-gradient(180deg, #F5FAFF 0%, #EDF6FF 100%);
+  background: linear-gradient(180deg, #faf8f5 0%, #f5f2ed 100%);
   border: none;
   padding-top: 48px;
 }
@@ -589,11 +719,11 @@
 
 .lock_icon :global(.material-icons) {
   font-size: 20px;
-  color: #2E7BC4;
+  color: #6B5344;
 }
 
 .info_preview_box.locked .preview_title {
-  color: #2E7BC4;
+  color: #6B5344;
   font-size: 14px;
   margin-bottom: 12px;
 }
@@ -617,7 +747,7 @@
   margin-top: 32px;
   padding: 24px;
   background: #fff;
-  border: 1px solid #4A90D9;
+  border: 1px solid #8B7355;
   border-radius: 16px;
   text-align: left;
 }
@@ -642,7 +772,7 @@
   padding: 8px 0;
   padding-left: 24px;
   position: relative;
-  border-bottom: 1px solid #E8F4FD;
+  border-bottom: 1px solid #f0ebe4;
 }
 
 .preview_list li:last-child {
@@ -653,7 +783,7 @@
   content: "✓";
   position: absolute;
   left: 0;
-  color: #2E7BC4;
+  color: #6B5344;
   font-weight: 600;
 }
 
@@ -677,20 +807,20 @@
   justify-content: center;
   gap: 8px;
   padding: 18px 24px;
-  background: linear-gradient(135deg, #4A90D9 0%, #3A7BC8 100%);
+  background: linear-gradient(135deg, #8B7355 0%, #7A6449 100%);
   color: #ffffff;
   font-size: 17px;
   font-weight: 700;
   border: none;
   border-radius: 14px;
   cursor: pointer;
-  box-shadow: 0 4px 20px rgba(74, 144, 217, 0.4);
+  box-shadow: 0 4px 20px rgba(107, 83, 68, 0.4);
   transition: all 0.2s ease;
 }
 
 .analyze_btn:hover {
   transform: translateY(-2px);
-  box-shadow: 0 6px 25px rgba(74, 144, 217, 0.5);
+  box-shadow: 0 6px 25px rgba(107, 83, 68, 0.5);
 }
 
 /* 고민 유도 섹션 */
@@ -698,7 +828,7 @@
   margin-top: 40px;
   padding: 40px 20px;
   text-align: center;
-  background: linear-gradient(180deg, #F5FAFF 0%, #EDF6FF 50%, #F5FAFF 100%);
+  background: linear-gradient(180deg, #faf8f5 0%, #f5f2ed 50%, #faf8f5 100%);
   position: relative;
   overflow: hidden;
 }
@@ -723,19 +853,19 @@
 .hesitate_hint {
   font-size: 18px;
   font-weight: 500;
-  color: #1E5A99;
+  color: #5a4a3a;
   margin: 0;
   padding: 16px 28px;
-  background: linear-gradient(135deg, #fff 0%, #F5FAFF 100%);
+  background: linear-gradient(135deg, #fff 0%, #faf8f5 100%);
   border-radius: 30px;
   display: inline-block;
   box-shadow:
-    0 4px 20px rgba(46, 123, 196, 0.15),
-    0 0 0 2px rgba(46, 123, 196, 0.1);
+    0 4px 20px rgba(107, 83, 68, 0.15),
+    0 0 0 2px rgba(107, 83, 68, 0.1);
 }
 
 .hesitate_hint strong {
-  color: #2E7BC4;
+  color: #6B5344;
   font-weight: 700;
 }
 
@@ -766,7 +896,7 @@
   padding: 0px 0px 12px 0;
   background: #fff;
   border-radius: 12px;
-  border: 1px solid #D4E8F8;
+  border: 1px solid #e8e0d8;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -778,8 +908,8 @@
   font-size: 11px;
   width: 100%;
   font-weight: 600;
-  color: #1E5A99;
-  background: #EDF6FF;
+  color: #5a4a3a;
+  background: #f5f2ed;
   padding: 4px 10px;
   border-radius: 12px 12px 0 0;
   margin-bottom: 8px;
@@ -806,22 +936,22 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(135deg, #4A90D9 0%, #3A7BC8 100%);
+  background: linear-gradient(135deg, #8B7355 0%, #7A6449 100%);
   border-radius: 50%;
-  box-shadow: 0 4px 20px rgba(74, 144, 217, 0.4);
+  box-shadow: 0 4px 20px rgba(107, 83, 68, 0.4);
 }
 
 /* 우리 가격 */
 .our_price_section {
   padding: 28px 24px;
-  background: linear-gradient(135deg, #F5FAFF 0%, #EDF6FF 100%);
+  background: linear-gradient(135deg, #faf8f5 0%, #f5f2ed 100%);
   border-radius: 16px;
 }
 
 .our_price_badge {
   font-size: 14px;
   font-weight: 600;
-  color: #1E5A99;
+  color: #5a4a3a;
   margin-bottom: 12px;
 }
 
@@ -861,7 +991,7 @@
 }
 
 .student_modal {
-  background: #F8FCFF;
+  background: #fdfcfa;
   border-radius: 16px;
   padding: 28px 24px;
   max-width: 300px;
@@ -885,7 +1015,7 @@
 }
 
 .student_modal_desc strong {
-  color: #2E7BC4;
+  color: #6B5344;
   font-weight: 700;
 }
 
@@ -908,15 +1038,15 @@
   content: "✓";
   position: absolute;
   left: 0;
-  color: #2E7BC4;
+  color: #6B5344;
   font-weight: 600;
 }
 
 .student_modal_list li.bonus {
   margin-top: 8px;
   padding-top: 10px;
-  border-top: 1px dashed #D4E8F8;
-  color: #1E5A99;
+  border-top: 1px dashed #e8e0d8;
+  color: #5a4a3a;
   font-weight: 500;
 }
 
@@ -931,14 +1061,14 @@
   font-size: 15px;
   font-weight: 600;
   cursor: pointer;
-  background: linear-gradient(135deg, #4A90D9 0%, #3A7BC8 100%);
+  background: linear-gradient(135deg, #8B7355 0%, #7A6449 100%);
   border: none;
   color: #ffffff;
 }
 
 .student_applied_badge {
   font-size: 12px;
-  color: #2E7BC4;
+  color: #6B5344;
   text-align: center;
   margin: 8px 0 0 0;
   font-weight: 500;
@@ -948,11 +1078,12 @@
 .payment-overlay {
   position: fixed;
   top: 0;
+  bottom: 0;
   left: 50%;
   transform: translateX(-50%);
   width: 100%;
   max-width: 500px;
-  height: 100%;
+  height: 100vh;
   background: whitesmoke;
   z-index: 99999;
   overflow-y: auto;
@@ -969,6 +1100,7 @@
 .modal-content {
   width: 100%;
   max-width: 500px;
+  min-height: 100vh;
   background: #fff;
   padding: 34px 22px 28px 22px;
   box-shadow: 0 10px 28px rgba(0, 0, 0, 0.19);
@@ -1032,7 +1164,7 @@
 }
 
 .payment-row.discount .payment-row-label {
-  color: #2E7BC4;
+  color: #6B5344;
 }
 
 .payment-row-discount-value {
@@ -1045,7 +1177,7 @@
   font-size: 12px;
   font-weight: 600;
   color: #fff;
-  background: #2E7BC4;
+  background: #6B5344;
   padding: 4px 8px;
   border-radius: 4px;
 }
@@ -1053,7 +1185,7 @@
 .discount-amount {
   font-size: 15px;
   font-weight: 600;
-  color: #2E7BC4;
+  color: #6B5344;
 }
 
 .payment-divider {
@@ -1079,7 +1211,7 @@
 }
 
 .payment-row-final-value.student-price {
-  color: #2E7BC4;
+  color: #6B5344;
 }
 
 /* 쿠폰 섹션 */
@@ -1105,7 +1237,7 @@
 }
 
 .coupon-input:focus {
-  border-color: #2E7BC4;
+  border-color: #6B5344;
 }
 
 .coupon-submit-btn {
@@ -1127,7 +1259,7 @@
 .coupon-error {
   margin-top: 8px;
   font-size: 12px;
-  color: #2E7BC4;
+  color: #6B5344;
 }
 
 #new-year-payment-method,
@@ -1143,21 +1275,21 @@
   margin-top: 16px;
   width: 100%;
   padding: 15px 0;
-  background: linear-gradient(135deg, #4A90D9 0%, #3A7BC8 100%);
+  background: linear-gradient(135deg, #8B7355 0%, #7A6449 100%);
   color: #ffffff;
   font-weight: 700;
   border: none;
   border-radius: 8px;
   font-size: 17px;
   cursor: pointer;
-  box-shadow: 0 4px 15px rgba(74, 144, 217, 0.3);
+  box-shadow: 0 4px 15px rgba(107, 83, 68, 0.3);
 }
 
 /* 학생 할인 배너 */
 .student-payment-banner {
   padding: 12px 20px;
-  background: #F5FAFF;
-  border: 1px solid #4A90D9;
+  background: #faf8f5;
+  border: 1px solid #8B7355;
   border-radius: 8px;
   margin-top: 16px;
   text-align: center;
@@ -1166,14 +1298,14 @@
 .student-payment-banner .banner-text {
   font-size: 14px;
   font-weight: 500;
-  color: #2E7BC4;
+  color: #6B5344;
   margin: 0;
 }
 
 .payment-row.discount.student-discount .payment-row-label {
-  color: #2E7BC4;
+  color: #6B5344;
 }
 
 .discount-badge.student {
-  background: #2E7BC4;
+  background: #6B5344;
 }

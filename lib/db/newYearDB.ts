@@ -33,6 +33,15 @@ export interface NewYearSajuData {
     korean?: string;
     animal?: string;
   };
+  yongsin?: {
+    yongsin?: { element?: string; korean?: string; hanja?: string };
+    heesin?: { element?: string; korean?: string; hanja?: string };
+    gisin?: { element?: string; korean?: string; hanja?: string };
+    gusin?: { element?: string; korean?: string; hanja?: string };
+    hansin?: { element?: string; korean?: string; hanja?: string };
+    method?: string;
+    reason?: string;
+  };
 }
 
 // 분석 결과 타입
