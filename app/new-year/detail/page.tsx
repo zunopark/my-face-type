@@ -131,6 +131,73 @@ const dayMasterData: Record<
   },
 };
 
+// 일간별 운세 날씨 데이터
+const weatherData: Record<
+  string,
+  { emoji: string; weather: string; abilityTitle: string; abilityDesc: string }
+> = {
+  甲: {
+    emoji: "🌤️",
+    weather: "묵혀둔 재능을 밖으로 꺼내야만 빛을 보는 해",
+    abilityTitle: "숨겨진 포텐을 터트리는 올라운더",
+    abilityDesc: "판이 깔렸으니 춤을 춘다.\n일도 놀이처럼 즐기니 결과물마저 예술이 된다.",
+  },
+  乙: {
+    emoji: "🌅",
+    weather: "가만히 있어도 세상의 시선이 나에게 꽂히는 해",
+    abilityTitle: "시선을 훔치는 분위기 메이커",
+    abilityDesc: "꽃이 만개하듯 매력이 절정에 달하니,\n나 자체가 걸어 다니는 브랜드가 된다.",
+  },
+  丙: {
+    emoji: "☀️",
+    weather: "누구의 눈치도 보지 않고 마음껏 질주하는 해",
+    abilityTitle: "대체 불가능한 독보적 존재감",
+    abilityDesc: "어딜 가나 자연스레 중심에 선다.\n행보가 곧 트렌드가 되는 압도적인 영향력을 발휘한다.",
+  },
+  丁: {
+    emoji: "⚡",
+    weather: "치열한 경쟁 속에서 결국 승기를 잡아채는 해",
+    abilityTitle: "판세를 뒤집는 반전의 승부사",
+    abilityDesc: "거대한 불길이 내 힘이 된다.\n위기를 기회로 바꾸는 탁월한 센스가 돋보인다.",
+  },
+  戊: {
+    emoji: "🌄",
+    weather: "나의 가치를 인정받고 우뚝 서는 해",
+    abilityTitle: "깊이가 남다른 진짜 실력자",
+    abilityDesc: "가벼운 유행에 휩쓸리지 않고,\n오랫동안 쌓아온 지식과 실력이 드디어 빛을 발한다.",
+  },
+  己: {
+    emoji: "🌈",
+    weather: "노력해온 것들이 확실한 몫으로 돌아오는 해",
+    abilityTitle: "실패 없는 확신의 결과주의자",
+    abilityDesc: "차곡차곡 쌓아온 안목이 비로소 빛을 발하니,\n누구도 부정할 수 없는 단단한 자산이 된다.",
+  },
+  庚: {
+    emoji: "⛈️",
+    weather: "뜨거운 담금질을 견디고 다시 태어나는 해",
+    abilityTitle: "한계를 뛰어넘는 성장의 아이콘",
+    abilityDesc: "힘들수록 더 불타오른다.\n압박감을 성과로 승화시키는 비범한 저력이 드러난다.",
+  },
+  辛: {
+    emoji: "🌟",
+    weather: "갈고 닦을수록 빛이 나고 이름값이 높아지는 해",
+    abilityTitle: "가장 높은 곳에서 빛나는 주인공",
+    abilityDesc: "조명 아래 보석처럼 빛난다.\n갈고 닦아 최상의 가치를 만드는 세련된 감각이 돋보인다.",
+  },
+  壬: {
+    emoji: "🌊",
+    weather: "판을 크게 벌려 거대한 기회의 파도에 올라타는 해",
+    abilityTitle: "흐름을 읽는 감각적인 리더",
+    abilityDesc: "큰 물에서 노니,\n넓은 시야로 기회를 포착하는 탁월한 직관이 발휘된다.",
+  },
+  癸: {
+    emoji: "🌦️",
+    weather: "남들은 모르는 알짜배기 실속을 쏙쏙 챙겨가는 해",
+    abilityTitle: "티 안 나게 이득 보는 실속파",
+    abilityDesc: "화려함 속에 감춰진 알맹이를 차지하니,\n영리하게 내 몫을 챙기는 현명함이 드러난다.",
+  },
+};
+
 // 오행 색상
 const elementColors: Record<string, string> = {
   木: "#2aa86c",
@@ -479,301 +546,33 @@ function NewYearDetailContent() {
             <img src="/new-year/img/detail.png" alt="2026 신년 운세" />
           </div>
 
-          <div className={styles.info_card}>
-            <div className={styles.info_main}>
-              <span className={styles.info_name}>{input.userName}</span>
-              <span className={styles.info_birth}>
-                {input.date}
-                {birthTime ? ` | ${birthTime}` : ""}
-              </span>
-            </div>
-            <div className={styles.info_ilju}>
-              <span className={styles.ilju_char}>{dayMaster.char}</span>
-              <span className={styles.ilju_title}>{dayMaster.title}</span>
-            </div>
-          </div>
+          {/* 운세 날씨 카드 */}
+          {weatherData[dayMaster.char] && (
+            <div className={styles.weather_card}>
+              <div className={styles.weather_label}>60년에 한번, 불기둥의 해</div>
+              <h2 className={styles.weather_title}>2026년 병오년 운세 날씨</h2>
 
-          {/* 사주 팔자 테이블 */}
-          <div className={styles.pillars_section}>
-            <div className={styles.pillars_header}>
-              <span className="material-icons">view_column</span>
-              사주 팔자
-            </div>
-            <div className={styles.saju_table_wrap}>
-              <table className={styles.saju_table}>
-                <thead>
-                  <tr>
-                    <th></th>
-                    <th>생시</th>
-                    <th>생일</th>
-                    <th>생월</th>
-                    <th>생년</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {/* 천간 */}
-                  <tr className={styles.row_cheongan}>
-                    <td className={styles.row_label}>천간</td>
-                    {(["hour", "day", "month", "year"] as const).map((key) => {
-                      const p = pillars[key];
-                      if (!p?.stem?.char)
-                        return (
-                          <td key={key} className={styles.cell_empty}>
-                            —
-                          </td>
-                        );
-                      return (
-                        <td key={key}>
-                          <span
-                            className={styles.char_main}
-                            style={{ color: getColor(p.stem.element) }}
-                          >
-                            {p.stem.char}
-                            {p.stem.korean}
-                          </span>
-                          <span
-                            className={styles.char_element}
-                            style={{ color: getColor(p.stem.element) }}
-                          >
-                            {getElementKorean(p.stem.element, p.stem.yinYang)}
-                          </span>
-                        </td>
-                      );
-                    })}
-                  </tr>
-                  {/* 십성 (천간) */}
-                  <tr className={styles.row_sipsung}>
-                    <td className={styles.row_label}>십성</td>
-                    {(["hour", "day", "month", "year"] as const).map((key) => {
-                      const p = pillars[key];
-                      return (
-                        <td
-                          key={key}
-                          className={styles.cell_sipsung}
-                          style={{ color: getColor(p?.stem?.element) }}
-                        >
-                          {p?.tenGodStem || "—"}
-                        </td>
-                      );
-                    })}
-                  </tr>
-                  {/* 지지 */}
-                  <tr className={styles.row_jiji}>
-                    <td className={styles.row_label}>지지</td>
-                    {(["hour", "day", "month", "year"] as const).map((key) => {
-                      const p = pillars[key];
-                      if (!p?.branch?.char)
-                        return (
-                          <td key={key} className={styles.cell_empty}>
-                            —
-                          </td>
-                        );
-                      return (
-                        <td key={key}>
-                          <span
-                            className={styles.char_main}
-                            style={{ color: getColor(p.branch.element) }}
-                          >
-                            {p.branch.char}
-                            {p.branch.korean}
-                          </span>
-                          <span
-                            className={styles.char_element}
-                            style={{ color: getColor(p.branch.element) }}
-                          >
-                            {getElementKorean(
-                              p.branch.element,
-                              p.branch.yinYang
-                            )}
-                          </span>
-                        </td>
-                      );
-                    })}
-                  </tr>
-                  {/* 십성 (지지) */}
-                  <tr className={styles.row_sipsung}>
-                    <td className={styles.row_label}>십성</td>
-                    {(["hour", "day", "month", "year"] as const).map((key) => {
-                      const p = pillars[key];
-                      return (
-                        <td
-                          key={key}
-                          className={styles.cell_sipsung}
-                          style={{ color: getColor(p?.branch?.element) }}
-                        >
-                          {p?.tenGodBranchMain || "—"}
-                        </td>
-                      );
-                    })}
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </section>
-
-        {/* 섹션 2: 내 사주와 2026년 궁합 */}
-        <section className={`${styles.detail_section} ${styles.section_2}`}>
-          <div className={styles.section_label}>60년에 한번, 불기둥의 해</div>
-          <div className={styles.section_main_title}>내 사주와 2026년 궁합</div>
-
-          {/* 사주 궁합 테이블 */}
-          <div className={styles.compatibility_table_wrap}>
-            <div className={styles.compatibility_left}>
-              <div className={styles.compatibility_label}>내 사주 팔자</div>
-              <div className={styles.compatibility_pillars}>
-                {(["hour", "day", "month", "year"] as const).map((key) => {
-                  const p = pillars[key];
-                  return (
-                    <div key={key} className={styles.compatibility_pillar}>
-                      <div
-                        className={styles.compat_stem}
-                        style={{
-                          backgroundColor: p?.stem?.char
-                            ? `${getColor(p.stem.element)}20`
-                            : "#f5f5f5",
-                          borderColor: p?.stem?.char
-                            ? getColor(p.stem.element)
-                            : "#ddd",
-                        }}
-                      >
-                        <span
-                          className={styles.compat_char}
-                          style={{ color: getColor(p?.stem?.element) }}
-                        >
-                          {p?.stem?.char || "—"}
-                          {p?.stem?.korean || ""}
-                        </span>
-                        <span
-                          className={styles.compat_element}
-                          style={{ color: getColor(p?.stem?.element) }}
-                        >
-                          {getElementKorean(p?.stem?.element, p?.stem?.yinYang) || ""}
-                        </span>
-                      </div>
-                      <div
-                        className={styles.compat_branch}
-                        style={{
-                          backgroundColor: p?.branch?.char
-                            ? `${getColor(p.branch.element)}20`
-                            : "#f5f5f5",
-                          borderColor: p?.branch?.char
-                            ? getColor(p.branch.element)
-                            : "#ddd",
-                        }}
-                      >
-                        <span
-                          className={styles.compat_char}
-                          style={{ color: getColor(p?.branch?.element) }}
-                        >
-                          {p?.branch?.char || "—"}
-                          {p?.branch?.korean || ""}
-                        </span>
-                        <span
-                          className={styles.compat_element}
-                          style={{ color: getColor(p?.branch?.element) }}
-                        >
-                          {getElementKorean(p?.branch?.element, p?.branch?.yinYang) || ""}
-                        </span>
-                      </div>
-                    </div>
-                  );
-                })}
+              <div className={styles.weather_quote_section}>
+                <span className={styles.weather_quote_mark}>"</span>
+                <div className={styles.weather_emoji}>{weatherData[dayMaster.char].emoji}</div>
+                <p className={styles.weather_headline}>{weatherData[dayMaster.char].weather}</p>
+                <span className={styles.weather_quote_mark_bottom}>"</span>
               </div>
-            </div>
 
-            <div className={styles.compatibility_plus}>+</div>
-
-            <div className={styles.compatibility_right}>
-              <div className={styles.compatibility_label}>2026년</div>
-              <div className={styles.compatibility_pillars}>
-                <div className={`${styles.compatibility_pillar} ${styles.year_2026}`}>
-                  <div
-                    className={styles.compat_stem}
-                    style={{
-                      backgroundColor: "rgba(255, 106, 106, 0.15)",
-                      borderColor: "#ff6a6a",
-                    }}
-                  >
-                    <span className={styles.compat_char} style={{ color: "#ff6a6a" }}>
-                      병丙
-                    </span>
-                    <span className={styles.compat_element} style={{ color: "#ff6a6a" }}>
-                      +화
-                    </span>
-                  </div>
-                  <div
-                    className={styles.compat_branch}
-                    style={{
-                      backgroundColor: "rgba(255, 106, 106, 0.15)",
-                      borderColor: "#ff6a6a",
-                    }}
-                  >
-                    <span className={styles.compat_char} style={{ color: "#ff6a6a" }}>
-                      오午
-                    </span>
-                    <span className={styles.compat_element} style={{ color: "#ff6a6a" }}>
-                      -화
-                    </span>
-                  </div>
+              <div className={styles.ability_section}>
+                <p className={styles.ability_label}>당신의 사주에 나타난,</p>
+                <h3 className={styles.ability_section_title}>올해 돋보일 나만의 능력</h3>
+                <div className={styles.ability_title_wrap}>
+                  <p className={styles.ability_title}>"{weatherData[dayMaster.char].abilityTitle}"</p>
                 </div>
+                <p className={styles.ability_desc}>{weatherData[dayMaster.char].abilityDesc}</p>
               </div>
             </div>
-          </div>
+          )}
 
-          {/* 블러 처리된 궁합 설명 */}
-          <div className={styles.blurred_content_section}>
-            <p className={styles.blurred_intro}>
-              <strong>불의 기운이 강한</strong> 올 해는 당신의
-            </p>
-            <div className={styles.blurred_text_block}>
-              <p>창의력과 표현력이 극대화되는 시기입니다. 특히 화(火)의 에너지가 당신의 사주와 만나 새로운 가능성을 열어줄 것입니다.</p>
-            </div>
-          </div>
-
-          {/* 생존 필살기 섹션 */}
-          <div className={styles.survival_section}>
-            <p className={styles.survival_subtitle}>당신의 사주에 나타난,</p>
-            <h3 className={styles.survival_title}>2026년 나의 생존 필살기</h3>
-
-            {dmData && (
-              <div className={styles.charm_headline_wrap}>
-                <span className={styles.charm_quote}>"</span>
-                <div className={styles.charm_headline}>{dmData.headline}</div>
-                <span className={styles.charm_quote}>"</span>
-              </div>
-            )}
-
-            {/* 블러 처리된 콘텐츠들 */}
-            <div className={styles.blurred_content_section}>
-              <p className={styles.blurred_intro}>올해는 당신의 재능 중,</p>
-              <div className={styles.blurred_text_block}>
-                <p>숨겨져 있던 리더십과 커뮤니케이션 능력이 빛을 발하게 됩니다. 주변 사람들에게 영향력을 미치는 역할을 맡게 될 가능성이 높아요.</p>
-              </div>
-            </div>
-
-            <div className={styles.blurred_content_section}>
-              <p className={styles.blurred_intro}>
-                <strong>나에게 맞는 돈 버는 수단:</strong> 투자 vs 사업
-              </p>
-              <div className={styles.blurred_text_block}>
-                <p>당신의 사주 구성을 보면 안정적인 수입원을 기반으로 부수입을 늘려가는 전략이 유리합니다. 무리한 투자보다는 실력을 쌓는 데 집중하세요.</p>
-              </div>
-            </div>
-          </div>
-
-          {/* 잠금 미리보기 박스 */}
-          <div className={`${styles.info_preview_box} ${styles.locked}`}>
-            <div className={styles.lock_icon}>
-              <span className="material-icons">lock</span>
-            </div>
-            <div className={styles.preview_title}>이런 내용을 알려드려요!</div>
-            <ul className={styles.preview_list}>
-              <li>2026년 병오년과 내 사주의 오행 궁합 분석</li>
-              <li>올해 발현될 나의 역량, 일잘러 포인트</li>
-              <li>나에게 맞는 돈 버는 수단 (직장 vs 투자 vs 부업)</li>
-              <li>찾아올 수 있는 위기 vs 기회 키워드</li>
-            </ul>
+          <div className={styles.hero_image}>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/new-year/img/detail2.png" alt="2026 신년 운세 상세" />
           </div>
         </section>
 
