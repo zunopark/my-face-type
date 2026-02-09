@@ -703,9 +703,12 @@ function NewYearDetailContent() {
 
       {/* 하단 고정 버튼 */}
       <div className={styles.bottom_fixed_btn}>
-        <button className={`${styles.analyze_btn} ${styles.disabled}`} disabled>
-          준비중입니다
+        <button className={styles.analyze_btn} onClick={openPaymentModal}>
+          내 신년 운세 분석 받기
         </button>
+        {studentCouponApplied && (
+          <p className={styles.student_applied_badge}>학생 할인 적용됨</p>
+        )}
       </div>
 
       {/* 학생 할인 모달 */}

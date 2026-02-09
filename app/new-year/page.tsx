@@ -51,26 +51,26 @@ const TIME_OPTIONS = [
 
 // 직업 상태 옵션
 const JOB_STATUS_OPTIONS = [
-  { value: "employee", label: "직장인" },
-  { value: "student", label: "학생(초,중,고)" },
-  { value: "university", label: "대학생" },
-  { value: "job_seeker", label: "취업준비" },
-  { value: "exam_prep", label: "고시/시험준비" },
-  { value: "civil_servant", label: "공무원" },
-  { value: "housewife", label: "주부" },
-  { value: "business_owner", label: "사업/자영업" },
-  { value: "freelancer", label: "프리랜서" },
-  { value: "professional", label: "전문직" },
+  { value: "직장인", label: "직장인" },
+  { value: "학생(초,중,고)", label: "학생(초,중,고)" },
+  { value: "대학생", label: "대학생" },
+  { value: "취업준비", label: "취업준비" },
+  { value: "고시/시험준비", label: "고시/시험준비" },
+  { value: "공무원", label: "공무원" },
+  { value: "주부", label: "주부" },
+  { value: "사업/자영업", label: "사업/자영업" },
+  { value: "프리랜서", label: "프리랜서" },
+  { value: "전문직", label: "전문직" },
   { value: "other", label: "직접입력" },
 ];
 
 // 연애 상태 옵션
 const RELATIONSHIP_OPTIONS = [
-  { value: "single", label: "솔로" },
-  { value: "some", label: "썸" },
-  { value: "couple", label: "연애중" },
-  { value: "married", label: "기혼" },
-  { value: "divorced", label: "돌싱" },
+  { value: "솔로", label: "솔로" },
+  { value: "썸", label: "썸" },
+  { value: "연애중", label: "연애중" },
+  { value: "기혼", label: "기혼" },
+  { value: "돌싱", label: "돌싱" },
 ];
 
 export default function NewYearPage() {
@@ -582,7 +582,7 @@ export default function NewYearPage() {
             {/* Step 2: 직업 상태 */}
             {additionalStep === 2 && (
               <div className={styles.input_group}>
-                <label className={styles.input_label}>하시는 일</label>
+                <label className={styles.input_label}>현재 어떤 일을 하고 계신가요?</label>
                 <div className={styles.status_options}>
                   {JOB_STATUS_OPTIONS.map((option) => (
                     <button

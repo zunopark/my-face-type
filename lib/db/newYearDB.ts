@@ -46,12 +46,14 @@ export interface NewYearSajuData {
 
 // 분석 결과 타입
 export interface NewYearAnalysis {
-  user_name: string;
+  user_name?: string; // meta에서 가져옴
+  full_text?: string; // AI 전체 응답
   chapters: Array<{
     number: number;
     title: string;
     content: string;
   }>;
+  chapter_count?: number;
 }
 
 // 부적 이미지 타입

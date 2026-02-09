@@ -2963,11 +2963,11 @@ function SajuCard({ data }: { data: SajuLoveRecord }) {
           <div className="ohang_chart_card">
             <p className="ohang_chart_title">나의 오행 비율</p>
             {[
-              { key: "木", label: "목(木)", color: "#2aa86c" },
-              { key: "火", label: "화(火)", color: "#ff6a6a" },
-              { key: "土", label: "토(土)", color: "#caa46a" },
-              { key: "金", label: "금(金)", color: "#a0a0a0" },
-              { key: "水", label: "수(水)", color: "#4a90d9" },
+              { key: "wood", label: "목(木)", color: "#2aa86c" },
+              { key: "fire", label: "화(火)", color: "#ff6a6a" },
+              { key: "earth", label: "토(土)", color: "#caa46a" },
+              { key: "metal", label: "금(金)", color: "#a0a0a0" },
+              { key: "water", label: "수(水)", color: "#4a90d9" },
             ].map(({ key, label, color }) => {
               const pct = elementPercent[key] || 0;
               const status =
@@ -3005,7 +3005,7 @@ function SajuCard({ data }: { data: SajuLoveRecord }) {
           <p className="ohang_section_title">{userName}님의 오행 분석</p>
           {[
             {
-              key: "木",
+              key: "wood",
               label: "목(木)",
               color: "#2aa86c",
               keyword: "성장 · 자유 · 솔직",
@@ -3023,7 +3023,7 @@ function SajuCard({ data }: { data: SajuLoveRecord }) {
                 "용기를 내서 먼저 다가가보세요. 적극적이고 밝은 목(木) 성향의 사람에게 자극받으면 성장할 수 있어요.",
             },
             {
-              key: "火",
+              key: "fire",
               label: "화(火)",
               color: "#ff6a6a",
               keyword: "열정 · 표현 · 로맨틱",
@@ -3041,7 +3041,7 @@ function SajuCard({ data }: { data: SajuLoveRecord }) {
                 "작은 것부터 표현해보세요. 밝고 열정적인 화(火) 성향의 사람을 만나면 불이 붙을 수 있어요.",
             },
             {
-              key: "土",
+              key: "earth",
               label: "토(土)",
               color: "#caa46a",
               keyword: "안정 · 포용 · 믿음",
@@ -3059,7 +3059,7 @@ function SajuCard({ data }: { data: SajuLoveRecord }) {
                 "책임감을 키워보세요. 믿음직하고 든든한 토(土) 성향의 사람이 중심을 잡아줄 수 있어요.",
             },
             {
-              key: "金",
+              key: "metal",
               label: "금(金)",
               color: "#a0a0a0",
               keyword: "원칙 · 깔끔 · 의리",
@@ -3076,7 +3076,7 @@ function SajuCard({ data }: { data: SajuLoveRecord }) {
                 "명확하게 표현하는 연습이 필요해요. 결단력 있는 금(金) 성향의 사람이 정리를 도와줄 수 있어요.",
             },
             {
-              key: "水",
+              key: "water",
               label: "수(水)",
               color: "#4a90d9",
               keyword: "감성 · 공감 · 배려",

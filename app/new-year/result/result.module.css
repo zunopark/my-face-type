@@ -53,7 +53,8 @@
 
 .newyear_result_page {
   font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, sans-serif;
-  background: linear-gradient(180deg, #f5f2ed 0%, #ebe6df 50%, #e0d9d0 100%);
+  background: #e8e2d9 url('/new-year/img/doryung.png') center top / cover no-repeat;
+  background-attachment: fixed;
   min-height: 100vh;
   min-height: 100dvh;
   -webkit-user-select: none;
@@ -63,7 +64,7 @@
 }
 
 .newyear_result_page .main_body_wrap {
-  background: white;
+  background: transparent;
   min-height: 100vh;
   min-height: 100dvh;
   width: 100%;
@@ -104,7 +105,7 @@
   left: 0;
   width: 40%;
   height: 100%;
-  background: linear-gradient(90deg, #8B7355, #7A6449);
+  background: linear-gradient(90deg, #4A90D9, #3A7BC8);
   border-radius: 2px;
   animation: progress-slide 1.5s ease-in-out infinite;
 }
@@ -161,7 +162,7 @@
 
 .newyear_result_page .error_btn {
   padding: 12px 24px;
-  background: linear-gradient(135deg, #8B7355 0%, #7A6449 100%);
+  background: linear-gradient(135deg, #4A90D9 0%, #3A7BC8 100%);
   color: #ffffff;
   text-decoration: none;
   border: none;
@@ -182,7 +183,7 @@
   height: 100dvh;
   z-index: 1;
   overflow: hidden;
-  background: linear-gradient(180deg, #f5f2ed 0%, #ebe6df 50%, #e0d9d0 100%);
+  background: transparent;
 }
 
 .newyear_result_page .result_bg_image {
@@ -190,12 +191,12 @@
   height: 100%;
   object-fit: cover;
   object-position: top center;
-  opacity: 0.3;
+  opacity: 1;
   transition: opacity 0.3s ease;
 }
 
 .newyear_result_page .result_bg_image.fade_in {
-  opacity: 0;
+  opacity: 1;
 }
 
 /* 뒤로가기 버튼 */
@@ -260,6 +261,10 @@
   z-index: 9999;
   cursor: pointer;
   font-family: inherit;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+  pointer-events: auto;
 }
 
 @media (max-width: 500px) {
@@ -331,14 +336,14 @@
   display: block;
   width: 100%;
   padding: 12px 16px;
-  background: #f8f8f8;
+  background: #faf8f5;
   border: none;
   border-radius: 8px;
   margin-bottom: 8px;
   font-size: 14px;
-  color: #999;
+  color: #333;
   text-align: left;
-  cursor: not-allowed;
+  cursor: pointer;
   font-family: inherit;
 }
 
@@ -349,7 +354,7 @@
 }
 
 .newyear_result_page .toc_modal_item.active {
-  background: linear-gradient(135deg, #8B7355 0%, #7A6449 100%);
+  background: linear-gradient(135deg, #4A90D9 0%, #3A7BC8 100%);
   color: #ffffff;
   font-weight: 600;
 }
@@ -406,7 +411,7 @@
 .newyear_result_page .exit_modal_confirm {
   flex: 1;
   padding: 12px;
-  background: linear-gradient(135deg, #8B7355 0%, #7A6449 100%);
+  background: linear-gradient(135deg, #4A90D9 0%, #3A7BC8 100%);
   border: none;
   border-radius: 8px;
   font-size: 14px;
@@ -550,27 +555,145 @@
 .newyear_result_page .card_content ul {
   list-style: none;
   margin: 16px 0;
-  padding: 0;
+  padding: 0 0 0 20px;
 }
 
 .newyear_result_page .card_content ul li {
   position: relative;
-  padding: 14px 16px 14px 44px;
-  background: linear-gradient(135deg, #faf8f5 0%, #f5f2ed 100%);
-  border-radius: 12px;
-  border: 1px solid #f0ebe4;
-  margin-bottom: 10px;
+  padding: 4px 0 4px 16px;
+  margin-bottom: 8px;
   font-size: 15px;
-  line-height: 1.7;
+  line-height: 1.8;
   color: #444;
 }
 
 .newyear_result_page .card_content ul li::before {
   content: "•";
   position: absolute;
-  left: 20px;
-  color: #6B5344;
+  left: 0;
+  color: #4A90D9;
   font-weight: bold;
+}
+
+.newyear_result_page .card_content ul li strong {
+  color: #333;
+}
+
+/* 마크다운 테이블 */
+.newyear_result_page .card_content :global(.md-table) {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 20px 0;
+  font-size: 14px;
+  border: 1px solid #e8e2d9;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.newyear_result_page .card_content :global(.md-table) th,
+.newyear_result_page .card_content :global(.md-table) td {
+  padding: 12px 14px;
+  text-align: center;
+  border: 1px solid #e8e2d9;
+}
+
+.newyear_result_page .card_content :global(.md-table) th {
+  background: rgba(74, 144, 217, 0.08);
+  font-weight: 600;
+  color: #3a3a3a;
+}
+
+.newyear_result_page .card_content :global(.md-table) tr:nth-child(even) {
+  background: #faf8f5;
+}
+
+/* 섹션 제목 */
+.newyear_result_page .card_content :global(.section-heading) {
+  display: block;
+  margin-top: 2em;
+  margin-bottom: 0.5em;
+  font-size: 1.05em;
+  color: #4A90D9;
+}
+
+.newyear_result_page .card_content p:first-child :global(.section-heading):first-child {
+  margin-top: 0;
+}
+
+/* 인용구 스타일 - 까치도령 전용 */
+.newyear_result_page .card_content :global(.quote-header) {
+  display: flex;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.newyear_result_page .card_content :global(.quote-pinch),
+.newyear_result_page .card_content :global(.quote-sokdak),
+.newyear_result_page .card_content :global(.quote-todak) {
+  background: #fff;
+  border: 1px solid #e8e2d9;
+  padding: 20px;
+}
+
+.newyear_result_page .card_content :global(.quote-pinch) strong,
+.newyear_result_page .card_content :global(.quote-sokdak) strong,
+.newyear_result_page .card_content :global(.quote-todak) strong {
+  display: inline;
+  margin-bottom: 0;
+  padding-top: 4px;
+  font-size: 16px;
+  color: #4A90D9;
+}
+
+/* hr 스타일 */
+.newyear_result_page .card_content hr {
+  border: none;
+  height: 1px;
+  background: linear-gradient(90deg, transparent 0%, #e8e2d9 50%, transparent 100%);
+  margin: 32px 0;
+}
+
+/* 헤딩 스타일 */
+.newyear_result_page .card_content h1,
+.newyear_result_page .card_content h2,
+.newyear_result_page .card_content h3,
+.newyear_result_page .card_content h4,
+.newyear_result_page .card_content h5,
+.newyear_result_page .card_content h6 {
+  font-family: 'Pretendard', sans-serif;
+  font-weight: 700;
+  color: #333;
+  margin: 1.5em 0 0.5em 0;
+  line-height: 1.4;
+}
+
+.newyear_result_page .card_content h1 { font-size: 1.5em; }
+.newyear_result_page .card_content h2 { font-size: 1.3em; color: #4A90D9; }
+.newyear_result_page .card_content h3 { font-size: 1.15em; }
+.newyear_result_page .card_content h4 { font-size: 1.05em; }
+.newyear_result_page .card_content h5 { font-size: 1em; }
+.newyear_result_page .card_content h6 { font-size: 0.95em; }
+
+/* 코드 스타일 */
+.newyear_result_page .card_content code {
+  font-family: 'Consolas', 'Monaco', monospace;
+  background: #f5f2ed;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 0.9em;
+}
+
+.newyear_result_page .card_content pre {
+  background: #f5f2ed;
+  padding: 16px;
+  border-radius: 8px;
+  overflow-x: auto;
+  margin: 16px 0;
+}
+
+.newyear_result_page .card_content pre code {
+  background: none;
+  padding: 0;
 }
 
 /* 인트로 카드 */
@@ -717,72 +840,75 @@
 
 /* 대기 카드 */
 .newyear_result_page .waiting_card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  min-height: 100dvh;
+  padding: 40px 20px;
   text-align: center;
+  background: #faf8f5;
 }
 
 .newyear_result_page .waiting_content {
-  padding: 20px 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
 }
 
 .newyear_result_page .waiting_progress_wrap {
+  width: 100%;
+  max-width: 280px;
   display: flex;
+  flex-direction: column;
   align-items: center;
   gap: 12px;
-  margin-bottom: 24px;
 }
 
 .newyear_result_page .waiting_progress_bar {
-  flex: 1;
+  width: 100%;
   height: 8px;
-  background: #f0f0f0;
+  background: #e0e8f0;
   border-radius: 4px;
   overflow: hidden;
 }
 
 .newyear_result_page .waiting_progress_fill {
   height: 100%;
-  background: linear-gradient(90deg, #8B7355, #7A6449);
+  background: linear-gradient(90deg, #4A90D9, #3A7BC8);
   border-radius: 4px;
-  transition: width 0.5s ease;
+  transition: width 0.3s ease-out;
 }
 
 .newyear_result_page .waiting_progress_text {
-  font-size: 14px;
+  font-family: 'Pretendard', sans-serif;
+  font-size: 32px;
   font-weight: 700;
-  color: #6B5344;
-  min-width: 40px;
+  color: #4A90D9;
+  letter-spacing: 2px;
 }
 
-.newyear_result_page .waiting_steps {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
+.newyear_result_page .waiting_title {
+  font-size: 24px;
+  font-weight: 700;
+  color: #333;
+  margin: 0;
 }
 
-.newyear_result_page .waiting_step {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 12px 16px;
-  background: #f8f8f8;
-  border-radius: 12px;
-  opacity: 0.5;
-  transition: opacity 0.3s ease, background 0.3s ease;
-}
-
-.newyear_result_page .waiting_step.active {
-  opacity: 1;
-  background: #faf8f5;
-  border: 1px solid #f0ebe4;
-}
-
-.newyear_result_page .waiting_step_icon {
-  font-size: 20px;
-}
-
-.newyear_result_page .waiting_step_text {
-  font-size: 14px;
+.newyear_result_page .waiting_text {
+  font-size: 16px;
   color: #555;
+  line-height: 1.6;
+  margin: 0;
+}
+
+.newyear_result_page .waiting_subtext {
+  font-size: 14px;
+  color: #888;
+  line-height: 1.5;
+  margin: 0;
 }
 
 /* 엔딩 카드 */
@@ -872,7 +998,7 @@
   justify-content: center;
   min-width: 48px;
   padding: 6px 12px;
-  background: linear-gradient(135deg, #8B7355 0%, #7A6449 100%);
+  background: linear-gradient(135deg, #4A90D9 0%, #3A7BC8 100%);
   color: #ffffff;
   font-size: 12px;
   font-weight: 700;
@@ -962,12 +1088,12 @@
   padding: 16px 32px;
   font-size: 16px;
   font-weight: 700;
-  background: linear-gradient(135deg, #8B7355 0%, #7A6449 100%);
+  background: linear-gradient(135deg, #4A90D9 0%, #3A7BC8 100%);
   color: #ffffff;
   border: none;
   border-radius: 12px;
   cursor: pointer;
-  box-shadow: 0 4px 20px rgba(107, 83, 68, 0.4);
+  box-shadow: 0 4px 20px rgba(74, 144, 217, 0.4);
   font-family: inherit;
 }
 
@@ -1022,7 +1148,7 @@
 .newyear_result_page .dialogue_speaker {
   font-size: 13px;
   font-weight: 600;
-  color: #8B7355;
+  color: #4A90D9;
   margin-bottom: 12px;
   letter-spacing: 1px;
 }
@@ -1076,12 +1202,12 @@
   padding: 16px 32px;
   font-size: 16px;
   font-weight: 700;
-  background: linear-gradient(135deg, #8B7355 0%, #7A6449 100%);
+  background: linear-gradient(135deg, #4A90D9 0%, #3A7BC8 100%);
   color: #ffffff;
   border: none;
   border-radius: 12px;
   cursor: pointer;
-  box-shadow: 0 4px 20px rgba(107, 83, 68, 0.4);
+  box-shadow: 0 4px 20px rgba(74, 144, 217, 0.4);
   font-family: inherit;
 }
 
@@ -1211,7 +1337,7 @@
 }
 
 .newyear_result_page .discount-badge {
-  background: linear-gradient(135deg, #8B7355 0%, #7A6449 100%);
+  background: linear-gradient(135deg, #4A90D9 0%, #3A7BC8 100%);
   color: #ffffff;
   font-size: 12px;
   font-weight: 700;
@@ -1263,7 +1389,7 @@
 
 .newyear_result_page .coupon-input:focus {
   outline: none;
-  border-color: #8B7355;
+  border-color: #4A90D9;
 }
 
 .newyear_result_page .coupon-submit-btn {
@@ -1297,7 +1423,7 @@
 .newyear_result_page .payment-submit-btn {
   width: 100%;
   padding: 16px;
-  background: linear-gradient(135deg, #8B7355 0%, #7A6449 100%);
+  background: linear-gradient(135deg, #4A90D9 0%, #3A7BC8 100%);
   color: #ffffff;
   border: none;
   border-radius: 12px;
@@ -1305,7 +1431,7 @@
   font-weight: 700;
   cursor: pointer;
   font-family: inherit;
-  box-shadow: 0 4px 20px rgba(107, 83, 68, 0.4);
+  box-shadow: 0 4px 20px rgba(74, 144, 217, 0.4);
 }
 
 /* ===== 포괄적인 인트로 카드 스타일 ===== */
@@ -1373,11 +1499,13 @@
 
 /* 인트로 노트 */
 .newyear_result_page .intro_note {
-  background: linear-gradient(135deg, #faf8f5 0%, #f5f2ed 100%);
-  padding: 16px;
-  border-radius: 12px;
-  border: 1px solid #f0ebe4;
-  margin-top: 16px;
+  background: rgba(255, 255, 255, 0.9);
+  padding: 20px;
+  border-radius: 16px;
+  margin-top: 20px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+  color: #444;
+  line-height: 1.7;
 }
 
 /* 인트로 약속 */
@@ -1682,17 +1810,35 @@
   margin: 8px 0;
 }
 
-.newyear_result_page .ohang_relation.saeng {
-  color: #2aa86c;
-}
-
-.newyear_result_page .ohang_relation.geuk {
-  color: #ff6a6a;
-}
-
 .newyear_result_page .relation_label {
   display: inline-block;
   width: 50px;
+  font-weight: 600;
+  color: #666;
+}
+
+.newyear_result_page .el_wood {
+  color: #2aa86c;
+  font-weight: 600;
+}
+
+.newyear_result_page .el_fire {
+  color: #ff6a6a;
+  font-weight: 600;
+}
+
+.newyear_result_page .el_earth {
+  color: #caa46a;
+  font-weight: 600;
+}
+
+.newyear_result_page .el_metal {
+  color: #9a9a9a;
+  font-weight: 600;
+}
+
+.newyear_result_page .el_water {
+  color: #6aa7ff;
   font-weight: 600;
 }
 
@@ -1763,58 +1909,77 @@
 
 /* ===== 병오년 정보 카드 ===== */
 .newyear_result_page .byungo_info_card {
-  background: linear-gradient(135deg, #FFF5F5 0%, #FFEEEE 100%);
-  border: 1px solid #FFE0E0;
-  border-radius: 16px;
-  padding: 24px;
-  margin: 20px 0;
+  background: linear-gradient(180deg, #1a1a2e 0%, #16213e 100%);
+  border-radius: 20px;
+  padding: 32px 24px;
+  margin: 24px 0;
   text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.newyear_result_page .byungo_info_card::before {
+  content: "";
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(255, 106, 106, 0.1) 0%, transparent 50%);
+  pointer-events: none;
 }
 
 .newyear_result_page .byungo_header {
-  margin-bottom: 20px;
+  margin-bottom: 28px;
+  position: relative;
 }
 
 .newyear_result_page .byungo_char {
-  font-size: 36px;
+  font-size: 56px;
   font-weight: 700;
   display: block;
-  margin-bottom: 4px;
+  margin-bottom: 8px;
+  background: linear-gradient(135deg, #ff6a6a 0%, #ff9a6a 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-shadow: 0 0 40px rgba(255, 106, 106, 0.3);
 }
 
 .newyear_result_page .byungo_label {
-  font-size: 14px;
-  color: #888;
+  font-size: 15px;
+  color: rgba(255, 255, 255, 0.6);
+  letter-spacing: 2px;
 }
 
 .newyear_result_page .byungo_details {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 10px;
 }
 
 .newyear_result_page .byungo_detail_item {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 12px 16px;
-  background: rgba(255, 255, 255, 0.8);
-  border-radius: 8px;
+  padding: 14px 20px;
+  background: rgba(255, 255, 255, 0.06);
+  border-radius: 10px;
 }
 
 .newyear_result_page .detail_label {
   font-size: 13px;
-  color: #888;
+  color: rgba(255, 255, 255, 0.5);
 }
 
 .newyear_result_page .detail_value {
   font-size: 14px;
   font-weight: 600;
-  color: #333;
+  color: #fff;
 }
 
 .newyear_result_page .detail_value.fire {
-  color: #ff6a6a;
+  color: #ff9a6a;
 }
 
 /* ===== 포괄적인 사주 카드 스타일 ===== */
@@ -2572,4 +2737,317 @@
 .newyear_result_page .strength_result_text .level {
   color: #6B5344;
   font-weight: 700;
+}
+
+/* ========================================
+   구조화된 챕터 콘텐츠 스타일 - 심플 보고서
+   ======================================== */
+
+.chapter_structured {
+  padding: 0;
+}
+
+.chapter_structured h4 {
+  margin: 0;
+}
+
+.chapter_structured p {
+  margin: 0;
+  line-height: 1.7;
+}
+
+/* 등급 카드 */
+.grade_card {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 28px 24px;
+  border-radius: 16px;
+  margin-bottom: 20px;
+}
+
+.grade_center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.grade_hanja {
+  font-size: 64px;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.grade_divider {
+  width: 36px;
+  height: 2px;
+  margin: 10px 0;
+  opacity: 0.4;
+}
+
+.grade_korean {
+  font-size: 18px;
+  color: #555;
+  font-weight: 500;
+}
+
+/* 축하 메시지 */
+.congrats_box {
+  text-align: center;
+  margin-bottom: 20px;
+  padding: 16px 0;
+}
+
+.congrats_title {
+  font-size: 18px;
+  font-weight: 700;
+  color: #333;
+  margin-bottom: 4px !important;
+}
+
+.congrats_subtitle {
+  font-size: 15px;
+  color: #666;
+}
+
+/* 섹션 타이틀 */
+.section_title {
+  font-size: 14px;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 12px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+/* 텍스트 블록 */
+.text_block {
+  margin-bottom: 16px;
+}
+
+.text_block p {
+  font-size: 14px;
+  color: #333;
+  line-height: 1.8;
+}
+
+/* 섹션 블록 */
+.section_block {
+  margin-bottom: 20px;
+}
+
+/* 정보 행 */
+.info_row {
+  display: flex;
+  padding: 8px 0;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.info_row:last-child {
+  border-bottom: none;
+}
+
+.info_label {
+  flex-shrink: 0;
+  width: 80px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #666;
+}
+
+.info_value {
+  flex: 1;
+  font-size: 14px;
+  color: #333;
+  line-height: 1.6;
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+/* 적합도 등급 뱃지 */
+.rating_badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 24px;
+  height: 20px;
+  padding: 0 6px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 600;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.rating_high {
+  background: #e8f5e9;
+  color: #2e7d32;
+}
+
+.rating_mid {
+  background: #fff8e1;
+  color: #f57c00;
+}
+
+.rating_low {
+  background: #fce4ec;
+  color: #c2185b;
+}
+
+.rating_text {
+  flex: 1;
+  color: #555;
+}
+
+/* 점수 테이블 */
+.score_table {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.score_row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 0;
+}
+
+.score_label {
+  width: 70px;
+  font-size: 13px;
+  color: #666;
+}
+
+.score_bar {
+  flex: 1;
+  height: 6px;
+  background: #eee;
+  border-radius: 3px;
+  overflow: hidden;
+  display: block;
+}
+
+.score_fill {
+  display: block;
+  height: 100%;
+  background: #4A90D9;
+  border-radius: 3px;
+}
+
+.score_num {
+  width: 30px;
+  font-size: 12px;
+  color: #999;
+  text-align: right;
+}
+
+/* 리스트 아이템 */
+.list_item {
+  padding: 12px 0;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.list_item:last-child {
+  border-bottom: none;
+}
+
+.list_item strong {
+  display: block;
+  font-size: 14px;
+  color: #333;
+  margin-bottom: 4px;
+}
+
+.list_item p {
+  font-size: 13px;
+  color: #666;
+}
+
+.list_header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+
+.list_meta {
+  font-size: 12px;
+  color: #999;
+  margin-left: auto;
+}
+
+.list_sub {
+  font-size: 13px;
+  color: #888;
+  margin-top: 6px !important;
+}
+
+/* 심플 리스트 */
+.simple_list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.simple_list li {
+  padding: 8px 0;
+  font-size: 14px;
+  color: #333;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.simple_list li:last-child {
+  border-bottom: none;
+}
+
+/* 월별 테이블 */
+.month_table {
+  display: flex;
+  flex-direction: column;
+}
+
+.month_row {
+  display: flex;
+  padding: 10px 0;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.month_row:last-child {
+  border-bottom: none;
+}
+
+.month_num {
+  flex-shrink: 0;
+  width: 40px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #333;
+}
+
+.month_content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.month_kw {
+  font-size: 13px;
+  color: #4A90D9;
+  font-weight: 500;
+}
+
+.month_desc {
+  font-size: 13px;
+  color: #666;
+}
+
+/* 편지 텍스트 */
+.letter_text {
+  font-size: 14px;
+  line-height: 1.9;
+  white-space: pre-wrap;
+  color: #333;
 }

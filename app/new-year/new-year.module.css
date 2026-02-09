@@ -364,7 +364,7 @@
 
 .input_field:focus {
   outline: none;
-  border-bottom-color: #4A90D9;
+  border-bottom-color: white;
 }
 
 .input_field::placeholder {
@@ -400,7 +400,7 @@
 }
 
 .calendar_btn.active {
-  color: #4A90D9;
+  color: white;
 }
 
 .calendar_btn.active .check_icon {
@@ -426,7 +426,7 @@
 }
 
 .time_unknown_btn.active {
-  color: #4A90D9;
+  color: white;
 }
 
 .time_unknown_btn.active .check_icon {
@@ -456,9 +456,9 @@
 }
 
 .gender_btn.active {
-  border-color: #4A90D9;
-  background: rgba(74, 144, 217, 0.2);
-  color: #4A90D9;
+  border-color: white;
+  background: rgba(255, 255, 255, 0.25);
+  color: white;
 }
 
 /* 하단 버튼 */
@@ -507,25 +507,49 @@
 /* 상태 선택 (직업/연애) */
 .status_options {
   display: flex;
-  flex-wrap: wrap;
+  flex-direction: column;
   gap: 8px;
+  max-height: 280px;
+  overflow-y: auto;
+  padding-right: 4px;
+}
+
+/* 스크롤바 스타일링 */
+.status_options::-webkit-scrollbar {
+  width: 4px;
+}
+
+.status_options::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 2px;
+}
+
+.status_options::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 2px;
+}
+
+.status_options::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.5);
 }
 
 .status_btn {
-  padding: 6px 14px;
+  width: 100%;
+  padding: 14px 16px;
   border: none;
-  border-radius: 6px;
+  border-radius: 10px;
   background: rgba(255, 255, 255, 0.15);
-  font-size: 13px;
+  font-size: 15px;
   font-weight: 500;
   color: rgba(255, 255, 255, 0.7);
   cursor: pointer;
   transition: all 0.2s ease;
+  text-align: left;
 }
 
 .status_btn.active {
-  background: rgba(74, 144, 217, 0.95);
-  color: #ffffff;
+  background: rgba(255, 255, 255, 0.95);
+  color: #333;
 }
 
 /* 분석 중 로딩 오버레이 */
