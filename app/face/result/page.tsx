@@ -912,7 +912,7 @@ function ResultContent() {
                   {/* 할인 */}
                   <div className={`${styles.payment_row} ${styles.discount}`}>
                     <span className={styles.payment_row_label}>
-                      1월 특별 할인
+                      병오년 구정 특별 할인
                     </span>
                     <div className={styles.payment_row_discount_value}>
                       <span className={styles.discount_badge}>
