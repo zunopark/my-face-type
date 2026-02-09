@@ -211,81 +211,81 @@ const getChapterConfig = (
   userName: string
 ): Record<string, { intro: string; outro: string; introBg: string; reportBg: string; outroBg: string }> => ({
   chapter1: {
-    intro: `1장에서는 ${userName}님의 2026년 전체 운세 흐름을 알려드릴게요!`,
-    outro: `어떠세요? 2026년의 큰 그림이 보이시나요?\n이제 재물운을 살펴볼게요!`,
-    introBg: "/new-year/img/doryung.png",
-    reportBg: "/new-year/img/doryung.png",
-    outroBg: "/new-year/img/doryung.png",
+    intro: `자, 그럼 ${userName}님의 2026년!\n어떤 한 해가 될지 같이 살펴볼까요?`,
+    outro: `어때요, 올해 느낌이 좀 오시나요?\n저는 ${userName}님의 2026년이 정말 기대돼요!\n\n그럼 이제 돈 얘기 좀 해볼까요?`,
+    introBg: "/new-year/img/doryung4.jpg",
+    reportBg: "/new-year/img/doryung.jpg",
+    outroBg: "/new-year/img/doryung4.jpg",
   },
   chapter2: {
-    intro: `2장에서는 ${userName}님의 2026년 재물운을 알려드릴게요.`,
-    outro: "재물운을 파악했으니,\n이제 건강운에 대해 얘기해볼까요?",
-    introBg: "/new-year/img/doryung.png",
-    reportBg: "/new-year/img/doryung.png",
-    outroBg: "/new-year/img/doryung.png",
+    intro: `다들 제일 궁금해하는 재물운이에요!\n${userName}님 올해 돈복은 어떨까요~?`,
+    outro: `돈은 들어올 때 잘 잡고,\n나갈 때는 꼭 필요한 곳에만!\n\n자, 이번엔 건강 얘기 해볼게요.\n건강해야 돈도 쓰죠, 그쵸?`,
+    introBg: "/new-year/img/doryung5.jpg",
+    reportBg: "/new-year/img/doryung5.jpg",
+    outroBg: "/new-year/img/doryung4.jpg",
   },
   chapter3: {
-    intro: `3장에서는 ${userName}님의 2026년 건강운을 알려드릴게요.\n건강이 제일 중요하니까요!`,
-    outro: "건강운을 살펴봤으니,\n연애운도 궁금하시죠?",
-    introBg: "/new-year/img/doryung.png",
-    reportBg: "/new-year/img/doryung.png",
-    outroBg: "/new-year/img/doryung.png",
+    intro: `이번엔 건강운이에요.\n뭐니뭐니해도 건강이 최고잖아요!`,
+    outro: `몸이 보내는 신호, 무시하지 마세요~\n아프면 다 소용없어요!\n\n그럼 이제 두근두근 연애운 볼까요?`,
+    introBg: "/new-year/img/doryung9.jpg",
+    reportBg: "/new-year/img/doryung9.jpg",
+    outroBg: "/new-year/img/doryung8.jpg",
   },
   chapter4: {
-    intro: "4장에서는 2026년 연애운을 알려드릴게요.",
-    outro: "연애운도 살펴봤으니,\n직장운과 명예운도 확인해볼까요?",
-    introBg: "/new-year/img/doryung.png",
-    reportBg: "/new-year/img/doryung.png",
-    outroBg: "/new-year/img/doryung.png",
+    intro: `연애운 시간이에요~\n${userName}님 올해 사랑운은 어떨까요?`,
+    outro: `사랑도 타이밍이더라고요.\n좋은 사람 만나면 망설이지 마세요!\n\n다음은 직장운이에요. 일도 중요하니까요!`,
+    introBg: "/new-year/img/doryung8.jpg",
+    reportBg: "/new-year/img/doryung8.jpg",
+    outroBg: "/new-year/img/doryung4.jpg",
   },
   chapter5: {
-    intro: `5장에서는 ${userName}님의 직장운과 명예운을 알려드릴게요.`,
-    outro: "직장운을 파악했으니,\n대인관계운도 살펴볼게요!",
-    introBg: "/new-year/img/doryung.png",
-    reportBg: "/new-year/img/doryung.png",
-    outroBg: "/new-year/img/doryung.png",
+    intro: `직장운과 명예운이에요.\n올해 ${userName}님 커리어는 어떨까요?`,
+    outro: `열심히 하면 분명 알아봐주는 사람 있어요.\n${userName}님, 항상 응원할게요!\n\n다음은 학업이랑 계약운이에요.`,
+    introBg: "/new-year/img/doryung3.jpg",
+    reportBg: "/new-year/img/doryung3.jpg",
+    outroBg: "/new-year/img/doryung5.jpg",
   },
   chapter6: {
-    intro: `6장에서는 ${userName}님의 관계운을 알려드릴게요.`,
-    outro: "관계운을 살펴봤으니,\n감정관리에 대해서도 얘기해볼게요.",
-    introBg: "/new-year/img/doryung.png",
-    reportBg: "/new-year/img/doryung.png",
-    outroBg: "/new-year/img/doryung.png",
+    intro: `학업운, 계약운 차례예요.\n시험이나 중요한 계약 앞두고 계신가요?`,
+    outro: `큰 결정은 좋은 시기에 하는 게 좋아요.\n참고해두시면 도움 될 거예요!\n\n자, 이번엔 사람 복 얘기 해볼까요?`,
+    introBg: "/new-year/img/doryung5.jpg",
+    reportBg: "/new-year/img/doryung3.jpg",
+    outroBg: "/new-year/img/doryung4.jpg",
   },
   chapter7: {
-    intro: `7장에서는 2026년 감정과 마음 관리 방법을 알려드릴게요.`,
-    outro: "감정관리법을 알아봤으니,\n월별 운세 흐름도 확인해볼까요?",
-    introBg: "/new-year/img/doryung.png",
-    reportBg: "/new-year/img/doryung.png",
-    outroBg: "/new-year/img/doryung.png",
+    intro: `대인관계운이에요.\n올해 ${userName}님 주변엔 어떤 사람들이 있을까요?`,
+    outro: `좋은 사람 곁에 있으면 운도 따라와요.\n소중한 인연 꼭 챙기세요!\n\n그럼 이제 월별로 자세히 볼까요?`,
+    introBg: "/new-year/img/doryung4.jpg",
+    reportBg: "/new-year/img/doryung8.jpg",
+    outroBg: "/new-year/img/doryung7.jpg",
   },
   chapter8: {
-    intro: `8장에서는 ${userName}님의 2026년 월별 운세를 알려드릴게요.`,
-    outro: "월별 운세를 살펴봤어요.\n이제 미래일기를 보여드릴게요!",
-    introBg: "/new-year/img/doryung.png",
-    reportBg: "/new-year/img/doryung.png",
-    outroBg: "/new-year/img/doryung.png",
+    intro: `12개월 월별 운세예요.\n매달 어떤 일이 있을지 궁금하시죠?`,
+    outro: `새 달이 시작될 때마다 한번씩 읽어보세요.\n분명 도움이 될 거예요!\n\n다음은 좀 특별한 거 준비했어요~`,
+    introBg: "/new-year/img/doryung7.jpg",
+    reportBg: "/new-year/img/doryung7.jpg",
+    outroBg: "/new-year/img/doryung4.jpg",
   },
   chapter9: {
-    intro: `9장에서는 ${userName}님의 2026년 미래일기를 펼쳐볼게요.\n미래의 ${userName}님이 쓴 일기예요!`,
-    outro: "미래일기 재밌으셨나요?\n이제 개운법을 알려드릴게요!",
-    introBg: "/new-year/img/doryung.png",
-    reportBg: "/new-year/img/doryung.png",
-    outroBg: "/new-year/img/doryung.png",
+    intro: `짜잔~ 미래일기예요!\n2026년의 ${userName}님이 직접 쓴 일기라고 상상해보세요.`,
+    outro: `어때요, 좀 설레지 않아요?\n이렇게 좋은 일들이 가득하길 바라요!\n\n자, 이제 올해 개운법 알려드릴게요.`,
+    introBg: "/new-year/img/doryung3.jpg",
+    reportBg: "/new-year/img/doryung3.jpg",
+    outroBg: "/new-year/img/doryung6.jpg",
   },
   chapter10: {
-    intro: `10장에서는 ${userName}님을 위한 개운법 10계명을 알려드릴게요.`,
-    outro: "개운법을 잘 기억해주세요!\n마지막으로 까치도령의 귀띔을 알려드릴게요.",
-    introBg: "/new-year/img/doryung.png",
-    reportBg: "/new-year/img/doryung.png",
-    outroBg: "/new-year/img/doryung.png",
+    intro: `개운법이에요!\n올해 운 더 좋아지는 꿀팁들 알려드릴게요.`,
+    outro: `하나씩 실천해보세요.\n작은 것부터 하면 운이 확 바뀌어요!\n\n마지막으로 제가 따로 해드릴 말씀이 있어요.`,
+    introBg: "/new-year/img/doryung6.jpg",
+    reportBg: "/new-year/img/doryung6.jpg",
+    outroBg: "/new-year/img/doryung4.jpg",
   },
   chapter11: {
-    intro: `마지막 11장이에요. ${userName}님을 위한 까치도령의 귀띔을 알려드릴게요.`,
+    intro: `드디어 마지막이에요.\n${userName}님께만 드리는 까치도령의 특별한 귀띔!`,
     outro: "",
-    introBg: "/new-year/img/doryung.png",
-    reportBg: "/new-year/img/doryung.png",
-    outroBg: "/new-year/img/doryung.png",
+    introBg: "/new-year/img/doryung4.jpg",
+    reportBg: "/new-year/img/doryung.jpg",
+    outroBg: "/new-year/img/doryung2.jpg",
   },
 });
 
@@ -318,7 +318,7 @@ function NewYearResultContent() {
   const pendingDataRef = useRef<NewYearRecord | null>(null);
 
   // 현재 메시지의 배경 이미지
-  const currentBgImage = messages[currentIndex]?.bgImage || "/new-year/img/doryung.png";
+  const currentBgImage = messages[currentIndex]?.bgImage || "/new-year/img/doryung.jpg";
 
   const isFetchingRef = useRef(false);
   const partialStartedRef = useRef(false);
@@ -355,35 +355,35 @@ function NewYearResultContent() {
       id: "opening-dialogue",
       type: "dialogue",
       content: `안녕하세요, ${userName}님\n저는 까치도령이에요. 반가워요!`,
-      bgImage: "/new-year/img/doryung.png",
+      bgImage: "/new-year/img/doryung4.jpg",
     });
 
     result.push({
       id: "intro-guide-dialogue",
       type: "dialogue",
       content: `${userName}님의 2026년 운세를 보기 전에,\n먼저 사주에 대해 간단히 설명해드릴게요.`,
-      bgImage: "/new-year/img/doryung.png",
+      bgImage: "/new-year/img/doryung6.jpg",
     });
 
     result.push({
       id: "intro-card",
       type: "intro",
       content: "",
-      bgImage: "/new-year/img/doryung.png",
+      bgImage: "/new-year/img/doryung.jpg",
     });
 
     result.push({
       id: "saju-intro-dialogue",
       type: "dialogue",
       content: `사주란 참 신기하죠?\n그럼 이제 ${userName}님의 사주 팔자를 살펴볼까요?`,
-      bgImage: "/new-year/img/doryung.png",
+      bgImage: "/new-year/img/doryung5.jpg",
     });
 
     result.push({
       id: "saju-card",
       type: "saju",
       content: "",
-      bgImage: "/new-year/img/doryung.png",
+      bgImage: "/new-year/img/doryung7.jpg",
     });
 
     // 결제 완료 후 분석 대기 상태
@@ -391,7 +391,7 @@ function NewYearResultContent() {
       id: "waiting",
       type: "waiting",
       content: "",
-      bgImage: "/new-year/img/doryung.png",
+      bgImage: "/new-year/img/doryung7.jpg",
     });
 
     return result;
@@ -402,41 +402,40 @@ function NewYearResultContent() {
     const result: MessageItem[] = [];
     const userName = record.analysis?.user_name || record.input?.userName || "고객";
     const chapters = record.analysis?.chapters || [];
-    const hasTalisman = !!(record.talismanImage?.success && record.talismanImage.image_base64);
 
     result.push({
       id: "opening-dialogue",
       type: "dialogue",
       content: `${userName}님, 안녕하세요?\n이제부터 2026년 신년 운세를 천천히 살펴볼까요?`,
-      bgImage: "/new-year/img/doryung.png",
+      bgImage: "/new-year/img/doryung4.jpg",
     });
 
     result.push({
       id: "intro-guide-dialogue",
       type: "dialogue",
       content: `${userName}님의 신년 운세를 알려드리기 전에,\n먼저 사주팔자에 대해 간단하게 설명을 해드릴게요.`,
-      bgImage: "/new-year/img/doryung.png",
+      bgImage: "/new-year/img/doryung6.jpg",
     });
 
     result.push({
       id: "intro-card",
       type: "intro",
       content: "",
-      bgImage: "/new-year/img/doryung.png",
+      bgImage: "/new-year/img/doryung.jpg",
     });
 
     result.push({
       id: "saju-intro-dialogue",
       type: "dialogue",
       content: `이제 ${userName}님의 사주 원국을 보여드릴게요.\n이게 바로 ${userName}님의 타고난 운명이에요!`,
-      bgImage: "/new-year/img/doryung.png",
+      bgImage: "/new-year/img/doryung5.jpg",
     });
 
     result.push({
       id: "saju-card",
       type: "saju",
       content: "",
-      bgImage: "/new-year/img/doryung.png",
+      bgImage: "/new-year/img/doryung7.jpg",
     });
 
     // 각 챕터별 [intro 대화 → 리포트 → outro 대화]
@@ -453,7 +452,7 @@ function NewYearResultContent() {
           id: `chapter-${uniqueId}-intro`,
           type: "dialogue",
           content: config.intro,
-          bgImage: config.introBg || "/new-year/img/doryung.png",
+          bgImage: config.introBg || "/new-year/img/doryung.jpg",
         });
       }
 
@@ -462,7 +461,7 @@ function NewYearResultContent() {
         type: "report",
         content: chapter.content || "",
         chapterIndex: index,
-        bgImage: config?.reportBg || "/new-year/img/doryung.png",
+        bgImage: config?.reportBg || "/new-year/img/doryung.jpg",
       });
 
       if (config?.outro) {
@@ -470,47 +469,31 @@ function NewYearResultContent() {
           id: `chapter-${uniqueId}-outro`,
           type: "dialogue",
           content: config.outro,
-          bgImage: config.outroBg || "/new-year/img/doryung.png",
+          bgImage: config.outroBg || "/new-year/img/doryung.jpg",
         });
       }
 
-      // 마지막 챕터 후 부적 이미지 삽입
-      if (uniqueId === chapters.length && hasTalisman && record.talismanImage?.image_base64) {
-        result.push({
-          id: "talisman-dialogue",
-          type: "dialogue",
-          content: `잠깐, 특별히 준비한 게 있어요.\n${userName}님을 위한 2026년 수호 부적이에요!`,
-          bgImage: "/new-year/img/doryung.png",
-        });
-        result.push({
-          id: "talisman-image",
-          type: "image",
-          content: `${userName}님의 2026년 수호 부적`,
-          imageBase64: record.talismanImage.image_base64,
-          bgImage: "/new-year/img/doryung.png",
-        });
-      }
     });
 
     result.push({
       id: "ending-intro",
       type: "dialogue",
       content: `${userName}님, 여기까지 긴 여정 함께해주셔서 감사해요.\n어떠셨어요? 2026년이 기대되시나요?`,
-      bgImage: "/new-year/img/doryung.png",
+      bgImage: "/new-year/img/doryung8.jpg",
     });
 
     result.push({
       id: "ending-outro",
       type: "dialogue",
       content: `2026년 병오년이 ${userName}님에게\n행운과 기쁨이 가득한 해가 되길 바랄게요.\n\n그럼, 마지막으로 정리된 보고서를 전달 드릴게요.`,
-      bgImage: "/new-year/img/doryung.png",
+      bgImage: "/new-year/img/doryung2.jpg",
     });
 
     result.push({
       id: "ending",
       type: "ending",
       content: "",
-      bgImage: "/new-year/img/doryung.png",
+      bgImage: "/new-year/img/doryung2.jpg",
     });
 
     return result;
@@ -636,7 +619,7 @@ function NewYearResultContent() {
     const goToNextMessage = async (nextIndex: number) => {
       const nextMsg = messages[nextIndex];
 
-      const nextImage = nextMsg.bgImage || "/new-year/img/doryung.png";
+      const nextImage = nextMsg.bgImage || "/new-year/img/doryung.jpg";
 
       await Promise.race([
         ensureImageLoaded(nextImage),
@@ -693,7 +676,6 @@ function NewYearResultContent() {
       "월별 운세를 정리하고 있어요",
       `${userName}님의 미래일기를 작성하고 있어요`,
       "개운법 10계명을 준비하고 있어요",
-      "수호 부적을 그리고 있어요",
       "곧 분석이 완료됩니다",
     ];
     let index = 0;
@@ -752,7 +734,6 @@ function NewYearResultContent() {
 
         const analysisResult = await response.json();
         const analysisData = analysisResult.analysis || analysisResult;
-        const talismanData = analysisResult.talisman_image || null;
         const metaData = analysisResult.meta || {};
 
         // meta에서 user_name 가져와서 analysis에 포함
@@ -764,12 +745,10 @@ function NewYearResultContent() {
         const updatedData: NewYearRecord = {
           ...storedData,
           analysis: analysisWithMeta,
-          talismanImage: talismanData,
           isAnalyzing: false,
         };
         await updateNewYearRecord(storedData.id, {
           analysis: analysisWithMeta,
-          talismanImage: talismanData,
           isAnalyzing: false,
         });
 
@@ -1152,13 +1131,6 @@ function NewYearResultContent() {
                 chapterIndex={currentMsg.chapterIndex!}
               />
             )}
-            {currentMsg.type === "image" && currentMsg.imageBase64 && (
-              <TalismanCard
-                imageBase64={currentMsg.imageBase64}
-                userName={userName}
-                title={currentMsg.content}
-              />
-            )}
             {currentMsg.type === "waiting" && (
               <WaitingCard
                 userName={userName}
@@ -1314,7 +1286,6 @@ function TocModal({
         return `${num}장. ${titles[num - 1] || ""}`;
       }
     }
-    if (item.type === "image") return "수호 부적";
     if (item.type === "ending") return "마무리";
     return "";
   };
@@ -2839,9 +2810,10 @@ function ReportCard({
   // 타이틀 기반으로 챕터 번호 보정 (백엔드 파싱 오류 대응)
   const detectChapterNum = (): number => {
     const title = chapter.title || "";
-    if (title.includes("까치도령") || title.includes("보너스")) return 11;
+    // 미래일기를 먼저 체크 (보너스 풀이 타이틀에 미래일기가 포함될 수 있음)
+    if (title.includes("미래") || title.includes("일기")) return 9;
+    if (title.includes("까치도령") || title.includes("보너스") || title.includes("귀띔")) return 11;
     if (title.includes("개운법") || title.includes("Do")) return 10;
-    if (title.includes("부적")) return 9;
     if (title.includes("월별")) return 8;
     if (title.includes("대인관계")) return 7;
     if (title.includes("학업") || title.includes("계약")) return 6;
@@ -3628,6 +3600,27 @@ function Chapter9Content({ sections }: { sections: Record<string, ParsedSection>
   const achieveData = getSectionData(sections, "가장큰_성취");
   const actionData = getSectionData(sections, "오늘의_행동");
 
+  // 미래일기 전체 내용 (섹션이 없을 때 fallback용)
+  const diaryContent = sections["미래일기"]?.content || sections["미래_일기"]?.content || "";
+
+  const hasStructuredContent = letterText || hardData["시기"] || hardData["상황"] || achieveData["성취"] || actionData["action_item"];
+
+  // 구조화된 데이터가 없으면 전체 내용 또는 모든 섹션 내용 표시
+  if (!hasStructuredContent) {
+    const allContent = diaryContent || Object.values(sections).map(s => s.content).filter(Boolean).join("\n\n");
+    if (allContent) {
+      return (
+        <div className={styles.chapter_structured}>
+          <div className={styles.text_block}>
+            {allContent.split("\n").map((line, i) => (
+              <p key={i}>{line || <br />}</p>
+            ))}
+          </div>
+        </div>
+      );
+    }
+  }
+
   return (
     <div className={styles.chapter_structured}>
       {letterText && (
@@ -3732,34 +3725,6 @@ function Chapter11Content({ sections }: { sections: Record<string, ParsedSection
           <div className={styles.text_block}><p>{data["특별_메시지"]}</p></div>
         </div>
       )}
-    </div>
-  );
-}
-
-// 부적 카드 컴포넌트
-function TalismanCard({
-  imageBase64,
-  userName,
-  title,
-}: {
-  imageBase64: string;
-  userName: string;
-  title: string;
-}) {
-  return (
-    <div className={`${styles.report_card} ${styles.talisman_card}`}>
-      <div className={styles.card_header}>
-        <span className={styles.card_label}>수호 부적</span>
-        <h2 className={styles.card_title}>{title}</h2>
-      </div>
-      <div className={styles.talisman_image_wrap}>
-        <img
-          src={`data:image/png;base64,${imageBase64}`}
-          alt="2026년 수호 부적"
-          className={styles.talisman_image}
-        />
-      </div>
-      <p className={styles.talisman_tip}>이미지를 길게 눌러 저장하거나, 배경으로 설정해보세요</p>
     </div>
   );
 }
@@ -3920,9 +3885,10 @@ function EndingCard({ data }: { data: NewYearRecord }) {
         {data.analysis?.chapters?.map((chapter, index) => {
           const title = chapter.title || "";
           let num = chapter.number || index + 1;
-          if (title.includes("까치도령") || title.includes("보너스")) num = 11;
+          // 미래일기를 먼저 체크
+          if (title.includes("미래") || title.includes("일기")) num = 9;
+          else if (title.includes("까치도령") || title.includes("보너스") || title.includes("귀띔")) num = 11;
           else if (title.includes("개운법")) num = 10;
-          else if (title.includes("부적")) num = 9;
           else if (title.includes("월별")) num = 8;
           else if (title.includes("대인관계")) num = 7;
           else if (title.includes("학업") || title.includes("계약")) num = 6;

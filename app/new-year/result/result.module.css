@@ -53,10 +53,10 @@
 
 .newyear_result_page {
   font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, sans-serif;
-  background: #e8e2d9 url('/new-year/img/doryung.png') center top / cover no-repeat;
-  background-attachment: fixed;
+  background: #e8e2d9;
   min-height: 100vh;
   min-height: 100dvh;
+  width: 100%;
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
@@ -67,7 +67,7 @@
   background: transparent;
   min-height: 100vh;
   min-height: 100dvh;
-  width: 100%;
+  width: 500px;
   max-width: 500px;
   margin: 0 auto;
   position: relative;
@@ -88,6 +88,19 @@
   margin: 0 auto;
   gap: 20px;
   background: white;
+}
+
+@media (max-width: 500px) {
+  .newyear_result_page .main_body_wrap {
+    width: 100%;
+    min-width: 100%;
+    max-width: 100%;
+  }
+  .newyear_result_page .loading_wrap {
+    width: 100%;
+    min-width: 100%;
+    max-width: 100%;
+  }
 }
 
 .newyear_result_page .loading_progress_bar {
