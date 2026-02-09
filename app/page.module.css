@@ -37,7 +37,7 @@
   width: 100%;
   display: flex;
   justify-content: center;
-  background: url("/img/main-bg.png") center center / cover no-repeat;
+  background: url("/img/main-bg.jpg") center center / cover no-repeat;
   position: relative;
 }
 
