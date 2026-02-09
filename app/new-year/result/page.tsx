@@ -2836,7 +2836,23 @@ function ReportCard({
     11: "까치도령의 귀띔",
   };
 
-  const chapterNum = chapter.number || chapterIndex + 1;
+  // 타이틀 기반으로 챕터 번호 보정 (백엔드 파싱 오류 대응)
+  const detectChapterNum = (): number => {
+    const title = chapter.title || "";
+    if (title.includes("까치도령") || title.includes("보너스")) return 11;
+    if (title.includes("개운법") || title.includes("Do")) return 10;
+    if (title.includes("부적")) return 9;
+    if (title.includes("월별")) return 8;
+    if (title.includes("대인관계")) return 7;
+    if (title.includes("학업") || title.includes("계약")) return 6;
+    if (title.includes("직장") || title.includes("명예")) return 5;
+    if (title.includes("연애") || title.includes("결혼")) return 4;
+    if (title.includes("건강")) return 3;
+    if (title.includes("재물")) return 2;
+    if (title.includes("총운")) return 1;
+    return chapter.number || chapterIndex + 1;
+  };
+  const chapterNum = detectChapterNum();
   const rawTitle = chapter.title || chapterTitles[chapterNum] || `${chapterNum}장`;
   const chapterTitle = rawTitle
     .replace(/^#+\s*/, "")
@@ -3901,17 +3917,32 @@ function EndingCard({ data }: { data: NewYearRecord }) {
       <div className={styles.ending_summary}>
         <h3 className={styles.summary_title}>2026년 신년 운세 요약</h3>
 
-        {data.analysis?.chapters?.map((chapter, index) => (
-          <div key={index} className={styles.summary_report_card}>
-            <div className={styles.card_header}>
-              <span className={styles.card_label}>{chapter.number || index + 1}장</span>
-              <span className={styles.card_title}>{chapter.title || ""}</span>
+        {data.analysis?.chapters?.map((chapter, index) => {
+          const title = chapter.title || "";
+          let num = chapter.number || index + 1;
+          if (title.includes("까치도령") || title.includes("보너스")) num = 11;
+          else if (title.includes("개운법")) num = 10;
+          else if (title.includes("부적")) num = 9;
+          else if (title.includes("월별")) num = 8;
+          else if (title.includes("대인관계")) num = 7;
+          else if (title.includes("학업") || title.includes("계약")) num = 6;
+          else if (title.includes("직장") || title.includes("명예")) num = 5;
+          else if (title.includes("연애") || title.includes("결혼")) num = 4;
+          else if (title.includes("건강")) num = 3;
+          else if (title.includes("재물")) num = 2;
+          else if (title.includes("총운")) num = 1;
+          return (
+            <div key={index} className={styles.summary_report_card}>
+              <div className={styles.card_header}>
+                <span className={styles.card_label}>{num}장</span>
+                <span className={styles.card_title}>{title}</span>
+              </div>
+              <div className={styles.card_content}>
+                {(chapter.content || "").slice(0, 200)}...
+              </div>
             </div>
-            <div className={styles.card_content}>
-              {(chapter.content || "").slice(0, 200)}...
-            </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
     </div>
   );
