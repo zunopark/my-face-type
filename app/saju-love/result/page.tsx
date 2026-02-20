@@ -1791,18 +1791,18 @@ function IdealTypeCard({
   // 피해야 할 인연은 바로 보여주기
   if (isAvoid) {
     return (
-      <div className="report_card ideal_type_card avoid_variant">
-        <div className="card_header">
-          <h3 className="card_title">{cardTitle}</h3>
+      <div className={`${styles.report_card} ${styles.ideal_type_card} ${styles.avoid_variant}`}>
+        <div className={styles.card_header}>
+          <h3 className={styles.card_title}>{cardTitle}</h3>
         </div>
-        <div className="ideal_image_wrap revealed">
+        <div className={`${styles.ideal_image_wrap} ${styles.revealed}`}>
           <img
             src={imageSrc}
             alt="가짜 인연 이미지"
-            className="ideal_image"
+            className={styles.ideal_image}
           />
         </div>
-        <div className="ideal_revealed_message">
+        <div className={styles.ideal_revealed_message}>
           <p>
             아무리 매력적으로 느껴져도,
             <br />
@@ -1814,19 +1814,19 @@ function IdealTypeCard({
   }
 
   return (
-    <div className="report_card ideal_type_card">
-      <div className="card_header">
-        <h3 className="card_title">{cardTitle}</h3>
+    <div className={`${styles.report_card} ${styles.ideal_type_card}`}>
+      <div className={styles.card_header}>
+        <h3 className={styles.card_title}>{cardTitle}</h3>
       </div>
       <div
-        className={`ideal_image_wrap ${isRevealed ? "revealed" : "blurred"} ${isShaking ? "shake" : ""
+        className={`${styles.ideal_image_wrap} ${isRevealed ? styles.revealed : styles.blurred} ${isShaking ? styles.shake : ""
           }`}
         onClick={handleClick}
       >
         <img
           src={imageSrc}
           alt="운명의 상대 이미지"
-          className="ideal_image"
+          className={styles.ideal_image}
           style={{
             filter: `blur(${blurLevel}px)`,
             transition: "filter 0.4s ease-out",
@@ -1834,10 +1834,10 @@ function IdealTypeCard({
         />
       </div>
       {!isRevealed && (
-        <p className="ideal_tap_hint">{hintMessages[clickCount]}</p>
+        <p className={styles.ideal_tap_hint}>{hintMessages[clickCount]}</p>
       )}
       {isRevealed && (
-        <div className="ideal_revealed_message">
+        <div className={styles.ideal_revealed_message}>
           <p>
             어떠세요, {userName}님?
             <br />
@@ -2207,12 +2207,12 @@ function SajuCard({ data }: { data: SajuLoveRecord }) {
   }, [data, sajuData]);
 
   return (
-    <div className="report_card intro_card saju_card_simple">
+    <div className={`${styles.report_card} ${styles.intro_card} ${styles.saju_card_simple}`}>
       {/* 장면 1: 장 오프닝 */}
-      <div className="intro_section intro_welcome compact">
-        <p className="welcome_sub">사주 원국</p>
-        <p className="welcome_main">{userName}님의 사주</p>
-        <p className="welcome_text">
+      <div className={`${styles.intro_section} ${styles.intro_welcome} ${styles.compact}`}>
+        <p className={styles.welcome_sub}>사주 원국</p>
+        <p className={styles.welcome_main}>{userName}님의 사주</p>
+        <p className={styles.welcome_text}>
           {userName}님의 사주에는 어떤 글자들이 있을까요?
           <br />
           지금부터 하나씩 살펴볼게요.
@@ -2220,19 +2220,19 @@ function SajuCard({ data }: { data: SajuLoveRecord }) {
       </div>
 
       {/* 장면 2: 사주원국표 */}
-      <div className="intro_section">
+      <div className={styles.intro_section}>
         {/* 기본 정보 */}
-        <div className="saju_info_header">
-          <span className="saju_info_name">{userName}님의 사주</span>
-          <span className="saju_info_date">
+        <div className={styles.saju_info_header}>
+          <span className={styles.saju_info_name}>{userName}님의 사주</span>
+          <span className={styles.saju_info_date}>
             {input?.date}
             {birthTime ? ` | ${birthTime}` : ""}
           </span>
         </div>
 
         {/* 사주 원국표 */}
-        <div className="saju_table_card">
-          <table className="saju_full_table">
+        <div className={styles.saju_table_card}>
+          <table className={styles.saju_full_table}>
             <thead>
               <tr>
                 <th></th>
@@ -2244,14 +2244,14 @@ function SajuCard({ data }: { data: SajuLoveRecord }) {
             </thead>
             <tbody>
               {/* 십성 (천간) */}
-              <tr className="row_sipsung_top">
-                <td className="row_label">십성</td>
+              <tr className={styles.row_sipsung_top}>
+                <td className={styles.row_label}>십성</td>
                 {(["hour", "day", "month", "year"] as const).map((key) => {
                   const p = pillars[key];
                   const isDay = key === "day";
                   return (
                     <td key={key} className={isDay ? "highlight" : ""}>
-                      <span className="sipsung_text">
+                      <span className={styles.sipsung_text}>
                         {p?.tenGodStem || "—"}
                       </span>
                     </td>
@@ -2259,21 +2259,21 @@ function SajuCard({ data }: { data: SajuLoveRecord }) {
                 })}
               </tr>
               {/* 천간 */}
-              <tr className="row_cheongan">
-                <td className="row_label">천간</td>
+              <tr className={styles.row_cheongan}>
+                <td className={styles.row_label}>천간</td>
                 {(["hour", "day", "month", "year"] as const).map((key) => {
                   const p = pillars[key];
                   const isDay = key === "day";
                   return (
                     <td key={key} className={isDay ? "highlight" : ""}>
-                      <div className="char_box">
+                      <div className={styles.char_box}>
                         <span
-                          className="char_hanja"
+                          className={styles.char_hanja}
                           style={{ color: getColor(p?.stem?.element) }}
                         >
                           {p?.stem?.char || "—"}
                         </span>
-                        <span className="char_korean">
+                        <span className={styles.char_korean}>
                           {p?.stem?.korean || ""}
                           {p?.stem?.element
                             ? getElementKorean(p.stem.element, p.stem.yinYang)
@@ -2285,21 +2285,21 @@ function SajuCard({ data }: { data: SajuLoveRecord }) {
                 })}
               </tr>
               {/* 지지 */}
-              <tr className="row_jiji">
-                <td className="row_label">지지</td>
+              <tr className={styles.row_jiji}>
+                <td className={styles.row_label}>지지</td>
                 {(["hour", "day", "month", "year"] as const).map((key) => {
                   const p = pillars[key];
                   const isDay = key === "day";
                   return (
                     <td key={key} className={isDay ? "highlight" : ""}>
-                      <div className="char_box">
+                      <div className={styles.char_box}>
                         <span
-                          className="char_hanja"
+                          className={styles.char_hanja}
                           style={{ color: getColor(p?.branch?.element) }}
                         >
                           {p?.branch?.char || "—"}
                         </span>
-                        <span className="char_korean">
+                        <span className={styles.char_korean}>
                           {p?.branch?.korean || ""}
                           {p?.branch?.element
                             ? getElementKorean(
@@ -2314,14 +2314,14 @@ function SajuCard({ data }: { data: SajuLoveRecord }) {
                 })}
               </tr>
               {/* 십성 (지지) */}
-              <tr className="row_sipsung_bottom">
-                <td className="row_label">십성</td>
+              <tr className={styles.row_sipsung_bottom}>
+                <td className={styles.row_label}>십성</td>
                 {(["hour", "day", "month", "year"] as const).map((key) => {
                   const p = pillars[key];
                   const isDay = key === "day";
                   return (
                     <td key={key} className={isDay ? "highlight" : ""}>
-                      <span className="sipsung_text">
+                      <span className={styles.sipsung_text}>
                         {p?.tenGodBranchMain || "—"}
                       </span>
                     </td>
@@ -2329,8 +2329,8 @@ function SajuCard({ data }: { data: SajuLoveRecord }) {
                 })}
               </tr>
               {/* 십이운성 */}
-              <tr className="row_extra">
-                <td className="row_label">십이운성</td>
+              <tr className={styles.row_extra}>
+                <td className={styles.row_label}>십이운성</td>
                 {(["hour", "day", "month", "year"] as const).map((key) => {
                   const p = pillars[key];
                   const isDay = key === "day";
@@ -2350,8 +2350,8 @@ function SajuCard({ data }: { data: SajuLoveRecord }) {
                 })}
               </tr>
               {/* 12신살 */}
-              <tr className="row_extra">
-                <td className="row_label">12신살</td>
+              <tr className={styles.row_extra}>
+                <td className={styles.row_label}>12신살</td>
                 {(["hour", "day", "month", "year"] as const).map((key) => {
                   const p = pillars[key];
                   const isDay = key === "day";
@@ -2366,7 +2366,7 @@ function SajuCard({ data }: { data: SajuLoveRecord }) {
                   return (
                     <td
                       key={key}
-                      className={`${isDay ? "highlight" : ""} ${isSinsalHighlight ? "cell_sinsal_highlight" : ""
+                      className={`${isDay ? styles.highlight : ""} ${isSinsalHighlight ? styles.cell_sinsal_highlight : ""
                         }`}
                     >
                       {displayValue}
@@ -2375,8 +2375,8 @@ function SajuCard({ data }: { data: SajuLoveRecord }) {
                 })}
               </tr>
               {/* 신살 */}
-              <tr className="row_extra">
-                <td className="row_label">신살</td>
+              <tr className={styles.row_extra}>
+                <td className={styles.row_label}>신살</td>
                 {(["hour", "day", "month", "year"] as const).map((key) => {
                   const isDay = key === "day";
                   const byPillar = sajuData?.sinsal?._byPillar;
@@ -2391,10 +2391,10 @@ function SajuCard({ data }: { data: SajuLoveRecord }) {
                   return (
                     <td
                       key={key}
-                      className={`cell_sinsal ${isDay ? "highlight" : ""}`}
+                      className={`${styles.cell_sinsal} ${isDay ? styles.highlight : ""}`}
                     >
                       {allSinsal.length > 0 ? (
-                        <div className="sinsal_vertical">
+                        <div className={styles.sinsal_vertical}>
                           {allSinsal.map((s, i) => (
                             <span
                               key={i}
@@ -2416,8 +2416,8 @@ function SajuCard({ data }: { data: SajuLoveRecord }) {
                 })}
               </tr>
               {/* 귀인 */}
-              <tr className="row_extra">
-                <td className="row_label">귀인</td>
+              <tr className={styles.row_extra}>
+                <td className={styles.row_label}>귀인</td>
                 {(["hour", "day", "month", "year"] as const).map((key) => {
                   const isDay = key === "day";
                   const byPillar = sajuData?.sinsal?._byPillar;
@@ -2429,10 +2429,10 @@ function SajuCard({ data }: { data: SajuLoveRecord }) {
                   return (
                     <td
                       key={key}
-                      className={`cell_gilsung ${isDay ? "highlight" : ""}`}
+                      className={`${styles.cell_gilsung} ${isDay ? styles.highlight : ""}`}
                     >
                       {allSinsal.length > 0 ? (
-                        <div className="gilsung_vertical">
+                        <div className={styles.gilsung_vertical}>
                           {allSinsal.map((s, i) => (
                             <span key={i}>{s}</span>
                           ))}
@@ -2449,7 +2449,7 @@ function SajuCard({ data }: { data: SajuLoveRecord }) {
         </div>
 
         {/* 사주원국 설명 */}
-        <div className="intro_section_content" style={{ marginTop: "16px" }}>
+        <div className={styles.intro_section_content} style={{ marginTop: "16px" }}>
           <p style={{ textAlign: "center" }}>
             처음 보면 무슨 말인지 잘 모르시겠죠?
             <br />
@@ -2464,9 +2464,9 @@ function SajuCard({ data }: { data: SajuLoveRecord }) {
           </p>
         </div>
 
-        <div className="saju_explain_card">
-          <p className="saju_explain_title">사주원국이란?</p>
-          <p className="saju_explain_text">
+        <div className={styles.saju_explain_card}>
+          <p className={styles.saju_explain_title}>사주원국이란?</p>
+          <p className={styles.saju_explain_text}>
             {userName}님의 생년월일시에 해당하는 하늘과 땅의 글자를 십성,
             십이운성, 살 등과 함께 적은 표예요.
           </p>
@@ -2474,8 +2474,8 @@ function SajuCard({ data }: { data: SajuLoveRecord }) {
       </div>
 
       {/* 장면 3: 천간/지지 분리 설명 */}
-      <div className="intro_section">
-        <div className="intro_section_content">
+      <div className={styles.intro_section}>
+        <div className={styles.intro_section_content}>
           <p>
             생년월일시를 가지고 역학달력에 따라 <strong>사주(四柱)</strong>를
             적어요.
@@ -2487,9 +2487,9 @@ function SajuCard({ data }: { data: SajuLoveRecord }) {
           </p>
         </div>
 
-        <div className="saju_split_table">
-          <div className="split_row">
-            <span className="split_label">
+        <div className={styles.saju_split_table}>
+          <div className={styles.split_row}>
+            <span className={styles.split_label}>
               천간
               <br />
               (天干)
@@ -2497,20 +2497,20 @@ function SajuCard({ data }: { data: SajuLoveRecord }) {
             {(["hour", "day", "month", "year"] as const).map((key) => {
               const p = pillars[key];
               return (
-                <div key={key} className="split_cell">
+                <div key={key} className={styles.split_cell}>
                   <span
-                    className="split_hanja"
+                    className={styles.split_hanja}
                     style={{ color: getColor(p?.stem?.element) }}
                   >
                     {p?.stem?.char || "—"}
                   </span>
-                  <span className="split_korean">{p?.stem?.korean || ""}</span>
+                  <span className={styles.split_korean}>{p?.stem?.korean || ""}</span>
                 </div>
               );
             })}
           </div>
-          <div className="split_row">
-            <span className="split_label">
+          <div className={styles.split_row}>
+            <span className={styles.split_label}>
               지지
               <br />
               (地支)
@@ -2518,14 +2518,14 @@ function SajuCard({ data }: { data: SajuLoveRecord }) {
             {(["hour", "day", "month", "year"] as const).map((key) => {
               const p = pillars[key];
               return (
-                <div key={key} className="split_cell">
+                <div key={key} className={styles.split_cell}>
                   <span
-                    className="split_hanja"
+                    className={styles.split_hanja}
                     style={{ color: getColor(p?.branch?.element) }}
                   >
                     {p?.branch?.char || "—"}
                   </span>
-                  <span className="split_korean">
+                  <span className={styles.split_korean}>
                     {p?.branch?.korean || ""}
                   </span>
                 </div>
@@ -2535,54 +2535,54 @@ function SajuCard({ data }: { data: SajuLoveRecord }) {
         </div>
 
         {/* 각 요소 연애 의미 설명 */}
-        <div className="saju_elements_meaning">
-          <p className="elements_meaning_title">
+        <div className={styles.saju_elements_meaning}>
+          <p className={styles.elements_meaning_title}>
             각 요소가 연애에서 의미하는 것
           </p>
-          <div className="element_meaning_list">
-            <div className="element_meaning_item">
+          <div className={styles.element_meaning_list}>
+            <div className={styles.element_meaning_item}>
               <strong>천간(天干)</strong>
               <p>
                 겉으로 드러나는 연애 스타일, 표현 방식. 상대에게 보여지는 나의
                 모습이에요.
               </p>
             </div>
-            <div className="element_meaning_item">
+            <div className={styles.element_meaning_item}>
               <strong>지지(地支)</strong>
               <p>
                 내면의 욕구와 본능. 무의식적으로 끌리는 이상형, 진짜 원하는
                 연애가 담겨 있어요.
               </p>
             </div>
-            <div className="element_meaning_item">
+            <div className={styles.element_meaning_item}>
               <strong>십성(十星)</strong>
               <p>
                 나와 상대의 관계 패턴. 어떤 사람에게 끌리고, 어떤 연애를 하는지
                 알 수 있어요.
               </p>
             </div>
-            <div className="element_meaning_item">
+            <div className={styles.element_meaning_item}>
               <strong>십이운성(十二運星)</strong>
               <p>
                 연애 에너지의 상태. 적극적인지 소극적인지, 연애운의 강약을
                 나타내요.
               </p>
             </div>
-            <div className="element_meaning_item">
+            <div className={styles.element_meaning_item}>
               <strong>12신살</strong>
               <p>
                 연애에 영향을 주는 특별한 기운. 도화살은 이성에게 인기, 매력을
                 뜻해요.
               </p>
             </div>
-            <div className="element_meaning_item">
+            <div className={styles.element_meaning_item}>
               <strong>신살(神殺)</strong>
               <p>
                 특별한 사건이나 기운을 나타내요. 홍염살, 화개살 등 연애에 영향을
                 주는 살이 있어요.
               </p>
             </div>
-            <div className="element_meaning_item">
+            <div className={styles.element_meaning_item}>
               <strong>귀인(貴人)</strong>
               <p>
                 나를 도와주는 좋은 기운. 연애에서 좋은 인연을 만나게 해주는
@@ -2594,63 +2594,63 @@ function SajuCard({ data }: { data: SajuLoveRecord }) {
       </div>
 
       {/* 연애 신살 설명 */}
-      <div className="intro_section">
+      <div className={styles.intro_section}>
         {/* 색동낭자 대화 - 연애 신살 전 */}
-        <div className="nangja_comment">
-          <p className="nangja_text">
+        <div className={styles.nangja_comment}>
+          <p className={styles.nangja_text}>
             참, 신살 중에는 연애와 관련된 것들도 있어요.
             <br />
             대표적인 3가지를 알려드릴게요.
           </p>
         </div>
 
-        <div className="love_sinsal_cards">
-          <div className="love_sinsal_card">
-            <div className="sinsal_card_header">
+        <div className={styles.love_sinsal_cards}>
+          <div className={styles.love_sinsal_card}>
+            <div className={styles.sinsal_card_header}>
               <strong>도화살(桃花殺)</strong>
             </div>
-            <p className="sinsal_meaning">
+            <p className={styles.sinsal_meaning}>
               복숭아꽃 살. 이성을 끌어당기는 매력, 분위기, 인기를 뜻해요.
             </p>
-            <div className="sinsal_love_effect">
-              <span className="effect_good">
+            <div className={styles.sinsal_love_effect}>
+              <span className={styles.effect_good}>
                 이성에게 인기 많음, 연애 기회 많음
               </span>
-              <span className="effect_bad">
+              <span className={styles.effect_bad}>
                 유혹에 약함, 복잡한 이성관계 주의
               </span>
             </div>
           </div>
 
-          <div className="love_sinsal_card">
-            <div className="sinsal_card_header">
+          <div className={styles.love_sinsal_card}>
+            <div className={styles.sinsal_card_header}>
               <strong>홍염살(紅艶殺)</strong>
             </div>
-            <p className="sinsal_meaning">
+            <p className={styles.sinsal_meaning}>
               붉은 요염함. 도화살보다 더 강렬한 성적 매력, 관능미예요.
             </p>
-            <div className="sinsal_love_effect">
-              <span className="effect_good">
+            <div className={styles.sinsal_love_effect}>
+              <span className={styles.effect_good}>
                 강렬한 첫인상, 잊히지 않는 매력
               </span>
-              <span className="effect_bad">
+              <span className={styles.effect_bad}>
                 애정 문제 복잡, 집착/질투 유발 가능
               </span>
             </div>
           </div>
 
-          <div className="love_sinsal_card">
-            <div className="sinsal_card_header">
+          <div className={styles.love_sinsal_card}>
+            <div className={styles.sinsal_card_header}>
               <strong>화개살(華蓋殺)</strong>
             </div>
-            <p className="sinsal_meaning">
+            <p className={styles.sinsal_meaning}>
               꽃 덮개. 예술성, 감수성, 혼자만의 세계를 뜻해요.
             </p>
-            <div className="sinsal_love_effect">
-              <span className="effect_good">
+            <div className={styles.sinsal_love_effect}>
+              <span className={styles.effect_good}>
                 깊이 있는 사랑, 정신적 교감 중시
               </span>
-              <span className="effect_bad">외로움을 잘 탐, 이상이 높음</span>
+              <span className={styles.effect_bad}>외로움을 잘 탐, 이상이 높음</span>
             </div>
           </div>
         </div>
@@ -2678,8 +2678,8 @@ function SajuCard({ data }: { data: SajuLoveRecord }) {
           if (hasHwagae) mySinsalList.push("화개살");
 
           return (
-            <div className="nangja_comment" style={{ marginTop: "16px" }}>
-              <p className="nangja_text">
+            <div className={styles.nangja_comment} style={{ marginTop: "16px" }}>
+              <p className={styles.nangja_text}>
                 {mySinsalList.length > 0
                   ? `${userName}님은 ${mySinsalList.join(", ")}이 보이네요.`
                   : `${userName}님은 연애 신살이 없어요. 다른 요소들이 연애 스타일을 만들어줘요.`}
@@ -2690,10 +2690,10 @@ function SajuCard({ data }: { data: SajuLoveRecord }) {
       </div>
 
       {/* 장면 5: 일간 강조 */}
-      <div className="intro_section">
+      <div className={styles.intro_section}>
         {/* 색동낭자 대화 - 일간 설명 전 */}
-        <div className="nangja_comment">
-          <p className="nangja_text">
+        <div className={styles.nangja_comment}>
+          <p className={styles.nangja_text}>
             그리고 일주의 천간, 즉 &apos;일간&apos;은
             <br />
             {userName}님 자신을 나타내는 글자예요.
@@ -2703,27 +2703,27 @@ function SajuCard({ data }: { data: SajuLoveRecord }) {
           </p>
         </div>
 
-        <h3 className="intro_section_title">일간(日干)</h3>
-        <p className="intro_section_subtitle">일주 천간 = 나를 대표하는 글자</p>
+        <h3 className={styles.intro_section_title}>일간(日干)</h3>
+        <p className={styles.intro_section_subtitle}>일주 천간 = 나를 대표하는 글자</p>
 
-        <div className="ilgan_simple_display">
+        <div className={styles.ilgan_simple_display}>
           <span
-            className="ilgan_char"
+            className={styles.ilgan_char}
             style={{ color: getColor(dayMaster?.element) }}
           >
             {dayMaster?.char}
           </span>
-          <span className="ilgan_label">{dayMaster?.title}</span>
+          <span className={styles.ilgan_label}>{dayMaster?.title}</span>
         </div>
 
-        <div className="intro_section_content">
+        <div className={styles.intro_section_content}>
           {dmData && (
-            <div className="ilgan_love_box">
-              <p className="ilgan_headline">{dmData.headline}</p>
-              <p className="ilgan_summary">{dmData.summary}</p>
-              <div className="ilgan_keywords">
+            <div className={styles.ilgan_love_box}>
+              <p className={styles.ilgan_headline}>{dmData.headline}</p>
+              <p className={styles.ilgan_summary}>{dmData.summary}</p>
+              <div className={styles.ilgan_keywords}>
                 {dmData.keywords.map((kw, i) => (
-                  <span key={i} className="ilgan_keyword">
+                  <span key={i} className={styles.ilgan_keyword}>
                     #{kw}
                   </span>
                 ))}
@@ -2734,31 +2734,31 @@ function SajuCard({ data }: { data: SajuLoveRecord }) {
       </div>
 
       {/* 장면 7: 각 기둥별 관계 해석 */}
-      <div className="intro_section">
+      <div className={styles.intro_section}>
         {/* 색동낭자 대화 - 기둥별 관계 전 */}
-        <div className="nangja_comment">
-          <p className="nangja_text">
+        <div className={styles.nangja_comment}>
+          <p className={styles.nangja_text}>
             그럼 이제 각 기둥이 어떤 의미를 갖는지 볼까요?
             <br />
             기둥마다 나타내는 관계가 달라요.
           </p>
         </div>
 
-        <div className="pillar_timing_cards">
-          <div className="timing_card">
+        <div className={styles.pillar_timing_cards}>
+          <div className={styles.timing_card}>
             {/* 미니 사주표 - 년주 강조 */}
-            <div className="mini_saju_table">
+            <div className={styles.mini_saju_table}>
               {(["hour", "day", "month", "year"] as const).map((key) => {
                 const p = pillars[key];
                 const isHighlight = key === "year";
                 return (
                   <div
                     key={key}
-                    className={`mini_pillar ${isHighlight ? "highlight" : "dimmed"
+                    className={`${styles.mini_pillar} ${isHighlight ? styles.highlight : styles.dimmed
                       }`}
                   >
                     <span
-                      className="mini_stem"
+                      className={styles.mini_stem}
                       style={{
                         color: isHighlight
                           ? getColor(p?.stem?.element)
@@ -2768,7 +2768,7 @@ function SajuCard({ data }: { data: SajuLoveRecord }) {
                       {p?.stem?.char || "—"}
                     </span>
                     <span
-                      className="mini_branch"
+                      className={styles.mini_branch}
                       style={{
                         color: isHighlight
                           ? getColor(p?.branch?.element)
@@ -2781,32 +2781,32 @@ function SajuCard({ data }: { data: SajuLoveRecord }) {
                 );
               })}
             </div>
-            <div className="timing_header">
-              <span className="timing_pillar">년주(年柱)</span>
-              <span className="timing_period">뿌리 · 조상, 부모</span>
+            <div className={styles.timing_header}>
+              <span className={styles.timing_pillar}>년주(年柱)</span>
+              <span className={styles.timing_period}>뿌리 · 조상, 부모</span>
             </div>
-            <p className="timing_desc">
+            <p className={styles.timing_desc}>
               나의 뿌리, 조상과 부모님, 그리고 사회적 배경을 나타내요.
             </p>
-            <p className="timing_love">
+            <p className={styles.timing_love}>
               연애에서는: 가정환경이 연애관에 미친 영향
             </p>
           </div>
 
-          <div className="timing_card">
+          <div className={styles.timing_card}>
             {/* 미니 사주표 - 월주 강조 */}
-            <div className="mini_saju_table">
+            <div className={styles.mini_saju_table}>
               {(["hour", "day", "month", "year"] as const).map((key) => {
                 const p = pillars[key];
                 const isHighlight = key === "month";
                 return (
                   <div
                     key={key}
-                    className={`mini_pillar ${isHighlight ? "highlight" : "dimmed"
+                    className={`${styles.mini_pillar} ${isHighlight ? styles.highlight : styles.dimmed
                       }`}
                   >
                     <span
-                      className="mini_stem"
+                      className={styles.mini_stem}
                       style={{
                         color: isHighlight
                           ? getColor(p?.stem?.element)
@@ -2816,7 +2816,7 @@ function SajuCard({ data }: { data: SajuLoveRecord }) {
                       {p?.stem?.char || "—"}
                     </span>
                     <span
-                      className="mini_branch"
+                      className={styles.mini_branch}
                       style={{
                         color: isHighlight
                           ? getColor(p?.branch?.element)
@@ -2829,32 +2829,32 @@ function SajuCard({ data }: { data: SajuLoveRecord }) {
                 );
               })}
             </div>
-            <div className="timing_header">
-              <span className="timing_pillar">월주(月柱)</span>
-              <span className="timing_period">줄기 · 형제, 사회</span>
+            <div className={styles.timing_header}>
+              <span className={styles.timing_pillar}>월주(月柱)</span>
+              <span className={styles.timing_period}>줄기 · 형제, 사회</span>
             </div>
-            <p className="timing_desc">
+            <p className={styles.timing_desc}>
               나의 줄기, 부모님과 형제, 그리고 사회생활을 나타내요.
             </p>
-            <p className="timing_love">
+            <p className={styles.timing_love}>
               연애에서는: 사회에서의 연애 (직장연애, 소개팅 등)
             </p>
           </div>
 
-          <div className="timing_card highlight">
+          <div className={`${styles.timing_card} ${styles.highlight}`}>
             {/* 미니 사주표 - 일주 강조 */}
-            <div className="mini_saju_table">
+            <div className={styles.mini_saju_table}>
               {(["hour", "day", "month", "year"] as const).map((key) => {
                 const p = pillars[key];
                 const isHighlight = key === "day";
                 return (
                   <div
                     key={key}
-                    className={`mini_pillar ${isHighlight ? "highlight" : "dimmed"
+                    className={`${styles.mini_pillar} ${isHighlight ? styles.highlight : styles.dimmed
                       }`}
                   >
                     <span
-                      className="mini_stem"
+                      className={styles.mini_stem}
                       style={{
                         color: isHighlight
                           ? getColor(p?.stem?.element)
@@ -2864,7 +2864,7 @@ function SajuCard({ data }: { data: SajuLoveRecord }) {
                       {p?.stem?.char || "—"}
                     </span>
                     <span
-                      className="mini_branch"
+                      className={styles.mini_branch}
                       style={{
                         color: isHighlight
                           ? getColor(p?.branch?.element)
@@ -2877,33 +2877,33 @@ function SajuCard({ data }: { data: SajuLoveRecord }) {
                 );
               })}
             </div>
-            <div className="timing_header">
-              <span className="timing_pillar">일주(日柱)</span>
-              <span className="timing_period">꽃 · 나, 배우자</span>
+            <div className={styles.timing_header}>
+              <span className={styles.timing_pillar}>일주(日柱)</span>
+              <span className={styles.timing_period}>꽃 · 나, 배우자</span>
             </div>
-            <p className="timing_desc">
+            <p className={styles.timing_desc}>
               나의 꽃, 나 자신과 배우자를 나타내는 가장 중요한 자리예요.
             </p>
-            <p className="timing_love">
+            <p className={styles.timing_love}>
               연애에서는: 가장 중요! 나의 연애 본질, 배우자 자리. 무의식적으로
               끌리는 이상형이 여기에!
             </p>
           </div>
 
-          <div className="timing_card">
+          <div className={styles.timing_card}>
             {/* 미니 사주표 - 시주 강조 */}
-            <div className="mini_saju_table">
+            <div className={styles.mini_saju_table}>
               {(["hour", "day", "month", "year"] as const).map((key) => {
                 const p = pillars[key];
                 const isHighlight = key === "hour";
                 return (
                   <div
                     key={key}
-                    className={`mini_pillar ${isHighlight ? "highlight" : "dimmed"
+                    className={`${styles.mini_pillar} ${isHighlight ? styles.highlight : styles.dimmed
                       }`}
                   >
                     <span
-                      className="mini_stem"
+                      className={styles.mini_stem}
                       style={{
                         color: isHighlight
                           ? getColor(p?.stem?.element)
@@ -2913,7 +2913,7 @@ function SajuCard({ data }: { data: SajuLoveRecord }) {
                       {p?.stem?.char || "—"}
                     </span>
                     <span
-                      className="mini_branch"
+                      className={styles.mini_branch}
                       style={{
                         color: isHighlight
                           ? getColor(p?.branch?.element)
@@ -2926,14 +2926,14 @@ function SajuCard({ data }: { data: SajuLoveRecord }) {
                 );
               })}
             </div>
-            <div className="timing_header">
-              <span className="timing_pillar">시주(時柱)</span>
-              <span className="timing_period">열매 · 자녀, 결실</span>
+            <div className={styles.timing_header}>
+              <span className={styles.timing_pillar}>시주(時柱)</span>
+              <span className={styles.timing_period}>열매 · 자녀, 결실</span>
             </div>
-            <p className="timing_desc">
+            <p className={styles.timing_desc}>
               나의 열매, 자녀와 말년의 결실을 나타내요.
             </p>
-            <p className="timing_love">
+            <p className={styles.timing_love}>
               연애에서는: 연애의 결과, 가정을 꾸린 후의 모습
             </p>
           </div>
@@ -2941,10 +2941,10 @@ function SajuCard({ data }: { data: SajuLoveRecord }) {
       </div>
 
       {/* 장면 8: 오행 */}
-      <div className="intro_section">
+      <div className={styles.intro_section}>
         {/* 색동낭자 대화 - 오행 설명 전 */}
-        <div className="nangja_comment">
-          <p className="nangja_text">
+        <div className={styles.nangja_comment}>
+          <p className={styles.nangja_text}>
             기둥마다 색이 다르죠?
             <br />
             이게 목·화·토·금·수, 오행이에요.
@@ -2956,12 +2956,12 @@ function SajuCard({ data }: { data: SajuLoveRecord }) {
           </p>
         </div>
 
-        <h3 className="intro_section_title">{userName}님의 오행</h3>
+        <h3 className={styles.intro_section_title}>{userName}님의 오행</h3>
 
         {/* 오행비율 막대그래프 */}
         {Object.keys(elementPercent).length > 0 && (
-          <div className="ohang_chart_card">
-            <p className="ohang_chart_title">나의 오행 비율</p>
+          <div className={styles.ohang_chart_card}>
+            <p className={styles.ohang_chart_title}>나의 오행 비율</p>
             {[
               { key: "wood", label: "목(木)", color: "#2aa86c" },
               { key: "fire", label: "화(火)", color: "#ff6a6a" },
@@ -2979,21 +2979,21 @@ function SajuCard({ data }: { data: SajuLoveRecord }) {
                       ? "부족"
                       : "결핍";
               return (
-                <div key={key} className="ohang_bar_row">
-                  <span className="ohang_label" style={{ color }}>
+                <div key={key} className={styles.ohang_bar_row}>
+                  <span className={styles.ohang_label} style={{ color }}>
                     {label}
                   </span>
-                  <div className="ohang_bar_track">
+                  <div className={styles.ohang_bar_track}>
                     <div
-                      className="ohang_bar_fill"
+                      className={styles.ohang_bar_fill}
                       style={{
                         width: `${Math.min(pct, 100)}%`,
                         backgroundColor: color,
                       }}
                     />
                   </div>
-                  <span className="ohang_pct">{pct.toFixed(1)}%</span>
-                  <span className={`ohang_status ${status}`}>{status}</span>
+                  <span className={styles.ohang_pct}>{pct.toFixed(1)}%</span>
+                  <span className={`${styles.ohang_status} ${styles[status]}`}>{status}</span>
                 </div>
               );
             })}
@@ -3001,8 +3001,8 @@ function SajuCard({ data }: { data: SajuLoveRecord }) {
         )}
 
         {/* 나의 오행 분석 - 특징 + 과다/부족 통합 */}
-        <div className="ohang_analysis_section">
-          <p className="ohang_section_title">{userName}님의 오행 분석</p>
+        <div className={styles.ohang_analysis_section}>
+          <p className={styles.ohang_section_title}>{userName}님의 오행 분석</p>
           {[
             {
               key: "wood",
@@ -3119,18 +3119,18 @@ function SajuCard({ data }: { data: SajuLoveRecord }) {
               const isOver = status === "과다";
               const isNormal = status === "적정";
               return (
-                <div key={key} className="ohang_analysis_card">
-                  <div className="ohang_analysis_header">
-                    <span className="ohang_element" style={{ color }}>
+                <div key={key} className={styles.ohang_analysis_card}>
+                  <div className={styles.ohang_analysis_header}>
+                    <span className={styles.ohang_element} style={{ color }}>
                       {label}
                     </span>
-                    <span className="ohang_keyword">{keyword}</span>
+                    <span className={styles.ohang_keyword}>{keyword}</span>
                   </div>
-                  <p className="ohang_base_desc">{baseDesc}</p>
+                  <p className={styles.ohang_base_desc}>{baseDesc}</p>
                   {!isNormal && (
                     <>
-                      <p className="ohang_analysis_title">
-                        <span className={`ohang_status_badge ${status}`}>
+                      <p className={styles.ohang_analysis_title}>
+                        <span className={`${styles.ohang_status_badge} ${styles[status]}`}>
                           {isOver
                             ? "과다"
                             : status === "결핍"
@@ -3139,10 +3139,10 @@ function SajuCard({ data }: { data: SajuLoveRecord }) {
                         </span>
                         → {isOver ? overTitle : lackTitle}
                       </p>
-                      <p className="ohang_analysis_desc">
+                      <p className={styles.ohang_analysis_desc}>
                         {isOver ? overDesc : lackDesc}
                       </p>
-                      <p className="ohang_analysis_advice">
+                      <p className={styles.ohang_analysis_advice}>
                         💡 {isOver ? overAdvice : lackAdvice}
                       </p>
                     </>
@@ -3154,8 +3154,8 @@ function SajuCard({ data }: { data: SajuLoveRecord }) {
         </div>
 
         {/* 오행 궁합 설명 */}
-        <div className="nangja_comment" style={{ marginTop: "16px" }}>
-          <p className="nangja_text">
+        <div className={styles.nangja_comment} style={{ marginTop: "16px" }}>
+          <p className={styles.nangja_text}>
             내가 부족한 오행을 상대가 채워주면 좋은 궁합,
             <br />
             같은 게 과다하면 부딪힐 수 있어요.
@@ -3163,78 +3163,78 @@ function SajuCard({ data }: { data: SajuLoveRecord }) {
         </div>
 
         {/* 오행 궁합 - 상생/상극 */}
-        <div className="ohang_compatibility_section">
-          <p className="ohang_section_title">오행 궁합표</p>
-          <div className="ohang_compat_cards">
-            <div className="ohang_compat_card good">
-              <p className="compat_card_title">잘 맞는 궁합 (상생)</p>
-              <p className="compat_card_subtitle">서로를 도와주는 관계</p>
-              <div className="compat_list">
-                <div className="compat_item">
+        <div className={styles.ohang_compatibility_section}>
+          <p className={styles.ohang_section_title}>오행 궁합표</p>
+          <div className={styles.ohang_compat_cards}>
+            <div className={`${styles.ohang_compat_card} ${styles.good}`}>
+              <p className={styles.compat_card_title}>잘 맞는 궁합 (상생)</p>
+              <p className={styles.compat_card_subtitle}>서로를 도와주는 관계</p>
+              <div className={styles.compat_list}>
+                <div className={styles.compat_item}>
                   <span style={{ color: "#4a90d9" }}>수</span>
-                  <span className="compat_arrow">→</span>
+                  <span className={styles.compat_arrow}>→</span>
                   <span style={{ color: "#2aa86c" }}>목</span>
-                  <span className="compat_desc">지지하고 키워주는 관계</span>
+                  <span className={styles.compat_desc}>지지하고 키워주는 관계</span>
                 </div>
-                <div className="compat_item">
+                <div className={styles.compat_item}>
                   <span style={{ color: "#2aa86c" }}>목</span>
-                  <span className="compat_arrow">→</span>
+                  <span className={styles.compat_arrow}>→</span>
                   <span style={{ color: "#ff6a6a" }}>화</span>
-                  <span className="compat_desc">열정에 불을 지펴주는 관계</span>
+                  <span className={styles.compat_desc}>열정에 불을 지펴주는 관계</span>
                 </div>
-                <div className="compat_item">
+                <div className={styles.compat_item}>
                   <span style={{ color: "#ff6a6a" }}>화</span>
-                  <span className="compat_arrow">→</span>
+                  <span className={styles.compat_arrow}>→</span>
                   <span style={{ color: "#caa46a" }}>토</span>
-                  <span className="compat_desc">따뜻하게 안정시키는 관계</span>
+                  <span className={styles.compat_desc}>따뜻하게 안정시키는 관계</span>
                 </div>
-                <div className="compat_item">
+                <div className={styles.compat_item}>
                   <span style={{ color: "#caa46a" }}>토</span>
-                  <span className="compat_arrow">→</span>
+                  <span className={styles.compat_arrow}>→</span>
                   <span style={{ color: "#a0a0a0" }}>금</span>
-                  <span className="compat_desc">든든히 받쳐주는 관계</span>
+                  <span className={styles.compat_desc}>든든히 받쳐주는 관계</span>
                 </div>
-                <div className="compat_item">
+                <div className={styles.compat_item}>
                   <span style={{ color: "#a0a0a0" }}>금</span>
-                  <span className="compat_arrow">→</span>
+                  <span className={styles.compat_arrow}>→</span>
                   <span style={{ color: "#4a90d9" }}>수</span>
-                  <span className="compat_desc">방향을 잡아주는 관계</span>
+                  <span className={styles.compat_desc}>방향을 잡아주는 관계</span>
                 </div>
               </div>
             </div>
-            <div className="ohang_compat_card bad">
-              <p className="compat_card_title">주의할 궁합 (상극)</p>
-              <p className="compat_card_subtitle">부딪히기 쉬운 관계</p>
-              <div className="compat_list">
-                <div className="compat_item">
+            <div className={`${styles.ohang_compat_card} ${styles.bad}`}>
+              <p className={styles.compat_card_title}>주의할 궁합 (상극)</p>
+              <p className={styles.compat_card_subtitle}>부딪히기 쉬운 관계</p>
+              <div className={styles.compat_list}>
+                <div className={styles.compat_item}>
                   <span style={{ color: "#a0a0a0" }}>금</span>
-                  <span className="compat_arrow bad">⚡</span>
+                  <span className={`${styles.compat_arrow} ${styles.bad}`}>⚡</span>
                   <span style={{ color: "#2aa86c" }}>목</span>
-                  <span className="compat_desc">비판하고 깎아내리는 관계</span>
+                  <span className={styles.compat_desc}>비판하고 깎아내리는 관계</span>
                 </div>
-                <div className="compat_item">
+                <div className={styles.compat_item}>
                   <span style={{ color: "#2aa86c" }}>목</span>
-                  <span className="compat_arrow bad">⚡</span>
+                  <span className={`${styles.compat_arrow} ${styles.bad}`}>⚡</span>
                   <span style={{ color: "#caa46a" }}>토</span>
-                  <span className="compat_desc">안정을 흔드는 관계</span>
+                  <span className={styles.compat_desc}>안정을 흔드는 관계</span>
                 </div>
-                <div className="compat_item">
+                <div className={styles.compat_item}>
                   <span style={{ color: "#caa46a" }}>토</span>
-                  <span className="compat_arrow bad">⚡</span>
+                  <span className={`${styles.compat_arrow} ${styles.bad}`}>⚡</span>
                   <span style={{ color: "#4a90d9" }}>수</span>
-                  <span className="compat_desc">감정 흐름을 막는 관계</span>
+                  <span className={styles.compat_desc}>감정 흐름을 막는 관계</span>
                 </div>
-                <div className="compat_item">
+                <div className={styles.compat_item}>
                   <span style={{ color: "#4a90d9" }}>수</span>
-                  <span className="compat_arrow bad">⚡</span>
+                  <span className={`${styles.compat_arrow} ${styles.bad}`}>⚡</span>
                   <span style={{ color: "#ff6a6a" }}>화</span>
-                  <span className="compat_desc">열정을 꺼뜨리는 관계</span>
+                  <span className={styles.compat_desc}>열정을 꺼뜨리는 관계</span>
                 </div>
-                <div className="compat_item">
+                <div className={styles.compat_item}>
                   <span style={{ color: "#ff6a6a" }}>화</span>
-                  <span className="compat_arrow bad">⚡</span>
+                  <span className={`${styles.compat_arrow} ${styles.bad}`}>⚡</span>
                   <span style={{ color: "#a0a0a0" }}>금</span>
-                  <span className="compat_desc">원칙을 무너뜨리는 관계</span>
+                  <span className={styles.compat_desc}>원칙을 무너뜨리는 관계</span>
                 </div>
               </div>
             </div>
@@ -3243,28 +3243,28 @@ function SajuCard({ data }: { data: SajuLoveRecord }) {
       </div>
 
       {/* 장면 9: 신강신약 */}
-      <div className="intro_section">
+      <div className={styles.intro_section}>
         {/* 색동낭자 대화 - 신강신약 전 */}
-        <div className="nangja_comment">
-          <p className="nangja_text">
+        <div className={styles.nangja_comment}>
+          <p className={styles.nangja_text}>
             마지막으로, {userName}님의 에너지가
             <br />
             강한지 약한지도 살펴볼게요.
           </p>
         </div>
 
-        <h3 className="intro_section_title">신강신약</h3>
-        <p className="intro_section_subtitle">연애 주도권의 척도</p>
+        <h3 className={styles.intro_section_title}>신강신약</h3>
+        <p className={styles.intro_section_subtitle}>연애 주도권의 척도</p>
 
-        <div className="intro_section_content">
+        <div className={styles.intro_section_content}>
           <p>
             신강/신약은 일간의 힘이 얼마나 강한지를 나타내요. 연애에서는{" "}
             <strong>주도권</strong>과 관련이 깊어요.
           </p>
         </div>
 
-        <div className="strength_gauge_card">
-          <div className="gauge_labels">
+        <div className={styles.strength_gauge_card}>
+          <div className={styles.gauge_labels}>
             {["극신약", "태약", "신약", "중화", "신강", "태강", "극신강"].map(
               (level) => (
                 <span
@@ -3276,18 +3276,18 @@ function SajuCard({ data }: { data: SajuLoveRecord }) {
               )
             )}
           </div>
-          <div className="gauge_track">
+          <div className={styles.gauge_track}>
             {["극신약", "태약", "신약", "중화", "신강", "태강", "극신강"].map(
               (level) => (
                 <div
                   key={level}
-                  className={`gauge_dot ${level === strengthLevel ? "active" : ""
+                  className={`${styles.gauge_dot} ${level === strengthLevel ? styles.active : ""
                     }`}
                 />
               )
             )}
           </div>
-          <p className="strength_result_text">
+          <p className={styles.strength_result_text}>
             일간{" "}
             <strong style={{ color: getColor(dayMaster?.element) }}>
               {dayMaster?.char}
@@ -3297,12 +3297,12 @@ function SajuCard({ data }: { data: SajuLoveRecord }) {
         </div>
 
         {/* 상세 해석 카드 */}
-        <div className="strength_detail_card">
-          <p className="strength_detail_title">{strengthData.title}</p>
-          <p className="strength_detail_ratio">{strengthData.mainRatio}</p>
+        <div className={styles.strength_detail_card}>
+          <p className={styles.strength_detail_title}>{strengthData.title}</p>
+          <p className={styles.strength_detail_ratio}>{strengthData.mainRatio}</p>
 
           {/* 표 형태로 정리 */}
-          <table className="strength_detail_table">
+          <table className={styles.strength_detail_table}>
             <tbody>
               <tr>
                 <th>연애 특징</th>
@@ -3312,25 +3312,25 @@ function SajuCard({ data }: { data: SajuLoveRecord }) {
                 <th>자주 하는 말</th>
                 <td>
                   {strengthData.pattern.map((p, i) => (
-                    <span key={i} className="pattern_quote">
+                    <span key={i} className={styles.pattern_quote}>
                       {p}
                     </span>
                   ))}
                 </td>
               </tr>
               {strengthData.goodPoints.length > 0 && (
-                <tr className="good_row">
+                <tr className={styles.good_row}>
                   <th>장점</th>
                   <td>{strengthData.goodPoints.join(", ")}</td>
                 </tr>
               )}
               {strengthData.warning.length > 0 && (
-                <tr className="warning_row">
+                <tr className={styles.warning_row}>
                   <th>주의할 점</th>
                   <td>{strengthData.warning.join(", ")}</td>
                 </tr>
               )}
-              <tr className="ideal_row">
+              <tr className={styles.ideal_row}>
                 <th>잘 맞는 상대</th>
                 <td>{strengthData.idealType}</td>
               </tr>
@@ -3340,10 +3340,10 @@ function SajuCard({ data }: { data: SajuLoveRecord }) {
       </div>
 
       {/* 장면 10: 마무리 전환 */}
-      <div className="intro_section saju_outro_section">
+      <div className={`${styles.intro_section} ${styles.saju_outro_section}`}>
         {/* 사주 원국 마무리 */}
-        <div className="nangja_comment">
-          <p className="nangja_text">
+        <div className={styles.nangja_comment}>
+          <p className={styles.nangja_text}>
             여기까지가 {userName}님의 기본 사주 원국이에요.
             <br />
             <br />
@@ -3353,7 +3353,7 @@ function SajuCard({ data }: { data: SajuLoveRecord }) {
         </div>
 
         {/* 대운/연운/월운 상세 표시 */}
-        <div className="luck_cycles_wrap">
+        <div className={styles.luck_cycles_wrap}>
           {/* 대운수 헤더 */}
           {(() => {
             const daeunData = (sajuData as Record<string, unknown>)
@@ -3392,11 +3392,11 @@ function SajuCard({ data }: { data: SajuLoveRecord }) {
             return (
               <>
                 {/* 대운 */}
-                <div className="luck_section">
-                  <h5 className="luck_section_title">대운</h5>
-                  <div className="luck_scroll_wrap" ref={daeunScrollRef}>
+                <div className={styles.luck_section}>
+                  <h5 className={styles.luck_section_title}>대운</h5>
+                  <div className={styles.luck_scroll_wrap} ref={daeunScrollRef}>
                     <div
-                      className={`luck_scroll ${isReverse ? "reverse" : ""}`}
+                      className={`${styles.luck_scroll} ${isReverse ? styles.reverse : ""}`}
                     >
                       {(isReverse ? [...daeunList].reverse() : daeunList)
                         .filter((dy) => dy.ganZhi)
@@ -3420,38 +3420,38 @@ function SajuCard({ data }: { data: SajuLoveRecord }) {
                           return (
                             <div
                               key={idx}
-                              className={`luck_card ${isCurrentDaeun ? "current" : ""
+                              className={`${styles.luck_card} ${isCurrentDaeun ? styles.current : ""
                                 }`}
                             >
-                              <div className="luck_card_top">
-                                <span className="luck_card_age">
+                              <div className={styles.luck_card_top}>
+                                <span className={styles.luck_card_age}>
                                   {dy.startAge}
                                 </span>
-                                <span className="luck_card_tengod">
+                                <span className={styles.luck_card_tengod}>
                                   {tenGodStem || "-"}
                                 </span>
                               </div>
                               <div
-                                className={`luck_card_stem elem_${stemElement}`}
+                                className={`${styles.luck_card_stem} ${styles["elem_" + stemElement]}`}
                               >
-                                <span className="char_hanja">{stem}</span>
-                                <span className="char_korean">
+                                <span className={styles.char_hanja}>{stem}</span>
+                                <span className={styles.char_korean}>
                                   {getStemKorean(stem)}
                                 </span>
                               </div>
                               <div
-                                className={`luck_card_branch elem_${branchElement}`}
+                                className={`${styles.luck_card_branch} ${styles["elem_" + branchElement]}`}
                               >
-                                <span className="char_hanja">{branch}</span>
-                                <span className="char_korean">
+                                <span className={styles.char_hanja}>{branch}</span>
+                                <span className={styles.char_korean}>
                                   {getBranchKorean(branch)}
                                 </span>
                               </div>
-                              <div className="luck_card_bottom">
-                                <span className="luck_card_tengod_branch">
+                              <div className={styles.luck_card_bottom}>
+                                <span className={styles.luck_card_tengod_branch}>
                                   {(daeunItem?.tenGodBranch as string) || "-"}
                                 </span>
-                                <span className="luck_card_stage">
+                                <span className={styles.luck_card_stage}>
                                   {twelveStage || "-"}
                                 </span>
                               </div>
@@ -3464,11 +3464,11 @@ function SajuCard({ data }: { data: SajuLoveRecord }) {
 
                 {/* 연운 */}
                 {luckCyclesData?.yeonun && (
-                  <div className="luck_section">
-                    <h5 className="luck_section_title">연운</h5>
-                    <div className="luck_scroll_wrap" ref={yeonunScrollRef}>
+                  <div className={styles.luck_section}>
+                    <h5 className={styles.luck_section_title}>연운</h5>
+                    <div className={styles.luck_scroll_wrap} ref={yeonunScrollRef}>
                       <div
-                        className={`luck_scroll ${isReverse ? "reverse" : ""}`}
+                        className={`${styles.luck_scroll} ${isReverse ? styles.reverse : ""}`}
                       >
                         {(isReverse
                           ? [
@@ -3490,38 +3490,38 @@ function SajuCard({ data }: { data: SajuLoveRecord }) {
                           return (
                             <div
                               key={idx}
-                              className={`luck_card ${isCurrentYear ? "current" : ""
+                              className={`${styles.luck_card} ${isCurrentYear ? styles.current : ""
                                 }`}
                             >
-                              <div className="luck_card_top">
-                                <span className="luck_card_year">
+                              <div className={styles.luck_card_top}>
+                                <span className={styles.luck_card_year}>
                                   {String(yn.year)}
                                 </span>
-                                <span className="luck_card_tengod">
+                                <span className={styles.luck_card_tengod}>
                                   {(yn.tenGodStem as string) || "-"}
                                 </span>
                               </div>
                               <div
-                                className={`luck_card_stem elem_${stemElement}`}
+                                className={`${styles.luck_card_stem} ${styles["elem_" + stemElement]}`}
                               >
-                                <span className="char_hanja">{stem}</span>
-                                <span className="char_korean">
+                                <span className={styles.char_hanja}>{stem}</span>
+                                <span className={styles.char_korean}>
                                   {getStemKorean(stem)}
                                 </span>
                               </div>
                               <div
-                                className={`luck_card_branch elem_${branchElement}`}
+                                className={`${styles.luck_card_branch} ${styles["elem_" + branchElement]}`}
                               >
-                                <span className="char_hanja">{branch}</span>
-                                <span className="char_korean">
+                                <span className={styles.char_hanja}>{branch}</span>
+                                <span className={styles.char_korean}>
                                   {getBranchKorean(branch)}
                                 </span>
                               </div>
-                              <div className="luck_card_bottom">
-                                <span className="luck_card_tengod_branch">
+                              <div className={styles.luck_card_bottom}>
+                                <span className={styles.luck_card_tengod_branch}>
                                   {(yn.tenGodBranch as string) || "-"}
                                 </span>
-                                <span className="luck_card_stage">
+                                <span className={styles.luck_card_stage}>
                                   {(yn.twelveStage as string) || "-"}
                                 </span>
                               </div>
@@ -3535,11 +3535,11 @@ function SajuCard({ data }: { data: SajuLoveRecord }) {
 
                 {/* 월운 */}
                 {luckCyclesData?.wolun && (
-                  <div className="luck_section">
-                    <h5 className="luck_section_title">월운</h5>
-                    <div className="luck_scroll_wrap" ref={wolunScrollRef}>
+                  <div className={styles.luck_section}>
+                    <h5 className={styles.luck_section_title}>월운</h5>
+                    <div className={styles.luck_scroll_wrap} ref={wolunScrollRef}>
                       <div
-                        className={`luck_scroll ${isReverse ? "reverse" : ""}`}
+                        className={`${styles.luck_scroll} ${isReverse ? styles.reverse : ""}`}
                       >
                         {(isReverse
                           ? [
@@ -3557,13 +3557,13 @@ function SajuCard({ data }: { data: SajuLoveRecord }) {
                           return (
                             <div
                               key={idx}
-                              className={`luck_card_mini ${isCurrentMonth ? "current" : ""
+                              className={`${styles.luck_card_mini} ${isCurrentMonth ? styles.current : ""
                                 }`}
                             >
-                              <span className="luck_mini_month">
+                              <span className={styles.luck_mini_month}>
                                 {String(wn.month)}월
                               </span>
-                              <span className="luck_mini_tengod">
+                              <span className={styles.luck_mini_tengod}>
                                 {(wn.tenGodStem as string) || "-"}
                               </span>
                             </div>
@@ -3575,12 +3575,12 @@ function SajuCard({ data }: { data: SajuLoveRecord }) {
                 )}
 
                 {/* 추가 정보 미니 섹션 - 위에서 안 보여주는 것들만 */}
-                <div className="extra_info_mini">
+                <div className={styles.extra_info_mini}>
                   {/* 태원/명궁/신궁 */}
-                  <div className="extra_info_row">
-                    <span className="extra_label">태원/명궁/신궁</span>
-                    <div className="extra_values">
-                      <span className="extra_ganzi">
+                  <div className={styles.extra_info_row}>
+                    <span className={styles.extra_label}>태원/명궁/신궁</span>
+                    <div className={styles.extra_values}>
+                      <span className={styles.extra_ganzi}>
                         {String(
                           (
                             (sajuData as Record<string, unknown>)
@@ -3588,7 +3588,7 @@ function SajuCard({ data }: { data: SajuLoveRecord }) {
                           )?.ganZhi || "-"
                         )}
                       </span>
-                      <span className="extra_ganzi">
+                      <span className={styles.extra_ganzi}>
                         {String(
                           (
                             (sajuData as Record<string, unknown>)
@@ -3596,7 +3596,7 @@ function SajuCard({ data }: { data: SajuLoveRecord }) {
                           )?.ganZhi || "-"
                         )}
                       </span>
-                      <span className="extra_ganzi">
+                      <span className={styles.extra_ganzi}>
                         {String(
                           (
                             (sajuData as Record<string, unknown>)
@@ -3605,38 +3605,38 @@ function SajuCard({ data }: { data: SajuLoveRecord }) {
                         )}
                       </span>
                     </div>
-                    <span className="extra_usage">선천기질·운명</span>
+                    <span className={styles.extra_usage}>선천기질·운명</span>
                   </div>
                   {/* 득력 */}
-                  <div className="extra_info_row">
-                    <span className="extra_label">득력</span>
-                    <div className="extra_values">
+                  <div className={styles.extra_info_row}>
+                    <span className={styles.extra_label}>득력</span>
+                    <div className={styles.extra_values}>
                       <span
-                        className={`extra_indicator small ${(fiveElements as Record<string, unknown>)?.deukryung
-                            ? "on"
+                        className={`${styles.extra_indicator} ${styles.small} ${(fiveElements as Record<string, unknown>)?.deukryung
+                            ? styles.on
                             : ""
                           }`}
                       >
                         령
                       </span>
                       <span
-                        className={`extra_indicator small ${(fiveElements as Record<string, unknown>)?.deukji
-                            ? "on"
+                        className={`${styles.extra_indicator} ${styles.small} ${(fiveElements as Record<string, unknown>)?.deukji
+                            ? styles.on
                             : ""
                           }`}
                       >
                         지
                       </span>
                       <span
-                        className={`extra_indicator small ${(fiveElements as Record<string, unknown>)?.deukse
-                            ? "on"
+                        className={`${styles.extra_indicator} ${styles.small} ${(fiveElements as Record<string, unknown>)?.deukse
+                            ? styles.on
                             : ""
                           }`}
                       >
                         세
                       </span>
                     </div>
-                    <span className="extra_usage">연애주도권</span>
+                    <span className={styles.extra_usage}>연애주도권</span>
                   </div>
                   {/* 납음(일주) */}
                   {(() => {
@@ -3644,12 +3644,12 @@ function SajuCard({ data }: { data: SajuLoveRecord }) {
                       ?.nayin as Record<string, string> | undefined;
                     const dayNayin = nayinData?.day;
                     return dayNayin ? (
-                      <div className="extra_info_row">
-                        <span className="extra_label">납음(일주)</span>
-                        <div className="extra_values">
-                          <span className="extra_text">{dayNayin}</span>
+                      <div className={styles.extra_info_row}>
+                        <span className={styles.extra_label}>납음(일주)</span>
+                        <div className={styles.extra_values}>
+                          <span className={styles.extra_text}>{dayNayin}</span>
                         </div>
-                        <span className="extra_usage">배우자 심층</span>
+                        <span className={styles.extra_usage}>배우자 심층</span>
                       </div>
                     ) : null;
                   })()}
@@ -3685,24 +3685,24 @@ function SajuCard({ data }: { data: SajuLoveRecord }) {
                       : [];
 
                     return (
-                      <div className="extra_info_row">
-                        <span className="extra_label">배우자성</span>
-                        <div className="extra_values">
+                      <div className={styles.extra_info_row}>
+                        <span className={styles.extra_label}>배우자성</span>
+                        <div className={styles.extra_values}>
                           {targetStars && targetStars.length > 0 && (
-                            <span className="extra_text">
+                            <span className={styles.extra_text}>
                               {targetStars.join("/")}
                             </span>
                           )}
-                          <span className="extra_count">
+                          <span className={styles.extra_count}>
                             {hitCount !== undefined ? `${hitCount}개` : "-"}
                           </span>
                           {sortedPositions.length > 0 && (
-                            <span className="extra_positions">
+                            <span className={styles.extra_positions}>
                               ({sortedPositions.join("/")})
                             </span>
                           )}
                         </div>
-                        <span className="extra_usage">연애기회·관심</span>
+                        <span className={styles.extra_usage}>연애기회·관심</span>
                       </div>
                     );
                   })()}
@@ -3713,13 +3713,13 @@ function SajuCard({ data }: { data: SajuLoveRecord }) {
         </div>
 
         {/* 분석 기반 설명 - 마지막 강조 멘트 */}
-        <div className="nangja_comment nangja_final">
-          <p className="nangja_text">
-            <span className="nangja_question">
+        <div className={`${styles.nangja_comment} ${styles.nangja_final}`}>
+          <p className={styles.nangja_text}>
+            <span className={styles.nangja_question}>
               점점 사주가 어려워지지 않나요?
             </span>
           </p>
-          <p className="nangja_text nangja_reassure">
+          <p className={`${styles.nangja_text} ${styles.nangja_reassure}`}>
             걱정 마세요.
             <br />
             사주 전문가들과 함께 만들고 검증한
@@ -3731,43 +3731,43 @@ function SajuCard({ data }: { data: SajuLoveRecord }) {
         </div>
 
         {/* 보고서 목차 */}
-        <div className="report_toc_card">
+        <div className={styles.report_toc_card}>
           {/* 1장 */}
-          <div className="toc_chapter">
-            <div className="toc_chapter_header">
-              <span className="toc_chapter_num">1장</span>
-              <h3 className="toc_chapter_title">
+          <div className={styles.toc_chapter}>
+            <div className={styles.toc_chapter_header}>
+              <span className={styles.toc_chapter_num}>1장</span>
+              <h3 className={styles.toc_chapter_title}>
                 나만의 매력과
                 <br />
                 연애 성향
               </h3>
             </div>
-            <ul className="toc_list">
+            <ul className={styles.toc_list}>
               <li>
                 풀이 1&nbsp;&nbsp;처음 본 순간 이성이 느끼는 나의 매력
                 <br />
-                <span className="toc_sub">
+                <span className={styles.toc_sub}>
                   - 겉으로 보이는 모습과 내면의 반전
                 </span>
               </li>
               <li>
                 풀이 2&nbsp;&nbsp;내 연애 스타일 장점과 숨겨진 반전 매력
                 <br />
-                <span className="toc_sub">
+                <span className={styles.toc_sub}>
                   - 오래 만날수록 빠지게 되는 포인트
                 </span>
               </li>
               <li>
                 풀이 3&nbsp;&nbsp;인만추 vs 자만추 vs 결정사, 나에게 맞는 방식은
                 <br />
-                <span className="toc_sub">
+                <span className={styles.toc_sub}>
                   - 성공 확률 높은 만남 방식과 실전 팁
                 </span>
               </li>
               <li>
                 풀이 4&nbsp;&nbsp;내가 끌리는 사람 vs 나에게 끌리는 사람
                 <br />
-                <span className="toc_sub">
+                <span className={styles.toc_sub}>
                   - 어떤 사람을 만나야 행복하게 연애할 수 있을까?
                 </span>
               </li>
@@ -3775,145 +3775,145 @@ function SajuCard({ data }: { data: SajuLoveRecord }) {
           </div>
 
           {/* 2장 */}
-          <div className="toc_chapter">
-            <div className="toc_chapter_header">
-              <span className="toc_chapter_num">2장</span>
-              <h3 className="toc_chapter_title">
+          <div className={styles.toc_chapter}>
+            <div className={styles.toc_chapter_header}>
+              <span className={styles.toc_chapter_num}>2장</span>
+              <h3 className={styles.toc_chapter_title}>
                 앞으로 펼쳐질
                 <br />
                 사랑의 흐름
               </h3>
             </div>
-            <ul className="toc_list">
+            <ul className={styles.toc_list}>
               <li>
                 풀이 1&nbsp;&nbsp;올해의 연애 총운 흐름
                 <br />
-                <span className="toc_sub">- 연애 활발기 vs 조용기 구분</span>
+                <span className={styles.toc_sub}>- 연애 활발기 vs 조용기 구분</span>
               </li>
               <li>
                 풀이 2&nbsp;&nbsp;앞으로 3년간 연애 기회가 오는 시기
                 <br />
-                <span className="toc_sub">
+                <span className={styles.toc_sub}>
                   - 인연이 집중되는 달과 상대의 특징
                 </span>
               </li>
               <li>
                 풀이 3&nbsp;&nbsp;이번 달 주차별 연애 운세
                 <br />
-                <span className="toc_sub">- 이성 기운이 들어오는 타이밍</span>
+                <span className={styles.toc_sub}>- 이성 기운이 들어오는 타이밍</span>
               </li>
             </ul>
           </div>
 
           {/* 3장 */}
-          <div className="toc_chapter">
-            <div className="toc_chapter_header">
-              <span className="toc_chapter_num">3장</span>
-              <h3 className="toc_chapter_title">
+          <div className={styles.toc_chapter}>
+            <div className={styles.toc_chapter_header}>
+              <span className={styles.toc_chapter_num}>3장</span>
+              <h3 className={styles.toc_chapter_title}>
                 결국 만나게 될<br />
                 운명의 상대
               </h3>
             </div>
-            <ul className="toc_list">
+            <ul className={styles.toc_list}>
               <li>
                 풀이 1&nbsp;&nbsp;운명의 상대, 그 사람의 외모와 성격
                 <br />
-                <span className="toc_sub">- 길에서 마주친 것처럼 생생하게</span>
+                <span className={styles.toc_sub}>- 길에서 마주친 것처럼 생생하게</span>
               </li>
               <li>
                 풀이 2&nbsp;&nbsp;그 사람을 만나는 시기와 장소
                 <br />
-                <span className="toc_sub">- 영화의 한 장면처럼 묘사</span>
+                <span className={styles.toc_sub}>- 영화의 한 장면처럼 묘사</span>
               </li>
               <li>
                 풀이 3&nbsp;&nbsp;그 사람 마음 사로잡는 공략법
                 <br />
-                <span className="toc_sub">
+                <span className={styles.toc_sub}>
                   - 나만의 무기를 활용한 맞춤 전략
                 </span>
               </li>
               <li>
                 풀이 4&nbsp;&nbsp;이별 위기 극복법
                 <br />
-                <span className="toc_sub">- 위험 패턴과 회복 필살기</span>
+                <span className={styles.toc_sub}>- 위험 패턴과 회복 필살기</span>
               </li>
             </ul>
           </div>
 
           {/* 보너스 */}
-          <div className="toc_chapter bonus">
-            <div className="toc_chapter_header">
-              <span className="toc_chapter_num bonus">보너스</span>
-              <h3 className="toc_chapter_title">운명의 상대 이미지</h3>
+          <div className={`${styles.toc_chapter} ${styles.bonus}`}>
+            <div className={styles.toc_chapter_header}>
+              <span className={`${styles.toc_chapter_num} ${styles.bonus}`}>보너스</span>
+              <h3 className={styles.toc_chapter_title}>운명의 상대 이미지</h3>
             </div>
           </div>
 
           {/* 4장 */}
-          <div className="toc_chapter">
-            <div className="toc_chapter_header">
-              <span className="toc_chapter_num">4장</span>
-              <h3 className="toc_chapter_title">
+          <div className={styles.toc_chapter}>
+            <div className={styles.toc_chapter_header}>
+              <span className={styles.toc_chapter_num}>4장</span>
+              <h3 className={styles.toc_chapter_title}>
                 운명으로 착각하는
                 <br />
                 가짜 인연
               </h3>
             </div>
-            <ul className="toc_list">
+            <ul className={styles.toc_list}>
               <li>
                 풀이 1&nbsp;&nbsp;내가 약해지는 위험 유형 2가지
                 <br />
-                <span className="toc_sub">
+                <span className={styles.toc_sub}>
                   - 왜 유독 그런 타입에게 끌리는지
                 </span>
               </li>
               <li>
                 풀이 2&nbsp;&nbsp;운명이라 착각하는 이유
                 <br />
-                <span className="toc_sub">
+                <span className={styles.toc_sub}>
                   - 첫 만남의 끌림, 그 정체를 폭로
                 </span>
               </li>
               <li>
                 풀이 3&nbsp;&nbsp;진짜 vs 가짜 구별법
                 <br />
-                <span className="toc_sub">- 구체적인 필터링 체크 포인트</span>
+                <span className={styles.toc_sub}>- 구체적인 필터링 체크 포인트</span>
               </li>
             </ul>
           </div>
 
           {/* 보너스: 피해야 할 인연 */}
-          <div className="toc_chapter bonus">
-            <div className="toc_chapter_header">
-              <span className="toc_chapter_num bonus">보너스</span>
-              <h3 className="toc_chapter_title">피해야 할 인연 이미지</h3>
+          <div className={`${styles.toc_chapter} ${styles.bonus}`}>
+            <div className={styles.toc_chapter_header}>
+              <span className={`${styles.toc_chapter_num} ${styles.bonus}`}>보너스</span>
+              <h3 className={styles.toc_chapter_title}>피해야 할 인연 이미지</h3>
             </div>
           </div>
 
           {/* 5장 */}
-          <div className="toc_chapter">
-            <div className="toc_chapter_header">
-              <span className="toc_chapter_num">5장</span>
-              <h3 className="toc_chapter_title">
+          <div className={styles.toc_chapter}>
+            <div className={styles.toc_chapter_header}>
+              <span className={styles.toc_chapter_num}>5장</span>
+              <h3 className={styles.toc_chapter_title}>
                 누구에게도 말 못할,
                 <br />
                 19금 사주 풀이
               </h3>
             </div>
-            <ul className="toc_list">
+            <ul className={styles.toc_list}>
               <li>
                 풀이 1&nbsp;&nbsp;낮과 밤이 다른 성적 매력
                 <br />
-                <span className="toc_sub">- 낮저밤이? 낮이밤저? 나의 갭</span>
+                <span className={styles.toc_sub}>- 낮저밤이? 낮이밤저? 나의 갭</span>
               </li>
               <li>
                 풀이 2&nbsp;&nbsp;은밀한 성감대
                 <br />
-                <span className="toc_sub">- 본인도 몰랐던 민감 포인트</span>
+                <span className={styles.toc_sub}>- 본인도 몰랐던 민감 포인트</span>
               </li>
               <li>
                 풀이 3&nbsp;&nbsp;나를 만족시킬 상대 조건
                 <br />
-                <span className="toc_sub">
+                <span className={styles.toc_sub}>
                   - 리드/팔로우, 템포, 킬링 포인트
                 </span>
               </li>
@@ -3921,12 +3921,12 @@ function SajuCard({ data }: { data: SajuLoveRecord }) {
           </div>
 
           {/* 6장 */}
-          <div className="toc_chapter">
-            <div className="toc_chapter_header">
-              <span className="toc_chapter_num">6장</span>
-              <h3 className="toc_chapter_title">색동낭자의 귀띔</h3>
+          <div className={styles.toc_chapter}>
+            <div className={styles.toc_chapter_header}>
+              <span className={styles.toc_chapter_num}>6장</span>
+              <h3 className={styles.toc_chapter_title}>색동낭자의 귀띔</h3>
             </div>
-            <ul className="toc_list">
+            <ul className={styles.toc_list}>
               <li>{userName}님의 고민에 대한 사주 기반 맞춤 조언</li>
             </ul>
           </div>
@@ -4056,24 +4056,24 @@ function WaitingCard({
   }, [isComplete, isTransitioning, progress, onTransition]);
 
   return (
-    <div className="report_card waiting_card">
-      <div className="waiting_content">
-        <div className="waiting_progress_wrap">
-          <div className="waiting_progress_bar">
+    <div className={`${styles.report_card} ${styles.waiting_card}`}>
+      <div className={styles.waiting_content}>
+        <div className={styles.waiting_progress_wrap}>
+          <div className={styles.waiting_progress_bar}>
             <div
-              className="waiting_progress_fill"
+              className={styles.waiting_progress_fill}
               style={{ width: `${progress}%` }}
             />
           </div>
-          <span className="waiting_progress_text">{progress}%</span>
+          <span className={styles.waiting_progress_text}>{progress}%</span>
         </div>
-        <h2 className="waiting_title">보고서 작성 중...</h2>
-        <p className="waiting_text">
+        <h2 className={styles.waiting_title}>보고서 작성 중...</h2>
+        <p className={styles.waiting_text}>
           색동낭자가 {userName}님의
           <br />
           연애 사주를 열심히 분석하고 있어요.
         </p>
-        <p className="waiting_subtext">
+        <p className={styles.waiting_subtext}>
           잠시만 기다려주세요,
           <br />
           페이지를 나가면 처음부터 다시 시작해야 할 수 있어요!
@@ -4086,37 +4086,37 @@ function WaitingCard({
 // 들어가며 인트로 카드
 function IntroCard({ userName }: { userName: string }) {
   return (
-    <div className="report_card intro_card">
+    <div className={`${styles.report_card} ${styles.intro_card}`}>
       {/* 장면 1: 인사 */}
-      <div className="intro_section intro_welcome">
-        <p className="welcome_main">어서 오세요</p>
-        <p className="welcome_sub">양반가에 오신 것을 환영해요</p>
-        <div className="welcome_divider">❀</div>
-        <p className="welcome_text">
+      <div className={`${styles.intro_section} ${styles.intro_welcome}`}>
+        <p className={styles.welcome_main}>어서 오세요</p>
+        <p className={styles.welcome_sub}>양반가에 오신 것을 환영해요</p>
+        <div className={styles.welcome_divider}>❀</div>
+        <p className={styles.welcome_text}>
           저는 이곳에서 연애 사주를 봐드리는 <strong>색동낭자</strong>예요.
         </p>
-        <p className="welcome_text">
+        <p className={styles.welcome_text}>
           미래가 궁금해서, 마음속 고민이 쉽게 풀리지 않아서, 혹은 인생의 중요한
           갈림길 앞에서 방향을 찾고 싶어서... 이런 여러 가지 이유로 양반가에
           오셨겠죠?
         </p>
-        <p className="welcome_text">
+        <p className={styles.welcome_text}>
           그렇다면 정말 잘 찾아오셨어요. {userName}님의 사주 속에는 이미 수많은
           힌트와 가능성들이 담겨 있어요.
         </p>
-        <p className="welcome_text">
+        <p className={styles.welcome_text}>
           제가 사주라는 지도를 함께 펼치고, {userName}님이 걸어갈 인생의 길을
           환하게 밝혀드릴게요.
         </p>
       </div>
 
       {/* 장면 2: 사주란? */}
-      <div className="intro_section">
-        <h3 className="intro_section_title">들어가며</h3>
-        <p className="intro_section_subtitle">사주란 무엇인가요?</p>
+      <div className={styles.intro_section}>
+        <h3 className={styles.intro_section_title}>들어가며</h3>
+        <p className={styles.intro_section_subtitle}>사주란 무엇인가요?</p>
 
-        <div className="intro_section_content">
-          <p className="intro_quote">
+        <div className={styles.intro_section_content}>
+          <p className={styles.intro_quote}>
             사주(四柱)는 네 개의 기둥이라는 뜻이에요.
           </p>
           <p>
@@ -4128,7 +4128,7 @@ function IntroCard({ userName }: { userName: string }) {
             이 네 가지 요소를 통해 한 사람이 지닌 성격, 타고난 기질, 흐르는 운의
             방향까지 자세히 살펴볼 수 있답니다.
           </p>
-          <p className="intro_note">
+          <p className={styles.intro_note}>
             사주는 단순히 미래를 맞히는 점술이 아니라,{" "}
             <strong>
               나를 이해하고, 더 나은 선택을 할 수 있게 도와주는 삶의 지도
@@ -4140,11 +4140,11 @@ function IntroCard({ userName }: { userName: string }) {
       </div>
 
       {/* 장면 3: 사주팔자의 구조 */}
-      <div className="intro_section">
-        <h3 className="intro_section_title">사주팔자의 구조</h3>
-        <p className="intro_section_subtitle">왜 팔자라고 부를까요?</p>
+      <div className={styles.intro_section}>
+        <h3 className={styles.intro_section_title}>사주팔자의 구조</h3>
+        <p className={styles.intro_section_subtitle}>왜 팔자라고 부를까요?</p>
 
-        <div className="intro_section_content">
+        <div className={styles.intro_section_content}>
           <p>
             사주는 흔히 <strong>사주팔자(四柱八字)</strong>라고도 불리는데요,
             여기서 팔자는 태어난 순간의 하늘과 땅의 기운이 담긴 여덟 글자를
@@ -4164,69 +4164,69 @@ function IntroCard({ userName }: { userName: string }) {
         </div>
 
         {/* 예시 사주명식 테이블 */}
-        <div className="intro_saju_table">
-          <div className="saju_pillar_row">
-            <div className="saju_pillar">
-              <span className="pillar_name">시주</span>
-              <div className="pillar_chars">
-                <div className="char_cell">
-                  <span className="cell_hanja metal">庚</span>
-                  <span className="char_meaning">자녀</span>
+        <div className={styles.intro_saju_table}>
+          <div className={styles.saju_pillar_row}>
+            <div className={styles.saju_pillar}>
+              <span className={styles.pillar_name}>시주</span>
+              <div className={styles.pillar_chars}>
+                <div className={styles.char_cell}>
+                  <span className={`${styles.cell_hanja} ${styles.metal}`}>庚</span>
+                  <span className={styles.char_meaning}>자녀</span>
                 </div>
-                <div className="char_cell">
-                  <span className="cell_hanja metal">申</span>
-                  <span className="char_meaning">말년</span>
-                </div>
-              </div>
-            </div>
-            <div className="saju_pillar highlight">
-              <span className="pillar_name">일주</span>
-              <div className="pillar_chars">
-                <div className="char_cell">
-                  <span className="cell_hanja earth">戊</span>
-                  <span className="char_meaning">나</span>
-                </div>
-                <div className="char_cell">
-                  <span className="cell_hanja fire">午</span>
-                  <span className="char_meaning">배우자</span>
+                <div className={styles.char_cell}>
+                  <span className={`${styles.cell_hanja} ${styles.metal}`}>申</span>
+                  <span className={styles.char_meaning}>말년</span>
                 </div>
               </div>
             </div>
-            <div className="saju_pillar">
-              <span className="pillar_name">월주</span>
-              <div className="pillar_chars">
-                <div className="char_cell">
-                  <span className="cell_hanja fire">丙</span>
-                  <span className="char_meaning">부모</span>
+            <div className={`${styles.saju_pillar} ${styles.highlight}`}>
+              <span className={styles.pillar_name}>일주</span>
+              <div className={styles.pillar_chars}>
+                <div className={styles.char_cell}>
+                  <span className={`${styles.cell_hanja} ${styles.earth}`}>戊</span>
+                  <span className={styles.char_meaning}>나</span>
                 </div>
-                <div className="char_cell">
-                  <span className="cell_hanja wood">寅</span>
-                  <span className="char_meaning">청년기</span>
+                <div className={styles.char_cell}>
+                  <span className={`${styles.cell_hanja} ${styles.fire}`}>午</span>
+                  <span className={styles.char_meaning}>배우자</span>
                 </div>
               </div>
             </div>
-            <div className="saju_pillar">
-              <span className="pillar_name">년주</span>
-              <div className="pillar_chars">
-                <div className="char_cell">
-                  <span className="cell_hanja wood">甲</span>
-                  <span className="char_meaning">조상</span>
+            <div className={styles.saju_pillar}>
+              <span className={styles.pillar_name}>월주</span>
+              <div className={styles.pillar_chars}>
+                <div className={styles.char_cell}>
+                  <span className={`${styles.cell_hanja} ${styles.fire}`}>丙</span>
+                  <span className={styles.char_meaning}>부모</span>
                 </div>
-                <div className="char_cell">
-                  <span className="cell_hanja water">子</span>
-                  <span className="char_meaning">유년기</span>
+                <div className={styles.char_cell}>
+                  <span className={`${styles.cell_hanja} ${styles.wood}`}>寅</span>
+                  <span className={styles.char_meaning}>청년기</span>
+                </div>
+              </div>
+            </div>
+            <div className={styles.saju_pillar}>
+              <span className={styles.pillar_name}>년주</span>
+              <div className={styles.pillar_chars}>
+                <div className={styles.char_cell}>
+                  <span className={`${styles.cell_hanja} ${styles.wood}`}>甲</span>
+                  <span className={styles.char_meaning}>조상</span>
+                </div>
+                <div className={styles.char_cell}>
+                  <span className={`${styles.cell_hanja} ${styles.water}`}>子</span>
+                  <span className={styles.char_meaning}>유년기</span>
                 </div>
               </div>
             </div>
           </div>
         </div>
 
-        <div className="intro_section_content">
+        <div className={styles.intro_section_content}>
           <p>
             우리가 이 세상에 태어난 그 순간, 눈에 보이지 않는 운명의 설계도가
             이미 그려지는 거예요.
           </p>
-          <p className="intro_note">
+          <p className={styles.intro_note}>
             그래서 사주는 예언이 아니라, 나의 성격과 기질, 그리고 앞으로 맞이할
             인생의 흐름을 미리 살펴볼 수 있는 <strong>소중한 지도</strong>
             랍니다.
@@ -4235,47 +4235,47 @@ function IntroCard({ userName }: { userName: string }) {
       </div>
 
       {/* 장면 4: 천간(天干) */}
-      <div className="intro_section">
-        <h3 className="intro_section_title">천간(天干)</h3>
-        <p className="intro_section_subtitle">하늘에서 내려오는 열 가지 기운</p>
+      <div className={styles.intro_section}>
+        <h3 className={styles.intro_section_title}>천간(天干)</h3>
+        <p className={styles.intro_section_subtitle}>하늘에서 내려오는 열 가지 기운</p>
 
-        <div className="intro_section_content">
+        <div className={styles.intro_section_content}>
           <p>
             천간은 하늘의 기운이에요. 총 <strong>10가지</strong>가 있어요.
           </p>
         </div>
 
-        <div className="intro_cheongan_table">
-          <div className="cheongan_row header">
-            <span className="element wood">목(木)</span>
-            <span className="element fire">화(火)</span>
-            <span className="element earth">토(土)</span>
-            <span className="element metal">금(金)</span>
-            <span className="element water">수(水)</span>
+        <div className={styles.intro_cheongan_table}>
+          <div className={`${styles.cheongan_row} ${styles.header}`}>
+            <span className={`${styles.element} ${styles.wood}`}>목(木)</span>
+            <span className={`${styles.element} ${styles.fire}`}>화(火)</span>
+            <span className={`${styles.element} ${styles.earth}`}>토(土)</span>
+            <span className={`${styles.element} ${styles.metal}`}>금(金)</span>
+            <span className={`${styles.element} ${styles.water}`}>수(水)</span>
           </div>
-          <div className="cheongan_row chars">
-            <span className="wood">
+          <div className={`${styles.cheongan_row} ${styles.chars}`}>
+            <span className={styles.wood}>
               甲 乙<br />
-              <span className="char_kor">갑 을</span>
+              <span className={styles.char_kor}>갑 을</span>
             </span>
-            <span className="fire">
+            <span className={styles.fire}>
               丙 丁<br />
-              <span className="char_kor">병 정</span>
+              <span className={styles.char_kor}>병 정</span>
             </span>
-            <span className="earth">
+            <span className={styles.earth}>
               戊 己<br />
-              <span className="char_kor">무 기</span>
+              <span className={styles.char_kor}>무 기</span>
             </span>
-            <span className="metal">
+            <span className={styles.metal}>
               庚 辛<br />
-              <span className="char_kor">경 신</span>
+              <span className={styles.char_kor}>경 신</span>
             </span>
-            <span className="water">
+            <span className={styles.water}>
               壬 癸<br />
-              <span className="char_kor">임 계</span>
+              <span className={styles.char_kor}>임 계</span>
             </span>
           </div>
-          <div className="cheongan_row meaning">
+          <div className={`${styles.cheongan_row} ${styles.meaning}`}>
             <span>
               큰나무
               <br />
@@ -4303,12 +4303,12 @@ function IntroCard({ userName }: { userName: string }) {
           </div>
         </div>
 
-        <div className="intro_section_content">
+        <div className={styles.intro_section_content}>
           <p>
             천간은 <strong>겉으로 드러나는 성격</strong>, 세상에 보여주는 나의
             모습을 나타내요.
           </p>
-          <p className="intro_note">
+          <p className={styles.intro_note}>
             예를 들어 <strong>丙(병)</strong>은 태양처럼 밝고 열정적인 사람,{" "}
             <strong>癸(계)</strong>는 시냇물처럼 조용하고 감성적인 사람이에요.
           </p>
@@ -4316,11 +4316,11 @@ function IntroCard({ userName }: { userName: string }) {
       </div>
 
       {/* 장면 5: 지지(地支) */}
-      <div className="intro_section">
-        <h3 className="intro_section_title">지지(地支)</h3>
-        <p className="intro_section_subtitle">땅에서 올라오는 열두 가지 기운</p>
+      <div className={styles.intro_section}>
+        <h3 className={styles.intro_section_title}>지지(地支)</h3>
+        <p className={styles.intro_section_subtitle}>땅에서 올라오는 열두 가지 기운</p>
 
-        <div className="intro_section_content">
+        <div className={styles.intro_section_content}>
           <p>
             지지는 땅의 기운을 뜻하는 열두 가지 글자로, 하늘의 기운을 받아들여
             더욱 구체적인 모습을 이루어 가죠.
@@ -4330,69 +4330,69 @@ function IntroCard({ userName }: { userName: string }) {
           </p>
         </div>
 
-        <div className="intro_jiji_table">
-          <div className="jiji_table_row">
-            <div className="jiji_cell">
-              <span className="jiji_hanja water">子</span>
-              <span className="jiji_info">자 · 쥐</span>
+        <div className={styles.intro_jiji_table}>
+          <div className={styles.jiji_table_row}>
+            <div className={styles.jiji_cell}>
+              <span className={`${styles.jiji_hanja} ${styles.water}`}>子</span>
+              <span className={styles.jiji_info}>자 · 쥐</span>
             </div>
-            <div className="jiji_cell">
-              <span className="jiji_hanja earth">丑</span>
-              <span className="jiji_info">축 · 소</span>
+            <div className={styles.jiji_cell}>
+              <span className={`${styles.jiji_hanja} ${styles.earth}`}>丑</span>
+              <span className={styles.jiji_info}>축 · 소</span>
             </div>
-            <div className="jiji_cell">
-              <span className="jiji_hanja wood">寅</span>
-              <span className="jiji_info">인 · 호랑이</span>
+            <div className={styles.jiji_cell}>
+              <span className={`${styles.jiji_hanja} ${styles.wood}`}>寅</span>
+              <span className={styles.jiji_info}>인 · 호랑이</span>
             </div>
-            <div className="jiji_cell">
-              <span className="jiji_hanja wood">卯</span>
-              <span className="jiji_info">묘 · 토끼</span>
-            </div>
-          </div>
-          <div className="jiji_table_row">
-            <div className="jiji_cell">
-              <span className="jiji_hanja earth">辰</span>
-              <span className="jiji_info">진 · 용</span>
-            </div>
-            <div className="jiji_cell">
-              <span className="jiji_hanja fire">巳</span>
-              <span className="jiji_info">사 · 뱀</span>
-            </div>
-            <div className="jiji_cell">
-              <span className="jiji_hanja fire">午</span>
-              <span className="jiji_info">오 · 말</span>
-            </div>
-            <div className="jiji_cell">
-              <span className="jiji_hanja earth">未</span>
-              <span className="jiji_info">미 · 양</span>
+            <div className={styles.jiji_cell}>
+              <span className={`${styles.jiji_hanja} ${styles.wood}`}>卯</span>
+              <span className={styles.jiji_info}>묘 · 토끼</span>
             </div>
           </div>
-          <div className="jiji_table_row">
-            <div className="jiji_cell">
-              <span className="jiji_hanja metal">申</span>
-              <span className="jiji_info">신 · 원숭이</span>
+          <div className={styles.jiji_table_row}>
+            <div className={styles.jiji_cell}>
+              <span className={`${styles.jiji_hanja} ${styles.earth}`}>辰</span>
+              <span className={styles.jiji_info}>진 · 용</span>
             </div>
-            <div className="jiji_cell">
-              <span className="jiji_hanja metal">酉</span>
-              <span className="jiji_info">유 · 닭</span>
+            <div className={styles.jiji_cell}>
+              <span className={`${styles.jiji_hanja} ${styles.fire}`}>巳</span>
+              <span className={styles.jiji_info}>사 · 뱀</span>
             </div>
-            <div className="jiji_cell">
-              <span className="jiji_hanja earth">戌</span>
-              <span className="jiji_info">술 · 개</span>
+            <div className={styles.jiji_cell}>
+              <span className={`${styles.jiji_hanja} ${styles.fire}`}>午</span>
+              <span className={styles.jiji_info}>오 · 말</span>
             </div>
-            <div className="jiji_cell">
-              <span className="jiji_hanja water">亥</span>
-              <span className="jiji_info">해 · 돼지</span>
+            <div className={styles.jiji_cell}>
+              <span className={`${styles.jiji_hanja} ${styles.earth}`}>未</span>
+              <span className={styles.jiji_info}>미 · 양</span>
+            </div>
+          </div>
+          <div className={styles.jiji_table_row}>
+            <div className={styles.jiji_cell}>
+              <span className={`${styles.jiji_hanja} ${styles.metal}`}>申</span>
+              <span className={styles.jiji_info}>신 · 원숭이</span>
+            </div>
+            <div className={styles.jiji_cell}>
+              <span className={`${styles.jiji_hanja} ${styles.metal}`}>酉</span>
+              <span className={styles.jiji_info}>유 · 닭</span>
+            </div>
+            <div className={styles.jiji_cell}>
+              <span className={`${styles.jiji_hanja} ${styles.earth}`}>戌</span>
+              <span className={styles.jiji_info}>술 · 개</span>
+            </div>
+            <div className={styles.jiji_cell}>
+              <span className={`${styles.jiji_hanja} ${styles.water}`}>亥</span>
+              <span className={styles.jiji_info}>해 · 돼지</span>
             </div>
           </div>
         </div>
 
-        <div className="intro_section_content">
+        <div className={styles.intro_section_content}>
           <p>
             이 천간과 지지가 서로 만나 하나의 조화를 이루면, 하늘과 땅이
             어우러지듯 우리의 생년월일시가 정해지게 돼요.
           </p>
-          <p className="intro_note">
+          <p className={styles.intro_note}>
             그리고 그 순간의 기운이 우리의 성향과 삶에 깊이 스며들어, 그 사람의
             성격부터 앞으로 펼쳐질 운명의 중요한 열쇠가 된답니다!
           </p>
@@ -4400,11 +4400,11 @@ function IntroCard({ userName }: { userName: string }) {
       </div>
 
       {/* 장면 6: 오행 */}
-      <div className="intro_section">
-        <h3 className="intro_section_title">다섯 가지 기운, 오행</h3>
-        <p className="intro_section_subtitle">천간과 지지를 이해하는 열쇠</p>
+      <div className={styles.intro_section}>
+        <h3 className={styles.intro_section_title}>다섯 가지 기운, 오행</h3>
+        <p className={styles.intro_section_subtitle}>천간과 지지를 이해하는 열쇠</p>
 
-        <div className="intro_section_content">
+        <div className={styles.intro_section_content}>
           <p>
             그런데 천간과 지지, 이렇게 많은 글자를 어떻게 이해하냐고요? 걱정
             마세요. 모든 글자는 다섯 가지 기운으로 나눌 수 있어요. 바로{" "}
@@ -4412,43 +4412,43 @@ function IntroCard({ userName }: { userName: string }) {
           </p>
         </div>
 
-        <div className="intro_ohang_circle">
-          <div className="ohang_circle_wrapper">
-            <div className="ohang_node fire top">
-              <span className="ohang_label">화</span>
-              <span className="ohang_desc">열정</span>
+        <div className={styles.intro_ohang_circle}>
+          <div className={styles.ohang_circle_wrapper}>
+            <div className={`${styles.ohang_node} ${styles.fire} ${styles.top}`}>
+              <span className={styles.ohang_label}>화</span>
+              <span className={styles.ohang_desc}>열정</span>
             </div>
-            <div className="ohang_node wood left-top">
-              <span className="ohang_label">목</span>
-              <span className="ohang_desc">성장</span>
+            <div className={`${styles.ohang_node} ${styles.wood} ${styles["left-top"]}`}>
+              <span className={styles.ohang_label}>목</span>
+              <span className={styles.ohang_desc}>성장</span>
             </div>
-            <div className="ohang_node earth right-top">
-              <span className="ohang_label">토</span>
-              <span className="ohang_desc">안정</span>
+            <div className={`${styles.ohang_node} ${styles.earth} ${styles["right-top"]}`}>
+              <span className={styles.ohang_label}>토</span>
+              <span className={styles.ohang_desc}>안정</span>
             </div>
-            <div className="ohang_node water left-bottom">
-              <span className="ohang_label">수</span>
-              <span className="ohang_desc">지혜</span>
+            <div className={`${styles.ohang_node} ${styles.water} ${styles["left-bottom"]}`}>
+              <span className={styles.ohang_label}>수</span>
+              <span className={styles.ohang_desc}>지혜</span>
             </div>
-            <div className="ohang_node metal right-bottom">
-              <span className="ohang_label">금</span>
-              <span className="ohang_desc">원칙</span>
+            <div className={`${styles.ohang_node} ${styles.metal} ${styles["right-bottom"]}`}>
+              <span className={styles.ohang_label}>금</span>
+              <span className={styles.ohang_desc}>원칙</span>
             </div>
           </div>
-          <div className="ohang_relations">
-            <p className="ohang_relation saeng">
-              <span className="relation_label">생(生)</span>목 → 화 → 토 → 금 →
+          <div className={styles.ohang_relations}>
+            <p className={`${styles.ohang_relation} ${styles.saeng}`}>
+              <span className={styles.relation_label}>생(生)</span>목 → 화 → 토 → 금 →
               수 → 목
             </p>
-            <p className="ohang_relation geuk">
-              <span className="relation_label">극(剋)</span>목 → 토 → 수 → 화 →
+            <p className={`${styles.ohang_relation} ${styles.geuk}`}>
+              <span className={styles.relation_label}>극(剋)</span>목 → 토 → 수 → 화 →
               금 → 목
             </p>
           </div>
         </div>
 
-        <div className="intro_section_content">
-          <p className="intro_note">
+        <div className={styles.intro_section_content}>
+          <p className={styles.intro_note}>
             이 다섯 가지 기운의 조합과 균형이 바로 {userName}님의 성격과 연애
             스타일을 만들어요.
           </p>
@@ -4456,44 +4456,44 @@ function IntroCard({ userName }: { userName: string }) {
       </div>
 
       {/* 장면 7: 일주 */}
-      <div className="intro_section">
-        <h3 className="intro_section_title">연애의 열쇠, 일주</h3>
-        <p className="intro_section_subtitle">사주에서 가장 중요한 기둥</p>
+      <div className={styles.intro_section}>
+        <h3 className={styles.intro_section_title}>연애의 열쇠, 일주</h3>
+        <p className={styles.intro_section_subtitle}>사주에서 가장 중요한 기둥</p>
 
-        <div className="intro_section_content">
+        <div className={styles.intro_section_content}>
           <p>
             자, 이제 중요한 이야기를 해볼게요. 사주의 네 기둥 중에서 연애를 볼
             때 가장 중요한 기둥이 있어요. 바로 <strong>일주(日柱)</strong>예요.
           </p>
         </div>
 
-        <div className="intro_ilju_diagram">
-          <div className="ilju_pillars">
-            <div className="ilju_pillar">
-              <span className="ilju_pillar_name">시주</span>
-              <div className="ilju_pillar_chars">
+        <div className={styles.intro_ilju_diagram}>
+          <div className={styles.ilju_pillars}>
+            <div className={styles.ilju_pillar}>
+              <span className={styles.ilju_pillar_name}>시주</span>
+              <div className={styles.ilju_pillar_chars}>
                 <span>○</span>
                 <span>○</span>
               </div>
             </div>
-            <div className="ilju_pillar highlight">
-              <span className="ilju_pillar_name">일주</span>
-              <div className="ilju_pillar_chars">
+            <div className={`${styles.ilju_pillar} ${styles.highlight}`}>
+              <span className={styles.ilju_pillar_name}>일주</span>
+              <div className={styles.ilju_pillar_chars}>
                 <span>나</span>
                 <span>배우자</span>
               </div>
-              <span className="ilju_arrow">↑ 이게 나!</span>
+              <span className={styles.ilju_arrow}>↑ 이게 나!</span>
             </div>
-            <div className="ilju_pillar">
-              <span className="ilju_pillar_name">월주</span>
-              <div className="ilju_pillar_chars">
+            <div className={styles.ilju_pillar}>
+              <span className={styles.ilju_pillar_name}>월주</span>
+              <div className={styles.ilju_pillar_chars}>
                 <span>○</span>
                 <span>○</span>
               </div>
             </div>
-            <div className="ilju_pillar">
-              <span className="ilju_pillar_name">년주</span>
-              <div className="ilju_pillar_chars">
+            <div className={styles.ilju_pillar}>
+              <span className={styles.ilju_pillar_name}>년주</span>
+              <div className={styles.ilju_pillar_chars}>
                 <span>○</span>
                 <span>○</span>
               </div>
@@ -4501,13 +4501,13 @@ function IntroCard({ userName }: { userName: string }) {
           </div>
         </div>
 
-        <div className="intro_section_content">
+        <div className={styles.intro_section_content}>
           <p>일주는 태어난 '날'의 기둥인데요, 사주에서 '나 자신'을 의미해요.</p>
           <p>
             특히 일주의 아랫글자, <strong>일지(日支)</strong>는 '배우자
             자리'라고도 불러요.
           </p>
-          <p className="intro_note">
+          <p className={styles.intro_note}>
             내 마음 깊은 곳에서 원하는 이상형, 무의식적으로 끌리는 사람의 유형,
             연애할 때 나도 모르게 나오는 습관... 이런 것들이 모두 일주에 담겨
             있답니다.
@@ -4516,11 +4516,11 @@ function IntroCard({ userName }: { userName: string }) {
       </div>
 
       {/* 장면 8: 사주를 알면 무엇이 좋을까? */}
-      <div className="intro_section">
-        <h3 className="intro_section_title">사주를 알면</h3>
-        <p className="intro_section_subtitle">무엇이 좋을까요?</p>
+      <div className={styles.intro_section}>
+        <h3 className={styles.intro_section_title}>사주를 알면</h3>
+        <p className={styles.intro_section_subtitle}>무엇이 좋을까요?</p>
 
-        <div className="intro_section_content">
+        <div className={styles.intro_section_content}>
           <p>
             사주를 알면 내가 어떤 사람인지, 진짜 내 모습이 무엇인지 더 깊이
             이해할 수 있어요.
@@ -4533,7 +4533,7 @@ function IntroCard({ userName }: { userName: string }) {
             또 언제 좋은 기회가 들어오고, 언제 조심해야 하는지도 미리 살펴볼 수
             있어서 삶의 중요한 순간들을 보다 현명하게 준비할 수 있죠.
           </p>
-          <p className="intro_note">
+          <p className={styles.intro_note}>
             특히 인생에서 중요한 시기를 맞이했을 때, 내가 가진 사주를 바탕으로
             흐름을 읽고 대비한다면 훨씬 안정적이고 후회 없는 결정을 내릴 수
             있어요. 사주는 그렇게, 지금의 나와 앞으로의 나를 잇는 다리 역할을
@@ -4543,10 +4543,10 @@ function IntroCard({ userName }: { userName: string }) {
       </div>
 
       {/* 장면 7: 색동낭자의 약속 */}
-      <div className="intro_section">
-        <h3 className="intro_section_title">색동낭자의 약속</h3>
+      <div className={styles.intro_section}>
+        <h3 className={styles.intro_section_title}>색동낭자의 약속</h3>
 
-        <div className="intro_section_content">
+        <div className={styles.intro_section_content}>
           <p>
             사주는 운명을 점치는 것이 아니라, 운명을 더 잘 살아내기 위한
             지혜예요.
@@ -4555,7 +4555,7 @@ function IntroCard({ userName }: { userName: string }) {
             저는 {userName}님의 사주를 정성스럽게 바라보면서, 진심을 담아
             조언해드릴게요.
           </p>
-          <p className="intro_promise">
+          <p className={styles.intro_promise}>
             좋은 운은 더 크게 살리고, 어려운 운은 지혜롭게 피할 수 있도록,
             무엇보다 {userName}님이 스스로를 더 사랑하고 이해할 수 있도록
             도와드릴게요.
@@ -4564,14 +4564,14 @@ function IntroCard({ userName }: { userName: string }) {
       </div>
 
       {/* 장면 8: 보고서 안내 */}
-      <div className="intro_section">
-        <h3 className="intro_section_title">보고서 안내</h3>
+      <div className={styles.intro_section}>
+        <h3 className={styles.intro_section_title}>보고서 안내</h3>
 
-        <div className="intro_section_content">
+        <div className={styles.intro_section_content}>
           <p>
             이 보고서는 총 <strong>6개의 장</strong>으로 구성되어 있어요.
           </p>
-          <div className="intro_chapters_list">
+          <div className={styles.intro_chapters_list}>
             <p>
               <strong>1장</strong> 나만의 매력과 연애 성향
             </p>
@@ -4595,9 +4595,9 @@ function IntroCard({ userName }: { userName: string }) {
       </div>
 
       {/* 장면 9: 마무리 - 전환 */}
-      <div className="intro_section intro_transition">
-        <div className="intro_section_content">
-          <p className="transition_text">
+      <div className={`${styles.intro_section} ${styles.intro_transition}`}>
+        <div className={styles.intro_section_content}>
+          <p className={styles.transition_text}>
             그럼 이제, 색동낭자와 함께 {userName}님의 사주를 펼쳐볼까요?
           </p>
         </div>
@@ -4654,15 +4654,15 @@ function TocModal({
   };
 
   return (
-    <div className="toc_modal_overlay" onClick={onClose}>
-      <div className="toc_modal" onClick={(e) => e.stopPropagation()}>
-        <div className="toc_modal_header">
-          <h3 className="toc_modal_title">목차</h3>
-          <button className="toc_modal_close" onClick={onClose}>
+    <div className={styles.toc_modal_overlay} onClick={onClose}>
+      <div className={styles.toc_modal} onClick={(e) => e.stopPropagation()}>
+        <div className={styles.toc_modal_header}>
+          <h3 className={styles.toc_modal_title}>목차</h3>
+          <button className={styles.toc_modal_close} onClick={onClose}>
             <span className="material-icons">close</span>
           </button>
         </div>
-        <ul className="toc_modal_list">
+        <ul className={styles.toc_modal_list}>
           {tocItems.map((item, i) => {
             const targetIndex = findIndexById(item.targetId);
             const isAvailable =
@@ -4673,7 +4673,7 @@ function TocModal({
             return (
               <li
                 key={i}
-                className={`toc_modal_item ${isCurrent ? "current" : ""} ${!isAvailable ? "disabled" : ""
+                className={`${styles.toc_modal_item} ${isCurrent ? styles.current : ""} ${!isAvailable ? styles.disabled : ""
                   }`}
                 onClick={() => {
                   if (isAvailable) {
@@ -4681,8 +4681,8 @@ function TocModal({
                   }
                 }}
               >
-                <span className="toc_item_label">{item.label}</span>
-                {isCurrent && <span className="toc_item_current">현재</span>}
+                <span className={styles.toc_item_label}>{item.label}</span>
+                {isCurrent && <span className={styles.toc_item_current}>현재</span>}
               </li>
             );
           })}
@@ -4742,23 +4742,23 @@ function ReviewSection({
   // 이미 리뷰를 남긴 경우
   if (submitted && existingReview) {
     return (
-      <div className="review_section review_submitted">
-        <div className="review_thank_you">
-          <span className="review_check_icon">✓</span>
-          <p className="review_thank_text">소중한 후기 감사합니다!</p>
-          <div className="review_submitted_content">
-            <div className="review_stars_display">
+      <div className={`${styles.review_section} ${styles.review_submitted}`}>
+        <div className={styles.review_thank_you}>
+          <span className={styles.review_check_icon}>✓</span>
+          <p className={styles.review_thank_text}>소중한 후기 감사합니다!</p>
+          <div className={styles.review_submitted_content}>
+            <div className={styles.review_stars_display}>
               {[1, 2, 3, 4, 5].map((star) => (
                 <span
                   key={star}
-                  className={`star ${star <= existingReview.rating ? "filled" : ""
+                  className={`${styles.star} ${star <= existingReview.rating ? styles.filled : ""
                     }`}
                 >
                   ★
                 </span>
               ))}
             </div>
-            <p className="review_text_display">{existingReview.content}</p>
+            <p className={styles.review_text_display}>{existingReview.content}</p>
           </div>
         </div>
       </div>
@@ -4766,23 +4766,23 @@ function ReviewSection({
   }
 
   return (
-    <div className="review_section">
-      <div className="review_header">
-        <h4 className="review_title">색동낭자에게 후기를 남겨주세요</h4>
-        <p className="review_subtitle">
+    <div className={styles.review_section}>
+      <div className={styles.review_header}>
+        <h4 className={styles.review_title}>색동낭자에게 후기를 남겨주세요</h4>
+        <p className={styles.review_subtitle}>
           {userName}님의 소중한 의견이 더 나은 서비스를 만듭니다
         </p>
       </div>
 
       {/* 별점 */}
-      <div className="review_rating">
-        <p className="rating_label">만족도</p>
-        <div className="rating_stars">
+      <div className={styles.review_rating}>
+        <p className={styles.rating_label}>만족도</p>
+        <div className={styles.rating_stars}>
           {[1, 2, 3, 4, 5].map((star) => (
             <button
               key={star}
               type="button"
-              className={`star_btn ${star <= rating ? "active" : ""}`}
+              className={`${styles.star_btn} ${star <= rating ? styles.active : ""}`}
               onClick={() => setRating(star)}
             >
               ★
@@ -4792,22 +4792,22 @@ function ReviewSection({
       </div>
 
       {/* 리뷰 내용 */}
-      <div className="review_content_input">
+      <div className={styles.review_content_input}>
         <textarea
-          className="review_textarea"
+          className={styles.review_textarea}
           placeholder="연애 사주 리포트는 어떠셨나요? 솔직한 후기를 남겨주세요."
           value={content}
           onChange={(e) => setContent(e.target.value)}
           maxLength={500}
         />
-        <span className="review_char_count">{content.length}/500</span>
+        <span className={styles.review_char_count}>{content.length}/500</span>
       </div>
 
       {/* 닉네임 */}
-      <div className="review_name_input">
+      <div className={styles.review_name_input}>
         <input
           type="text"
-          className="review_name_field"
+          className={styles.review_name_field}
           placeholder="닉네임 (선택)"
           value={displayName}
           onChange={(e) => setDisplayName(e.target.value)}
@@ -4817,7 +4817,7 @@ function ReviewSection({
 
       {/* 제출 버튼 */}
       <button
-        className="review_submit_btn"
+        className={styles.review_submit_btn}
         onClick={handleSubmit}
         disabled={isSubmitting || !content.trim()}
       >
@@ -4862,28 +4862,28 @@ function ReviewModal({
   };
 
   return (
-    <div className="review_modal_overlay" onClick={onClose}>
-      <div className="review_modal" onClick={(e) => e.stopPropagation()}>
-        <button className="review_modal_close" onClick={onClose}>
+    <div className={styles.review_modal_overlay} onClick={onClose}>
+      <div className={styles.review_modal} onClick={(e) => e.stopPropagation()}>
+        <button className={styles.review_modal_close} onClick={onClose}>
           ✕
         </button>
 
-        <div className="review_modal_header">
-          <h3 className="review_modal_title">색동낭자에게 후기 남기기</h3>
-          <p className="review_modal_subtitle">
+        <div className={styles.review_modal_header}>
+          <h3 className={styles.review_modal_title}>색동낭자에게 후기 남기기</h3>
+          <p className={styles.review_modal_subtitle}>
             {userName}님의 소중한 의견을 들려주세요
           </p>
         </div>
 
         {/* 별점 */}
-        <div className="review_rating">
-          <p className="rating_label">만족도</p>
-          <div className="rating_stars">
+        <div className={styles.review_rating}>
+          <p className={styles.rating_label}>만족도</p>
+          <div className={styles.rating_stars}>
             {[1, 2, 3, 4, 5].map((star) => (
               <button
                 key={star}
                 type="button"
-                className={`star_btn ${star <= rating ? "active" : ""}`}
+                className={`${styles.star_btn} ${star <= rating ? styles.active : ""}`}
                 onClick={() => setRating(star)}
               >
                 ★
@@ -4893,22 +4893,22 @@ function ReviewModal({
         </div>
 
         {/* 리뷰 내용 */}
-        <div className="review_content_input">
+        <div className={styles.review_content_input}>
           <textarea
-            className="review_textarea"
+            className={styles.review_textarea}
             placeholder="연애 사주 리포트는 어떠셨나요?"
             value={content}
             onChange={(e) => setContent(e.target.value)}
             maxLength={500}
           />
-          <span className="review_char_count">{content.length}/500</span>
+          <span className={styles.review_char_count}>{content.length}/500</span>
         </div>
 
         {/* 닉네임 */}
-        <div className="review_name_input">
+        <div className={styles.review_name_input}>
           <input
             type="text"
-            className="review_name_field"
+            className={styles.review_name_field}
             placeholder="닉네임 (선택)"
             value={displayName}
             onChange={(e) => setDisplayName(e.target.value)}
@@ -4917,12 +4917,12 @@ function ReviewModal({
         </div>
 
         {/* 버튼들 */}
-        <div className="review_modal_buttons">
-          <button className="review_skip_btn" onClick={onClose}>
+        <div className={styles.review_modal_buttons}>
+          <button className={styles.review_skip_btn} onClick={onClose}>
             다음에 할게요
           </button>
           <button
-            className="review_submit_btn"
+            className={styles.review_submit_btn}
             onClick={handleSubmit}
             disabled={isSubmitting || !content.trim()}
           >
@@ -4970,10 +4970,10 @@ function ReviewInlineCard({
 
   if (submitted) {
     return (
-      <div className="review_overlay active">
-        <div className="review_form_wrap">
-          <div className="review_thanks_wrap">
-            <p className="review_thanks_text">고마워요! 💕</p>
+      <div className={`${styles.review_overlay} ${styles.active}`}>
+        <div className={styles.review_form_wrap}>
+          <div className={styles.review_thanks_wrap}>
+            <p className={styles.review_thanks_text}>고마워요! 💕</p>
           </div>
         </div>
       </div>
@@ -4981,14 +4981,14 @@ function ReviewInlineCard({
   }
 
   return (
-    <div className="review_overlay active">
-      <div className="review_form_wrap">
+    <div className={`${styles.review_overlay} ${styles.active}`}>
+      <div className={styles.review_form_wrap}>
         {/* 만족도 */}
-        <div className="input_group">
-          <label className="input_label">
+        <div className={styles.input_group}>
+          <label className={styles.input_label}>
             {userName}님, 풀이는 어떠셨나요?
           </label>
-          <div className="review_rating_options">
+          <div className={styles.review_rating_options}>
             {[
               { value: 1, label: "아쉬워요" },
               { value: 2, label: "보통" },
@@ -4998,7 +4998,7 @@ function ReviewInlineCard({
               <button
                 key={option.value}
                 type="button"
-                className={`review_rating_btn ${rating === option.value ? "active" : ""
+                className={`${styles.review_rating_btn} ${rating === option.value ? styles.active : ""
                   }`}
                 onClick={() => setRating(option.value)}
               >
@@ -5009,10 +5009,10 @@ function ReviewInlineCard({
         </div>
 
         {/* 후기 입력 */}
-        <div className="input_group">
-          <label className="input_label">의견을 알려주세요</label>
+        <div className={styles.input_group}>
+          <label className={styles.input_label}>의견을 알려주세요</label>
           <textarea
-            className="input_field textarea"
+            className={`${styles.input_field} ${styles.textarea}`}
             placeholder={
               "색동낭자의 풀이에 대해 솔직한 의견을 남겨주세요.\n의견을 참고하여 계속해서 공부할게요!"
             }
@@ -5025,12 +5025,12 @@ function ReviewInlineCard({
       </div>
 
       {/* 버튼들 */}
-      <div className="input_buttons">
-        <button className="input_prev_btn" onClick={onDone}>
+      <div className={styles.input_buttons}>
+        <button className={styles.input_prev_btn} onClick={onDone}>
           건너뛰기
         </button>
         <button
-          className="input_submit_btn"
+          className={styles.input_submit_btn}
           onClick={handleSubmit}
           disabled={isSubmitting || !content.trim()}
         >
@@ -5054,11 +5054,11 @@ function EndingCard({ data }: { data: SajuLoveRecord | null }) {
     data?.loveAnalysis?.avoid_type_image?.image_base64;
 
   return (
-    <div className="report_card ending_card">
-      <div className="ending_content">
+    <div className={`${styles.report_card} ${styles.ending_card}`}>
+      <div className={styles.ending_content}>
         {/* 인사말 */}
-        <div className="ending_greeting">
-          <p className="greeting_main">
+        <div className={styles.ending_greeting}>
+          <p className={styles.greeting_main}>
             {userName}님, 여기까지 긴 리포트를 읽어주셔서 감사합니다.
           </p>
           <p>
@@ -5066,22 +5066,22 @@ function EndingCard({ data }: { data: SajuLoveRecord | null }) {
             위한 도구예요.
           </p>
           <p>당신의 사랑이 더 깊어지고, 더 따뜻해지길 진심으로 응원합니다.</p>
-          <p className="ending_sign">- 색동낭자 드림</p>
+          <p className={styles.ending_sign}>- 색동낭자 드림</p>
         </div>
 
         {/* 리뷰 섹션 */}
         {data?.id && <ReviewSection recordId={data.id} userName={userName} />}
 
         {/* 보고서 전체 */}
-        <div className="ending_summary">
-          <h3 className="summary_title">나의 연애 사주 리포트 전체</h3>
+        <div className={styles.ending_summary}>
+          <h3 className={styles.summary_title}>나의 연애 사주 리포트 전체</h3>
 
           {/* 들어가며 */}
-          <div className="report_card summary_report_card">
-            <div className="card_header">
-              <h3 className="card_title">색동낭자의 인사</h3>
+          <div className={`${styles.report_card} ${styles.summary_report_card}`}>
+            <div className={styles.card_header}>
+              <h3 className={styles.card_title}>색동낭자의 인사</h3>
             </div>
-            <div className="card_content intro_summary_content">
+            <div className={`${styles.card_content} ${styles.intro_summary_content}`}>
               <p>{userName}님, 안녕하세요.</p>
               <p>저는 색동낭자예요. 사주로 인연의 실타래를 풀어드리죠.</p>
               <p>
@@ -5113,14 +5113,14 @@ function EndingCard({ data }: { data: SajuLoveRecord | null }) {
 
             return (
               <div key={index}>
-                <div className="report_card summary_report_card">
-                  <div className="card_header">
-                    <h3 className="card_title">
+                <div className={`${styles.report_card} ${styles.summary_report_card}`}>
+                  <div className={styles.card_header}>
+                    <h3 className={styles.card_title}>
                       {chapterNum}장 {titleText}
                     </h3>
                   </div>
                   <div
-                    className="card_content"
+                    className={styles.card_content}
                     dangerouslySetInnerHTML={{
                       __html: formatChapterContent(chapter.content),
                     }}
@@ -5128,30 +5128,30 @@ function EndingCard({ data }: { data: SajuLoveRecord | null }) {
                 </div>
                 {/* 3장 뒤에 운명의 상대 이미지 표시 */}
                 {isChapter3 && idealPartnerImage && (
-                  <div className="report_card summary_ideal_card">
-                    <div className="card_header">
-                      <h3 className="card_title">{userName}님의 운명의 상대</h3>
+                  <div className={`${styles.report_card} ${styles.summary_ideal_card}`}>
+                    <div className={styles.card_header}>
+                      <h3 className={styles.card_title}>{userName}님의 운명의 상대</h3>
                     </div>
-                    <div className="summary_ideal_image">
+                    <div className={styles.summary_ideal_image}>
                       <img
                         src={`data:image/png;base64,${idealPartnerImage}`}
                         alt="운명의 상대 이미지"
-                        className="ideal_image_full"
+                        className={styles.ideal_image_full}
                       />
                     </div>
                   </div>
                 )}
                 {/* 4장 뒤에 피해야 할 인연 이미지 표시 */}
                 {isChapter4 && avoidTypeImage && (
-                  <div className="report_card summary_ideal_card summary_avoid_card">
-                    <div className="card_header">
-                      <h3 className="card_title">{userName}님의 가짜 인연</h3>
+                  <div className={`${styles.report_card} ${styles.summary_ideal_card} ${styles.summary_avoid_card}`}>
+                    <div className={styles.card_header}>
+                      <h3 className={styles.card_title}>{userName}님의 가짜 인연</h3>
                     </div>
-                    <div className="summary_ideal_image">
+                    <div className={styles.summary_ideal_image}>
                       <img
                         src={`data:image/png;base64,${avoidTypeImage}`}
                         alt="가짜 인연 이미지"
-                        className="ideal_image_full"
+                        className={styles.ideal_image_full}
                       />
                     </div>
                   </div>
@@ -5209,46 +5209,46 @@ function SummmarySajuCard({ data }: { data: SajuLoveRecord }) {
   const pillarLabels = ["시주", "일주", "월주", "년주"];
 
   return (
-    <div className="report_card summary_report_card summary_saju_card">
-      <div className="card_header">
-        <h3 className="card_title">{userName}님의 사주 원국</h3>
+    <div className={`${styles.report_card} ${styles.summary_report_card} ${styles.summary_saju_card}`}>
+      <div className={styles.card_header}>
+        <h3 className={styles.card_title}>{userName}님의 사주 원국</h3>
       </div>
 
       {/* 기본 정보 */}
-      <div className="summary_saju_info">
-        <p className="summary_saju_birth">
+      <div className={styles.summary_saju_info}>
+        <p className={styles.summary_saju_birth}>
           {input?.userName} · {input?.date}
           {birthTime ? ` · ${birthTime}` : ""}
         </p>
         {dayMaster && (
-          <p className="summary_saju_daymaster">
+          <p className={styles.summary_saju_daymaster}>
             <span
-              className="daymaster_char"
+              className={styles.daymaster_char}
               style={{ color: getColor(dayMaster.element) }}
             >
               {dayMaster.char}
             </span>
-            <span className="daymaster_title">{dayMaster.title}</span>
+            <span className={styles.daymaster_title}>{dayMaster.title}</span>
           </p>
         )}
       </div>
 
       {/* 간소화된 사주 팔자 */}
-      <div className="summary_pillars">
+      <div className={styles.summary_pillars}>
         {pillarOrder.map((key, idx) => {
           const p = pillars[key];
           return (
-            <div key={key} className="summary_pillar">
-              <span className="pillar_label">{pillarLabels[idx]}</span>
-              <div className="pillar_chars">
+            <div key={key} className={styles.summary_pillar}>
+              <span className={styles.pillar_label}>{pillarLabels[idx]}</span>
+              <div className={styles.pillar_chars}>
                 <span
-                  className="pillar_stem"
+                  className={styles.pillar_stem}
                   style={{ color: getColor(p?.stem?.element) }}
                 >
                   {p?.stem?.char || "—"}
                 </span>
                 <span
-                  className="pillar_branch"
+                  className={styles.pillar_branch}
                   style={{ color: getColor(p?.branch?.element) }}
                 >
                   {p?.branch?.char || "—"}
@@ -5465,11 +5465,11 @@ export default function SajuLoveResultPage() {
   return (
     <Suspense
       fallback={
-        <div className="saju_result_page">
-          <div className="main_body_wrap">
-            <div className="loading_wrap">
-              <div className="loading_spinner"></div>
-              <p className="loading_text">불러오는 중...</p>
+        <div className={styles.saju_result_page}>
+          <div className={styles.main_body_wrap}>
+            <div className={styles.loading_wrap}>
+              <div className={styles.loading_spinner}></div>
+              <p className={styles.loading_text}>불러오는 중...</p>
             </div>
           </div>
         </div>
