@@ -870,12 +870,12 @@ function ResultContent() {
 
         {/* 결제 버튼 영역 */}
         <div
-          className="result_btn_wrap"
+          className={styles.result_btn_wrap}
           data-state="ready"
           style={{ display: "flex" }}
         >
-          <div className="result_btn_status">관상 분석을 완료했습니다.</div>
-          <button className="result_btn" onClick={openPaymentModal}>
+          <div className={styles.result_btn_status}>관상 분석을 완료했습니다.</div>
+          <button className={styles.result_btn} onClick={openPaymentModal}>
             관상 풀이 지금 확인하기
           </button>
         </div>

@@ -480,7 +480,7 @@ function FacePageContent() {
 
 export default function FacePage() {
   return (
-    <Suspense fallback={<div className="main_body_wrap" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '100vh' }}>로딩중...</div>}>
+    <Suspense fallback={<div className={styles.main_body_wrap} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '100vh' }}>로딩중...</div>}>
       <FacePageContent />
     </Suspense>
   );
