@@ -450,31 +450,64 @@ function SajuDetailContent() {
   const handleCouponSubmit = useCallback(async () => {
     if (!data || !couponCode.trim()) return;
 
-    // 할인 쿠폰 설정
-    let discount = 0;
-    if (couponCode === "coupon10000" || couponCode === "chaerin") {
-      discount = 10000; // 14,000원 할인
-    } else if (couponCode === "boniiii" || couponCode === "차세린") {
-      discount = 4000; // 4,000원 할인
-    } else if (couponCode === "free-" || couponCode === "차세린") {
-      discount = 23800; // 4,000원 할인
-    }
+    const code = couponCode.trim();
 
-    if (discount > 0) {
-      setCouponError("");
-      setAppliedCoupon({ code: couponCode, discount });
+    try {
+      const res = await fetch("/api/coupon/validate", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ code, serviceType: "saju_love" }),
+      });
+      const result = await res.json();
 
-      // 결제 위젯 금액 업데이트
-      if (paymentWidgetRef.current) {
-        const newPrice = PAYMENT_CONFIG.price - discount;
-        paymentWidgetRef.current.renderPaymentMethods("#saju-payment-method", {
-          value: newPrice,
-        });
+      if (!result.valid) {
+        setCouponError(result.error || "유효하지 않은 쿠폰입니다");
+        return;
       }
-    } else {
-      setCouponError("유효하지 않은 쿠폰입니다");
+
+      const isFree = result.is_free;
+      const discount = isFree ? PAYMENT_CONFIG.price : result.discount_amount;
+
+      setCouponError("");
+      setAppliedCoupon({ code, discount });
+
+      if (isFree) {
+        // 무료 쿠폰: 결제 완료 처리
+        await saveSajuLoveRecord({
+          ...data,
+          paid: true,
+          paidAt: new Date().toISOString(),
+          paymentInfo: {
+            method: "coupon",
+            price: 0,
+            couponCode: code,
+            isDiscount: true,
+          },
+        });
+
+        // 쿠폰 수량 차감
+        await fetch("/api/coupon/use", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ code }),
+        });
+
+        // 결과 페이지로 이동
+        router.push(`/saju-love/result?id=${data.id}`);
+      } else {
+        // 할인 쿠폰: 결제 위젯 금액 업데이트
+        if (paymentWidgetRef.current) {
+          const newPrice = Math.max(PAYMENT_CONFIG.price - discount, 100);
+          paymentWidgetRef.current.renderPaymentMethods("#saju-payment-method", {
+            value: newPrice,
+          });
+        }
+      }
+    } catch (error) {
+      console.error("쿠폰 검증 오류:", error);
+      setCouponError("쿠폰 확인 중 오류가 발생했습니다");
     }
-  }, [data, couponCode]);
+  }, [data, couponCode, router]);
 
   // 결제 요청
   const handlePaymentRequest = useCallback(async () => {
@@ -520,7 +553,7 @@ function SajuDetailContent() {
         customerName: data.input.userName || "고객",
         successUrl: `${
           window.location.origin
-        }/payment/success?type=saju&id=${encodeURIComponent(data.id)}`,
+        }/payment/success?type=saju&id=${encodeURIComponent(data.id)}${appliedCoupon ? `&couponCode=${encodeURIComponent(appliedCoupon.code)}` : ""}`,
         failUrl: `${
           window.location.origin
         }/payment/fail?id=${encodeURIComponent(data.id)}&type=saju`,

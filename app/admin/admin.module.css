@@ -1,0 +1,373 @@
+/* 로그인 */
+.loginContainer {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f5f5f5;
+  padding: 20px;
+}
+
+.loginBox {
+  background: white;
+  border-radius: 16px;
+  padding: 40px;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 400px;
+  text-align: center;
+}
+
+.loginTitle {
+  font-size: 24px;
+  font-weight: 700;
+  margin-bottom: 8px;
+  color: #1a1a1a;
+}
+
+.loginSubtitle {
+  font-size: 14px;
+  color: #666;
+  margin-bottom: 24px;
+}
+
+.loginInput {
+  width: 100%;
+  padding: 12px 16px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 16px;
+  margin-bottom: 12px;
+  outline: none;
+  box-sizing: border-box;
+}
+
+.loginInput:focus {
+  border-color: #ffbe0a;
+  box-shadow: 0 0 0 3px rgba(255, 190, 10, 0.2);
+}
+
+.loginButton {
+  width: 100%;
+  padding: 12px;
+  background: #ffbe0a;
+  color: #1a1a1a;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.loginButton:hover {
+  background: #f5aa00;
+}
+
+/* 메인 컨테이너 */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 24px;
+  min-height: 100vh;
+  background: #fafafa;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.title {
+  font-size: 24px;
+  font-weight: 700;
+  color: #1a1a1a;
+}
+
+.createButton {
+  padding: 10px 20px;
+  background: #ffbe0a;
+  color: #1a1a1a;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.createButton:hover {
+  background: #f5aa00;
+}
+
+/* 생성 폼 */
+.createForm {
+  background: white;
+  border-radius: 12px;
+  padding: 24px;
+  margin-bottom: 24px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+.formTitle {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 16px;
+  color: #1a1a1a;
+}
+
+.formGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.formField {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.formField label {
+  font-size: 13px;
+  font-weight: 500;
+  color: #555;
+}
+
+.input,
+.select {
+  padding: 10px 12px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 14px;
+  outline: none;
+  background: white;
+}
+
+.input:focus,
+.select:focus {
+  border-color: #ffbe0a;
+  box-shadow: 0 0 0 3px rgba(255, 190, 10, 0.2);
+}
+
+.submitButton {
+  padding: 10px 24px;
+  background: #ffbe0a;
+  color: #1a1a1a;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.submitButton:hover {
+  background: #f5aa00;
+}
+
+.errorText {
+  color: #e53e3e;
+  font-size: 13px;
+  margin-bottom: 12px;
+}
+
+/* 테이블 */
+.tableWrapper {
+  background: white;
+  border-radius: 12px;
+  overflow-x: auto;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+.table th {
+  text-align: left;
+  padding: 12px 16px;
+  background: #f8f8f8;
+  font-weight: 600;
+  color: #555;
+  border-bottom: 1px solid #eee;
+  white-space: nowrap;
+}
+
+.table td {
+  padding: 12px 16px;
+  border-bottom: 1px solid #f0f0f0;
+  color: #333;
+}
+
+.table tr:last-child td {
+  border-bottom: none;
+}
+
+.table tr.inactive td {
+  opacity: 0.5;
+}
+
+.codeCell {
+  font-family: monospace;
+  font-weight: 600;
+  color: #2d3748;
+}
+
+.quantityDepleted {
+  color: #e53e3e;
+  font-weight: 700;
+}
+
+.quantityLow {
+  color: #dd6b20;
+  font-weight: 600;
+}
+
+/* 토글 버튼 */
+.toggleButton {
+  padding: 4px 12px;
+  border: none;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.toggleButton.active {
+  background: #c6f6d5;
+  color: #22543d;
+}
+
+.toggleButton.inactive {
+  background: #fed7d7;
+  color: #9b2c2c;
+}
+
+/* 액션 버튼 */
+.actionCell {
+  display: flex;
+  gap: 8px;
+  white-space: nowrap;
+}
+
+.editButton {
+  padding: 4px 12px;
+  background: #edf2f7;
+  color: #2d3748;
+  border: none;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.editButton:hover {
+  background: #e2e8f0;
+}
+
+.deleteButton {
+  padding: 4px 12px;
+  background: #fff5f5;
+  color: #e53e3e;
+  border: none;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.deleteButton:hover {
+  background: #fed7d7;
+}
+
+/* 모달 */
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 20px;
+}
+
+.modal {
+  background: white;
+  border-radius: 16px;
+  padding: 32px;
+  width: 100%;
+  max-width: 600px;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+.modalActions {
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
+  margin-top: 16px;
+}
+
+.cancelButton {
+  padding: 10px 24px;
+  background: #edf2f7;
+  color: #2d3748;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.cancelButton:hover {
+  background: #e2e8f0;
+}
+
+/* 상태 텍스트 */
+.loadingText,
+.emptyText {
+  text-align: center;
+  padding: 40px;
+  color: #888;
+  font-size: 14px;
+}
+
+/* 모바일 대응 */
+@media (max-width: 768px) {
+  .container {
+    padding: 16px;
+  }
+
+  .header {
+    flex-direction: column;
+    gap: 12px;
+    align-items: flex-start;
+  }
+
+  .formGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .table {
+    font-size: 12px;
+  }
+
+  .table th,
+  .table td {
+    padding: 8px 12px;
+  }
+}

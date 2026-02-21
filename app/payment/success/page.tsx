@@ -24,6 +24,7 @@ function SuccessContent() {
   const amount = searchParams.get("amount");
   const resultId = searchParams.get("id");
   const reportType = searchParams.get("type") || "base";
+  const couponCode = searchParams.get("couponCode");
 
   const [status, setStatus] = useState<"loading" | "success" | "fail">("loading");
   const [message, setMessage] = useState("🔄 결제 확인 중...");
@@ -78,6 +79,19 @@ function SuccessContent() {
       // 결제 성공
       setStatus("success");
       setMessage("✅ 결제가 완료되었습니다!");
+
+      // 쿠폰 사용 시 수량 차감
+      if (couponCode) {
+        try {
+          await fetch("/api/coupon/use", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ code: couponCode }),
+          });
+        } catch (couponErr) {
+          console.error("쿠폰 수량 차감 실패:", couponErr);
+        }
+      }
 
       // 결제 성공 추적
       const serviceTypeMap: Record<string, ServiceType> = {
@@ -169,11 +183,12 @@ function SuccessContent() {
         try {
           if (reportType === "saju") {
             // 사주 결제인 경우
-            const isDiscount = orderId?.includes("discount") || false;
+            const isDiscount = orderId?.includes("discount") || !!couponCode;
             const paymentInfo = {
               method: "toss" as const,
               price: Number(amount),
               isDiscount,
+              ...(couponCode ? { couponCode } : {}),
             };
 
             // IndexedDB 업데이트
@@ -245,11 +260,12 @@ function SuccessContent() {
             }
           } else if (reportType === "new_year") {
             // 신년 사주 결제인 경우
-            const isDiscount = orderId?.includes("discount") || false;
+            const isDiscount = orderId?.includes("discount") || !!couponCode;
             const paymentInfo = {
               method: "toss" as const,
               price: Number(amount),
               isDiscount,
+              ...(couponCode ? { couponCode } : {}),
             };
 
             // IndexedDB 업데이트
@@ -319,7 +335,7 @@ function SuccessContent() {
                   couple_report: coupleRecord.report as Record<string, unknown>,
                   is_paid: true,
                   paid_at: new Date().toISOString(),
-                  payment_info: { method: "toss", price: Number(amount) },
+                  payment_info: { method: "toss", price: Number(amount), ...(couponCode ? { couponCode } : {}) },
                 });
                 console.log("✅ Supabase에 궁합 관상 결과 저장 완료");
               } catch (err) {
@@ -346,7 +362,7 @@ function SuccessContent() {
                   analysis_result: faceRecord.reports as Record<string, unknown>,
                   is_paid: true,
                   paid_at: new Date().toISOString(),
-                  payment_info: { method: "toss", price: Number(amount) },
+                  payment_info: { method: "toss", price: Number(amount), ...(couponCode ? { couponCode } : {}) },
                 });
                 console.log("✅ Supabase에 정통 관상 결과 저장 완료");
               } catch (err) {

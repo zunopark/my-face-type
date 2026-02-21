@@ -468,23 +468,24 @@ function ResultContent() {
   const handleCouponSubmit = useCallback(async () => {
     if (!couponCode.trim()) return;
 
-    const code = couponCode.toUpperCase();
-    let discount = 0;
-    let isFree = false;
+    const code = couponCode.trim();
 
-    // 관상 전용 쿠폰 코드
-    if (code === "FREETICKET") {
-      isFree = true;
-      discount = PAYMENT_CONFIG.price;
-    } else if (code === "FACE10000") {
-      discount = 10000;
-    } else if (code === "FACE5000") {
-      discount = 5000;
-    } else if (code === "FACE2000") {
-      discount = 2000;
-    }
+    try {
+      const res = await fetch("/api/coupon/validate", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ code, serviceType: "face" }),
+      });
+      const data = await res.json();
 
-    if (discount > 0 || isFree) {
+      if (!data.valid) {
+        setCouponError(data.error || "유효하지 않은 쿠폰입니다");
+        return;
+      }
+
+      const isFree = data.is_free;
+      const discount = isFree ? PAYMENT_CONFIG.price : data.discount_amount;
+
       setCouponError("");
       setAppliedCoupon({ code, discount, isFree });
 
@@ -503,6 +504,13 @@ function ResultContent() {
       if (isFree) {
         // 무료 쿠폰: 결제 없이 바로 완료 처리
         await handleFreeCouponPayment();
+
+        // 쿠폰 수량 차감
+        await fetch("/api/coupon/use", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ code }),
+        });
 
         // 무료 쿠폰 결제 성공 이벤트 트래킹
         trackPaymentSuccess("face", {
@@ -523,8 +531,9 @@ function ResultContent() {
           });
         }
       }
-    } else {
-      setCouponError("유효하지 않은 쿠폰입니다");
+    } catch (error) {
+      console.error("쿠폰 검증 오류:", error);
+      setCouponError("쿠폰 확인 중 오류가 발생했습니다");
     }
   }, [couponCode, handleFreeCouponPayment, result?.id]);
 
@@ -584,7 +593,7 @@ function ResultContent() {
         orderName: `${PAYMENT_CONFIG.orderName}${orderNameSuffix}`,
         customerName: "고객",
         successUrl: `${window.location.origin
-          }/payment/success?id=${encodeURIComponent(result.id)}&type=base`,
+          }/payment/success?id=${encodeURIComponent(result.id)}&type=base${appliedCoupon ? `&couponCode=${encodeURIComponent(appliedCoupon.code)}` : ""}`,
         failUrl: `${window.location.origin
           }/payment/fail?id=${encodeURIComponent(result.id)}&type=base`,
       });
