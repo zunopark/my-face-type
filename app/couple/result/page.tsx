@@ -384,7 +384,7 @@ function CoupleResultContent() {
         await fetch("/api/coupon/use", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ code }),
+          body: JSON.stringify({ code, serviceType: "couple" }),
         });
 
         // 무료 쿠폰 결제 성공 이벤트 트래킹

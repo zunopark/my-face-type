@@ -11,6 +11,7 @@ import { markNewYearPaid, getNewYearRecord } from "@/lib/db/newYearDB";
 import { createSajuAnalysis, getSajuAnalysisByShareId, updateSajuAnalysis } from "@/lib/db/sajuAnalysisDB";
 import { upsertFaceAnalysisSupabase, getFaceAnalysisSupabase } from "@/lib/db/faceSupabaseDB";
 import { uploadSajuLoveImages, uploadFaceImage, uploadCoupleImages } from "@/lib/storage/imageStorage";
+import { getStoredUtmParams } from "@/components/providers/MixpanelProvider";
 
 const MAX_RETRY = 3;
 const BASE_DELAY = 1500;
@@ -86,7 +87,13 @@ function SuccessContent() {
           await fetch("/api/coupon/use", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ code: couponCode }),
+            body: JSON.stringify({
+              code: couponCode,
+              serviceType: orderId?.startsWith("saju") ? "saju_love"
+                : orderId?.startsWith("new-year") ? "new_year"
+                : orderId?.startsWith("couple") ? "couple"
+                : "face",
+            }),
           });
         } catch (couponErr) {
           console.error("쿠폰 수량 차감 실패:", couponErr);
@@ -178,6 +185,25 @@ function SuccessContent() {
         });
       }
 
+      // UTM 정보 조회 (인플루언서 연결)
+      let utmSource: string | null = null;
+      let influencerId: string | null = null;
+      try {
+        const utmParams = getStoredUtmParams();
+        if (utmParams.utm_source) {
+          utmSource = utmParams.utm_source;
+          const infRes = await fetch(`/api/admin/influencers?slug=${encodeURIComponent(utmSource)}`);
+          if (infRes.ok) {
+            const infData = await infRes.json();
+            if (infData && infData.id) {
+              influencerId = infData.id;
+            }
+          }
+        }
+      } catch (utmErr) {
+        console.error("UTM 정보 조회 실패:", utmErr);
+      }
+
       // 결제 정보 업데이트
       if (resultId) {
         try {
@@ -204,6 +230,8 @@ function SuccessContent() {
                   is_paid: true,
                   paid_at: new Date().toISOString(),
                   payment_info: paymentInfo,
+                  ...(utmSource ? { utm_source: utmSource } : {}),
+                  ...(influencerId ? { influencer_id: influencerId } : {}),
                 });
                 console.log("✅ Supabase 결제 상태 업데이트 완료");
               } else {
@@ -254,6 +282,8 @@ function SuccessContent() {
                   is_paid: true,
                   paid_at: new Date().toISOString(),
                   payment_info: paymentInfo,
+                  ...(utmSource ? { utm_source: utmSource } : {}),
+                  ...(influencerId ? { influencer_id: influencerId } : {}),
                 });
                 console.log("✅ Supabase에 사주 분석 결과 저장 완료");
               }
@@ -281,6 +311,8 @@ function SuccessContent() {
                   is_paid: true,
                   paid_at: new Date().toISOString(),
                   payment_info: paymentInfo,
+                  ...(utmSource ? { utm_source: utmSource } : {}),
+                  ...(influencerId ? { influencer_id: influencerId } : {}),
                 });
                 console.log("✅ Supabase 신년사주 결제 상태 업데이트 완료");
               } else {
@@ -304,6 +336,8 @@ function SuccessContent() {
                   is_paid: true,
                   paid_at: new Date().toISOString(),
                   payment_info: paymentInfo,
+                  ...(utmSource ? { utm_source: utmSource } : {}),
+                  ...(influencerId ? { influencer_id: influencerId } : {}),
                 });
                 console.log("✅ Supabase에 신년사주 분석 결과 저장 완료");
               }
@@ -336,6 +370,8 @@ function SuccessContent() {
                   is_paid: true,
                   paid_at: new Date().toISOString(),
                   payment_info: { method: "toss", price: Number(amount), ...(couponCode ? { couponCode } : {}) },
+                  ...(utmSource ? { utm_source: utmSource } : {}),
+                  ...(influencerId ? { influencer_id: influencerId } : {}),
                 });
                 console.log("✅ Supabase에 궁합 관상 결과 저장 완료");
               } catch (err) {
@@ -363,6 +399,8 @@ function SuccessContent() {
                   is_paid: true,
                   paid_at: new Date().toISOString(),
                   payment_info: { method: "toss", price: Number(amount), ...(couponCode ? { couponCode } : {}) },
+                  ...(utmSource ? { utm_source: utmSource } : {}),
+                  ...(influencerId ? { influencer_id: influencerId } : {}),
                 });
                 console.log("✅ Supabase에 정통 관상 결과 저장 완료");
               } catch (err) {

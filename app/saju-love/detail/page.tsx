@@ -296,11 +296,11 @@ function SajuDetailContent() {
             loveAnalysis: null, // detail 페이지에서는 분석 결과 필요 없음
             paymentInfo: supabaseRecord.payment_info
               ? {
-                  method: supabaseRecord.payment_info.method,
-                  price: supabaseRecord.payment_info.price,
-                  couponCode: supabaseRecord.payment_info.couponCode,
-                  isDiscount: supabaseRecord.payment_info.isDiscount,
-                }
+                method: supabaseRecord.payment_info.method,
+                price: supabaseRecord.payment_info.price,
+                couponCode: supabaseRecord.payment_info.couponCode,
+                isDiscount: supabaseRecord.payment_info.isDiscount,
+              }
               : undefined,
           };
 
@@ -338,9 +338,9 @@ function SajuDetailContent() {
               raw_saju_data: record.rawSajuData || null,
               analysis_result: record.loveAnalysis
                 ? {
-                    user_name: record.loveAnalysis.user_name,
-                    chapters: record.loveAnalysis.chapters,
-                  }
+                  user_name: record.loveAnalysis.user_name,
+                  chapters: record.loveAnalysis.chapters,
+                }
                 : null,
               image_paths: [],
               is_paid: record.paid || false,
@@ -489,7 +489,7 @@ function SajuDetailContent() {
         await fetch("/api/coupon/use", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ code }),
+          body: JSON.stringify({ code, serviceType: "saju_love" }),
         });
 
         // 결과 페이지로 이동
@@ -539,24 +539,22 @@ function SajuDetailContent() {
       const orderSuffix = studentCouponApplied
         ? "-student"
         : appliedCoupon
-        ? `-${appliedCoupon.code}`
-        : "";
+          ? `-${appliedCoupon.code}`
+          : "";
       const orderNameSuffix = studentCouponApplied
         ? " - 학생 할인"
         : appliedCoupon
-        ? ` - ${appliedCoupon.code} 할인`
-        : "";
+          ? ` - ${appliedCoupon.code} 할인`
+          : "";
 
       await paymentWidgetRef.current.requestPayment({
         orderId: `saju-love${orderSuffix}_${Date.now()}`,
         orderName: `${PAYMENT_CONFIG.orderName}${orderNameSuffix}`,
         customerName: data.input.userName || "고객",
-        successUrl: `${
-          window.location.origin
-        }/payment/success?type=saju&id=${encodeURIComponent(data.id)}${appliedCoupon ? `&couponCode=${encodeURIComponent(appliedCoupon.code)}` : ""}`,
-        failUrl: `${
-          window.location.origin
-        }/payment/fail?id=${encodeURIComponent(data.id)}&type=saju`,
+        successUrl: `${window.location.origin
+          }/payment/success?type=saju&id=${encodeURIComponent(data.id)}${appliedCoupon ? `&couponCode=${encodeURIComponent(appliedCoupon.code)}` : ""}`,
+        failUrl: `${window.location.origin
+          }/payment/fail?id=${encodeURIComponent(data.id)}&type=saju`,
       });
     } catch (err) {
       console.error("결제 오류:", err);
@@ -1006,8 +1004,8 @@ function SajuDetailContent() {
                         {Math.floor(
                           (1 -
                             PAYMENT_CONFIG.price /
-                              PAYMENT_CONFIG.originalPrice) *
-                            100
+                            PAYMENT_CONFIG.originalPrice) *
+                          100
                         )}
                         %
                       </span>
@@ -1041,17 +1039,16 @@ function SajuDetailContent() {
                 <div className={`${styles["payment-row"]} ${styles.final}`}>
                   <span className={styles["payment-row-label"]}>최종 결제금액</span>
                   <span
-                    className={`${styles["payment-row-final-value"]} ${
-                      studentCouponApplied ? styles["student-price"] : ""
-                    }`}
+                    className={`${styles["payment-row-final-value"]} ${studentCouponApplied ? styles["student-price"] : ""
+                      }`}
                   >
                     {studentCouponApplied
                       ? PAYMENT_CONFIG.studentPrice.toLocaleString()
                       : appliedCoupon
-                      ? (
+                        ? (
                           PAYMENT_CONFIG.price - appliedCoupon.discount
                         ).toLocaleString()
-                      : PAYMENT_CONFIG.price.toLocaleString()}
+                        : PAYMENT_CONFIG.price.toLocaleString()}
                     원
                   </span>
                 </div>

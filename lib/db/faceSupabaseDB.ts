@@ -28,6 +28,8 @@ export interface FaceAnalysisSupabase {
   paid_at?: string | null;
   payment_info?: PaymentInfo | null;
   created_at?: string;
+  utm_source?: string | null;
+  influencer_id?: string | null;
 }
 
 /**

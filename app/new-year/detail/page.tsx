@@ -403,7 +403,7 @@ function NewYearDetailContent() {
         await fetch("/api/coupon/use", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ code }),
+          body: JSON.stringify({ code, serviceType: "new_year" }),
         });
 
         // 결과 페이지로 이동

@@ -91,6 +91,18 @@ export default function MixpanelProvider({
       mixpanel.register(storedUtm);
     }
 
+    // UTM 방문 기록을 자체 DB에 저장 (fire-and-forget)
+    if (newUtm.utm_source) {
+      fetch("/api/utm/visit", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          ...newUtm,
+          landing_page: window.location.pathname,
+        }),
+      }).catch(() => {});
+    }
+
     // 전역에서 사용할 수 있도록 window에 할당
     (window as unknown as { mixpanel: typeof mixpanel }).mixpanel = mixpanel;
   }, []);

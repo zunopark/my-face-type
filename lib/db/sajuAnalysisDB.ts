@@ -71,6 +71,8 @@ export interface SajuAnalysis {
   created_at?: string;
   expires_at?: string;
   user_name?: string;  // generated column
+  utm_source?: string | null;
+  influencer_id?: string | null;
 }
 
 /**
