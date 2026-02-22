@@ -22,7 +22,7 @@ export const viewport: Viewport = {
 export const metadata: Metadata = {
   metadataBase: new URL("https://yangban.ai"),
   title: {
-    default: "관상 테스트 | 관상가 양반 | AI 관상 | AI 사주",
+    default: "AI 관상 테스트 | 관상가 양반",
     template: "%s",
   },
   description:
@@ -55,7 +55,7 @@ export const metadata: Metadata = {
     type: "website",
     locale: "ko_KR",
     siteName: "양반가",
-    title: "관상 테스트 | 관상가 양반 | AI 관상 | AI 사주",
+    title: "AI 관상 테스트 | 관상가 양반",
     description:
       "AI 관상 테스트로 나의 얼굴을 분석해보세요. 관상가 양반이 알려주는 관상, 동물상, 궁합, 연애 사주까지 한 번에!",
     images: [
@@ -69,7 +69,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "관상 테스트 | 관상가 양반 | AI 관상 | AI 사주",
+    title: "AI 관상 테스트 | 관상가 양반",
     description:
       "AI 관상 테스트로 나의 얼굴을 분석해보세요. 관상가 양반이 알려주는 관상, 동물상, 궁합, 연애 사주까지 한 번에!",
   },

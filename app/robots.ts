@@ -6,7 +6,18 @@ export default function robots(): MetadataRoute.Robots {
       {
         userAgent: "*",
         allow: "/",
-        disallow: ["/api/", "/payment/success", "/payment/fail"],
+        disallow: [
+          "/api/",
+          "/admin/",
+          "/payment/",
+          "/face/result",
+          "/couple/result",
+          "/saju-love/result",
+          "/saju-love/detail",
+          "/new-year/result",
+          "/new-year/detail",
+          "/history/",
+        ],
       },
       {
         userAgent: "Yeti", // 네이버 봇
