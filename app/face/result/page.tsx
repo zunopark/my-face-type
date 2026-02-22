@@ -888,8 +888,8 @@ function ResultContent() {
                     >
                       <div className={styles.image_square_frame}>
                         <Image
-                          src={result.imageBase64}
-                          alt="분석 중인 사진"
+                          src={result.portraitBase64 || result.imageBase64}
+                          alt="AI 수묵화 초상"
                           fill
                           style={{ objectFit: "cover" }}
                           unoptimized
@@ -900,23 +900,8 @@ function ResultContent() {
                 </div>
               </div>
             </div>
+            <div className={styles.portrait_caption}>AI 관상가 양반이 인식한 관상입니다.</div>
           </div>
-          {/* 붓그림 초상화 (숨김 처리) */}
-          {/* {result.portraitBase64 && (
-            <div className={styles.portrait_section}>
-              <div className={styles.portrait_label}>AI 수묵화 초상</div>
-              <div className={styles.portrait_frame}>
-                <Image
-                  src={result.portraitBase64}
-                  alt="붓그림 초상화"
-                  width={280}
-                  height={280}
-                  style={{ objectFit: "contain", borderRadius: "12px" }}
-                  unoptimized
-                />
-              </div>
-            </div>
-          )} */}
           <div className={styles.fake_analysis_spinner} />
           <div className={styles.fake_analysis_text}>{fakeMessage}</div>
           <div className={styles.fake_analysis_progress_wrap}>
@@ -946,7 +931,7 @@ function ResultContent() {
             <div className={styles.main_subtitle}>AI 관상 | 관상가 양반</div>
           </div>
 
-          {/* 업로드된 이미지 */}
+          {/* AI 수묵화 초상 (원본 대체) */}
           <div className={styles.border}>
             <div className={styles.frame}>
               <div className={styles.image}>
@@ -957,8 +942,8 @@ function ResultContent() {
                   >
                     <div className={styles.image_square_frame}>
                       <Image
-                        src={result.imageBase64}
-                        alt="분석된 사진"
+                        src={result.portraitBase64 || result.imageBase64}
+                        alt="AI 수묵화 초상"
                         fill
                         style={{ objectFit: "cover" }}
                         unoptimized
@@ -969,23 +954,7 @@ function ResultContent() {
               </div>
             </div>
           </div>
-
-          {/* 붓그림 초상화 (숨김 처리) */}
-          {/* {result.portraitBase64 && (
-            <div className={styles.portrait_section}>
-              <div className={styles.portrait_label}>AI 수묵화 초상</div>
-              <div className={styles.portrait_frame}>
-                <Image
-                  src={result.portraitBase64}
-                  alt="붓그림 초상화"
-                  width={300}
-                  height={300}
-                  style={{ objectFit: "contain", borderRadius: "12px" }}
-                  unoptimized
-                />
-              </div>
-            </div>
-          )} */}
+          <div className={styles.portrait_caption}>AI 관상가 양반이 인식한 관상입니다.</div>
 
           {/* faceteller 이미지 */}
           <div className={styles.face_teller_wrap}>
@@ -1228,8 +1197,8 @@ function ResultContent() {
                   >
                     <div className={styles.image_square_frame}>
                       <Image
-                        src={result.imageBase64}
-                        alt="분석 중인 사진"
+                        src={result.portraitBase64 || result.imageBase64}
+                        alt="AI 수묵화 초상"
                         fill
                         style={{ objectFit: "cover" }}
                         unoptimized
@@ -1240,6 +1209,7 @@ function ResultContent() {
               </div>
             </div>
           </div>
+          <div className={styles.portrait_caption}>AI 관상가 양반이 인식한 관상입니다.</div>
 
           <div className={styles.result}>
             <div className="loading-box dark-mode">
@@ -1275,6 +1245,7 @@ function ResultContent() {
             <div className={styles.main_subtitle}>AI 관상 | 관상가 양반</div>
           </div>
 
+          {/* AI 수묵화 초상 (원본 대체) */}
           <div className={styles.border}>
             <div className={styles.frame}>
               <div className={styles.image}>
@@ -1285,8 +1256,8 @@ function ResultContent() {
                   >
                     <div className={styles.image_square_frame}>
                       <Image
-                        src={result.imageBase64}
-                        alt="분석된 사진"
+                        src={result.portraitBase64 || result.imageBase64}
+                        alt="AI 수묵화 초상"
                         fill
                         style={{ objectFit: "cover" }}
                         unoptimized
@@ -1297,23 +1268,7 @@ function ResultContent() {
               </div>
             </div>
           </div>
-
-          {/* 붓그림 초상화 (숨김 처리) */}
-          {/* {result.portraitBase64 && (
-            <div className={styles.portrait_section}>
-              <div className={styles.portrait_label}>AI 수묵화 초상</div>
-              <div className={styles.portrait_frame}>
-                <Image
-                  src={result.portraitBase64}
-                  alt="붓그림 초상화"
-                  width={300}
-                  height={300}
-                  style={{ objectFit: "contain", borderRadius: "12px" }}
-                  unoptimized
-                />
-              </div>
-            </div>
-          )} */}
+          <div className={styles.portrait_caption}>AI 관상가 양반이 인식한 관상입니다.</div>
 
           <div className={styles.result}>
             {/* Summary */}
