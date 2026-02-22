@@ -1,0 +1,759 @@
+.admin_wrapper {
+  width: 100%;
+  min-height: 100vh;
+  background: #f8f7f1;
+}
+
+.admin_container {
+  max-width: 1000px;
+  min-width: 500px;
+  margin: 0 auto;
+  padding: 24px 16px;
+  min-height: 100vh;
+  color: #333;
+}
+
+/* ── 로그인 ──────────────────────────── */
+.login_container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 60vh;
+  gap: 16px;
+}
+
+.login_title {
+  font-size: 24px;
+  font-weight: 700;
+  color: #4a3c2a;
+}
+
+.login_form {
+  display: flex;
+  gap: 8px;
+  width: 100%;
+  max-width: 360px;
+}
+
+.login_input {
+  flex: 1;
+  padding: 10px 14px;
+  border: 1px solid #d4c5a9;
+  border-radius: 8px;
+  background: #fff;
+  color: #333;
+  font-size: 14px;
+  outline: none;
+}
+
+.login_input:focus {
+  border-color: #c4965a;
+}
+
+.login_button {
+  padding: 10px 20px;
+  background: #c4965a;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.login_button:hover {
+  background: #b8860b;
+}
+
+.login_error {
+  color: #e74c3c;
+  font-size: 13px;
+}
+
+/* ── 헤더 ──────────────────────────── */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.title {
+  font-size: 22px;
+  font-weight: 700;
+  color: #4a3c2a;
+}
+
+.logout_button {
+  padding: 6px 14px;
+  background: transparent;
+  border: 1px solid #d4c5a9;
+  border-radius: 6px;
+  color: #8b7355;
+  cursor: pointer;
+  font-size: 13px;
+}
+
+.logout_button:hover {
+  border-color: #c4965a;
+  color: #4a3c2a;
+}
+
+/* ── 탭 ──────────────────────────── */
+.tabs {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 20px;
+  border-bottom: 1px solid #e5e0d5;
+}
+
+.tab {
+  padding: 10px 20px;
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid transparent;
+  color: #999;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  transition: all 0.2s;
+}
+
+.tab:hover {
+  color: #666;
+}
+
+.tab_active {
+  color: #c4965a;
+  border-bottom-color: #c4965a;
+}
+
+/* ── 쿠폰 관리 ──────────────────────── */
+.action_bar {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 16px;
+}
+
+.create_button {
+  padding: 8px 18px;
+  background: #c4965a;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.create_button:hover {
+  background: #b8860b;
+}
+
+/* ── 폼 ──────────────────────────── */
+.form_container {
+  background: #fff;
+  border: 1px solid #e5e0d5;
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+.form_title {
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 16px;
+  color: #4a3c2a;
+}
+
+.form_grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.form_field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.form_field_full {
+  grid-column: 1 / -1;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.form_label {
+  font-size: 12px;
+  color: #8b7355;
+  font-weight: 500;
+}
+
+.form_input {
+  padding: 8px 12px;
+  border: 1px solid #d4c5a9;
+  border-radius: 6px;
+  background: #fdfcf8;
+  color: #333;
+  font-size: 14px;
+  outline: none;
+}
+
+.form_input:focus {
+  border-color: #c4965a;
+}
+
+.form_select {
+  padding: 8px 12px;
+  border: 1px solid #d4c5a9;
+  border-radius: 6px;
+  background: #fdfcf8;
+  color: #333;
+  font-size: 14px;
+  outline: none;
+  cursor: pointer;
+}
+
+.form_select:focus {
+  border-color: #c4965a;
+}
+
+.form_actions {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+  margin-top: 16px;
+}
+
+.form_submit {
+  padding: 8px 20px;
+  background: #c4965a;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.form_submit:hover {
+  background: #b8860b;
+}
+
+.form_cancel {
+  padding: 8px 20px;
+  background: transparent;
+  border: 1px solid #d4c5a9;
+  border-radius: 6px;
+  color: #8b7355;
+  cursor: pointer;
+}
+
+.form_cancel:hover {
+  border-color: #c4965a;
+  color: #4a3c2a;
+}
+
+/* ── 리뷰 ──────────────────────────── */
+.review_cell {
+  display: flex;
+  align-items: flex-start;
+  gap: 6px;
+}
+
+.review_badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  font-size: 12px;
+  font-weight: 600;
+  color: #c4965a;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.review_content {
+  font-size: 12px;
+  color: #555;
+  line-height: 1.4;
+}
+
+.review_none {
+  color: #ccc;
+  font-size: 12px;
+}
+
+/* ── 원가 힌트 ──────────────────────── */
+.price_hint {
+  font-size: 12px;
+  color: #c4965a;
+  font-weight: 600;
+  margin-top: 2px;
+}
+
+/* ── 테이블 ──────────────────────────── */
+.table_wrap {
+  overflow-x: auto;
+  background: #fff;
+  border: 1px solid #e5e0d5;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+
+.table th {
+  padding: 10px 8px;
+  text-align: left;
+  border-bottom: 1px solid #e5e0d5;
+  color: #8b7355;
+  font-weight: 500;
+  white-space: nowrap;
+  background: #faf8f4;
+}
+
+.table td {
+  padding: 10px 8px;
+  border-bottom: 1px solid #f0ece4;
+  vertical-align: middle;
+}
+
+.code_cell {
+  font-family: monospace;
+  font-weight: 600;
+  color: #6b4423;
+}
+
+.badge {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 10px;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.badge_active {
+  background: rgba(46, 204, 113, 0.12);
+  color: #27ae60;
+}
+
+.badge_inactive {
+  background: rgba(231, 76, 60, 0.1);
+  color: #e74c3c;
+}
+
+.badge_free {
+  background: rgba(52, 152, 219, 0.1);
+  color: #2980b9;
+}
+
+.badge_fixed {
+  background: rgba(155, 89, 182, 0.1);
+  color: #8e44ad;
+}
+
+.quantity_cell {
+  font-variant-numeric: tabular-nums;
+}
+
+.action_buttons {
+  display: flex;
+  gap: 6px;
+  justify-content: flex-end;
+}
+
+.btn_edit {
+  padding: 4px 10px;
+  background: transparent;
+  border: 1px solid #d4c5a9;
+  border-radius: 4px;
+  color: #8b7355;
+  cursor: pointer;
+  font-size: 12px;
+}
+
+.btn_edit:hover {
+  border-color: #c4965a;
+  color: #c4965a;
+}
+
+.btn_delete {
+  padding: 4px 10px;
+  background: transparent;
+  border: 1px solid #d4c5a9;
+  border-radius: 4px;
+  color: #8b7355;
+  cursor: pointer;
+  font-size: 12px;
+}
+
+.btn_delete:hover {
+  border-color: #e74c3c;
+  color: #e74c3c;
+}
+
+.btn_toggle {
+  padding: 4px 10px;
+  background: transparent;
+  border: 1px solid #d4c5a9;
+  border-radius: 4px;
+  color: #8b7355;
+  cursor: pointer;
+  font-size: 12px;
+}
+
+.btn_toggle:hover {
+  border-color: #27ae60;
+  color: #27ae60;
+}
+
+/* ── 사용 내역 ──────────────────────── */
+.filter_bar {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 16px;
+  align-items: center;
+}
+
+.filter_label {
+  font-size: 13px;
+  color: #8b7355;
+}
+
+.filter_select {
+  padding: 6px 12px;
+  border: 1px solid #d4c5a9;
+  border-radius: 6px;
+  background: #fff;
+  color: #333;
+  font-size: 13px;
+  outline: none;
+  cursor: pointer;
+}
+
+.filter_select:focus {
+  border-color: #c4965a;
+}
+
+/* ── 모달 (수정) ──────────────────────── */
+.modal_overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 16px;
+}
+
+.modal {
+  background: #fff;
+  border: 1px solid #e5e0d5;
+  border-radius: 12px;
+  padding: 24px;
+  width: 100%;
+  max-width: 500px;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+}
+
+.modal_title {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 20px;
+  color: #4a3c2a;
+}
+
+/* ── 빈 상태 ──────────────────────── */
+.empty {
+  text-align: center;
+  padding: 40px;
+  color: #999;
+  font-size: 14px;
+}
+
+/* ── 로딩 ──────────────────────────── */
+.loading {
+  text-align: center;
+  padding: 40px;
+  color: #999;
+}
+
+/* ── 에러 메시지 ──────────────────── */
+.error_msg {
+  color: #e74c3c;
+  font-size: 13px;
+  margin-top: 8px;
+}
+
+/* ── 인플루언서 관리 ──────────────────── */
+.btn_icon {
+  width: 30px;
+  height: 30px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: 1px solid #d4c5a9;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: all 0.15s;
+  padding: 0;
+}
+
+.btn_icon:hover {
+  background: #f5f0e8;
+  border-color: #c4965a;
+}
+
+.btn_utm {
+  padding: 4px 10px;
+  background: transparent;
+  border: 1px solid #d4c5a9;
+  border-radius: 4px;
+  color: #8b7355;
+  cursor: pointer;
+  font-size: 12px;
+}
+
+.btn_utm:hover {
+  border-color: #2980b9;
+  color: #2980b9;
+}
+
+.btn_coupon {
+  padding: 4px 10px;
+  background: transparent;
+  border: 1px solid #d4c5a9;
+  border-radius: 4px;
+  color: #8b7355;
+  cursor: pointer;
+  font-size: 12px;
+}
+
+.btn_coupon:hover {
+  border-color: #8e44ad;
+  color: #8e44ad;
+}
+
+/* UTM 플랫폼 선택 */
+.utm_platform_bar {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 16px;
+}
+
+.utm_platform_btn {
+  padding: 6px 14px;
+  background: transparent;
+  border: 1px solid #d4c5a9;
+  border-radius: 6px;
+  color: #8b7355;
+  cursor: pointer;
+  font-size: 13px;
+  transition: all 0.15s;
+}
+
+.utm_platform_btn:hover {
+  border-color: #c4965a;
+  color: #4a3c2a;
+}
+
+.utm_platform_active {
+  background: #c4965a;
+  color: #fff;
+  border-color: #c4965a;
+}
+
+/* UTM 링크 모달 */
+.utm_links {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.utm_link_row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.utm_link_label {
+  min-width: 70px;
+  font-size: 13px;
+  font-weight: 500;
+  color: #4a3c2a;
+}
+
+.utm_link_url {
+  flex: 1;
+  padding: 6px 10px;
+  background: #faf8f4;
+  border: 1px solid #e5e0d5;
+  border-radius: 6px;
+  font-size: 12px;
+  font-family: monospace;
+  color: #555;
+  word-break: break-all;
+}
+
+.btn_copy {
+  padding: 4px 12px;
+  background: #c4965a;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 11px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.btn_copy:hover {
+  background: #b8860b;
+}
+
+.btn_copied {
+  padding: 4px 12px;
+  background: #27ae60;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+/* 정산 섹션 */
+.settlement_section {
+  margin-top: 32px;
+}
+
+.settlement_header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.settlement_title {
+  font-size: 16px;
+  font-weight: 600;
+  color: #4a3c2a;
+}
+
+.month_selector {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.month_arrow {
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #fff;
+  border: 1px solid #d4c5a9;
+  border-radius: 8px;
+  color: #4a3c2a;
+  cursor: pointer;
+  font-size: 16px;
+  transition: all 0.15s;
+}
+
+.month_arrow:hover {
+  background: #c4965a;
+  color: #fff;
+  border-color: #c4965a;
+}
+
+.month_display {
+  font-size: 15px;
+  font-weight: 600;
+  color: #4a3c2a;
+  min-width: 110px;
+  text-align: center;
+}
+
+.table_foot td {
+  font-weight: 700;
+  background: #faf8f4;
+  border-top: 2px solid #e5e0d5;
+  white-space: nowrap;
+}
+
+.table .text_right {
+  text-align: right;
+  white-space: nowrap;
+}
+
+.clickable_num {
+  color: #2980b9;
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.clickable_num:hover {
+  color: #1a5276;
+}
+
+.form_textarea {
+  padding: 8px 12px;
+  border: 1px solid #d4c5a9;
+  border-radius: 6px;
+  background: #fdfcf8;
+  color: #333;
+  font-size: 14px;
+  outline: none;
+  resize: vertical;
+  min-height: 60px;
+  font-family: inherit;
+}
+
+.form_textarea:focus {
+  border-color: #c4965a;
+}
+
+/* ── 반응형 ──────────────────────── */
+@media (max-width: 640px) {
+  .form_grid {
+    grid-template-columns: 1fr;
+  }
+
+  .table {
+    font-size: 12px;
+  }
+
+  .table th,
+  .table td {
+    padding: 8px 4px;
+  }
+
+  .utm_link_row {
+    flex-wrap: wrap;
+  }
+
+  .utm_link_label {
+    min-width: 60px;
+  }
+
+  .action_buttons {
+    flex-wrap: wrap;
+  }
+}

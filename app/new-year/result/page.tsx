@@ -7,6 +7,7 @@ import {
   updateNewYearRecord,
   NewYearRecord,
 } from "@/lib/db/newYearDB";
+import { updateSajuAnalysis } from "@/lib/db/sajuAnalysisDB";
 import { trackPageView } from "@/lib/mixpanel";
 import {
   parseTemplateSections,
@@ -751,6 +752,16 @@ function NewYearResultContent() {
           analysis: analysisWithMeta,
           isAnalyzing: false,
         });
+
+        // Supabase에도 분석 결과 저장
+        try {
+          await updateSajuAnalysis(storedData.id, {
+            analysis_result: analysisWithMeta as unknown as Record<string, unknown>,
+          });
+          console.log("✅ Supabase에 신년사주 분석 결과 저장 완료");
+        } catch (supabaseErr) {
+          console.error("Supabase 신년사주 결과 저장 실패:", supabaseErr);
+        }
 
         stopLoadingMessages();
         setIsAnalyzing(false);

@@ -2061,6 +2061,171 @@ body {
 }
 
 /* ========================================
+   커플 궁합 - 리뷰
+   ======================================== */
+
+.couple-review-section {
+  background: linear-gradient(135deg, #fdfcf9 0%, #f8f5ed 100%);
+  border: 1px solid #e8e0d0;
+  border-radius: 16px;
+  padding: 24px 20px;
+  margin: 24px 16px 40px;
+}
+
+/* --- 하단 슬라이드 모달 --- */
+
+.couple-review-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.4);
+  z-index: 9999;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  animation: coupleReviewFadeIn 0.2s ease;
+}
+
+@keyframes coupleReviewFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.couple-review-modal {
+  width: 100%;
+  max-width: 500px;
+  background: #fff;
+  border-radius: 20px 20px 0 0;
+  padding: 24px 20px 32px;
+  position: relative;
+  animation: coupleReviewSlideUp 0.3s ease;
+}
+
+@keyframes coupleReviewSlideUp {
+  from { transform: translateY(100%); }
+  to { transform: translateY(0); }
+}
+
+.couple-review-modal-close {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  background: none;
+  border: none;
+  font-size: 18px;
+  color: #999;
+  cursor: pointer;
+  padding: 4px;
+}
+
+.couple-review-header {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.couple-review-title {
+  font-size: 17px;
+  font-weight: 700;
+  color: #3d3528;
+  margin: 0 0 8px 0;
+}
+
+.couple-review-subtitle {
+  font-size: 13px;
+  color: #888;
+  margin: 0;
+}
+
+.couple-review-rating-options {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 16px;
+  justify-content: center;
+}
+
+.couple-review-rating-btn {
+  padding: 6px 12px;
+  border: 1px solid #e0d6c2;
+  border-radius: 16px;
+  background: #fff;
+  font-size: 13px;
+  color: #666;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.couple-review-rating-btn.active {
+  background: linear-gradient(135deg, #d4a017 0%, #b8860b 100%);
+  color: #fff;
+  border-color: transparent;
+  font-weight: 600;
+}
+
+.couple-review-rating-btn:hover {
+  border-color: #b8860b;
+}
+
+.couple-review-content-input {
+  position: relative;
+  margin-bottom: 16px;
+}
+
+.couple-review-textarea {
+  width: 100%;
+  min-height: 100px;
+  padding: 14px;
+  border: 1px solid #e0e0e0;
+  border-radius: 12px;
+  font-size: 14px;
+  line-height: 1.6;
+  resize: none;
+  box-sizing: border-box;
+  font-family: inherit;
+  background: #fff;
+}
+
+.couple-review-textarea:focus {
+  outline: none;
+  border-color: #b8860b;
+}
+
+.couple-review-textarea::placeholder {
+  color: #aaa;
+}
+
+.couple-review-char-count {
+  position: absolute;
+  bottom: 10px;
+  right: 14px;
+  font-size: 11px;
+  color: #999;
+}
+
+.couple-review-submit-btn {
+  width: 100%;
+  padding: 14px;
+  background: linear-gradient(135deg, #d4a017 0%, #b8860b 100%);
+  color: #fff;
+  font-size: 15px;
+  font-weight: 600;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+
+.couple-review-submit-btn:hover {
+  opacity: 0.9;
+}
+
+.couple-review-submit-btn:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+}
+
+/* ========================================
    양반가 랜딩 페이지 스타일 (밝은 테마)
    ======================================== */
 

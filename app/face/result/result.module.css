@@ -863,6 +863,168 @@
   height: 60px;
 }
 
+/* === 인라인 리뷰 폼 === */
+.review_section {
+  background: linear-gradient(135deg, #fdfcf9 0%, #f8f5ed 100%);
+  border: 1px solid #e8e0d0;
+  border-radius: 16px;
+  padding: 24px 20px;
+  margin: 24px 0 40px;
+  width: 100%;
+}
+
+/* === 리뷰 하단 슬라이드 모달 === */
+.review_modal_overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.4);
+  z-index: 9999;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  animation: reviewFadeIn 0.2s ease;
+}
+
+@keyframes reviewFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.review_modal {
+  width: 100%;
+  max-width: 500px;
+  background: #fff;
+  border-radius: 20px 20px 0 0;
+  padding: 24px 20px 32px;
+  position: relative;
+  animation: reviewSlideUp 0.3s ease;
+}
+
+@keyframes reviewSlideUp {
+  from { transform: translateY(100%); }
+  to { transform: translateY(0); }
+}
+
+.review_modal_close {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  background: none;
+  border: none;
+  font-size: 18px;
+  color: #999;
+  cursor: pointer;
+  padding: 4px;
+}
+
+.review_header {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.review_title {
+  font-size: 17px;
+  font-weight: 700;
+  color: #3d3528;
+  margin: 0 0 8px 0;
+}
+
+.review_subtitle {
+  font-size: 13px;
+  color: #888;
+  margin: 0;
+}
+
+.review_rating_options {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 16px;
+  justify-content: center;
+}
+
+.review_rating_btn {
+  padding: 6px 12px;
+  border: 1px solid #e0d6c2;
+  border-radius: 16px;
+  background: #fff;
+  font-size: 13px;
+  color: #666;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.review_rating_btn.active {
+  background: linear-gradient(135deg, #d4a017 0%, #b8860b 100%);
+  color: #fff;
+  border-color: transparent;
+  font-weight: 600;
+}
+
+.review_rating_btn:hover {
+  border-color: #b8860b;
+}
+
+.review_content_input {
+  position: relative;
+  margin-bottom: 16px;
+}
+
+.review_textarea {
+  width: 100%;
+  min-height: 100px;
+  padding: 14px;
+  border: 1px solid #e0e0e0;
+  border-radius: 12px;
+  font-size: 14px;
+  line-height: 1.6;
+  resize: none;
+  box-sizing: border-box;
+  font-family: inherit;
+  background: #fff;
+}
+
+.review_textarea:focus {
+  outline: none;
+  border-color: #b8860b;
+}
+
+.review_textarea::placeholder {
+  color: #aaa;
+}
+
+.review_char_count {
+  position: absolute;
+  bottom: 10px;
+  right: 14px;
+  font-size: 11px;
+  color: #999;
+}
+
+.review_submit_btn {
+  width: 100%;
+  padding: 14px;
+  background: linear-gradient(135deg, #d4a017 0%, #b8860b 100%);
+  color: #fff;
+  font-size: 15px;
+  font-weight: 600;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+
+.review_submit_btn:hover {
+  opacity: 0.9;
+}
+
+.review_submit_btn:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+}
+
 /* === 미디어 쿼리 === */
 @media screen and (min-width: 500px) {
   .main_body_wrap,

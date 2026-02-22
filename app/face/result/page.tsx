@@ -32,6 +32,7 @@ import {
   FaceAnalysisRecord,
 } from "@/lib/db/faceAnalysisDB";
 import { upsertFaceAnalysisSupabase, updateFaceAnalysisSupabase, getFaceAnalysisSupabase } from "@/lib/db/faceSupabaseDB";
+import { createReview, getReviewByRecordId, Review } from "@/lib/db/reviewDB";
 import { uploadFaceImage, getImageUrl } from "@/lib/storage/imageStorage";
 
 // TossPayments 타입 선언
@@ -158,6 +159,16 @@ function ResultContent() {
     isFree: boolean;
   } | null>(null);
 
+  // 리뷰 관련 상태
+  const [reviewRating, setReviewRating] = useState(3);
+  const [reviewContent, setReviewContent] = useState("");
+  const [isReviewSubmitting, setIsReviewSubmitting] = useState(false);
+  const [reviewSubmitted, setReviewSubmitted] = useState(false);
+  const [existingReview, setExistingReview] = useState<Review | null>(null);
+  const [showReviewModal, setShowReviewModal] = useState(false);
+  const [reviewModalDismissed, setReviewModalDismissed] = useState(false);
+  const reviewModalTriggered = useRef(false);
+
   // IndexedDB 또는 Supabase에서 결과 가져오기
   useEffect(() => {
     if (!resultId) {
@@ -257,7 +268,6 @@ function ResultContent() {
         }
 
         // 결제는 됐지만 분석 결과가 없으면 다시 분석
-        // 단, 이미지가 필요하므로 이미지가 없으면 에러
         if (!imageUrl) {
           console.error("이미지 URL을 가져올 수 없음");
           alert("이미지를 불러올 수 없습니다. 다시 시도해주세요.");
@@ -265,9 +275,26 @@ function ResultContent() {
           return;
         }
 
-        setIsLoading(false);
-        // 이미지 URL로는 재분석 불가 (base64 필요), 결과 없이 표시
-        setShowResult(true);
+        // 이미지 URL → base64 변환 후 재분석
+        try {
+          const imgResponse = await fetch(imageUrl);
+          const imgBlob = await imgResponse.blob();
+          const reader = new FileReader();
+          const imageBase64: string = await new Promise((resolve, reject) => {
+            reader.onloadend = () => resolve(reader.result as string);
+            reader.onerror = reject;
+            reader.readAsDataURL(imgBlob);
+          });
+
+          const retryParsed: FaceResult = { ...parsed, imageBase64 };
+          setResult(retryParsed);
+          setIsLoading(false);
+          startRealAnalysis(retryParsed);
+        } catch (imgErr) {
+          console.error("이미지 로드 실패:", imgErr);
+          alert("이미지를 불러올 수 없습니다. 다시 시도해주세요.");
+          router.push("/face");
+        }
         return;
       }
 
@@ -278,6 +305,67 @@ function ResultContent() {
 
     loadData();
   }, [resultId, router]);
+
+  // 리뷰 존재 여부 확인
+  useEffect(() => {
+    if (!resultId || !showResult) return;
+    const checkReview = async () => {
+      const review = await getReviewByRecordId("face", resultId);
+      if (review) {
+        setExistingReview(review);
+        setReviewSubmitted(true);
+      }
+    };
+    checkReview();
+  }, [resultId, showResult]);
+
+  // 스크롤 감지 → 리뷰 모달 띄우기
+  useEffect(() => {
+    if (!showResult || !resultId) return;
+    const dismissed = sessionStorage.getItem(`review_dismissed_${resultId}`);
+    if (dismissed) {
+      setReviewModalDismissed(true);
+      return;
+    }
+
+    const handleScroll = () => {
+      if (reviewModalTriggered.current) return;
+      const scrollTop = window.scrollY;
+      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+      if (docHeight > 0 && scrollTop / docHeight > 0.75) {
+        reviewModalTriggered.current = true;
+        setShowReviewModal(true);
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [showResult, resultId]);
+
+  const dismissReviewModal = () => {
+    setShowReviewModal(false);
+    setReviewModalDismissed(true);
+    if (resultId) sessionStorage.setItem(`review_dismissed_${resultId}`, "true");
+  };
+
+  // 리뷰 제출
+  const handleReviewSubmit = async () => {
+    if (!reviewContent.trim() || !resultId) return;
+    setIsReviewSubmitting(true);
+    const review = await createReview({
+      service_type: "face",
+      record_id: resultId,
+      user_name: "익명",
+      rating: reviewRating,
+      content: reviewContent.trim(),
+      is_public: true,
+    });
+    if (review) {
+      setExistingReview(review);
+      setReviewSubmitted(true);
+    }
+    setIsReviewSubmitting(false);
+  };
 
   // 가라 분석 (30초)
   const startFakeAnalysis = (id: string) => {
@@ -1221,8 +1309,108 @@ function ResultContent() {
                 />
               </div>
             )}
+
+            {/* 인라인 리뷰 폼 (모달 닫은 후 표시) */}
+            {reviewModalDismissed && !reviewSubmitted && !existingReview && (
+              <div className={styles.review_section}>
+                <div className={styles.review_header}>
+                  <h4 className={styles.review_title}>관상가 양반에게 후기를 남겨주세요</h4>
+                  <p className={styles.review_subtitle}>소중한 의견이 더 나은 서비스를 만듭니다</p>
+                </div>
+
+                <div className={styles.review_rating_options}>
+                  {[
+                    { value: 1, label: "아쉬워요" },
+                    { value: 2, label: "보통" },
+                    { value: 3, label: "좋았어요" },
+                    { value: 4, label: "고마워요" },
+                  ].map((option) => (
+                    <button
+                      key={option.value}
+                      type="button"
+                      className={`${styles.review_rating_btn} ${reviewRating === option.value ? styles.active : ""}`}
+                      onClick={() => setReviewRating(option.value)}
+                    >
+                      {option.label}
+                    </button>
+                  ))}
+                </div>
+
+                <div className={styles.review_content_input}>
+                  <textarea
+                    className={styles.review_textarea}
+                    placeholder="관상 분석은 어떠셨나요? 솔직한 후기를 남겨주세요."
+                    value={reviewContent}
+                    onChange={(e) => setReviewContent(e.target.value)}
+                    maxLength={500}
+                  />
+                  <span className={styles.review_char_count}>{reviewContent.length}/500</span>
+                </div>
+
+                <button
+                  className={styles.review_submit_btn}
+                  onClick={handleReviewSubmit}
+                  disabled={isReviewSubmitting || !reviewContent.trim()}
+                >
+                  {isReviewSubmitting ? "등록 중..." : "후기 남기기"}
+                </button>
+              </div>
+            )}
           </div>
         </div>
+
+        {/* 리뷰 하단 슬라이드 모달 */}
+        {showReviewModal && !reviewSubmitted && !existingReview && (
+          <div className={styles.review_modal_overlay} onClick={dismissReviewModal}>
+            <div className={styles.review_modal} onClick={(e) => e.stopPropagation()}>
+              <button className={styles.review_modal_close} onClick={dismissReviewModal}>✕</button>
+              <div className={styles.review_header}>
+                <h4 className={styles.review_title}>관상가 양반에게 후기를 남겨주세요</h4>
+                <p className={styles.review_subtitle}>소중한 의견이 더 나은 서비스를 만듭니다</p>
+              </div>
+
+              <div className={styles.review_rating_options}>
+                {[
+                  { value: 1, label: "아쉬워요" },
+                  { value: 2, label: "보통" },
+                  { value: 3, label: "좋았어요" },
+                  { value: 4, label: "고마워요" },
+                ].map((option) => (
+                  <button
+                    key={option.value}
+                    type="button"
+                    className={`${styles.review_rating_btn} ${reviewRating === option.value ? styles.active : ""}`}
+                    onClick={() => setReviewRating(option.value)}
+                  >
+                    {option.label}
+                  </button>
+                ))}
+              </div>
+
+              <div className={styles.review_content_input}>
+                <textarea
+                  className={styles.review_textarea}
+                  placeholder="관상 분석은 어떠셨나요? 솔직한 후기를 남겨주세요."
+                  value={reviewContent}
+                  onChange={(e) => setReviewContent(e.target.value)}
+                  maxLength={500}
+                />
+                <span className={styles.review_char_count}>{reviewContent.length}/500</span>
+              </div>
+
+              <button
+                className={styles.review_submit_btn}
+                onClick={async () => {
+                  await handleReviewSubmit();
+                  dismissReviewModal();
+                }}
+                disabled={isReviewSubmitting || !reviewContent.trim()}
+              >
+                {isReviewSubmitting ? "등록 중..." : "후기 남기기"}
+              </button>
+            </div>
+          </div>
+        )}
 
         {/* Footer */}
         <Footer />

@@ -21,6 +21,7 @@ import {
 } from "@/lib/db/coupleAnalysisDB";
 import { upsertFaceAnalysisSupabase } from "@/lib/db/faceSupabaseDB";
 import { uploadCoupleImages } from "@/lib/storage/imageStorage";
+import { createReview, getReviewByRecordId, Review } from "@/lib/db/reviewDB";
 
 // TossPayments 타입 선언
 declare global {
@@ -120,6 +121,16 @@ function CoupleResultContent() {
     isFree: boolean;
   } | null>(null);
 
+  // 리뷰 관련 상태
+  const [reviewRating, setReviewRating] = useState(3);
+  const [reviewContent, setReviewContent] = useState("");
+  const [isReviewSubmitting, setIsReviewSubmitting] = useState(false);
+  const [reviewSubmitted, setReviewSubmitted] = useState(false);
+  const [existingReview, setExistingReview] = useState<Review | null>(null);
+  const [showReviewModal, setShowReviewModal] = useState(false);
+  const [reviewModalDismissed, setReviewModalDismissed] = useState(false);
+  const reviewModalTriggered = useRef(false);
+
   // IndexedDB에서 결과 가져오기
   useEffect(() => {
     if (!resultId) {
@@ -178,6 +189,67 @@ function CoupleResultContent() {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  // 리뷰 존재 여부 확인
+  useEffect(() => {
+    if (!resultId || !showResult) return;
+    const checkReview = async () => {
+      const review = await getReviewByRecordId("couple", resultId);
+      if (review) {
+        setExistingReview(review);
+        setReviewSubmitted(true);
+      }
+    };
+    checkReview();
+  }, [resultId, showResult]);
+
+  // 스크롤 감지 → 리뷰 모달 띄우기
+  useEffect(() => {
+    if (!showResult || !resultId) return;
+    const dismissed = sessionStorage.getItem(`review_dismissed_${resultId}`);
+    if (dismissed) {
+      setReviewModalDismissed(true);
+      return;
+    }
+
+    const handleReviewScroll = () => {
+      if (reviewModalTriggered.current) return;
+      const scrollTop = window.scrollY;
+      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+      if (docHeight > 0 && scrollTop / docHeight > 0.75) {
+        reviewModalTriggered.current = true;
+        setShowReviewModal(true);
+      }
+    };
+
+    window.addEventListener("scroll", handleReviewScroll);
+    return () => window.removeEventListener("scroll", handleReviewScroll);
+  }, [showResult, resultId]);
+
+  const dismissReviewModal = () => {
+    setShowReviewModal(false);
+    setReviewModalDismissed(true);
+    if (resultId) sessionStorage.setItem(`review_dismissed_${resultId}`, "true");
+  };
+
+  // 리뷰 제출
+  const handleReviewSubmit = async () => {
+    if (!reviewContent.trim() || !resultId) return;
+    setIsReviewSubmitting(true);
+    const review = await createReview({
+      service_type: "couple",
+      record_id: resultId,
+      user_name: "익명",
+      rating: reviewRating,
+      content: reviewContent.trim(),
+      is_public: true,
+    });
+    if (review) {
+      setExistingReview(review);
+      setReviewSubmitted(true);
+    }
+    setIsReviewSubmitting(false);
+  };
 
   // 분석 시작
   const startAnalysis = useCallback(async (data: CoupleResult) => {
@@ -715,6 +787,53 @@ function CoupleResultContent() {
                 </div>
               </div>
             ))}
+
+            {/* 인라인 리뷰 폼 (모달 닫은 후 표시) */}
+            {isPaid && reviewModalDismissed && !reviewSubmitted && !existingReview && (
+              <div className="couple-review-section">
+                <div className="couple-review-header">
+                  <h4 className="couple-review-title">관상가 양반에게 후기를 남겨주세요</h4>
+                  <p className="couple-review-subtitle">소중한 의견이 더 나은 서비스를 만듭니다</p>
+                </div>
+
+                <div className="couple-review-rating-options">
+                  {[
+                    { value: 1, label: "아쉬워요" },
+                    { value: 2, label: "보통" },
+                    { value: 3, label: "좋았어요" },
+                    { value: 4, label: "고마워요" },
+                  ].map((option) => (
+                    <button
+                      key={option.value}
+                      type="button"
+                      className={`couple-review-rating-btn ${reviewRating === option.value ? "active" : ""}`}
+                      onClick={() => setReviewRating(option.value)}
+                    >
+                      {option.label}
+                    </button>
+                  ))}
+                </div>
+
+                <div className="couple-review-content-input">
+                  <textarea
+                    className="couple-review-textarea"
+                    placeholder="궁합 분석은 어떠셨나요? 솔직한 후기를 남겨주세요."
+                    value={reviewContent}
+                    onChange={(e) => setReviewContent(e.target.value)}
+                    maxLength={500}
+                  />
+                  <span className="couple-review-char-count">{reviewContent.length}/500</span>
+                </div>
+
+                <button
+                  className="couple-review-submit-btn"
+                  onClick={handleReviewSubmit}
+                  disabled={isReviewSubmitting || !reviewContent.trim()}
+                >
+                  {isReviewSubmitting ? "등록 중..." : "후기 남기기"}
+                </button>
+              </div>
+            )}
           </div>
         )}
 
@@ -937,6 +1056,59 @@ function CoupleResultContent() {
               </button>
               <div className="payment-empty" />
             </div>
+          </div>
+        </div>
+      )}
+
+      {/* 리뷰 하단 슬라이드 모달 */}
+      {showReviewModal && !reviewSubmitted && !existingReview && (
+        <div className="couple-review-modal-overlay" onClick={dismissReviewModal}>
+          <div className="couple-review-modal" onClick={(e) => e.stopPropagation()}>
+            <button className="couple-review-modal-close" onClick={dismissReviewModal}>✕</button>
+            <div className="couple-review-header">
+              <h4 className="couple-review-title">관상가 양반에게 후기를 남겨주세요</h4>
+              <p className="couple-review-subtitle">소중한 의견이 더 나은 서비스를 만듭니다</p>
+            </div>
+
+            <div className="couple-review-rating-options">
+              {[
+                { value: 1, label: "아쉬워요" },
+                { value: 2, label: "보통" },
+                { value: 3, label: "좋았어요" },
+                { value: 4, label: "고마워요" },
+              ].map((option) => (
+                <button
+                  key={option.value}
+                  type="button"
+                  className={`couple-review-rating-btn ${reviewRating === option.value ? "active" : ""}`}
+                  onClick={() => setReviewRating(option.value)}
+                >
+                  {option.label}
+                </button>
+              ))}
+            </div>
+
+            <div className="couple-review-content-input">
+              <textarea
+                className="couple-review-textarea"
+                placeholder="궁합 분석은 어떠셨나요? 솔직한 후기를 남겨주세요."
+                value={reviewContent}
+                onChange={(e) => setReviewContent(e.target.value)}
+                maxLength={500}
+              />
+              <span className="couple-review-char-count">{reviewContent.length}/500</span>
+            </div>
+
+            <button
+              className="couple-review-submit-btn"
+              onClick={async () => {
+                await handleReviewSubmit();
+                dismissReviewModal();
+              }}
+              disabled={isReviewSubmitting || !reviewContent.trim()}
+            >
+              {isReviewSubmitting ? "등록 중..." : "후기 남기기"}
+            </button>
           </div>
         </div>
       )}
