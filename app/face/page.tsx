@@ -127,18 +127,10 @@ function FacePageContent() {
             throw new Error("얼굴을 인식할 수 없습니다. 다른 사진을 올려주세요.");
           }
 
-          // 붓그림 초상화 이미지 처리
-          let portraitBase64 = "";
-          if (result.data.portrait?.success && result.data.portrait.image_base64) {
-            const mimeType = result.data.portrait.mime_type || "image/png";
-            portraitBase64 = `data:${mimeType};base64,${result.data.portrait.image_base64}`;
-          }
-
           const resultId = crypto.randomUUID();
           const resultData = {
             id: resultId,
             imageBase64: base64,
-            portraitBase64,
             features: result.data.features,
             paid: false,
             timestamp: new Date().toISOString(),
@@ -335,7 +327,7 @@ function FacePageContent() {
               </div>
             </div>
           </div>
-          <div className={styles.nostore}>*걱정마세요! 사진은 절대로 저장되지 않습니다.</div>
+          <div className={styles.nostore}>*걱정마세요! 사진은 본인만 확인 가능합니다.</div>
         </div>
 
         {/* Match Content */}
@@ -399,7 +391,7 @@ function FacePageContent() {
             </div>
           </div>
 
-          <div className={styles.nostore}>*걱정마세요! 사진은 절대로 저장되지 않습니다.</div>
+          <div className={styles.nostore}>*걱정마세요! 사진은 본인만 확인 가능합니다.</div>
           <div className={styles.couple_action}>
             <button
               className={styles.btn_primary}

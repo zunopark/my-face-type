@@ -73,7 +73,6 @@ const PAYMENT_CONFIG = {
 interface FaceResult {
   id: string;
   imageBase64: string;
-  portraitBase64?: string;
   features: string;
   paid: boolean;
   timestamp: string;
@@ -185,7 +184,6 @@ function ResultContent() {
         const parsed: FaceResult = {
           id: stored.id,
           imageBase64: stored.imageBase64,
-          portraitBase64: (stored as unknown as Record<string, unknown>).portraitBase64 as string | undefined,
           features: stored.features,
           paid: stored.paid || false,
           timestamp: stored.timestamp,
@@ -888,8 +886,8 @@ function ResultContent() {
                     >
                       <div className={styles.image_square_frame}>
                         <Image
-                          src={result.portraitBase64 || result.imageBase64}
-                          alt="AI 수묵화 초상"
+                          src={result.imageBase64}
+                          alt="관상 사진"
                           fill
                           style={{ objectFit: "cover" }}
                           unoptimized
@@ -942,8 +940,8 @@ function ResultContent() {
                   >
                     <div className={styles.image_square_frame}>
                       <Image
-                        src={result.portraitBase64 || result.imageBase64}
-                        alt="AI 수묵화 초상"
+                        src={result.imageBase64}
+                        alt="관상 사진"
                         fill
                         style={{ objectFit: "cover" }}
                         unoptimized
@@ -1197,8 +1195,8 @@ function ResultContent() {
                   >
                     <div className={styles.image_square_frame}>
                       <Image
-                        src={result.portraitBase64 || result.imageBase64}
-                        alt="AI 수묵화 초상"
+                        src={result.imageBase64}
+                        alt="관상 사진"
                         fill
                         style={{ objectFit: "cover" }}
                         unoptimized
@@ -1256,8 +1254,8 @@ function ResultContent() {
                   >
                     <div className={styles.image_square_frame}>
                       <Image
-                        src={result.portraitBase64 || result.imageBase64}
-                        alt="AI 수묵화 초상"
+                        src={result.imageBase64}
+                        alt="관상 사진"
                         fill
                         style={{ objectFit: "cover" }}
                         unoptimized

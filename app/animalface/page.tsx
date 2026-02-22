@@ -358,7 +358,7 @@ export default function AnimalFacePage() {
             </div>
           )}
 
-          <div className={styles.animal_noti}>*걱정마세요! 사진은 절대로 저장되지 않습니다.</div>
+          <div className={styles.animal_noti}>*걱정마세요! 사진은 본인만 확인 가능합니다.</div>
         </div>
 
         <Footer />

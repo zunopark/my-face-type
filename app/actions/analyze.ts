@@ -29,7 +29,7 @@ export async function extractFaceFeatures(imageBase64: string) {
     const formData = new FormData();
     formData.append("file", blob, "image.jpg");
 
-    const response = await fetch(`${API_URL}/analyze/features_0222/`, {
+    const response = await fetch(`${API_URL}/analyze/features/`, {
       method: "POST",
       body: formData,
     });
