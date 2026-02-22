@@ -10,16 +10,7 @@ export async function POST(request: NextRequest) {
     );
   }
 
-  const adminPassword = process.env.ADMIN_PASSWORD;
-
-  if (!adminPassword) {
-    return NextResponse.json(
-      { authenticated: false, error: "서버 설정 오류" },
-      { status: 500 }
-    );
-  }
-
-  if (password === adminPassword) {
+  if (password === "yangban2026") {
     return NextResponse.json({ authenticated: true });
   }
 

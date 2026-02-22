@@ -2842,10 +2842,12 @@ function ReportCard({
   const chapterTitle = rawTitle
     .replace(/^#+\s*/, "")
     .replace(/^\[\d+장\]\s*/, "")
+    .replace(/보너스\s*풀이\s*[-–—]\s*/g, "")
     .trim();
 
-  // 템플릿 형식 파싱
-  const sections = parseTemplateSections(chapter.content || "");
+  // 템플릿 형식 파싱 (끝에 붙은 --- 구분선 제거)
+  const cleanedContent = (chapter.content || "").replace(/\n*---\s*$/g, "").trimEnd();
+  const sections = parseTemplateSections(cleanedContent);
   const hasSections = Object.keys(sections).length > 0;
 
   // 챕터별 구조화된 렌더링
@@ -2877,7 +2879,7 @@ function ReportCard({
         return (
           <div
             className={styles.card_content}
-            dangerouslySetInnerHTML={{ __html: simpleMD(chapter.content || "") }}
+            dangerouslySetInnerHTML={{ __html: simpleMD(cleanedContent) }}
           />
         );
     }
@@ -2892,7 +2894,7 @@ function ReportCard({
       {hasSections ? renderStructuredContent() : (
         <div
           className={styles.card_content}
-          dangerouslySetInnerHTML={{ __html: simpleMD(chapter.content || "") }}
+          dangerouslySetInnerHTML={{ __html: simpleMD(cleanedContent) }}
         />
       )}
     </div>
@@ -3789,32 +3791,82 @@ function Chapter10Content({ sections }: { sections: Record<string, ParsedSection
 
 // 11장: 까치도령 귀띔 콘텐츠
 function Chapter11Content({ sections }: { sections: Record<string, ParsedSection> }) {
-  const data = getSectionData(sections, "까치도령_귀띔");
+  // 새 형식: 귀띔_제목 + 귀띔_서술
+  const titleText = sections["귀띔_제목"]?.content || "";
+  const narrativeText = sections["귀띔_서술"]?.content || "";
+
+  // 구 형식 호환
+  const oldData = getSectionData(sections, "까치도령_귀띔");
+
+  // 귀띔_서술을 소제목 기준으로 분리 (숫자. 제목 패턴)
+  const renderNarrative = (text: string) => {
+    if (!text) return null;
+    const parts = text.split(/\n(?=\d+\.\s)/);
+    return (
+      <>
+        {parts.map((part, i) => {
+          const lines = part.split("\n").filter(l => l.trim());
+          if (lines.length === 0) return null;
+          // 첫 줄이 "1. 제목: 설명" 패턴이면 소제목으로
+          const headMatch = lines[0].match(/^(\d+)\.\s*(.+)/);
+          if (headMatch) {
+            return (
+              <div key={i} className={styles.section_block}>
+                <h4 className={styles.section_title}>{headMatch[2]}</h4>
+                <div className={styles.text_block}>
+                  {lines.slice(1).map((line, j) => (
+                    <p key={j}>{line}</p>
+                  ))}
+                </div>
+              </div>
+            );
+          }
+          return (
+            <div key={i} className={styles.text_block}>
+              {lines.map((line, j) => (
+                <p key={j}>{line}</p>
+              ))}
+            </div>
+          );
+        })}
+      </>
+    );
+  };
 
   return (
     <div className={styles.chapter_structured}>
-      {data["고민_주제"] && (
-        <div className={styles.info_row}>
-          <span className={styles.info_label}>고민 주제</span>
-          <span className={styles.info_value}>{data["고민_주제"]}</span>
+      {/* 새 형식: 제목 */}
+      {titleText && (
+        <div className={styles.text_block}>
+          <p><strong>{titleText}</strong></p>
         </div>
       )}
 
-      {data["맞춤_조언"] && (
-        <div className={styles.section_block}>
-          <h4 className={styles.section_title}>맞춤 조언</h4>
-          <div className={styles.text_block}><p>{data["맞춤_조언"]}</p></div>
-        </div>
+      {/* 새 형식: 서술 (소제목 분리) */}
+      {narrativeText ? renderNarrative(narrativeText) : (
+        <>
+          {/* 구 형식 호환 */}
+          {oldData["고민_주제"] && (
+            <div className={styles.info_row}>
+              <span className={styles.info_label}>고민 주제</span>
+              <span className={styles.info_value}>{oldData["고민_주제"]}</span>
+            </div>
+          )}
+          {oldData["맞춤_조언"] && (
+            <div className={styles.section_block}>
+              <h4 className={styles.section_title}>맞춤 조언</h4>
+              <div className={styles.text_block}><p>{oldData["맞춤_조언"]}</p></div>
+            </div>
+          )}
+          {oldData["특별_메시지"] && (
+            <div className={styles.section_block}>
+              <h4 className={styles.section_title}>특별 메시지</h4>
+              <div className={styles.text_block}><p>{oldData["특별_메시지"]}</p></div>
+            </div>
+          )}
+          <NarrativeText sections={sections} name="귀띔_서술" />
+        </>
       )}
-
-      {data["특별_메시지"] && (
-        <div className={styles.section_block}>
-          <h4 className={styles.section_title}>특별 메시지</h4>
-          <div className={styles.text_block}><p>{data["특별_메시지"]}</p></div>
-        </div>
-      )}
-
-      <NarrativeText sections={sections} name="귀띔_서술" />
     </div>
   );
 }
