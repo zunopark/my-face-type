@@ -1922,7 +1922,8 @@
 
 /* ===== 병오년 정보 카드 ===== */
 .newyear_result_page .byungo_info_card {
-  background: linear-gradient(180deg, #1a1a2e 0%, #16213e 100%);
+  background: linear-gradient(180deg, #fff8f6 0%, #fff0ec 100%);
+  border: 1px solid #ffe0d6;
   border-radius: 20px;
   padding: 32px 24px;
   margin: 24px 0;
@@ -1938,7 +1939,7 @@
   left: -50%;
   width: 200%;
   height: 200%;
-  background: radial-gradient(circle, rgba(255, 106, 106, 0.1) 0%, transparent 50%);
+  background: radial-gradient(circle, rgba(255, 106, 106, 0.06) 0%, transparent 50%);
   pointer-events: none;
 }
 
@@ -1952,16 +1953,15 @@
   font-weight: 700;
   display: block;
   margin-bottom: 8px;
-  background: linear-gradient(135deg, #ff6a6a 0%, #ff9a6a 100%);
+  background: linear-gradient(135deg, #e05a3a 0%, #ff8a5c 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
-  text-shadow: 0 0 40px rgba(255, 106, 106, 0.3);
 }
 
 .newyear_result_page .byungo_label {
   font-size: 15px;
-  color: rgba(255, 255, 255, 0.6);
+  color: #999;
   letter-spacing: 2px;
 }
 
@@ -1976,23 +1976,23 @@
   justify-content: space-between;
   align-items: center;
   padding: 14px 20px;
-  background: rgba(255, 255, 255, 0.06);
+  background: rgba(255, 100, 80, 0.06);
   border-radius: 10px;
 }
 
 .newyear_result_page .detail_label {
   font-size: 13px;
-  color: rgba(255, 255, 255, 0.5);
+  color: #999;
 }
 
 .newyear_result_page .detail_value {
   font-size: 14px;
   font-weight: 600;
-  color: #fff;
+  color: #333;
 }
 
 .newyear_result_page .detail_value.fire {
-  color: #ff9a6a;
+  color: #e05a3a;
 }
 
 /* ===== 포괄적인 사주 카드 스타일 ===== */
