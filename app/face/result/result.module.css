@@ -1239,15 +1239,12 @@
   color: #888;
   background: #fff;
   border: 1.5px solid #ddd;
-  border-radius: 20px;
+  border-radius: 4px;
   cursor: pointer;
   transition: all 0.2s;
 }
 
 .addon_inline_chip:hover {
-  border-color: #c4a86c;
-  color: #5a4a3a;
-  background: #fdfaf2;
 }
 
 .addon_inline_chip_active {
@@ -1259,8 +1256,6 @@
 }
 
 .addon_inline_chip_active:hover {
-  opacity: 0.92;
-  color: #fff;
 }
 
 /* === 미디어 쿼리 === */

@@ -183,7 +183,7 @@ function ResultContent() {
   };
 
   // 리뷰 관련 상태
-  const [reviewRating, setReviewRating] = useState(3);
+  const [reviewRating, setReviewRating] = useState(4);
   const [reviewContent, setReviewContent] = useState("");
   const [isReviewSubmitting, setIsReviewSubmitting] = useState(false);
   const [reviewSubmitted, setReviewSubmitted] = useState(false);
