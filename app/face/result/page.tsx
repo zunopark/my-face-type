@@ -63,11 +63,22 @@ const PAYMENT_CONFIG = {
   clientKey:
     process.env.NEXT_PUBLIC_TOSS_CLIENT_KEY ||
     "live_gck_yZqmkKeP8gBaRKPg1WwdrbQRxB9l",
-  price: 9900,
-  discountPrice: 7900,
+  basePrice: 9900,
+  addonPrice: 5000,
+  freeAddonCount: 1,
+  discountAmount: 2000,
   originalPrice: 29900,
   orderName: "관상 상세 분석 서비스",
 };
+
+// 추가 보고서 옵션
+const ADDON_OPTIONS = [
+  { key: "wealth", label: "재물운" },
+  { key: "love", label: "연애운" },
+  { key: "career", label: "직업운" },
+  { key: "health", label: "건강운" },
+  { key: "marriage", label: "결혼운" },
+] as const;
 
 // 저장된 결과 타입
 interface FaceResult {
@@ -84,6 +95,7 @@ interface FaceResult {
     career?: string;
     wealth?: string;
     health?: string;
+    marriage?: string;
   };
   reports: {
     base: { paid: boolean; data: unknown };
@@ -91,6 +103,7 @@ interface FaceResult {
     love: { paid: boolean; data: unknown };
     marriage: { paid: boolean; data: unknown };
     career: { paid: boolean; data: unknown };
+    health: { paid: boolean; data: unknown };
   };
 }
 
@@ -110,11 +123,12 @@ const FAKE_ANALYSIS_MESSAGES = [
 
 // 섹션 설정
 const SECTION_CONFIG = [
-  { key: "face_reading", title: "부위별 관상 심층 풀이" },
-  { key: "love", title: "연애운 심층 풀이" },
-  { key: "career", title: "직업운 심층 풀이" },
-  { key: "wealth", title: "재물운 심층 풀이" },
-  { key: "health", title: "건강운 심층 풀이" },
+  { key: "face_reading", reportKey: "base", title: "부위별 관상 심층 풀이" },
+  { key: "love", reportKey: "love", title: "연애운 심층 풀이" },
+  { key: "career", reportKey: "career", title: "직업운 심층 풀이" },
+  { key: "wealth", reportKey: "wealth", title: "재물운 심층 풀이" },
+  { key: "health", reportKey: "health", title: "건강운 심층 풀이" },
+  { key: "marriage", reportKey: "marriage", title: "결혼운 심층 풀이" },
 ];
 
 function ResultContent() {
@@ -158,6 +172,15 @@ function ResultContent() {
     discount: number;
     isFree: boolean;
   } | null>(null);
+
+  // 추가 보고서 선택 상태 (1개만 무료 선택)
+  const [selectedAddon, setSelectedAddon] = useState<string | null>("wealth");
+  const selectedAddons = selectedAddon ? new Set([selectedAddon]) : new Set<string>();
+  const totalPrice = PAYMENT_CONFIG.basePrice;
+
+  const toggleAddon = (key: string) => {
+    setSelectedAddon((prev) => (prev === key ? null : key));
+  };
 
   // 리뷰 관련 상태
   const [reviewRating, setReviewRating] = useState(3);
@@ -419,6 +442,19 @@ function ResultContent() {
       const formData = new FormData();
       formData.append("file", blob, "image.jpg");
 
+      // 선택된 섹션 결정: reports에서 paid=true인 항목
+      const paidSections: string[] = ["face_reading"]; // base는 항상 포함
+      if (data.reports) {
+        for (const addon of ADDON_OPTIONS) {
+          const reportKey = addon.key as keyof typeof data.reports;
+          if (data.reports[reportKey]?.paid) {
+            paidSections.push(addon.key);
+          }
+        }
+      }
+      formData.append("sections", paidSections.join(","));
+      console.log("📤 요청 섹션:", paidSections.join(","));
+
       const response = await fetch(`${API_URL}/face-teller2/`, {
         method: "POST",
         body: formData,
@@ -506,13 +542,20 @@ function ResultContent() {
     if (!result) return;
 
     try {
+      // 선택된 addon 전부 paid=true로 마킹
+      const updatedReports = {
+        ...result.reports,
+        base: { paid: true, data: result.reports?.base?.data || null },
+      };
+      for (const addonKey of selectedAddons) {
+        const reportKey = addonKey as keyof typeof updatedReports;
+        updatedReports[reportKey] = { paid: true, data: updatedReports[reportKey]?.data || null };
+      }
+
       // IndexedDB에 결제 완료 표시
       await updateFaceAnalysisRecord(result.id, {
         paid: true,
-        reports: {
-          ...result.reports,
-          base: { paid: true, data: result.reports?.base?.data || null },
-        } as FaceAnalysisRecord["reports"],
+        reports: updatedReports as FaceAnalysisRecord["reports"],
       });
 
       // Supabase 저장 (정통 관상 - 무료 쿠폰)
@@ -550,7 +593,7 @@ function ResultContent() {
       console.error("무료 쿠폰 처리 오류:", error);
       setCouponError("쿠폰 처리 중 오류가 발생했습니다");
     }
-  }, [result, startRealAnalysis, appliedCoupon]);
+  }, [result, startRealAnalysis, appliedCoupon, selectedAddons]);
 
   // 쿠폰 검증 및 적용
   const handleCouponSubmit = useCallback(async () => {
@@ -572,7 +615,7 @@ function ResultContent() {
       }
 
       const isFree = data.is_free;
-      const discount = isFree ? PAYMENT_CONFIG.price : data.discount_amount;
+      const discount = isFree ? totalPrice : data.discount_amount;
 
       setCouponError("");
       setAppliedCoupon({ code, discount, isFree });
@@ -583,10 +626,10 @@ function ResultContent() {
         coupon_code: code,
         discount,
         is_free: isFree,
-        original_price: PAYMENT_CONFIG.price,
+        original_price: totalPrice,
         final_price: isFree
           ? 0
-          : Math.max(PAYMENT_CONFIG.price - discount, 100),
+          : Math.max(totalPrice - discount, 100),
       });
 
       if (isFree) {
@@ -605,7 +648,7 @@ function ResultContent() {
           id: result?.id,
           order_id: `free_coupon_${Date.now()}`,
           amount: 0,
-          original_price: PAYMENT_CONFIG.price,
+          original_price: totalPrice,
           coupon_code: code,
           is_free_coupon: true,
           report_type: "base",
@@ -613,7 +656,7 @@ function ResultContent() {
       } else {
         // 일반 쿠폰: 결제 위젯 금액 업데이트
         if (paymentWidgetRef.current) {
-          const newPrice = Math.max(PAYMENT_CONFIG.price - discount, 100);
+          const newPrice = Math.max(totalPrice - discount, 100);
           paymentWidgetRef.current.renderPaymentMethods("#payment-method", {
             value: newPrice,
           });
@@ -623,7 +666,7 @@ function ResultContent() {
       console.error("쿠폰 검증 오류:", error);
       setCouponError("쿠폰 확인 중 오류가 발생했습니다");
     }
-  }, [couponCode, handleFreeCouponPayment, result?.id]);
+  }, [couponCode, handleFreeCouponPayment, result?.id, totalPrice]);
 
   // 결제 모달 열기
   const openPaymentModal = () => {
@@ -631,7 +674,7 @@ function ResultContent() {
 
     trackPaymentModalOpen("face", {
       id: result.id,
-      price: PAYMENT_CONFIG.price,
+      price: totalPrice,
       is_discount: false,
     });
 
@@ -648,7 +691,7 @@ function ResultContent() {
         paymentWidgetRef.current = widget;
 
         widget.renderPaymentMethods("#payment-method", {
-          value: PAYMENT_CONFIG.price,
+          value: totalPrice,
         });
         widget.renderAgreement("#agreement");
       }
@@ -660,13 +703,15 @@ function ResultContent() {
     if (!paymentWidgetRef.current || !result) return;
 
     const finalPrice = appliedCoupon
-      ? Math.max(PAYMENT_CONFIG.price - appliedCoupon.discount, 100)
-      : PAYMENT_CONFIG.price;
+      ? Math.max(totalPrice - appliedCoupon.discount, 100)
+      : totalPrice;
 
     const orderSuffix = appliedCoupon ? `-${appliedCoupon.code}` : "";
     const orderNameSuffix = appliedCoupon
       ? ` - ${appliedCoupon.code} 할인`
       : "";
+
+    const addonsParam = selectedAddons.size > 0 ? `&addons=${Array.from(selectedAddons).join(",")}` : "";
 
     try {
       trackPaymentAttempt("face", {
@@ -681,7 +726,7 @@ function ResultContent() {
         orderName: `${PAYMENT_CONFIG.orderName}${orderNameSuffix}`,
         customerName: "고객",
         successUrl: `${window.location.origin
-          }/payment/success?id=${encodeURIComponent(result.id)}&type=base${appliedCoupon ? `&couponCode=${encodeURIComponent(appliedCoupon.code)}` : ""}`,
+          }/payment/success?id=${encodeURIComponent(result.id)}&type=base${addonsParam}${appliedCoupon ? `&couponCode=${encodeURIComponent(appliedCoupon.code)}` : ""}`,
         failUrl: `${window.location.origin
           }/payment/fail?id=${encodeURIComponent(result.id)}&type=base`,
       });
@@ -712,12 +757,14 @@ function ResultContent() {
   };
 
   // 할인 모달 열기
+  const discountPrice = totalPrice - PAYMENT_CONFIG.discountAmount;
+
   const openDiscountModal = () => {
     if (!result) return;
 
     trackPaymentModalOpen("face", {
       id: result.id,
-      price: PAYMENT_CONFIG.discountPrice,
+      price: discountPrice,
       is_discount: true,
     });
 
@@ -734,7 +781,7 @@ function ResultContent() {
         discountWidgetRef.current = widget;
 
         widget.renderPaymentMethods("#discount-method", {
-          value: PAYMENT_CONFIG.discountPrice,
+          value: discountPrice,
         });
         widget.renderAgreement("#discount-agreement");
       }
@@ -745,10 +792,12 @@ function ResultContent() {
   const handleDiscountPaymentRequest = async () => {
     if (!discountWidgetRef.current || !result) return;
 
+    const addonsParam = selectedAddons.size > 0 ? `&addons=${Array.from(selectedAddons).join(",")}` : "";
+
     try {
       trackPaymentAttempt("face", {
         id: result.id,
-        price: PAYMENT_CONFIG.discountPrice,
+        price: discountPrice,
         is_discount: true,
       });
 
@@ -757,7 +806,7 @@ function ResultContent() {
         orderName: "AI 관상 프리미엄 보고서 - 할인 특가",
         customerName: "고객",
         successUrl: `${window.location.origin
-          }/payment/success?id=${encodeURIComponent(result.id)}&type=base`,
+          }/payment/success?id=${encodeURIComponent(result.id)}&type=base${addonsParam}`,
         failUrl: `${window.location.origin
           }/payment/fail?id=${encodeURIComponent(result.id)}&type=base`,
       });
@@ -898,8 +947,7 @@ function ResultContent() {
                 </div>
               </div>
             </div>
-            <div className={styles.portrait_caption}>AI 관상가 양반이 인식한 관상입니다.</div>
-          </div>
+            </div>
           <div className={styles.fake_analysis_spinner} />
           <div className={styles.fake_analysis_text}>{fakeMessage}</div>
           <div className={styles.fake_analysis_progress_wrap}>
@@ -952,7 +1000,6 @@ function ResultContent() {
               </div>
             </div>
           </div>
-          <div className={styles.portrait_caption}>AI 관상가 양반이 인식한 관상입니다.</div>
 
           {/* faceteller 이미지 */}
           <div className={styles.face_teller_wrap}>
@@ -965,6 +1012,7 @@ function ResultContent() {
               unoptimized
             />
           </div>
+
         </div>
 
         {/* 결제 버튼 영역 */}
@@ -998,30 +1046,32 @@ function ResultContent() {
                 <div className={styles.payment_amount_section}>
                   <h3 className={styles.payment_amount_title}>복채</h3>
 
-                  {/* 정가 */}
+                  {/* 기본 항목 */}
                   <div className={styles.payment_row}>
                     <span className={styles.payment_row_label}>
-                      관상 심층 분석 20,000자 보고서
+                      부위별 관상 심층 풀이
                     </span>
                     <span className={styles.payment_row_value}>
-                      {PAYMENT_CONFIG.originalPrice.toLocaleString()}원
+                      {PAYMENT_CONFIG.basePrice.toLocaleString()}원
                     </span>
                   </div>
 
-                  {/* 할인 */}
-                  <div className={`${styles.payment_row} ${styles.discount}`}>
-                    <span className={styles.payment_row_label}>
-                      병오년 구정 특별 할인
-                    </span>
-                    <div className={styles.payment_row_discount_value}>
-                      <span className={styles.discount_badge}>
-                        {Math.floor(
-                          (1 - PAYMENT_CONFIG.price / PAYMENT_CONFIG.originalPrice) * 100
-                        )}%
-                      </span>
-                      <span className={styles.discount_amount}>
-                        -{(PAYMENT_CONFIG.originalPrice - PAYMENT_CONFIG.price).toLocaleString()}원
-                      </span>
+                  {/* 무료 추가 보고서 선택 (인라인) */}
+                  <div className={styles.addon_inline_wrap}>
+                    <div className={styles.addon_inline_title}>추가 보고서 무료 선택 1개</div>
+                    <div className={styles.addon_inline_items}>
+                      {ADDON_OPTIONS.map((opt) => {
+                        const isSelected = selectedAddon === opt.key;
+                        return (
+                          <button
+                            key={opt.key}
+                            className={`${styles.addon_inline_chip} ${isSelected ? styles.addon_inline_chip_active : ""}`}
+                            onClick={() => toggleAddon(opt.key)}
+                          >
+                            {opt.label}
+                          </button>
+                        );
+                      })}
                     </div>
                   </div>
 
@@ -1045,8 +1095,8 @@ function ResultContent() {
                     <span className={styles.payment_row_label}>최종 결제금액</span>
                     <span className={styles.payment_row_final_value}>
                       {appliedCoupon
-                        ? Math.max(PAYMENT_CONFIG.price - appliedCoupon.discount, 0).toLocaleString()
-                        : PAYMENT_CONFIG.price.toLocaleString()}원
+                        ? Math.max(totalPrice - appliedCoupon.discount, 0).toLocaleString()
+                        : totalPrice.toLocaleString()}원
                     </span>
                   </div>
                 </div>
@@ -1111,29 +1161,43 @@ function ResultContent() {
                 <div className={styles.payment_amount_section}>
                   <h3 className={styles.payment_amount_title}>특별 할인가</h3>
 
-                  {/* 정가 */}
+                  {/* 기본 항목 */}
                   <div className={styles.payment_row}>
                     <span className={styles.payment_row_label}>
-                      관상 심층 분석 보고서
+                      부위별 관상 심층 풀이
                     </span>
                     <span className={styles.payment_row_value}>
-                      {PAYMENT_CONFIG.originalPrice.toLocaleString()}원
+                      {PAYMENT_CONFIG.basePrice.toLocaleString()}원
                     </span>
+                  </div>
+
+                  {/* 무료 추가 보고서 선택 (인라인) */}
+                  <div className={styles.addon_inline_wrap}>
+                    <div className={styles.addon_inline_title}>추가 보고서 무료 선택 1개</div>
+                    <div className={styles.addon_inline_items}>
+                      {ADDON_OPTIONS.map((opt) => {
+                        const isSelected = selectedAddon === opt.key;
+                        return (
+                          <button
+                            key={opt.key}
+                            className={`${styles.addon_inline_chip} ${isSelected ? styles.addon_inline_chip_active : ""}`}
+                            onClick={() => toggleAddon(opt.key)}
+                          >
+                            {opt.label}
+                          </button>
+                        );
+                      })}
+                    </div>
                   </div>
 
                   {/* 할인 */}
                   <div className={`${styles.payment_row} ${styles.discount}`}>
                     <span className={styles.payment_row_label}>
-                      특별가 + 추가 2천원 할인
+                      깜짝 추가 할인
                     </span>
                     <div className={styles.payment_row_discount_value}>
-                      <span className={styles.discount_badge}>
-                        {Math.floor(
-                          (1 - PAYMENT_CONFIG.discountPrice / PAYMENT_CONFIG.originalPrice) * 100
-                        )}%
-                      </span>
                       <span className={styles.discount_amount}>
-                        -{(PAYMENT_CONFIG.originalPrice - PAYMENT_CONFIG.discountPrice).toLocaleString()}원
+                        -{PAYMENT_CONFIG.discountAmount.toLocaleString()}원
                       </span>
                     </div>
                   </div>
@@ -1145,7 +1209,7 @@ function ResultContent() {
                   <div className={`${styles.payment_row} ${styles.final}`}>
                     <span className={styles.payment_row_label}>최종 결제금액</span>
                     <span className={styles.payment_row_final_value}>
-                      {PAYMENT_CONFIG.discountPrice.toLocaleString()}원
+                      {discountPrice.toLocaleString()}원
                     </span>
                   </div>
                 </div>
@@ -1207,7 +1271,6 @@ function ResultContent() {
               </div>
             </div>
           </div>
-          <div className={styles.portrait_caption}>AI 관상가 양반이 인식한 관상입니다.</div>
 
           <div className={styles.result}>
             <div className="loading-box dark-mode">
@@ -1266,7 +1329,6 @@ function ResultContent() {
               </div>
             </div>
           </div>
-          <div className={styles.portrait_caption}>AI 관상가 양반이 인식한 관상입니다.</div>
 
           <div className={styles.result}>
             {/* Summary */}

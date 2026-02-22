@@ -1035,6 +1035,234 @@
   cursor: not-allowed;
 }
 
+/* === 추가 보고서 선택 영역 === */
+.addon_selection_wrap {
+  width: 100%;
+  padding: 24px 20px;
+  margin-top: 24px;
+}
+
+.addon_selection_title {
+  font-size: 17px;
+  font-weight: 700;
+  color: #2d2620;
+  margin-bottom: 6px;
+  font-family: "KimjungchulMyungjo-Bold", serif;
+}
+
+.addon_selection_subtitle {
+  font-size: 13px;
+  color: #888;
+  margin-bottom: 16px;
+}
+
+.addon_base_item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 16px;
+  background: #f8f5ed;
+  border: 2px solid #d4c5a9;
+  border-radius: 12px;
+  margin-bottom: 10px;
+  opacity: 0.85;
+}
+
+.addon_base_label {
+  font-size: 15px;
+  font-weight: 600;
+  color: #3d3528;
+}
+
+.addon_base_price {
+  font-size: 14px;
+  font-weight: 700;
+  color: #8b7355;
+}
+
+.addon_base_check {
+  font-size: 13px;
+  color: #8b7355;
+  margin-left: 8px;
+}
+
+.addon_items_wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.addon_item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 16px;
+  background: #fff;
+  border: 2px solid #e8e0d0;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.addon_item:hover {
+  border-color: #c4a86c;
+}
+
+.addon_item.selected {
+  border-color: #b8860b;
+  background: #fdfaf2;
+}
+
+.addon_item_left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.addon_check_off {
+  width: 22px;
+  height: 22px;
+  border: 2px solid #d4d4d4;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.addon_check_on {
+  width: 22px;
+  height: 22px;
+  border: 2px solid #b8860b;
+  border-radius: 6px;
+  background: linear-gradient(135deg, #d4a017 0%, #b8860b 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.addon_item_label {
+  font-size: 15px;
+  font-weight: 500;
+  color: #3d3528;
+}
+
+.addon_item_price {
+  font-size: 14px;
+  font-weight: 600;
+  color: #b8860b;
+  white-space: nowrap;
+}
+
+.addon_free_badge {
+  display: inline-block;
+  padding: 2px 10px;
+  font-size: 13px;
+  font-weight: 700;
+  color: #fff;
+  background: linear-gradient(135deg, #d4a017 0%, #b8860b 100%);
+  border-radius: 12px;
+}
+
+.addon_select_all_wrap {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 12px;
+}
+
+.addon_select_all_btn {
+  padding: 6px 14px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #8b7355;
+  background: none;
+  border: 1px solid #d4c5a9;
+  border-radius: 16px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.addon_select_all_btn:hover {
+  background: #f8f5ed;
+}
+
+.addon_total {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 0;
+  border-top: 2px solid #e8e0d0;
+  margin-top: 8px;
+}
+
+.addon_total_label {
+  font-size: 16px;
+  font-weight: 700;
+  color: #2d2620;
+}
+
+.addon_total_price {
+  font-size: 20px;
+  font-weight: 800;
+  color: #b8860b;
+}
+
+/* === 결제 모달 내 인라인 추가 보고서 선택 === */
+.addon_inline_wrap {
+  margin: 16px 0 4px;
+  padding: 14px 0;
+  border-top: 1px dashed #e8e0d0;
+}
+
+.addon_inline_title {
+  font-size: 13px;
+  font-weight: 600;
+  color: #8b7355;
+  margin-bottom: 10px;
+}
+
+.addon_inline_items {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.addon_inline_chip {
+  padding: 8px 16px;
+  font-size: 13px;
+  font-weight: 500;
+  color: #888;
+  background: #fff;
+  border: 1.5px solid #ddd;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.addon_inline_chip:hover {
+  border-color: #c4a86c;
+  color: #5a4a3a;
+  background: #fdfaf2;
+}
+
+.addon_inline_chip_active {
+  background: linear-gradient(135deg, #d4a017 0%, #b8860b 100%);
+  color: #fff;
+  border-color: transparent;
+  font-weight: 700;
+  box-shadow: 0 2px 8px rgba(184, 134, 11, 0.3);
+}
+
+.addon_inline_chip_active:hover {
+  opacity: 0.92;
+  color: #fff;
+}
+
 /* === 미디어 쿼리 === */
 @media screen and (min-width: 500px) {
   .main_body_wrap,

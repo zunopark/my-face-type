@@ -4,7 +4,7 @@ const DB_NAME = "FaceAnalysisDB";
 const DB_VERSION = 1;
 const STORE_NAME = "results";
 
-const REPORT_TYPES = ["base", "wealth", "love", "marriage", "career"] as const;
+const REPORT_TYPES = ["base", "wealth", "love", "marriage", "career", "health"] as const;
 type ReportType = (typeof REPORT_TYPES)[number];
 
 export interface FaceReport {

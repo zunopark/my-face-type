@@ -31,6 +31,7 @@ export interface PaymentInfo {
   price: number;
   couponCode?: string;
   isDiscount?: boolean;
+  selected_addons?: string[];
 }
 
 // 분석 결과 타입 (서비스별로 다를 수 있음)

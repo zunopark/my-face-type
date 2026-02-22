@@ -140,6 +140,7 @@ function FacePageContent() {
               love: { paid: false, data: null },
               marriage: { paid: false, data: null },
               career: { paid: false, data: null },
+              health: { paid: false, data: null },
             },
           };
 

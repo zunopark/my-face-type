@@ -26,6 +26,8 @@ function SuccessContent() {
   const resultId = searchParams.get("id");
   const reportType = searchParams.get("type") || "base";
   const couponCode = searchParams.get("couponCode");
+  const addonsParam = searchParams.get("addons");
+  const selectedAddons = addonsParam ? addonsParam.split(",").filter(Boolean) : [];
 
   const [status, setStatus] = useState<"loading" | "success" | "fail">("loading");
   const [message, setMessage] = useState("🔄 결제 확인 중...");
@@ -379,8 +381,12 @@ function SuccessContent() {
               }
             }
           } else {
-            // 관상 결제인 경우 (base, wealth, love, marriage, career)
-            await markFaceReportPaid(resultId, reportType as "base" | "wealth" | "love" | "marriage" | "career");
+            // 관상 결제인 경우 (base + 선택된 addon들)
+            await markFaceReportPaid(resultId, "base");
+            // 선택된 addon들도 paid 처리
+            for (const addon of selectedAddons) {
+              await markFaceReportPaid(resultId, addon as "base" | "wealth" | "love" | "marriage" | "career" | "health");
+            }
 
             // Supabase 저장 (정통 관상)
             const faceRecord = await getFaceAnalysisRecord(resultId);
@@ -398,7 +404,12 @@ function SuccessContent() {
                   analysis_result: faceRecord.reports as Record<string, unknown>,
                   is_paid: true,
                   paid_at: new Date().toISOString(),
-                  payment_info: { method: "toss", price: Number(amount), ...(couponCode ? { couponCode } : {}) },
+                  payment_info: {
+                    method: "toss",
+                    price: Number(amount),
+                    ...(couponCode ? { couponCode } : {}),
+                    selected_addons: selectedAddons,
+                  },
                   ...(utmSource ? { utm_source: utmSource } : {}),
                   ...(influencerId ? { influencer_id: influencerId } : {}),
                 });
