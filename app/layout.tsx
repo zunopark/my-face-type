@@ -144,6 +144,20 @@ export default function RootLayout({
           </>
         )}
 
+        {/* Google Ads (gtag.js) - 전환 측정 */}
+        <Script
+          src="https://www.googletagmanager.com/gtag/js?id=AW-17969586043"
+          strategy="afterInteractive"
+        />
+        <Script id="google-ads" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'AW-17969586043');
+          `}
+        </Script>
+
         {/* AdSense */}
         {process.env.NEXT_PUBLIC_ADSENSE_CLIENT && (
           <Script

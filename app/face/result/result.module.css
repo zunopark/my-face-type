@@ -227,6 +227,30 @@
   height: 100%;
 }
 
+/* === 붓그림 초상화 === */
+.portrait_section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 32px;
+  gap: 12px;
+}
+
+.portrait_label {
+  font-family: "KimjungchulMyungjo-Bold", serif;
+  font-size: 15px;
+  color: #5a4a3a;
+  letter-spacing: 2px;
+}
+
+.portrait_frame {
+  background: #f8f5ed;
+  border: 2px solid #e8e0d0;
+  border-radius: 16px;
+  padding: 12px;
+  box-shadow: 0 4px 16px rgba(60, 50, 40, 0.1);
+}
+
 /* === faceteller 이미지 === */
 .face_teller_wrap {
   width: 350px;

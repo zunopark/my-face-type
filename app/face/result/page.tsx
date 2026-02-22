@@ -73,6 +73,7 @@ const PAYMENT_CONFIG = {
 interface FaceResult {
   id: string;
   imageBase64: string;
+  portraitBase64?: string;
   features: string;
   paid: boolean;
   timestamp: string;
@@ -184,6 +185,7 @@ function ResultContent() {
         const parsed: FaceResult = {
           id: stored.id,
           imageBase64: stored.imageBase64,
+          portraitBase64: (stored as unknown as Record<string, unknown>).portraitBase64 as string | undefined,
           features: stored.features,
           paid: stored.paid || false,
           timestamp: stored.timestamp,
@@ -899,6 +901,22 @@ function ResultContent() {
               </div>
             </div>
           </div>
+          {/* 붓그림 초상화 (숨김 처리) */}
+          {/* {result.portraitBase64 && (
+            <div className={styles.portrait_section}>
+              <div className={styles.portrait_label}>AI 수묵화 초상</div>
+              <div className={styles.portrait_frame}>
+                <Image
+                  src={result.portraitBase64}
+                  alt="붓그림 초상화"
+                  width={280}
+                  height={280}
+                  style={{ objectFit: "contain", borderRadius: "12px" }}
+                  unoptimized
+                />
+              </div>
+            </div>
+          )} */}
           <div className={styles.fake_analysis_spinner} />
           <div className={styles.fake_analysis_text}>{fakeMessage}</div>
           <div className={styles.fake_analysis_progress_wrap}>
@@ -951,6 +969,23 @@ function ResultContent() {
               </div>
             </div>
           </div>
+
+          {/* 붓그림 초상화 (숨김 처리) */}
+          {/* {result.portraitBase64 && (
+            <div className={styles.portrait_section}>
+              <div className={styles.portrait_label}>AI 수묵화 초상</div>
+              <div className={styles.portrait_frame}>
+                <Image
+                  src={result.portraitBase64}
+                  alt="붓그림 초상화"
+                  width={300}
+                  height={300}
+                  style={{ objectFit: "contain", borderRadius: "12px" }}
+                  unoptimized
+                />
+              </div>
+            </div>
+          )} */}
 
           {/* faceteller 이미지 */}
           <div className={styles.face_teller_wrap}>
@@ -1262,6 +1297,23 @@ function ResultContent() {
               </div>
             </div>
           </div>
+
+          {/* 붓그림 초상화 (숨김 처리) */}
+          {/* {result.portraitBase64 && (
+            <div className={styles.portrait_section}>
+              <div className={styles.portrait_label}>AI 수묵화 초상</div>
+              <div className={styles.portrait_frame}>
+                <Image
+                  src={result.portraitBase64}
+                  alt="붓그림 초상화"
+                  width={300}
+                  height={300}
+                  style={{ objectFit: "contain", borderRadius: "12px" }}
+                  unoptimized
+                />
+              </div>
+            </div>
+          )} */}
 
           <div className={styles.result}>
             {/* Summary */}
