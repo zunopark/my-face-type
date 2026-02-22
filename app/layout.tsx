@@ -22,21 +22,23 @@ export const viewport: Viewport = {
 export const metadata: Metadata = {
   metadataBase: new URL("https://yangban.ai"),
   title: {
-    default: "AI 관상 테스트 | 관상가 양반",
-    template: "%s",
+    default: "관상 테스트 - AI 관상, 사주, 궁합, 운세 | 양반가",
+    template: "%s | 양반가",
   },
   description:
-    "AI 관상 테스트로 나의 얼굴을 분석해보세요. 관상가 양반이 알려주는 관상, 동물상, 궁합, 연애 사주까지 한 번에!",
+    "관상 테스트 무료로 해보세요! AI가 얼굴 사진으로 관상을 분석하고, 사주, 궁합, 연애운, 신년 운세까지 풀어드립니다.",
   keywords: [
     "관상 테스트",
     "관상",
-    "관상가 양반",
+    "AI 관상",
+    "관상 보기",
     "사주",
-    "운세",
-    "AI",
-    "인공지능",
-    "동물상",
     "궁합",
+    "운세",
+    "연애 사주",
+    "신년 운세",
+    "동물상 테스트",
+    "양반가",
   ],
   authors: [{ name: "관상가 양반 | Nmax" }],
   verification: {
@@ -55,23 +57,23 @@ export const metadata: Metadata = {
     type: "website",
     locale: "ko_KR",
     siteName: "양반가",
-    title: "AI 관상 테스트 | 관상가 양반",
+    title: "관상 테스트 - AI 관상, 사주, 궁합, 운세 | 양반가",
     description:
-      "AI 관상 테스트로 나의 얼굴을 분석해보세요. 관상가 양반이 알려주는 관상, 동물상, 궁합, 연애 사주까지 한 번에!",
+      "관상 테스트 무료로 해보세요! AI가 얼굴 사진으로 관상을 분석하고, 사주, 궁합, 연애운, 신년 운세까지 풀어드립니다.",
     images: [
       {
         url: "https://i.ibb.co/pVwxWdq/gvv.png",
         width: 1200,
         height: 630,
-        alt: "관상가 양반",
+        alt: "양반가 - 관상 테스트",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "AI 관상 테스트 | 관상가 양반",
+    title: "관상 테스트 - AI 관상, 사주, 궁합, 운세 | 양반가",
     description:
-      "AI 관상 테스트로 나의 얼굴을 분석해보세요. 관상가 양반이 알려주는 관상, 동물상, 궁합, 연애 사주까지 한 번에!",
+      "관상 테스트 무료로 해보세요! AI가 얼굴 사진으로 관상을 분석하고, 사주, 궁합, 연애운, 신년 운세까지 풀어드립니다.",
   },
   robots: {
     index: true,
