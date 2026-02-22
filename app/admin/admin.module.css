@@ -257,6 +257,14 @@
   color: #4a3c2a;
 }
 
+/* ── 원가 힌트 ──────────────────────── */
+.price_hint {
+  font-size: 12px;
+  color: #c4965a;
+  font-weight: 600;
+  margin-top: 2px;
+}
+
 /* ── 테이블 ──────────────────────────── */
 .table_wrap {
   overflow-x: auto;
@@ -663,6 +671,17 @@
 .table .text_right {
   text-align: right;
   white-space: nowrap;
+}
+
+.clickable_num {
+  color: #2980b9;
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.clickable_num:hover {
+  color: #1a5276;
 }
 
 .form_textarea {

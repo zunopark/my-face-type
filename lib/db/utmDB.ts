@@ -128,3 +128,60 @@ export async function getMonthlySettlement(
 
   return results;
 }
+
+export interface PaymentDetail {
+  id: string;
+  service_type: string;
+  user_name: string;
+  price: number;
+  paid_at: string;
+}
+
+/**
+ * 인플루언서별 결제 내역 조회
+ */
+export async function getPaymentsByInfluencer(
+  influencerId: string
+): Promise<PaymentDetail[]> {
+  const { data: sajuData } = await supabase
+    .from("saju_analyses")
+    .select("id, service_type, user_info, payment_info, paid_at")
+    .eq("influencer_id", influencerId)
+    .eq("is_paid", true)
+    .order("paid_at", { ascending: false });
+
+  const { data: faceData } = await supabase
+    .from("face_analyses")
+    .select("id, service_type, payment_info, paid_at")
+    .eq("influencer_id", influencerId)
+    .eq("is_paid", true)
+    .order("paid_at", { ascending: false });
+
+  const results: PaymentDetail[] = [];
+
+  for (const row of sajuData || []) {
+    const userInfo = row.user_info as { userName?: string } | null;
+    const paymentInfo = row.payment_info as { price?: number } | null;
+    results.push({
+      id: row.id,
+      service_type: row.service_type,
+      user_name: userInfo?.userName || "-",
+      price: paymentInfo?.price || 0,
+      paid_at: row.paid_at,
+    });
+  }
+
+  for (const row of faceData || []) {
+    const paymentInfo = row.payment_info as { price?: number } | null;
+    results.push({
+      id: row.id,
+      service_type: row.service_type,
+      user_name: "-",
+      price: paymentInfo?.price || 0,
+      paid_at: row.paid_at,
+    });
+  }
+
+  results.sort((a, b) => new Date(b.paid_at).getTime() - new Date(a.paid_at).getTime());
+  return results;
+}

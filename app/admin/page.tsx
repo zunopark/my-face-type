@@ -40,6 +40,14 @@ interface Influencer {
   total_revenue?: number;
 }
 
+interface PaymentDetail {
+  id: string;
+  service_type: string;
+  user_name: string;
+  price: number;
+  paid_at: string;
+}
+
 interface SettlementRow {
   influencer_id: string;
   influencer_name: string;
@@ -53,11 +61,17 @@ interface SettlementRow {
 }
 
 const SERVICE_LABELS: Record<string, string> = {
-  all: "전체",
   face: "관상",
   couple: "커플궁합",
   saju_love: "연애사주",
   new_year: "신년사주",
+};
+
+const SERVICE_PRICES: Record<string, number> = {
+  face: 9900,
+  couple: 9900,
+  saju_love: 23900,
+  new_year: 26900,
 };
 
 const DISCOUNT_LABELS: Record<string, string> = {
@@ -75,7 +89,7 @@ const PLATFORM_LABELS: Record<string, string> = {
 const EMPTY_FORM = {
   code: "",
   name: "",
-  service_type: "all",
+  service_type: "face",
   discount_type: "fixed",
   discount_amount: "" as string | number,
   total_quantity: "" as string | number,
@@ -145,6 +159,11 @@ export default function AdminPage() {
   const [utmInfluencer, setUtmInfluencer] = useState<Influencer | null>(null);
   const [copiedIdx, setCopiedIdx] = useState<number | null>(null);
   const [utmPlatform, setUtmPlatform] = useState("instagram");
+
+  // Payment detail modal state
+  const [paymentDetails, setPaymentDetails] = useState<PaymentDetail[]>([]);
+  const [paymentInfluencer, setPaymentInfluencer] = useState<Influencer | null>(null);
+  const [paymentLoading, setPaymentLoading] = useState(false);
 
   // Settlement state
   const [settlement, setSettlement] = useState<SettlementRow[]>([]);
@@ -432,6 +451,23 @@ export default function AdminPage() {
     });
   };
 
+  // ─── 결제 내역 조회 ──────────────────────────────
+
+  const handleShowPayments = async (inf: Influencer) => {
+    setPaymentInfluencer(inf);
+    setPaymentLoading(true);
+    try {
+      const res = await fetch(`/api/admin/influencers?payments=${inf.id}`);
+      const data = await res.json();
+      setPaymentDetails(Array.isArray(data) ? data : []);
+    } catch (err) {
+      console.error("결제 내역 조회 오류:", err);
+      setPaymentDetails([]);
+    } finally {
+      setPaymentLoading(false);
+    }
+  };
+
   // ─── 정산 월 이동 ──────────────────────────────
 
   const goSettlementMonth = (delta: number) => {
@@ -698,7 +734,18 @@ export default function AdminPage() {
                         <td className={styles.code_cell}>{inf.slug}</td>
                         <td className={styles.text_right}>{rs}%</td>
                         <td className={styles.text_right}>{(inf.total_visits || 0).toLocaleString()}</td>
-                        <td className={styles.text_right}>{(inf.total_payments || 0).toLocaleString()}</td>
+                        <td className={styles.text_right}>
+                          {(inf.total_payments || 0) > 0 ? (
+                            <span
+                              className={styles.clickable_num}
+                              onClick={() => handleShowPayments(inf)}
+                            >
+                              {(inf.total_payments || 0).toLocaleString()}
+                            </span>
+                          ) : (
+                            "0"
+                          )}
+                        </td>
                         <td className={styles.text_right}>{revenue.toLocaleString()}원</td>
                         <td className={styles.text_right}>{settlementAmt.toLocaleString()}원</td>
                         <td className={styles.text_right}>
@@ -878,6 +925,11 @@ export default function AdminPage() {
                         </option>
                       ))}
                     </select>
+                    {SERVICE_PRICES[formData.service_type] && (
+                      <span className={styles.price_hint}>
+                        원가: {SERVICE_PRICES[formData.service_type].toLocaleString()}원
+                      </span>
+                    )}
                   </div>
                   <div className={styles.form_field}>
                     <label className={styles.form_label}>할인 유형</label>
@@ -1340,6 +1392,70 @@ export default function AdminPage() {
                 </button>
                 <button className={styles.form_submit} onClick={handleUpdateInfluencer}>
                   저장
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* ── 결제 내역 모달 ──────────────── */}
+        {paymentInfluencer && (
+          <div
+            className={styles.modal_overlay}
+            onClick={(e) => {
+              if (e.target === e.currentTarget) {
+                setPaymentInfluencer(null);
+              }
+            }}
+          >
+            <div className={styles.modal}>
+              <h3 className={styles.modal_title}>{paymentInfluencer.name} 결제 내역</h3>
+              {paymentLoading ? (
+                <div className={styles.loading}>불러오는 중...</div>
+              ) : paymentDetails.length === 0 ? (
+                <div className={styles.empty}>결제 내역이 없습니다.</div>
+              ) : (
+                <div className={styles.table_wrap}>
+                  <table className={styles.table}>
+                    <thead>
+                      <tr>
+                        <th>날짜</th>
+                        <th>서비스</th>
+                        <th>이름</th>
+                        <th className={styles.text_right}>금액</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {paymentDetails.map((p) => (
+                        <tr key={p.id}>
+                          <td>
+                            {new Date(p.paid_at).toLocaleDateString("ko-KR", {
+                              year: "numeric",
+                              month: "2-digit",
+                              day: "2-digit",
+                            })}
+                          </td>
+                          <td>{SERVICE_LABELS[p.service_type] || p.service_type}</td>
+                          <td>{p.user_name}</td>
+                          <td className={styles.text_right}>{p.price.toLocaleString()}원</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                    <tfoot>
+                      <tr className={styles.table_foot}>
+                        <td colSpan={3}>합계 ({paymentDetails.length}건)</td>
+                        <td className={styles.text_right}>{paymentDetails.reduce((s, p) => s + p.price, 0).toLocaleString()}원</td>
+                      </tr>
+                    </tfoot>
+                  </table>
+                </div>
+              )}
+              <div className={styles.form_actions}>
+                <button
+                  className={styles.form_cancel}
+                  onClick={() => setPaymentInfluencer(null)}
+                >
+                  닫기
                 </button>
               </div>
             </div>

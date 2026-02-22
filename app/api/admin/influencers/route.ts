@@ -6,9 +6,16 @@ import {
   updateInfluencer,
   deleteInfluencer,
 } from "@/lib/db/influencerDB";
+import { getPaymentsByInfluencer } from "@/lib/db/utmDB";
 
 export async function GET(request: NextRequest) {
   const slug = request.nextUrl.searchParams.get("slug");
+  const payments = request.nextUrl.searchParams.get("payments");
+
+  if (payments) {
+    const data = await getPaymentsByInfluencer(payments);
+    return NextResponse.json(data);
+  }
 
   if (slug) {
     const influencer = await getInfluencerBySlug(slug);

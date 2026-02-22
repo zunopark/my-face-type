@@ -2786,6 +2786,19 @@ function SajuCard({ data }: { data: NewYearRecord }) {
 }
 
 // 리포트 카드 컴포넌트
+// 서술 텍스트 렌더링 헬퍼
+function NarrativeText({ sections, name }: { sections: Record<string, ParsedSection>; name: string }) {
+  const text = sections[name]?.content;
+  if (!text) return null;
+  return (
+    <div className={styles.text_block}>
+      {text.split("\n").filter(line => line.trim()).map((para, i) => (
+        <p key={i}>{para}</p>
+      ))}
+    </div>
+  );
+}
+
 function ReportCard({
   chapter,
   chapterIndex,
@@ -2959,6 +2972,8 @@ function Chapter1Content({ sections }: { sections: Record<string, ParsedSection>
         </div>
       )}
 
+      <NarrativeText sections={sections} name="총운_서술" />
+
       {Object.values(scores).some(s => s > 0) && (
         <div className={styles.section_block}>
           <h4 className={styles.section_title}>영역별 운세</h4>
@@ -2982,6 +2997,8 @@ function Chapter1Content({ sections }: { sections: Record<string, ParsedSection>
           <span className={styles.info_value}>{keywords.join(", ")}</span>
         </div>
       )}
+
+      <NarrativeText sections={sections} name="키워드_서술" />
 
       {(mainData["주요_특징"] || mainData["전반적_흐름"]) && (
         <div className={styles.text_block}>
@@ -3034,6 +3051,8 @@ function Chapter1Content({ sections }: { sections: Record<string, ParsedSection>
         </div>
       )}
 
+      <NarrativeText sections={sections} name="위기_서술" />
+
       {opportunityData["기회1_제목"] && (
         <div className={styles.section_block}>
           <h4 className={styles.section_title}>기회의 시기</h4>
@@ -3053,6 +3072,8 @@ function Chapter1Content({ sections }: { sections: Record<string, ParsedSection>
           })}
         </div>
       )}
+
+      <NarrativeText sections={sections} name="기회_서술" />
     </div>
   );
 }
@@ -3085,6 +3106,8 @@ function Chapter2Content({ sections }: { sections: Record<string, ParsedSection>
       {summary && <div className={styles.text_block}><p>{summary}</p></div>}
       {flow && <div className={styles.text_block}><p>{flow}</p></div>}
 
+      <NarrativeText sections={sections} name="재물운_서술" />
+
       {events.length > 0 && (
         <div className={styles.section_block}>
           <h4 className={styles.section_title}>올해의 재물 사건</h4>
@@ -3096,6 +3119,8 @@ function Chapter2Content({ sections }: { sections: Record<string, ParsedSection>
           ))}
         </div>
       )}
+
+      <NarrativeText sections={sections} name="재물사건_서술" />
 
       {methods.length > 0 && (
         <div className={styles.section_block}>
@@ -3122,6 +3147,8 @@ function Chapter2Content({ sections }: { sections: Record<string, ParsedSection>
           })}
         </div>
       )}
+
+      <NarrativeText sections={sections} name="돈버는방식_서술" />
 
       {(monthlyData["상승기_월"] || monthlyData["주의기_월"]) && (
         <div className={styles.section_block}>
@@ -3159,6 +3186,8 @@ function Chapter2Content({ sections }: { sections: Record<string, ParsedSection>
         </div>
       )}
 
+      <NarrativeText sections={sections} name="귀인악인_서술" />
+
       {(adviceData["수입_흐름"] || adviceData["지출_새는이유"]) && (
         <div className={styles.section_block}>
           <h4 className={styles.section_title}>재물 조언</h4>
@@ -3168,6 +3197,8 @@ function Chapter2Content({ sections }: { sections: Record<string, ParsedSection>
           {adviceData["지출_막는법"] && <div className={styles.info_row}><span className={styles.info_label}>지출 막기</span><span className={styles.info_value}>{adviceData["지출_막는법"]}</span></div>}
         </div>
       )}
+
+      <NarrativeText sections={sections} name="재물운_조언_서술" />
     </div>
   );
 }
@@ -3197,6 +3228,8 @@ function Chapter3Content({ sections }: { sections: Record<string, ParsedSection>
   return (
     <div className={styles.chapter_structured}>
       {summary && <div className={styles.text_block}><p>{summary}</p></div>}
+
+      <NarrativeText sections={sections} name="건강운_서술" />
 
       {(constitutionData["타고난_체질"] || constitutionData["체질_장점"]) && (
         <div className={styles.section_block}>
@@ -3254,6 +3287,8 @@ function Chapter3Content({ sections }: { sections: Record<string, ParsedSection>
           {dietData["추천_영양제"] && <div className={styles.info_row}><span className={styles.info_label}>영양제</span><span className={styles.info_value}>{dietData["추천_영양제"]}</span></div>}
         </div>
       )}
+
+      <NarrativeText sections={sections} name="운동식습관_서술" />
     </div>
   );
 }
@@ -3283,6 +3318,8 @@ function Chapter4Content({ sections }: { sections: Record<string, ParsedSection>
       {(summary || summaryData["요약"]) && <div className={styles.text_block}><p>{summary || summaryData["요약"]}</p></div>}
       {mainText && <div className={styles.text_block}><p>{mainText}</p></div>}
 
+      <NarrativeText sections={sections} name="애정운_서술" />
+
       {(risingData["상승_월"] || risingData["상승_이유"]) && (
         <div className={styles.section_block}>
           <h4 className={styles.section_title}>애정운 상승 시기</h4>
@@ -3290,6 +3327,8 @@ function Chapter4Content({ sections }: { sections: Record<string, ParsedSection>
           {risingData["상승_이유"] && <div className={styles.text_block}><p>{risingData["상승_이유"]}</p></div>}
         </div>
       )}
+
+      <NarrativeText sections={sections} name="상승시기_서술" />
 
       {places.length > 0 && (
         <div className={styles.info_row}>
@@ -3304,6 +3343,8 @@ function Chapter4Content({ sections }: { sections: Record<string, ParsedSection>
           <span className={styles.info_value}>{charms.join(", ")}</span>
         </div>
       )}
+
+      <NarrativeText sections={sections} name="매력포인트_서술" />
 
       {luckData["개운법"] && (
         <div className={styles.section_block}>
@@ -3320,6 +3361,8 @@ function Chapter4Content({ sections }: { sections: Record<string, ParsedSection>
           {itemData["행운_향기"] && <div className={styles.info_row}><span className={styles.info_label}>향기</span><span className={styles.info_value}>{itemData["행운_향기"]}</span></div>}
         </div>
       )}
+
+      <NarrativeText sections={sections} name="개운법_서술" />
     </div>
   );
 }
@@ -3345,6 +3388,8 @@ function Chapter5Content({ sections }: { sections: Record<string, ParsedSection>
       {summary && <div className={styles.text_block}><p>{summary}</p></div>}
       {socialText && <div className={styles.text_block}><p>{socialText}</p></div>}
 
+      <NarrativeText sections={sections} name="직업운_서술" />
+
       {(jobData["이직_적합도"] || jobData["퇴사_적합도"]) && (
         <div className={styles.section_block}>
           <h4 className={styles.section_title}>이직/퇴사 분석</h4>
@@ -3357,6 +3402,8 @@ function Chapter5Content({ sections }: { sections: Record<string, ParsedSection>
         </div>
       )}
 
+      <NarrativeText sections={sections} name="이직퇴사_서술" />
+
       {abilities.length > 0 && (
         <div className={styles.section_block}>
           <h4 className={styles.section_title}>일잘러 능력</h4>
@@ -3368,6 +3415,8 @@ function Chapter5Content({ sections }: { sections: Record<string, ParsedSection>
           ))}
         </div>
       )}
+
+      <NarrativeText sections={sections} name="일잘러능력_서술" />
 
       {(timingData["상승기_월"] || timingData["주의기_월"]) && (
         <div className={styles.section_block}>
@@ -3414,6 +3463,10 @@ function Chapter5Content({ sections }: { sections: Record<string, ParsedSection>
           {villainData["상황"] && <div className={styles.info_row}><span className={styles.info_label}>상황</span><span className={styles.info_value}>{villainData["상황"]}</span></div>}
         </div>
       )}
+
+      <NarrativeText sections={sections} name="귀인악인_서술" />
+
+      <NarrativeText sections={sections} name="연봉승진_서술" />
     </div>
   );
 }
@@ -3440,6 +3493,8 @@ function Chapter6Content({ sections }: { sections: Record<string, ParsedSection>
     <div className={styles.chapter_structured}>
       {summary && <div className={styles.text_block}><p>{summary}</p></div>}
 
+      <NarrativeText sections={sections} name="관계운_서술" />
+
       {(flowData["가까워질_사람"] || flowData["멀어질_사람"]) && (
         <div className={styles.section_block}>
           <h4 className={styles.section_title}>인연의 흐름</h4>
@@ -3462,6 +3517,8 @@ function Chapter6Content({ sections }: { sections: Record<string, ParsedSection>
         </div>
       )}
 
+      <NarrativeText sections={sections} name="관계별_서술" />
+
       {(benefactorData["외모_특징"] || benefactorData["직업"]) && (
         <div className={styles.section_block}>
           <h4 className={styles.section_title}>올해의 귀인</h4>
@@ -3472,6 +3529,8 @@ function Chapter6Content({ sections }: { sections: Record<string, ParsedSection>
         </div>
       )}
 
+      <NarrativeText sections={sections} name="귀인_서술" />
+
       {(avoidData["감정쓰레기통"] || avoidData["악인_특징"]) && (
         <div className={styles.section_block}>
           <h4 className={styles.section_title}>멀리해야 할 사람</h4>
@@ -3480,6 +3539,8 @@ function Chapter6Content({ sections }: { sections: Record<string, ParsedSection>
           {avoidData["악인_특징"] && <div className={styles.info_row}><span className={styles.info_label}>특징</span><span className={styles.info_value}>{avoidData["악인_특징"]}</span></div>}
         </div>
       )}
+
+      <NarrativeText sections={sections} name="악인_서술" />
     </div>
   );
 }
@@ -3497,6 +3558,8 @@ function Chapter7Content({ sections }: { sections: Record<string, ParsedSection>
       {summary && <div className={styles.text_block}><p>{summary}</p></div>}
       {flowText && <div className={styles.text_block}><p>{flowText}</p></div>}
 
+      <NarrativeText sections={sections} name="감정흐름_서술" />
+
       {(weakData["시기"] || weakData["감정_패턴"]) && (
         <div className={styles.section_block}>
           <h4 className={styles.section_title}>약해지는 시기</h4>
@@ -3506,6 +3569,8 @@ function Chapter7Content({ sections }: { sections: Record<string, ParsedSection>
         </div>
       )}
 
+      <NarrativeText sections={sections} name="약해지는시기_서술" />
+
       {(routineData["하루_루틴"] || routineData["주간_루틴"]) && (
         <div className={styles.section_block}>
           <h4 className={styles.section_title}>마음 루틴</h4>
@@ -3514,6 +3579,8 @@ function Chapter7Content({ sections }: { sections: Record<string, ParsedSection>
           {routineData["월간_루틴"] && <div className={styles.info_row}><span className={styles.info_label}>매월</span><span className={styles.info_value}>{routineData["월간_루틴"]}</span></div>}
         </div>
       )}
+
+      <NarrativeText sections={sections} name="마음루틴_서술" />
 
       {(prescriptionData["개운_색상"] || prescriptionData["개운_활동"]) && (
         <div className={styles.section_block}>
@@ -3525,6 +3592,8 @@ function Chapter7Content({ sections }: { sections: Record<string, ParsedSection>
           {prescriptionData["추천_향기"] && <div className={styles.info_row}><span className={styles.info_label}>향기</span><span className={styles.info_value}>{prescriptionData["추천_향기"]}</span></div>}
         </div>
       )}
+
+      <NarrativeText sections={sections} name="마음처방전_서술" />
     </div>
   );
 }
@@ -3566,6 +3635,9 @@ function Chapter8Content({ sections }: { sections: Record<string, ParsedSection>
         </div>
       )}
 
+      <NarrativeText sections={sections} name="최고의달_서술" />
+      <NarrativeText sections={sections} name="조심할달_서술" />
+
       <div className={styles.section_block}>
         <h4 className={styles.section_title}>월별 운세</h4>
         <div className={styles.month_table}>
@@ -3581,6 +3653,8 @@ function Chapter8Content({ sections }: { sections: Record<string, ParsedSection>
         </div>
       </div>
 
+      <NarrativeText sections={sections} name="월별_서술" />
+
       {forbiddenDays.length > 0 && (
         <div className={styles.section_block}>
           <h4 className={styles.section_title}>금기일</h4>
@@ -3589,6 +3663,8 @@ function Chapter8Content({ sections }: { sections: Record<string, ParsedSection>
           </ul>
         </div>
       )}
+
+      <NarrativeText sections={sections} name="금기일_서술" />
     </div>
   );
 }
@@ -3629,6 +3705,8 @@ function Chapter9Content({ sections }: { sections: Record<string, ParsedSection>
         </div>
       )}
 
+      <NarrativeText sections={sections} name="연말편지_서술" />
+
       {(hardData["시기"] || hardData["상황"]) && (
         <div className={styles.section_block}>
           <h4 className={styles.section_title}>힘들었던 순간</h4>
@@ -3647,12 +3725,16 @@ function Chapter9Content({ sections }: { sections: Record<string, ParsedSection>
         </div>
       )}
 
+      <NarrativeText sections={sections} name="성취_서술" />
+
       {actionData["action_item"] && (
         <div className={styles.section_block}>
           <h4 className={styles.section_title}>오늘 당장 시작하기</h4>
           <div className={styles.text_block}><p>{actionData["action_item"]}</p></div>
         </div>
       )}
+
+      <NarrativeText sections={sections} name="행동_서술" />
     </div>
   );
 }
@@ -3677,6 +3759,8 @@ function Chapter10Content({ sections }: { sections: Record<string, ParsedSection
         </div>
       )}
 
+      <NarrativeText sections={sections} name="Do_서술" />
+
       {dontList.length > 0 && (
         <div className={styles.section_block}>
           <h4 className={styles.section_title}>Don&apos;t</h4>
@@ -3685,6 +3769,8 @@ function Chapter10Content({ sections }: { sections: Record<string, ParsedSection
           </ul>
         </div>
       )}
+
+      <NarrativeText sections={sections} name="Dont_서술" />
 
       {(luckyData["행운_색상"] || luckyData["행운_숫자"]) && (
         <div className={styles.section_block}>
@@ -3695,6 +3781,8 @@ function Chapter10Content({ sections }: { sections: Record<string, ParsedSection
           {luckyData["행운_음식"] && <div className={styles.info_row}><span className={styles.info_label}>음식</span><span className={styles.info_value}>{luckyData["행운_음식"]}</span></div>}
         </div>
       )}
+
+      <NarrativeText sections={sections} name="행운아이템_서술" />
     </div>
   );
 }
@@ -3725,6 +3813,8 @@ function Chapter11Content({ sections }: { sections: Record<string, ParsedSection
           <div className={styles.text_block}><p>{data["특별_메시지"]}</p></div>
         </div>
       )}
+
+      <NarrativeText sections={sections} name="귀띔_서술" />
     </div>
   );
 }
