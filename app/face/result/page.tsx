@@ -25,6 +25,7 @@ import {
   trackPaymentAttempt,
   trackPaymentSuccess,
   trackCouponApplied,
+  trackPageView,
 } from "@/lib/mixpanel";
 import {
   getFaceAnalysisRecord,
@@ -219,6 +220,7 @@ function ResultContent() {
           reports: stored.reports as FaceResult["reports"],
         };
         setResult(parsed);
+        trackPageView("face_result", { id: parsed.id, paid: parsed.paid });
 
         // 이미 분석 완료된 경우 바로 결과 표시
         if (parsed.summary && parsed.detail) {
@@ -282,6 +284,7 @@ function ResultContent() {
         };
 
         setResult(parsed);
+        trackPageView("face_result", { id: parsed.id, paid: true, source: "supabase" });
 
         // 분석 결과가 있으면 바로 표시
         if (parsed.summary || parsed.sections) {

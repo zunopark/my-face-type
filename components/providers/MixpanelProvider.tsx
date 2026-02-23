@@ -75,7 +75,7 @@ export default function MixpanelProvider({
 
     mixpanel.init(MIXPANEL_TOKEN, {
       debug: process.env.NODE_ENV === "development",
-      track_pageview: true,
+      track_pageview: false,
       persistence: "localStorage",
     });
 

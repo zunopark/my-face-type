@@ -7,6 +7,8 @@ import {
   trackPaymentModalOpen,
   trackPaymentModalClose,
   trackPaymentAttempt,
+  trackCouponApplied,
+  trackPaymentSuccess,
 } from "@/lib/mixpanel";
 import {
   getNewYearRecord,
@@ -404,6 +406,19 @@ function NewYearDetailContent() {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ code, serviceType: "new_year" }),
+        });
+
+        trackCouponApplied("new_year", {
+          coupon_code: code,
+          discount: PAYMENT_CONFIG.price,
+          is_free: true,
+          final_price: 0,
+        });
+        trackPaymentSuccess("new_year", {
+          id: data.id,
+          price: 0,
+          method: "coupon",
+          coupon_code: code,
         });
 
         // 결과 페이지로 이동

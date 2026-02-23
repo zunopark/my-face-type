@@ -7,6 +7,8 @@ import {
   trackPaymentModalOpen,
   trackPaymentModalClose,
   trackPaymentAttempt,
+  trackCouponApplied,
+  trackPaymentSuccess,
 } from "@/lib/mixpanel";
 import {
   getSajuLoveRecord,
@@ -490,6 +492,19 @@ function SajuDetailContent() {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ code, serviceType: "saju_love" }),
+        });
+
+        trackCouponApplied("saju_love", {
+          coupon_code: code,
+          discount: PAYMENT_CONFIG.price,
+          is_free: true,
+          final_price: 0,
+        });
+        trackPaymentSuccess("saju_love", {
+          id: data.id,
+          price: 0,
+          method: "coupon",
+          coupon_code: code,
         });
 
         // 결과 페이지로 이동

@@ -13,6 +13,7 @@ import {
   trackPaymentAttempt,
   trackPaymentSuccess,
   trackCouponApplied,
+  trackPageView,
 } from "@/lib/mixpanel";
 import {
   getCoupleAnalysisRecord,
@@ -160,6 +161,7 @@ function CoupleResultContent() {
           },
         };
         setResult(parsed);
+        trackPageView("couple_result", { id: parsed.id, paid: parsed.reports?.couple?.paid });
 
         // 이미 분석 완료된 경우 바로 결과 표시
         if (parsed.reports?.couple?.data?.details?.length === 5) {
