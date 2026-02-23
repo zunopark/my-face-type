@@ -2112,9 +2112,11 @@ function SajuCard({ data }: { data: SajuLoveRecord }) {
     strengthLoveInterpretation[strengthLevel] ||
     strengthLoveInterpretation["중화"];
 
-  // 오행 퍼센트
-  const elementPercent =
-    loveFacts?.fiveElementsHanjaPercent || fiveElements?.percent || {};
+  // 오행 퍼센트 (렌더링에서 영문 키 wood/fire/earth/metal/water 사용)
+  const hanjaPercent = loveFacts?.fiveElementsHanjaPercent;
+  const elementPercent: Record<string, number> = hanjaPercent
+    ? { wood: hanjaPercent["木"] || 0, fire: hanjaPercent["火"] || 0, earth: hanjaPercent["土"] || 0, metal: hanjaPercent["金"] || 0, water: hanjaPercent["水"] || 0 }
+    : fiveElements?.percent || {};
 
   // 대운/연운/월운 스크롤 위치 설정 (현재 항목이 보이도록)
   useEffect(() => {
