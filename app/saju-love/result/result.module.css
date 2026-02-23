@@ -186,277 +186,27 @@
 }
 
 /* 결과 래퍼 */
-.saju_result_page .result_wrap {
-  width: 100%;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-}
 
 /* 상단 고정 헤더 */
-.saju_result_page .top_fixed_header {
-  position: fixed;
-  top: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 100%;
-  max-width: 500px;
-  z-index: 100;
-  background: #fff;
-}
 
-.saju_result_page .top_label {
-  padding: 14px 20px;
-  background: linear-gradient(135deg, #fff0f0 0%, #ffe8e8 100%);
-  font-size: 15px;
-  color: #b23c30;
-  font-weight: 600;
-}
 
 /* 프로그레스 바 */
-.saju_result_page .chapter_progress {
-  width: 100%;
-  height: 3px;
-  background: #f0f0f0;
-}
 
-.saju_result_page .chapter_progress_fill {
-  height: 100%;
-  background: linear-gradient(90deg, #e74c3c, #c0392b);
-  transition: width 0.3s ease;
-}
 
 /* 챕터 컨테이너 */
-.saju_result_page .chapters_container {
-  flex: 1;
-  margin-top: 44px;
-  position: relative;
-  overflow: hidden;
-}
 
-.saju_result_page .chapters_track {
-  display: flex;
-  transition: transform 0.4s ease;
-  height: 100%;
-}
-
-.saju_result_page .chapter_slide {
-  min-width: 100%;
-  width: 100%;
-  height: calc(100vh - 44px);
-  overflow-y: auto;
-  overflow-x: hidden;
-  flex-shrink: 0;
-}
-
-.saju_result_page .chapter_content_wrap {
-  padding: 0 0 100px;
-  max-width: 100%;
-  box-sizing: border-box;
-}
 
 /* 하단 네비게이션 */
-.saju_result_page .chapter_nav {
-  position: fixed;
-  bottom: 24px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 160px;
-  height: 48px;
-  background: rgba(255, 255, 255, 0.25);
-  backdrop-filter: blur(20px) saturate(180%);
-  -webkit-backdrop-filter: blur(20px) saturate(180%);
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 8px;
-  z-index: 100;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1),
-    inset 0 1px 0 rgba(255, 255, 255, 0.4);
-  border: 1px solid rgba(255, 255, 255, 0.4);
-  border-radius: 24px;
-}
 
-.saju_result_page .nav_arrow {
-  width: 36px;
-  height: 36px;
-  border: none;
-  background: transparent;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 50%;
-  transition: background 0.2s;
-}
-
-.saju_result_page .nav_arrow:hover {
-  background: rgba(0, 0, 0, 0.05);
-}
-
-.saju_result_page .nav_arrow:disabled {
-  opacity: 0.3;
-  cursor: not-allowed;
-}
-
-.saju_result_page .nav_arrow :global(.material-icons) {
-  font-size: 24px;
-  color: #333;
-}
-
-.saju_result_page .chapter_indicator {
-  display: flex;
-  align-items: center;
-  gap: 3px;
-  font-size: 13px;
-  color: #666;
-}
-
-.saju_result_page .current_chapter {
-  font-weight: 700;
-  color: #e74c3c;
-  font-size: 15px;
-}
-
-.saju_result_page .separator {
-  color: #aaa;
-}
-
-.saju_result_page .total_chapters {
-  color: #888;
-}
 
 /* 챕터 헤더 */
-.saju_result_page .chapter_header {
-  display: flex;
-  flex-direction: column;
-  gap: 0;
-  margin-bottom: 24px;
-  padding: 0;
-  text-align: left;
-  background: #fff;
-}
 
-.saju_result_page .chapter_label {
-  display: none;
-}
-
-.saju_result_page .chapter_title {
-  font-family: "KimjungchulMyungjo-Bold", serif;
-  font-size: 22px;
-  font-weight: 700;
-  color: #1a1a1a;
-  line-height: 1.4;
-  margin: 0;
-  padding: 20px 20px 0;
-}
 
 /* 챕터 본문 */
-.saju_result_page .chapter_body {
-  line-height: 2;
-  color: #333;
-  word-break: keep-all;
-  margin-top: 0;
-  padding: 0 20px;
-}
 
-.saju_result_page .chapter_body p {
-  margin-bottom: 18px;
-  margin-top: 0;
-}
-
-.saju_result_page .chapter_body p:first-child {
-  margin-top: 0;
-}
-
-.saju_result_page .chapter_body p:last-child {
-  margin-bottom: 0;
-}
-
-.saju_result_page .chapter_body h2 {
-  margin-top: 24px;
-  padding-top: 20px;
-  border-top: 1px dashed #f5b7b1;
-  font-size: 20px;
-  font-weight: 700;
-  color: #c0392b;
-}
-
-.saju_result_page .chapter_body h2:first-child {
-  margin-top: 0;
-  padding-top: 0;
-  border-top: none;
-}
-
-.saju_result_page .chapter_body h3 {
-  color: #c0392b;
-  font-size: 18px;
-  font-weight: 600;
-  margin-top: 20px;
-  margin-bottom: 12px;
-}
-
-.saju_result_page .chapter_body h3:first-child {
-  margin-top: 0;
-}
-
-.saju_result_page .chapter_body strong {
-  color: #e74c3c;
-}
-
-.saju_result_page .chapter_body blockquote {
-  all: unset;
-  display: block;
-  position: relative;
-  margin: 20px 0;
-  padding: 20px;
-  background: #fffaf5;
-  border: none;
-  border-radius: 16px;
-  font-size: 14px;
-  line-height: 1.8;
-  color: #666;
-  font-style: normal;
-  box-shadow: 0 2px 8px rgba(231, 76, 60, 0.08);
-}
-
-.saju_result_page .chapter_body hr {
-  border: none;
-  border-top: 1px dashed #ddd;
-  margin: 24px 0;
-}
 
 /* 고민 박스 */
-.saju_result_page .concern_box {
-  background: #fff9f9;
-  border-radius: 12px;
-  padding: 20px;
-  margin: 0 20px 24px;
-  border: 1px solid #ffe8e8;
-  text-align: center;
-}
 
-.saju_result_page .concern_box_label {
-  font-size: 13px;
-  color: #999;
-  margin-bottom: 12px;
-}
-
-.saju_result_page .concern_box_content {
-  display: flex;
-  align-items: flex-start;
-  justify-content: center;
-  gap: 4px;
-  line-height: 1.8;
-  word-break: keep-all;
-}
-
-.saju_result_page .concern_text {
-  color: #333;
-  font-size: 15px;
-  padding-top: 4px;
-  text-align: left;
-}
 
 /* 챕터 섹션 스타일 */
 .saju_result_page :global(.chapter_section) {
@@ -488,26 +238,6 @@
   line-height: 1.4;
 }
 
-.saju_result_page .section_number {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-width: 28px;
-  height: 28px;
-  background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
-  color: #fff;
-  font-size: 14px;
-  font-weight: 700;
-  border-radius: 50%;
-  flex-shrink: 0;
-  box-shadow: 0 2px 6px rgba(231, 76, 60, 0.3);
-}
-
-.saju_result_page .section_text {
-  flex: 1;
-  color: #2a2a2a;
-  font-weight: 700;
-}
 
 .saju_result_page :global(.section_content) {
   margin-top: 0;
@@ -572,133 +302,16 @@
 }
 
 /* 인트로/목차 슬라이드 */
-.saju_result_page .intro_slide .chapter_content_wrap,
-.saju_result_page .toc_slide .chapter_content_wrap {
-  display: flex;
-  flex-direction: column;
-  align-items: stretch;
-  justify-content: flex-start;
-  min-height: auto;
-  text-align: left;
-}
 
-.saju_result_page .intro_compact {
-  gap: 0;
-}
 
 /* 인트로/목차 헤더 */
-.saju_result_page .intro_header {
-  display: flex;
-  flex-direction: column;
-  gap: 0;
-  padding: 0;
-  background: #fff;
-  margin-bottom: 20px;
-}
 
-.saju_result_page .intro_label {
-  display: none;
-}
-
-.saju_result_page .intro_title {
-  font-family: "KimjungchulMyungjo-Bold", serif;
-  font-size: 22px;
-  font-weight: 700;
-  color: #1a1a1a;
-  margin: 0;
-  padding: 20px 20px 0;
-}
-
-.saju_result_page .intro_subtitle {
-  font-size: 15px;
-  color: #7a5a5a;
-  margin: 0;
-  padding: 8px 20px 0;
-}
 
 /* 기본 정보 카드 */
-.saju_result_page .info_card {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 16px 20px;
-  background: #fff;
-  border-bottom: 1px solid #ffe8e8;
-}
 
-.saju_result_page .info_main {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
-
-.saju_result_page .info_name {
-  font-size: 18px;
-  font-weight: 700;
-  color: #1a1a1a;
-}
-
-.saju_result_page .info_birth {
-  font-size: 14px;
-  color: #888;
-}
-
-.saju_result_page .info_ilju {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  background: #fff9f9;
-  padding: 8px 14px;
-  border-radius: 20px;
-  border: 1px solid #ffe0e0;
-}
-
-.saju_result_page .ilju_char {
-  font-size: 20px;
-  font-weight: 700;
-  color: #e74c3c;
-}
-
-.saju_result_page .ilju_title {
-  font-size: 14px;
-  color: #666;
-}
 
 /* 사주 팔자 섹션 */
-.saju_result_page .pillars_section {
-  padding: 20px;
-  background: #fff;
-}
 
-.saju_result_page .pillars_header {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 15px;
-  font-weight: 700;
-  color: #1a1a1a;
-  margin-bottom: 16px;
-}
-
-.saju_result_page .pillars_header :global(.material-icons) {
-  font-size: 20px;
-  color: #e74c3c;
-}
-
-.saju_result_page .pillars_wrap {
-  display: flex;
-  justify-content: space-between;
-  gap: 8px;
-}
-
-.saju_result_page .pillar_item {
-  flex: 1;
-  text-align: center;
-  background: #fff9f9;
-  border: 1px solid #ffe0e0;
-  border-radius: 12px;
-  padding: 12px 6px;
-}
 
 .saju_result_page .pillar_label {
   font-size: 12px;
@@ -713,14 +326,6 @@
   gap: 8px;
 }
 
-.saju_result_page .pillar_char_wrap {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 4px;
-  padding: 8px 6px;
-  border-radius: 8px;
-}
 
 .saju_result_page .pillar_stem,
 .saju_result_page .pillar_branch {
@@ -728,99 +333,12 @@
   font-weight: 700;
 }
 
-.saju_result_page .pillar_ten_god {
-  font-size: 10px;
-  color: #888;
-  background: rgba(0, 0, 0, 0.05);
-  padding: 2px 6px;
-  border-radius: 4px;
-}
-
-.saju_result_page .pillar_korean {
-  font-size: 11px;
-  color: #666;
-  margin-top: 6px;
-}
 
 /* 연애 사주 핵심 카드 */
-.saju_result_page .love_facts_card {
-  margin: 0 20px 20px;
-  padding: 20px;
-  background: #fff;
-  border: 1px solid #ffe0e0;
-  border-radius: 16px;
-}
 
-.saju_result_page .love_facts_header {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 15px;
-  font-weight: 700;
-  color: #1a1a1a;
-  margin-bottom: 16px;
-}
-
-.saju_result_page .love_facts_header :global(.material-icons) {
-  font-size: 20px;
-  color: #e74c3c;
-}
-
-.saju_result_page .love_facts_grid {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-
-.saju_result_page .love_fact_item {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 10px 14px;
-  background: #fff9f9;
-  border-radius: 10px;
-}
-
-.saju_result_page .love_fact_label {
-  font-size: 14px;
-  color: #666;
-  font-weight: 500;
-}
-
-.saju_result_page .love_fact_value {
-  font-size: 14px;
-  color: #333;
-  font-weight: 600;
-}
-
-.saju_result_page .love_fact_value.highlight {
-  color: #e74c3c;
-}
-
-.saju_result_page .love_fact_value.muted {
-  color: #aaa;
-  font-weight: 500;
-}
 
 /* 리포트 목차 */
-.saju_result_page .toc_card {
-  width: calc(100% - 40px);
-  margin: 0 20px;
-  padding: 24px;
-  border-radius: 20px;
-  background: #fff;
-  border: 1px solid #f3d6d6;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
-  text-align: left;
-  box-sizing: border-box;
-}
 
-.saju_result_page .toc_title {
-  font-weight: 700;
-  font-size: 18px;
-  color: #b23c30;
-  margin-bottom: 20px;
-}
 
 .saju_result_page .toc_list {
   list-style: none;
@@ -831,95 +349,9 @@
   gap: 20px;
 }
 
-.saju_result_page .toc_item {
-  padding-bottom: 16px;
-  border-bottom: 1px dashed #f1cccc;
-}
-
-.saju_result_page .toc_item:last-child {
-  border-bottom: none;
-  padding-bottom: 0;
-}
-
-.saju_result_page .toc_item_title {
-  font-weight: 700;
-  font-size: 17px;
-  color: #5b2e2e;
-  margin-bottom: 10px;
-}
-
-.saju_result_page .toc_item_desc {
-  font-size: 15px;
-  color: #7a5a5a;
-  line-height: 1.5;
-  margin-top: 6px;
-}
-
-.saju_result_page .toc_subitems {
-  list-style: none;
-  padding: 0;
-  margin: 12px 0 0 0;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.saju_result_page .toc_subitem {
-  font-size: 15px;
-  color: #7a5a5a;
-  padding-left: 18px;
-  position: relative;
-  line-height: 1.5;
-}
-
-.saju_result_page .toc_subitem::before {
-  content: "•";
-  position: absolute;
-  left: 0;
-  color: #e74c3c;
-}
 
 /* 마지막 슬라이드 */
-.saju_result_page .ending_slide .chapter_content_wrap {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  min-height: calc(100vh - 120px);
-  text-align: center;
-  padding: 40px 24px 100px;
-}
 
-.saju_result_page .ending_header {
-  margin-bottom: 32px;
-}
-
-.saju_result_page .ending_label {
-  display: inline-block;
-  padding: 8px 20px;
-  background: linear-gradient(135deg, #fff0f0 0%, #ffe8e8 100%);
-  color: #b23c30;
-  font-size: 14px;
-  font-weight: 600;
-  border-radius: 20px;
-  border: 1px solid #ffd0d0;
-}
-
-.saju_result_page .ending_message {
-  max-width: 320px;
-  margin-bottom: 40px;
-}
-
-.saju_result_page .ending_message p {
-  font-size: 15px;
-  color: #555;
-  line-height: 1.9;
-  margin: 0 0 16px 0;
-}
-
-.saju_result_page .ending_message p:last-of-type:not(.ending_sign) {
-  margin-bottom: 24px;
-}
 
 .saju_result_page .ending_sign {
   font-size: 14px;
@@ -928,127 +360,11 @@
   margin-top: 20px;
 }
 
-.saju_result_page .ending_buttons {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  width: 100%;
-  max-width: 280px;
-}
-
-.saju_result_page .action_btn {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  padding: 14px 24px;
-  font-size: 15px;
-  font-weight: 600;
-  border-radius: 12px;
-  text-decoration: none;
-  border: none;
-  cursor: pointer;
-}
-
-.saju_result_page .action_btn.primary {
-  background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
-  color: white;
-  box-shadow: 0 4px 15px rgba(231, 76, 60, 0.3);
-}
-
-.saju_result_page .action_btn.secondary {
-  background: #f5f5f5;
-  color: #333;
-  border: 1px solid #ddd;
-}
 
 /* 이상형 이미지 */
-.saju_result_page .ideal_type_inline {
-  margin: 32px 0;
-  padding: 28px 20px;
-  background: linear-gradient(135deg, #fff5f5 0%, #ffe8e8 100%);
-  border-radius: 20px;
-  text-align: center;
-  border: 1px solid #ffd0d0;
-}
 
-.saju_result_page .ideal_type_header {
-  margin-bottom: 20px;
-}
-
-.saju_result_page .ideal_type_label {
-  display: inline-block;
-  padding: 6px 16px;
-  background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
-  color: white;
-  font-size: 13px;
-  font-weight: 700;
-  border-radius: 20px;
-  margin-bottom: 12px;
-}
-
-.saju_result_page .ideal_type_title {
-  font-size: 20px;
-  font-weight: 700;
-  color: #2a2a2a;
-  margin: 0 0 8px 0;
-}
-
-.saju_result_page .ideal_type_image_wrap {
-  max-width: 260px;
-  margin: 0 auto;
-  aspect-ratio: 3/4;
-  border-radius: 16px;
-  overflow: hidden;
-  box-shadow: 0 8px 32px rgba(231, 76, 60, 0.25);
-  position: relative;
-  cursor: pointer;
-  user-select: none;
-  -webkit-tap-highlight-color: transparent;
-}
-
-.saju_result_page .ideal_type_image {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.saju_result_page .ideal_type_blurred .ideal_type_image {
-  filter: blur(30px);
-  transition: filter 0.4s ease-out;
-}
-
-.saju_result_page .ideal_type_blurred[data-click-count="1"] .ideal_type_image {
-  filter: blur(24px);
-}
-
-.saju_result_page .ideal_type_blurred[data-click-count="2"] .ideal_type_image {
-  filter: blur(18px);
-}
-
-.saju_result_page .ideal_type_blurred[data-click-count="3"] .ideal_type_image {
-  filter: blur(12px);
-}
-
-.saju_result_page .ideal_type_blurred[data-click-count="4"] .ideal_type_image {
-  filter: blur(6px);
-}
-
-.saju_result_page .ideal_type_revealed .ideal_type_image {
-  filter: blur(0);
-}
-
-.saju_result_page .ideal_type_tap_hint {
-  margin-top: 16px;
-  font-size: 14px;
-  color: #e74c3c;
-  transition: opacity 0.3s ease;
-}
 
 /* 클릭 시 흔들림 애니메이션 */
-.saju_result_page .ideal_type_shake {
-  animation: shake-reveal 0.5s ease-out;
-}
 
 @keyframes shake-reveal {
   0%,
@@ -1137,7 +453,6 @@
 }
 
 /* 리스트 스타일 */
-.saju_result_page .chapter_body ul,
 .saju_result_page :global(.section_content) ul {
   list-style: none;
   margin: 16px 0;
@@ -1147,7 +462,6 @@
   gap: 10px;
 }
 
-.saju_result_page .chapter_body ul li,
 .saju_result_page :global(.section_content) ul li {
   position: relative;
   padding: 14px 16px 14px 44px;
@@ -1161,7 +475,6 @@
 
 
 /* 순서 있는 리스트 */
-.saju_result_page .chapter_body ol,
 .saju_result_page :global(.section_content) ol {
   list-style: none;
   margin: 16px 0;
@@ -1172,7 +485,6 @@
   counter-reset: list-counter;
 }
 
-.saju_result_page .chapter_body ol li,
 .saju_result_page :global(.section_content) ol li {
   position: relative;
   padding: 16px 16px 16px 52px;
@@ -1186,7 +498,6 @@
   box-shadow: 0 2px 8px rgba(231, 76, 60, 0.06);
 }
 
-.saju_result_page .chapter_body ol li::before,
 .saju_result_page :global(.section_content) ol li::before {
   content: counter(list-counter);
   position: absolute;
@@ -1206,9 +517,6 @@
 }
 
 /* 유틸리티 */
-.saju_result_page .hidden {
-  display: none !important;
-}
 
 /* ============================================
    대화형 UI 스타일 (chat_mode)
@@ -1223,97 +531,16 @@
 }
 
 /* 채팅 헤더 */
-.saju_result_page .chat_header {
-  position: fixed;
-  top: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 100%;
-  max-width: 500px;
-  padding: 12px 16px;
-  background: linear-gradient(135deg, #fff0f0 0%, #ffe8e8 100%);
-  border-bottom: 1px solid #ffd0d0;
-  z-index: 100;
-  box-sizing: border-box;
-}
 
-.saju_result_page .chat_header_profile {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
-.saju_result_page .chat_profile_img {
-  width: 44px;
-  height: 44px;
-  border-radius: 50%;
-  object-fit: cover;
-  border: 2px solid #fff;
-  box-shadow: 0 2px 8px rgba(231, 76, 60, 0.2);
-}
-
-.saju_result_page .chat_header_info {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-}
-
-.saju_result_page .chat_header_name {
-  font-size: 16px;
-  font-weight: 700;
-  color: #2a2a2a;
-}
-
-.saju_result_page .chat_header_status {
-  font-size: 12px;
-  color: #e74c3c;
-}
 
 /* 메시지 영역 */
-.saju_result_page .chat_messages_wrap {
-  flex: 1;
-  overflow-y: auto;
-  padding: 80px 16px 100px;
-  background: #fff;
-}
 
-.saju_result_page .chat_messages {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-}
 
 /* 메시지 행 */
-.saju_result_page .chat_message_row {
-  display: flex;
-  align-items: flex-start;
-  gap: 10px;
-}
 
-.saju_result_page .chat_avatar {
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  object-fit: cover;
-  flex-shrink: 0;
-}
 
 /* 말풍선 */
-.saju_result_page .chat_bubble {
-  max-width: 80%;
-  padding: 14px 16px;
-  border-radius: 4px 18px 18px 18px;
-  background: linear-gradient(135deg, #fff5f5 0%, #ffe8e8 100%);
-  border: 1px solid #ffd0d0;
-}
 
-.saju_result_page .chat_text {
-  font-size: 15px;
-  line-height: 1.7;
-  color: #333;
-  margin: 0;
-  word-break: keep-all;
-}
 
 /* 타이핑 커서 */
 .saju_result_page .typing_cursor {
@@ -1329,11 +556,6 @@
 }
 
 /* 카드 래퍼 */
-.saju_result_page .chat_card_wrap {
-  width: 100%;
-  padding: 0 4px;
-  box-sizing: border-box;
-}
 
 /* 리포트 카드 공통 - 인트로 스타일과 통일 */
 .saju_result_page .report_card {
@@ -1427,24 +649,7 @@
 }
 
 /* 사주 인트로 카드 */
-.saju_result_page .saju_intro_card {
-  background: linear-gradient(135deg, #fffafa 0%, #fff5f5 100%);
-}
 
-.saju_result_page .saju_info_row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 12px 0;
-  border-bottom: 1px solid #ffe8e8;
-  margin-bottom: 16px;
-}
-
-.saju_result_page .saju_info_main {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
 
 .saju_result_page .saju_info_name {
   font-size: 16px;
@@ -1452,127 +657,15 @@
   color: #1a1a1a;
 }
 
-.saju_result_page .saju_info_birth {
-  font-size: 13px;
-  color: #888;
-}
-
-.saju_result_page .saju_info_ilju {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  background: #fff;
-  padding: 6px 12px;
-  border-radius: 16px;
-  border: 1px solid #ffe0e0;
-}
-
-.saju_result_page .saju_info_ilju .ilju_char {
-  font-size: 18px;
-  font-weight: 700;
-  color: #e74c3c;
-}
-
-.saju_result_page .saju_info_ilju .ilju_title {
-  font-size: 13px;
-  color: #666;
-}
 
 /* 미니 사주팔자 */
-.saju_result_page .pillars_mini {
-  display: flex;
-  justify-content: space-between;
-  gap: 8px;
-  margin-bottom: 16px;
-}
 
-.saju_result_page .pillar_mini_item {
-  flex: 1;
-  text-align: center;
-  background: #fff;
-  border: 1px solid #ffe8e8;
-  border-radius: 10px;
-  padding: 10px 4px;
-}
-
-.saju_result_page .pillar_mini_label {
-  font-size: 11px;
-  color: #e74c3c;
-  font-weight: 600;
-  margin-bottom: 8px;
-}
-
-.saju_result_page .pillar_mini_chars {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
-
-.saju_result_page .pillar_mini_stem,
-.saju_result_page .pillar_mini_branch {
-  font-size: 20px;
-  font-weight: 700;
-  padding: 4px;
-  border-radius: 6px;
-}
 
 /* 미니 연애 핵심 */
-.saju_result_page .love_facts_mini {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 8px;
-}
 
-.saju_result_page .love_fact_mini {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 10px 12px;
-  background: #fff;
-  border-radius: 8px;
-  border: 1px solid #ffe8e8;
-}
-
-.saju_result_page .fact_label {
-  font-size: 13px;
-  color: #888;
-}
-
-.saju_result_page .fact_value {
-  font-size: 13px;
-  font-weight: 600;
-  color: #333;
-}
-
-.saju_result_page .fact_value.highlight {
-  color: #e74c3c;
-}
-
-.saju_result_page .fact_value.muted {
-  color: #bbb;
-}
 
 /* 고민 박스 미니 */
-.saju_result_page .concern_box_mini {
-  background: #fff9f9;
-  border: 1px solid #ffe8e8;
-  border-radius: 12px;
-  padding: 14px;
-  margin-bottom: 16px;
-}
 
-.saju_result_page .concern_box_mini .concern_label {
-  font-size: 12px;
-  color: #999;
-  margin-bottom: 8px;
-}
-
-.saju_result_page .concern_box_mini .concern_text {
-  font-size: 14px;
-  color: #333;
-  line-height: 1.7;
-  margin: 0;
-}
 
 /* 이상형 카드 */
 .saju_result_page .ideal_type_card {
@@ -1636,9 +729,6 @@
   color: #fff;
 }
 
-.saju_result_page .ideal_type_card.avoid_variant .card_subtitle {
-  color: rgba(255, 255, 255, 0.7);
-}
 
 .saju_result_page .ideal_type_card.avoid_variant .ideal_image_wrap {
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
@@ -1943,80 +1033,9 @@
 }
 
 /* 하단 버튼 영역 */
-.saju_result_page .chat_bottom {
-  position: fixed;
-  bottom: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 100%;
-  max-width: 500px;
-  padding: 16px;
-  background: linear-gradient(0deg, #fff 80%, transparent 100%);
-  box-sizing: border-box;
-  z-index: 100;
-}
 
-.saju_result_page .chat_next_btn {
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  padding: 16px 24px;
-  background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
-  color: #fff;
-  font-size: 16px;
-  font-weight: 700;
-  border: none;
-  border-radius: 14px;
-  cursor: pointer;
-  box-shadow: 0 4px 16px rgba(231, 76, 60, 0.3);
-  transition: transform 0.2s, box-shadow 0.2s;
-}
-
-.saju_result_page .chat_next_btn:active {
-  transform: scale(0.98);
-}
-
-.saju_result_page .chat_next_btn :global(.material-icons) {
-  font-size: 20px;
-}
-
-.saju_result_page .chat_end_buttons {
-  display: flex;
-  gap: 12px;
-}
-
-.saju_result_page .chat_action_btn {
-  flex: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 14px 20px;
-  font-size: 15px;
-  font-weight: 600;
-  border-radius: 12px;
-  text-decoration: none;
-  border: none;
-  cursor: pointer;
-}
-
-.saju_result_page .chat_action_btn.primary {
-  background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
-  color: #fff;
-  box-shadow: 0 4px 12px rgba(231, 76, 60, 0.3);
-}
-
-.saju_result_page .chat_action_btn.secondary {
-  background: #f5f5f5;
-  color: #333;
-  border: 1px solid #ddd;
-}
 
 /* 메시지 등장 애니메이션 */
-.saju_result_page .message_appear {
-  animation: slideUp 0.5s ease-out;
-}
 
 @keyframes slideUp {
   from {
@@ -2060,21 +1079,6 @@
   border-bottom: 1px solid #f0d8d8;
 }
 
-.saju_result_page .report_card .section_number {
-  display: none;
-}
-
-.saju_result_page .report_card .section_text {
-  color: #3a2a2a;
-}
-
-.saju_result_page .report_card .section_subtitle {
-  font-size: 13px;
-  color: #a08080;
-  text-align: center;
-  margin: 0 0 28px 0;
-  letter-spacing: 1px;
-}
 
 .saju_result_page .report_card :global(.section_content) {
   font-size: 16px;
@@ -2308,6 +1312,7 @@
   .saju_result_page .error_wrap {
     width: 500px;
   }
+
 }
 
 /* 미디어쿼리 - 500px 미만 (모바일) */
@@ -2318,6 +1323,7 @@
   .saju_result_page .error_wrap {
     width: 100%;
   }
+
 }
 
 /* ============================================
@@ -2345,7 +1351,7 @@
   max-width: 500px;
   height: 100%;
   z-index: 1;
-  background: #fff;
+  background: #000;
 }
 
 .saju_result_page .result_bg_image {
@@ -2403,6 +1409,7 @@
   .saju_result_page .back_btn {
     left: 16px;
   }
+
 }
 
 .saju_result_page .back_btn:hover,
@@ -2508,13 +1515,17 @@
   padding: 20px;
   padding-bottom: calc(20px + env(safe-area-inset-bottom));
   z-index: 100;
-  display: none;
+  display: flex;
   flex-direction: column;
   gap: 12px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.15s ease;
 }
 
 .saju_result_page .dialogue_wrap.active {
-  display: flex;
+  opacity: 1;
+  pointer-events: auto;
 }
 
 .saju_result_page .dialogue_box {
@@ -2895,11 +1906,6 @@
   background: rgba(192, 57, 43, 0.03);
 }
 
-.saju_result_page .char_row {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
 
 .saju_result_page .char_cell {
   display: flex;
@@ -3249,238 +2255,14 @@
    SajuCard 스타일 (사주 원국)
    ============================================ */
 
-.saju_result_page .saju_card {
-  background: #fffcf8;
-}
-
-.saju_result_page .saju_table_wrap {
-  overflow-x: auto;
-  margin: 0 -20px;
-  padding: 0 20px;
-}
-
-.saju_result_page .saju_table {
-  width: 100%;
-  border-collapse: collapse;
-  font-size: 13px;
-  min-width: 320px;
-}
-
-.saju_result_page .saju_table th,
-.saju_result_page .saju_table td {
-  padding: 10px 6px;
-  text-align: center;
-  border: 1px solid #e8e0d8;
-  vertical-align: middle;
-}
-
-.saju_result_page .saju_table th {
-  background: #f5f0ea;
-  font-weight: 600;
-  color: #5c4a3a;
-  font-size: 12px;
-}
-
-.saju_result_page .saju_table .row_label {
-  background: #faf7f4;
-  font-weight: 600;
-  color: #8b7355;
-  font-size: 11px;
-  white-space: nowrap;
-  width: 50px;
-}
-
-.saju_result_page .saju_table .row_cheongan td,
-.saju_result_page .saju_table .row_jiji td {
-  background: #fffcf8;
-  padding: 8px 4px;
-}
-
-.saju_result_page .saju_table .char_main {
-  display: block;
-  font-size: 18px;
-  font-weight: 700;
-  line-height: 1.3;
-}
-
-.saju_result_page .saju_table .char_element {
-  display: block;
-  font-size: 10px;
-  margin-top: 2px;
-}
-
-.saju_result_page .saju_table .row_sipsung td {
-  background: #faf7f4;
-  font-size: 12px;
-  padding: 6px 4px;
-}
-
-.saju_result_page .saju_table .cell_sipsung {
-  font-weight: 500;
-}
-
-.saju_result_page .saju_table .row_extra td {
-  background: #faf7f4;
-  font-size: 11px;
-  color: #8b7355;
-  padding: 6px 4px;
-}
-
-.saju_result_page .saju_table .cell_empty {
-  color: #ccc;
-}
-
-.saju_result_page .saju_table .cell_extra {
-  word-break: keep-all;
-}
 
 /* 신살 섹션 */
-.saju_result_page .sinsal_section {
-  margin-top: 24px;
-  padding: 20px;
-  background: #fffcf8;
-  border-radius: 16px;
-  border: 1px solid #e8e0d8;
-}
 
-.saju_result_page .sinsal_header {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 15px;
-  font-weight: 700;
-  color: #1a1a1a;
-  margin-bottom: 12px;
-}
-
-.saju_result_page .sinsal_header :global(.material-icons) {
-  font-size: 20px;
-  color: #e74c3c;
-}
-
-.saju_result_page .sinsal_tags {
-  font-size: 14px;
-  line-height: 1.8;
-  color: #666;
-  margin: 0 0 16px 0;
-}
-
-.saju_result_page .sinsal_tags .love {
-  color: #e74c3c;
-  font-weight: 600;
-}
-
-.saju_result_page .sinsal_tags .normal {
-  color: #666;
-}
-
-.saju_result_page .sinsal_empty {
-  color: #bbb;
-  font-style: italic;
-}
-
-.saju_result_page .sinsal_table_wrap {
-  overflow-x: auto;
-  margin: 0 -20px;
-  padding: 0 20px;
-}
-
-.saju_result_page .sinsal_table {
-  width: 100%;
-  border-collapse: collapse;
-  font-size: 13px;
-  min-width: 320px;
-}
-
-.saju_result_page .sinsal_table th,
-.saju_result_page .sinsal_table td {
-  padding: 10px 6px;
-  text-align: center;
-  border: 1px solid #ffe0e0;
-  vertical-align: middle;
-}
-
-.saju_result_page .sinsal_table th {
-  background: #fff5f5;
-  font-weight: 600;
-  color: #c0392b;
-  font-size: 12px;
-}
-
-.saju_result_page .sinsal_table .row_label {
-  background: #fff9f9;
-  font-weight: 600;
-  color: #888;
-  font-size: 11px;
-  white-space: nowrap;
-  width: 50px;
-}
-
-.saju_result_page .sinsal_table .char_hanja {
-  font-size: 20px;
-  font-weight: 700;
-}
-
-.saju_result_page .sinsal_table .cell_gilsung {
-  font-size: 11px;
-  color: #888;
-  word-break: keep-all;
-}
 
 /* ============================================
    공유 버튼 스타일
    ============================================ */
 
-.saju_result_page .share_btn {
-  position: fixed;
-  top: 16px;
-  right: calc(50% - 250px + 84px);
-  height: 40px;
-  padding: 0 16px;
-  background: rgba(255, 255, 255, 0.4);
-  -webkit-backdrop-filter: blur(16px);
-  backdrop-filter: blur(16px);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  border-radius: 20px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 200;
-  text-decoration: none;
-  color: #333;
-  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
-  cursor: pointer;
-  -webkit-tap-highlight-color: transparent;
-  touch-action: manipulation;
-  pointer-events: auto;
-  transition: none;
-  animation: none;
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  appearance: none;
-  font-family: inherit;
-}
-
-@media (max-width: 500px) {
-  .saju_result_page .share_btn {
-    right: 84px;
-  }
-}
-
-.saju_result_page .share_btn:hover,
-.saju_result_page .share_btn:active,
-.saju_result_page .share_btn:focus {
-  background: rgba(255, 255, 255, 0.4);
-  transition: none;
-  animation: none;
-  outline: none;
-}
-
-.saju_result_page .share_btn_text {
-  color: #333;
-  font-size: 14px;
-  font-weight: 500;
-}
 
 /* ============================================
    목차 버튼 & 모달 스타일
@@ -3521,6 +2303,7 @@
   .saju_result_page .toc_btn {
     right: 16px;
   }
+
 }
 
 .saju_result_page .toc_btn:hover,
@@ -3755,69 +2538,14 @@
 /* SajuCard v2 - 사주 풀이 섹션 */
 /* ============================= */
 
-.saju_result_page .saju_card_v2 {
-  background: #fffcf8;
-}
-
-.saju_result_page .saju_card_v2 .card_content {
-  padding: 0;
-}
 
 /* 섹션 인트로 텍스트 */
-.saju_result_page .saju_card_v2 .section_intro {
-  font-size: 15px;
-  line-height: 1.9;
-  color: #4a3a3a;
-  margin: 0 0 16px 0;
-  word-break: keep-all;
-}
 
-.saju_result_page .saju_card_v2 .section_intro strong {
-  color: #c0392b;
-  font-weight: 600;
-}
 
 /* 섹션 타이틀 */
-.saju_result_page .saju_card_v2 :global(.section_title) {
-  font-family: "KimjungchulMyungjo-Bold", serif;
-  font-size: 16px;
-  font-weight: 700;
-  color: #3a2a2a;
-  margin: 0 0 16px 0;
-  text-align: center;
-}
 
 /* 사주원국이란? 설명 박스 */
-.saju_result_page .saju_intro_box {
-  background: linear-gradient(135deg, #fffaf5 0%, #fff5f0 100%);
-  border: 1px solid #f5e0d5;
-  border-radius: 16px;
-  padding: 20px;
-  margin: 0 20px 24px;
-}
 
-.saju_result_page .saju_intro_question {
-  font-size: 15px;
-  color: #6a5a5a;
-  margin: 0 0 8px 0;
-}
-
-.saju_result_page .saju_intro_lead {
-  font-size: 15px;
-  color: #4a3a3a;
-  margin: 0 0 16px 0;
-}
-
-.saju_result_page .saju_intro_lead strong {
-  color: #c0392b;
-}
-
-.saju_result_page .saju_explain_box {
-  background: #fffcf8;
-  border: 1px dashed #e8d8c8;
-  border-radius: 12px;
-  padding: 16px;
-}
 
 .saju_result_page .saju_explain_title {
   font-family: "KimjungchulMyungjo-Bold", serif;
@@ -3828,145 +2556,17 @@
   text-align: center;
 }
 
-.saju_result_page .saju_explain_box p {
-  font-size: 14px;
-  line-height: 1.8;
-  color: #5a4a4a;
-  margin: 0;
-  word-break: keep-all;
-}
 
 /* 사주원국표 섹션 */
-.saju_result_page .saju_table_section {
-  margin: 0 0 28px 0;
-  padding: 0 20px;
-}
 
 /* 사주 팔자 섹션 - detail 페이지 스타일 */
-.saju_result_page .pillars_section {
-  padding: 20px 0;
-}
 
-.saju_result_page .pillars_header {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 15px;
-  font-weight: 700;
-  color: #1a1a1a;
-  margin-bottom: 16px;
-}
-
-.saju_result_page .pillars_header :global(.material-icons) {
-  font-size: 20px;
-  color: #e74c3c;
-}
 
 /* 사주 테이블 - detail 페이지 스타일 */
-.saju_result_page .saju_table_wrap {
-  overflow-x: auto;
-  margin-bottom: 8px;
-}
 
-.saju_result_page .saju_table {
-  width: 100%;
-  border-collapse: collapse;
-  font-size: 13px;
-  table-layout: fixed;
-}
-
-.saju_result_page .saju_table th,
-.saju_result_page .saju_table td {
-  padding: 10px 4px;
-  text-align: center;
-  border-bottom: 1px solid #f0e8e8;
-}
-
-.saju_result_page .saju_table th {
-  font-size: 12px;
-  font-weight: 500;
-  color: #999;
-  background: #fafafa;
-}
-
-.saju_result_page .saju_table th:first-child,
-.saju_result_page .saju_table td:first-child {
-  width: 50px;
-}
-
-.saju_result_page .saju_table .row_label {
-  font-size: 11px;
-  color: #999;
-  font-weight: 500;
-  text-align: left;
-  padding-left: 8px;
-}
-
-.saju_result_page .saju_table .row_cheongan td,
-.saju_result_page .saju_table .row_jiji td {
-  padding: 12px 4px;
-}
-
-.saju_result_page .saju_table .char_main {
-  display: block;
-  font-size: 22px;
-  font-weight: 700;
-  line-height: 1.2;
-}
-
-.saju_result_page .saju_table .char_element {
-  display: block;
-  font-size: 11px;
-  font-weight: 500;
-  margin-top: 2px;
-}
-
-.saju_result_page .saju_table .row_sipsung td {
-  background: #fafafa;
-}
-
-.saju_result_page .saju_table .cell_sipsung {
-  font-size: 12px;
-  color: #666;
-}
-
-.saju_result_page .saju_table .row_extra td {
-  font-size: 11px;
-  color: #888;
-}
-
-.saju_result_page .saju_table .cell_extra {
-  font-size: 11px;
-  color: #888;
-}
-
-.saju_result_page .saju_table .cell_empty {
-  color: #ccc;
-}
 
 /* 일간 섹션 */
-.saju_result_page .ilgan_section {
-  margin: 0 0 28px 0;
-  padding: 0 20px;
-}
 
-.saju_result_page .ilgan_highlight_box {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  background: linear-gradient(135deg, #fff5f0 0%, #ffebe5 100%);
-  border-radius: 16px;
-  padding: 20px;
-  margin-bottom: 16px;
-}
-
-.saju_result_page .ilgan_big {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 4px;
-  min-width: 70px;
-}
 
 .saju_result_page .ilgan_char {
   font-size: 44px;
@@ -3974,22 +2574,6 @@
   line-height: 1;
 }
 
-.saju_result_page .ilgan_korean {
-  font-size: 13px;
-  color: #8a6a5a;
-}
-
-.saju_result_page .ilgan_desc {
-  flex: 1;
-  font-size: 14px;
-  line-height: 1.8;
-  color: #4a3a3a;
-  margin: 0;
-}
-
-.saju_result_page .ilgan_desc strong {
-  color: #c0392b;
-}
 
 .saju_result_page .ilgan_love_box {
   background: #fffaf5;
@@ -3998,21 +2582,6 @@
   padding: 16px;
 }
 
-.saju_result_page .ilgan_love_headline {
-  font-family: "KimjungchulMyungjo-Bold", serif;
-  font-size: 15px;
-  font-weight: 700;
-  color: #c0392b;
-  margin: 0 0 8px 0;
-}
-
-.saju_result_page .ilgan_love_summary {
-  font-size: 14px;
-  line-height: 1.8;
-  color: #5a4a4a;
-  margin: 0 0 12px 0;
-  word-break: keep-all;
-}
 
 .saju_result_page .ilgan_keywords {
   display: flex;
@@ -4020,94 +2589,12 @@
   gap: 8px;
 }
 
-.saju_result_page .keyword_tag {
-  display: inline-block;
-  padding: 4px 10px;
-  background: #fff0eb;
-  border-radius: 20px;
-  font-size: 13px;
-  color: #c0392b;
-}
 
 /* 4가지 요소 섹션 */
-.saju_result_page .four_elements_section {
-  margin: 0 0 28px 0;
-  padding: 0 20px;
-}
 
-.saju_result_page .four_elements_list {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-
-.saju_result_page .four_elements_section .element_item {
-  display: flex;
-  align-items: flex-start;
-  gap: 12px;
-  background: #fffcf8;
-  border: 1px solid #f0e8e0;
-  border-radius: 12px;
-  padding: 14px 16px;
-}
-
-.saju_result_page .element_num {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-width: 24px;
-  height: 24px;
-  background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
-  color: #fff;
-  font-size: 13px;
-  font-weight: 700;
-  border-radius: 50%;
-  flex-shrink: 0;
-}
-
-.saju_result_page .element_content {
-  flex: 1;
-}
-
-.saju_result_page .element_content strong {
-  display: block;
-  font-size: 15px;
-  font-weight: 700;
-  color: #3a2a2a;
-  margin-bottom: 4px;
-}
-
-.saju_result_page .element_content p {
-  font-size: 13px;
-  line-height: 1.6;
-  color: #6a5a4a;
-  margin: 0;
-}
 
 /* 기둥별 연애 시기 섹션 */
-.saju_result_page .pillar_timing_section {
-  margin: 0 0 28px 0;
-  padding: 0 20px;
-}
 
-.saju_result_page .pillar_timing_list {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.saju_result_page .pillar_timing_section .timing_item {
-  background: #fffcf8;
-  border: 1px solid #f0e8e0;
-  border-radius: 12px;
-  padding: 14px 16px;
-  transition: all 0.2s;
-}
-
-.saju_result_page .pillar_timing_section .timing_item.highlight {
-  background: linear-gradient(135deg, #fff5f0 0%, #ffebe5 100%);
-  border-color: #ffd5c8;
-}
 
 .saju_result_page .timing_header {
   display: flex;
@@ -4116,11 +2603,6 @@
   margin-bottom: 6px;
 }
 
-.saju_result_page .timing_label {
-  font-size: 15px;
-  font-weight: 700;
-  color: #3a2a2a;
-}
 
 .saju_result_page .timing_period {
   font-size: 12px;
@@ -4130,10 +2612,6 @@
   border-radius: 12px;
 }
 
-.saju_result_page .timing_item.highlight .timing_period {
-  background: #ffe0d5;
-  color: #c0392b;
-}
 
 .saju_result_page .timing_desc {
   font-size: 13px;
@@ -4143,26 +2621,7 @@
 }
 
 /* 오행 분포 섹션 */
-.saju_result_page .ohang_section {
-  margin: 0 0 28px 0;
-  padding: 0 20px;
-}
 
-.saju_result_page .ohang_bars {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  background: #fffcf8;
-  border: 1px solid #f0e8e0;
-  border-radius: 12px;
-  padding: 16px;
-}
-
-.saju_result_page .ohang_bar_item {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
 
 .saju_result_page .ohang_label {
   min-width: 50px;
@@ -4170,19 +2629,6 @@
   font-weight: 600;
 }
 
-.saju_result_page .ohang_bar_wrap {
-  flex: 1;
-  height: 18px;
-  background: #f5f0ea;
-  border-radius: 9px;
-  overflow: hidden;
-}
-
-.saju_result_page .ohang_bar {
-  height: 100%;
-  border-radius: 9px;
-  transition: width 0.6s ease;
-}
 
 .saju_result_page .ohang_pct {
   min-width: 48px;
@@ -4222,18 +2668,7 @@
 }
 
 /* 신강/신약 섹션 */
-.saju_result_page .strength_section {
-  margin: 0 0 28px 0;
-  padding: 0 20px;
-}
 
-.saju_result_page .strength_gauge {
-  background: #fffcf8;
-  border: 1px solid #f0e8e0;
-  border-radius: 12px;
-  padding: 20px 16px;
-  margin-bottom: 16px;
-}
 
 .saju_result_page .gauge_labels {
   display: flex;
@@ -4243,24 +2678,6 @@
   color: #8a7a6a;
 }
 
-.saju_result_page .gauge_bar {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  height: 28px;
-  background: linear-gradient(90deg,
-    #e8f5e9 0%,
-    #c8e6c9 15%,
-    #fff9c4 35%,
-    #fff59d 50%,
-    #ffcc80 65%,
-    #ffab91 85%,
-    #ffebee 100%
-  );
-  border-radius: 14px;
-  padding: 0 8px;
-  margin-bottom: 16px;
-}
 
 .saju_result_page .gauge_dot {
   width: 12px;
@@ -4279,254 +2696,15 @@
   box-shadow: 0 2px 8px rgba(192, 57, 43, 0.4);
 }
 
-.saju_result_page .strength_result {
-  font-size: 15px;
-  line-height: 1.6;
-  color: #4a3a3a;
-  text-align: center;
-  margin: 0;
-}
-
-.saju_result_page .strength_love_box {
-  background: #fff5f5;
-  border: 1px solid #ffe0e0;
-  border-radius: 12px;
-  padding: 16px;
-}
-
-.saju_result_page .strength_love_title {
-  font-size: 15px;
-  font-weight: 700;
-  color: #c0392b;
-  margin: 0 0 10px 0;
-}
-
-.saju_result_page .strength_traits {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-.saju_result_page .strength_traits li {
-  font-size: 14px;
-  line-height: 1.8;
-  color: #5a4a4a;
-  padding-left: 16px;
-  position: relative;
-  margin-bottom: 4px;
-}
-
-.saju_result_page .strength_traits li::before {
-  content: "•";
-  position: absolute;
-  left: 0;
-  color: #c0392b;
-}
-
-.saju_result_page .strength_traits li:last-child {
-  margin-bottom: 0;
-}
 
 /* 신살과 길성 섹션 - detail 페이지 스타일 */
-.saju_result_page .sinsal_section {
-  padding: 20px 0;
-  background: #fafafa;
-  border-top: 1px solid #f0e8e8;
-  margin-top: 8px;
-}
 
-.saju_result_page .sinsal_header {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 15px;
-  font-weight: 700;
-  color: #1a1a1a;
-  margin-bottom: 12px;
-}
-
-.saju_result_page .sinsal_header :global(.material-icons) {
-  font-size: 20px;
-  color: #e74c3c;
-}
-
-.saju_result_page .sinsal_tags {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  margin-bottom: 16px;
-}
-
-.saju_result_page .sinsal_tag {
-  display: inline-block;
-  padding: 6px 12px;
-  background: #fff;
-  border: 1px solid #ffe0e0;
-  border-radius: 20px;
-  font-size: 12px;
-  color: #e74c3c;
-  font-weight: 500;
-}
-
-.saju_result_page .sinsal_tag.gilsung {
-  background: #f0f8ff;
-  border-color: #b8d4f0;
-  color: #3b82f6;
-}
-
-.saju_result_page .sinsal_empty {
-  font-size: 12px;
-  color: #999;
-}
 
 /* 신살 테이블 - detail 페이지 스타일 */
-.saju_result_page .sinsal_table_wrap {
-  overflow-x: auto;
-}
 
-.saju_result_page .sinsal_table {
-  width: 100%;
-  border-collapse: collapse;
-  font-size: 12px;
-  background: #fff;
-  border-radius: 8px;
-  overflow: hidden;
-  table-layout: fixed;
-}
-
-.saju_result_page .sinsal_table th,
-.saju_result_page .sinsal_table td {
-  padding: 10px 4px;
-  text-align: center;
-  border-bottom: 1px solid #f0e8e8;
-}
-
-.saju_result_page .sinsal_table th {
-  font-size: 11px;
-  font-weight: 500;
-  color: #999;
-  background: #f8f8f8;
-}
-
-.saju_result_page .sinsal_table th:first-child,
-.saju_result_page .sinsal_table td:first-child {
-  width: 50px;
-}
-
-.saju_result_page .sinsal_table .row_label {
-  font-size: 11px;
-  color: #999;
-  font-weight: 500;
-  text-align: left;
-  padding-left: 8px;
-}
-
-.saju_result_page .sinsal_table .char_hanja {
-  font-size: 18px;
-  font-weight: 700;
-}
-
-.saju_result_page .sinsal_table .cell_gilsung {
-  font-size: 10px;
-  color: #666;
-  line-height: 1.4;
-}
 
 /* 사주 상식 토글 섹션 */
-.saju_result_page .saju_tip_section {
-  margin: 0 0 20px 0;
-  padding: 0 20px;
-}
 
-.saju_result_page .saju_tip_toggle {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  width: 100%;
-  padding: 14px 16px;
-  background: #f8f5f0;
-  border: 1px solid #e8e0d8;
-  border-radius: 12px;
-  cursor: pointer;
-  transition: background 0.2s;
-  font-size: 15px;
-  font-weight: 600;
-  color: #5a4a3a;
-}
-
-.saju_result_page .saju_tip_toggle:hover {
-  background: #f0ebe5;
-}
-
-.saju_result_page .saju_tip_toggle :global(.material-icons) {
-  font-size: 20px;
-  color: #8a7a6a;
-}
-
-.saju_result_page .saju_tip_content {
-  margin-top: 12px;
-}
-
-.saju_result_page .saju_tip_content .tip_section {
-  background: #fffcf8;
-  border: 1px solid #f0e8e0;
-  border-radius: 12px;
-  padding: 16px;
-  margin-bottom: 12px;
-}
-
-.saju_result_page .saju_tip_content .tip_section:last-child {
-  margin-bottom: 0;
-}
-
-.saju_result_page .saju_tip_content h4 {
-  font-size: 14px;
-  font-weight: 700;
-  color: #5a4a3a;
-  margin: 0 0 10px 0;
-}
-
-.saju_result_page .saju_tip_content p {
-  font-size: 14px;
-  line-height: 1.8;
-  color: #5a4a4a;
-  margin: 0 0 10px 0;
-  word-break: keep-all;
-}
-
-.saju_result_page .saju_tip_content p:last-child {
-  margin-bottom: 0;
-}
-
-.saju_result_page .saju_tip_content p strong {
-  color: #c0392b;
-}
-
-.saju_result_page .saju_tip_content ul {
-  list-style: none;
-  padding: 0;
-  margin: 10px 0 0 0;
-}
-
-.saju_result_page .saju_tip_content ul li {
-  font-size: 13px;
-  line-height: 1.8;
-  color: #5a4a4a;
-  padding-left: 16px;
-  position: relative;
-  margin-bottom: 4px;
-}
-
-.saju_result_page .saju_tip_content ul li::before {
-  content: "•";
-  position: absolute;
-  left: 0;
-  color: #c0392b;
-}
-
-.saju_result_page .saju_tip_content ul li strong {
-  color: #3a2a2a;
-}
 
 /* ============================================
    SajuCard Simple 스타일 (IntroCard 스타일 기반)
@@ -4561,64 +2739,13 @@
 }
 
 /* 사주 키워드 */
-.saju_result_page .saju_keywords {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 8px;
-  margin-top: 20px;
-}
 
-.saju_result_page .saju_keyword {
-  display: inline-block;
-  padding: 6px 14px;
-  background: rgba(192, 57, 43, 0.1);
-  color: #c0392b;
-  font-size: 13px;
-  font-weight: 500;
-  border-radius: 20px;
-}
 
 /* 신강/신약 표시 */
-.saju_result_page .saju_strength_display {
-  display: flex;
-  justify-content: center;
-  margin-bottom: 20px;
-}
 
-.saju_result_page .strength_level {
-  display: inline-block;
-  padding: 12px 28px;
-  background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
-  color: #fff;
-  font-size: 18px;
-  font-weight: 700;
-  border-radius: 30px;
-  letter-spacing: 2px;
-}
 
 /* 특성 리스트 */
-.saju_result_page .saju_traits_list {
-  list-style: none;
-  padding: 0;
-  margin: 16px 0 0 0;
-}
 
-.saju_result_page .saju_traits_list li {
-  font-size: 14px;
-  line-height: 2;
-  color: #5a4a4a;
-  padding-left: 20px;
-  position: relative;
-  margin-bottom: 4px;
-}
-
-.saju_result_page .saju_traits_list li::before {
-  content: "•";
-  position: absolute;
-  left: 0;
-  color: #c0392b;
-}
 
 /* ============================================
    SajuCard 기획서 기반 추가 스타일
@@ -4812,10 +2939,6 @@
   gap: 2px;
 }
 
-.saju_result_page .saju_full_table .sinsal_highlight {
-  color: #e74c3c;
-  font-weight: 600;
-}
 
 .saju_result_page .saju_full_table .cell_sinsal_highlight {
   color: #e74c3c;
@@ -4903,54 +3026,7 @@
 }
 
 /* 네 가지 요소 카드 */
-.saju_result_page .four_elements_card {
-  background: #fff;
-  border: 1px solid #f0e8e8;
-  border-radius: 16px;
-  padding: 20px;
-  margin-top: 20px;
-}
 
-.saju_result_page .element_item {
-  display: flex;
-  gap: 12px;
-  padding: 14px 0;
-  border-bottom: 1px dashed #f0e8e8;
-}
-
-.saju_result_page .element_item:last-child {
-  border-bottom: none;
-  padding-bottom: 0;
-}
-
-.saju_result_page .element_item:first-child {
-  padding-top: 0;
-}
-
-.saju_result_page .element_num {
-  font-size: 16px;
-  color: #c0392b;
-  font-weight: 700;
-  flex-shrink: 0;
-}
-
-.saju_result_page .element_content {
-  flex: 1;
-}
-
-.saju_result_page .element_content strong {
-  font-size: 14px;
-  color: #3a2a2a;
-  display: block;
-  margin-bottom: 4px;
-}
-
-.saju_result_page .element_content p {
-  font-size: 13px;
-  color: #666;
-  line-height: 1.7;
-  margin: 0;
-}
 
 /* 연애 신살 카드 */
 .saju_result_page .love_sinsal_cards {
@@ -4974,9 +3050,6 @@
   margin-bottom: 8px;
 }
 
-.saju_result_page .sinsal_icon {
-  font-size: 18px;
-}
 
 .saju_result_page .sinsal_card_header strong {
   font-size: 14px;
@@ -5190,37 +3263,7 @@
 }
 
 /* 오행 연애 해석 카드 */
-.saju_result_page .ohang_love_card {
-  background: #fffaf5;
-  border: 1px solid #f5e0d5;
-  border-radius: 16px;
-  padding: 20px;
-  margin-top: 16px;
-}
 
-.saju_result_page .ohang_love_title {
-  font-size: 14px;
-  font-weight: 600;
-  color: #c0392b;
-  margin: 0 0 12px 0;
-}
-
-.saju_result_page .ohang_love_list {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-.saju_result_page .ohang_love_list li {
-  font-size: 13px;
-  line-height: 1.8;
-  color: #5a4a4a;
-  margin-bottom: 6px;
-}
-
-.saju_result_page .ohang_love_list li:last-child {
-  margin-bottom: 0;
-}
 
 /* 오행 섹션 타이틀 */
 .saju_result_page .ohang_section_title {
@@ -5231,55 +3274,7 @@
 }
 
 /* 오행별 기본 특징 */
-.saju_result_page .ohang_traits_section {
-  margin-top: 20px;
-}
 
-.saju_result_page .ohang_traits_list {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-.saju_result_page .ohang_trait_item {
-  display: flex;
-  align-items: flex-start;
-  gap: 12px;
-  padding: 12px;
-  background: #fafafa;
-  border-radius: 10px;
-}
-
-.saju_result_page .ohang_trait_label {
-  flex-shrink: 0;
-  width: 28px;
-  height: 28px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 50%;
-  color: #fff;
-  font-size: 13px;
-  font-weight: 600;
-}
-
-.saju_result_page .ohang_trait_content {
-  flex: 1;
-}
-
-.saju_result_page .ohang_trait_keyword {
-  font-size: 12px;
-  color: #8a7a6a;
-  display: block;
-  margin-bottom: 4px;
-}
-
-.saju_result_page .ohang_trait_desc {
-  font-size: 13px;
-  line-height: 1.6;
-  color: #5a4a4a;
-  margin: 0;
-}
 
 /* 오행 궁합 섹션 */
 .saju_result_page .ohang_compatibility_section {
@@ -5622,74 +3617,12 @@
 }
 
 /* 신강신약 궁합 섹션 */
-.saju_result_page .strength_compat_section {
-  margin-top: 20px;
-}
 
-.saju_result_page .strength_compat_title {
-  font-size: 14px;
-  font-weight: 600;
-  color: #5a4a4a;
-  margin: 0 0 12px 0;
-  text-align: center;
-}
-
-.saju_result_page .strength_compat_list {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-.saju_result_page .strength_compat_item {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 10px 12px;
-  background: #fafafa;
-  border-radius: 8px;
-  font-size: 13px;
-}
-
-.saju_result_page .strength_compat_item .compat_pair {
-  font-weight: 600;
-  color: #5a4a4a;
-  min-width: 120px;
-}
-
-.saju_result_page .strength_compat_item .compat_rating {
-  font-size: 14px;
-}
-
-.saju_result_page .strength_compat_item .compat_desc {
-  color: #8a7a7a;
-  flex: 1;
-}
 
 /* 신강신약 안내 문구 */
-.saju_result_page .strength_note {
-  margin-top: 16px;
-  padding: 12px 16px;
-  background: #f8f5f0;
-  border-radius: 8px;
-}
 
-.saju_result_page .strength_note p {
-  font-size: 12px;
-  line-height: 1.7;
-  color: #8a7a6a;
-  margin: 0;
-}
 
 /* 사주상식 인트로 */
-.saju_result_page .tip_intro {
-  font-size: 14px;
-  line-height: 1.9;
-  color: #5a4a4a;
-  text-align: center;
-  margin-bottom: 24px;
-  padding-bottom: 20px;
-  border-bottom: 1px dashed #e8d8c8;
-}
 
 /* 색동낭자 대화 코멘트 */
 .saju_result_page .nangja_comment {
@@ -5739,177 +3672,16 @@
   margin-top: 24px;
 }
 
-.saju_result_page .saju_outro_box {
-  background: transparent;
-  border-radius: 0;
-  padding: 0;
-  text-align: center;
-}
-
-.saju_result_page .saju_outro_title {
-  font-size: 16px;
-  font-weight: 700;
-  color: #5a4a5a;
-  margin: 0 0 16px 0;
-}
-
-.saju_result_page .saju_outro_text {
-  font-size: 14px;
-  line-height: 1.8;
-  color: #6a5a6a;
-  margin: 0 0 12px 0;
-}
-
-.saju_result_page .saju_outro_text strong {
-  color: #b85a85;
-}
-
-.saju_result_page .saju_outro_chapters {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 8px;
-  margin: 20px 0;
-}
-
-.saju_result_page .saju_outro_chapters span {
-  font-size: 12px;
-  color: #8a7a8a;
-  background: #fff;
-  padding: 6px 12px;
-  border-radius: 20px;
-  border: 1px solid #e8e0e8;
-}
-
-.saju_result_page .saju_outro_cta {
-  font-size: 14px;
-  font-weight: 600;
-  color: #b85a85;
-  margin: 16px 0 0 0;
-}
 
 /* 사주 데이터 플레이스홀더 */
-.saju_result_page .saju_data_placeholder {
-  min-height: 20px;
-  margin: 16px 0;
-}
 
 /* 보고서 목차 상세 */
-.saju_result_page .saju_outro_chapters_detail {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  margin: 20px 0;
-  text-align: left;
-}
 
 /* 심플 목차 스타일 */
-.saju_result_page .saju_outro_chapters_simple {
-  display: flex;
-  flex-direction: column;
-  gap: 0;
-  margin: 16px 0;
-}
 
-.saju_result_page .chapter_row {
-  padding: 12px 0;
-  border-bottom: 1px solid #f0e8f0;
-}
-
-.saju_result_page .chapter_row:last-child {
-  border-bottom: none;
-}
-
-.saju_result_page .chapter_header {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.saju_result_page .chapter_num {
-  font-size: 11px;
-  font-weight: 600;
-  color: #b85a85;
-}
-
-.saju_result_page .chapter_title {
-  font-size: 13px;
-  font-weight: 600;
-  color: #3a2a3a;
-}
-
-.saju_result_page .chapter_sublist {
-  margin: 6px 0 0 0;
-  padding: 0 0 0 32px;
-  list-style: none;
-}
-
-.saju_result_page .chapter_sublist li {
-  font-size: 11px;
-  color: #8a7a8a;
-  line-height: 1.7;
-  position: relative;
-  padding-left: 10px;
-}
-
-.saju_result_page .chapter_sublist li::before {
-  content: "-";
-  position: absolute;
-  left: 0;
-  color: #b85a85;
-}
-
-.saju_result_page .chapter_row.bonus .chapter_num {
-  color: #d4a853;
-}
-
-.saju_result_page .chapter_row.bonus .chapter_title {
-  color: #d4a853;
-}
 
 /* 내가 가진 연애 신살 */
-.saju_result_page .my_love_sinsal {
-  background: #fff;
-  border: 1px solid #f0e8e8;
-  border-radius: 12px;
-  padding: 16px;
-  margin-bottom: 20px;
-  text-align: center;
-}
 
-.saju_result_page .my_sinsal_label {
-  font-size: 13px;
-  font-weight: 600;
-  color: #5a4a4a;
-  margin: 0 0 12px 0;
-}
-
-.saju_result_page .my_sinsal_tags {
-  display: flex;
-  justify-content: center;
-  gap: 16px;
-  flex-wrap: wrap;
-}
-
-.saju_result_page .my_sinsal_tags .sinsal_tag {
-  font-size: 14px;
-  padding: 0;
-  border-radius: 0;
-  background: transparent;
-  color: #bbb;
-  border: none;
-}
-
-.saju_result_page .my_sinsal_tags .sinsal_tag.active {
-  font-weight: 600;
-  color: #c0392b;
-}
-
-.saju_result_page .no_sinsal_text {
-  font-size: 12px;
-  color: #aaa;
-  margin: 12px 0 0 0;
-}
 
 /* ========================================
    분석 대기 카드 (Waiting Card)
@@ -5966,14 +3738,6 @@
   letter-spacing: 2px;
 }
 
-.saju_result_page .waiting_spinner {
-  width: 60px;
-  height: 60px;
-  border: 4px solid #ffe0e0;
-  border-top-color: #e74c3c;
-  border-radius: 50%;
-  animation: saju-spin 1s linear infinite;
-}
 
 .saju_result_page .waiting_title {
   font-size: 24px;
@@ -5996,42 +3760,6 @@
   margin: 0;
 }
 
-.saju_result_page .waiting_dots {
-  display: flex;
-  gap: 8px;
-  margin-top: 10px;
-}
-
-.saju_result_page .waiting_dots span {
-  width: 10px;
-  height: 10px;
-  background: #e74c3c;
-  border-radius: 50%;
-  animation: waiting-bounce 1.4s ease-in-out infinite both;
-}
-
-.saju_result_page .waiting_dots span:nth-child(1) {
-  animation-delay: -0.32s;
-}
-
-.saju_result_page .waiting_dots span:nth-child(2) {
-  animation-delay: -0.16s;
-}
-
-.saju_result_page .waiting_dots span:nth-child(3) {
-  animation-delay: 0s;
-}
-
-@keyframes waiting-bounce {
-  0%, 80%, 100% {
-    transform: scale(0.6);
-    opacity: 0.5;
-  }
-  40% {
-    transform: scale(1);
-    opacity: 1;
-  }
-}
 
 /* 대기 중 하단 안내 텍스트 */
 .saju_result_page .waiting_info {
@@ -6135,576 +3863,47 @@
 }
 
 /* 사주 데이터 종합 표 */
-.saju_result_page .saju_data_summary {
-  background: #faf8f6;
-  border: 1px solid #e8e0dc;
-  margin: 24px 0;
-  padding: 20px 16px;
-}
 
-.saju_result_page .saju_data_section {
-  margin-bottom: 20px;
-}
-
-.saju_result_page .saju_data_section:last-child {
-  margin-bottom: 0;
-}
-
-.saju_result_page .saju_data_title {
-  font-family: "Danjo", serif;
-  font-size: 15px;
-  font-weight: 600;
-  color: #c0392b;
-  margin: 0 0 12px 0;
-  padding-left: 10px;
-  border-left: 3px solid #c0392b;
-}
 
 /* 사주 원국 테이블 */
-.saju_result_page .saju_data_table {
-  width: 100%;
-  border-collapse: collapse;
-  font-size: 13px;
-  text-align: center;
-}
 
-.saju_result_page .saju_data_table th {
-  background: #f0ebe8;
-  padding: 8px 4px;
-  font-weight: 600;
-  color: #5a5a5a;
-  border-bottom: 1px solid #ddd;
-}
-
-.saju_result_page .saju_data_table td {
-  padding: 8px 4px;
-  border-bottom: 1px solid #eee;
-  color: #3a3a3a;
-}
-
-.saju_result_page .saju_data_table td.row_label {
-  background: #f5f1ee;
-  font-weight: 500;
-  color: #666;
-  text-align: left;
-  padding-left: 8px;
-  width: 60px;
-}
-
-.saju_result_page .saju_data_table td.highlight {
-  background: #fff3e0;
-  font-weight: 600;
-  color: #c0392b;
-}
 
 /* 오행 분포 */
-.saju_result_page .saju_data_row {
-  display: flex;
-  justify-content: space-around;
-  gap: 8px;
-  margin-bottom: 12px;
-}
 
-.saju_result_page .element_item {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 4px;
-}
-
-.saju_result_page .element_name {
-  font-size: 13px;
-  color: #666;
-}
-
-.saju_result_page .element_value {
-  font-size: 14px;
-  font-weight: 600;
-  color: #3a3a3a;
-}
-
-.saju_result_page .saju_data_inline {
-  display: flex;
-  justify-content: space-between;
-  padding: 10px 12px;
-  background: #fff;
-  border: 1px solid #e8e0dc;
-}
-
-.saju_result_page .inline_label {
-  font-size: 13px;
-  color: #666;
-}
-
-.saju_result_page .inline_value {
-  font-size: 14px;
-  font-weight: 600;
-  color: #c0392b;
-}
 
 /* 신살 태그 */
-.saju_result_page .sinsal_tags {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-}
 
-.saju_result_page .sinsal_tag {
-  display: inline-block;
-  padding: 6px 12px;
-  background: #fff;
-  border: 1px solid #ddd;
-  border-radius: 16px;
-  font-size: 13px;
-  color: #5a5a5a;
-}
-
-.saju_result_page .no_data {
-  font-size: 13px;
-  color: #999;
-}
 
 /* 연애 지표 */
-.saju_result_page .love_indicators {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
 
-.saju_result_page .indicator_item {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 10px 12px;
-  background: #fff;
-  border: 1px solid #e8e0dc;
-}
-
-.saju_result_page .indicator_label {
-  font-size: 13px;
-  color: #666;
-}
-
-.saju_result_page .indicator_value {
-  font-size: 14px;
-  font-weight: 500;
-  color: #3a3a3a;
-}
-
-.saju_result_page .indicator_sub {
-  font-size: 12px;
-  color: #888;
-  margin-left: 4px;
-}
-
-.saju_result_page .indicator_value.highlight_red {
-  color: #c0392b;
-  font-weight: 600;
-}
 
 /* 대운 흐름 */
-.saju_result_page .daeun_info {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
 
-.saju_result_page .daeun_direction {
-  display: flex;
-  justify-content: space-between;
-  padding: 10px 12px;
-  background: #fff;
-  border: 1px solid #e8e0dc;
-}
-
-.saju_result_page .daeun_list {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 8px;
-}
-
-.saju_result_page .daeun_item {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 10px 8px;
-  background: #fff;
-  border: 1px solid #e8e0dc;
-  text-align: center;
-}
-
-.saju_result_page .daeun_age {
-  font-size: 11px;
-  color: #888;
-  margin-bottom: 4px;
-}
-
-.saju_result_page .daeun_ganzhi {
-  font-size: 16px;
-  font-weight: 600;
-  color: #3a3a3a;
-}
 
 /* ==========================================
    분석 데이터 섹션 스타일 (analysis_data_wrap)
    ========================================== */
 
-.saju_result_page .analysis_data_wrap {
-  margin: 24px 0;
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-}
-
-.saju_result_page .analysis_data_card {
-  background: #faf8f6;
-  border: 1px solid #e8e0dc;
-  padding: 16px;
-}
-
-.saju_result_page .analysis_data_card.love_card {
-  background: linear-gradient(135deg, #fff5f5 0%, #faf8f6 100%);
-  border-color: #e8d0d0;
-}
-
-.saju_result_page .analysis_data_title {
-  font-family: "Danjo", serif;
-  font-size: 14px;
-  font-weight: 600;
-  color: #c0392b;
-  margin: 0 0 12px 0;
-  padding-left: 10px;
-  border-left: 3px solid #c0392b;
-}
-
-.saju_result_page .analysis_data_grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 10px;
-}
-
-.saju_result_page .analysis_data_grid.three_col {
-  grid-template-columns: repeat(3, 1fr);
-}
-
-.saju_result_page .analysis_data_item {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 12px 8px;
-  background: #fff;
-  border: 1px solid #e8e0dc;
-  text-align: center;
-  gap: 4px;
-}
-
-.saju_result_page .data_label {
-  font-size: 12px;
-  color: #888;
-}
-
-.saju_result_page .data_value {
-  font-size: 15px;
-  font-weight: 600;
-  color: #3a3a3a;
-}
-
-.saju_result_page .data_value.highlight_yes {
-  color: #27ae60;
-}
-
-.saju_result_page .data_value.highlight_no {
-  color: #bbb;
-}
-
-.saju_result_page .data_sub {
-  font-size: 11px;
-  color: #aaa;
-}
 
 /* 득력 점수 바 */
-.saju_result_page .strength_score_bar {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin-top: 12px;
-  padding: 10px 12px;
-  background: #fff;
-  border: 1px solid #e8e0dc;
-}
 
-.saju_result_page .score_label {
-  font-size: 12px;
-  color: #666;
-  flex-shrink: 0;
-}
-
-.saju_result_page .score_bar_track {
-  flex: 1;
-  height: 8px;
-  background: #e8e0dc;
-  border-radius: 4px;
-  overflow: hidden;
-}
-
-.saju_result_page .score_bar_fill {
-  height: 100%;
-  background: linear-gradient(90deg, #c0392b, #e74c3c);
-  border-radius: 4px;
-  transition: width 0.3s ease;
-}
-
-.saju_result_page .score_value {
-  font-size: 12px;
-  font-weight: 600;
-  color: #c0392b;
-  flex-shrink: 0;
-}
 
 /* 대운 스크롤 */
-.saju_result_page .daeun_scroll_wrap {
-  overflow-x: auto;
-  margin: 0 -16px;
-  padding: 0 16px;
-  -webkit-overflow-scrolling: touch;
-}
 
-.saju_result_page .daeun_scroll {
-  display: flex;
-  gap: 8px;
-  min-width: max-content;
-  padding-bottom: 4px;
-}
-
-.saju_result_page .daeun_card {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 10px 12px;
-  background: #fff;
-  border: 1px solid #e8e0dc;
-  min-width: 70px;
-  gap: 4px;
-}
-
-.saju_result_page .daeun_card_age {
-  font-size: 10px;
-  color: #888;
-}
-
-.saju_result_page .daeun_card_ganzhi {
-  font-size: 16px;
-  font-weight: 600;
-  color: #3a3a3a;
-}
-
-.saju_result_page .daeun_card_tenGod {
-  font-size: 11px;
-  color: #c0392b;
-}
-
-.saju_result_page .daeun_card_stage {
-  font-size: 10px;
-  color: #888;
-  background: #f5f1ee;
-  padding: 2px 6px;
-  border-radius: 8px;
-}
 
 /* 연애 특수 지표 그리드 */
-.saju_result_page .love_indicator_grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 10px;
-}
 
-.saju_result_page .love_indicator_item {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 12px 8px;
-  background: #fff;
-  border: 1px solid #e8e0dc;
-  text-align: center;
-  gap: 4px;
-}
-
-.saju_result_page .love_indicator_label {
-  font-size: 12px;
-  color: #888;
-}
-
-.saju_result_page .love_indicator_value {
-  font-size: 14px;
-  font-weight: 600;
-  color: #999;
-}
-
-.saju_result_page .love_indicator_value.has {
-  color: #c0392b;
-}
-
-.saju_result_page .love_indicator_value.has.red {
-  color: #e74c3c;
-}
-
-.saju_result_page .love_indicator_pos {
-  font-size: 11px;
-  color: #666;
-}
 
 /* 귀인 태그 */
-.saju_result_page .guiin_tags {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-}
 
-.saju_result_page .guiin_tag {
-  display: inline-block;
-  padding: 6px 12px;
-  background: linear-gradient(135deg, #fff8e1 0%, #fffde7 100%);
-  border: 1px solid #ffd54f;
-  border-radius: 16px;
-  font-size: 13px;
-  color: #f57c00;
-  font-weight: 500;
-}
-
-.saju_result_page .no_guiin {
-  font-size: 13px;
-  color: #999;
-}
 
 /* 주의 신살 태그 */
-.saju_result_page .warning_sinsal_tags {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-}
 
-.saju_result_page .warning_sinsal_tag {
-  display: inline-block;
-  padding: 6px 12px;
-  background: linear-gradient(135deg, #ffebee 0%, #fff5f5 100%);
-  border: 1px solid #ef9a9a;
-  border-radius: 16px;
-  font-size: 13px;
-  color: #c62828;
-  font-weight: 500;
-}
-
-.saju_result_page .no_warning {
-  font-size: 13px;
-  color: #999;
-}
 
 /* ==========================================
    미니 데이터 섹션 (extra_data_mini_wrap)
    ========================================== */
 
-.saju_result_page .extra_data_mini_wrap {
-  margin: 20px 0;
-  padding: 16px;
-  background: linear-gradient(135deg, #faf8f6 0%, #f5f2ef 100%);
-  border: 1px solid #e8e0dc;
-  border-radius: 8px;
-}
-
-.saju_result_page .mini_data_section {
-  display: flex;
-  align-items: flex-start;
-  gap: 10px;
-  padding: 8px 0;
-  border-bottom: 1px dashed #e0d8d4;
-}
-
-.saju_result_page .mini_data_section:last-child {
-  border-bottom: none;
-  padding-bottom: 0;
-}
-
-.saju_result_page .mini_data_section:first-child {
-  padding-top: 0;
-}
-
-.saju_result_page .mini_section_label {
-  flex-shrink: 0;
-  width: 90px;
-  font-size: 11px;
-  font-weight: 600;
-  color: #888;
-}
-
-.saju_result_page .mini_data_row {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
-  flex: 1;
-}
-
-.saju_result_page .mini_chip {
-  display: inline-block;
-  padding: 3px 8px;
-  background: #fff;
-  border: 1px solid #d8d0cc;
-  border-radius: 10px;
-  font-size: 11px;
-  color: #666;
-}
-
-.saju_result_page .mini_chip.good {
-  background: #e8f5e9;
-  border-color: #a5d6a7;
-  color: #2e7d32;
-}
-
-.saju_result_page .mini_chip.warn {
-  background: #ffebee;
-  border-color: #ef9a9a;
-  color: #c62828;
-}
-
-.saju_result_page .mini_chip_data {
-  display: inline-block;
-  padding: 3px 10px;
-  background: #fff;
-  border: 1px solid #c0392b;
-  border-radius: 10px;
-  font-size: 12px;
-  font-weight: 600;
-  color: #c0392b;
-}
-
-.saju_result_page .mini_chip_sm {
-  display: inline-block;
-  padding: 2px 6px;
-  background: #f5f1ee;
-  border: 1px solid #e0d8d4;
-  border-radius: 8px;
-  font-size: 10px;
-  color: #888;
-}
-
-.saju_result_page .mini_chip_indicator {
-  display: inline-block;
-  padding: 3px 8px;
-  border-radius: 10px;
-  font-size: 11px;
-  font-weight: 500;
-}
-
-.saju_result_page .mini_chip_indicator.on {
-  background: #e8f5e9;
-  border: 1px solid #a5d6a7;
-  color: #2e7d32;
-}
-
-.saju_result_page .mini_chip_indicator.off {
-  background: #f5f5f5;
-  border: 1px solid #e0e0e0;
-  color: #bbb;
-}
 
 /* ==========================================
    대운/연운/월운 섹션 (luck_cycles_wrap)
@@ -6718,43 +3917,6 @@
   border-radius: 12px;
 }
 
-.saju_result_page .luck_header {
-  margin-bottom: 20px;
-}
-
-.saju_result_page .luck_title {
-  font-family: "Danjo", serif;
-  font-size: 18px;
-  font-weight: 600;
-  color: #3a3a3a;
-  margin: 0 0 6px 0;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.saju_result_page .direction_badge {
-  display: inline-block;
-  padding: 2px 8px;
-  background: #e3f2fd;
-  border: 1px solid #90caf9;
-  border-radius: 10px;
-  font-size: 11px;
-  font-weight: 500;
-  color: #1976d2;
-}
-
-.saju_result_page .direction_badge.reverse {
-  background: #fff3e0;
-  border-color: #ffb74d;
-  color: #f57c00;
-}
-
-.saju_result_page .luck_hint {
-  font-size: 12px;
-  color: #999;
-  margin: 0;
-}
 
 .saju_result_page .luck_section {
   margin-bottom: 20px;
@@ -6991,20 +4153,6 @@
   margin-left: auto;
 }
 
-.saju_result_page .extra_score {
-  font-size: 12px;
-  font-weight: 600;
-  color: #c0392b;
-}
-
-.saju_result_page .extra_level {
-  padding: 2px 8px;
-  background: #fff3e0;
-  border: 1px solid #ffcc80;
-  border-radius: 10px;
-  font-size: 11px;
-  color: #e65100;
-}
 
 .saju_result_page .extra_text {
   font-size: 12px;
@@ -7029,760 +4177,39 @@
 }
 
 /* ===== 가격 비교 섹션 ===== */
-.saju_result_page .price_compare_section {
-  margin-top: 32px;
-  padding: 28px 20px ;
-  text-align: center;
-  background: #fff;
-}
 
-.saju_result_page .price_compare_title {
-  font-size: 15px;
-  font-weight: 500;
-  color: #666;
-  margin: 0 0 20px 0;
-}
-
-.saju_result_page .price_compare_cards {
-  display: flex;
-  gap: 10px;
-  justify-content: center;
-}
-
-.saju_result_page .price_card {
-  flex: 1;
-  max-width: 110px;
-  padding: 16px 10px;
-  background: #fff;
-  border-radius: 12px;
-  border: 1px solid #f0e0dc;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 4px;
-}
-
-.saju_result_page .price_card_badge {
-  display: inline-block;
-  font-size: 11px;
-  font-weight: 600;
-  color: #c0392b;
-  background: #fce8e6;
-  padding: 4px 10px;
-  border-radius: 20px;
-  margin-bottom: 8px;
-}
-
-.saju_result_page .price_card_value {
-  font-size: 15px;
-  font-weight: 700;
-  color: #333;
-}
-
-.saju_result_page .price_card_sep {
-  font-size: 12px;
-  color: #999;
-}
-
-.saju_result_page .price_vs {
-  font-size: 32px;
-  font-weight: 800;
-  color: #c0392b;
-  margin: 28px 0 0 0;
-}
-
-.saju_result_page .price_compare_img {
-  width: 100%;
-  max-width: none;
-  display: block;
-  text-align: center;
-}
-
-.saju_result_page .price_final_img {
-  width: calc(100% + 48px);
-  max-width: none;
-  margin-left: -24px;
-  display: block;
-  margin-top: 40px;
-}
-
-.saju_result_page .price_card_label {
-  display: block;
-  font-size: 12px;
-  font-weight: 500;
-  color: #888;
-  margin-bottom: 8px;
-}
-
-.saju_result_page .price_card_value {
-  display: block;
-  font-size: 16px;
-  font-weight: 700;
-  color: #666;
-}
-
-.saju_result_page .price_card_desc {
-  display: block;
-  font-size: 11px;
-  color: #aaa;
-  margin-top: 6px;
-}
 
 /* 색동낭자 강조 카드 */
-.saju_result_page .price_card_ours {
-  position: relative;
-  background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
-  border-radius: 16px;
-  padding: 24px 20px 20px;
-  text-align: center;
-  box-shadow: 0 4px 20px rgba(231, 76, 60, 0.3);
-}
 
-.saju_result_page .price_card_ours_badge {
-  position: absolute;
-  top: -10px;
-  left: 50%;
-  transform: translateX(-50%);
-  background: #ffd700;
-  color: #333;
-  font-size: 11px;
-  font-weight: 700;
-  padding: 4px 14px;
-  border-radius: 20px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
-}
-
-.saju_result_page .price_card_ours_content {
-  margin-bottom: 0;
-}
-
-.saju_result_page .price_card_ours_label {
-  display: block;
-  font-size: 14px;
-  font-weight: 500;
-  color: rgba(255, 255, 255, 0.9);
-  margin-bottom: 8px;
-}
-
-.saju_result_page .price_card_ours_value {
-  display: block;
-  font-size: 28px;
-  font-weight: 800;
-  color: #fff;
-}
-
-.saju_result_page .price_card_ours_benefits {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  text-align: left;
-}
-
-.saju_result_page .price_card_ours_benefits li {
-  font-size: 13px;
-  color: rgba(255, 255, 255, 0.95);
-  padding: 6px 0;
-  padding-left: 20px;
-  position: relative;
-}
-
-.saju_result_page .price_card_ours_benefits li::before {
-  content: "✓";
-  position: absolute;
-  left: 0;
-  color: #ffd700;
-  font-weight: 700;
-}
 
 /* ===== 고민 유도 섹션 ===== */
-.saju_result_page .hesitate_section {
-  margin-top: 40px;
-  padding: 28px 20px;
-  text-align: center;
-}
 
-.saju_result_page .hesitate_question {
-  font-size: 18px;
-  font-weight: 700;
-  color: #333;
-  margin: 0 0 12px 0;
-}
-
-.saju_result_page .hesitate_hint {
-  font-size: 14px;
-  font-weight: 500;
-  color: #b85a85;
-  margin: 0;
-  padding: 10px 16px;
-  background: rgba(184, 90, 133, 0.08);
-  border-radius: 20px;
-  display: inline-block;
-}
 
 /* ===== 결제 유도 카드 (PaymentCard) ===== */
-.saju_result_page .payment_card {
-  background: linear-gradient(180deg, #fff9f9 0%, #fff 20%);
-  min-height: 100%;
-}
 
-.saju_result_page .payment_card_content {
-  padding: 40px 24px 60px;
-}
-
-.saju_result_page .payment_card_header {
-  text-align: center;
-  margin-bottom: 32px;
-}
-
-.saju_result_page .payment_card_title {
-  font-size: 24px;
-  font-weight: 700;
-  color: #333;
-  margin: 0 0 12px 0;
-  line-height: 1.4;
-}
-
-.saju_result_page .payment_card_subtitle {
-  font-size: 16px;
-  font-weight: 400;
-  color: #666;
-  margin: 0;
-  line-height: 1.5;
-}
 
 /* 목차 미리보기 */
-.saju_result_page .payment_card_toc {
-  background: #fafafa;
-  border-radius: 16px;
-  padding: 20px;
-  margin-bottom: 24px;
-}
 
-.saju_result_page .payment_card_toc_header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 16px;
-}
-
-.saju_result_page .payment_card_toc_title {
-  font-size: 14px;
-  font-weight: 600;
-  color: #333;
-}
-
-.saju_result_page .payment_card_toc_badge {
-  font-size: 11px;
-  font-weight: 600;
-  color: #b85a85;
-  background: rgba(184, 90, 133, 0.1);
-  padding: 4px 10px;
-  border-radius: 12px;
-}
-
-.saju_result_page .payment_card_toc_list {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-.saju_result_page .payment_card_toc_list li {
-  font-size: 13px;
-  color: #555;
-  padding: 8px 0;
-  border-bottom: 1px solid #eee;
-}
-
-.saju_result_page .payment_card_toc_list li:last-child {
-  border-bottom: none;
-}
 
 /* 가격 정보 */
-.saju_result_page .payment_card_price {
-  background: #fff;
-  border: 1px solid #eee;
-  border-radius: 16px;
-  padding: 20px;
-  margin-bottom: 24px;
-}
 
-.saju_result_page .payment_card_price_original,
-.saju_result_page .payment_card_price_discount {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 8px 0;
-}
-
-.saju_result_page .payment_card_price_original .label,
-.saju_result_page .payment_card_price_discount .label {
-  font-size: 13px;
-  color: #888;
-}
-
-.saju_result_page .payment_card_price_original .value {
-  font-size: 14px;
-  color: #aaa;
-  text-decoration: line-through;
-}
-
-.saju_result_page .payment_card_price_discount .value {
-  font-size: 14px;
-  color: #e74c3c;
-  font-weight: 600;
-}
-
-.saju_result_page .payment_card_price_final {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 16px 0 8px;
-  border-top: 1px dashed #ddd;
-  margin-top: 8px;
-}
-
-.saju_result_page .payment_card_price_final .label {
-  font-size: 14px;
-  font-weight: 600;
-  color: #333;
-}
-
-.saju_result_page .payment_card_price_final .discount_badge {
-  font-size: 12px;
-  font-weight: 700;
-  color: #fff;
-  background: #e74c3c;
-  padding: 4px 8px;
-  border-radius: 4px;
-  margin-left: 8px;
-}
-
-.saju_result_page .payment_card_price_final .value {
-  font-size: 22px;
-  font-weight: 800;
-  color: #333;
-}
 
 /* 결제 버튼 */
-.saju_result_page .payment_card_btn {
-  width: 100%;
-  padding: 18px 24px;
-  background: linear-gradient(135deg, #b85a85 0%, #9e4a73 100%);
-  color: #fff;
-  font-size: 17px;
-  font-weight: 700;
-  border: none;
-  border-radius: 14px;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  box-shadow: 0 4px 16px rgba(184, 90, 133, 0.3);
-}
 
-.saju_result_page .payment_card_btn:active {
-  transform: scale(0.98);
-}
 
 /* 힌트 텍스트 */
-.saju_result_page .payment_card_hint {
-  text-align: center;
-  font-size: 12px;
-  color: #999;
-  margin-top: 16px;
-}
 
 /* ===== 결제 모달 스타일 (detail.css에서 복사) ===== */
-.payment-overlay {
-  position: fixed;
-  top: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 100vw;
-  height: 100vh;
-  background: rgba(0, 0, 0, 0.6);
-  z-index: 10000;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
 
-.payment-fullscreen {
-  position: relative;
-  width: 100%;
-  max-width: 500px;
-  height: 100%;
-  background: #fff;
-  z-index: 10001;
-  overflow-y: auto;
-  -webkit-overflow-scrolling: touch;
-}
-
-.payment-fullscreen .modal-content {
-  padding: 0;
-  padding-bottom: 40px;
-}
 
 /* 히어로 섹션 */
-.payment-hero {
-  position: relative;
-  background: linear-gradient(135deg, #b85a85 0%, #9e4a73 100%);
-  padding: 32px 24px;
-  text-align: center;
-  color: #fff;
-}
 
-.payment-hero .payment-close {
-  position: absolute;
-  top: 12px;
-  right: 12px;
-  color: rgba(255, 255, 255, 0.8);
-  font-size: 24px;
-  cursor: pointer;
-  padding: 4px;
-  z-index: 10;
-}
-
-.payment-hero-icon {
-  font-size: 48px;
-  margin-bottom: 16px;
-}
-
-.payment-hero-title {
-  font-size: 22px;
-  font-weight: 700;
-  line-height: 1.4;
-  margin: 0 0 8px 0;
-}
-
-.payment-hero-subtitle {
-  font-size: 14px;
-  opacity: 0.9;
-  margin: 0 0 20px 0;
-}
-
-.payment-hero-features {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  font-size: 13px;
-  opacity: 0.95;
-}
-
-.payment-hero-features span {
-  display: block;
-}
-
-.payment-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 10px 20px;
-  border-bottom: 1px solid #eee;
-  position: sticky;
-  top: 0;
-  background: #fff;
-  z-index: 10;
-}
-
-.payment-title {
-  font-size: 18px;
-  font-weight: 700;
-  color: #333;
-}
-
-.payment-close {
-  font-size: 24px;
-  color: #999;
-  cursor: pointer;
-  padding: 4px;
-}
-
-.report-toc {
-  padding: 20px;
-  background: #fafafa;
-}
-
-.report-toc-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 16px;
-}
-
-.report-toc-title {
-  font-size: 14px;
-  font-weight: 600;
-  color: #333;
-}
-
-.report-toc-badge {
-  font-size: 11px;
-  font-weight: 600;
-  color: #b85a85;
-  background: rgba(184, 90, 133, 0.1);
-  padding: 4px 10px;
-  border-radius: 12px;
-}
-
-.report-toc-list {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-.report-toc-list li {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 12px 0;
-  border-bottom: 1px solid #eee;
-  font-size: 13px;
-  color: #333;
-}
-
-.report-toc-list li:last-child {
-  border-bottom: none;
-}
-
-.toc-keywords {
-  font-size: 11px;
-  color: #999;
-}
 
 /* 결제 금액 섹션 */
-.payment-amount-section {
-  padding: 24px 20px;
-  background: #fff;
-}
 
-.payment-amount-title {
-  font-size: 18px;
-  font-weight: 700;
-  color: #333;
-  margin: 0 0 20px 0;
-  text-align: left;
-}
-
-.payment-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 12px 0;
-}
-
-.payment-row-label {
-  font-size: 15px;
-  color: #333;
-}
-
-.payment-row-value {
-  font-size: 15px;
-  color: #333;
-}
-
-.payment-row.discount .payment-row-label {
-  color: #e74c3c;
-}
-
-.payment-row-discount-value {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.discount-badge {
-  font-size: 12px;
-  font-weight: 600;
-  color: #fff;
-  background: #e74c3c;
-  padding: 4px 8px;
-  border-radius: 4px;
-}
-
-.discount-amount {
-  font-size: 15px;
-  font-weight: 600;
-  color: #e74c3c;
-}
-
-.payment-divider {
-  height: 1px;
-  background: #eee;
-  margin: 16px 0;
-}
-
-.payment-row.final {
-  padding: 16px 0 0 0;
-}
-
-.payment-row.final .payment-row-label {
-  font-size: 16px;
-  font-weight: 700;
-  color: #333;
-}
-
-.payment-row-final-value {
-  font-size: 24px;
-  font-weight: 800;
-  color: #333;
-}
 
 /* 쿠폰 섹션 */
-.coupon-section {
-  padding: 16px 20px;
-  background: #f8f8f8;
-  border-top: 1px solid #eee;
-}
 
-.coupon-section .coupon-input-row {
-  display: flex;
-  gap: 8px;
-}
-
-.coupon-section .coupon-input {
-  flex: 1;
-  padding: 12px 16px;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  font-size: 14px;
-  outline: none;
-  background: #fff;
-}
-
-.coupon-section .coupon-input:focus {
-  border-color: #999;
-}
-
-.coupon-section .coupon-submit-btn {
-  padding: 12px 20px;
-  background: #333;
-  color: #fff;
-  border: none;
-  border-radius: 8px;
-  font-size: 14px;
-  font-weight: 600;
-  cursor: pointer;
-}
-
-.coupon-section .coupon-submit-btn:disabled {
-  background: #ccc;
-  cursor: not-allowed;
-}
-
-.coupon-section .coupon-error {
-  margin-top: 8px;
-  font-size: 12px;
-  color: #e74c3c;
-}
-
-.payment-coupon-title {
-  font-size: 13px;
-  color: #666;
-}
-
-.payment-coupon-price {
-  font-size: 16px;
-  font-weight: 700;
-  color: #e74c3c;
-}
-
-.coupon-input-wrap {
-  padding: 16px 20px;
-  background: #f8f8f8;
-}
-
-.coupon-input-row {
-  display: flex;
-  gap: 8px;
-}
-
-.coupon-input {
-  flex: 1;
-  padding: 12px 16px;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  font-size: 14px;
-  outline: none;
-}
-
-.coupon-input:focus {
-  border-color: #b85a85;
-}
-
-.coupon-submit-btn {
-  padding: 12px 20px;
-  background: #333;
-  color: #fff;
-  border: none;
-  border-radius: 8px;
-  font-size: 14px;
-  font-weight: 600;
-  cursor: pointer;
-}
-
-.coupon-submit-btn:disabled {
-  background: #ccc;
-  cursor: not-allowed;
-}
-
-.coupon-error {
-  margin-top: 8px;
-  font-size: 12px;
-  color: #e74c3c;
-}
-
-.payment-final-price-wrap {
-  padding: 20px;
-  background: #fff;
-}
-
-.payment-final-price-title {
-  font-size: 13px;
-  color: #888;
-  margin-bottom: 8px;
-}
-
-.payment-final-price-price-wrap {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.payment-originam-price2 {
-  font-size: 14px;
-  color: #bbb;
-  text-decoration: line-through;
-}
-
-.payment-final-price {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.payment-final-price-discount {
-  font-size: 14px;
-  font-weight: 700;
-  color: #e74c3c;
-}
-
-.payment-final-price-num {
-  font-size: 24px;
-  font-weight: 800;
-  color: #333;
-}
-
-.payment-final-btn-saju {
-  width: calc(100% - 40px);
-  margin: 20px;
-  padding: 18px;
-  background: #e74c3c;
-  color: #fff;
-  font-size: 17px;
-  font-weight: 700;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-}
 
 /* ========== 리뷰 섹션 ========== */
 .review_section {
@@ -8129,12 +4556,6 @@
   color: white;
 }
 
-.review_overlay .input_optional {
-  font-size: 12px;
-  font-weight: 400;
-  color: rgba(255, 255, 255, 0.5);
-  margin-left: 6px;
-}
 
 .review_overlay .input_field {
   width: 100%;
@@ -8166,28 +4587,7 @@
 }
 
 /* 별점 선택 (status_options 스타일) */
-.review_overlay .status_options {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-}
 
-.review_overlay .status_btn {
-  padding: 6px 14px;
-  border: none;
-  border-radius: 6px;
-  background: rgba(255, 255, 255, 0.15);
-  font-size: 13px;
-  font-weight: 500;
-  color: rgba(255, 255, 255, 0.7);
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.review_overlay .status_btn.active {
-  background: rgba(255, 255, 255, 0.95);
-  color: #8b4a5e;
-}
 
 /* 버튼들 */
 .review_overlay .input_buttons {

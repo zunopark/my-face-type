@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState, useCallback, useRef, Suspense } from "react";
-import { useSearchParams, useRouter } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 // 클라이언트에서 직접 FastAPI 호출 (Netlify 타임아웃 우회)
 const SAJU_API_URL = process.env.NEXT_PUBLIC_SAJU_API_URL;
 import {
@@ -14,7 +14,28 @@ import { trackPageView } from "@/lib/mixpanel";
 import { createReview, getReviewByRecordId, Review } from "@/lib/db/reviewDB";
 import { getSajuAnalysisByShareId, createSajuAnalysis, updateSajuAnalysis } from "@/lib/db/sajuAnalysisDB";
 import { uploadSajuLoveImages, getImageUrl } from "@/lib/storage/imageStorage";
+import {
+  getColor,
+  getStemElement,
+  getBranchElement,
+  getBranchKorean,
+  getStemKorean,
+  getElementKorean,
+  escapeHTML,
+  simpleMD as simpleMDBase,
+} from "@/lib/saju-utils";
+import { ScenePlayer, Scene, CardScene, WaitingScene, ActionScene } from "@/components/scene-player";
+import { getChapterConfig, CHAPTER_TITLES, sajuLovePlayerConfig } from "./config";
 import styles from "./result.module.css";
+
+// 색동낭자 전용 마크다운 파서
+const simpleMD = (src: string = "") =>
+  simpleMDBase(src, {
+    name: "색동낭자",
+    pinchImg: "/saju-love/img/pinch.jpg",
+    sokdakImg: "/saju-love/img/sokdak.jpg",
+    todakImg: "/saju-love/img/todak.jpg",
+  });
 
 // 연애 사주 분석 결과 타입
 interface LoveAnalysisResult {
@@ -36,200 +57,9 @@ interface LoveAnalysisResult {
   };
 }
 
-// 메시지 타입 정의
-type MessageItem = {
-  id: string;
-  type:
-  | "dialogue"
-  | "report"
-  | "image"
-  | "ending"
-  | "saju"
-  | "intro"
-  | "waiting"
-  | "review_prompt"; // 리뷰 유도 카드
-  content: string;
-  chapterIndex?: number;
-  imageBase64?: string;
-  imageUrl?: string;  // Storage URL (Supabase에서 가져온 경우)
-  imageVariant?: "ideal" | "avoid"; // 이미지 타입 구분
-  bgImage?: string;
-};
-
-// 오행 색상
-const elementColors: Record<string, string> = {
-  木: "#2aa86c",
-  wood: "#2aa86c",
-  Wood: "#2aa86c",
-  火: "#ff6a6a",
-  fire: "#ff6a6a",
-  Fire: "#ff6a6a",
-  土: "#caa46a",
-  earth: "#caa46a",
-  Earth: "#caa46a",
-  金: "#9a9a9a",
-  metal: "#9a9a9a",
-  Metal: "#9a9a9a",
-  水: "#6aa7ff",
-  water: "#6aa7ff",
-  Water: "#6aa7ff",
-};
-
-const getColor = (element?: string): string => {
-  if (!element) return "#333";
-  return elementColors[element] || "#333";
-};
-
-// 천간 -> 오행 매핑
-const STEM_ELEMENT: Record<string, string> = {
-  甲: "wood",
-  乙: "wood",
-  丙: "fire",
-  丁: "fire",
-  戊: "earth",
-  己: "earth",
-  庚: "metal",
-  辛: "metal",
-  壬: "water",
-  癸: "water",
-};
-
-// 지지 -> 오행 매핑
-const BRANCH_ELEMENT: Record<string, string> = {
-  子: "water",
-  丑: "earth",
-  寅: "wood",
-  卯: "wood",
-  辰: "earth",
-  巳: "fire",
-  午: "fire",
-  未: "earth",
-  申: "metal",
-  酉: "metal",
-  戌: "earth",
-  亥: "water",
-};
-
-// 지지 -> 한글 매핑
-const BRANCH_KOREAN: Record<string, string> = {
-  子: "자",
-  丑: "축",
-  寅: "인",
-  卯: "묘",
-  辰: "진",
-  巳: "사",
-  午: "오",
-  未: "미",
-  申: "신",
-  酉: "유",
-  戌: "술",
-  亥: "해",
-};
-
-// 천간 -> 한글 매핑
-const STEM_KOREAN: Record<string, string> = {
-  甲: "갑",
-  乙: "을",
-  丙: "병",
-  丁: "정",
-  戊: "무",
-  己: "기",
-  庚: "경",
-  辛: "신",
-  壬: "임",
-  癸: "계",
-};
-
-const getStemElement = (stem: string): string => STEM_ELEMENT[stem] || "";
-const getBranchElement = (branch: string): string =>
-  BRANCH_ELEMENT[branch] || "";
-const getBranchKorean = (branch: string): string =>
-  BRANCH_KOREAN[branch] || branch;
-const getStemKorean = (stem: string): string => STEM_KOREAN[stem] || stem;
-
-// 오행 한글 변환 함수 (음양 포함)
-const getElementKorean = (
-  element: string | undefined,
-  yinYang?: string
-): string => {
-  if (!element) return "";
-  const el = element.toLowerCase();
-  const sign = yinYang?.toLowerCase() === "yang" ? "+" : "-";
-  if (el === "fire" || element === "火") return `${sign}화`;
-  if (el === "wood" || element === "木") return `${sign}목`;
-  if (el === "water" || element === "水") return `${sign}수`;
-  if (el === "metal" || element === "金") return `${sign}금`;
-  if (el === "earth" || element === "土") return `${sign}토`;
-  return "";
-};
-
-// 각 챕터별 대사와 배경 이미지
-// API 응답: [1장, 2장, 3장, 4장, 5장, 6장] - 총 6개 챕터
-const getChapterConfig = (
-  userName: string
-): Record<
-  string,
-  {
-    intro: string;
-    outro: string;
-    introBg: string;
-    reportBg: string;
-    outroBg: string;
-  }
-> => ({
-  chapter1: {
-    // 1장: 나만의 매력과 연애 성향
-    intro: `1장에서는 ${userName}님이 가진 매력과\n연애 스타일을 알려드릴게요!`,
-    outro: `어떠세요, ${userName}님의 매력이 보이시나요?\n이제 미래의 연애 운을 살펴볼게요!`,
-    introBg: "/saju-love/img/nangja-5.jpg",
-    reportBg: "/saju-love/img/nangja-7.jpg",
-    outroBg: "/saju-love/img/nangja-8.jpg",
-  },
-  chapter2: {
-    // 2장: 앞으로 펼쳐질 사랑의 흐름
-    intro: `2장에서는 앞으로 펼쳐질\n${userName}님의 연애 운세를 알려드릴게요.`,
-    outro: "운세의 흐름을 파악했으니,\n이제 운명의 상대에 대해 얘기해볼까요?",
-    introBg: "/saju-love/img/nangja-9.jpg",
-    reportBg: "/saju-love/img/nangja-10.jpg",
-    outroBg: "/saju-love/img/nangja-11.jpg",
-  },
-  chapter3: {
-    // 3장: 결국 만나게 될 운명의 상대
-    intro: `3장에서는 ${userName}님이 만나게 될\n운명의 상대에 대해 알려드릴게요.`,
-    outro: "이제 조심해야 할 가짜 인연에\n대해 이야기해드릴게요.",
-    introBg: "/saju-love/img/nangja-11.jpg",
-    reportBg: "/saju-love/img/nangja-11.jpg",
-    outroBg: "/saju-love/img/nangja-11.jpg",
-  },
-  chapter4: {
-    // 4장: 운명이라 착각하는 가짜 인연
-    intro: "4장에서는 운명이라 착각할 수 있는\n가짜 인연에 대해 알려드릴게요.",
-    outro: "근데 피해야 할 사람,\n어떻게 생겼는지 궁금하지 않으세요?",
-    introBg: "/saju-love/img/nangja-18.jpg",
-    reportBg: "/saju-love/img/nangja-18.jpg",
-    outroBg: "/saju-love/img/nangja-19.jpg",
-  },
-  chapter5: {
-    // 5장: 누구에게도 말 못할, 19금 사주 풀이
-    intro: "5장에서는 누구에게도 말 못할,\n속궁합에 대해 알려드릴게요.",
-    outro: `마지막으로 제가 ${userName}님께\n전해드릴 귀띔이 있어요.`,
-    introBg: "/saju-love/img/nangja-21.jpg",
-    reportBg: "/saju-love/img/nangja-22.jpg",
-    outroBg: "/saju-love/img/nangja-23.jpg",
-  },
-  chapter6: {
-    // 6장: 색동낭자의 귀띔 (고민 답변)
-    intro: `${userName}님의 고민에 제가 답변드릴게요.`,
-    outro: "",
-    introBg: "/saju-love/img/nangja-24.jpg",
-    reportBg: "/saju-love/img/nangja-25.jpg",
-    outroBg: "/saju-love/img/nangja-25.jpg",
-  },
-});
 
 function SajuLoveResultContent() {
   const searchParams = useSearchParams();
-  const router = useRouter();
   const resultId = searchParams.get("id");
 
   const [isLoading, setIsLoading] = useState(true);
@@ -238,37 +68,23 @@ function SajuLoveResultContent() {
   const [data, setData] = useState<SajuLoveRecord | null>(null);
   const MAX_AUTO_RETRY = 2; // 자동 재시도 최대 횟수
 
-  // 대화형 UI 상태
-  const [messages, setMessages] = useState<MessageItem[]>([]);
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const [dialogueText, setDialogueText] = useState("");
-  const [isTyping, setIsTyping] = useState(false);
-  const [showButtons, setShowButtons] = useState(false);
-  const [showReport, setShowReport] = useState(false);
-  const [isAnimating, setIsAnimating] = useState(false);
-  const [canProceed, setCanProceed] = useState(false);
-  const [showScrollHint, setShowScrollHint] = useState(false);
-  const [showTocModal, setShowTocModal] = useState(false);
-  const [showExitModal, setShowExitModal] = useState(false);
+  // 씬 상태
+  const [scenes, setScenes] = useState<Scene[]>([]);
+  const [jumpIndex, setJumpIndex] = useState(0);
+  const [sceneKey, setSceneKey] = useState(0);
+
+  // 분석 상태
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [analysisComplete, setAnalysisComplete] = useState(false);
-  const [bgFadeIn, setBgFadeIn] = useState(false);
   const pendingDataRef = useRef<SajuLoveRecord | null>(null);
 
-  // 현재 메시지의 배경 이미지
-  const currentBgImage =
-    messages[currentIndex]?.bgImage || "/saju-love/img/nangja-1.jpg";
-
-  // 리뷰 모달 상태
-  const [showReviewModal, setShowReviewModal] = useState(false);
+  // 리뷰 관련 상태
   // 기존 리뷰 존재 여부 (미리 확인해서 review_prompt 카드 생성 여부 결정)
   const [hasExistingReview, setHasExistingReview] = useState(false);
 
   const isFetchingRef = useRef(false);
   const partialStartedRef = useRef(false);
   const loadingIntervalRef = useRef<NodeJS.Timeout | null>(null);
-  const typingIntervalRef = useRef<NodeJS.Timeout | null>(null);
-  const reportRef = useRef<HTMLDivElement>(null);
   // handleNext에서 사용하기 위한 함수 ref (선언 순서 문제 해결)
   const startLoadingMessagesRef = useRef<(userName: string) => void>(() => { });
   const fetchLoveAnalysisRef = useRef<(record: SajuLoveRecord) => void>(
@@ -328,70 +144,24 @@ function SajuLoveResultContent() {
     return "chapter1"; // 기본값
   };
 
-  // 부분 메시지 리스트 생성 (들어가며 + 사주원국만)
-  const buildPartialMessageList = useCallback(
-    (record: SajuLoveRecord): MessageItem[] => {
-      const result: MessageItem[] = [];
-      const userName = record.input?.userName || "고객";
+  // 부분 씬 리스트 생성 (들어가며 + 사주원국 + 대기)
+  const buildPartialScenes = useCallback((record: SajuLoveRecord): Scene[] => {
+    const userName = record.input?.userName || "고객";
+    return [
+      { kind: "dialogue", id: "opening-dialogue", text: `안녕하세요, ${userName}님\n저는 색동낭자예요. 반가워요!`, bgImage: "/saju-love/img/nangja-1.jpg" },
+      { kind: "dialogue", id: "intro-guide-dialogue", text: `${userName}님의 연애운을 보기 전에,\n먼저 사주에 대해 간단히 설명해드릴게요.`, bgImage: "/saju-love/img/nangja-2.jpg" },
+      { kind: "card", id: "intro-card", bgImage: "/saju-love/img/nangja-3.jpg", tocLabel: "들어가며" },
+      { kind: "dialogue", id: "saju-intro-dialogue", text: `사주란 참 신기하죠?\n그럼 이제 ${userName}님의 사주 팔자를 살펴볼까요?`, bgImage: "/saju-love/img/nangja-3.jpg" },
+      { kind: "card", id: "saju-card", bgImage: "/saju-love/img/nangja-5.jpg", tocLabel: "사주 원국" },
+      { kind: "waiting", id: "waiting", bgImage: "/saju-love/img/nangja-1.jpg" },
+    ];
+  }, []);
 
-      // 1. 첫 인사 대화
-      result.push({
-        id: "opening-dialogue",
-        type: "dialogue",
-        content: `안녕하세요, ${userName}님\n저는 색동낭자예요. 반가워요!`,
-        bgImage: "/saju-love/img/nangja-1.jpg",
-      });
-
-      // 2. 들어가며 안내 대화
-      result.push({
-        id: "intro-guide-dialogue",
-        type: "dialogue",
-        content: `${userName}님의 연애운을 보기 전에,\n먼저 사주에 대해 간단히 설명해드릴게요.`,
-        bgImage: "/saju-love/img/nangja-2.jpg",
-      });
-
-      // 3. 들어가며 인트로 카드
-      result.push({
-        id: "intro-card",
-        type: "intro",
-        content: "",
-        bgImage: "/saju-love/img/nangja-3.jpg",
-      });
-
-      // 4. 사주 원국 소개 대화
-      result.push({
-        id: "saju-intro-dialogue",
-        type: "dialogue",
-        content: `사주란 참 신기하죠?\n그럼 이제 ${userName}님의 사주 팔자를 살펴볼까요?`,
-        bgImage: "/saju-love/img/nangja-3.jpg",
-      });
-
-      // 5. 사주 원국 카드
-      result.push({
-        id: "saju-card",
-        type: "saju",
-        content: "",
-        bgImage: "/saju-love/img/nangja-5.jpg",
-      });
-
-      // 결제 완료 후 대기 카드 (보고서 작성중 - 분석 완료되면 자동 전환)
-      result.push({
-        id: "waiting",
-        type: "waiting",
-        content: "",
-        bgImage: "/saju-love/img/nangja-1.jpg",
-      });
-
-      return result;
-    },
-    []
-  );
-
-  // 메시지 리스트 생성 (전체 - 분석 완료 후)
+  // 전체 씬 리스트 생성 (분석 완료 후)
   // 흐름: 첫 인사 → [1장] → [2장] → [3장] → 운명의 상대 이미지 → [4장] → 피해야 할 인연 이미지 → [5장] → [6장] → 엔딩
-  const buildMessageList = useCallback(
-    (record: SajuLoveRecord, skipReviewPrompt = false): MessageItem[] => {
-      const result: MessageItem[] = [];
+  const buildFullScenes = useCallback(
+    (record: SajuLoveRecord, skipReviewPrompt = false): Scene[] => {
+      const result: Scene[] = [];
       const userName =
         record.loveAnalysis?.user_name || record.input?.userName || "고객";
       const chapters = record.loveAnalysis?.chapters || [];
@@ -402,380 +172,63 @@ function SajuLoveResultContent() {
         !!(record.loveAnalysis?.avoid_type_image?.image_base64 ||
           record.loveAnalysis?.avoid_type_image?.image_url);
 
-      // 1. 첫 인사 대화
-      result.push({
-        id: "opening-dialogue",
-        type: "dialogue",
-        content: `${userName}님, 안녕하세요?\n이제부터 연애 사주를 천천히 살펴볼까요?`,
-        bgImage: "/saju-love/img/nangja-1.jpg",
-      });
+      result.push({ kind: "dialogue", id: "opening-dialogue", text: `${userName}님, 안녕하세요?\n이제부터 연애 사주를 천천히 살펴볼까요?`, bgImage: "/saju-love/img/nangja-1.jpg" });
+      result.push({ kind: "dialogue", id: "intro-guide-dialogue", text: `${userName}님의 연애 사주를 알려드리기 전에,\n먼저 사주팔자에 대해 간단하게 설명을 해드릴게요.`, bgImage: "/saju-love/img/nangja-2.jpg" });
+      result.push({ kind: "card", id: "intro-card", bgImage: "/saju-love/img/nangja-3.jpg", tocLabel: "들어가며" });
+      result.push({ kind: "dialogue", id: "saju-intro-dialogue", text: `이제 ${userName}님의 사주 원국을 보여드릴게요.\n이게 바로 ${userName}님의 타고난 운명이에요!`, bgImage: "/saju-love/img/nangja-3.jpg" });
+      result.push({ kind: "card", id: "saju-card", bgImage: "/saju-love/img/nangja-5.jpg", tocLabel: "사주 원국" });
 
-      // 2. 들어가며 안내 대화
-      result.push({
-        id: "intro-guide-dialogue",
-        type: "dialogue",
-        content: `${userName}님의 연애 사주를 알려드리기 전에,\n먼저 사주팔자에 대해 간단하게 설명을 해드릴게요.`,
-        bgImage: "/saju-love/img/nangja-2.jpg",
-      });
-
-      // 3. 들어가며 인트로 카드
-      result.push({
-        id: "intro-card",
-        type: "intro",
-        content: "",
-        bgImage: "/saju-love/img/nangja-3.jpg",
-      });
-
-      // 4. 사주 원국 소개 대화
-      result.push({
-        id: "saju-intro-dialogue",
-        type: "dialogue",
-        content: `이제 ${userName}님의 사주 원국을 보여드릴게요.\n이게 바로 ${userName}님의 타고난 운명이에요!`,
-        bgImage: "/saju-love/img/nangja-3.jpg",
-      });
-
-      // 5. 사주 원국 카드
-      result.push({
-        id: "saju-card",
-        type: "saju",
-        content: "",
-        bgImage: "/saju-love/img/nangja-5.jpg",
-      });
-
-      // 6. 각 챕터별 [intro 대화 → 리포트 → outro 대화]
-      // 3장 이후에 운명의 상대 이미지 삽입
+      // 각 챕터별 [intro 대화 → 리포트 → outro 대화]
       const chapterConfig = getChapterConfig(userName);
       chapters.forEach((chapter, index) => {
         const chapterKey = getChapterKey(chapter);
         const config = chapterConfig[chapterKey];
         const chapterNum = parseInt(chapterKey.replace("chapter", ""));
 
-        // 챕터 intro 대화 (있는 경우에만)
         if (config?.intro) {
-          result.push({
-            id: `chapter-${chapterKey}-intro`,
-            type: "dialogue",
-            content: config.intro,
-            bgImage: config.introBg || "/saju-love/img/nangja-1.jpg",
-          });
+          result.push({ kind: "dialogue", id: `chapter-${chapterKey}-intro`, text: config.intro, bgImage: config.introBg || "/saju-love/img/nangja-1.jpg" });
         }
 
-        // 챕터 리포트 카드
-        result.push({
-          id: `chapter-${chapterKey}-report`,
-          type: "report",
-          content: chapter.content,
-          chapterIndex: index,
-          bgImage: config?.reportBg || "/saju-love/img/nangja-1.jpg",
-        });
+        result.push({ kind: "card", id: `chapter-${chapterKey}-report`, bgImage: config?.reportBg || "/saju-love/img/nangja-1.jpg", chapterIndex: index, tocLabel: `${chapterNum}장. ${CHAPTER_TITLES[chapterNum - 1] || ""}` });
 
         // 5장인 경우 outro 전에 추가 대화 삽입
         if (chapterNum === 5) {
-          result.push({
-            id: "chapter5-extra",
-            type: "dialogue",
-            content: `어때요? 이런 부분도 미리 생각하면서\n더 깊은 관계를 만들어 보세요!`,
-            bgImage: "/saju-love/img/nangja-20.jpg",
-          });
+          result.push({ kind: "dialogue", id: "chapter5-extra", text: `어때요? 이런 부분도 미리 생각하면서\n더 깊은 관계를 만들어 보세요!`, bgImage: "/saju-love/img/nangja-20.jpg" });
         }
 
-        // 챕터 outro 대화 (있는 경우에만)
         if (config?.outro) {
-          result.push({
-            id: `chapter-${chapterKey}-outro`,
-            type: "dialogue",
-            content: config.outro,
-            bgImage: config.outroBg || "/saju-love/img/nangja-1.jpg",
-          });
+          result.push({ kind: "dialogue", id: `chapter-${chapterKey}-outro`, text: config.outro, bgImage: config.outroBg || "/saju-love/img/nangja-1.jpg" });
         }
 
         // 5장 끝난 후 리뷰 유도 (이미 리뷰가 있으면 스킵)
         if (chapterNum === 5 && !skipReviewPrompt) {
-          result.push({
-            id: "review-prompt",
-            type: "review_prompt",
-            content: `${userName}님, 여기까지 어떠셨어요?\n잠깐, 소중한 후기를 남겨주시면\n더 좋은 서비스를 만드는 데 큰 힘이 됩니다!`,
-            bgImage: "/saju-love/img/nangja-20.jpg",
-          });
+          result.push({ kind: "action", id: "review-prompt", bgImage: "/saju-love/img/nangja-20.jpg" });
         }
 
         // 3장 이후에 운명의 상대 이미지 삽입
         if (chapterNum === 3 && hasIdealImage) {
-          result.push({
-            id: "ideal-type-dialogue",
-            type: "dialogue",
-            content: `잠깐, 여기서 특별히 보여드릴게 있어요.\n${userName}님의 운명의 상대가 어떻게 생겼는지 궁금하지 않으세요?`,
-            bgImage: "/saju-love/img/nangja-15.jpg",
-          });
-          result.push({
-            id: "ideal-type-image",
-            type: "image",
-            content: `${userName}님의 운명의 상대`,
-            imageBase64: record.loveAnalysis!.ideal_partner_image!.image_base64,
-            imageUrl: record.loveAnalysis!.ideal_partner_image!.image_url,
-            imageVariant: "ideal",
-            bgImage: "/saju-love/img/nangja-16.jpg",
-          });
-          result.push({
-            id: "ideal-type-outro",
-            type: "dialogue",
-            content: `어떠세요, 설레지 않으세요?\n자, 이제 계속해서 ${userName}님의 연애 운을 살펴볼게요!`,
-            bgImage: "/saju-love/img/nangja-17.jpg",
-          });
+          result.push({ kind: "dialogue", id: "ideal-type-dialogue", text: `잠깐, 여기서 특별히 보여드릴게 있어요.\n${userName}님의 운명의 상대가 어떻게 생겼는지 궁금하지 않으세요?`, bgImage: "/saju-love/img/nangja-15.jpg" });
+          result.push({ kind: "card", id: "ideal-type-image", bgImage: "/saju-love/img/nangja-16.jpg" });
+          result.push({ kind: "dialogue", id: "ideal-type-outro", text: `어떠세요, 설레지 않으세요?\n자, 이제 계속해서 ${userName}님의 연애 운을 살펴볼게요!`, bgImage: "/saju-love/img/nangja-17.jpg" });
         }
 
         // 4장 이후에 피해야 할 인연 이미지 삽입
         if (chapterNum === 4 && hasAvoidImage) {
-          result.push({
-            id: "avoid-type-dialogue",
-            type: "dialogue",
-            content: `실제로 이렇게 생겼을거에요.`,
-            bgImage: "/saju-love/img/nangja-19.jpg",
-          });
-          result.push({
-            id: "avoid-type-image",
-            type: "image",
-            content: `${userName}님의 가짜 인연`,
-            imageBase64: record.loveAnalysis!.avoid_type_image!.image_base64,
-            imageUrl: record.loveAnalysis!.avoid_type_image!.image_url,
-            imageVariant: "avoid",
-            bgImage: "/saju-love/img/nangja-19.jpg",
-          });
-          result.push({
-            id: "avoid-type-outro",
-            type: "dialogue",
-            content: `연인이 되시지 말고 지인으로만 지내세요!\n이제 속으로 궁금했던,, 부끄러운 주제로 넘어가볼까요?`,
-            bgImage: "/saju-love/img/nangja-19.jpg",
-          });
+          result.push({ kind: "dialogue", id: "avoid-type-dialogue", text: `실제로 이렇게 생겼을거에요.`, bgImage: "/saju-love/img/nangja-19.jpg" });
+          result.push({ kind: "card", id: "avoid-type-image", bgImage: "/saju-love/img/nangja-19.jpg" });
+          result.push({ kind: "dialogue", id: "avoid-type-outro", text: `연인이 되시지 말고 지인으로만 지내세요!\n이제 속으로 궁금했던,, 부끄러운 주제로 넘어가볼까요?`, bgImage: "/saju-love/img/nangja-19.jpg" });
         }
       });
 
-      // 26. 마무리 전 대화
-      result.push({
-        id: "ending-intro",
-        type: "dialogue",
-        content: `${userName}님, 정말 마지막이었어요. 여기까지 긴 여정 함께해주셔서 감사해요.\n어떠셨어요? 연애 사주를 보니 조금 나에 대해 더 아셨나요?`,
-        bgImage: "/saju-love/img/nangja-1.jpg",
-      });
-
-      // 27. 마무리 인사
-      result.push({
-        id: "ending-outro",
-        type: "dialogue",
-        content: `앞으로의 인연 길에\n늘 좋은 일만 가득하시길 바랄게요.\n\n그럼, 마지막으로 정리된 보고서를 전달 드릴게요.`,
-        bgImage: "/saju-love/img/nangja-1.jpg",
-      });
-
-      // 28. 마무리 메시지
-      result.push({
-        id: "ending",
-        type: "ending",
-        content: "",
-        bgImage: "/saju-love/img/nangja-1.jpg",
-      });
+      result.push({ kind: "dialogue", id: "ending-intro", text: `${userName}님, 정말 마지막이었어요. 여기까지 긴 여정 함께해주셔서 감사해요.\n어떠셨어요? 연애 사주를 보니 조금 나에 대해 더 아셨나요?`, bgImage: "/saju-love/img/nangja-1.jpg" });
+      result.push({ kind: "dialogue", id: "ending-outro", text: `앞으로의 인연 길에\n늘 좋은 일만 가득하시길 바랄게요.\n\n그럼, 마지막으로 정리된 보고서를 전달 드릴게요.`, bgImage: "/saju-love/img/nangja-1.jpg" });
+      result.push({ kind: "card", id: "ending", bgImage: "/saju-love/img/nangja-1.jpg", tocLabel: "마무리" });
 
       return result;
     },
     []
   );
 
-  // 리포트 표시 시 스크롤 이벤트 리스너 등록
-  useEffect(() => {
-    if (showReport && reportRef.current) {
-      const el = reportRef.current;
-
-      // 스크롤 체크 함수 (클로저로 정의)
-      const handleScroll = () => {
-        const { scrollTop, scrollHeight, clientHeight } = el;
-        const isAtBottom = scrollTop + clientHeight >= scrollHeight - 50; // 50px 여유
-
-        // 스크롤이 조금이라도 발생하면 힌트 숨김
-        if (scrollTop > 10) {
-          setShowScrollHint(false);
-        }
-
-        if (isAtBottom) {
-          setCanProceed(true);
-        }
-      };
-
-      // 초기 상태 리셋 후 체크
-      setCanProceed(false);
-      setShowScrollHint(true);
-
-      // DOM이 렌더링된 후 스크롤 필요 여부 확인
-      const checkTimer = setTimeout(() => {
-        const needsScroll = el.scrollHeight > el.clientHeight + 50;
-
-        if (!needsScroll) {
-          // 스크롤이 필요 없으면 바로 버튼 표시
-          setCanProceed(true);
-          setShowScrollHint(false);
-        } else {
-          // 스크롤 이벤트 리스너 등록
-          el.addEventListener("scroll", handleScroll);
-          // 혹시 이미 스크롤되어 있을 경우 체크
-          handleScroll();
-        }
-      }, 300);
-
-      return () => {
-        clearTimeout(checkTimer);
-        el.removeEventListener("scroll", handleScroll);
-      };
-    }
-  }, [showReport, currentIndex]);
-
-  // 타이핑 효과
-  const typeText = useCallback((text: string, onComplete: () => void) => {
-    // 기존 인터벌 클리어
-    if (typingIntervalRef.current) {
-      clearInterval(typingIntervalRef.current);
-    }
-
-    setIsTyping(true);
-    setShowButtons(false);
-    setDialogueText("");
-
-    let i = 0;
-    typingIntervalRef.current = setInterval(() => {
-      if (i < text.length) {
-        setDialogueText(text.substring(0, i + 1));
-        i++;
-      } else {
-        if (typingIntervalRef.current) {
-          clearInterval(typingIntervalRef.current);
-          typingIntervalRef.current = null;
-        }
-        setIsTyping(false);
-        onComplete();
-      }
-    }, 50);
-  }, []);
-
-  // 이전 메시지로 이동
-  const handlePrev = useCallback(() => {
-    // 타이핑 중이면 무시
-    if (isTyping) return;
-
-    // 첫 번째 메시지면 무시
-    if (currentIndex <= 0) return;
-
-    // 리포트 보고 있으면 닫기
-    if (showReport) {
-      setShowReport(false);
-    }
-
-    // 이전 메시지로
-    const prevIndex = currentIndex - 1;
-    setCurrentIndex(prevIndex);
-    const prevMsg = messages[prevIndex];
-
-    if (prevMsg.type === "dialogue") {
-      // 이전 대화는 타이핑 효과 없이 바로 보여주기
-      setDialogueText(prevMsg.content);
-      setShowButtons(true);
-    } else {
-      setShowReport(true);
-      setShowButtons(true);
-    }
-  }, [currentIndex, messages, isTyping, showReport]);
-
-  // 다음 메시지로 이동
-  const handleNext = useCallback(() => {
-    // 타이핑 중이면 스킵 (인터벌 클리어하고 텍스트 완성)
-    if (isTyping) {
-      if (typingIntervalRef.current) {
-        clearInterval(typingIntervalRef.current);
-        typingIntervalRef.current = null;
-      }
-      const currentMsg = messages[currentIndex];
-      if (currentMsg?.type === "dialogue") {
-        setDialogueText(currentMsg.content);
-        setIsTyping(false);
-        setShowButtons(true);
-      }
-      return;
-    }
-
-    // 이미지 프리로드 헬퍼
-    const ensureImageLoaded = (url: string): Promise<void> => {
-      return new Promise((resolve) => {
-        const img = new Image();
-        img.onload = () => resolve();
-        img.onerror = () => resolve();
-        // 이미 캐시되어 있으면 즉시 resolve
-        if (img.complete) {
-          resolve();
-          return;
-        }
-        img.src = url;
-      });
-    };
-
-    // 다음 메시지로 이동하는 함수
-    const goToNextMessage = async (nextIndex: number) => {
-      const nextMsg = messages[nextIndex];
-
-      const nextImage = nextMsg.bgImage || "/saju-love/img/nangja-1.jpg";
-
-      // 이미지 로드 대기 (최대 100ms)
-      await Promise.race([
-        ensureImageLoaded(nextImage),
-        new Promise((resolve) => setTimeout(resolve, 100)),
-      ]);
-
-      setCurrentIndex(nextIndex);
-
-      if (nextMsg.type === "dialogue") {
-        typeText(nextMsg.content, () => setShowButtons(true));
-      } else {
-        setIsAnimating(true);
-        setShowReport(true);
-        setShowButtons(true);
-        // 애니메이션 완료 후 상호작용 허용 (0.5s transition)
-        setTimeout(() => setIsAnimating(false), 550);
-      }
-    };
-
-    // 리포트 보고 있으면 닫기
-    if (showReport) {
-      const currentMsg = messages[currentIndex];
-      const nextIndex = currentIndex + 1;
-
-      // 현재가 waiting 카드면 → 이미 분석 중이므로 무시
-      if (currentMsg.type === "waiting") {
-        return;
-      }
-
-      if (nextIndex < messages.length) {
-        // 1. 대화창/버튼 숨김 + 보고서 내려감
-        // 2. 애니메이션 완료 후 배경 fade in + 대화 시작
-        setDialogueText("");
-        setShowButtons(false);
-        setShowReport(false);
-        setBgFadeIn(true);
-        setTimeout(() => {
-          goToNextMessage(nextIndex);
-          setTimeout(() => setBgFadeIn(false), 300);
-        }, 250);
-      }
-      return;
-    }
-
-    // 다음 메시지로
-    const nextIndex = currentIndex + 1;
-    if (nextIndex < messages.length) {
-      goToNextMessage(nextIndex);
-    }
-  }, [
-    currentIndex,
-    messages,
-    isTyping,
-    showReport,
-    typeText,
-    data,
-  ]);
 
   // 로딩 메시지 순환
   const startLoadingMessages = useCallback((userName: string) => {
@@ -976,12 +429,8 @@ function SajuLoveResultContent() {
         } else {
           // 아직 partial 시작 전이면 → 바로 전환
           setData(updatedData);
-          const messageList = buildMessageList(updatedData, hasExistingReview);
-          setMessages(messageList);
+          setScenes(buildFullScenes(updatedData, hasExistingReview));
           setIsLoading(false);
-          setTimeout(() => {
-            typeText(messageList[0].content, () => setShowButtons(true));
-          }, 500);
         }
       } catch (err) {
         stopLoadingMessages();
@@ -1031,8 +480,7 @@ function SajuLoveResultContent() {
     [
       startLoadingMessages,
       stopLoadingMessages,
-      buildMessageList,
-      typeText,
+      buildFullScenes,
       MAX_AUTO_RETRY,
     ]
   );
@@ -1173,7 +621,8 @@ function SajuLoveResultContent() {
 
         // 기존 리뷰 존재 여부 미리 확인 (review_prompt 카드 표시 여부 결정)
         const existingReview = await getReviewByRecordId("saju_love", record.id);
-        if (existingReview) {
+        const hasReview = !!existingReview;
+        if (hasReview) {
           setHasExistingReview(true);
         }
 
@@ -1203,46 +652,32 @@ function SajuLoveResultContent() {
 
           // 이미 인트로를 본 적 있으면 가라 로딩 스킵
           if (record.seenIntro) {
-            const partialMessages = buildPartialMessageList(record);
-            setMessages(partialMessages);
+            setScenes(buildPartialScenes(record));
             setIsLoading(false);
-            setTimeout(() => {
-              typeText(partialMessages[0].content, () => setShowButtons(true));
-            }, 500);
             return;
           }
 
-          // 첫 방문: 10초 가라 로딩 후 partial 메시지 시작
+          // 첫 방문: 10초 가라 로딩 후 partial 씬 시작
           startLoadingMessages(userName);
           setTimeout(async () => {
             stopLoadingMessages();
-            // seenIntro 플래그 저장
             await updateSajuLoveRecord(record.id, { seenIntro: true });
-            const partialMessages = buildPartialMessageList(record);
-            setMessages(partialMessages);
+            setScenes(buildPartialScenes(record));
             setIsLoading(false);
-            setTimeout(() => {
-              typeText(partialMessages[0].content, () => setShowButtons(true));
-            }, 500);
-          }, 10000); // 10초
+          }, 10000);
 
           return;
         }
 
-        // 결제 완료 & 분석 완료: 전체 메시지 보여주기
+        // 결제 완료 & 분석 완료: 전체 씬 보여주기
         if (record.loveAnalysis) {
           setData(record);
-          const messageList = buildMessageList(record, hasExistingReview);
-          setMessages(messageList);
+          setScenes(buildFullScenes(record, hasReview));
           setIsLoading(false);
-          setTimeout(() => {
-            typeText(messageList[0].content, () => setShowButtons(true));
-          }, 500);
           return;
         }
 
         // detail 페이지에서 결제 후 진입 (paid=true 쿼리 파라미터)
-        // 10초 가라 로딩 → 들어가며 + 사주원국 → 분석 미완료시 대기 카드
         const paidFromDetail = searchParams.get("paid") === "true";
         const userName = record.input?.userName || "고객";
 
@@ -1254,19 +689,14 @@ function SajuLoveResultContent() {
           partialStartedRef.current = true;
           fetchLoveAnalysis(record);
 
-          // 10초 가라 로딩 후 partial 메시지 시작
+          // 10초 가라 로딩 후 partial 씬 시작
           startLoadingMessages(userName);
           setTimeout(async () => {
             stopLoadingMessages();
-            // seenIntro 플래그 저장
             await updateSajuLoveRecord(record.id, { seenIntro: true });
-            const partialMessages = buildPartialMessageList(record);
-            setMessages(partialMessages);
+            setScenes(buildPartialScenes(record));
             setIsLoading(false);
-            setTimeout(() => {
-              typeText(partialMessages[0].content, () => setShowButtons(true));
-            }, 500);
-          }, 10000); // 10초
+          }, 10000);
 
           return;
         }
@@ -1274,15 +704,11 @@ function SajuLoveResultContent() {
         // 결제 완료 & 분석 필요 (이미 인트로를 본 경우)
         setData(record);
         setIsAnalyzing(true);
-        const partialMessages = buildPartialMessageList(record);
-        setMessages(partialMessages);
+        setScenes(buildPartialScenes(record));
         setIsLoading(false);
-        setTimeout(() => {
-          typeText(partialMessages[0].content, () => setShowButtons(true));
-        }, 500);
 
         // 이미 분석 중인지 확인 (5분 이내)
-        const ANALYSIS_TIMEOUT = 5 * 60 * 1000; // 5분
+        const ANALYSIS_TIMEOUT = 5 * 60 * 1000;
         const isStillAnalyzing =
           record.isAnalyzing &&
           record.analysisStartedAt &&
@@ -1290,11 +716,9 @@ function SajuLoveResultContent() {
           ANALYSIS_TIMEOUT;
 
         if (isStillAnalyzing) {
-          // 이미 분석 중이면 API 호출 안하고 주기적으로 DB 체크
-          // 단, 30초 후에도 응답 없으면 다시 API 호출 (새로고침으로 이전 호출이 취소됐을 수 있음)
           partialStartedRef.current = true;
           let checkCount = 0;
-          const MAX_CHECKS = 10; // 3초 * 10 = 30초
+          const MAX_CHECKS = 10;
 
           const checkInterval = setInterval(async () => {
             checkCount++;
@@ -1304,36 +728,23 @@ function SajuLoveResultContent() {
               clearInterval(checkInterval);
               setData(updated);
               setIsAnalyzing(false);
-              const messageList = buildMessageList(updated, hasExistingReview);
 
-              // 1장으로 이동 - 상태를 먼저 모두 설정
-              const chapter1IntroIndex = messageList.findIndex(
-                (m) => m.id === "chapter-chapter1-intro"
+              const fullScenes = buildFullScenes(updated, hasReview);
+              const chapter1IntroIndex = fullScenes.findIndex(
+                (s) => s.id === "chapter-chapter1-intro"
               );
-              if (chapter1IntroIndex >= 0) {
-                const nextMsg = messageList[chapter1IntroIndex];
-                setMessages(messageList);
-                setCurrentIndex(chapter1IntroIndex);
-                setShowReport(false);
-                setTimeout(() => {
-                  typeText(
-                    `오래 기다리셨죠? 분석이 완료됐어요!\n\n${nextMsg.content}`,
-                    () => setShowButtons(true)
-                  );
-                }, 100);
-              } else {
-                setMessages(messageList);
-              }
+              setScenes(fullScenes);
+              setJumpIndex(chapter1IntroIndex >= 0 ? chapter1IntroIndex : 0);
+              setSceneKey((k) => k + 1);
               return;
             }
 
-            // 30초 후에도 응답 없으면 다시 API 호출
             if (checkCount >= MAX_CHECKS) {
               clearInterval(checkInterval);
               console.log("분석 응답 없음, API 재호출");
               fetchLoveAnalysis(record);
             }
-          }, 3000); // 3초마다 체크
+          }, 3000);
           return;
         }
 
@@ -1350,13 +761,28 @@ function SajuLoveResultContent() {
     loadData();
   }, [
     resultId,
+    searchParams,
     fetchLoveAnalysis,
-    buildMessageList,
-    buildPartialMessageList,
-    typeText,
+    buildFullScenes,
+    buildPartialScenes,
     startLoadingMessages,
     stopLoadingMessages,
   ]);
+
+  // 분석 완료 시 씬 전환
+  const handleAnalysisTransition = useCallback(() => {
+    if (pendingDataRef.current) {
+      const updatedData = pendingDataRef.current;
+      setData(updatedData);
+      const fullScenes = buildFullScenes(updatedData, hasExistingReview);
+      const chapter1IntroIndex = fullScenes.findIndex((s) => s.id === "chapter-chapter1-intro");
+      setScenes(fullScenes);
+      setJumpIndex(chapter1IntroIndex >= 0 ? chapter1IntroIndex : 0);
+      setSceneKey((k) => k + 1);
+      pendingDataRef.current = null;
+      setAnalysisComplete(false);
+    }
+  }, [buildFullScenes, hasExistingReview]);
 
   // 로딩 화면
   if (isLoading) {
@@ -1376,7 +802,6 @@ function SajuLoveResultContent() {
     );
   }
 
-  // 재시도 핸들러 - 페이지 새로고침
   const handleRetry = () => {
     window.location.reload();
   };
@@ -1404,297 +829,90 @@ function SajuLoveResultContent() {
     );
   }
 
-  // 데이터나 메시지가 없으면 null
-  if (!data || messages.length === 0) {
+  if (!data || scenes.length === 0) {
     return null;
   }
 
   const userName =
     data.loveAnalysis?.user_name || data.input?.userName || "고객";
-  const currentMsg = messages[currentIndex];
 
-  // 버튼 텍스트 결정
-  const getButtonText = () => {
-    if (showReport) return "다음";
-    if (currentMsg?.type === "dialogue") return "다음";
-    return "확인하기";
-  };
-
-  // 화면 전체 클릭 핸들러 (대화 중일 때만 스킵)
-  const handleScreenClick = () => {
-    if (!showReport && currentMsg?.type === "dialogue") {
-      handleNext();
+  const renderCard = (scene: CardScene) => {
+    if (scene.id === "intro-card") return <IntroCard userName={userName} />;
+    if (scene.id === "saju-card") return <SajuCard data={data} />;
+    if (scene.id === "ideal-type-image") {
+      return (
+        <IdealTypeCard
+          imageBase64={data.loveAnalysis?.ideal_partner_image?.image_base64}
+          imageUrl={data.loveAnalysis?.ideal_partner_image?.image_url}
+          userName={userName}
+          variant="ideal"
+          title={`${userName}님의 운명의 상대`}
+        />
+      );
     }
+    if (scene.id === "avoid-type-image") {
+      return (
+        <IdealTypeCard
+          imageBase64={data.loveAnalysis?.avoid_type_image?.image_base64}
+          imageUrl={data.loveAnalysis?.avoid_type_image?.image_url}
+          userName={userName}
+          variant="avoid"
+          title={`${userName}님의 가짜 인연`}
+        />
+      );
+    }
+    if (scene.id === "ending") {
+      return <EndingCard data={data} />;
+    }
+    if (scene.chapterIndex != null && data.loveAnalysis?.chapters?.[scene.chapterIndex]) {
+      return (
+        <ReportCard
+          chapter={data.loveAnalysis.chapters[scene.chapterIndex]}
+          chapterIndex={scene.chapterIndex}
+        />
+      );
+    }
+    return null;
   };
 
-  return (
-    <div className={`${styles.saju_result_page} ${styles.chat_mode}`} onClick={handleScreenClick}>
-      {/* 배경 이미지 */}
-      <div className={styles.result_bg}>
-        <img
-          src={currentBgImage}
-          alt=""
-          className={`${styles.result_bg_image} ${bgFadeIn ? styles.fade_in : ""}`}
-        />
-      </div>
+  const renderWaiting = (
+    _scene: WaitingScene,
+    props: { isComplete: boolean; onTransition: () => void }
+  ) => (
+    <WaitingCard
+      userName={userName}
+      isComplete={props.isComplete}
+      analysisStartedAt={data?.analysisStartedAt}
+      onTransition={props.onTransition}
+    />
+  );
 
-      {/* 뒤로가기 버튼 */}
-      <button
-        className={styles.back_btn}
-        onClick={(e) => {
-          e.stopPropagation();
-          setShowExitModal(true);
-        }}
-      >
-        <span className="material-icons">arrow_back</span>
-        <span className={styles.back_btn_text}>홈으로</span>
-      </button>
-
-      {/* 홈으로 돌아가기 확인 모달 */}
-      {showExitModal && (
-        <div
-          className={styles.exit_modal_overlay}
-          onClick={() => setShowExitModal(false)}
-        >
-          <div className={styles.exit_modal} onClick={(e) => e.stopPropagation()}>
-            <p className={styles.exit_modal_text}>홈으로 돌아갈까요?</p>
-            <div className={styles.exit_modal_buttons}>
-              <button
-                className={styles.exit_modal_cancel}
-                onClick={() => setShowExitModal(false)}
-              >
-                아니요
-              </button>
-              <button
-                className={styles.exit_modal_confirm}
-                onClick={() => router.push("/saju-love")}
-              >
-                네, 돌아갈게요
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* 공유 버튼 */}
-      {data?.paid && (
-        <button
-          className={styles.share_btn}
-          onClick={async (e) => {
-            e.stopPropagation();
-            const shareUrl = `${window.location.origin}/saju-love/result?id=${resultId}`;
-            const shareData = {
-              title: `${data?.input?.userName || ""}님의 AI 연애 사주`,
-              text: "AI가 분석한 나만의 연애 사주 결과를 확인해보세요!",
-              url: shareUrl,
-            };
-
-            try {
-              if (navigator.share && navigator.canShare?.(shareData)) {
-                await navigator.share(shareData);
-              } else {
-                await navigator.clipboard.writeText(shareUrl);
-                alert("링크가 복사되었습니다!");
-              }
-            } catch (err) {
-              // 사용자가 공유 취소한 경우 무시
-              if ((err as Error).name !== "AbortError") {
-                try {
-                  await navigator.clipboard.writeText(shareUrl);
-                  alert("링크가 복사되었습니다!");
-                } catch {
-                  alert("공유에 실패했습니다.");
-                }
-              }
-            }
-          }}
-        >
-          <span className={styles.share_btn_text}>공유</span>
-        </button>
-      )}
-
-      {/* 목차 버튼 */}
-      <button
-        className={styles.toc_btn}
-        onClick={(e) => {
-          e.stopPropagation();
-          setShowTocModal(true);
-        }}
-      >
-        <span className={styles.toc_btn_text}>목차</span>
-      </button>
-
-      {/* 목차 모달 */}
-      {showTocModal && (
-        <TocModal
-          messages={messages}
-          currentIndex={currentIndex}
-          onClose={() => setShowTocModal(false)}
-          onNavigate={(index) => {
-            setCurrentIndex(index);
-            const targetMsg = messages[index];
-            if (targetMsg.type === "dialogue") {
-              setShowReport(false);
-              setDialogueText(targetMsg.content);
-              setShowButtons(true);
-            } else {
-              setShowReport(true);
-              setShowButtons(true);
-            }
-            setShowTocModal(false);
-          }}
-        />
-      )}
-
-      {/* 리포트 카드 (오버레이) */}
-      {currentMsg && (
-        <div
-          className={`${styles.report_overlay} ${showReport ? styles.active : ""} ${isAnimating ? styles.animating : ""
-            }`}
-        >
-          <div className={styles.report_scroll} ref={reportRef}>
-            {currentMsg.type === "intro" && <IntroCard userName={userName} />}
-            {currentMsg.type === "saju" && <SajuCard data={data} />}
-            {currentMsg.type === "report" && data.loveAnalysis && (
-              <ReportCard
-                chapter={data.loveAnalysis.chapters[currentMsg.chapterIndex!]}
-                chapterIndex={currentMsg.chapterIndex!}
-              />
-            )}
-            {currentMsg.type === "image" && (currentMsg.imageBase64 || currentMsg.imageUrl) && (
-              <IdealTypeCard
-                imageBase64={currentMsg.imageBase64}
-                imageUrl={currentMsg.imageUrl}
-                userName={userName}
-                variant={currentMsg.imageVariant || "ideal"}
-                title={currentMsg.content}
-              />
-            )}
-            {currentMsg.type === "waiting" && (
-              <WaitingCard
-                userName={userName}
-                isComplete={analysisComplete}
-                analysisStartedAt={data?.analysisStartedAt}
-                onTransition={() => {
-                  if (pendingDataRef.current) {
-                    const updatedData = pendingDataRef.current;
-                    setData(updatedData);
-                    const messageList = buildMessageList(updatedData, hasExistingReview);
-                    const chapter1IntroIndex = messageList.findIndex(
-                      (m) => m.id === "chapter-chapter1-intro"
-                    );
-                    if (chapter1IntroIndex >= 0) {
-                      const nextMsg = messageList[chapter1IntroIndex];
-                      setMessages(messageList);
-                      setCurrentIndex(chapter1IntroIndex);
-                      setShowReport(false);
-                      setIsLoading(false);
-                      setTimeout(() => {
-                        typeText(
-                          `오래 기다리셨죠? 분석이 완료됐어요!\n\n${nextMsg.content}`,
-                          () => setShowButtons(true)
-                        );
-                      }, 100);
-                    } else {
-                      setMessages(messageList);
-                      setIsLoading(false);
-                    }
-                    pendingDataRef.current = null;
-                    setAnalysisComplete(false);
-                  }
-                }}
-              />
-            )}
-            {currentMsg.type === "ending" && <EndingCard data={data} />}
-          </div>
-
-          {/* 스크롤 힌트 */}
-          {showScrollHint && !canProceed && (
-            <div className={styles.scroll_hint}>
-              <span className="material-icons">keyboard_arrow_down</span>
-              아래로 스크롤해주세요
-            </div>
-          )}
-
-          {/* 하단 다음 버튼 */}
-          <div
-            className={`${styles.report_bottom_btn_wrap} ${canProceed &&
-                currentMsg.type !== "waiting" &&
-                currentMsg.type !== "review_prompt"
-                ? styles.visible
-                : ""
-              }`}
-          >
-            {currentMsg.type === "ending" ? (
-              <div className={styles.end_buttons}>
-                <button
-                  className={styles.dialogue_next_btn}
-                  onClick={() => window.location.reload()}
-                >
-                  처음부터 다시 보기
-                </button>
-                <button
-                  className={styles.dialogue_secondary_btn}
-                  onClick={() => setShowExitModal(true)}
-                >
-                  홈으로
-                </button>
-              </div>
-            ) : currentMsg.type === "waiting" ? (
-              <div className={styles.waiting_info}>
-                <p>분석이 완료되면 자동으로 다음으로 넘어갑니다</p>
-              </div>
-            ) : (
-              <div className={styles.report_nav_buttons}>
-                {currentIndex > 0 && (
-                  <button className={styles.report_prev_btn} onClick={handlePrev}>
-                    이전
-                  </button>
-                )}
-                <button className={styles.report_next_btn} onClick={handleNext}>
-                  다음
-                </button>
-              </div>
-            )}
-          </div>
-        </div>
-      )}
-
-      {/* 대화 UI (하단 고정) */}
-      <div
-        className={`${styles.dialogue_wrap} ${!showReport ? styles.active : ""}`}
-        onClick={(e) => e.stopPropagation()}
-      >
-        <div className={styles.dialogue_box} onClick={handleNext}>
-          <div className={styles.dialogue_speaker}>색동낭자</div>
-          <p className={styles.dialogue_text}>
-            {dialogueText}
-            {isTyping && <span className={styles.typing_cursor}></span>}
-          </p>
-        </div>
-
-        <div className={`${styles.dialogue_buttons} ${showButtons ? styles.visible : ""}`}>
-          {currentIndex > 0 && (
-            <button className={styles.dialogue_prev_btn} onClick={handlePrev}>
-              이전
-            </button>
-          )}
-          <button className={styles.dialogue_next_btn} onClick={handleNext}>
-            {getButtonText()}
-          </button>
-        </div>
-      </div>
-
-      {/* 리뷰 입력 (5장 후) */}
-      {currentMsg?.type === "review_prompt" && data?.id && (
+  const renderAction = (scene: ActionScene, onComplete: () => void) => {
+    if (scene.id === "review-prompt" && data?.id) {
+      return (
         <ReviewInlineCard
           recordId={data.id}
           userName={userName}
-          onDone={handleNext}
+          onDone={onComplete}
         />
-      )}
+      );
+    }
+    return null;
+  };
 
-    </div>
+  return (
+    <ScenePlayer
+      key={sceneKey}
+      config={sajuLovePlayerConfig}
+      scenes={scenes}
+      initialIndex={jumpIndex}
+      styles={styles}
+      renderCard={renderCard}
+      renderWaiting={renderWaiting}
+      renderAction={renderAction}
+      analysisComplete={analysisComplete}
+      onAnalysisTransition={handleAnalysisTransition}
+    />
   );
 }
 
@@ -4608,92 +3826,6 @@ function IntroCard({ userName }: { userName: string }) {
   );
 }
 
-// 목차 모달
-function TocModal({
-  messages,
-  currentIndex,
-  onClose,
-  onNavigate,
-}: {
-  messages: MessageItem[];
-  currentIndex: number;
-  onClose: () => void;
-  onNavigate: (index: number) => void;
-}) {
-  // 목차 항목 정의
-  const tocItems = [
-    { label: "들어가며", targetId: "intro-card" },
-    { label: "사주 원국", targetId: "saju-card" },
-    {
-      label: "1장: 나만의 매력과 연애 성향",
-      targetId: "chapter-chapter1-report",
-    },
-    {
-      label: "2장: 앞으로 펼쳐질 사랑의 흐름",
-      targetId: "chapter-chapter2-report",
-    },
-    {
-      label: "3장: 결국 만나게 될 운명의 상대",
-      targetId: "chapter-chapter3-report",
-    },
-    { label: "보너스: 운명의 상대 이미지", targetId: "ideal-type-image" },
-    {
-      label: "4장: 운명이라 착각하는 가짜 인연",
-      targetId: "chapter-chapter4-report",
-    },
-    { label: "보너스: 피해야 할 인연 이미지", targetId: "avoid-type-image" },
-    {
-      label: "5장: 누구에게도 말 못할, 19금 사주 풀이",
-      targetId: "chapter-chapter5-report",
-    },
-    { label: "6장: 색동낭자의 귀띔", targetId: "chapter-chapter6-report" },
-    { label: "마무리", targetId: "ending" },
-  ];
-
-  // 메시지 ID로 인덱스 찾기
-  const findIndexById = (targetId: string) => {
-    return messages.findIndex((msg) => msg.id === targetId);
-  };
-
-  return (
-    <div className={styles.toc_modal_overlay} onClick={onClose}>
-      <div className={styles.toc_modal} onClick={(e) => e.stopPropagation()}>
-        <div className={styles.toc_modal_header}>
-          <h3 className={styles.toc_modal_title}>목차</h3>
-          <button className={styles.toc_modal_close} onClick={onClose}>
-            <span className="material-icons">close</span>
-          </button>
-        </div>
-        <ul className={styles.toc_modal_list}>
-          {tocItems.map((item, i) => {
-            const targetIndex = findIndexById(item.targetId);
-            const isAvailable =
-              targetIndex !== -1 && targetIndex <= messages.length - 1;
-            const isCurrent =
-              targetIndex !== -1 && targetIndex === currentIndex;
-
-            return (
-              <li
-                key={i}
-                className={`${styles.toc_modal_item} ${isCurrent ? styles.current : ""} ${!isAvailable ? styles.disabled : ""
-                  }`}
-                onClick={() => {
-                  if (isAvailable) {
-                    onNavigate(targetIndex);
-                  }
-                }}
-              >
-                <span className={styles.toc_item_label}>{item.label}</span>
-                {isCurrent && <span className={styles.toc_item_current}>현재</span>}
-              </li>
-            );
-          })}
-        </ul>
-      </div>
-    </div>
-  );
-}
-
 // 리뷰 섹션 컴포넌트
 function ReviewSection({
   recordId,
@@ -5265,104 +4397,6 @@ function SummmarySajuCard({ data }: { data: SajuLoveRecord }) {
 }
 
 // 마크다운 파서
-function simpleMD(src: string = ""): string {
-  src = src.replace(
-    /```([\s\S]*?)```/g,
-    (_, c) => `<pre><code>${escapeHTML(c)}</code></pre>`
-  );
-  src = src.replace(/`([^`]+?)`/g, (_, c) => `<code>${escapeHTML(c)}</code>`);
-  src = src
-    .replace(/^###### (.*$)/gim, "<h6>$1</h6>")
-    .replace(/^##### (.*$)/gim, "<h5>$1</h5>")
-    .replace(/^#### (.*$)/gim, "<h4>$1</h4>")
-    .replace(/^### (.*$)/gim, "<h3>$1</h3>")
-    .replace(/^## (.*$)/gim, "<h2>$1</h2>")
-    .replace(/^# (.*$)/gim, "<h1>$1</h1>");
-  src = src
-    .replace(/\*\*\*([^*]+)\*\*\*/g, "<strong><em>$1</em></strong>")
-    .replace(/___([^_]+)___/g, "<strong><em>$1</em></strong>")
-    .replace(
-      /^(\s*)\*\*([^*]+)\*\*$/gm,
-      '$1<strong class="section-heading">$2</strong>'
-    )
-    .replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>")
-    .replace(/__([^_]+)__/g, "<strong>$1</strong>");
-  src = src
-    .replace(/!\[([^\]]*?)\]\((.*?)\)/g, '<img src="$2" alt="$1">')
-    .replace(
-      /\[([^\]]+?)\]\((.*?)\)/g,
-      '<a href="$2" target="_blank" rel="noopener">$1</a>'
-    )
-    .replace(
-      /^(\s*)\[([^\]]+)\]$/gm,
-      '$1<strong class="section-heading">$2</strong>'
-    );
-  src = src.replace(/(?:^|\n)((?:\|[^\n]+\|\n)+)/g, (match, tableBlock) => {
-    const rows = tableBlock.trim().split("\n");
-    if (rows.length < 2) return match;
-    let html = '<table class="md-table">';
-    rows.forEach((row: string, idx: number) => {
-      if (/^\|[\s\-:|]+\|$/.test(row.trim()) && row.includes("-")) return;
-      const cells = row
-        .split("|")
-        .filter(
-          (_: string, i: number, arr: string[]) => i > 0 && i < arr.length - 1
-        );
-      const tag = idx === 0 ? "th" : "td";
-      html += "<tr>";
-      cells.forEach((cell: string) => {
-        html += `<${tag}>${cell.trim()}</${tag}>`;
-      });
-      html += "</tr>";
-    });
-    html += "</table>";
-    return html;
-  });
-  src = src.replace(/^\s*(\*\s*\*\s*\*|-{3,}|_{3,})\s*$/gm, "<hr>");
-  src = src.replace(/(^>\s?.*$\n?)+/gm, (match) => {
-    const content = match
-      .split("\n")
-      .map((line) => line.replace(/^>\s?/, "").trim())
-      .filter((line) => line)
-      .join("<br>");
-    return `<blockquote>${content}</blockquote>`;
-  });
-  src = src.replace(
-    /<blockquote><strong>색동낭자 콕 찍기<\/strong>/g,
-    '<blockquote class="quote-pinch"><div class="quote-header"><img src="/saju-love/img/pinch.jpg" class="quote-profile" alt="색동낭자"><strong>색동낭자 콕 찍기</strong></div>'
-  );
-  src = src.replace(
-    /<blockquote><strong>색동낭자 속닥속닥<\/strong>/g,
-    '<blockquote class="quote-sokdak"><div class="quote-header"><img src="/saju-love/img/sokdak.jpg" class="quote-profile" alt="색동낭자"><strong>색동낭자 속닥속닥</strong></div>'
-  );
-  src = src.replace(
-    /<blockquote><strong>색동낭자 토닥토닥<\/strong>/g,
-    '<blockquote class="quote-todak"><div class="quote-header"><img src="/saju-love/img/todak.jpg" class="quote-profile" alt="색동낭자"><strong>색동낭자 토닥토닥</strong></div>'
-  );
-  src = src
-    .replace(/^\s*[*+-]\s+(.+)$/gm, "<ul><li>$1</li></ul>")
-    .replace(/(<\/ul>\s*)<ul>/g, "")
-    .replace(/^\s*\d+\.\s+(.+)$/gm, "<ul><li>$1</li></ul>")
-    .replace(/(<\/ul>\s*)<ul>/g, "");
-  src = src
-    .replace(/(?<!\*)\*([^*\n]+)\*(?!\*)/g, "<em>$1</em>")
-    .replace(/(?<!_)_([^_\n]+)_(?!_)/g, "<em>$1</em>");
-  src = src.replace(/~~(.+?)~~/g, "<del>$1</del>");
-  src = src.replace(/\n{2,}/g, "</p><p>").replace(/\n/g, "<br>");
-  return `<p>${src}</p>`;
-}
-
-function escapeHTML(str: string): string {
-  const escapeMap: Record<string, string> = {
-    "&": "&amp;",
-    "<": "&lt;",
-    ">": "&gt;",
-    '"': "&quot;",
-    "'": "&#39;",
-  };
-  return str.replace(/[&<>"']/g, (m) => escapeMap[m]);
-}
-
 function formatChapterContent(content: string): string {
   if (!content) return "";
   const sectionPattern = /###\s*(?:풀이\s*)?(\d+)\.\s*(.+?)(?:\n|$)/g;

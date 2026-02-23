@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState, useCallback, useRef, Suspense } from "react";
-import { useSearchParams, useRouter } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import {
   getNewYearRecord,
   updateNewYearRecord,
@@ -13,288 +13,30 @@ import { createReview, getReviewByRecordId, Review } from "@/lib/db/reviewDB";
 import { trackPageView } from "@/lib/mixpanel";
 import {
   parseTemplateSections,
-  getSectionValue,
   getSectionData,
   parseScore,
   ParsedSection,
 } from "@/lib/parseNewYearTemplate";
+import {
+  getColor,
+  getBranchKorean,
+  getStemKorean,
+  getElementKorean,
+  simpleMD as simpleMDBase,
+} from "@/lib/saju-utils";
+import { ScenePlayer, Scene, CardScene, WaitingScene } from "@/components/scene-player";
+import { getChapterConfig, CHAPTER_TITLES, newYearPlayerConfig } from "./config";
 import styles from "./result.module.css";
 
 // 클라이언트에서 직접 FastAPI 호출
 const SAJU_API_URL = process.env.NEXT_PUBLIC_SAJU_API_URL;
 
-// 메시지 타입 정의
-type MessageItem = {
-  id: string;
-  type:
-    | "dialogue"
-    | "report"
-    | "image"
-    | "ending"
-    | "saju"
-    | "intro"
-    | "waiting";
-  content: string;
-  chapterIndex?: number;
-  imageBase64?: string;
-  bgImage?: string;
-};
-
-// 오행 색상
-const elementColors: Record<string, string> = {
-  木: "#2aa86c",
-  wood: "#2aa86c",
-  火: "#ff6a6a",
-  fire: "#ff6a6a",
-  土: "#caa46a",
-  earth: "#caa46a",
-  金: "#9a9a9a",
-  metal: "#9a9a9a",
-  水: "#6aa7ff",
-  water: "#6aa7ff",
-};
-
-const getColor = (element?: string): string => {
-  if (!element) return "#333";
-  return elementColors[element] || elementColors[element.toLowerCase()] || "#333";
-};
-
-// 천간 -> 오행 매핑
-const STEM_ELEMENT: Record<string, string> = {
-  甲: "wood", 乙: "wood", 丙: "fire", 丁: "fire", 戊: "earth",
-  己: "earth", 庚: "metal", 辛: "metal", 壬: "water", 癸: "water",
-};
-
-// 지지 -> 오행 매핑
-const BRANCH_ELEMENT: Record<string, string> = {
-  子: "water", 丑: "earth", 寅: "wood", 卯: "wood", 辰: "earth", 巳: "fire",
-  午: "fire", 未: "earth", 申: "metal", 酉: "metal", 戌: "earth", 亥: "water",
-};
-
-// 지지 -> 한글 매핑
-const BRANCH_KOREAN: Record<string, string> = {
-  子: "자", 丑: "축", 寅: "인", 卯: "묘", 辰: "진", 巳: "사",
-  午: "오", 未: "미", 申: "신", 酉: "유", 戌: "술", 亥: "해",
-};
-
-// HTML 이스케이프
-function escapeHTML(str: string): string {
-  const escapeMap: Record<string, string> = {
-    "&": "&amp;",
-    "<": "&lt;",
-    ">": "&gt;",
-    '"': "&quot;",
-    "'": "&#39;",
-  };
-  return str.replace(/[&<>"']/g, (m) => escapeMap[m]);
-}
-
-// 마크다운 파서
-function simpleMD(src: string = ""): string {
-  src = src.replace(
-    /```([\s\S]*?)```/g,
-    (_, c) => `<pre><code>${escapeHTML(c)}</code></pre>`
-  );
-  src = src.replace(/`([^`]+?)`/g, (_, c) => `<code>${escapeHTML(c)}</code>`);
-  src = src
-    .replace(/^###### (.*$)/gim, "<h6>$1</h6>")
-    .replace(/^##### (.*$)/gim, "<h5>$1</h5>")
-    .replace(/^#### (.*$)/gim, "<h4>$1</h4>")
-    .replace(/^### (.*$)/gim, "<h3>$1</h3>")
-    .replace(/^## (.*$)/gim, "<h2>$1</h2>")
-    .replace(/^# (.*$)/gim, "<h1>$1</h1>");
-  src = src
-    .replace(/\*\*\*([^*]+)\*\*\*/g, "<strong><em>$1</em></strong>")
-    .replace(/___([^_]+)___/g, "<strong><em>$1</em></strong>")
-    .replace(
-      /^(\s*)\*\*([^*]+)\*\*$/gm,
-      '$1<strong class="section-heading">$2</strong>'
-    )
-    .replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>")
-    .replace(/__([^_]+)__/g, "<strong>$1</strong>");
-  src = src
-    .replace(/!\[([^\]]*?)\]\((.*?)\)/g, '<img src="$2" alt="$1">')
-    .replace(
-      /\[([^\]]+?)\]\((.*?)\)/g,
-      '<a href="$2" target="_blank" rel="noopener">$1</a>'
-    )
-    .replace(
-      /^(\s*)\[([^\]]+)\]$/gm,
-      '$1<strong class="section-heading">$2</strong>'
-    );
-  src = src.replace(/(?:^|\n)((?:\|[^\n]+\|\n)+)/g, (match, tableBlock) => {
-    const rows = tableBlock.trim().split("\n");
-    if (rows.length < 2) return match;
-    let html = '<table class="md-table">';
-    rows.forEach((row: string, idx: number) => {
-      if (/^\|[\s\-:|]+\|$/.test(row.trim()) && row.includes("-")) return;
-      const cells = row
-        .split("|")
-        .filter(
-          (_: string, i: number, arr: string[]) => i > 0 && i < arr.length - 1
-        );
-      const tag = idx === 0 ? "th" : "td";
-      html += "<tr>";
-      cells.forEach((cell: string) => {
-        html += `<${tag}>${cell.trim()}</${tag}>`;
-      });
-      html += "</tr>";
-    });
-    html += "</table>";
-    return html;
-  });
-  src = src.replace(/^\s*(\*\s*\*\s*\*|-{3,}|_{3,})\s*$/gm, "<hr>");
-  src = src.replace(/(^>\s?.*$\n?)+/gm, (match) => {
-    const content = match
-      .split("\n")
-      .map((line) => line.replace(/^>\s?/, "").trim())
-      .filter((line) => line)
-      .join("<br>");
-    return `<blockquote>${content}</blockquote>`;
-  });
-  // 까치도령 전용 인용구
-  src = src.replace(
-    /<blockquote><strong>까치도령 콕 찍기<\/strong>/g,
-    '<blockquote class="quote-pinch"><div class="quote-header"><strong>까치도령 콕 찍기</strong></div>'
-  );
-  src = src.replace(
-    /<blockquote><strong>까치도령 속닥속닥<\/strong>/g,
-    '<blockquote class="quote-sokdak"><div class="quote-header"><strong>까치도령 속닥속닥</strong></div>'
-  );
-  src = src.replace(
-    /<blockquote><strong>까치도령 토닥토닥<\/strong>/g,
-    '<blockquote class="quote-todak"><div class="quote-header"><strong>까치도령 토닥토닥</strong></div>'
-  );
-  src = src
-    .replace(/^\s*[*+-]\s+(.+)$/gm, "<ul><li>$1</li></ul>")
-    .replace(/(<\/ul>\s*)<ul>/g, "")
-    .replace(/^\s*\d+\.\s+(.+)$/gm, "<ul><li>$1</li></ul>")
-    .replace(/(<\/ul>\s*)<ul>/g, "");
-  src = src
-    .replace(/(?<!\*)\*([^*\n]+)\*(?!\*)/g, "<em>$1</em>")
-    .replace(/(?<!_)_([^_\n]+)_(?!_)/g, "<em>$1</em>");
-  src = src.replace(/~~(.+?)~~/g, "<del>$1</del>");
-  src = src.replace(/\n{2,}/g, "</p><p>").replace(/\n/g, "<br>");
-  // 블록 요소 앞뒤의 불필요한 <br> 제거
-  src = src
-    .replace(/<br>\s*(<h[1-6]|<ul|<ol|<table|<blockquote|<hr|<pre)/g, "$1")
-    .replace(/(<\/h[1-6]>|<\/ul>|<\/ol>|<\/table>|<\/blockquote>|<hr>|<\/pre>)\s*<br>/g, "$1")
-    .replace(/<p>\s*<\/p>/g, "")
-    .replace(/<p>\s*(<h[1-6]|<ul|<ol|<table|<blockquote|<hr|<pre)/g, "$1")
-    .replace(/(<\/h[1-6]>|<\/ul>|<\/ol>|<\/table>|<\/blockquote>|<hr>|<\/pre>)\s*<\/p>/g, "$1");
-  return `<p>${src}</p>`;
-}
-
-// 천간 -> 한글 매핑
-const STEM_KOREAN: Record<string, string> = {
-  甲: "갑", 乙: "을", 丙: "병", 丁: "정", 戊: "무",
-  己: "기", 庚: "경", 辛: "신", 壬: "임", 癸: "계",
-};
-
-const getStemElement = (stem: string): string => STEM_ELEMENT[stem] || "";
-const getBranchElement = (branch: string): string => BRANCH_ELEMENT[branch] || "";
-const getBranchKorean = (branch: string): string => BRANCH_KOREAN[branch] || branch;
-const getStemKorean = (stem: string): string => STEM_KOREAN[stem] || stem;
-
-// 오행 한글 변환 함수 (음양 포함)
-const getElementKorean = (element: string | undefined, yinYang?: string): string => {
-  if (!element) return "";
-  const el = element.toLowerCase();
-  const sign = yinYang?.toLowerCase() === "yang" ? "+" : "-";
-  if (el === "fire" || element === "火") return `${sign}화`;
-  if (el === "wood" || element === "木") return `${sign}목`;
-  if (el === "water" || element === "水") return `${sign}수`;
-  if (el === "metal" || element === "金") return `${sign}금`;
-  if (el === "earth" || element === "土") return `${sign}토`;
-  return "";
-};
-
-// 각 챕터별 대사와 배경 이미지
-const getChapterConfig = (
-  userName: string
-): Record<string, { intro: string; outro: string; introBg: string; reportBg: string; outroBg: string }> => ({
-  chapter1: {
-    intro: `자, 그럼 ${userName}님의 2026년!\n어떤 한 해가 될지 같이 살펴볼까요?`,
-    outro: `어때요, 올해 느낌이 좀 오시나요?\n저는 ${userName}님의 2026년이 정말 기대돼요!\n\n그럼 이제 돈 얘기 좀 해볼까요?`,
-    introBg: "/new-year/img/doryung4.jpg",
-    reportBg: "/new-year/img/doryung.jpg",
-    outroBg: "/new-year/img/doryung4.jpg",
-  },
-  chapter2: {
-    intro: `다들 제일 궁금해하는 재물운이에요!\n${userName}님 올해 돈복은 어떨까요~?`,
-    outro: `돈은 들어올 때 잘 잡고,\n나갈 때는 꼭 필요한 곳에만!\n\n자, 이번엔 건강 얘기 해볼게요.\n건강해야 돈도 쓰죠, 그쵸?`,
-    introBg: "/new-year/img/doryung5.jpg",
-    reportBg: "/new-year/img/doryung5.jpg",
-    outroBg: "/new-year/img/doryung4.jpg",
-  },
-  chapter3: {
-    intro: `이번엔 건강운이에요.\n뭐니뭐니해도 건강이 최고잖아요!`,
-    outro: `몸이 보내는 신호, 무시하지 마세요~\n아프면 다 소용없어요!\n\n그럼 이제 두근두근 연애운 볼까요?`,
-    introBg: "/new-year/img/doryung9.jpg",
-    reportBg: "/new-year/img/doryung9.jpg",
-    outroBg: "/new-year/img/doryung8.jpg",
-  },
-  chapter4: {
-    intro: `연애운 시간이에요~\n${userName}님 올해 사랑운은 어떨까요?`,
-    outro: `사랑도 타이밍이더라고요.\n좋은 사람 만나면 망설이지 마세요!\n\n다음은 직장운이에요. 일도 중요하니까요!`,
-    introBg: "/new-year/img/doryung8.jpg",
-    reportBg: "/new-year/img/doryung8.jpg",
-    outroBg: "/new-year/img/doryung4.jpg",
-  },
-  chapter5: {
-    intro: `직장운과 명예운이에요.\n올해 ${userName}님 커리어는 어떨까요?`,
-    outro: `열심히 하면 분명 알아봐주는 사람 있어요.\n${userName}님, 항상 응원할게요!\n\n다음은 학업이랑 계약운이에요.`,
-    introBg: "/new-year/img/doryung3.jpg",
-    reportBg: "/new-year/img/doryung3.jpg",
-    outroBg: "/new-year/img/doryung5.jpg",
-  },
-  chapter6: {
-    intro: `학업운, 계약운 차례예요.\n시험이나 중요한 계약 앞두고 계신가요?`,
-    outro: `큰 결정은 좋은 시기에 하는 게 좋아요.\n참고해두시면 도움 될 거예요!\n\n자, 이번엔 사람 복 얘기 해볼까요?`,
-    introBg: "/new-year/img/doryung5.jpg",
-    reportBg: "/new-year/img/doryung3.jpg",
-    outroBg: "/new-year/img/doryung4.jpg",
-  },
-  chapter7: {
-    intro: `대인관계운이에요.\n올해 ${userName}님 주변엔 어떤 사람들이 있을까요?`,
-    outro: `좋은 사람 곁에 있으면 운도 따라와요.\n소중한 인연 꼭 챙기세요!\n\n그럼 이제 월별로 자세히 볼까요?`,
-    introBg: "/new-year/img/doryung4.jpg",
-    reportBg: "/new-year/img/doryung8.jpg",
-    outroBg: "/new-year/img/doryung7.jpg",
-  },
-  chapter8: {
-    intro: `12개월 월별 운세예요.\n매달 어떤 일이 있을지 궁금하시죠?`,
-    outro: `새 달이 시작될 때마다 한번씩 읽어보세요.\n분명 도움이 될 거예요!\n\n다음은 좀 특별한 거 준비했어요~`,
-    introBg: "/new-year/img/doryung7.jpg",
-    reportBg: "/new-year/img/doryung7.jpg",
-    outroBg: "/new-year/img/doryung4.jpg",
-  },
-  chapter9: {
-    intro: `짜잔~ 미래일기예요!\n2026년의 ${userName}님이 직접 쓴 일기라고 상상해보세요.`,
-    outro: `어때요, 좀 설레지 않아요?\n이렇게 좋은 일들이 가득하길 바라요!\n\n자, 이제 올해 개운법 알려드릴게요.`,
-    introBg: "/new-year/img/doryung3.jpg",
-    reportBg: "/new-year/img/doryung3.jpg",
-    outroBg: "/new-year/img/doryung6.jpg",
-  },
-  chapter10: {
-    intro: `개운법이에요!\n올해 운 더 좋아지는 꿀팁들 알려드릴게요.`,
-    outro: `하나씩 실천해보세요.\n작은 것부터 하면 운이 확 바뀌어요!\n\n마지막으로 제가 따로 해드릴 말씀이 있어요.`,
-    introBg: "/new-year/img/doryung6.jpg",
-    reportBg: "/new-year/img/doryung6.jpg",
-    outroBg: "/new-year/img/doryung4.jpg",
-  },
-  chapter11: {
-    intro: `드디어 마지막이에요.\n${userName}님께만 드리는 까치도령의 특별한 귀띔!`,
-    outro: "",
-    introBg: "/new-year/img/doryung4.jpg",
-    reportBg: "/new-year/img/doryung.jpg",
-    outroBg: "/new-year/img/doryung2.jpg",
-  },
-});
+// 까치도령 전용 마크다운 파서
+const simpleMD = (src: string = "") =>
+  simpleMDBase(src, { name: "까치도령" });
 
 function NewYearResultContent() {
   const searchParams = useSearchParams();
-  const router = useRouter();
   const resultId = searchParams.get("id");
 
   const [isLoading, setIsLoading] = useState(true);
@@ -303,21 +45,14 @@ function NewYearResultContent() {
   const [data, setData] = useState<NewYearRecord | null>(null);
   const MAX_AUTO_RETRY = 2;
 
-  // 대화형 UI 상태
-  const [messages, setMessages] = useState<MessageItem[]>([]);
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const [dialogueText, setDialogueText] = useState("");
-  const [isTyping, setIsTyping] = useState(false);
-  const [showButtons, setShowButtons] = useState(false);
-  const [showReport, setShowReport] = useState(false);
-  const [isAnimating, setIsAnimating] = useState(false);
-  const [canProceed, setCanProceed] = useState(false);
-  const [showScrollHint, setShowScrollHint] = useState(false);
-  const [showTocModal, setShowTocModal] = useState(false);
-  const [showExitModal, setShowExitModal] = useState(false);
+  // 씬 상태
+  const [scenes, setScenes] = useState<Scene[]>([]);
+  const [jumpIndex, setJumpIndex] = useState(0);
+  const [sceneKey, setSceneKey] = useState(0);
+
+  // 분석 상태
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [analysisComplete, setAnalysisComplete] = useState(false);
-  const [bgFadeIn, setBgFadeIn] = useState(false);
   const pendingDataRef = useRef<NewYearRecord | null>(null);
 
   // 리뷰 관련 상태
@@ -330,353 +65,57 @@ function NewYearResultContent() {
   const [reviewModalDismissed, setReviewModalDismissed] = useState(false);
   const reviewModalTriggered = useRef(false);
 
-  // 현재 메시지의 배경 이미지
-  const currentBgImage = messages[currentIndex]?.bgImage || "/new-year/img/doryung.jpg";
-
   const isFetchingRef = useRef(false);
   const partialStartedRef = useRef(false);
   const loadingIntervalRef = useRef<NodeJS.Timeout | null>(null);
-  const typingIntervalRef = useRef<NodeJS.Timeout | null>(null);
-  const reportRef = useRef<HTMLDivElement>(null);
 
-  // 챕터에서 키 추출
-  const getChapterKey = (chapter: { number?: number; title?: string }): string => {
-    if (typeof chapter.number === "number" && chapter.number >= 1 && chapter.number <= 11) {
-      return `chapter${chapter.number}`;
-    }
-    const title = chapter.title || "";
-    if (title.includes("1장") || title.includes("총운")) return "chapter1";
-    if (title.includes("2장") || title.includes("재물운")) return "chapter2";
-    if (title.includes("3장") || title.includes("건강운")) return "chapter3";
-    if (title.includes("4장") || title.includes("애정운") || title.includes("연애운")) return "chapter4";
-    if (title.includes("5장") || title.includes("직장운") || title.includes("명예운")) return "chapter5";
-    if (title.includes("6장") || title.includes("관계운")) return "chapter6";
-    if (title.includes("7장") || title.includes("감정") || title.includes("마음")) return "chapter7";
-    if (title.includes("8장") || title.includes("월별")) return "chapter8";
-    if (title.includes("9장") || title.includes("미래일기")) return "chapter9";
-    if (title.includes("10장") || title.includes("개운법")) return "chapter10";
-    if (title.includes("11장") || title.includes("귀띔")) return "chapter11";
-    return "chapter1";
-  };
-
-  // 부분 메시지 리스트 생성 (들어가며 + 사주원국만)
-  const buildPartialMessageList = useCallback((record: NewYearRecord): MessageItem[] => {
-    const result: MessageItem[] = [];
+  // 부분 씬 리스트 생성 (들어가며 + 사주원국 + 대기)
+  const buildPartialScenes = useCallback((record: NewYearRecord): Scene[] => {
     const userName = record.input?.userName || "고객";
-
-    result.push({
-      id: "opening-dialogue",
-      type: "dialogue",
-      content: `안녕하세요, ${userName}님\n저는 까치도령이에요. 반가워요!`,
-      bgImage: "/new-year/img/doryung4.jpg",
-    });
-
-    result.push({
-      id: "intro-guide-dialogue",
-      type: "dialogue",
-      content: `${userName}님의 2026년 운세를 보기 전에,\n먼저 사주에 대해 간단히 설명해드릴게요.`,
-      bgImage: "/new-year/img/doryung6.jpg",
-    });
-
-    result.push({
-      id: "intro-card",
-      type: "intro",
-      content: "",
-      bgImage: "/new-year/img/doryung.jpg",
-    });
-
-    result.push({
-      id: "saju-intro-dialogue",
-      type: "dialogue",
-      content: `사주란 참 신기하죠?\n그럼 이제 ${userName}님의 사주 팔자를 살펴볼까요?`,
-      bgImage: "/new-year/img/doryung5.jpg",
-    });
-
-    result.push({
-      id: "saju-card",
-      type: "saju",
-      content: "",
-      bgImage: "/new-year/img/doryung7.jpg",
-    });
-
-    // 결제 완료 후 분석 대기 상태
-    result.push({
-      id: "waiting",
-      type: "waiting",
-      content: "",
-      bgImage: "/new-year/img/doryung7.jpg",
-    });
-
-    return result;
+    return [
+      { kind: "dialogue", id: "opening-dialogue", text: `안녕하세요, ${userName}님\n저는 까치도령이에요. 반가워요!`, bgImage: "/new-year/img/doryung4.jpg" },
+      { kind: "dialogue", id: "intro-guide-dialogue", text: `${userName}님의 2026년 운세를 보기 전에,\n먼저 사주에 대해 간단히 설명해드릴게요.`, bgImage: "/new-year/img/doryung6.jpg" },
+      { kind: "card", id: "intro-card", bgImage: "/new-year/img/doryung.jpg", tocLabel: "들어가며" },
+      { kind: "dialogue", id: "saju-intro-dialogue", text: `사주란 참 신기하죠?\n그럼 이제 ${userName}님의 사주 팔자를 살펴볼까요?`, bgImage: "/new-year/img/doryung5.jpg" },
+      { kind: "card", id: "saju-card", bgImage: "/new-year/img/doryung7.jpg", tocLabel: "사주 원국" },
+      { kind: "waiting", id: "waiting", bgImage: "/new-year/img/doryung7.jpg" },
+    ];
   }, []);
 
-  // 메시지 리스트 생성 (전체 - 분석 완료 후)
-  const buildMessageList = useCallback((record: NewYearRecord): MessageItem[] => {
-    const result: MessageItem[] = [];
+  // 전체 씬 리스트 생성 (분석 완료 후)
+  const buildFullScenes = useCallback((record: NewYearRecord): Scene[] => {
+    const result: Scene[] = [];
     const userName = record.analysis?.user_name || record.input?.userName || "고객";
     const chapters = record.analysis?.chapters || [];
 
-    result.push({
-      id: "opening-dialogue",
-      type: "dialogue",
-      content: `${userName}님, 안녕하세요?\n이제부터 2026년 신년 운세를 천천히 살펴볼까요?`,
-      bgImage: "/new-year/img/doryung4.jpg",
-    });
+    result.push({ kind: "dialogue", id: "opening-dialogue", text: `${userName}님, 안녕하세요?\n이제부터 2026년 신년 운세를 천천히 살펴볼까요?`, bgImage: "/new-year/img/doryung4.jpg" });
+    result.push({ kind: "dialogue", id: "intro-guide-dialogue", text: `${userName}님의 신년 운세를 알려드리기 전에,\n먼저 사주팔자에 대해 간단하게 설명을 해드릴게요.`, bgImage: "/new-year/img/doryung6.jpg" });
+    result.push({ kind: "card", id: "intro-card", bgImage: "/new-year/img/doryung.jpg", tocLabel: "들어가며" });
+    result.push({ kind: "dialogue", id: "saju-intro-dialogue", text: `이제 ${userName}님의 사주 원국을 보여드릴게요.\n이게 바로 ${userName}님의 타고난 운명이에요!`, bgImage: "/new-year/img/doryung5.jpg" });
+    result.push({ kind: "card", id: "saju-card", bgImage: "/new-year/img/doryung7.jpg", tocLabel: "사주 원국" });
 
-    result.push({
-      id: "intro-guide-dialogue",
-      type: "dialogue",
-      content: `${userName}님의 신년 운세를 알려드리기 전에,\n먼저 사주팔자에 대해 간단하게 설명을 해드릴게요.`,
-      bgImage: "/new-year/img/doryung6.jpg",
-    });
-
-    result.push({
-      id: "intro-card",
-      type: "intro",
-      content: "",
-      bgImage: "/new-year/img/doryung.jpg",
-    });
-
-    result.push({
-      id: "saju-intro-dialogue",
-      type: "dialogue",
-      content: `이제 ${userName}님의 사주 원국을 보여드릴게요.\n이게 바로 ${userName}님의 타고난 운명이에요!`,
-      bgImage: "/new-year/img/doryung5.jpg",
-    });
-
-    result.push({
-      id: "saju-card",
-      type: "saju",
-      content: "",
-      bgImage: "/new-year/img/doryung7.jpg",
-    });
-
-    // 각 챕터별 [intro 대화 → 리포트 → outro 대화]
     const chapterConfig = getChapterConfig(userName);
     chapters.forEach((chapter, index) => {
-      // index를 기반으로 고유 ID 생성, 챕터 설정은 chapter.number 사용
       const chapterNum = chapter.number || index + 1;
       const chapterKey = `chapter${chapterNum}`;
-      const uniqueId = index + 1; // 고유 ID용
+      const uniqueId = index + 1;
       const config = chapterConfig[chapterKey];
 
       if (config?.intro) {
-        result.push({
-          id: `chapter-${uniqueId}-intro`,
-          type: "dialogue",
-          content: config.intro,
-          bgImage: config.introBg || "/new-year/img/doryung.jpg",
-        });
+        result.push({ kind: "dialogue", id: `chapter-${uniqueId}-intro`, text: config.intro, bgImage: config.introBg || "/new-year/img/doryung.jpg" });
       }
-
-      result.push({
-        id: `chapter-${uniqueId}-report`,
-        type: "report",
-        content: chapter.content || "",
-        chapterIndex: index,
-        bgImage: config?.reportBg || "/new-year/img/doryung.jpg",
-      });
-
+      result.push({ kind: "card", id: `chapter-${uniqueId}-report`, bgImage: config?.reportBg || "/new-year/img/doryung.jpg", chapterIndex: index, tocLabel: `${chapterNum}장. ${CHAPTER_TITLES[chapterNum - 1] || ""}` });
       if (config?.outro) {
-        result.push({
-          id: `chapter-${uniqueId}-outro`,
-          type: "dialogue",
-          content: config.outro,
-          bgImage: config.outroBg || "/new-year/img/doryung.jpg",
-        });
+        result.push({ kind: "dialogue", id: `chapter-${uniqueId}-outro`, text: config.outro, bgImage: config.outroBg || "/new-year/img/doryung.jpg" });
       }
-
     });
 
-    result.push({
-      id: "ending-intro",
-      type: "dialogue",
-      content: `${userName}님, 여기까지 긴 여정 함께해주셔서 감사해요.\n어떠셨어요? 2026년이 기대되시나요?`,
-      bgImage: "/new-year/img/doryung8.jpg",
-    });
-
-    result.push({
-      id: "ending-outro",
-      type: "dialogue",
-      content: `2026년 병오년이 ${userName}님에게\n행운과 기쁨이 가득한 해가 되길 바랄게요.\n\n그럼, 마지막으로 정리된 보고서를 전달 드릴게요.`,
-      bgImage: "/new-year/img/doryung2.jpg",
-    });
-
-    result.push({
-      id: "ending",
-      type: "ending",
-      content: "",
-      bgImage: "/new-year/img/doryung2.jpg",
-    });
+    result.push({ kind: "dialogue", id: "ending-intro", text: `${userName}님, 여기까지 긴 여정 함께해주셔서 감사해요.\n어떠셨어요? 2026년이 기대되시나요?`, bgImage: "/new-year/img/doryung8.jpg" });
+    result.push({ kind: "dialogue", id: "ending-outro", text: `2026년 병오년이 ${userName}님에게\n행운과 기쁨이 가득한 해가 되길 바랄게요.\n\n그럼, 마지막으로 정리된 보고서를 전달 드릴게요.`, bgImage: "/new-year/img/doryung2.jpg" });
+    result.push({ kind: "card", id: "ending", bgImage: "/new-year/img/doryung2.jpg", tocLabel: "마무리" });
 
     return result;
   }, []);
-
-  // 리포트 표시 시 스크롤 이벤트 리스너 등록
-  useEffect(() => {
-    if (showReport && reportRef.current) {
-      const el = reportRef.current;
-
-      const handleScroll = () => {
-        const { scrollTop, scrollHeight, clientHeight } = el;
-        const isAtBottom = scrollTop + clientHeight >= scrollHeight - 50;
-
-        if (scrollTop > 10) {
-          setShowScrollHint(false);
-        }
-
-        if (isAtBottom) {
-          setCanProceed(true);
-        }
-      };
-
-      setCanProceed(false);
-      setShowScrollHint(true);
-
-      const checkTimer = setTimeout(() => {
-        const needsScroll = el.scrollHeight > el.clientHeight + 50;
-
-        if (!needsScroll) {
-          setCanProceed(true);
-          setShowScrollHint(false);
-        } else {
-          el.addEventListener("scroll", handleScroll);
-          handleScroll();
-        }
-      }, 300);
-
-      return () => {
-        clearTimeout(checkTimer);
-        el.removeEventListener("scroll", handleScroll);
-      };
-    }
-  }, [showReport, currentIndex]);
-
-  // 타이핑 효과
-  const typeText = useCallback((text: string, onComplete: () => void) => {
-    if (typingIntervalRef.current) {
-      clearInterval(typingIntervalRef.current);
-    }
-
-    setIsTyping(true);
-    setShowButtons(false);
-    setDialogueText("");
-
-    let i = 0;
-    typingIntervalRef.current = setInterval(() => {
-      if (i < text.length) {
-        setDialogueText(text.substring(0, i + 1));
-        i++;
-      } else {
-        if (typingIntervalRef.current) {
-          clearInterval(typingIntervalRef.current);
-          typingIntervalRef.current = null;
-        }
-        setIsTyping(false);
-        onComplete();
-      }
-    }, 50);
-  }, []);
-
-  // 이전 메시지로 이동
-  const handlePrev = useCallback(() => {
-    if (isTyping) return;
-    if (currentIndex <= 0) return;
-
-    if (showReport) {
-      setShowReport(false);
-    }
-
-    const prevIndex = currentIndex - 1;
-    setCurrentIndex(prevIndex);
-    const prevMsg = messages[prevIndex];
-
-    if (prevMsg.type === "dialogue") {
-      setDialogueText(prevMsg.content);
-      setShowButtons(true);
-    } else {
-      setShowReport(true);
-      setShowButtons(true);
-    }
-  }, [currentIndex, messages, isTyping, showReport]);
-
-  // 다음 메시지로 이동
-  const handleNext = useCallback(() => {
-    if (isTyping) {
-      if (typingIntervalRef.current) {
-        clearInterval(typingIntervalRef.current);
-        typingIntervalRef.current = null;
-      }
-      const currentMsg = messages[currentIndex];
-      if (currentMsg?.type === "dialogue") {
-        setDialogueText(currentMsg.content);
-        setIsTyping(false);
-        setShowButtons(true);
-      }
-      return;
-    }
-
-    const ensureImageLoaded = (url: string): Promise<void> => {
-      return new Promise((resolve) => {
-        const img = new Image();
-        img.onload = () => resolve();
-        img.onerror = () => resolve();
-        if (img.complete) {
-          resolve();
-          return;
-        }
-        img.src = url;
-      });
-    };
-
-    const goToNextMessage = async (nextIndex: number) => {
-      const nextMsg = messages[nextIndex];
-
-      const nextImage = nextMsg.bgImage || "/new-year/img/doryung.jpg";
-
-      await Promise.race([
-        ensureImageLoaded(nextImage),
-        new Promise((resolve) => setTimeout(resolve, 100)),
-      ]);
-
-      setCurrentIndex(nextIndex);
-
-      if (nextMsg.type === "dialogue") {
-        typeText(nextMsg.content, () => setShowButtons(true));
-      } else {
-        setIsAnimating(true);
-        setShowReport(true);
-        setShowButtons(true);
-        setTimeout(() => setIsAnimating(false), 550);
-      }
-    };
-
-    if (showReport) {
-      const currentMsg = messages[currentIndex];
-      const nextIndex = currentIndex + 1;
-
-      if (currentMsg.type === "waiting") {
-        return;
-      }
-
-      if (nextIndex < messages.length) {
-        setDialogueText("");
-        setShowButtons(false);
-        setShowReport(false);
-        setBgFadeIn(true);
-        setTimeout(() => {
-          goToNextMessage(nextIndex);
-          setTimeout(() => setBgFadeIn(false), 300);
-        }, 250);
-      }
-      return;
-    }
-
-    const nextIndex = currentIndex + 1;
-    if (nextIndex < messages.length) {
-      goToNextMessage(nextIndex);
-    }
-  }, [currentIndex, messages, isTyping, showReport, typeText]);
 
   // 로딩 메시지 순환
   const startLoadingMessages = useCallback((userName: string) => {
@@ -785,12 +224,8 @@ function NewYearResultContent() {
           setAnalysisComplete(true);
         } else {
           setData(updatedData);
-          const messageList = buildMessageList(updatedData);
-          setMessages(messageList);
+          setScenes(buildFullScenes(updatedData));
           setIsLoading(false);
-          setTimeout(() => {
-            typeText(messageList[0].content, () => setShowButtons(true));
-          }, 500);
         }
       } catch (err) {
         stopLoadingMessages();
@@ -826,7 +261,7 @@ function NewYearResultContent() {
         setIsLoading(false);
       }
     },
-    [startLoadingMessages, stopLoadingMessages, buildMessageList, typeText]
+    [startLoadingMessages, stopLoadingMessages, buildFullScenes]
   );
 
   // 초기화
@@ -892,12 +327,8 @@ function NewYearResultContent() {
           const userName = record.input?.userName || "고객";
 
           if (record.seenIntro) {
-            const partialMessages = buildPartialMessageList(record);
-            setMessages(partialMessages);
+            setScenes(buildPartialScenes(record));
             setIsLoading(false);
-            setTimeout(() => {
-              typeText(partialMessages[0].content, () => setShowButtons(true));
-            }, 500);
             return;
           }
 
@@ -905,12 +336,8 @@ function NewYearResultContent() {
           setTimeout(async () => {
             stopLoadingMessages();
             await updateNewYearRecord(record.id, { seenIntro: true });
-            const partialMessages = buildPartialMessageList(record);
-            setMessages(partialMessages);
+            setScenes(buildPartialScenes(record));
             setIsLoading(false);
-            setTimeout(() => {
-              typeText(partialMessages[0].content, () => setShowButtons(true));
-            }, 500);
           }, 10000);
 
           return;
@@ -919,12 +346,8 @@ function NewYearResultContent() {
         // 결제 완료 & 분석 완료
         if (record.analysis) {
           setData(record);
-          const messageList = buildMessageList(record);
-          setMessages(messageList);
+          setScenes(buildFullScenes(record));
           setIsLoading(false);
-          setTimeout(() => {
-            typeText(messageList[0].content, () => setShowButtons(true));
-          }, 500);
           return;
         }
 
@@ -943,12 +366,8 @@ function NewYearResultContent() {
           setTimeout(async () => {
             stopLoadingMessages();
             await updateNewYearRecord(record.id, { seenIntro: true });
-            const partialMessages = buildPartialMessageList(record);
-            setMessages(partialMessages);
+            setScenes(buildPartialScenes(record));
             setIsLoading(false);
-            setTimeout(() => {
-              typeText(partialMessages[0].content, () => setShowButtons(true));
-            }, 500);
           }, 10000);
 
           return;
@@ -957,12 +376,8 @@ function NewYearResultContent() {
         // 결제 완료 & 분석 필요
         setData(record);
         setIsAnalyzing(true);
-        const partialMessages = buildPartialMessageList(record);
-        setMessages(partialMessages);
+        setScenes(buildPartialScenes(record));
         setIsLoading(false);
-        setTimeout(() => {
-          typeText(partialMessages[0].content, () => setShowButtons(true));
-        }, 500);
 
         const ANALYSIS_TIMEOUT = 5 * 60 * 1000;
         const isStillAnalyzing =
@@ -983,25 +398,14 @@ function NewYearResultContent() {
               clearInterval(checkInterval);
               setData(updated);
               setIsAnalyzing(false);
-              const messageList = buildMessageList(updated);
 
-              const chapter1IntroIndex = messageList.findIndex(
-                (m) => m.id === "chapter-1-intro"
+              const fullScenes = buildFullScenes(updated);
+              const chapter1IntroIndex = fullScenes.findIndex(
+                (s) => s.id === "chapter-1-intro"
               );
-              if (chapter1IntroIndex >= 0) {
-                const nextMsg = messageList[chapter1IntroIndex];
-                setMessages(messageList);
-                setCurrentIndex(chapter1IntroIndex);
-                setShowReport(false);
-                setTimeout(() => {
-                  typeText(
-                    `오래 기다리셨죠? 분석이 완료됐어요!\n\n${nextMsg.content}`,
-                    () => setShowButtons(true)
-                  );
-                }, 100);
-              } else {
-                setMessages(messageList);
-              }
+              setScenes(fullScenes);
+              setJumpIndex(chapter1IntroIndex >= 0 ? chapter1IntroIndex : 0);
+              setSceneKey((k) => k + 1);
               return;
             }
 
@@ -1028,12 +432,54 @@ function NewYearResultContent() {
     resultId,
     searchParams,
     fetchNewYearAnalysis,
-    buildMessageList,
-    buildPartialMessageList,
-    typeText,
+    buildFullScenes,
+    buildPartialScenes,
     startLoadingMessages,
     stopLoadingMessages,
   ]);
+
+  // 분석 완료 시 씬 전환
+  const handleAnalysisTransition = useCallback(() => {
+    if (pendingDataRef.current) {
+      const updatedData = pendingDataRef.current;
+      setData(updatedData);
+      const fullScenes = buildFullScenes(updatedData);
+      const chapter1IntroIndex = fullScenes.findIndex((s) => s.id === "chapter-1-intro");
+      setScenes(fullScenes);
+      setJumpIndex(chapter1IntroIndex >= 0 ? chapter1IntroIndex : 0);
+      setSceneKey((k) => k + 1);
+      pendingDataRef.current = null;
+      setAnalysisComplete(false);
+    }
+  }, [buildFullScenes]);
+
+  // 씬 변경 시 리뷰 모달 트리거
+  const handleSceneChange = useCallback(
+    (index: number, scene: Scene) => {
+      if (!data?.paid || !resultId) return;
+      if (reviewModalTriggered.current || existingReview || reviewSubmitted) return;
+      if (scene.kind !== "card" || (scene as CardScene).chapterIndex == null) return;
+
+      const chIdx = (scene as CardScene).chapterIndex!;
+      const ch = data.analysis?.chapters?.[chIdx];
+      const title = ch?.title || "";
+      const isGwittim =
+        title.includes("까치도령") ||
+        title.includes("귀띔") ||
+        title.includes("보너스") ||
+        ch?.number === 11;
+      if (!isGwittim) return;
+
+      const dismissed = sessionStorage.getItem(`review_dismissed_${resultId}`);
+      if (dismissed) {
+        setReviewModalDismissed(true);
+        return;
+      }
+      reviewModalTriggered.current = true;
+      setTimeout(() => setShowReviewModal(true), 1500);
+    },
+    [data, resultId, existingReview, reviewSubmitted]
+  );
 
   // 리뷰 존재 여부 확인
   useEffect(() => {
@@ -1047,28 +493,6 @@ function NewYearResultContent() {
     };
     checkReview();
   }, [resultId, data?.paid]);
-
-  // 까치도령의 귀띔(11장) 카드 도달 시 리뷰 모달 표시
-  useEffect(() => {
-    if (!data?.paid || !resultId) return;
-    const currentMsg = messages[currentIndex];
-    if (!currentMsg || reviewModalTriggered.current || existingReview || reviewSubmitted) return;
-    // 11장 귀띔 report 카드인지 확인
-    const isGwittim = currentMsg.type === "report" && currentMsg.chapterIndex != null &&
-      (() => {
-        const ch = data.analysis?.chapters?.[currentMsg.chapterIndex!];
-        const title = ch?.title || "";
-        return title.includes("까치도령") || title.includes("귀띔") || title.includes("보너스") || ch?.number === 11;
-      })();
-    if (!isGwittim) return;
-    const dismissed = sessionStorage.getItem(`review_dismissed_${resultId}`);
-    if (dismissed) {
-      setReviewModalDismissed(true);
-      return;
-    }
-    reviewModalTriggered.current = true;
-    setTimeout(() => setShowReviewModal(true), 1500);
-  }, [currentIndex, messages, data, resultId, existingReview, reviewSubmitted]);
 
   const dismissReviewModal = () => {
     setShowReviewModal(false);
@@ -1139,358 +563,122 @@ function NewYearResultContent() {
     );
   }
 
-  if (!data || messages.length === 0) {
+  if (!data || scenes.length === 0) {
     return null;
   }
 
   const userName = data.analysis?.user_name || data.input?.userName || "고객";
-  const currentMsg = messages[currentIndex];
 
-  const getButtonText = () => {
-    if (showReport) return "다음";
-    if (currentMsg?.type === "dialogue") return "다음";
-    return "확인하기";
-  };
-
-  const handleScreenClick = () => {
-    if (!showReport && currentMsg?.type === "dialogue") {
-      handleNext();
-    }
-  };
-
-  return (
-    <div className={`${styles.newyear_result_page} ${styles.chat_mode}`} onClick={handleScreenClick}>
-      {/* 배경 이미지 */}
-      <div className={styles.result_bg}>
-        <img
-          src={currentBgImage}
-          alt=""
-          className={`${styles.result_bg_image} ${bgFadeIn ? styles.fade_in : ""}`}
-        />
-      </div>
-
-      {/* 뒤로가기 버튼 */}
-      <button
-        className={styles.back_btn}
-        onClick={(e) => {
-          e.stopPropagation();
-          setShowExitModal(true);
-        }}
-      >
-        <span className="material-icons">arrow_back</span>
-        <span className={styles.back_btn_text}>홈으로</span>
-      </button>
-
-      {/* 홈으로 돌아가기 확인 모달 */}
-      {showExitModal && (
-        <div className={styles.exit_modal_overlay} onClick={() => setShowExitModal(false)}>
-          <div className={styles.exit_modal} onClick={(e) => e.stopPropagation()}>
-            <p className={styles.exit_modal_text}>홈으로 돌아갈까요?</p>
-            <div className={styles.exit_modal_buttons}>
-              <button className={styles.exit_modal_cancel} onClick={() => setShowExitModal(false)}>
-                아니요
-              </button>
-              <button className={styles.exit_modal_confirm} onClick={() => router.push("/new-year")}>
-                네, 돌아갈게요
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* 목차 버튼 */}
-      <button
-        className={styles.toc_btn}
-        onClick={(e) => {
-          e.stopPropagation();
-          setShowTocModal(true);
-        }}
-      >
-        <span className={styles.toc_btn_text}>목차</span>
-      </button>
-
-      {/* 목차 모달 */}
-      {showTocModal && (
-        <TocModal
-          messages={messages}
-          currentIndex={currentIndex}
-          onClose={() => setShowTocModal(false)}
-          onNavigate={(index) => {
-            setCurrentIndex(index);
-            const targetMsg = messages[index];
-            if (targetMsg.type === "dialogue") {
-              setShowReport(false);
-              setDialogueText(targetMsg.content);
-              setShowButtons(true);
-            } else {
-              setShowReport(true);
-              setShowButtons(true);
-            }
-            setShowTocModal(false);
+  const renderCard = (scene: CardScene) => {
+    if (scene.id === "intro-card") return <IntroCard userName={userName} />;
+    if (scene.id === "saju-card") return <SajuCard data={data} />;
+    if (scene.id === "ending") {
+      return (
+        <EndingCard
+          data={data}
+          reviewProps={{
+            reviewRating,
+            setReviewRating,
+            reviewContent,
+            setReviewContent,
+            isReviewSubmitting,
+            reviewSubmitted,
+            existingReview,
+            reviewModalDismissed,
+            handleReviewSubmit,
           }}
         />
-      )}
-
-      {/* 리포트 카드 (오버레이) */}
-      {currentMsg && (
-        <div className={`${styles.report_overlay} ${showReport ? styles.active : ""} ${isAnimating ? styles.animating : ""}`}>
-          <div className={styles.report_scroll} ref={reportRef}>
-            {currentMsg.type === "intro" && <IntroCard userName={userName} />}
-            {currentMsg.type === "saju" && <SajuCard data={data} />}
-            {currentMsg.type === "report" && data.analysis?.chapters?.[currentMsg.chapterIndex!] && (
-              <ReportCard
-                chapter={data.analysis.chapters[currentMsg.chapterIndex!]}
-                chapterIndex={currentMsg.chapterIndex!}
-              />
-            )}
-            {currentMsg.type === "waiting" && (
-              <WaitingCard
-                userName={userName}
-                isComplete={analysisComplete}
-                analysisStartedAt={data?.analysisStartedAt}
-                onTransition={() => {
-                  if (pendingDataRef.current) {
-                    const updatedData = pendingDataRef.current;
-                    setData(updatedData);
-                    const messageList = buildMessageList(updatedData);
-                    const chapter1IntroIndex = messageList.findIndex(
-                      (m) => m.id === "chapter-1-intro"
-                    );
-                    if (chapter1IntroIndex >= 0) {
-                      const nextMsg = messageList[chapter1IntroIndex];
-                      setMessages(messageList);
-                      setCurrentIndex(chapter1IntroIndex);
-                      setShowReport(false);
-                      setIsLoading(false);
-                      setTimeout(() => {
-                        typeText(
-                          `오래 기다리셨죠? 분석이 완료됐어요!\n\n${nextMsg.content}`,
-                          () => setShowButtons(true)
-                        );
-                      }, 100);
-                    } else {
-                      setMessages(messageList);
-                      setIsLoading(false);
-                    }
-                    pendingDataRef.current = null;
-                    setAnalysisComplete(false);
-                  }
-                }}
-              />
-            )}
-            {currentMsg.type === "ending" && (
-              <EndingCard
-                data={data}
-                reviewProps={{
-                  reviewRating,
-                  setReviewRating,
-                  reviewContent,
-                  setReviewContent,
-                  isReviewSubmitting,
-                  reviewSubmitted,
-                  existingReview,
-                  reviewModalDismissed,
-                  handleReviewSubmit,
-                }}
-              />
-            )}
-          </div>
-
-          {/* 스크롤 힌트 */}
-          {showScrollHint && !canProceed && (
-            <div className={styles.scroll_hint}>
-              <span className="material-icons">keyboard_arrow_down</span>
-              아래로 스크롤해주세요
-            </div>
-          )}
-
-          {/* 하단 다음 버튼 */}
-          <div
-            className={`${styles.report_bottom_btn_wrap} ${
-              canProceed && currentMsg.type !== "waiting"
-                ? styles.visible
-                : ""
-            }`}
-          >
-            {currentMsg.type === "ending" ? (
-              <div className={styles.end_buttons}>
-                <button className={styles.dialogue_next_btn} onClick={() => window.location.reload()}>
-                  처음부터 다시 보기
-                </button>
-                <button className={styles.dialogue_secondary_btn} onClick={() => setShowExitModal(true)}>
-                  홈으로
-                </button>
-              </div>
-            ) : currentMsg.type === "waiting" ? (
-              <div className={styles.waiting_info}>
-                <p>분석이 완료되면 자동으로 다음으로 넘어갑니다</p>
-              </div>
-            ) : (
-              <div className={styles.report_nav_buttons}>
-                {currentIndex > 0 && (
-                  <button className={styles.report_prev_btn} onClick={handlePrev}>
-                    이전
-                  </button>
-                )}
-                <button className={styles.report_next_btn} onClick={handleNext}>
-                  다음
-                </button>
-              </div>
-            )}
-          </div>
-        </div>
-      )}
-
-      {/* 대화 UI (하단 고정) */}
-      <div className={`${styles.dialogue_wrap} ${!showReport ? styles.active : ""}`} onClick={(e) => e.stopPropagation()}>
-        <div className={styles.dialogue_box} onClick={handleNext}>
-          <div className={styles.dialogue_speaker}>까치도령</div>
-          <p className={styles.dialogue_text}>
-            {dialogueText}
-            {isTyping && <span className={styles.typing_cursor}></span>}
-          </p>
-        </div>
-
-        <div className={`${styles.dialogue_buttons} ${showButtons ? styles.visible : ""}`}>
-          {currentIndex > 0 && (
-            <button className={styles.dialogue_prev_btn} onClick={handlePrev}>
-              이전
-            </button>
-          )}
-          <button className={styles.dialogue_next_btn} onClick={handleNext}>
-            {getButtonText()}
-          </button>
-        </div>
-      </div>
-
-      {/* 리뷰 하단 슬라이드 모달 */}
-      {showReviewModal && !reviewSubmitted && !existingReview && (
-        <div className={styles.review_modal_overlay} onClick={dismissReviewModal}>
-          <div className={styles.review_modal} onClick={(e) => e.stopPropagation()}>
-            <button className={styles.review_modal_close} onClick={dismissReviewModal}>✕</button>
-            <div className={styles.review_header}>
-              <h4 className={styles.review_title}>까치도령에게 후기를 남겨주세요</h4>
-              <p className={styles.review_subtitle}>소중한 의견이 더 나은 서비스를 만듭니다</p>
-            </div>
-            <div className={styles.review_rating_options}>
-              {[
-                { value: 1, label: "아쉬워요" },
-                { value: 2, label: "보통" },
-                { value: 3, label: "좋았어요" },
-                { value: 4, label: "고마워요" },
-              ].map((option) => (
-                <button
-                  key={option.value}
-                  type="button"
-                  className={`${styles.review_rating_btn} ${reviewRating === option.value ? styles.active : ""}`}
-                  onClick={() => setReviewRating(option.value)}
-                >
-                  {option.label}
-                </button>
-              ))}
-            </div>
-            <div className={styles.review_content_input}>
-              <textarea
-                className={styles.review_textarea}
-                placeholder="신년운세는 어떠셨나요? 솔직한 후기를 남겨주세요."
-                value={reviewContent}
-                onChange={(e) => setReviewContent(e.target.value)}
-                maxLength={500}
-              />
-              <span className={styles.review_char_count}>{reviewContent.length}/500</span>
-            </div>
-            <button
-              className={styles.review_submit_btn}
-              onClick={async () => {
-                await handleReviewSubmit();
-                dismissReviewModal();
-              }}
-              disabled={isReviewSubmitting}
-            >
-              {isReviewSubmitting ? "등록 중..." : "후기 남기기"}
-            </button>
-          </div>
-        </div>
-      )}
-
-    </div>
-  );
-}
-
-// 목차 모달 컴포넌트
-function TocModal({
-  messages,
-  currentIndex,
-  onClose,
-  onNavigate,
-}: {
-  messages: MessageItem[];
-  currentIndex: number;
-  onClose: () => void;
-  onNavigate: (index: number) => void;
-}) {
-  const tocItems = messages
-    .map((m, i) => ({ ...m, index: i }))
-    .filter(
-      (m) =>
-        m.type === "intro" ||
-        m.type === "saju" ||
-        (m.type === "report" && m.id.includes("-report")) ||
-        m.type === "image" ||
-        m.type === "ending"
-    );
-
-  const getTocTitle = (item: MessageItem & { index: number }) => {
-    if (item.type === "intro") return "들어가며";
-    if (item.type === "saju") return "사주 원국";
-    if (item.type === "report") {
-      const match = item.id.match(/chapter-(\d+)/);
-      if (match) {
-        const num = parseInt(match[1]);
-        const titles = [
-          "2026년 총운",
-          "재물운",
-          "건강운",
-          "애정운",
-          "직장·명예운",
-          "관계운",
-          "감정관리",
-          "월별운세",
-          "미래일기",
-          "개운법 10계명",
-          "까치도령의 귀띔",
-        ];
-        return `${num}장. ${titles[num - 1] || ""}`;
-      }
+      );
     }
-    if (item.type === "ending") return "마무리";
-    return "";
+    if (scene.chapterIndex != null && data.analysis?.chapters?.[scene.chapterIndex]) {
+      return (
+        <ReportCard
+          chapter={data.analysis.chapters[scene.chapterIndex]}
+          chapterIndex={scene.chapterIndex}
+        />
+      );
+    }
+    return null;
   };
 
-  return (
-    <div className={styles.toc_modal_overlay} onClick={onClose}>
-      <div className={styles.toc_modal} onClick={(e) => e.stopPropagation()}>
-        <div className={styles.toc_modal_header}>
-          <span className={styles.toc_modal_title}>목차</span>
-          <button className={styles.toc_modal_close} onClick={onClose}>
+  const renderWaiting = (
+    _scene: WaitingScene,
+    props: { isComplete: boolean; onTransition: () => void }
+  ) => (
+    <WaitingCard
+      userName={userName}
+      isComplete={props.isComplete}
+      analysisStartedAt={data?.analysisStartedAt}
+      onTransition={props.onTransition}
+    />
+  );
+
+  const reviewModalOverlay =
+    showReviewModal && !reviewSubmitted && !existingReview ? (
+      <div className={styles.review_modal_overlay} onClick={dismissReviewModal}>
+        <div className={styles.review_modal} onClick={(e) => e.stopPropagation()}>
+          <button className={styles.review_modal_close} onClick={dismissReviewModal}>
             ✕
           </button>
-        </div>
-        <div className={styles.toc_modal_list}>
-          {tocItems.map((item) => (
-            <button
-              key={item.id}
-              className={`${styles.toc_modal_item} ${item.index === currentIndex ? styles.active : ""} ${
-                item.index <= currentIndex ? styles.visited : ""
-              }`}
-              onClick={() => onNavigate(item.index)}
-            >
-              {getTocTitle(item)}
-            </button>
-          ))}
+          <div className={styles.review_header}>
+            <h4 className={styles.review_title}>까치도령에게 후기를 남겨주세요</h4>
+            <p className={styles.review_subtitle}>소중한 의견이 더 나은 서비스를 만듭니다</p>
+          </div>
+          <div className={styles.review_rating_options}>
+            {[
+              { value: 1, label: "아쉬워요" },
+              { value: 2, label: "보통" },
+              { value: 3, label: "좋았어요" },
+              { value: 4, label: "고마워요" },
+            ].map((option) => (
+              <button
+                key={option.value}
+                type="button"
+                className={`${styles.review_rating_btn} ${reviewRating === option.value ? styles.active : ""}`}
+                onClick={() => setReviewRating(option.value)}
+              >
+                {option.label}
+              </button>
+            ))}
+          </div>
+          <div className={styles.review_content_input}>
+            <textarea
+              className={styles.review_textarea}
+              placeholder="신년운세는 어떠셨나요? 솔직한 후기를 남겨주세요."
+              value={reviewContent}
+              onChange={(e) => setReviewContent(e.target.value)}
+              maxLength={500}
+            />
+            <span className={styles.review_char_count}>{reviewContent.length}/500</span>
+          </div>
+          <button
+            className={styles.review_submit_btn}
+            onClick={async () => {
+              await handleReviewSubmit();
+              dismissReviewModal();
+            }}
+            disabled={isReviewSubmitting}
+          >
+            {isReviewSubmitting ? "등록 중..." : "후기 남기기"}
+          </button>
         </div>
       </div>
-    </div>
+    ) : undefined;
+
+  return (
+    <ScenePlayer
+      key={sceneKey}
+      config={newYearPlayerConfig}
+      scenes={scenes}
+      initialIndex={jumpIndex}
+      styles={styles}
+      renderCard={renderCard}
+      renderWaiting={renderWaiting}
+      analysisComplete={analysisComplete}
+      onAnalysisTransition={handleAnalysisTransition}
+      onSceneChange={handleSceneChange}
+      extraOverlay={reviewModalOverlay}
+    />
   );
 }
 
