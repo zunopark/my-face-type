@@ -1,7 +1,7 @@
 import { supabase } from "@/lib/supabase";
 
 // 서비스 타입
-export type ServiceType = "saju_love" | "couple" | "face";
+export type ServiceType = "saju_love" | "couple" | "face" | "new_year";
 
 // 리뷰 타입
 export interface Review {

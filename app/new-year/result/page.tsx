@@ -9,6 +9,7 @@ import {
   NewYearRecord,
 } from "@/lib/db/newYearDB";
 import { updateSajuAnalysis, getSajuAnalysisById } from "@/lib/db/sajuAnalysisDB";
+import { createReview, getReviewByRecordId, Review } from "@/lib/db/reviewDB";
 import { trackPageView } from "@/lib/mixpanel";
 import {
   parseTemplateSections,
@@ -318,6 +319,16 @@ function NewYearResultContent() {
   const [analysisComplete, setAnalysisComplete] = useState(false);
   const [bgFadeIn, setBgFadeIn] = useState(false);
   const pendingDataRef = useRef<NewYearRecord | null>(null);
+
+  // 리뷰 관련 상태
+  const [reviewRating, setReviewRating] = useState(4);
+  const [reviewContent, setReviewContent] = useState("");
+  const [isReviewSubmitting, setIsReviewSubmitting] = useState(false);
+  const [reviewSubmitted, setReviewSubmitted] = useState(false);
+  const [existingReview, setExistingReview] = useState<Review | null>(null);
+  const [showReviewModal, setShowReviewModal] = useState(false);
+  const [reviewModalDismissed, setReviewModalDismissed] = useState(false);
+  const reviewModalTriggered = useRef(false);
 
   // 현재 메시지의 배경 이미지
   const currentBgImage = messages[currentIndex]?.bgImage || "/new-year/img/doryung.jpg";
@@ -1024,6 +1035,65 @@ function NewYearResultContent() {
     stopLoadingMessages,
   ]);
 
+  // 리뷰 존재 여부 확인
+  useEffect(() => {
+    if (!resultId || !data?.paid) return;
+    const checkReview = async () => {
+      const review = await getReviewByRecordId("new_year", resultId);
+      if (review) {
+        setExistingReview(review);
+        setReviewSubmitted(true);
+      }
+    };
+    checkReview();
+  }, [resultId, data?.paid]);
+
+  // 까치도령의 귀띔(11장) 카드 도달 시 리뷰 모달 표시
+  useEffect(() => {
+    if (!data?.paid || !resultId) return;
+    const currentMsg = messages[currentIndex];
+    if (!currentMsg || reviewModalTriggered.current || existingReview || reviewSubmitted) return;
+    // 11장 귀띔 report 카드인지 확인
+    const isGwittim = currentMsg.type === "report" && currentMsg.chapterIndex != null &&
+      (() => {
+        const ch = data.analysis?.chapters?.[currentMsg.chapterIndex!];
+        const title = ch?.title || "";
+        return title.includes("까치도령") || title.includes("귀띔") || title.includes("보너스") || ch?.number === 11;
+      })();
+    if (!isGwittim) return;
+    const dismissed = sessionStorage.getItem(`review_dismissed_${resultId}`);
+    if (dismissed) {
+      setReviewModalDismissed(true);
+      return;
+    }
+    reviewModalTriggered.current = true;
+    setTimeout(() => setShowReviewModal(true), 1500);
+  }, [currentIndex, messages, data, resultId, existingReview, reviewSubmitted]);
+
+  const dismissReviewModal = () => {
+    setShowReviewModal(false);
+    setReviewModalDismissed(true);
+    if (resultId) sessionStorage.setItem(`review_dismissed_${resultId}`, "true");
+  };
+
+  const handleReviewSubmit = async () => {
+    if (!resultId) return;
+    setIsReviewSubmitting(true);
+    const review = await createReview({
+      service_type: "new_year",
+      record_id: resultId,
+      user_name: "익명",
+      rating: reviewRating,
+      content: reviewContent.trim(),
+      is_public: true,
+    });
+    if (review) {
+      setExistingReview(review);
+      setReviewSubmitted(true);
+    }
+    setIsReviewSubmitting(false);
+  };
+
   // 로딩 화면
   if (isLoading) {
     return (
@@ -1208,7 +1278,22 @@ function NewYearResultContent() {
                 }}
               />
             )}
-            {currentMsg.type === "ending" && <EndingCard data={data} />}
+            {currentMsg.type === "ending" && (
+              <EndingCard
+                data={data}
+                reviewProps={{
+                  reviewRating,
+                  setReviewRating,
+                  reviewContent,
+                  setReviewContent,
+                  isReviewSubmitting,
+                  reviewSubmitted,
+                  existingReview,
+                  reviewModalDismissed,
+                  handleReviewSubmit,
+                }}
+              />
+            )}
           </div>
 
           {/* 스크롤 힌트 */}
@@ -1277,6 +1362,56 @@ function NewYearResultContent() {
           </button>
         </div>
       </div>
+
+      {/* 리뷰 하단 슬라이드 모달 */}
+      {showReviewModal && !reviewSubmitted && !existingReview && (
+        <div className={styles.review_modal_overlay} onClick={dismissReviewModal}>
+          <div className={styles.review_modal} onClick={(e) => e.stopPropagation()}>
+            <button className={styles.review_modal_close} onClick={dismissReviewModal}>✕</button>
+            <div className={styles.review_header}>
+              <h4 className={styles.review_title}>까치도령에게 후기를 남겨주세요</h4>
+              <p className={styles.review_subtitle}>소중한 의견이 더 나은 서비스를 만듭니다</p>
+            </div>
+            <div className={styles.review_rating_options}>
+              {[
+                { value: 1, label: "아쉬워요" },
+                { value: 2, label: "보통" },
+                { value: 3, label: "좋았어요" },
+                { value: 4, label: "고마워요" },
+              ].map((option) => (
+                <button
+                  key={option.value}
+                  type="button"
+                  className={`${styles.review_rating_btn} ${reviewRating === option.value ? styles.active : ""}`}
+                  onClick={() => setReviewRating(option.value)}
+                >
+                  {option.label}
+                </button>
+              ))}
+            </div>
+            <div className={styles.review_content_input}>
+              <textarea
+                className={styles.review_textarea}
+                placeholder="신년운세는 어떠셨나요? 솔직한 후기를 남겨주세요."
+                value={reviewContent}
+                onChange={(e) => setReviewContent(e.target.value)}
+                maxLength={500}
+              />
+              <span className={styles.review_char_count}>{reviewContent.length}/500</span>
+            </div>
+            <button
+              className={styles.review_submit_btn}
+              onClick={async () => {
+                await handleReviewSubmit();
+                dismissReviewModal();
+              }}
+              disabled={isReviewSubmitting}
+            >
+              {isReviewSubmitting ? "등록 중..." : "후기 남기기"}
+            </button>
+          </div>
+        </div>
+      )}
 
     </div>
   );
@@ -4067,8 +4202,22 @@ function WaitingCard({
 }
 
 // 엔딩 카드 컴포넌트
-function EndingCard({ data }: { data: NewYearRecord }) {
+function EndingCard({ data, reviewProps }: {
+  data: NewYearRecord;
+  reviewProps: {
+    reviewRating: number;
+    setReviewRating: (v: number) => void;
+    reviewContent: string;
+    setReviewContent: (v: string) => void;
+    isReviewSubmitting: boolean;
+    reviewSubmitted: boolean;
+    existingReview: Review | null;
+    reviewModalDismissed: boolean;
+    handleReviewSubmit: () => Promise<void>;
+  };
+}) {
   const userName = data.analysis?.user_name || data.input?.userName || "고객";
+  const { reviewRating, setReviewRating, reviewContent, setReviewContent, isReviewSubmitting, reviewSubmitted, existingReview, reviewModalDismissed, handleReviewSubmit } = reviewProps;
 
   return (
     <div className={`${styles.report_card} ${styles.ending_card}`}>
@@ -4094,7 +4243,6 @@ function EndingCard({ data }: { data: NewYearRecord }) {
         {data.analysis?.chapters?.map((chapter, index) => {
           const title = chapter.title || "";
           let num = chapter.number || index + 1;
-          // 미래일기를 먼저 체크
           if (title.includes("미래") || title.includes("일기")) num = 9;
           else if (title.includes("까치도령") || title.includes("보너스") || title.includes("귀띔")) num = 11;
           else if (title.includes("개운법")) num = 10;
@@ -4119,6 +4267,50 @@ function EndingCard({ data }: { data: NewYearRecord }) {
           );
         })}
       </div>
+
+      {/* 인라인 리뷰 (모달 닫은 후 표시) */}
+      {reviewModalDismissed && !reviewSubmitted && !existingReview && (
+        <div className={styles.review_inline_section}>
+          <div className={styles.review_header}>
+            <h4 className={styles.review_title}>까치도령에게 후기를 남겨주세요</h4>
+            <p className={styles.review_subtitle}>소중한 의견이 더 나은 서비스를 만듭니다</p>
+          </div>
+          <div className={styles.review_rating_options}>
+            {[
+              { value: 1, label: "아쉬워요" },
+              { value: 2, label: "보통" },
+              { value: 3, label: "좋았어요" },
+              { value: 4, label: "고마워요" },
+            ].map((option) => (
+              <button
+                key={option.value}
+                type="button"
+                className={`${styles.review_rating_btn} ${reviewRating === option.value ? styles.active : ""}`}
+                onClick={() => setReviewRating(option.value)}
+              >
+                {option.label}
+              </button>
+            ))}
+          </div>
+          <div className={styles.review_content_input}>
+            <textarea
+              className={styles.review_textarea}
+              placeholder="신년운세는 어떠셨나요? 솔직한 후기를 남겨주세요."
+              value={reviewContent}
+              onChange={(e) => setReviewContent(e.target.value)}
+              maxLength={500}
+            />
+            <span className={styles.review_char_count}>{reviewContent.length}/500</span>
+          </div>
+          <button
+            className={styles.review_submit_btn}
+            onClick={handleReviewSubmit}
+            disabled={isReviewSubmitting}
+          >
+            {isReviewSubmitting ? "등록 중..." : "후기 남기기"}
+          </button>
+        </div>
+      )}
     </div>
   );
 }
