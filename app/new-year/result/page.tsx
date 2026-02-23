@@ -2835,7 +2835,7 @@ function NarrativeText({ sections, name }: { sections: Record<string, ParsedSect
   return (
     <div className={styles.text_block}>
       {text.split("\n").filter(line => line.trim()).map((para, i) => (
-        <p key={i}>{para}</p>
+        <p key={i} dangerouslySetInnerHTML={{ __html: para.replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>") }} />
       ))}
     </div>
   );
@@ -2979,9 +2979,30 @@ function Chapter1Content({ sections }: { sections: Record<string, ParsedSection>
     "중길": { bg: "#f6ffed", text: "#389e0d" },
     "小吉": { bg: "#e6f7ff", text: "#096dd9" },
     "소길": { bg: "#e6f7ff", text: "#096dd9" },
+    "길흉": { bg: "#f9f0ff", text: "#722ed1" },
+    "吉凶": { bg: "#f9f0ff", text: "#722ed1" },
+    "凶": { bg: "#f5f5f5", text: "#595959" },
+    "흉": { bg: "#f5f5f5", text: "#595959" },
+  };
+
+  // 등급별 축하 메시지 제목 오버라이드
+  const gradeMessages: Record<string, string> = {
+    "大吉": "축하해요!",
+    "대길": "축하해요!",
+    "吉": "좋은 한 해가 될 거예요!",
+    "길": "좋은 한 해가 될 거예요!",
+    "中吉": "괜찮은 한 해예요!",
+    "중길": "괜찮은 한 해예요!",
+    "小吉": "작은 행운이 함께해요!",
+    "소길": "작은 행운이 함께해요!",
+    "길흉": "기회와 시련이 함께하는 해예요!",
+    "吉凶": "기회와 시련이 함께하는 해예요!",
+    "凶": "조심하면 괜찮아요!",
+    "흉": "조심하면 괜찮아요!",
   };
 
   const gradeStyle = gradeColors[gradeData["등급"]] || gradeColors[gradeData["등급_한글"]] || { bg: "#f5f5f5", text: "#333" };
+  const congratsTitle = gradeMessages[gradeData["등급"]] || gradeMessages[gradeData["등급_한글"]] || congratsData["제목"];
 
   return (
     <div className={styles.chapter_structured}>
@@ -2997,9 +3018,9 @@ function Chapter1Content({ sections }: { sections: Record<string, ParsedSection>
       )}
 
       {/* 축하 메시지 */}
-      {(congratsData["제목"] || congratsData["부제"]) && (
+      {(congratsTitle || congratsData["부제"]) && (
         <div className={styles.congrats_box}>
-          {congratsData["제목"] && <p className={styles.congrats_title}>&ldquo;{congratsData["제목"]}&rdquo;</p>}
+          {congratsTitle && <p className={styles.congrats_title}>&ldquo;{congratsTitle}&rdquo;</p>}
           {congratsData["부제"] && <p className={styles.congrats_subtitle}>{congratsData["부제"]}</p>}
         </div>
       )}
@@ -3843,6 +3864,10 @@ function Chapter11Content({ sections }: { sections: Record<string, ParsedSection
   // 귀띔_서술을 소제목 기준으로 분리 (숫자. 제목 패턴)
   const renderNarrative = (text: string) => {
     if (!text) return null;
+    // **bold** 마크다운을 <strong>으로 변환
+    const renderLine = (line: string) => {
+      return <span dangerouslySetInnerHTML={{ __html: line.replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>") }} />;
+    };
     const parts = text.split(/\n(?=\d+\.\s)/);
     return (
       <>
@@ -3854,10 +3879,10 @@ function Chapter11Content({ sections }: { sections: Record<string, ParsedSection
           if (headMatch) {
             return (
               <div key={i} className={styles.section_block}>
-                <h4 className={styles.section_title}>{headMatch[2]}</h4>
+                <h4 className={styles.section_title}>{renderLine(headMatch[2])}</h4>
                 <div className={styles.text_block}>
                   {lines.slice(1).map((line, j) => (
-                    <p key={j}>{line}</p>
+                    <p key={j}>{renderLine(line)}</p>
                   ))}
                 </div>
               </div>
@@ -3866,7 +3891,7 @@ function Chapter11Content({ sections }: { sections: Record<string, ParsedSection
           return (
             <div key={i} className={styles.text_block}>
               {lines.map((line, j) => (
-                <p key={j}>{line}</p>
+                <p key={j}>{renderLine(line)}</p>
               ))}
             </div>
           );
