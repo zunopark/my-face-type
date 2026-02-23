@@ -119,8 +119,7 @@ export async function GET(request: NextRequest) {
       if (yearParam && monthParam) {
         const year = parseInt(yearParam);
         const month = parseInt(monthParam);
-        const startDate = new Date(year, month - 1, 1).toISOString();
-        const endDate = new Date(year, month, 1).toISOString();
+        const { startDate, endDate } = kstMonthRange(year, month);
         sajuQuery = sajuQuery.gte("paid_at", startDate).lt("paid_at", endDate);
         faceQuery = faceQuery.gte("paid_at", startDate).lt("paid_at", endDate);
       }
