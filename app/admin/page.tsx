@@ -38,6 +38,7 @@ interface Influencer {
   total_visits?: number;
   total_payments?: number;
   total_revenue?: number;
+  password?: string;
 }
 
 interface PaymentDetail {
@@ -101,6 +102,7 @@ const EMPTY_INF_FORM = {
   contact: "",
   memo: "",
   rs_percentage: 40,
+  password: "",
 };
 
 const BASE_URL = "https://yangban.ai";
@@ -411,6 +413,7 @@ export default function AdminPage() {
       memo: inf.memo || "",
       rs_percentage: inf.rs_percentage,
       is_active: inf.is_active,
+      password: inf.password || "",
     });
     setInfFormError("");
   };
@@ -662,6 +665,18 @@ export default function AdminPage() {
                           ...infFormData,
                           rs_percentage: Number(e.target.value),
                         })
+                      }
+                    />
+                  </div>
+                  <div className={styles.form_field}>
+                    <label className={styles.form_label}>비밀번호</label>
+                    <input
+                      className={styles.form_input}
+                      type="text"
+                      placeholder="인플루언서 로그인용"
+                      value={infFormData.password}
+                      onChange={(e) =>
+                        setInfFormData({ ...infFormData, password: e.target.value })
                       }
                     />
                   </div>
@@ -1339,6 +1354,18 @@ export default function AdminPage() {
                         ...editInfData,
                         rs_percentage: Number(e.target.value),
                       })
+                    }
+                  />
+                </div>
+                <div className={styles.form_field}>
+                  <label className={styles.form_label}>비밀번호</label>
+                  <input
+                    className={styles.form_input}
+                    type="text"
+                    placeholder="인플루언서 로그인용"
+                    value={(editInfData.password as string) || ""}
+                    onChange={(e) =>
+                      setEditInfData({ ...editInfData, password: e.target.value })
                     }
                   />
                 </div>
