@@ -32,14 +32,16 @@ export async function GET(request: NextRequest) {
         .from("saju_analyses")
         .select("payment_info")
         .eq("influencer_id", influencerId)
-        .eq("is_paid", true);
+        .eq("is_paid", true)
+        .eq("is_refunded", false);
 
       // Face payments
       const { data: facePayments } = await supabase
         .from("face_analyses")
         .select("payment_info")
         .eq("influencer_id", influencerId)
-        .eq("is_paid", true);
+        .eq("is_paid", true)
+        .eq("is_refunded", false);
 
       const allPayments = [...(sajuPayments || []), ...(facePayments || [])];
       const totalRevenue = allPayments.reduce((sum, p) => {
@@ -75,6 +77,7 @@ export async function GET(request: NextRequest) {
         .select("payment_info")
         .eq("influencer_id", influencerId)
         .eq("is_paid", true)
+        .eq("is_refunded", false)
         .gte("paid_at", startDate)
         .lt("paid_at", endDate);
 
@@ -84,6 +87,7 @@ export async function GET(request: NextRequest) {
         .select("payment_info")
         .eq("influencer_id", influencerId)
         .eq("is_paid", true)
+        .eq("is_refunded", false)
         .gte("paid_at", startDate)
         .lt("paid_at", endDate);
 
@@ -106,13 +110,13 @@ export async function GET(request: NextRequest) {
     if (type === "payments") {
       let sajuQuery = supabase
         .from("saju_analyses")
-        .select("id, service_type, user_info, payment_info, paid_at")
+        .select("id, service_type, user_info, payment_info, paid_at, is_refunded")
         .eq("influencer_id", influencerId)
         .eq("is_paid", true);
 
       let faceQuery = supabase
         .from("face_analyses")
-        .select("id, service_type, payment_info, paid_at")
+        .select("id, service_type, payment_info, paid_at, is_refunded")
         .eq("influencer_id", influencerId)
         .eq("is_paid", true);
 
@@ -133,6 +137,7 @@ export async function GET(request: NextRequest) {
         user_name: string;
         price: number;
         paid_at: string;
+        is_refunded: boolean;
       }> = [];
 
       for (const row of sajuData || []) {
@@ -144,6 +149,7 @@ export async function GET(request: NextRequest) {
           user_name: userInfo?.userName || "-",
           price: paymentInfo?.price || 0,
           paid_at: row.paid_at,
+          is_refunded: row.is_refunded || false,
         });
       }
 
@@ -155,6 +161,7 @@ export async function GET(request: NextRequest) {
           user_name: "-",
           price: paymentInfo?.price || 0,
           paid_at: row.paid_at,
+          is_refunded: row.is_refunded || false,
         });
       }
 

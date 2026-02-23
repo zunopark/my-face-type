@@ -59,6 +59,9 @@ interface AllPayment {
   has_review: boolean;
   review_rating: number | null;
   review_content: string | null;
+  is_refunded: boolean;
+  refunded_at: string | null;
+  table: "saju_analyses" | "face_analyses";
 }
 
 const SERVICE_RESULT_PATHS: Record<string, string> = {
@@ -563,6 +566,26 @@ export default function SuperAdminPage() {
     const path = SERVICE_RESULT_PATHS[serviceType];
     if (!path) return null;
     return `${BASE_URL}${path}?id=${id}`;
+  };
+
+  const handleRefund = async (payment: AllPayment) => {
+    if (!confirm(`이 결제 건을 환불 처리하시겠습니까?\n서비스: ${SERVICE_LABELS[payment.service_type] || payment.service_type}\n금액: ${payment.price.toLocaleString()}원`)) return;
+
+    try {
+      const res = await fetch("/api/superadmin/payments", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id: payment.id, table: payment.table }),
+      });
+      const data = await res.json();
+      if (data.success) {
+        fetchAllPayments();
+      } else {
+        alert("환불 처리 실패: " + (data.error || "알 수 없는 오류"));
+      }
+    } catch {
+      alert("환불 처리 중 오류가 발생했습니다.");
+    }
   };
 
   const filteredPayments = paymentServiceFilter
@@ -1192,7 +1215,7 @@ export default function SuperAdminPage() {
                   ))}
                 </select>
                 <span className={styles.filter_label} style={{ marginLeft: 4 }}>
-                  {filteredPayments.length}건 / {filteredPayments.reduce((s, p) => s + p.price, 0).toLocaleString()}원
+                  {filteredPayments.filter(p => !p.is_refunded).length}건 / {filteredPayments.filter(p => !p.is_refunded).reduce((s, p) => s + p.price, 0).toLocaleString()}원
                 </span>
               </div>
               <div className={styles.month_selector}>
@@ -1231,6 +1254,7 @@ export default function SuperAdminPage() {
                       <th className={styles.text_right}>금액</th>
                       <th>결과</th>
                       <th>리뷰</th>
+                      <th>상태</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -1254,7 +1278,11 @@ export default function SuperAdminPage() {
                             <span className={`${styles.badge} ${styles.badge_free}`}>{p.coupon_code}</span>
                           ) : "-"}</td>
                           <td className={styles.text_right}>
-                            {p.price.toLocaleString()}원
+                            {p.is_refunded ? (
+                              <span style={{ textDecoration: "line-through", color: "#999" }}>{p.price.toLocaleString()}원</span>
+                            ) : (
+                              <>{p.price.toLocaleString()}원</>
+                            )}
                           </td>
                           <td>
                             {resultUrl ? (
@@ -1284,16 +1312,29 @@ export default function SuperAdminPage() {
                               <span className={styles.review_none}>-</span>
                             )}
                           </td>
+                          <td>
+                            {p.is_refunded ? (
+                              <span className={`${styles.badge} ${styles.badge_refunded}`}>환불됨</span>
+                            ) : (
+                              <button
+                                className={styles.btn_refund}
+                                onClick={() => handleRefund(p)}
+                              >
+                                환불
+                              </button>
+                            )}
+                          </td>
                         </tr>
                       );
                     })}
                   </tbody>
                   <tfoot>
                     <tr className={styles.table_foot}>
-                      <td colSpan={5}>합계 ({filteredPayments.length}건)</td>
+                      <td colSpan={5}>합계 ({filteredPayments.filter(p => !p.is_refunded).length}건{filteredPayments.filter(p => p.is_refunded).length > 0 ? ` / 환불 ${filteredPayments.filter(p => p.is_refunded).length}건` : ""})</td>
                       <td className={styles.text_right}>
-                        {filteredPayments.reduce((s, p) => s + p.price, 0).toLocaleString()}원
+                        {filteredPayments.filter(p => !p.is_refunded).reduce((s, p) => s + p.price, 0).toLocaleString()}원
                       </td>
+                      <td></td>
                       <td></td>
                       <td></td>
                     </tr>

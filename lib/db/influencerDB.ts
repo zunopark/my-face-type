@@ -125,13 +125,15 @@ export async function getAllInfluencersWithStats(): Promise<InfluencerWithStats[
       .from("saju_analyses")
       .select("payment_info")
       .eq("influencer_id", inf.id)
-      .eq("is_paid", true);
+      .eq("is_paid", true)
+      .eq("is_refunded", false);
 
     const { data: facePayments } = await supabase
       .from("face_analyses")
       .select("payment_info")
       .eq("influencer_id", inf.id)
-      .eq("is_paid", true);
+      .eq("is_paid", true)
+      .eq("is_refunded", false);
 
     const allPayments = [...(sajuPayments || []), ...(facePayments || [])];
     const totalRevenue = allPayments.reduce((sum, p) => {

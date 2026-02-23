@@ -30,6 +30,7 @@ interface PaymentDetail {
   user_name: string;
   price: number;
   paid_at: string;
+  is_refunded: boolean;
 }
 
 const SERVICE_LABELS: Record<string, string> = {
@@ -393,19 +394,27 @@ export default function InfluencerPage() {
                           day: "2-digit",
                         })}
                       </td>
-                      <td>{SERVICE_LABELS[p.service_type] || p.service_type}</td>
+                      <td>
+                        {SERVICE_LABELS[p.service_type] || p.service_type}
+                        {p.is_refunded && <span style={{ marginLeft: 6, padding: "1px 6px", borderRadius: 8, fontSize: 10, fontWeight: 600, background: "rgba(231, 76, 60, 0.1)", color: "#e74c3c" }}>환불</span>}
+                      </td>
                       <td>{p.user_name}</td>
                       <td className={styles.text_right}>
-                        {p.price.toLocaleString()}원
+                        {p.is_refunded ? (
+                          <span style={{ textDecoration: "line-through", color: "#999" }}>{p.price.toLocaleString()}원</span>
+                        ) : (
+                          <>{p.price.toLocaleString()}원</>
+                        )}
                       </td>
                     </tr>
                   ))}
                 </tbody>
                 <tfoot>
                   <tr className={styles.table_foot}>
-                    <td colSpan={3}>합계 ({payments.length}건)</td>
+                    <td colSpan={3}>합계 ({payments.filter(p => !p.is_refunded).length}건{payments.filter(p => p.is_refunded).length > 0 ? ` / 환불 ${payments.filter(p => p.is_refunded).length}건` : ""})</td>
                     <td className={styles.text_right}>
                       {payments
+                        .filter(p => !p.is_refunded)
                         .reduce((s, p) => s + p.price, 0)
                         .toLocaleString()}
                       원

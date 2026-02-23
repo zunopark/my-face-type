@@ -89,6 +89,7 @@ export async function getMonthlySettlement(
       .select("payment_info")
       .eq("influencer_id", inf.id)
       .eq("is_paid", true)
+      .eq("is_refunded", false)
       .gte("paid_at", startDate)
       .lt("paid_at", endDate);
 
@@ -98,6 +99,7 @@ export async function getMonthlySettlement(
       .select("payment_info")
       .eq("influencer_id", inf.id)
       .eq("is_paid", true)
+      .eq("is_refunded", false)
       .gte("paid_at", startDate)
       .lt("paid_at", endDate);
 
@@ -136,6 +138,7 @@ export interface PaymentDetail {
   user_name: string;
   price: number;
   paid_at: string;
+  is_refunded: boolean;
 }
 
 /**
@@ -146,14 +149,14 @@ export async function getPaymentsByInfluencer(
 ): Promise<PaymentDetail[]> {
   const { data: sajuData } = await supabase
     .from("saju_analyses")
-    .select("id, service_type, user_info, payment_info, paid_at")
+    .select("id, service_type, user_info, payment_info, paid_at, is_refunded")
     .eq("influencer_id", influencerId)
     .eq("is_paid", true)
     .order("paid_at", { ascending: false });
 
   const { data: faceData } = await supabase
     .from("face_analyses")
-    .select("id, service_type, payment_info, paid_at")
+    .select("id, service_type, payment_info, paid_at, is_refunded")
     .eq("influencer_id", influencerId)
     .eq("is_paid", true)
     .order("paid_at", { ascending: false });
@@ -169,6 +172,7 @@ export async function getPaymentsByInfluencer(
       user_name: userInfo?.userName || "-",
       price: paymentInfo?.price || 0,
       paid_at: row.paid_at,
+      is_refunded: row.is_refunded || false,
     });
   }
 
@@ -180,6 +184,7 @@ export async function getPaymentsByInfluencer(
       user_name: "-",
       price: paymentInfo?.price || 0,
       paid_at: row.paid_at,
+      is_refunded: row.is_refunded || false,
     });
   }
 

@@ -14,7 +14,7 @@ export async function GET(request: NextRequest) {
   try {
     const { data: sajuData } = await supabase
       .from("saju_analyses")
-      .select("id, service_type, user_info, payment_info, paid_at, utm_source")
+      .select("id, service_type, user_info, payment_info, paid_at, utm_source, is_refunded, refunded_at")
       .eq("is_paid", true)
       .gte("paid_at", startDate)
       .lt("paid_at", endDate)
@@ -22,7 +22,7 @@ export async function GET(request: NextRequest) {
 
     const { data: faceData } = await supabase
       .from("face_analyses")
-      .select("id, service_type, payment_info, paid_at, utm_source")
+      .select("id, service_type, payment_info, paid_at, utm_source, is_refunded, refunded_at")
       .eq("is_paid", true)
       .gte("paid_at", startDate)
       .lt("paid_at", endDate)
@@ -60,6 +60,9 @@ export async function GET(request: NextRequest) {
         coupon_code: paymentInfo?.couponCode || null,
         influencer: infMap.get(row.utm_source) || null,
         paid_at: row.paid_at,
+        is_refunded: row.is_refunded || false,
+        refunded_at: row.refunded_at || null,
+        table: "saju_analyses" as const,
       });
     }
 
@@ -76,6 +79,9 @@ export async function GET(request: NextRequest) {
         coupon_code: paymentInfo?.couponCode || null,
         influencer: infMap.get(row.utm_source) || null,
         paid_at: row.paid_at,
+        is_refunded: row.is_refunded || false,
+        refunded_at: row.refunded_at || null,
+        table: "face_analyses" as const,
       });
     }
 
@@ -112,5 +118,34 @@ export async function GET(request: NextRequest) {
       { error: "결제 내역 조회 실패" },
       { status: 500 }
     );
+  }
+}
+
+export async function POST(request: NextRequest) {
+  try {
+    const { id, table } = await request.json();
+
+    if (!id || !table) {
+      return NextResponse.json({ error: "id와 table은 필수입니다." }, { status: 400 });
+    }
+
+    if (table !== "saju_analyses" && table !== "face_analyses") {
+      return NextResponse.json({ error: "올바르지 않은 테이블입니다." }, { status: 400 });
+    }
+
+    const { error } = await supabase
+      .from(table)
+      .update({ is_refunded: true, refunded_at: new Date().toISOString() })
+      .eq("id", id);
+
+    if (error) {
+      console.error("환불 처리 오류:", error);
+      return NextResponse.json({ error: "환불 처리 실패" }, { status: 500 });
+    }
+
+    return NextResponse.json({ success: true });
+  } catch (error) {
+    console.error("환불 처리 오류:", error);
+    return NextResponse.json({ error: "환불 처리 실패" }, { status: 500 });
   }
 }
