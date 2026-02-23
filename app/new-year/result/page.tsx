@@ -5,9 +5,10 @@ import { useSearchParams, useRouter } from "next/navigation";
 import {
   getNewYearRecord,
   updateNewYearRecord,
+  saveNewYearRecord,
   NewYearRecord,
 } from "@/lib/db/newYearDB";
-import { updateSajuAnalysis } from "@/lib/db/sajuAnalysisDB";
+import { updateSajuAnalysis, getSajuAnalysisById } from "@/lib/db/sajuAnalysisDB";
 import { trackPageView } from "@/lib/mixpanel";
 import {
   parseTemplateSections,
@@ -827,7 +828,37 @@ function NewYearResultContent() {
 
     const loadData = async () => {
       try {
-        const record = await getNewYearRecord(resultId);
+        let record = await getNewYearRecord(resultId);
+
+        // IndexedDB에 없으면 Supabase에서 가져오기 (다른 기기/브라우저 접근 시)
+        if (!record) {
+          const serverData = await getSajuAnalysisById(resultId);
+          if (serverData && serverData.is_paid && serverData.analysis_result) {
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            const userInfo = serverData.user_info as any;
+            record = {
+              id: serverData.id,
+              createdAt: serverData.created_at || new Date().toISOString(),
+              input: {
+                userName: userInfo?.userName || "-",
+                gender: userInfo?.gender || "male",
+                date: userInfo?.date || "",
+                calendar: (userInfo?.calendar as "solar" | "lunar") || "solar",
+                time: userInfo?.time || null,
+                jobStatus: userInfo?.jobStatus || "",
+                relationshipStatus: userInfo?.relationshipStatus || "",
+                wish2026: userInfo?.wish2026 || "",
+              },
+              sajuData: serverData.raw_saju_data as NewYearRecord["sajuData"],
+              analysis: serverData.analysis_result as NewYearRecord["analysis"],
+              paid: true,
+              paidAt: serverData.paid_at || undefined,
+              seenIntro: true,
+            };
+            // IndexedDB에 캐시하여 다음 접근 시 바로 로드
+            await saveNewYearRecord(record);
+          }
+        }
 
         if (!record) {
           setError("데이터를 찾을 수 없습니다.");
