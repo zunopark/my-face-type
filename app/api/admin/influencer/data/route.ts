@@ -1,6 +1,14 @@
 import { NextRequest, NextResponse } from "next/server";
 import { supabase } from "@/lib/supabase";
 
+// KST(UTC+9) 기준 월 시작/끝 → UTC ISO string
+function kstMonthRange(year: number, month: number) {
+  const KST_OFFSET = 9 * 60 * 60 * 1000;
+  const startDate = new Date(Date.UTC(year, month - 1, 1) - KST_OFFSET).toISOString();
+  const endDate = new Date(Date.UTC(year, month, 1) - KST_OFFSET).toISOString();
+  return { startDate, endDate };
+}
+
 export async function GET(request: NextRequest) {
   const influencerId = request.nextUrl.searchParams.get("influencer_id");
   const type = request.nextUrl.searchParams.get("type") || "summary";
@@ -51,8 +59,7 @@ export async function GET(request: NextRequest) {
       const year = yearParam ? parseInt(yearParam) : now.getFullYear();
       const month = monthParam ? parseInt(monthParam) : now.getMonth() + 1;
 
-      const startDate = new Date(year, month - 1, 1).toISOString();
-      const endDate = new Date(year, month, 1).toISOString();
+      const { startDate, endDate } = kstMonthRange(year, month);
 
       // Visits
       const { count: visitCount } = await supabase

@@ -61,8 +61,6 @@ export default function InfluencerPage() {
   // Payment details
   const [payments, setPayments] = useState<PaymentDetail[]>([]);
   const [paymentLoading, setPaymentLoading] = useState(false);
-  const [showPayments, setShowPayments] = useState(false);
-  const [paymentViewMonth, setPaymentViewMonth] = useState<{ year: number; month: number } | null>(null);
 
   // Check session
   useEffect(() => {
@@ -110,7 +108,6 @@ export default function InfluencerPage() {
     setSummary(null);
     setSettlement(null);
     setPayments([]);
-    setShowPayments(false);
     sessionStorage.removeItem("influencer_auth");
   };
 
@@ -148,28 +145,22 @@ export default function InfluencerPage() {
     }
   }, [influencer, settlementYear, settlementMonth]);
 
-  // Fetch payments
-  const fetchPayments = async (year?: number, month?: number) => {
+  // Fetch payments (해당 월)
+  const fetchPayments = useCallback(async () => {
     if (!influencer) return;
     setPaymentLoading(true);
     try {
-      let url = `/api/admin/influencer/data?influencer_id=${influencer.id}&type=payments`;
-      if (year && month) {
-        url += `&year=${year}&month=${month}`;
-        setPaymentViewMonth({ year, month });
-      } else {
-        setPaymentViewMonth(null);
-      }
-      const res = await fetch(url);
+      const res = await fetch(
+        `/api/admin/influencer/data?influencer_id=${influencer.id}&type=payments&year=${settlementYear}&month=${settlementMonth}`
+      );
       const data = await res.json();
       setPayments(Array.isArray(data) ? data : []);
-      setShowPayments(true);
     } catch (err) {
       console.error("Payments error:", err);
     } finally {
       setPaymentLoading(false);
     }
-  };
+  }, [influencer, settlementYear, settlementMonth]);
 
   // Month navigation
   const goMonth = (delta: number) => {
@@ -196,8 +187,9 @@ export default function InfluencerPage() {
   useEffect(() => {
     if (isAuthenticated && influencer) {
       fetchSettlement();
+      fetchPayments();
     }
-  }, [isAuthenticated, influencer, fetchSettlement]);
+  }, [isAuthenticated, influencer, fetchSettlement, fetchPayments]);
 
   // Loading check
   if (!authChecked) {
@@ -286,6 +278,14 @@ export default function InfluencerPage() {
               </div>
             </div>
             <div className={styles.summary_card}>
+              <div className={styles.summary_label}>전환율</div>
+              <div className={styles.summary_value}>
+                {summary.total_visits > 0
+                  ? ((summary.total_payments / summary.total_visits) * 100).toFixed(1)
+                  : "0.0"}%
+              </div>
+            </div>
+            <div className={styles.summary_card}>
               <div className={styles.summary_label}>총 매출</div>
               <div className={styles.summary_value}>
                 {summary.total_revenue.toLocaleString()}원
@@ -331,16 +331,7 @@ export default function InfluencerPage() {
                 <div>
                   <div className={styles.settlement_item_label}>결제건수</div>
                   <div className={styles.settlement_item_value}>
-                    {settlement.payment_count > 0 ? (
-                      <span
-                        className={styles.clickable_num}
-                        onClick={() => fetchPayments(settlement.year, settlement.month)}
-                      >
-                        {settlement.payment_count.toLocaleString()}
-                      </span>
-                    ) : (
-                      "0"
-                    )}
+                    {settlement.payment_count.toLocaleString()}
                   </div>
                 </div>
                 <div>
@@ -371,73 +362,60 @@ export default function InfluencerPage() {
           )}
         </div>
 
-        {/* Payment Details */}
-        {showPayments && (
-          <div className={styles.payment_section}>
-            <div className={styles.payment_header}>
-              <h3 className={styles.payment_title}>
-                결제 내역
-                {paymentViewMonth
-                  ? ` (${paymentViewMonth.year}년 ${paymentViewMonth.month}월)`
-                  : " (전체)"}
-              </h3>
-              <button
-                className={styles.payment_close}
-                onClick={() => setShowPayments(false)}
-              >
-                닫기
-              </button>
-            </div>
+        {/* Payment Details - 해당 월 결제 리스트 항상 표시 */}
+        <div className={styles.payment_section}>
+          <h3 className={styles.payment_title}>
+            결제 내역 ({settlementYear}년 {settlementMonth}월)
+          </h3>
 
-            {paymentLoading ? (
-              <div className={styles.loading}>불러오는 중...</div>
-            ) : payments.length === 0 ? (
-              <div className={styles.empty}>결제 내역이 없습니다.</div>
-            ) : (
-              <div className={styles.table_wrap}>
-                <table className={styles.table}>
-                  <thead>
-                    <tr>
-                      <th>날짜</th>
-                      <th>서비스</th>
-                      <th>이름</th>
-                      <th className={styles.text_right}>금액</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {payments.map((p) => (
-                      <tr key={p.id}>
-                        <td>
-                          {new Date(p.paid_at).toLocaleDateString("ko-KR", {
-                            year: "numeric",
-                            month: "2-digit",
-                            day: "2-digit",
-                          })}
-                        </td>
-                        <td>{SERVICE_LABELS[p.service_type] || p.service_type}</td>
-                        <td>{p.user_name}</td>
-                        <td className={styles.text_right}>
-                          {p.price.toLocaleString()}원
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                  <tfoot>
-                    <tr className={styles.table_foot}>
-                      <td colSpan={3}>합계 ({payments.length}건)</td>
+          {paymentLoading ? (
+            <div className={styles.loading}>불러오는 중...</div>
+          ) : payments.length === 0 ? (
+            <div className={styles.empty}>해당 월의 결제 내역이 없습니다.</div>
+          ) : (
+            <div className={styles.table_wrap}>
+              <table className={styles.table}>
+                <thead>
+                  <tr>
+                    <th>날짜</th>
+                    <th>서비스</th>
+                    <th>이름</th>
+                    <th className={styles.text_right}>금액</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {payments.map((p) => (
+                    <tr key={p.id}>
+                      <td>
+                        {new Date(p.paid_at).toLocaleDateString("ko-KR", {
+                          year: "numeric",
+                          month: "2-digit",
+                          day: "2-digit",
+                        })}
+                      </td>
+                      <td>{SERVICE_LABELS[p.service_type] || p.service_type}</td>
+                      <td>{p.user_name}</td>
                       <td className={styles.text_right}>
-                        {payments
-                          .reduce((s, p) => s + p.price, 0)
-                          .toLocaleString()}
-                        원
+                        {p.price.toLocaleString()}원
                       </td>
                     </tr>
-                  </tfoot>
-                </table>
-              </div>
-            )}
-          </div>
-        )}
+                  ))}
+                </tbody>
+                <tfoot>
+                  <tr className={styles.table_foot}>
+                    <td colSpan={3}>합계 ({payments.length}건)</td>
+                    <td className={styles.text_right}>
+                      {payments
+                        .reduce((s, p) => s + p.price, 0)
+                        .toLocaleString()}
+                      원
+                    </td>
+                  </tr>
+                </tfoot>
+              </table>
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );

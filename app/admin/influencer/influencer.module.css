@@ -114,7 +114,7 @@
 /* Summary Cards */
 .summary_cards {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(5, 1fr);
   gap: 12px;
   margin-bottom: 28px;
 }
@@ -284,32 +284,11 @@
   margin-top: 28px;
 }
 
-.payment_header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 16px;
-}
-
 .payment_title {
   font-size: 16px;
   font-weight: 600;
   color: #4a3c2a;
-}
-
-.payment_close {
-  padding: 6px 14px;
-  background: transparent;
-  border: 1px solid #d4c5a9;
-  border-radius: 6px;
-  color: #8b7355;
-  cursor: pointer;
-  font-size: 13px;
-}
-
-.payment_close:hover {
-  border-color: #c4965a;
-  color: #4a3c2a;
+  margin-bottom: 16px;
 }
 
 /* Loading & Empty */

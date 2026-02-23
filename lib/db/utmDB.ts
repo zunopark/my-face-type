@@ -56,9 +56,10 @@ export async function getMonthlySettlement(
   year: number,
   month: number
 ): Promise<SettlementRow[]> {
-  // 해당 월의 시작/끝 날짜
-  const startDate = new Date(year, month - 1, 1).toISOString();
-  const endDate = new Date(year, month, 1).toISOString();
+  // 해당 월의 시작/끝 날짜 (KST 기준)
+  const KST_OFFSET = 9 * 60 * 60 * 1000;
+  const startDate = new Date(Date.UTC(year, month - 1, 1) - KST_OFFSET).toISOString();
+  const endDate = new Date(Date.UTC(year, month, 1) - KST_OFFSET).toISOString();
 
   // 1. 활성 인플루언서 목록
   const { data: influencers, error: infError } = await supabase
