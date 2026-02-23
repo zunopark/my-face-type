@@ -588,6 +588,26 @@ export default function SuperAdminPage() {
     }
   };
 
+  const handleCancelRefund = async (payment: AllPayment) => {
+    if (!confirm(`환불을 취소하시겠습니까?\n서비스: ${SERVICE_LABELS[payment.service_type] || payment.service_type}\n금액: ${payment.price.toLocaleString()}원`)) return;
+
+    try {
+      const res = await fetch("/api/superadmin/payments", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id: payment.id, table: payment.table, action: "cancel_refund" }),
+      });
+      const data = await res.json();
+      if (data.success) {
+        fetchAllPayments();
+      } else {
+        alert("환불 취소 실패: " + (data.error || "알 수 없는 오류"));
+      }
+    } catch {
+      alert("환불 취소 중 오류가 발생했습니다.");
+    }
+  };
+
   const filteredPayments = paymentServiceFilter
     ? allPayments.filter((p) => p.service_type === paymentServiceFilter)
     : allPayments;
@@ -1314,7 +1334,15 @@ export default function SuperAdminPage() {
                           </td>
                           <td>
                             {p.is_refunded ? (
-                              <span className={`${styles.badge} ${styles.badge_refunded}`}>환불됨</span>
+                              <div className={styles.action_buttons}>
+                                <span className={`${styles.badge} ${styles.badge_refunded}`}>환불됨</span>
+                                <button
+                                  className={styles.btn_cancel_refund}
+                                  onClick={() => handleCancelRefund(p)}
+                                >
+                                  취소
+                                </button>
+                              </div>
                             ) : (
                               <button
                                 className={styles.btn_refund}

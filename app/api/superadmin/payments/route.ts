@@ -123,7 +123,7 @@ export async function GET(request: NextRequest) {
 
 export async function POST(request: NextRequest) {
   try {
-    const { id, table } = await request.json();
+    const { id, table, action } = await request.json();
 
     if (!id || !table) {
       return NextResponse.json({ error: "id와 table은 필수입니다." }, { status: 400 });
@@ -133,9 +133,13 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "올바르지 않은 테이블입니다." }, { status: 400 });
     }
 
+    const updateData = action === "cancel_refund"
+      ? { is_refunded: false, refunded_at: null }
+      : { is_refunded: true, refunded_at: new Date().toISOString() };
+
     const { error } = await supabase
       .from(table)
-      .update({ is_refunded: true, refunded_at: new Date().toISOString() })
+      .update(updateData)
       .eq("id", id);
 
     if (error) {
