@@ -7,7 +7,7 @@ import Footer from "@/components/layout/Footer";
 
 interface HistoryItem {
   id: string;
-  category: "face" | "saju" | "couple";
+  category: "face" | "saju" | "couple" | "new_year";
   img?: string;
   img1?: string;
   img2?: string;
@@ -72,10 +72,11 @@ export default function HistoryPage() {
 
       // IndexedDB에서 결제된 결과 가져오기
       try {
-        const [faceDB, sajuDB, coupleDB] = await Promise.all([
+        const [faceDB, sajuDB, coupleDB, newYearDB] = await Promise.all([
           openDB("FaceAnalysisDB", 1),
           openDB("SajuLoveDB", 2),
           openDB("CoupleAnalysisDB", 1),
+          openDB("NewYearDB", 1),
         ]);
 
         const faceResults = (await getAllFromDB(faceDB)) as Array<{
@@ -147,6 +148,30 @@ export default function HistoryPage() {
               sub: "AI 커플 궁합 리포트",
               ts: rec.paidAt || rec.createdAt || new Date().toISOString(),
               link: `/couple/result?id=${rec.id}`,
+            });
+          }
+        });
+
+        const newYearResults = (await getAllFromDB(newYearDB)) as Array<{
+          id: string;
+          paid?: boolean;
+          paidAt?: string;
+          createdAt?: string;
+          input?: { userName?: string; date?: string };
+          sajuData?: { dayMaster?: { char?: string } };
+        }>;
+
+        newYearResults.forEach((rec) => {
+          if (rec.paid) {
+            collectedItems.push({
+              id: rec.id,
+              category: "new_year",
+              userName: rec.input?.userName || "사용자",
+              dayMaster: rec.sajuData?.dayMaster?.char || "?",
+              label: `${rec.input?.userName || "사용자"}님의 2026 신년 운세`,
+              sub: rec.input?.date || "",
+              ts: rec.paidAt || rec.createdAt || new Date().toISOString(),
+              link: `/new-year/result?id=${rec.id}`,
             });
           }
         });
@@ -292,6 +317,26 @@ export default function HistoryPage() {
                     fontSize: "22px",
                     fontWeight: "bold",
                     color: "#c44",
+                    flexShrink: 0,
+                    fontFamily: "KimjungchulMyungjo-Bold, serif"
+                  }}>
+                    {item.dayMaster}
+                  </div>
+                )}
+
+                {item.category === "new_year" && (
+                  <div style={{
+                    width: "52px",
+                    height: "52px",
+                    borderRadius: "10px",
+                    background: "linear-gradient(135deg, #f5f0ff, #e8e0ff)",
+                    border: "1px solid #d4c4ff",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    fontSize: "22px",
+                    fontWeight: "bold",
+                    color: "#6b4ecf",
                     flexShrink: 0,
                     fontFamily: "KimjungchulMyungjo-Bold, serif"
                   }}>
