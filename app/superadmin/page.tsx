@@ -1267,8 +1267,8 @@ export default function SuperAdminPage() {
                   <thead>
                     <tr>
                       <th>날짜</th>
-                      <th>서비스</th>
-                      <th>이름</th>
+                      <th style={{ minWidth: 100 }}>서비스</th>
+                      <th style={{ minWidth: 80 }}>이름</th>
                       <th>인플루언서</th>
                       <th>쿠폰</th>
                       <th className={styles.text_right}>금액</th>

@@ -51,6 +51,9 @@ function NewYearResultContent() {
   const [sceneKey, setSceneKey] = useState(0);
   const [allTocUnlocked, setAllTocUnlocked] = useState(false);
 
+  // 재분석 필요 상태 (새 브라우저에서 결제O, 분석 결과 없음)
+  const [needsReanalysis, setNeedsReanalysis] = useState(false);
+
   // 분석 상태
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [analysisComplete, setAnalysisComplete] = useState(false);
@@ -293,11 +296,12 @@ function NewYearResultContent() {
     const loadData = async () => {
       try {
         let record = await getNewYearRecord(resultId);
+        let fromSupabase = false;
 
         // IndexedDB에 없으면 Supabase에서 가져오기 (다른 기기/브라우저 접근 시)
         if (!record) {
           const serverData = await getSajuAnalysisById(resultId);
-          if (serverData && serverData.is_paid && serverData.analysis_result) {
+          if (serverData && serverData.is_paid) {
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
             const userInfo = serverData.user_info as any;
             record = {
@@ -313,14 +317,16 @@ function NewYearResultContent() {
                 relationshipStatus: userInfo?.relationshipStatus || "",
                 wish2026: userInfo?.wish2026 || "",
               },
+              rawSajuData: serverData.raw_saju_data as NewYearRecord["rawSajuData"],
               sajuData: serverData.raw_saju_data as NewYearRecord["sajuData"],
-              analysis: serverData.analysis_result as NewYearRecord["analysis"],
+              analysis: serverData.analysis_result ? (serverData.analysis_result as NewYearRecord["analysis"]) : null,
               paid: true,
               paidAt: serverData.paid_at || undefined,
               seenIntro: true,
             };
             // IndexedDB에 캐시하여 다음 접근 시 바로 로드
             await saveNewYearRecord(record);
+            fromSupabase = true;
           }
         }
 
@@ -389,6 +395,14 @@ function NewYearResultContent() {
             setIsLoading(false);
           }, 10000);
 
+          return;
+        }
+
+        // 새 브라우저에서 접근: 결제O, 분석 결과 없음 → 재분석 안내
+        if (fromSupabase && !record.analysis) {
+          setData(record);
+          setNeedsReanalysis(true);
+          setIsLoading(false);
           return;
         }
 
@@ -558,6 +572,41 @@ function NewYearResultContent() {
   const handleRetry = () => {
     window.location.reload();
   };
+
+  // 재분석 시작 핸들러
+  const handleReanalysis = () => {
+    if (!data) return;
+    setNeedsReanalysis(false);
+    setIsAnalyzing(true);
+    setScenes(buildPartialScenes(data));
+    partialStartedRef.current = true;
+    startLoadingMessages(data.input?.userName || "고객");
+    fetchNewYearAnalysis(data);
+  };
+
+  // 재분석 안내 화면 (새 브라우저에서 결제O, 분석 결과 없음)
+  if (needsReanalysis && data) {
+    return (
+      <div className={styles.newyear_result_page}>
+        <div className={styles.main_body_wrap}>
+          <div className={styles.error_wrap}>
+            <div className={styles.error_icon}>?</div>
+            <p className={styles.error_text}>
+              아직 분석 결과가 저장되지 않았어요.
+              <br />
+              다른 기기에서 분석 중일 수 있어요.
+              <br />
+              <br />
+              다시 사주 분석을 시작할까요?
+            </p>
+            <button className={styles.error_btn} onClick={handleReanalysis}>
+              분석 시작하기
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   // 에러 화면
   if (error) {
