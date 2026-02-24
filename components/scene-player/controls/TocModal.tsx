@@ -32,6 +32,7 @@ interface TocModalProps {
   onClose: () => void;
   onNavigate: (index: number) => void;
   styles: Record<string, string>;
+  allUnlocked?: boolean;
 }
 
 export function TocModal({
@@ -40,6 +41,7 @@ export function TocModal({
   onClose,
   onNavigate,
   styles,
+  allUnlocked = false,
 }: TocModalProps) {
   const tocItems = buildTocItems(scenes);
 
@@ -55,7 +57,7 @@ export function TocModal({
         <ul className={styles.toc_modal_list}>
           {tocItems.map((item) => {
             const isCurrent = item.index === currentIndex;
-            const isAvailable = item.index <= currentIndex;
+            const isAvailable = allUnlocked || item.index <= currentIndex;
 
             return (
               <li

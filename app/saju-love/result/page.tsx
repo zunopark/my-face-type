@@ -72,6 +72,7 @@ function SajuLoveResultContent() {
   const [scenes, setScenes] = useState<Scene[]>([]);
   const [jumpIndex, setJumpIndex] = useState(0);
   const [sceneKey, setSceneKey] = useState(0);
+  const [allTocUnlocked, setAllTocUnlocked] = useState(false);
 
   // 분석 상태
   const [isAnalyzing, setIsAnalyzing] = useState(false);
@@ -669,10 +670,11 @@ function SajuLoveResultContent() {
           return;
         }
 
-        // 결제 완료 & 분석 완료: 전체 씬 보여주기
+        // 결제 완료 & 분석 완료: 전체 씬 보여주기 (재방문)
         if (record.loveAnalysis) {
           setData(record);
           setScenes(buildFullScenes(record, hasReview));
+          setAllTocUnlocked(true);
           setIsLoading(false);
           return;
         }
@@ -912,6 +914,7 @@ function SajuLoveResultContent() {
       renderAction={renderAction}
       analysisComplete={analysisComplete}
       onAnalysisTransition={handleAnalysisTransition}
+      allTocUnlocked={allTocUnlocked}
     />
   );
 }

@@ -39,6 +39,8 @@ interface ScenePlayerProps {
   extraOverlay?: ReactNode;
   /** Called when scene changes */
   onSceneChange?: (index: number, scene: Scene) => void;
+  /** Whether all TOC items should be unlocked (e.g., returning paid user) */
+  allTocUnlocked?: boolean;
 }
 
 export function ScenePlayer({
@@ -55,6 +57,7 @@ export function ScenePlayer({
   extraButtons,
   extraOverlay,
   onSceneChange,
+  allTocUnlocked = false,
 }: ScenePlayerProps) {
   const router = useRouter();
   const [showTocModal, setShowTocModal] = useState(false);
@@ -207,6 +210,7 @@ export function ScenePlayer({
           onClose={() => setShowTocModal(false)}
           onNavigate={handleTocNavigate}
           styles={styles}
+          allUnlocked={allTocUnlocked}
         />
       )}
 

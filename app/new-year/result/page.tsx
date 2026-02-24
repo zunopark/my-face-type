@@ -49,6 +49,7 @@ function NewYearResultContent() {
   const [scenes, setScenes] = useState<Scene[]>([]);
   const [jumpIndex, setJumpIndex] = useState(0);
   const [sceneKey, setSceneKey] = useState(0);
+  const [allTocUnlocked, setAllTocUnlocked] = useState(false);
 
   // 분석 상태
   const [isAnalyzing, setIsAnalyzing] = useState(false);
@@ -82,6 +83,23 @@ function NewYearResultContent() {
     ];
   }, []);
 
+  // 타이틀 기반 챕터 번호 보정 (백엔드 파싱 오류 대응)
+  const detectChapterNumber = (title: string | undefined, number: number | undefined, index: number): number => {
+    const t = title || "";
+    if (t.includes("미래") || t.includes("일기")) return 9;
+    if (t.includes("까치도령") || t.includes("보너스") || t.includes("귀띔")) return 11;
+    if (t.includes("개운법") || t.includes("Do")) return 10;
+    if (t.includes("월별")) return 8;
+    if (t.includes("대인관계")) return 7;
+    if (t.includes("학업") || t.includes("계약")) return 6;
+    if (t.includes("직장") || t.includes("명예")) return 5;
+    if (t.includes("연애") || t.includes("결혼")) return 4;
+    if (t.includes("건강")) return 3;
+    if (t.includes("재물")) return 2;
+    if (t.includes("총운")) return 1;
+    return number || index + 1;
+  };
+
   // 전체 씬 리스트 생성 (분석 완료 후)
   const buildFullScenes = useCallback((record: NewYearRecord): Scene[] => {
     const result: Scene[] = [];
@@ -96,7 +114,7 @@ function NewYearResultContent() {
 
     const chapterConfig = getChapterConfig(userName);
     chapters.forEach((chapter, index) => {
-      const chapterNum = chapter.number || index + 1;
+      const chapterNum = detectChapterNumber(chapter.title, chapter.number, index);
       const chapterKey = `chapter${chapterNum}`;
       const uniqueId = index + 1;
       const config = chapterConfig[chapterKey];
@@ -343,10 +361,11 @@ function NewYearResultContent() {
           return;
         }
 
-        // 결제 완료 & 분석 완료
+        // 결제 완료 & 분석 완료 (재방문)
         if (record.analysis) {
           setData(record);
           setScenes(buildFullScenes(record));
+          setAllTocUnlocked(true);
           setIsLoading(false);
           return;
         }
@@ -678,6 +697,7 @@ function NewYearResultContent() {
       onAnalysisTransition={handleAnalysisTransition}
       onSceneChange={handleSceneChange}
       extraOverlay={reviewModalOverlay}
+      allTocUnlocked={allTocUnlocked}
     />
   );
 }
