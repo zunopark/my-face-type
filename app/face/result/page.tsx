@@ -753,10 +753,6 @@ function ResultContent() {
     setCouponCode("");
     setCouponError("");
 
-    // 1초 후 깜짝 할인 모달 열기
-    setTimeout(() => {
-      openDiscountModal();
-    }, 1000);
   };
 
   // 할인 모달 열기
