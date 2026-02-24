@@ -62,7 +62,7 @@ export const metadata: Metadata = {
       "관상 테스트 무료로 해보세요! AI가 얼굴 사진으로 관상을 분석하고, 사주, 궁합, 연애운, 신년 운세까지 풀어드립니다.",
     images: [
       {
-        url: "https://i.ibb.co/pVwxWdq/gvv.png",
+        url: "https://i.ibb.co/Ld2gwhJ4/asdf.png",
         width: 1200,
         height: 630,
         alt: "양반가 - 관상 테스트",

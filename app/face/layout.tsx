@@ -21,7 +21,7 @@ export const metadata: Metadata = {
       "관상 테스트로 내 얼굴을 분석해보세요! 사진 한 장이면 AI가 성격, 연애운, 재물운, 직업운까지 풀어드립니다.",
     images: [
       {
-        url: "https://i.ibb.co/pVwxWdq/gvv.png",
+        url: "https://i.ibb.co/Ld2gwhJ4/asdf.png",
         width: 1200,
         height: 630,
         alt: "양반가 - 관상 테스트",

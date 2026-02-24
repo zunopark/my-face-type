@@ -20,7 +20,7 @@ export const metadata: Metadata = {
       "2026년 나의 한 해는? AI가 총운, 재물운, 연애운, 건강운, 직업운까지 11가지 운세를 상세하게 풀어드립니다.",
     images: [
       {
-        url: "https://i.ibb.co/pVwxWdq/gvv.png",
+        url: "https://i.ibb.co/5xsNBRcx/ggg.png",
         width: 1200,
         height: 630,
         alt: "양반가 - 2026 신년 운세",

@@ -19,7 +19,7 @@ export const metadata: Metadata = {
       "두 사람의 얼굴로 보는 궁합 테스트! AI가 성격 궁합, 연애 스타일, 속궁합까지 분석해드립니다.",
     images: [
       {
-        url: "https://i.ibb.co/pVwxWdq/gvv.png",
+        url: "https://i.ibb.co/Ld2gwhJ4/asdf.png",
         width: 1200,
         height: 630,
         alt: "양반가 - 궁합 테스트",
