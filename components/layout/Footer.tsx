@@ -20,6 +20,8 @@ export default function Footer() {
       <div style={{ marginTop: "12px" }}>
         <a href="mailto:dydtjq94@yonsei.ac.kr" className="contact_me">고객센터</a>
         <a href="mailto:dydtjq94@yonsei.ac.kr" className="contact_me">API 또는 협업 문의</a>
+        <Link href="/terms" className="contact_me">이용약관</Link>
+        <Link href="/privacy" className="contact_me">개인정보처리방침</Link>
         <Link href="/refund" className="contact_me">환불 정책 보기</Link>
       </div>
 
