@@ -17,9 +17,11 @@ export default function Footer() {
         <div><strong>통신판매업 신고번호</strong> - 제 2023-성남분당B-0437 호</div>
       </div>
 
-      <div style={{ marginTop: "12px" }}>
+      <div style={{ marginTop: "16px" }}>
         <a href="mailto:dydtjq94@yonsei.ac.kr" className="contact_me">고객센터</a>
         <a href="mailto:dydtjq94@yonsei.ac.kr" className="contact_me">API 또는 협업 문의</a>
+      </div>
+      <div>
         <Link href="/terms" className="contact_me">이용약관</Link>
         <Link href="/privacy" className="contact_me">개인정보처리방침</Link>
         <Link href="/refund" className="contact_me">환불 정책 보기</Link>

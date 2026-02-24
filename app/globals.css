@@ -329,7 +329,8 @@
   text-decoration: underline;
   color: #515151;
   font-weight: 700;
-  margin-right: 4px;
+  margin: 0 8px 0 0;
+  padding: 8px 0;
 }
 
 .footer_text_wrap {
