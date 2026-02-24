@@ -54,7 +54,7 @@ const PAYMENT_CONFIG = {
     "live_gck_yZqmkKeP8gBaRKPg1WwdrbQRxB9l",
   price: 9900,
   discountPrice: 7900,
-  originalPrice: 21140,
+  originalPrice: 24900,
   orderName: "AI 커플 궁합 관상 보고서",
 };
 
