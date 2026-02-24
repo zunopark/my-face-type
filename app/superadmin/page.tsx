@@ -1274,7 +1274,7 @@ export default function SuperAdminPage() {
                       <th className={styles.text_right}>금액</th>
                       <th>결과</th>
                       <th>리뷰</th>
-                      <th>상태</th>
+                      <th style={{ minWidth: 80 }}>상태</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -1282,14 +1282,13 @@ export default function SuperAdminPage() {
                       const resultUrl = getResultUrl(p.service_type, p.id);
                       return (
                         <tr key={p.id}>
-                          <td>
-                            {new Date(p.paid_at).toLocaleString("ko-KR", {
-                              year: "numeric",
-                              month: "2-digit",
-                              day: "2-digit",
-                              hour: "2-digit",
-                              minute: "2-digit",
-                            })}
+                          <td style={{ whiteSpace: "nowrap" }}>
+                            {(() => {
+                              const d = new Date(p.paid_at);
+                              const date = d.toLocaleDateString("ko-KR", { year: "numeric", month: "2-digit", day: "2-digit" });
+                              const time = d.toLocaleTimeString("ko-KR", { hour: "2-digit", minute: "2-digit" });
+                              return <>{date}<br />{time}</>;
+                            })()}
                           </td>
                           <td>{SERVICE_LABELS[p.service_type] || p.service_type}</td>
                           <td>{p.user_name}</td>
@@ -1334,15 +1333,12 @@ export default function SuperAdminPage() {
                           </td>
                           <td>
                             {p.is_refunded ? (
-                              <div className={styles.action_buttons}>
-                                <span className={`${styles.badge} ${styles.badge_refunded}`}>환불됨</span>
-                                <button
-                                  className={styles.btn_cancel_refund}
-                                  onClick={() => handleCancelRefund(p)}
-                                >
-                                  취소
-                                </button>
-                              </div>
+                              <button
+                                className={styles.btn_cancel_refund}
+                                onClick={() => handleCancelRefund(p)}
+                              >
+                                환불 취소
+                              </button>
                             ) : (
                               <button
                                 className={styles.btn_refund}

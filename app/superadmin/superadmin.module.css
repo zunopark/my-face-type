@@ -383,11 +383,11 @@
 }
 
 .btn_cancel_refund {
-  padding: 3px 8px;
-  background: transparent;
-  border: 1px solid #d4c5a9;
+  padding: 3px 10px;
+  background: rgba(231, 76, 60, 0.1);
+  border: 1px solid #e74c3c;
   border-radius: 4px;
-  color: #8b7355;
+  color: #e74c3c;
   cursor: pointer;
   font-size: 11px;
   font-weight: 500;
@@ -395,9 +395,7 @@
 }
 
 .btn_cancel_refund:hover {
-  border-color: #2980b9;
-  color: #2980b9;
-  background: rgba(52, 152, 219, 0.05);
+  background: rgba(231, 76, 60, 0.2);
 }
 
 .quantity_cell {
