@@ -541,9 +541,9 @@ function SajuLoveResultContent() {
                 daeun: (supabaseRecord.raw_saju_data as Record<string, unknown>)?.daeun as SajuLoveRecord["sajuData"]["daeun"],
                 zodiac: (supabaseRecord.raw_saju_data as Record<string, unknown>)?.zodiac as SajuLoveRecord["sajuData"]["zodiac"],
                 luckCycles: (supabaseRecord.raw_saju_data as Record<string, unknown>)?.luckCycles as SajuLoveRecord["sajuData"]["luckCycles"],
-                taiYuan: (supabaseRecord.raw_saju_data as Record<string, unknown>)?.taiYuan as SajuLoveRecord["sajuData"]["taiYuan"],
-                mingGong: (supabaseRecord.raw_saju_data as Record<string, unknown>)?.mingGong as SajuLoveRecord["sajuData"]["mingGong"],
-                shenGong: (supabaseRecord.raw_saju_data as Record<string, unknown>)?.shenGong as SajuLoveRecord["sajuData"]["shenGong"],
+                taiYuan: ((supabaseRecord.raw_saju_data as Record<string, unknown>)?.gong as Record<string, unknown>)?.taiYuan as SajuLoveRecord["sajuData"]["taiYuan"],
+                mingGong: ((supabaseRecord.raw_saju_data as Record<string, unknown>)?.gong as Record<string, unknown>)?.mingGong as SajuLoveRecord["sajuData"]["mingGong"],
+                shenGong: ((supabaseRecord.raw_saju_data as Record<string, unknown>)?.gong as Record<string, unknown>)?.shenGong as SajuLoveRecord["sajuData"]["shenGong"],
               },
               loveAnalysis: analysisResult ? {
                 user_name: analysisResult.user_name || "",
