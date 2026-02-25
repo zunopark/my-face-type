@@ -1,4 +1,4 @@
-import { supabase } from "@/lib/supabase";
+import { supabaseAdmin as supabase } from "@/lib/supabase";
 import type { SajuServiceType } from "@/lib/db/sajuAnalysisDB";
 
 // 버킷 이름

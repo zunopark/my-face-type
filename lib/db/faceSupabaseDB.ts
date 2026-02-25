@@ -1,4 +1,4 @@
-import { supabase } from "@/lib/supabase";
+import { supabaseAdmin as supabase } from "@/lib/supabase";
 import type { PaymentInfo } from "@/lib/db/sajuAnalysisDB";
 
 // Face 서비스 타입

@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { supabase } from "@/lib/supabase";
+import { supabaseAdmin as supabase } from "@/lib/supabase";
 
 // KST(UTC+9) 기준 월 시작/끝 → UTC ISO string
 function kstMonthRange(year: number, month: number) {
