@@ -180,7 +180,7 @@ export default function HistoryPage() {
       }
 
       collectedItems.sort(
-        (a, b) => new Date(b.ts).getTime() - new Date(a.ts).getTime()
+        (a, b) => new Date(b.ts).getTime() - new Date(a.ts).getTime(),
       );
 
       setItems(collectedItems);
@@ -201,73 +201,106 @@ export default function HistoryPage() {
   return (
     <div className="landing-container" style={{ paddingTop: "60px" }}>
       {/* 헤더 */}
-      <header style={{
-        position: "fixed",
-        top: 0,
-        left: "50%",
-        transform: "translateX(-50%)",
-        width: "100%",
-        maxWidth: "500px",
-        background: "#f8f7f1",
-        zIndex: 999,
-        borderBottom: "1px solid #e5e0d5"
-      }}>
-        <div style={{
-          display: "flex",
-          alignItems: "center",
-          padding: "16px 20px",
-          gap: "6px"
-        }}>
-          <span style={{ fontFamily: "KimjungchulMyungjo-Bold, serif", fontSize: "20px", color: "#171717" }}>家</span>
-          <span style={{ fontFamily: "KimjungchulMyungjo-Bold, serif", fontSize: "18px", fontWeight: 700, color: "#171717" }}>양반가</span>
+      <header
+        style={{
+          position: "fixed",
+          top: 0,
+          left: "50%",
+          transform: "translateX(-50%)",
+          width: "100%",
+          maxWidth: "500px",
+          background: "#f8f7f1",
+          zIndex: 999,
+          borderBottom: "1px solid #e5e0d5",
+        }}
+      >
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            padding: "16px 20px",
+            gap: "6px",
+          }}
+        >
+          <span
+            style={{
+              fontFamily: "KimjungchulMyungjo-Bold, serif",
+              fontSize: "18px",
+              fontWeight: 700,
+              color: "#171717",
+            }}
+          >
+            양반가
+          </span>
         </div>
       </header>
 
       {/* 콘텐츠 */}
-      <div style={{ padding: "0 16px", marginTop: "20px", width: "100%", maxWidth: "500px", boxSizing: "border-box" }}>
-        <div style={{
-          fontSize: "14px",
-          color: "#6b6560",
-          marginBottom: "16px"
-        }}>
+      <div
+        style={{
+          padding: "0 16px",
+          marginTop: "20px",
+          width: "100%",
+          maxWidth: "500px",
+          boxSizing: "border-box",
+        }}
+      >
+        <div
+          style={{
+            fontSize: "14px",
+            color: "#6b6560",
+            marginBottom: "16px",
+          }}
+        >
           결제 내역 <span style={{ color: "#9a9590" }}>({items.length}개)</span>
         </div>
 
         {isLoading ? (
           <div style={{ textAlign: "center", padding: "60px 0" }}>
-            <div style={{
-              width: "32px",
-              height: "32px",
-              border: "3px solid #e5e0d5",
-              borderTopColor: "#c4965a",
-              borderRadius: "50%",
-              margin: "0 auto",
-              animation: "spin 1s linear infinite"
-            }} />
+            <div
+              style={{
+                width: "32px",
+                height: "32px",
+                border: "3px solid #e5e0d5",
+                borderTopColor: "#c4965a",
+                borderRadius: "50%",
+                margin: "0 auto",
+                animation: "spin 1s linear infinite",
+              }}
+            />
           </div>
         ) : items.length === 0 ? (
-          <div style={{
-            textAlign: "center",
-            padding: "60px 20px",
-            background: "#fff",
-            borderRadius: "12px",
-            border: "1px solid #e5e0d5"
-          }}>
-            <p style={{ color: "#6b6560", marginBottom: "20px" }}>결제한 분석 결과가 아직 없습니다.</p>
-            <Link href="/" style={{
-              display: "inline-block",
-              padding: "12px 24px",
-              background: "linear-gradient(135deg, #d4a017 0%, #b8860b 100%)",
-              color: "#fff",
-              borderRadius: "8px",
-              fontWeight: 600,
-              textDecoration: "none"
-            }}>
+          <div
+            style={{
+              textAlign: "center",
+              padding: "60px 20px",
+              background: "#fff",
+              borderRadius: "12px",
+              border: "1px solid #e5e0d5",
+            }}
+          >
+            <p style={{ color: "#6b6560", marginBottom: "20px" }}>
+              결제한 분석 결과가 아직 없습니다.
+            </p>
+            <Link
+              href="/"
+              style={{
+                display: "inline-block",
+                padding: "12px 24px",
+                background: "linear-gradient(135deg, #d4a017 0%, #b8860b 100%)",
+                color: "#fff",
+                borderRadius: "8px",
+                fontWeight: 600,
+                textDecoration: "none",
+              }}
+            >
               AI 관상 보러 가기
             </Link>
           </div>
         ) : (
-          <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
+          <div
+            style={{ display: "flex", flexDirection: "column", gap: "12px" }}
+          >
             {items.map((item) => (
               <Link
                 key={`${item.category}-${item.id}-${item.ts}`}
@@ -281,65 +314,75 @@ export default function HistoryPage() {
                   borderRadius: "12px",
                   border: "1px solid #e5e0d5",
                   textDecoration: "none",
-                  transition: "all 0.2s ease"
+                  transition: "all 0.2s ease",
                 }}
               >
                 {/* 이미지 영역 */}
                 {item.category === "face" && item.img && (
-                  <div style={{
-                    width: "52px",
-                    height: "52px",
-                    borderRadius: "10px",
-                    overflow: "hidden",
-                    flexShrink: 0
-                  }}>
+                  <div
+                    style={{
+                      width: "52px",
+                      height: "52px",
+                      borderRadius: "10px",
+                      overflow: "hidden",
+                      flexShrink: 0,
+                    }}
+                  >
                     <Image
                       src={item.img}
                       alt=""
                       width={52}
                       height={52}
-                      style={{ width: "100%", height: "100%", objectFit: "cover" }}
+                      style={{
+                        width: "100%",
+                        height: "100%",
+                        objectFit: "cover",
+                      }}
                       unoptimized
                     />
                   </div>
                 )}
 
                 {item.category === "saju" && (
-                  <div style={{
-                    width: "52px",
-                    height: "52px",
-                    borderRadius: "10px",
-                    background: "linear-gradient(135deg, #fff5f5, #ffe8e8)",
-                    border: "1px solid #ffd4d4",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    fontSize: "22px",
-                    fontWeight: "bold",
-                    color: "#c44",
-                    flexShrink: 0,
-                    fontFamily: "KimjungchulMyungjo-Bold, serif"
-                  }}>
+                  <div
+                    style={{
+                      width: "52px",
+                      height: "52px",
+                      borderRadius: "10px",
+                      background: "linear-gradient(135deg, #fff5f5, #ffe8e8)",
+                      border: "1px solid #ffd4d4",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      fontSize: "22px",
+                      fontWeight: "bold",
+                      color: "#c44",
+                      flexShrink: 0,
+                      fontFamily: "KimjungchulMyungjo-Bold, serif",
+                    }}
+                  >
                     {item.dayMaster}
                   </div>
                 )}
 
                 {item.category === "new_year" && (
-                  <div style={{
-                    width: "52px",
-                    height: "52px",
-                    borderRadius: "10px",
-                    background: "linear-gradient(135deg, #f5f0ff, #e8e0ff)",
-                    border: "1px solid #d4c4ff",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    fontSize: "22px",
-                    fontWeight: "bold",
-                    color: "#6b4ecf",
-                    flexShrink: 0,
-                    fontFamily: "KimjungchulMyungjo-Bold, serif"
-                  }}>
+                  <div
+                    style={{
+                      width: "52px",
+                      height: "52px",
+                      borderRadius: "10px",
+                      background: "linear-gradient(135deg, #f5f0ff, #e8e0ff)",
+                      border: "1px solid #d4c4ff",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      fontSize: "22px",
+                      fontWeight: "bold",
+                      color: "#6b4ecf",
+                      flexShrink: 0,
+                      fontFamily: "KimjungchulMyungjo-Bold, serif",
+                    }}
+                  >
                     {item.dayMaster}
                   </div>
                 )}
@@ -347,42 +390,54 @@ export default function HistoryPage() {
                 {item.category === "couple" && (
                   <div style={{ display: "flex", flexShrink: 0 }}>
                     {item.img1 && (
-                      <div style={{
-                        width: "44px",
-                        height: "44px",
-                        borderRadius: "50%",
-                        overflow: "hidden",
-                        border: "2px solid #fff",
-                        boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
-                        marginRight: "-12px",
-                        position: "relative",
-                        zIndex: 2
-                      }}>
+                      <div
+                        style={{
+                          width: "44px",
+                          height: "44px",
+                          borderRadius: "50%",
+                          overflow: "hidden",
+                          border: "2px solid #fff",
+                          boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
+                          marginRight: "-12px",
+                          position: "relative",
+                          zIndex: 2,
+                        }}
+                      >
                         <Image
                           src={item.img1}
                           alt=""
                           width={44}
                           height={44}
-                          style={{ width: "100%", height: "100%", objectFit: "cover" }}
+                          style={{
+                            width: "100%",
+                            height: "100%",
+                            objectFit: "cover",
+                          }}
                           unoptimized
                         />
                       </div>
                     )}
                     {item.img2 && (
-                      <div style={{
-                        width: "44px",
-                        height: "44px",
-                        borderRadius: "50%",
-                        overflow: "hidden",
-                        border: "2px solid #fff",
-                        boxShadow: "0 2px 4px rgba(0,0,0,0.1)"
-                      }}>
+                      <div
+                        style={{
+                          width: "44px",
+                          height: "44px",
+                          borderRadius: "50%",
+                          overflow: "hidden",
+                          border: "2px solid #fff",
+                          boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
+                        }}
+                      >
                         <Image
                           src={item.img2}
                           alt=""
                           width={44}
                           height={44}
-                          style={{ width: "100%", height: "100%", objectFit: "cover" }}
+                          style={{
+                            width: "100%",
+                            height: "100%",
+                            objectFit: "cover",
+                          }}
                           unoptimized
                         />
                       </div>
@@ -392,30 +447,45 @@ export default function HistoryPage() {
 
                 {/* 텍스트 영역 */}
                 <div style={{ flex: 1, minWidth: 0 }}>
-                  <div style={{
-                    fontSize: "15px",
-                    fontWeight: 600,
-                    color: "#171717",
-                    marginBottom: "4px"
-                  }}>{item.label}</div>
-                  <div style={{
-                    fontSize: "13px",
-                    color: "#8b8680",
-                    overflow: "hidden",
-                    textOverflow: "ellipsis",
-                    whiteSpace: "nowrap"
-                  }}>{item.sub}</div>
+                  <div
+                    style={{
+                      fontSize: "15px",
+                      fontWeight: 600,
+                      color: "#171717",
+                      marginBottom: "4px",
+                    }}
+                  >
+                    {item.label}
+                  </div>
+                  <div
+                    style={{
+                      fontSize: "13px",
+                      color: "#8b8680",
+                      overflow: "hidden",
+                      textOverflow: "ellipsis",
+                      whiteSpace: "nowrap",
+                    }}
+                  >
+                    {item.sub}
+                  </div>
                 </div>
 
                 {/* 날짜 */}
-                <div style={{
-                  fontSize: "12px",
-                  color: "#9a9590",
-                  flexShrink: 0
-                }}>{formatDate(item.ts)}</div>
+                <div
+                  style={{
+                    fontSize: "12px",
+                    color: "#9a9590",
+                    flexShrink: 0,
+                  }}
+                >
+                  {formatDate(item.ts)}
+                </div>
 
                 {/* 화살표 */}
-                <span className="material-icons" style={{ color: "#ccc", fontSize: "18px" }}>
+                <span
+                  className="material-icons"
+                  style={{ color: "#ccc", fontSize: "18px" }}
+                >
                   chevron_right
                 </span>
               </Link>
