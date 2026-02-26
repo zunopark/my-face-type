@@ -495,13 +495,8 @@ function NewYearResultContent() {
 
       const chIdx = (scene as CardScene).chapterIndex!;
       const ch = data.analysis?.chapters?.[chIdx];
-      const title = ch?.title || "";
-      const isGwittim =
-        title.includes("까치도령") ||
-        title.includes("귀띔") ||
-        title.includes("보너스") ||
-        ch?.number === 11;
-      if (!isGwittim) return;
+      const chapterNum = detectChapterNumber(ch?.title, ch?.number, chIdx);
+      if (chapterNum !== 11) return;
 
       const dismissed = sessionStorage.getItem(`review_dismissed_${resultId}`);
       if (dismissed) {
