@@ -246,7 +246,7 @@ function NewYearDetailContent() {
   const isApplyingCouponRef = useRef(false);
 
   // T/F 성향 선택
-  const [personalityType, setPersonalityType] = useState<"T" | "F">("F");
+  const [personalityType, setPersonalityType] = useState<"T" | "F">("T");
 
   // 데이터 로드
   useEffect(() => {

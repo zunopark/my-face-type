@@ -108,12 +108,9 @@ export function ScenePlayer({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [scenes.length]);
 
-  // Handle analysis completion for waiting scenes
-  useEffect(() => {
-    if (analysisComplete && currentScene?.kind === "waiting" && onAnalysisTransition) {
-      onAnalysisTransition();
-    }
-  }, [analysisComplete, currentScene, onAnalysisTransition]);
+  // NOTE: Analysis completion for waiting scenes is handled by the WaitingCard's
+  // own onTransition callback, which animates progress to 100% before transitioning.
+  // Do NOT call onAnalysisTransition directly here — it would skip the 100% animation.
 
   const handleScreenClick = useCallback(() => {
     if (!isCardView && currentScene?.kind === "dialogue") {
