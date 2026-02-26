@@ -196,7 +196,7 @@ function NewYearResultContent() {
             user_job_status: storedData.input?.jobStatus || "",
             user_relationship_status: storedData.input?.relationshipStatus || "",
             user_wish_2026: storedData.input?.wish2026?.trim() || "",
-            personality_type: storedData.personalityType || null,
+            personality_type: storedData.personalityType || "T",
             year: 2026,
           }),
         });
