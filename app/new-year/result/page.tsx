@@ -2705,19 +2705,18 @@ function Chapter3Content({ sections }: { sections: Record<string, ParsedSection>
         </div>
       )}
 
-      {exercises.length > 0 && (
+      {(exercises.length > 0 || avoidData["운동"]) && (
         <div className={styles.section_block}>
           <h4 className={styles.section_title}>추천 운동</h4>
-          {exercises.map((e, i) => (
-            <div key={i} className={styles.info_row}>
-              <span className={styles.info_label}>{e.name}</span>
-              <span className={styles.info_value}>{e.reason}</span>
-            </div>
-          ))}
+          <ul className={styles.simple_list}>
+            {exercises.map((e, i) => (
+              <li key={i}>{e.name}{e.reason ? ` - ${e.reason}` : ""}</li>
+            ))}
+          </ul>
           {avoidData["운동"] && (
-            <div className={styles.info_row}>
+            <div className={styles.info_row} style={{ marginTop: 8 }}>
               <span className={styles.info_label}>피할 운동</span>
-              <span className={styles.info_value}>{avoidData["운동"]} {avoidData["이유"] && `- ${avoidData["이유"]}`}</span>
+              <span className={styles.info_value}>{avoidData["운동"]}{avoidData["이유"] ? ` (${avoidData["이유"]})` : ""}</span>
             </div>
           )}
         </div>
@@ -3249,21 +3248,26 @@ function Chapter11Content({ sections }: { sections: Record<string, ParsedSection
   // 구 형식 호환
   const oldData = getSectionData(sections, "까치도령_귀띔");
 
-  // 귀띔_서술을 소제목 기준으로 분리 (숫자. 제목 패턴)
+  // 귀띔_서술을 소제목 기준으로 분리 (숫자. 제목 패턴 또는 ### 헤딩)
   const renderNarrative = (text: string) => {
     if (!text) return null;
-    // **bold** 마크다운을 <strong>으로 변환
+    // 마크다운 인라인 처리: **bold**, ### 제거
     const renderLine = (line: string) => {
-      return <span dangerouslySetInnerHTML={{ __html: line.replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>") }} />;
+      const cleaned = line
+        .replace(/^#{1,4}\s*/, "") // ### 헤딩 마크다운 제거
+        .replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>");
+      return <span dangerouslySetInnerHTML={{ __html: cleaned }} />;
     };
-    const parts = text.split(/\n(?=\d+\.\s)/);
+    // ### 또는 숫자. 패턴으로 분리
+    const parts = text.split(/\n(?=#{1,4}\s|\d+\.\s)/);
     return (
       <>
         {parts.map((part, i) => {
           const lines = part.split("\n").filter(l => l.trim());
           if (lines.length === 0) return null;
-          // 첫 줄이 "1. 제목: 설명" 패턴이면 소제목으로
-          const headMatch = lines[0].match(/^(\d+)\.\s*(.+)/);
+          // "### 1. 제목" 또는 "1. 제목" 패턴 매칭
+          const cleanFirst = lines[0].replace(/^#{1,4}\s*/, "");
+          const headMatch = cleanFirst.match(/^(\d+)\.\s*(.+)/);
           if (headMatch) {
             return (
               <div key={i} className={styles.section_block}>

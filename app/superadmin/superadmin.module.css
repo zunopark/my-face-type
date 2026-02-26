@@ -260,17 +260,13 @@
 /* ── 고민/소원 ──────────────────────────── */
 .wish_cell {
   position: relative;
-  max-width: 160px;
+  cursor: default;
 }
 
-.wish_text {
-  display: block;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  font-size: 12px;
-  color: #555;
-  cursor: default;
+.wish_badge {
+  font-size: 11px;
+  color: #5b4cf0;
+  font-weight: 600;
 }
 
 .wish_tooltip {
@@ -298,9 +294,11 @@
 
 /* ── 리뷰 ──────────────────────────── */
 .review_cell {
+  position: relative;
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   gap: 6px;
+  cursor: default;
 }
 
 .review_badge {
@@ -312,6 +310,35 @@
   color: #c4965a;
   white-space: nowrap;
   flex-shrink: 0;
+}
+
+.review_has_text {
+  font-size: 10px;
+  color: #5b4cf0;
+  font-weight: 600;
+}
+
+.review_tooltip {
+  display: none;
+  position: absolute;
+  left: 0;
+  top: 100%;
+  z-index: 10;
+  min-width: 180px;
+  max-width: 300px;
+  padding: 10px 12px;
+  background: #333;
+  color: #fff;
+  font-size: 13px;
+  line-height: 1.5;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.review_cell:hover .review_tooltip {
+  display: block;
 }
 
 .review_content {

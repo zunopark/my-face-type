@@ -87,16 +87,19 @@ export async function GET(request: NextRequest) {
       });
     }
 
-    // 리뷰 매칭
+    // 리뷰 매칭 (ID가 많으면 배치로 나눠서 조회)
     const allIds = results.map((r) => r.id);
-    const { data: reviewData } = await supabase
-      .from("reviews")
-      .select("record_id, rating, content")
-      .in("record_id", allIds.length > 0 ? allIds : [""]);
-
     const reviewMap = new Map<string, { rating: number; content: string }>();
-    for (const r of reviewData || []) {
-      reviewMap.set(r.record_id, { rating: r.rating, content: r.content });
+    const BATCH_SIZE = 50;
+    for (let i = 0; i < allIds.length; i += BATCH_SIZE) {
+      const batch = allIds.slice(i, i + BATCH_SIZE);
+      const { data: reviewData } = await supabase
+        .from("reviews")
+        .select("record_id, rating, content")
+        .in("record_id", batch);
+      for (const r of reviewData || []) {
+        reviewMap.set(r.record_id, { rating: r.rating, content: r.content });
+      }
     }
 
     const final = results.map((r) => {

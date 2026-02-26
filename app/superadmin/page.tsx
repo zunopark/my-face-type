@@ -1270,11 +1270,11 @@ export default function SuperAdminPage() {
                       <th>날짜</th>
                       <th style={{ minWidth: 100 }}>서비스</th>
                       <th style={{ minWidth: 80 }}>이름</th>
-                      <th style={{ minWidth: 120 }}>고민/소원</th>
                       <th>인플루언서</th>
                       <th>쿠폰</th>
                       <th className={styles.text_right}>금액</th>
                       <th>결과</th>
+                      <th>고민</th>
                       <th>리뷰</th>
                       <th style={{ minWidth: 80 }}>상태</th>
                     </tr>
@@ -1294,10 +1294,6 @@ export default function SuperAdminPage() {
                           </td>
                           <td>{SERVICE_LABELS[p.service_type] || p.service_type}</td>
                           <td>{p.user_name}</td>
-                          <td className={styles.wish_cell}>
-                            <span className={styles.wish_text}>{p.wish || "-"}</span>
-                            {p.wish && <div className={styles.wish_tooltip}>{p.wish}</div>}
-                          </td>
                           <td>{p.influencer || "-"}</td>
                           <td>{p.coupon_code ? (
                             <span className={`${styles.badge} ${styles.badge_free}`}>{p.coupon_code}</span>
@@ -1325,13 +1321,22 @@ export default function SuperAdminPage() {
                             )}
                           </td>
                           <td>
+                            {p.wish ? (
+                              <div className={styles.wish_cell}>
+                                <span className={styles.wish_badge}>있음</span>
+                                <div className={styles.wish_tooltip}>{p.wish}</div>
+                              </div>
+                            ) : "-"}
+                          </td>
+                          <td>
                             {p.has_review ? (
                               <div className={styles.review_cell}>
                                 <span className={styles.review_badge}>
                                   <Star size={12} fill="#c4965a" stroke="#c4965a" />
                                   {p.review_rating}
                                 </span>
-                                <span className={styles.review_content}>{p.review_content}</span>
+                                {p.review_content && <span className={styles.review_has_text}>리뷰</span>}
+                                {p.review_content && <div className={styles.review_tooltip}>{p.review_content}</div>}
                               </div>
                             ) : (
                               <span className={styles.review_none}>-</span>
