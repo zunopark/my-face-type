@@ -51,23 +51,7 @@ const PAYMENT_CONFIG = {
     "live_gck_yZqmkKeP8gBaRKPg1WwdrbQRxB9l",
   price: 26900,
   originalPrice: 49800,
-  studentPrice: 4900,
   orderName: "AI 2026 신년 운세 심층 분석",
-};
-
-// 만 나이 계산 함수
-const calculateAge = (birthDateStr: string): number => {
-  const today = new Date();
-  const birthDate = new Date(birthDateStr.replace(/-/g, "/"));
-  let age = today.getFullYear() - birthDate.getFullYear();
-  const monthDiff = today.getMonth() - birthDate.getMonth();
-  if (
-    monthDiff < 0 ||
-    (monthDiff === 0 && today.getDate() < birthDate.getDate())
-  ) {
-    age--;
-  }
-  return age;
 };
 
 // 일간별 신년운세 성향 데이터
@@ -264,10 +248,6 @@ function NewYearDetailContent() {
   // T/F 성향 선택
   const [personalityType, setPersonalityType] = useState<"T" | "F">("F");
 
-  // 학생 할인 모달 상태
-  const [showStudentModal, setShowStudentModal] = useState(false);
-  const [studentCouponApplied, setStudentCouponApplied] = useState(false);
-
   // 데이터 로드
   useEffect(() => {
     if (!resultId) {
@@ -301,20 +281,6 @@ function NewYearDetailContent() {
     loadData();
   }, [resultId, router]);
 
-  // 학생 모달 자동 표시
-  useEffect(() => {
-    if (data && !isLoading) {
-      const age = calculateAge(data.input.date);
-      const isStudentUser = age < 20;
-      if (isStudentUser && !studentCouponApplied) {
-        const timer = setTimeout(() => {
-          setShowStudentModal(true);
-        }, 1000);
-        return () => clearTimeout(timer);
-      }
-    }
-  }, [data, isLoading, studentCouponApplied]);
-
   // 시간 포맷
   const formatTimeToSi = (timeStr: string | null) => {
     if (!timeStr) return "";
@@ -339,14 +305,11 @@ function NewYearDetailContent() {
   const openPaymentModal = useCallback(() => {
     if (!data) return;
 
-    const paymentPrice = studentCouponApplied
-      ? PAYMENT_CONFIG.studentPrice
-      : PAYMENT_CONFIG.price;
+    const paymentPrice = PAYMENT_CONFIG.price;
 
     trackPaymentModalOpen("new_year", {
       id: data.id,
       price: paymentPrice,
-      is_student: studentCouponApplied,
       user_name: data.input.userName,
       gender: data.input.gender,
       birth_date: data.input.date,
@@ -370,7 +333,7 @@ function NewYearDetailContent() {
         widget.renderAgreement("#new-year-agreement");
       }
     }, 100);
-  }, [data, studentCouponApplied]);
+  }, [data]);
 
   // 쿠폰 적용
   const handleCouponSubmit = useCallback(async () => {
@@ -504,9 +467,7 @@ function NewYearDetailContent() {
       personalityType,
     });
 
-    const basePrice = studentCouponApplied
-      ? PAYMENT_CONFIG.studentPrice
-      : PAYMENT_CONFIG.price;
+    const basePrice = PAYMENT_CONFIG.price;
 
     const finalPrice = appliedCoupon
       ? basePrice - appliedCoupon.discount
@@ -515,7 +476,6 @@ function NewYearDetailContent() {
     trackPaymentAttempt("new_year", {
       id: data.id,
       price: finalPrice,
-      is_student: studentCouponApplied,
       is_discount: !!appliedCoupon,
       coupon_code: appliedCoupon?.code,
       user_name: data.input.userName,
@@ -525,16 +485,12 @@ function NewYearDetailContent() {
     });
 
     try {
-      const orderSuffix = studentCouponApplied
-        ? "-student"
-        : appliedCoupon
-          ? `-${appliedCoupon.code}`
-          : "";
-      const orderNameSuffix = studentCouponApplied
-        ? " - 학생 할인"
-        : appliedCoupon
-          ? ` - ${appliedCoupon.code} 할인`
-          : "";
+      const orderSuffix = appliedCoupon
+        ? `-${appliedCoupon.code}`
+        : "";
+      const orderNameSuffix = appliedCoupon
+        ? ` - ${appliedCoupon.code} 할인`
+        : "";
 
       await paymentWidgetRef.current.requestPayment({
         orderId: `new-year${orderSuffix}_${Date.now()}`,
@@ -548,7 +504,7 @@ function NewYearDetailContent() {
     } catch (err) {
       console.error("결제 오류:", err);
     }
-  }, [data, appliedCoupon, studentCouponApplied, personalityType]);
+  }, [data, appliedCoupon, personalityType]);
 
   // 결제 모달 닫기
   const closePaymentModal = useCallback(() => {
@@ -595,11 +551,6 @@ function NewYearDetailContent() {
   }>;
   const dmData = dayMasterData[dayMaster.char];
   const birthTime = formatTimeToSi(input.time);
-
-  // 학생 할인율 계산
-  const studentDiscount = Math.floor(
-    (1 - PAYMENT_CONFIG.studentPrice / PAYMENT_CONFIG.originalPrice) * 100
-  );
 
   // 오행 한자 맵
   const elementHanjaMap: Record<string, string> = {
@@ -791,42 +742,7 @@ function NewYearDetailContent() {
         <button className={styles.analyze_btn} onClick={openPaymentModal}>
           내 신년 운세 분석 받기
         </button>
-        {studentCouponApplied && (
-          <p className={styles.student_applied_badge}>학생 할인 적용됨</p>
-        )}
       </div>
-
-      {/* 학생 할인 모달 */}
-      {showStudentModal && (
-        <div
-          className={styles.student_modal_overlay}
-          onClick={() => setShowStudentModal(false)}
-        >
-          <div className={styles.student_modal} onClick={(e) => e.stopPropagation()}>
-            <p className={styles.student_modal_title}>혹시 학생이신가요?</p>
-            <p className={styles.student_modal_desc}>
-              학생분들의 새해를 응원해요!
-              <br />
-              학생이시면 <strong>커피 한 잔</strong>에 풀이하고 있어요
-            </p>
-            <ul className={styles.student_modal_list}>
-              <li>20,000자 신년 운세 심층 분석</li>
-              <li>2026년 월별 운세 캘린더</li>
-              <li>재물운, 직장운, 건강운, 연애운</li>
-              <li className={styles.bonus}>보너스: 나만의 행운 부적</li>
-            </ul>
-            <button
-              className={styles.student_modal_confirm}
-              onClick={() => {
-                setStudentCouponApplied(true);
-                setShowStudentModal(false);
-              }}
-            >
-              네, 학생이에요 (90% 할인)
-            </button>
-          </div>
-        </div>
-      )}
 
       {/* 결제 모달 */}
       {showPaymentModal && (
@@ -835,21 +751,12 @@ function NewYearDetailContent() {
             <div className={styles["modal-content"]}>
               <div className={styles["payment-header"]}>
                 <div className={styles["payment-title"]}>
-                  {studentCouponApplied
-                    ? "🎓 학생 특별 복채"
-                    : "까치도령 신년 운세 복채"}
+                  까치도령 신년 운세 복채
                 </div>
                 <div className={styles["payment-close"]} onClick={closePaymentModal}>
                   ✕
                 </div>
               </div>
-
-              {/* 학생 할인 배너 */}
-              {studentCouponApplied && (
-                <div className={styles["student-payment-banner"]}>
-                  <p className={styles["banner-text"]}>학생 할인이 적용되었어요</p>
-                </div>
-              )}
 
               {/* 결제 금액 섹션 */}
               <div className={styles["payment-amount-section"]}>
@@ -866,40 +773,21 @@ function NewYearDetailContent() {
                 </div>
 
                 {/* 할인 */}
-                {studentCouponApplied ? (
-                  <div className={`${styles["payment-row"]} ${styles.discount} ${styles["student-discount"]}`}>
-                    <span className={styles["payment-row-label"]}>🎓 학생 특별 할인</span>
-                    <div className={styles["payment-row-discount-value"]}>
-                      <span className={`${styles["discount-badge"]} ${styles.student}`}>
-                        {studentDiscount}%
-                      </span>
-                      <span className={styles["discount-amount"]}>
-                        -
-                        {(
-                          PAYMENT_CONFIG.originalPrice -
-                          PAYMENT_CONFIG.studentPrice
-                        ).toLocaleString()}
-                        원
-                      </span>
-                    </div>
-                  </div>
-                ) : (
-                  <div className={`${styles["payment-row"]} ${styles.discount}`}>
-                    <span className={styles["payment-row-label"]}>
-                      병오년(丙午年) 2월 특가 할인
-                    </span>
-                    <span className={styles["discount-amount"]}>
-                      -
-                      {(
-                        PAYMENT_CONFIG.originalPrice - PAYMENT_CONFIG.price
-                      ).toLocaleString()}
-                      원
-                    </span>
-                  </div>
-                )}
+                <div className={`${styles["payment-row"]} ${styles.discount}`}>
+                  <span className={styles["payment-row-label"]}>
+                    병오년(丙午年) 2월 특가 할인
+                  </span>
+                  <span className={styles["discount-amount"]}>
+                    -
+                    {(
+                      PAYMENT_CONFIG.originalPrice - PAYMENT_CONFIG.price
+                    ).toLocaleString()}
+                    원
+                  </span>
+                </div>
 
                 {/* 쿠폰 할인 */}
-                {!studentCouponApplied && appliedCoupon && (
+                {appliedCoupon && (
                   <div className={`${styles["payment-row"]} ${styles.discount}`}>
                     <span className={styles["payment-row-label"]}>
                       {appliedCoupon.code} 쿠폰
@@ -915,50 +803,43 @@ function NewYearDetailContent() {
                 {/* 최종 금액 */}
                 <div className={`${styles["payment-row"]} ${styles.final}`}>
                   <span className={styles["payment-row-label"]}>최종 결제금액</span>
-                  <span
-                    className={`${styles["payment-row-final-value"]} ${studentCouponApplied ? styles["student-price"] : ""
-                      }`}
-                  >
-                    {studentCouponApplied
-                      ? PAYMENT_CONFIG.studentPrice.toLocaleString()
-                      : appliedCoupon
-                        ? (
-                          PAYMENT_CONFIG.price - appliedCoupon.discount
-                        ).toLocaleString()
-                        : PAYMENT_CONFIG.price.toLocaleString()}
+                  <span className={styles["payment-row-final-value"]}>
+                    {appliedCoupon
+                      ? (
+                        PAYMENT_CONFIG.price - appliedCoupon.discount
+                      ).toLocaleString()
+                      : PAYMENT_CONFIG.price.toLocaleString()}
                     원
                   </span>
                 </div>
               </div>
 
               {/* 쿠폰 입력 */}
-              {!studentCouponApplied && (
-                <div className={styles["coupon-section"]}>
-                  <div className={styles["coupon-input-row"]}>
-                    <input
-                      type="text"
-                      className={styles["coupon-input"]}
-                      placeholder="쿠폰 코드 입력"
-                      value={couponCode}
-                      onChange={(e) => {
-                        setCouponCode(e.target.value);
-                        setCouponError("");
-                      }}
-                      disabled={!!appliedCoupon}
-                    />
-                    <button
-                      className={styles["coupon-submit-btn"]}
-                      onClick={handleCouponSubmit}
-                      disabled={!!appliedCoupon || isApplyingCoupon}
-                    >
-                      {isApplyingCoupon ? "확인 중..." : appliedCoupon ? "적용됨" : "적용"}
-                    </button>
-                  </div>
-                  {couponError && (
-                    <div className={styles["coupon-error"]}>{couponError}</div>
-                  )}
+              <div className={styles["coupon-section"]}>
+                <div className={styles["coupon-input-row"]}>
+                  <input
+                    type="text"
+                    className={styles["coupon-input"]}
+                    placeholder="쿠폰 코드 입력"
+                    value={couponCode}
+                    onChange={(e) => {
+                      setCouponCode(e.target.value);
+                      setCouponError("");
+                    }}
+                    disabled={!!appliedCoupon}
+                  />
+                  <button
+                    className={styles["coupon-submit-btn"]}
+                    onClick={handleCouponSubmit}
+                    disabled={!!appliedCoupon || isApplyingCoupon}
+                  >
+                    {isApplyingCoupon ? "확인 중..." : appliedCoupon ? "적용됨" : "적용"}
+                  </button>
                 </div>
-              )}
+                {couponError && (
+                  <div className={styles["coupon-error"]}>{couponError}</div>
+                )}
+              </div>
 
               <div style={{ padding: "0 20px" }}>
                 <div

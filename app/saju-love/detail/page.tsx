@@ -52,23 +52,7 @@ const PAYMENT_CONFIG = {
   price: 23900,
   discountPrice: 9900,
   originalPrice: 44800,
-  studentPrice: 4900, // 학생 특별가
   orderName: "AI 연애 사주 심층 분석",
-};
-
-// 만 나이 계산 함수
-const calculateAge = (birthDateStr: string): number => {
-  const today = new Date();
-  const birthDate = new Date(birthDateStr.replace(/-/g, "/"));
-  let age = today.getFullYear() - birthDate.getFullYear();
-  const monthDiff = today.getMonth() - birthDate.getMonth();
-  if (
-    monthDiff < 0 ||
-    (monthDiff === 0 && today.getDate() < birthDate.getDate())
-  ) {
-    age--;
-  }
-  return age;
 };
 
 // 일간별 성향 데이터
@@ -236,10 +220,6 @@ function SajuDetailContent() {
   > | null>(null);
   const isApplyingCouponRef = useRef(false);
 
-  // 학생 할인 모달 상태
-  const [showStudentModal, setShowStudentModal] = useState(false);
-  const [studentCouponApplied, setStudentCouponApplied] = useState(false);
-
   // 데이터 로드 (IndexedDB에서)
   useEffect(() => {
     if (!resultId) {
@@ -376,21 +356,6 @@ function SajuDetailContent() {
     loadData();
   }, [resultId, router]);
 
-  // 학생 모달 자동 표시 (데이터 로드 후)
-  useEffect(() => {
-    if (data && !isLoading) {
-      const age = calculateAge(data.input.date);
-      const isStudentUser = age < 20;
-      if (isStudentUser && !studentCouponApplied) {
-        // 1초 후 모달 표시
-        const timer = setTimeout(() => {
-          setShowStudentModal(true);
-        }, 1000);
-        return () => clearTimeout(timer);
-      }
-    }
-  }, [data, isLoading, studentCouponApplied]);
-
   // 시간 포맷
   const formatTimeToSi = (timeStr: string | null) => {
     if (!timeStr) return "";
@@ -415,15 +380,11 @@ function SajuDetailContent() {
   const openPaymentModal = useCallback(() => {
     if (!data) return;
 
-    // 학생 쿠폰 적용 여부에 따라 가격 결정
-    const paymentPrice = studentCouponApplied
-      ? PAYMENT_CONFIG.studentPrice
-      : PAYMENT_CONFIG.price;
+    const paymentPrice = PAYMENT_CONFIG.price;
 
     trackPaymentModalOpen("saju_love", {
       id: data.id,
       price: paymentPrice,
-      is_student: studentCouponApplied,
       user_name: data.input.userName,
       gender: data.input.gender,
       birth_date: data.input.date,
@@ -448,7 +409,7 @@ function SajuDetailContent() {
         widget.renderAgreement("#saju-agreement");
       }
     }, 100);
-  }, [data, studentCouponApplied]);
+  }, [data]);
 
   // 쿠폰 적용
   const handleCouponSubmit = useCallback(async () => {
@@ -573,10 +534,7 @@ function SajuDetailContent() {
   const handlePaymentRequest = useCallback(async () => {
     if (!paymentWidgetRef.current || !data) return;
 
-    // 학생 쿠폰 적용 여부에 따라 가격 결정
-    const basePrice = studentCouponApplied
-      ? PAYMENT_CONFIG.studentPrice
-      : PAYMENT_CONFIG.price;
+    const basePrice = PAYMENT_CONFIG.price;
 
     const finalPrice = appliedCoupon
       ? basePrice - appliedCoupon.discount
@@ -585,7 +543,6 @@ function SajuDetailContent() {
     trackPaymentAttempt("saju_love", {
       id: data.id,
       price: finalPrice,
-      is_student: studentCouponApplied,
       is_discount: !!appliedCoupon,
       coupon_code: appliedCoupon?.code,
       user_name: data.input.userName,
@@ -596,16 +553,10 @@ function SajuDetailContent() {
     });
 
     try {
-      const orderSuffix = studentCouponApplied
-        ? "-student"
-        : appliedCoupon
-          ? `-${appliedCoupon.code}`
-          : "";
-      const orderNameSuffix = studentCouponApplied
-        ? " - 학생 할인"
-        : appliedCoupon
-          ? ` - ${appliedCoupon.code} 할인`
-          : "";
+      const orderSuffix = appliedCoupon ? `-${appliedCoupon.code}` : "";
+      const orderNameSuffix = appliedCoupon
+        ? ` - ${appliedCoupon.code} 할인`
+        : "";
 
       await paymentWidgetRef.current.requestPayment({
         orderId: `saju-love${orderSuffix}_${Date.now()}`,
@@ -662,11 +613,6 @@ function SajuDetailContent() {
   const pillars = sajuData.pillars;
   const dmData = dayMasterData[dayMaster.char];
   const birthTime = formatTimeToSi(input.time);
-
-  // 학생 할인율 계산
-  const studentDiscount = Math.floor(
-    (1 - PAYMENT_CONFIG.studentPrice / PAYMENT_CONFIG.originalPrice) * 100
-  );
 
   // 오행 한자 맵
   const elementHanjaMap: Record<string, string> = {
@@ -962,42 +908,7 @@ function SajuDetailContent() {
         <button className={styles.analyze_btn} onClick={openPaymentModal}>
           내 연애 사주 분석 받기
         </button>
-        {studentCouponApplied && (
-          <p className={styles.student_applied_badge}>학생 할인 적용됨</p>
-        )}
       </div>
-
-      {/* 학생 할인 모달 */}
-      {showStudentModal && (
-        <div
-          className={styles.student_modal_overlay}
-          onClick={() => setShowStudentModal(false)}
-        >
-          <div className={styles.student_modal} onClick={(e) => e.stopPropagation()}>
-            <p className={styles.student_modal_title}>혹시 학생이신가요?</p>
-            <p className={styles.student_modal_desc}>
-              학생분들의 연애를 응원해요!
-              <br />
-              학생이시면 <strong>커피 한 잔</strong>에 풀이하고 있어요
-            </p>
-            <ul className={styles.student_modal_list}>
-              <li>20,000자 연애 사주 심층 분석</li>
-              <li>운명의 상대 & 피해야 할 인연 사진</li>
-              <li>2026년 월별 연애운 캘린더</li>
-              <li className={styles.bonus}>보너스: 개인 연애 고민 풀이</li>
-            </ul>
-            <button
-              className={styles.student_modal_confirm}
-              onClick={() => {
-                setStudentCouponApplied(true);
-                setShowStudentModal(false);
-              }}
-            >
-              네, 학생이에요 (90% 할인)
-            </button>
-          </div>
-        </div>
-      )}
 
       {/* 결제 모달 */}
       {showPaymentModal && (
@@ -1006,21 +917,12 @@ function SajuDetailContent() {
             <div className={styles["modal-content"]}>
               <div className={styles["payment-header"]}>
                 <div className={styles["payment-title"]}>
-                  {studentCouponApplied
-                    ? "🎓 학생 특별 복채"
-                    : "색동낭자 연애 사주 복채"}
+                  색동낭자 연애 사주 복채
                 </div>
                 <div className={styles["payment-close"]} onClick={closePaymentModal}>
                   ✕
                 </div>
               </div>
-
-              {/* 학생 할인 배너 */}
-              {studentCouponApplied && (
-                <div className={styles["student-payment-banner"]}>
-                  <p className={styles["banner-text"]}>학생 할인이 적용되었어요</p>
-                </div>
-              )}
 
               {/* 결제 금액 섹션 */}
               <div className={styles["payment-amount-section"]}>
@@ -1036,26 +938,8 @@ function SajuDetailContent() {
                   </span>
                 </div>
 
-                {/* 할인 - 학생/일반 분기 */}
-                {studentCouponApplied ? (
-                  <div className={`${styles["payment-row"]} ${styles.discount} ${styles["student-discount"]}`}>
-                    <span className={styles["payment-row-label"]}>🎓 학생 특별 할인</span>
-                    <div className={styles["payment-row-discount-value"]}>
-                      <span className={`${styles["discount-badge"]} ${styles.student}`}>
-                        {studentDiscount}%
-                      </span>
-                      <span className={styles["discount-amount"]}>
-                        -
-                        {(
-                          PAYMENT_CONFIG.originalPrice -
-                          PAYMENT_CONFIG.studentPrice
-                        ).toLocaleString()}
-                        원
-                      </span>
-                    </div>
-                  </div>
-                ) : (
-                  <div className={`${styles["payment-row"]} ${styles.discount}`}>
+                {/* 할인 */}
+                <div className={`${styles["payment-row"]} ${styles.discount}`}>
                     <span className={styles["payment-row-label"]}>
                       병오년(丙午年) 1월 특가 할인
                     </span>
@@ -1078,10 +962,9 @@ function SajuDetailContent() {
                       </span>
                     </div>
                   </div>
-                )}
 
-                {/* 쿠폰 할인 적용 표시 (학생 쿠폰 미적용 시만) */}
-                {!studentCouponApplied && appliedCoupon && (
+                {/* 쿠폰 할인 적용 표시 */}
+                {appliedCoupon && (
                   <div className={`${styles["payment-row"]} ${styles.discount}`}>
                     <span className={styles["payment-row-label"]}>
                       {appliedCoupon.code} 쿠폰
@@ -1099,24 +982,20 @@ function SajuDetailContent() {
                 <div className={`${styles["payment-row"]} ${styles.final}`}>
                   <span className={styles["payment-row-label"]}>최종 결제금액</span>
                   <span
-                    className={`${styles["payment-row-final-value"]} ${studentCouponApplied ? styles["student-price"] : ""
-                      }`}
+                    className={styles["payment-row-final-value"]}
                   >
-                    {studentCouponApplied
-                      ? PAYMENT_CONFIG.studentPrice.toLocaleString()
-                      : appliedCoupon
-                        ? (
-                          PAYMENT_CONFIG.price - appliedCoupon.discount
-                        ).toLocaleString()
-                        : PAYMENT_CONFIG.price.toLocaleString()}
+                    {appliedCoupon
+                      ? (
+                        PAYMENT_CONFIG.price - appliedCoupon.discount
+                      ).toLocaleString()
+                      : PAYMENT_CONFIG.price.toLocaleString()}
                     원
                   </span>
                 </div>
               </div>
 
-              {/* 쿠폰 입력 (학생 쿠폰 미적용 시만) */}
-              {!studentCouponApplied && (
-                <div className={styles["coupon-section"]}>
+              {/* 쿠폰 입력 */}
+              <div className={styles["coupon-section"]}>
                   <div className={styles["coupon-input-row"]}>
                     <input
                       type="text"
@@ -1141,7 +1020,6 @@ function SajuDetailContent() {
                     <div className={styles["coupon-error"]}>{couponError}</div>
                   )}
                 </div>
-              )}
 
               <div style={{ padding: "0 20px" }}>
                 <div
