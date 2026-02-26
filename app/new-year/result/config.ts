@@ -45,18 +45,18 @@ export const getChapterConfig = (
     outroBg: "/new-year/img/doryung5.jpg",
   },
   chapter6: {
-    intro: `학업운, 계약운 차례예요.\n시험이나 중요한 계약 앞두고 계신가요?`,
-    outro: `큰 결정은 좋은 시기에 하는 게 좋아요.\n참고해두시면 도움 될 거예요!\n\n자, 이번엔 사람 복 얘기 해볼까요?`,
-    introBg: "/new-year/img/doryung5.jpg",
-    reportBg: "/new-year/img/doryung3.jpg",
-    outroBg: "/new-year/img/doryung4.jpg",
-  },
-  chapter7: {
     intro: `대인관계운이에요.\n올해 ${userName}님 주변엔 어떤 사람들이 있을까요?`,
-    outro: `좋은 사람 곁에 있으면 운도 따라와요.\n소중한 인연 꼭 챙기세요!\n\n그럼 이제 월별로 자세히 볼까요?`,
+    outro: `좋은 사람 곁에 있으면 운도 따라와요.\n소중한 인연 꼭 챙기세요!\n\n다음은 마음 관리에 대해 살펴볼게요.`,
     introBg: "/new-year/img/doryung4.jpg",
     reportBg: "/new-year/img/doryung8.jpg",
     outroBg: "/new-year/img/doryung7.jpg",
+  },
+  chapter7: {
+    intro: `이번엔 감정, 마음 관리 운이에요.\n올해 ${userName}님 마음 건강은 어떨까요?`,
+    outro: `마음이 편해야 모든 게 잘 풀려요.\n자기 자신을 꼭 챙기세요!\n\n그럼 이제 월별로 자세히 볼까요?`,
+    introBg: "/new-year/img/doryung5.jpg",
+    reportBg: "/new-year/img/doryung3.jpg",
+    outroBg: "/new-year/img/doryung4.jpg",
   },
   chapter8: {
     intro: `12개월 월별 운세예요.\n매달 어떤 일이 있을지 궁금하시죠?`,

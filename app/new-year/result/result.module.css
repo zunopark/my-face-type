@@ -833,115 +833,86 @@
 
 /* 엔딩 카드 */
 .newyear_result_page .ending_card {
-  padding: 32px 24px;
+  padding: 48px 24px;
   background: #fdfcfa;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: calc(100vh - 160px);
 }
 
 .newyear_result_page .ending_greeting {
   text-align: center;
-  padding: 24px;
-  background: linear-gradient(135deg, #faf8f5 0%, #f5f2ed 100%);
-  border-radius: 16px;
-  border: 1px solid #f0ebe4;
-  margin-bottom: 32px;
+  padding: 0;
+  background: none;
+  border-radius: 0;
+  border: none;
+  margin-bottom: 48px;
 }
 
 .newyear_result_page .ending_greeting .greeting_main {
   font-family: "KimjungchulMyungjo-Bold", serif;
-  font-size: 18px;
+  font-size: 20px;
   font-weight: 700;
   color: #3a2a2a;
-  margin: 0 0 16px 0;
+  margin: 0 0 24px 0;
 }
 
 .newyear_result_page .ending_greeting p {
   font-size: 15px;
-  color: #555;
+  color: #777;
   line-height: 1.9;
   margin: 0 0 8px 0;
 }
 
 .newyear_result_page .ending_greeting .ending_sign {
   font-size: 14px;
-  color: #6B5344;
+  color: #999;
   font-style: italic;
-  margin-top: 16px;
-  font-weight: 600;
+  margin-top: 24px;
+  font-weight: 500;
 }
 
-.newyear_result_page .ending_summary {
-  margin-top: 0;
-}
-
-.newyear_result_page .ending_summary .summary_title {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  font-size: 16px;
-  font-weight: 700;
-  color: #3a2a2a;
+.newyear_result_page .link_copy_section {
   text-align: center;
-  margin: 0 0 24px 0;
-  padding: 16px;
-  background: #fff;
-  border-radius: 12px;
-  border: 1px solid #f0e8e0;
+  padding: 0;
+  background: none;
+  border: none;
+  border-radius: 0;
 }
 
-.newyear_result_page .ending_summary .summary_report_card {
-  margin-bottom: 16px;
-  background: #fff;
-  border-radius: 16px;
-  padding: 20px;
-  border: 1px solid #f0e8e0;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+.newyear_result_page .link_copy_text {
+  font-size: 14px;
+  color: #999;
+  line-height: 1.6;
+  margin: 0 0 12px 0;
 }
 
-.newyear_result_page .ending_summary .summary_report_card .card_header {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  margin-bottom: 16px;
-  padding-bottom: 12px;
-  border-bottom: 1px solid #f5f0eb;
-  text-align: left;
-}
-
-.newyear_result_page .ending_summary .summary_report_card .card_header::after {
-  display: none;
-}
-
-.newyear_result_page .ending_summary .summary_report_card .card_label {
+.newyear_result_page .link_copy_btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-width: 48px;
-  padding: 6px 12px;
-  background: linear-gradient(135deg, #4A90D9 0%, #3A7BC8 100%);
-  color: #ffffff;
-  font-size: 12px;
-  font-weight: 700;
-  border-radius: 8px;
-  flex-shrink: 0;
-  letter-spacing: 0;
-  margin-bottom: 0;
-}
-
-.newyear_result_page .ending_summary .summary_report_card .card_title {
-  font-family: "KimjungchulMyungjo-Bold", serif;
-  font-size: 16px;
-  font-weight: 700;
-  color: #3a2a2a;
-  margin: 0;
-  flex: 1;
-  letter-spacing: 0;
-}
-
-.newyear_result_page .ending_summary .summary_report_card .card_content {
+  gap: 8px;
+  padding: 10px 24px;
+  background: none;
+  color: #4A90D9;
   font-size: 14px;
-  line-height: 1.9;
-  color: #4a3a3a;
+  font-weight: 600;
+  border: 1px solid #d0d8e0;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.newyear_result_page .link_copy_btn:active {
+  transform: scale(0.97);
+}
+
+.newyear_result_page .link_copy_btn.copied {
+  background: none;
+  color: #48bb78;
+  border-color: #48bb78;
 }
 
 /* 스크롤 힌트 */
@@ -2512,6 +2483,7 @@
 /* 정보 행 */
 .info_row {
   display: flex;
+  align-items: baseline;
   padding: 8px 0;
   border-bottom: 1px solid #f0f0f0;
 }
@@ -2522,10 +2494,11 @@
 
 .info_label {
   flex-shrink: 0;
-  width: 80px;
   font-size: 13px;
   font-weight: 600;
   color: #666;
+  white-space: nowrap;
+  margin-right: 16px;
 }
 
 .info_value {

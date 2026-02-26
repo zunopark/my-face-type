@@ -93,9 +93,9 @@ function NewYearResultContent() {
     if (t.includes("까치도령") || t.includes("보너스") || t.includes("귀띔")) return 11;
     if (t.includes("개운법") || t.includes("Do")) return 10;
     if (t.includes("월별")) return 8;
-    if (t.includes("대인관계")) return 7;
-    if (t.includes("학업") || t.includes("계약")) return 6;
-    if (t.includes("직장") || t.includes("명예")) return 5;
+    if (t.includes("감정") || t.includes("마음")) return 7;
+    if (t.includes("관계") || t.includes("대인")) return 6;
+    if (t.includes("직장") || t.includes("명예") || t.includes("직업") || t.includes("커리어")) return 5;
     if (t.includes("연애") || t.includes("결혼")) return 4;
     if (t.includes("건강")) return 3;
     if (t.includes("재물")) return 2;
@@ -132,7 +132,7 @@ function NewYearResultContent() {
     });
 
     result.push({ kind: "dialogue", id: "ending-intro", text: `${userName}님, 여기까지 긴 여정 함께해주셔서 감사해요.\n어떠셨어요? 2026년이 기대되시나요?`, bgImage: "/new-year/img/doryung8.jpg" });
-    result.push({ kind: "dialogue", id: "ending-outro", text: `2026년 병오년이 ${userName}님에게\n행운과 기쁨이 가득한 해가 되길 바랄게요.\n\n그럼, 마지막으로 정리된 보고서를 전달 드릴게요.`, bgImage: "/new-year/img/doryung2.jpg" });
+    result.push({ kind: "dialogue", id: "ending-outro", text: `2026년 병오년이 ${userName}님에게\n행운과 기쁨이 가득한 해가 되길 바랄게요.`, bgImage: "/new-year/img/doryung2.jpg" });
     result.push({ kind: "card", id: "ending", bgImage: "/new-year/img/doryung2.jpg", tocLabel: "마무리" });
 
     return result;
@@ -2258,9 +2258,9 @@ function ReportCard({
     if (title.includes("까치도령") || title.includes("보너스") || title.includes("귀띔")) return 11;
     if (title.includes("개운법") || title.includes("Do")) return 10;
     if (title.includes("월별")) return 8;
-    if (title.includes("대인관계")) return 7;
-    if (title.includes("학업") || title.includes("계약")) return 6;
-    if (title.includes("직장") || title.includes("명예")) return 5;
+    if (title.includes("감정") || title.includes("마음")) return 7;
+    if (title.includes("관계") || title.includes("대인")) return 6;
+    if (title.includes("직장") || title.includes("명예") || title.includes("직업") || title.includes("커리어")) return 5;
     if (title.includes("연애") || title.includes("결혼")) return 4;
     if (title.includes("건강")) return 3;
     if (title.includes("재물")) return 2;
@@ -2705,18 +2705,19 @@ function Chapter3Content({ sections }: { sections: Record<string, ParsedSection>
         </div>
       )}
 
-      {(exercises.length > 0 || avoidData["운동"]) && (
+      {exercises.length > 0 && (
         <div className={styles.section_block}>
           <h4 className={styles.section_title}>추천 운동</h4>
-          <ul className={styles.simple_list}>
-            {exercises.map((e, i) => (
-              <li key={i}>{e.name}{e.reason ? ` - ${e.reason}` : ""}</li>
-            ))}
-          </ul>
+          {exercises.map((e, i) => (
+            <div key={i} className={styles.info_row}>
+              <span className={styles.info_label}>{e.name}</span>
+              <span className={styles.info_value}>{e.reason}</span>
+            </div>
+          ))}
           {avoidData["운동"] && (
-            <div className={styles.info_row} style={{ marginTop: 8 }}>
+            <div className={styles.info_row}>
               <span className={styles.info_label}>피할 운동</span>
-              <span className={styles.info_value}>{avoidData["운동"]}{avoidData["이유"] ? ` (${avoidData["이유"]})` : ""}</span>
+              <span className={styles.info_value}>{avoidData["운동"]} {avoidData["이유"] && `- ${avoidData["이유"]}`}</span>
             </div>
           )}
         </div>
@@ -3075,13 +3076,13 @@ function Chapter8Content({ sections }: { sections: Record<string, ParsedSection>
           {bestData["월"] && (
             <div className={styles.info_row}>
               <span className={styles.info_label}>최고의 달</span>
-              <span className={styles.info_value}>{bestData["월"]} - {bestData["이유"]}</span>
+              <span className={styles.info_value}>{bestData["월"]}{bestData["이유"] ? ` - ${bestData["이유"]}` : ""}</span>
             </div>
           )}
           {cautionData["월"] && (
             <div className={styles.info_row}>
               <span className={styles.info_label}>조심할 달</span>
-              <span className={styles.info_value}>{cautionData["월"]} - {cautionData["이유"]}</span>
+              <span className={styles.info_value}>{cautionData["월"]}{cautionData["이유"] ? ` - ${cautionData["이유"]}` : ""}</span>
             </div>
           )}
         </div>
@@ -3475,6 +3476,24 @@ function EndingCard({ data, reviewProps }: {
 }) {
   const userName = data.analysis?.user_name || data.input?.userName || "고객";
   const { reviewRating, setReviewRating, reviewContent, setReviewContent, isReviewSubmitting, reviewSubmitted, existingReview, reviewModalDismissed, handleReviewSubmit } = reviewProps;
+  const [linkCopied, setLinkCopied] = useState(false);
+
+  const handleCopyLink = async () => {
+    try {
+      await navigator.clipboard.writeText(window.location.href);
+      setLinkCopied(true);
+      setTimeout(() => setLinkCopied(false), 2000);
+    } catch {
+      const textarea = document.createElement("textarea");
+      textarea.value = window.location.href;
+      document.body.appendChild(textarea);
+      textarea.select();
+      document.execCommand("copy");
+      document.body.removeChild(textarea);
+      setLinkCopied(true);
+      setTimeout(() => setLinkCopied(false), 2000);
+    }
+  };
 
   return (
     <div className={`${styles.report_card} ${styles.ending_card}`}>
@@ -3491,38 +3510,19 @@ function EndingCard({ data, reviewProps }: {
           <br />
           가득한 해가 되길 바랄게요.
         </p>
-        <p className={styles.ending_sign}>- 까치도령 드림 🐴</p>
+        <p className={styles.ending_sign}>- 까치도령 드림</p>
       </div>
 
-      <div className={styles.ending_summary}>
-        <h3 className={styles.summary_title}>2026년 신년 운세 요약</h3>
-
-        {data.analysis?.chapters?.map((chapter, index) => {
-          const title = chapter.title || "";
-          let num = chapter.number || index + 1;
-          if (title.includes("미래") || title.includes("일기")) num = 9;
-          else if (title.includes("까치도령") || title.includes("보너스") || title.includes("귀띔")) num = 11;
-          else if (title.includes("개운법")) num = 10;
-          else if (title.includes("월별")) num = 8;
-          else if (title.includes("대인관계")) num = 7;
-          else if (title.includes("학업") || title.includes("계약")) num = 6;
-          else if (title.includes("직장") || title.includes("명예")) num = 5;
-          else if (title.includes("연애") || title.includes("결혼")) num = 4;
-          else if (title.includes("건강")) num = 3;
-          else if (title.includes("재물")) num = 2;
-          else if (title.includes("총운")) num = 1;
-          return (
-            <div key={index} className={styles.summary_report_card}>
-              <div className={styles.card_header}>
-                <span className={styles.card_label}>{num}장</span>
-                <span className={styles.card_title}>{title}</span>
-              </div>
-              <div className={styles.card_content}>
-                {(chapter.content || "").slice(0, 200)}...
-              </div>
-            </div>
-          );
-        })}
+      <div className={styles.link_copy_section}>
+        <p className={styles.link_copy_text}>
+          결과를 보관하고 싶으면 링크를 복사하세요
+        </p>
+        <button
+          className={`${styles.link_copy_btn} ${linkCopied ? styles.copied : ""}`}
+          onClick={handleCopyLink}
+        >
+          {linkCopied ? "복사 완료!" : "링크 복사하기"}
+        </button>
       </div>
 
       {/* 인라인 리뷰 (모달 닫은 후 표시) */}
