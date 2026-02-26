@@ -10,6 +10,7 @@ export interface Influencer {
   rs_percentage: number;
   is_active: boolean;
   created_at: string;
+  admin_id?: string | null;
 }
 
 export interface CreateInfluencerInput {
@@ -19,6 +20,7 @@ export interface CreateInfluencerInput {
   contact?: string;
   memo?: string;
   rs_percentage?: number;
+  admin_id?: string;
 }
 
 export interface UpdateInfluencerInput {
@@ -78,8 +80,20 @@ export async function createInfluencer(
 
 export async function updateInfluencer(
   id: string,
-  input: UpdateInfluencerInput
+  input: UpdateInfluencerInput,
+  adminId?: string
 ): Promise<{ success: boolean; error?: string }> {
+  if (adminId) {
+    const { data: existing } = await supabase
+      .from("influencers")
+      .select("admin_id")
+      .eq("id", id)
+      .single();
+    if (existing?.admin_id && existing.admin_id !== adminId) {
+      return { success: false, error: "수정 권한이 없습니다." };
+    }
+  }
+
   const { error } = await supabase
     .from("influencers")
     .update(input)
@@ -104,12 +118,18 @@ export interface InfluencerWithStats extends Influencer {
 /**
  * 인플루언서 목록 + 누적 통계 (방문수, 결제건수, 매출)
  */
-export async function getAllInfluencersWithStats(): Promise<InfluencerWithStats[]> {
-  const { data: influencers, error } = await supabase
+export async function getAllInfluencersWithStats(adminId?: string): Promise<InfluencerWithStats[]> {
+  let query = supabase
     .from("influencers")
     .select("*")
     .eq("is_active", true)
     .order("created_at", { ascending: false });
+
+  if (adminId) {
+    query = query.or(`admin_id.eq.${adminId},admin_id.is.null`);
+  }
+
+  const { data: influencers, error } = await query;
 
   if (error || !influencers || influencers.length === 0) return [];
 
@@ -153,8 +173,20 @@ export async function getAllInfluencersWithStats(): Promise<InfluencerWithStats[
 }
 
 export async function deleteInfluencer(
-  id: string
+  id: string,
+  adminId?: string
 ): Promise<{ success: boolean; error?: string }> {
+  if (adminId) {
+    const { data: existing } = await supabase
+      .from("influencers")
+      .select("admin_id")
+      .eq("id", id)
+      .single();
+    if (existing?.admin_id && existing.admin_id !== adminId) {
+      return { success: false, error: "삭제 권한이 없습니다." };
+    }
+  }
+
   const { error } = await supabase.from("influencers").delete().eq("id", id);
 
   if (error) {

@@ -62,6 +62,11 @@ interface SettlementRow {
   settlement_amount: number;
 }
 
+interface AdminAccount {
+  id: string;
+  name: string;
+}
+
 const SERVICE_LABELS: Record<string, string> = {
   face: "관상",
   couple: "커플궁합",
@@ -122,10 +127,18 @@ export default function AdminPage() {
   const [authChecked, setAuthChecked] = useState(false);
   const [password, setPassword] = useState("");
   const [authError, setAuthError] = useState("");
+  const [adminAccount, setAdminAccount] = useState<AdminAccount | null>(null);
 
   useEffect(() => {
-    if (sessionStorage.getItem("admin_auth") === "true") {
-      setIsAuthenticated(true);
+    const saved = sessionStorage.getItem("admin_account");
+    if (saved) {
+      try {
+        const account = JSON.parse(saved) as AdminAccount;
+        setAdminAccount(account);
+        setIsAuthenticated(true);
+      } catch {
+        sessionStorage.removeItem("admin_account");
+      }
     }
     setAuthChecked(true);
   }, []);
@@ -185,9 +198,10 @@ export default function AdminPage() {
         body: JSON.stringify({ password }),
       });
       const data = await res.json();
-      if (data.authenticated) {
+      if (data.authenticated && data.account) {
+        setAdminAccount(data.account);
         setIsAuthenticated(true);
-        sessionStorage.setItem("admin_auth", "true");
+        sessionStorage.setItem("admin_account", JSON.stringify(data.account));
       } else {
         setAuthError(data.error || "인증 실패");
       }
@@ -226,6 +240,7 @@ export default function AdminPage() {
           ...formData,
           discount_amount: Number(formData.discount_amount) || 0,
           total_quantity: Number(formData.total_quantity) || 0,
+          admin_id: adminAccount?.id,
         }),
       });
       const data = await res.json();
@@ -328,7 +343,8 @@ export default function AdminPage() {
   const fetchInfluencers = useCallback(async () => {
     setInfLoading(true);
     try {
-      const res = await fetch("/api/admin/influencers");
+      const params = adminAccount ? `?admin_id=${adminAccount.id}` : "";
+      const res = await fetch(`/api/admin/influencers${params}`);
       const data = await res.json();
       setInfluencers(data);
     } catch (err) {
@@ -336,7 +352,7 @@ export default function AdminPage() {
     } finally {
       setInfLoading(false);
     }
-  }, []);
+  }, [adminAccount]);
 
   const handleCreateInfluencer = async () => {
     setInfFormError("");
@@ -352,6 +368,7 @@ export default function AdminPage() {
         body: JSON.stringify({
           ...infFormData,
           rs_percentage: Number(infFormData.rs_percentage) || 40,
+          admin_id: adminAccount?.id,
         }),
       });
       const data = await res.json();
@@ -375,7 +392,7 @@ export default function AdminPage() {
       const res = await fetch("/api/admin/influencers", {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ id: editInfluencer.id, ...editInfData }),
+        body: JSON.stringify({ id: editInfluencer.id, ...editInfData, admin_id: adminAccount?.id }),
       });
       const data = await res.json();
       if (data.error) {
@@ -397,7 +414,7 @@ export default function AdminPage() {
       await fetch("/api/admin/influencers", {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ id, is_active: false }),
+        body: JSON.stringify({ id, is_active: false, admin_id: adminAccount?.id }),
       });
       fetchInfluencers();
     } catch (err) {
@@ -493,8 +510,9 @@ export default function AdminPage() {
   const fetchSettlement = useCallback(async () => {
     setSettlementLoading(true);
     try {
+      const adminParam = adminAccount ? `&admin_id=${adminAccount.id}` : "";
       const res = await fetch(
-        `/api/admin/settlement?year=${settlementYear}&month=${settlementMonth}`
+        `/api/admin/settlement?year=${settlementYear}&month=${settlementMonth}${adminParam}`
       );
       const data = await res.json();
       setSettlement(Array.isArray(data) ? data : []);
@@ -503,7 +521,7 @@ export default function AdminPage() {
     } finally {
       setSettlementLoading(false);
     }
-  }, [settlementYear, settlementMonth]);
+  }, [settlementYear, settlementMonth, adminAccount]);
 
   // ─── Effects ──────────────────────────────
 
@@ -571,13 +589,14 @@ export default function AdminPage() {
       <div className={styles.admin_container}>
         {/* 헤더 */}
         <div className={styles.header}>
-          <h1 className={styles.title}>마케팅 대시보드</h1>
+          <h1 className={styles.title}>마케팅 대시보드{adminAccount ? ` — ${adminAccount.name}` : ""}</h1>
           <button
             className={styles.logout_button}
             onClick={() => {
               setIsAuthenticated(false);
+              setAdminAccount(null);
               setPassword("");
-              sessionStorage.removeItem("admin_auth");
+              sessionStorage.removeItem("admin_account");
             }}
           >
             로그아웃

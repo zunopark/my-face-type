@@ -11,6 +11,7 @@ import { getPaymentsByInfluencer } from "@/lib/db/utmDB";
 export async function GET(request: NextRequest) {
   const slug = request.nextUrl.searchParams.get("slug");
   const payments = request.nextUrl.searchParams.get("payments");
+  const adminId = request.nextUrl.searchParams.get("admin_id") || undefined;
 
   if (payments) {
     const data = await getPaymentsByInfluencer(payments);
@@ -25,14 +26,14 @@ export async function GET(request: NextRequest) {
     return NextResponse.json(influencer);
   }
 
-  const influencers = await getAllInfluencersWithStats();
+  const influencers = await getAllInfluencersWithStats(adminId);
   return NextResponse.json(influencers);
 }
 
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { name, slug, platform, contact, memo, rs_percentage } = body;
+    const { name, slug, platform, contact, memo, rs_percentage, admin_id } = body;
 
     if (!name || !slug) {
       return NextResponse.json(
@@ -48,6 +49,7 @@ export async function POST(request: NextRequest) {
       contact,
       memo,
       rs_percentage,
+      admin_id,
     });
 
     if (!result.success) {
@@ -62,13 +64,13 @@ export async function POST(request: NextRequest) {
 export async function PATCH(request: NextRequest) {
   try {
     const body = await request.json();
-    const { id, ...updates } = body;
+    const { id, admin_id, ...updates } = body;
 
     if (!id) {
       return NextResponse.json({ error: "ID는 필수입니다." }, { status: 400 });
     }
 
-    const result = await updateInfluencer(id, updates);
+    const result = await updateInfluencer(id, updates, admin_id);
     if (!result.success) {
       return NextResponse.json({ error: result.error }, { status: 400 });
     }
@@ -80,11 +82,12 @@ export async function PATCH(request: NextRequest) {
 
 export async function DELETE(request: NextRequest) {
   const id = request.nextUrl.searchParams.get("id");
+  const adminId = request.nextUrl.searchParams.get("admin_id") || undefined;
   if (!id) {
     return NextResponse.json({ error: "ID는 필수입니다." }, { status: 400 });
   }
 
-  const result = await deleteInfluencer(id);
+  const result = await deleteInfluencer(id, adminId);
   if (!result.success) {
     return NextResponse.json({ error: result.error }, { status: 400 });
   }

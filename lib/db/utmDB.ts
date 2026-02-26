@@ -54,7 +54,8 @@ export async function recordVisit(input: RecordVisitInput): Promise<boolean> {
  */
 export async function getMonthlySettlement(
   year: number,
-  month: number
+  month: number,
+  adminId?: string
 ): Promise<SettlementRow[]> {
   // 해당 월의 시작/끝 날짜 (KST 기준)
   const KST_OFFSET = 9 * 60 * 60 * 1000;
@@ -62,10 +63,16 @@ export async function getMonthlySettlement(
   const endDate = new Date(Date.UTC(year, month, 1) - KST_OFFSET).toISOString();
 
   // 1. 활성 인플루언서 목록
-  const { data: influencers, error: infError } = await supabase
+  let infQuery = supabase
     .from("influencers")
     .select("*")
     .order("name");
+
+  if (adminId) {
+    infQuery = infQuery.or(`admin_id.eq.${adminId},admin_id.is.null`);
+  }
+
+  const { data: influencers, error: infError } = await infQuery;
 
   if (infError || !influencers) {
     console.error("인플루언서 조회 오류:", infError);

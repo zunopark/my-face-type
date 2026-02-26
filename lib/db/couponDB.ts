@@ -11,6 +11,7 @@ export interface Coupon {
   remaining_quantity: number;
   is_active: boolean;
   created_at: string;
+  admin_id?: string | null;
 }
 
 export interface CouponUsageLog {
@@ -28,6 +29,7 @@ export interface CreateCouponInput {
   discount_type: string;
   discount_amount: number;
   total_quantity: number;
+  admin_id?: string;
 }
 
 export interface UpdateCouponInput {
@@ -43,11 +45,17 @@ export interface UpdateCouponInput {
 
 // ─── 쿠폰 CRUD ─────────────────────────────────────
 
-export async function getAllCoupons(): Promise<Coupon[]> {
-  const { data, error } = await supabase
+export async function getAllCoupons(adminId?: string): Promise<Coupon[]> {
+  let query = supabase
     .from("coupons")
     .select("*")
     .order("created_at", { ascending: false });
+
+  if (adminId) {
+    query = query.or(`admin_id.eq.${adminId},admin_id.is.null`);
+  }
+
+  const { data, error } = await query;
 
   if (error) {
     console.error("쿠폰 목록 조회 오류:", error);
@@ -76,8 +84,20 @@ export async function createCoupon(
 
 export async function updateCoupon(
   id: string,
-  input: UpdateCouponInput
+  input: UpdateCouponInput,
+  adminId?: string
 ): Promise<{ success: boolean; error?: string }> {
+  if (adminId) {
+    const { data: existing } = await supabase
+      .from("coupons")
+      .select("admin_id")
+      .eq("id", id)
+      .single();
+    if (existing?.admin_id && existing.admin_id !== adminId) {
+      return { success: false, error: "수정 권한이 없습니다." };
+    }
+  }
+
   const { error } = await supabase.from("coupons").update(input).eq("id", id);
 
   if (error) {
@@ -88,8 +108,20 @@ export async function updateCoupon(
 }
 
 export async function deleteCoupon(
-  id: string
+  id: string,
+  adminId?: string
 ): Promise<{ success: boolean; error?: string }> {
+  if (adminId) {
+    const { data: existing } = await supabase
+      .from("coupons")
+      .select("admin_id")
+      .eq("id", id)
+      .single();
+    if (existing?.admin_id && existing.admin_id !== adminId) {
+      return { success: false, error: "삭제 권한이 없습니다." };
+    }
+  }
+
   const { error } = await supabase.from("coupons").delete().eq("id", id);
 
   if (error) {
@@ -216,7 +248,8 @@ export async function logCouponUsage(
 }
 
 export async function getCouponUsageLogs(
-  couponCode?: string
+  couponCode?: string,
+  adminId?: string
 ): Promise<CouponUsageLog[]> {
   let query = supabase
     .from("coupon_usage_logs")
@@ -225,6 +258,18 @@ export async function getCouponUsageLogs(
 
   if (couponCode) {
     query = query.ilike("coupon_code", couponCode);
+  }
+
+  if (adminId) {
+    const { data: adminCoupons } = await supabase
+      .from("coupons")
+      .select("code")
+      .or(`admin_id.eq.${adminId},admin_id.is.null`);
+
+    if (adminCoupons && adminCoupons.length > 0) {
+      const codes = adminCoupons.map(c => c.code);
+      query = query.in("coupon_code", codes);
+    }
   }
 
   const { data, error } = await query;

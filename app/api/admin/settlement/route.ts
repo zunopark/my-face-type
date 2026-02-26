@@ -4,6 +4,7 @@ import { getMonthlySettlement } from "@/lib/db/utmDB";
 export async function GET(request: NextRequest) {
   const yearParam = request.nextUrl.searchParams.get("year");
   const monthParam = request.nextUrl.searchParams.get("month");
+  const adminId = request.nextUrl.searchParams.get("admin_id") || undefined;
 
   const now = new Date();
   const year = yearParam ? parseInt(yearParam) : now.getFullYear();
@@ -17,7 +18,7 @@ export async function GET(request: NextRequest) {
   }
 
   try {
-    const data = await getMonthlySettlement(year, month);
+    const data = await getMonthlySettlement(year, month, adminId);
     return NextResponse.json(data);
   } catch (err) {
     console.error("정산 데이터 조회 오류:", err);

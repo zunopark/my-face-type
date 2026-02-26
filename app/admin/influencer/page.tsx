@@ -40,6 +40,23 @@ const SERVICE_LABELS: Record<string, string> = {
   new_year: "신년사주",
 };
 
+const BASE_URL = "https://yangban.ai";
+
+const UTM_PAGES = [
+  { label: "홈", path: "/" },
+  { label: "관상", path: "/face" },
+  { label: "궁합", path: "/couple" },
+  { label: "연애사주", path: "/saju-love" },
+  { label: "신년사주", path: "/new-year" },
+];
+
+const PLATFORM_LABELS: Record<string, string> = {
+  instagram: "Instagram",
+  youtube: "YouTube",
+  tiktok: "TikTok",
+  blog: "Blog",
+};
+
 export default function InfluencerPage() {
   // Auth
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -62,6 +79,11 @@ export default function InfluencerPage() {
   // Payment details
   const [payments, setPayments] = useState<PaymentDetail[]>([]);
   const [paymentLoading, setPaymentLoading] = useState(false);
+
+  // UTM link state
+  const [showUtm, setShowUtm] = useState(false);
+  const [utmPlatform, setUtmPlatform] = useState("instagram");
+  const [copiedIdx, setCopiedIdx] = useState<number | null>(null);
 
   // Check session
   useEffect(() => {
@@ -178,6 +200,22 @@ export default function InfluencerPage() {
     setSettlementMonth(newMonth);
   };
 
+  // UTM copy
+  const handleCopyUtm = async (url: string, idx: number) => {
+    try {
+      await navigator.clipboard.writeText(url);
+    } catch {
+      const ta = document.createElement("textarea");
+      ta.value = url;
+      document.body.appendChild(ta);
+      ta.select();
+      document.execCommand("copy");
+      document.body.removeChild(ta);
+    }
+    setCopiedIdx(idx);
+    setTimeout(() => setCopiedIdx(null), 2000);
+  };
+
   // Effects
   useEffect(() => {
     if (isAuthenticated && influencer) {
@@ -256,10 +294,68 @@ export default function InfluencerPage() {
               {influencer?.name} <span className={styles.subtitle}>대시보드</span>
             </h1>
           </div>
-          <button className={styles.logout_button} onClick={handleLogout}>
-            로그아웃
-          </button>
+          <div className={styles.header_actions}>
+            <button
+              className={styles.utm_toggle_button}
+              onClick={() => setShowUtm(!showUtm)}
+            >
+              내 UTM 링크
+            </button>
+            <button className={styles.logout_button} onClick={handleLogout}>
+              로그아웃
+            </button>
+          </div>
         </div>
+
+        {/* UTM Links Modal */}
+        {showUtm && influencer && (
+          <div
+            className={styles.modal_overlay}
+            onClick={(e) => { if (e.target === e.currentTarget) setShowUtm(false); }}
+          >
+            <div className={styles.modal}>
+              <div className={styles.utm_header}>
+                <div>
+                  <h3 className={styles.utm_title}>내 UTM 링크</h3>
+                  <p className={styles.utm_desc}>하나의 링크만으로도 유저가 다른 페이지로 이동 시 결제 추적이 됩니다. (24시간)</p>
+                </div>
+              </div>
+              <div className={styles.utm_platforms}>
+                {Object.entries(PLATFORM_LABELS).map(([key, label]) => (
+                  <button
+                    key={key}
+                    className={`${styles.utm_platform_btn} ${utmPlatform === key ? styles.utm_platform_active : ""}`}
+                    onClick={() => { setUtmPlatform(key); setCopiedIdx(null); }}
+                  >
+                    {label}
+                  </button>
+                ))}
+              </div>
+              <div className={styles.utm_links}>
+                {UTM_PAGES.map((page, idx) => {
+                  const url = `${BASE_URL}${page.path}?utm_source=${influencer.slug}&utm_medium=${utmPlatform}`;
+                  return (
+                    <div key={page.path} className={styles.utm_link_row}>
+                      <span className={styles.utm_link_label}>{page.label}</span>
+                      <span className={styles.utm_link_url}>{url}</span>
+                      <button
+                        className={copiedIdx === idx ? styles.btn_copied : styles.btn_copy}
+                        onClick={() => handleCopyUtm(url, idx)}
+                      >
+                        {copiedIdx === idx ? "복사됨" : "복사"}
+                      </button>
+                    </div>
+                  );
+                })}
+              </div>
+              <div className={styles.modal_actions}>
+                <button className={styles.modal_close} onClick={() => setShowUtm(false)}>
+                  닫기
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
 
         {/* Summary Cards */}
         {summaryLoading ? (

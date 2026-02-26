@@ -11,20 +11,21 @@ import {
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url);
   const action = searchParams.get("action");
+  const adminId = searchParams.get("admin_id") || undefined;
 
   if (action === "usage_logs") {
     const couponCode = searchParams.get("coupon_code") || undefined;
-    const logs = await getCouponUsageLogs(couponCode);
+    const logs = await getCouponUsageLogs(couponCode, adminId);
     return NextResponse.json(logs);
   }
 
-  const coupons = await getAllCoupons();
+  const coupons = await getAllCoupons(adminId);
   return NextResponse.json(coupons);
 }
 
 export async function POST(request: NextRequest) {
   const body = await request.json();
-  const { code, name, discount_type, total_quantity } = body;
+  const { code, name, discount_type, total_quantity, admin_id } = body;
 
   if (!code || !name || !discount_type || !total_quantity) {
     return NextResponse.json(
@@ -40,6 +41,7 @@ export async function POST(request: NextRequest) {
     discount_type,
     discount_amount: body.discount_amount || 0,
     total_quantity: Number(total_quantity),
+    admin_id,
   });
 
   if (!result.success) {
@@ -51,7 +53,7 @@ export async function POST(request: NextRequest) {
 
 export async function PATCH(request: NextRequest) {
   const body = await request.json();
-  const { id, action: toggleAction, ...updateData } = body;
+  const { id, action: toggleAction, admin_id, ...updateData } = body;
 
   if (!id) {
     return NextResponse.json(
@@ -68,7 +70,7 @@ export async function PATCH(request: NextRequest) {
     return NextResponse.json({ success: true });
   }
 
-  const result = await updateCoupon(id, updateData);
+  const result = await updateCoupon(id, updateData, admin_id);
   if (!result.success) {
     return NextResponse.json({ error: result.error }, { status: 400 });
   }
@@ -78,6 +80,7 @@ export async function PATCH(request: NextRequest) {
 export async function DELETE(request: NextRequest) {
   const { searchParams } = new URL(request.url);
   const id = searchParams.get("id");
+  const adminId = searchParams.get("admin_id") || undefined;
 
   if (!id) {
     return NextResponse.json(
@@ -86,7 +89,7 @@ export async function DELETE(request: NextRequest) {
     );
   }
 
-  const result = await deleteCoupon(id);
+  const result = await deleteCoupon(id, adminId);
   if (!result.success) {
     return NextResponse.json({ error: result.error }, { status: 400 });
   }
