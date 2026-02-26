@@ -234,6 +234,7 @@ function SajuDetailContent() {
   const paymentWidgetRef = useRef<ReturnType<
     typeof window.PaymentWidget
   > | null>(null);
+  const isApplyingCouponRef = useRef(false);
 
   // 학생 할인 모달 상태
   const [showStudentModal, setShowStudentModal] = useState(false);
@@ -451,9 +452,10 @@ function SajuDetailContent() {
 
   // 쿠폰 적용
   const handleCouponSubmit = useCallback(async () => {
-    if (!data || !couponCode.trim() || isApplyingCoupon) return;
+    if (!data || !couponCode.trim() || isApplyingCouponRef.current) return;
 
     const code = couponCode.trim();
+    isApplyingCouponRef.current = true;
     setIsApplyingCoupon(true);
 
     try {
@@ -473,10 +475,11 @@ function SajuDetailContent() {
       const discount = isFree ? PAYMENT_CONFIG.price : result.discount_amount;
 
       setCouponError("");
-      setAppliedCoupon({ code, discount });
 
       if (isFree) {
-        // 무료 쿠폰: 결제 완료 처리
+        setAppliedCoupon({ code, discount });
+
+        // 1. 결과 저장 확정 (IndexedDB)
         await saveSajuLoveRecord({
           ...data,
           paid: true,
@@ -489,27 +492,7 @@ function SajuDetailContent() {
           },
         });
 
-        // 쿠폰 수량 차감
-        await fetch("/api/coupon/use", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ code, serviceType: "saju_love" }),
-        });
-
-        trackCouponApplied("saju_love", {
-          coupon_code: code,
-          discount: PAYMENT_CONFIG.price,
-          is_free: true,
-          final_price: 0,
-        });
-        trackPaymentSuccess("saju_love", {
-          id: data.id,
-          price: 0,
-          method: "coupon",
-          coupon_code: code,
-        });
-
-        // Supabase 저장 (무료 쿠폰)
+        // 2. Supabase 저장
         try {
           const existsInSupabase = await getSajuAnalysisByShareId(data.id);
           if (!existsInSupabase) {
@@ -542,7 +525,31 @@ function SajuDetailContent() {
           console.error("무료 쿠폰 Supabase 저장 실패:", e);
         }
 
-        // 결과 페이지로 이동
+        // 3. 결과 확정 후 쿠폰 수량 차감
+        try {
+          await fetch("/api/coupon/use", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ code, serviceType: "saju_love" }),
+          });
+        } catch (e) {
+          console.error("쿠폰 수량 차감 실패:", e);
+        }
+
+        trackCouponApplied("saju_love", {
+          coupon_code: code,
+          discount: PAYMENT_CONFIG.price,
+          is_free: true,
+          final_price: 0,
+        });
+        trackPaymentSuccess("saju_love", {
+          id: data.id,
+          price: 0,
+          method: "coupon",
+          coupon_code: code,
+        });
+
+        // 4. 결과 페이지로 이동
         router.push(`/saju-love/result?id=${data.id}`);
       } else {
         // 할인 쿠폰: 결제 위젯 금액 업데이트
@@ -557,9 +564,10 @@ function SajuDetailContent() {
       console.error("쿠폰 검증 오류:", error);
       setCouponError("쿠폰 확인 중 오류가 발생했습니다");
     } finally {
+      isApplyingCouponRef.current = false;
       setIsApplyingCoupon(false);
     }
-  }, [data, couponCode, isApplyingCoupon, router]);
+  }, [data, couponCode, router]);
 
   // 결제 요청
   const handlePaymentRequest = useCallback(async () => {

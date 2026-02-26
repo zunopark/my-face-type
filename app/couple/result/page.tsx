@@ -109,6 +109,7 @@ function CoupleResultContent() {
   const [showDiscountModal, setShowDiscountModal] = useState(false);
   const paymentWidgetRef = useRef<ReturnType<typeof window.PaymentWidget> | null>(null);
   const discountWidgetRef = useRef<ReturnType<typeof window.PaymentWidget> | null>(null);
+  const isApplyingCouponRef = useRef(false);
 
   // 하단 고정 버튼 표시 여부
   const [showFloatingBtn, setShowFloatingBtn] = useState(false);
@@ -418,9 +419,10 @@ function CoupleResultContent() {
 
   // 쿠폰 검증 및 적용
   const handleCouponSubmit = useCallback(async () => {
-    if (!couponCode.trim() || isApplyingCoupon) return;
+    if (!couponCode.trim() || isApplyingCouponRef.current) return;
 
     const code = couponCode.trim();
+    isApplyingCouponRef.current = true;
     setIsApplyingCoupon(true);
 
     try {
@@ -440,30 +442,33 @@ function CoupleResultContent() {
       const discount = isFree ? PAYMENT_CONFIG.price : data.discount_amount;
 
       setCouponError("");
-      setAppliedCoupon({ code, discount, isFree });
-
-      // 쿠폰 적용 이벤트 트래킹
-      trackCouponApplied("couple", {
-        id: result?.id,
-        coupon_code: code,
-        discount,
-        is_free: isFree,
-        original_price: PAYMENT_CONFIG.price,
-        final_price: isFree ? 0 : Math.max(PAYMENT_CONFIG.price - discount, 100),
-      });
 
       if (isFree) {
-        // 무료 쿠폰: 결제 없이 바로 완료 처리
+        setAppliedCoupon({ code, discount, isFree });
+
+        // 1. 결과 저장 확정
         await handleFreeCouponPayment();
 
-        // 쿠폰 수량 차감
-        await fetch("/api/coupon/use", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ code, serviceType: "couple" }),
-        });
+        // 2. 결과 확정 후 쿠폰 수량 차감
+        try {
+          await fetch("/api/coupon/use", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ code, serviceType: "couple" }),
+          });
+        } catch (e) {
+          console.error("쿠폰 수량 차감 실패:", e);
+        }
 
-        // 무료 쿠폰 결제 성공 이벤트 트래킹
+        // 3. 이벤트 트래킹
+        trackCouponApplied("couple", {
+          id: result?.id,
+          coupon_code: code,
+          discount,
+          is_free: isFree,
+          original_price: PAYMENT_CONFIG.price,
+          final_price: 0,
+        });
         trackPaymentSuccess("couple", {
           id: result?.id,
           order_id: `free_coupon_${Date.now()}`,
@@ -474,6 +479,18 @@ function CoupleResultContent() {
           report_type: "couple",
         });
       } else {
+        setAppliedCoupon({ code, discount, isFree });
+
+        // 쿠폰 적용 이벤트 트래킹
+        trackCouponApplied("couple", {
+          id: result?.id,
+          coupon_code: code,
+          discount,
+          is_free: false,
+          original_price: PAYMENT_CONFIG.price,
+          final_price: Math.max(PAYMENT_CONFIG.price - discount, 100),
+        });
+
         // 일반 쿠폰: 결제 위젯 금액 업데이트
         if (paymentWidgetRef.current) {
           const newPrice = Math.max(PAYMENT_CONFIG.price - discount, 100);
@@ -486,9 +503,10 @@ function CoupleResultContent() {
       console.error("쿠폰 검증 오류:", error);
       setCouponError("쿠폰 확인 중 오류가 발생했습니다");
     } finally {
+      isApplyingCouponRef.current = false;
       setIsApplyingCoupon(false);
     }
-  }, [couponCode, isApplyingCoupon, handleFreeCouponPayment, result?.id]);
+  }, [couponCode, handleFreeCouponPayment, result?.id]);
 
   // 결제 모달 열기
   const openPaymentModal = () => {

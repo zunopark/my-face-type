@@ -186,7 +186,7 @@ export async function useCoupon(
   code: string,
   serviceType: string
 ): Promise<{ success: boolean; error?: string }> {
-  // Atomic decrement via RPC
+  // Atomic decrement via RPC (fallback 제거 - RPC 타임아웃 시 이중 차감 방지)
   const { data: rpcResult, error: rpcError } = await supabase.rpc(
     "use_coupon",
     { coupon_code: code }
@@ -194,27 +194,11 @@ export async function useCoupon(
 
   if (rpcError) {
     console.error("use_coupon RPC 오류:", rpcError);
-    // Fallback: manual decrement
-    const { data: coupon } = await supabase
-      .from("coupons")
-      .select("id, remaining_quantity")
-      .ilike("code", code)
-      .single();
+    return { success: false, error: "쿠폰 사용에 실패했습니다. 다시 시도해주세요." };
+  }
 
-    if (!coupon || coupon.remaining_quantity <= 0) {
-      return { success: false, error: "쿠폰 사용에 실패했습니다." };
-    }
-
-    const { error: updateError } = await supabase
-      .from("coupons")
-      .update({ remaining_quantity: coupon.remaining_quantity - 1 })
-      .eq("id", coupon.id);
-
-    if (updateError) {
-      return { success: false, error: "쿠폰 수량 차감에 실패했습니다." };
-    }
-  } else if (rpcResult === false) {
-    return { success: false, error: "쿠폰 사용에 실패했습니다." };
+  if (rpcResult === false) {
+    return { success: false, error: "쿠폰이 모두 소진되었습니다." };
   }
 
   // Log usage

@@ -83,10 +83,10 @@ function SuccessContent() {
       setStatus("success");
       setMessage("✅ 결제가 완료되었습니다!");
 
-      // 쿠폰 사용 시 수량 차감
+      // 쿠폰 사용 시 수량 차감 (할인 쿠폰용 - 무료 쿠폰은 각 detail 페이지에서 처리)
       if (couponCode) {
         try {
-          await fetch("/api/coupon/use", {
+          const useRes = await fetch("/api/coupon/use", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
@@ -97,6 +97,10 @@ function SuccessContent() {
                 : "face",
             }),
           });
+          const useResult = await useRes.json();
+          if (!useResult.success) {
+            console.error("쿠폰 수량 차감 실패:", useResult.error);
+          }
         } catch (couponErr) {
           console.error("쿠폰 수량 차감 실패:", couponErr);
         }

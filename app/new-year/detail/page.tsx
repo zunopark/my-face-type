@@ -259,6 +259,7 @@ function NewYearDetailContent() {
   const paymentWidgetRef = useRef<ReturnType<
     typeof window.PaymentWidget
   > | null>(null);
+  const isApplyingCouponRef = useRef(false);
 
   // 학생 할인 모달 상태
   const [showStudentModal, setShowStudentModal] = useState(false);
@@ -370,9 +371,10 @@ function NewYearDetailContent() {
 
   // 쿠폰 적용
   const handleCouponSubmit = useCallback(async () => {
-    if (!data || !couponCode.trim() || isApplyingCoupon) return;
+    if (!data || !couponCode.trim() || isApplyingCouponRef.current) return;
 
     const code = couponCode.trim();
+    isApplyingCouponRef.current = true;
     setIsApplyingCoupon(true);
 
     try {
@@ -394,7 +396,7 @@ function NewYearDetailContent() {
       setCouponError("");
 
       if (isFree) {
-        // 무료 쿠폰: 결제 완료 처리
+        // 1. 결과 저장 확정 (IndexedDB)
         await saveNewYearRecord({
           ...data,
           paid: true,
@@ -407,27 +409,7 @@ function NewYearDetailContent() {
           },
         });
 
-        // 쿠폰 수량 차감
-        await fetch("/api/coupon/use", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ code, serviceType: "new_year" }),
-        });
-
-        trackCouponApplied("new_year", {
-          coupon_code: code,
-          discount: PAYMENT_CONFIG.price,
-          is_free: true,
-          final_price: 0,
-        });
-        trackPaymentSuccess("new_year", {
-          id: data.id,
-          price: 0,
-          method: "coupon",
-          coupon_code: code,
-        });
-
-        // Supabase 저장 (무료 쿠폰)
+        // 2. Supabase 저장
         try {
           const existsInSupabase = await getSajuAnalysisByShareId(data.id);
           if (!existsInSupabase) {
@@ -461,7 +443,31 @@ function NewYearDetailContent() {
           console.error("무료 쿠폰 Supabase 저장 실패:", e);
         }
 
-        // 결과 페이지로 이동
+        // 3. 결과 확정 후 쿠폰 수량 차감
+        try {
+          await fetch("/api/coupon/use", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ code, serviceType: "new_year" }),
+          });
+        } catch (e) {
+          console.error("쿠폰 수량 차감 실패:", e);
+        }
+
+        trackCouponApplied("new_year", {
+          coupon_code: code,
+          discount: PAYMENT_CONFIG.price,
+          is_free: true,
+          final_price: 0,
+        });
+        trackPaymentSuccess("new_year", {
+          id: data.id,
+          price: 0,
+          method: "coupon",
+          coupon_code: code,
+        });
+
+        // 4. 결과 페이지로 이동
         router.push(`/new-year/result?id=${data.id}`);
         return;
       }
@@ -479,9 +485,10 @@ function NewYearDetailContent() {
       console.error("쿠폰 검증 오류:", error);
       setCouponError("쿠폰 확인 중 오류가 발생했습니다");
     } finally {
+      isApplyingCouponRef.current = false;
       setIsApplyingCoupon(false);
     }
-  }, [data, couponCode, isApplyingCoupon, router]);
+  }, [data, couponCode, router]);
 
   // 결제 요청
   const handlePaymentRequest = useCallback(async () => {

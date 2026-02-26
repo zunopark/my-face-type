@@ -157,6 +157,7 @@ function ResultContent() {
   const discountWidgetRef = useRef<ReturnType<
     typeof window.PaymentWidget
   > | null>(null);
+  const isApplyingCouponRef = useRef(false);
 
   // 실제 분석 상태
   const [isAnalyzing, setIsAnalyzing] = useState(false);
@@ -600,9 +601,10 @@ function ResultContent() {
 
   // 쿠폰 검증 및 적용
   const handleCouponSubmit = useCallback(async () => {
-    if (!couponCode.trim()) return;
+    if (!couponCode.trim() || isApplyingCouponRef.current) return;
 
     const code = couponCode.trim();
+    isApplyingCouponRef.current = true;
 
     try {
       const res = await fetch("/api/coupon/validate", {
@@ -636,17 +638,21 @@ function ResultContent() {
       });
 
       if (isFree) {
-        // 무료 쿠폰: 결제 없이 바로 완료 처리
+        // 1. 결과 저장 확정
         await handleFreeCouponPayment();
 
-        // 쿠폰 수량 차감
-        await fetch("/api/coupon/use", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ code, serviceType: "face" }),
-        });
+        // 2. 결과 확정 후 쿠폰 수량 차감
+        try {
+          await fetch("/api/coupon/use", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ code, serviceType: "face" }),
+          });
+        } catch (e) {
+          console.error("쿠폰 수량 차감 실패:", e);
+        }
 
-        // 무료 쿠폰 결제 성공 이벤트 트래킹
+        // 3. 이벤트 트래킹
         trackPaymentSuccess("face", {
           id: result?.id,
           order_id: `free_coupon_${Date.now()}`,
@@ -668,6 +674,8 @@ function ResultContent() {
     } catch (error) {
       console.error("쿠폰 검증 오류:", error);
       setCouponError("쿠폰 확인 중 오류가 발생했습니다");
+    } finally {
+      isApplyingCouponRef.current = false;
     }
   }, [couponCode, handleFreeCouponPayment, result?.id, totalPrice]);
 
