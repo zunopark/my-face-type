@@ -261,6 +261,9 @@ function NewYearDetailContent() {
   > | null>(null);
   const isApplyingCouponRef = useRef(false);
 
+  // T/F 성향 선택
+  const [personalityType, setPersonalityType] = useState<"T" | "F">("F");
+
   // 학생 할인 모달 상태
   const [showStudentModal, setShowStudentModal] = useState(false);
   const [studentCouponApplied, setStudentCouponApplied] = useState(false);
@@ -401,6 +404,7 @@ function NewYearDetailContent() {
           ...data,
           paid: true,
           paidAt: new Date().toISOString(),
+          personalityType,
           paymentInfo: {
             method: "coupon",
             price: 0,
@@ -494,6 +498,12 @@ function NewYearDetailContent() {
   const handlePaymentRequest = useCallback(async () => {
     if (!paymentWidgetRef.current || !data) return;
 
+    // T/F 성향 선택 저장 (결제 리다이렉트 전)
+    await saveNewYearRecord({
+      ...data,
+      personalityType,
+    });
+
     const basePrice = studentCouponApplied
       ? PAYMENT_CONFIG.studentPrice
       : PAYMENT_CONFIG.price;
@@ -538,7 +548,7 @@ function NewYearDetailContent() {
     } catch (err) {
       console.error("결제 오류:", err);
     }
-  }, [data, appliedCoupon, studentCouponApplied]);
+  }, [data, appliedCoupon, studentCouponApplied, personalityType]);
 
   // 결제 모달 닫기
   const closePaymentModal = useCallback(() => {
@@ -876,26 +886,15 @@ function NewYearDetailContent() {
                 ) : (
                   <div className={`${styles["payment-row"]} ${styles.discount}`}>
                     <span className={styles["payment-row-label"]}>
-                      병오년(丙午年) 1월 특가 할인
+                      병오년(丙午年) 2월 특가 할인
                     </span>
-                    <div className={styles["payment-row-discount-value"]}>
-                      <span className={styles["discount-badge"]}>
-                        {Math.floor(
-                          (1 -
-                            PAYMENT_CONFIG.price /
-                            PAYMENT_CONFIG.originalPrice) *
-                          100
-                        )}
-                        %
-                      </span>
-                      <span className={styles["discount-amount"]}>
-                        -
-                        {(
-                          PAYMENT_CONFIG.originalPrice - PAYMENT_CONFIG.price
-                        ).toLocaleString()}
-                        원
-                      </span>
-                    </div>
+                    <span className={styles["discount-amount"]}>
+                      -
+                      {(
+                        PAYMENT_CONFIG.originalPrice - PAYMENT_CONFIG.price
+                      ).toLocaleString()}
+                      원
+                    </span>
                   </div>
                 )}
 
@@ -967,6 +966,19 @@ function NewYearDetailContent() {
                   style={{ padding: 0, margin: 0 }}
                 />
                 <div id="new-year-agreement" />
+              </div>
+              {/* 직설 분석 선택 */}
+              <div className={styles["spicy-section"]}>
+                <label className={styles["spicy-label"]}>
+                  <span className={styles["spicy-text"]}>직설적으로 말해줘도 괜찮아요</span>
+                  <input
+                    type="checkbox"
+                    checked={personalityType === "T"}
+                    onChange={(e) => setPersonalityType(e.target.checked ? "T" : "F")}
+                    className={styles["spicy-checkbox"]}
+                  />
+                  <span className={styles["spicy-toggle"]} />
+                </label>
               </div>
               <button
                 className={styles["payment-final-btn"]}

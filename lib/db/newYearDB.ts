@@ -84,6 +84,8 @@ export interface NewYearRecord {
     couponCode?: string;
     isDiscount?: boolean;
   };
+  // T/F 성향 선택
+  personalityType?: "T" | "F" | null;
 }
 
 // DB 열기
