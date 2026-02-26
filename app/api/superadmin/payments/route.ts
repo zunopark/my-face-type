@@ -47,7 +47,7 @@ export async function GET(request: NextRequest) {
     const results = [];
 
     for (const row of sajuData || []) {
-      const userInfo = row.user_info as { userName?: string } | null;
+      const userInfo = row.user_info as { userName?: string; wish2026?: string; userConcern?: string } | null;
       const paymentInfo = row.payment_info as {
         price?: number;
         couponCode?: string;
@@ -56,6 +56,7 @@ export async function GET(request: NextRequest) {
         id: row.id,
         service_type: row.service_type,
         user_name: userInfo?.userName || "-",
+        wish: userInfo?.wish2026 || userInfo?.userConcern || null,
         price: paymentInfo?.price || 0,
         coupon_code: paymentInfo?.couponCode || null,
         influencer: infMap.get(row.utm_source) || null,
@@ -75,6 +76,7 @@ export async function GET(request: NextRequest) {
         id: row.id,
         service_type: row.service_type,
         user_name: "-",
+        wish: null,
         price: paymentInfo?.price || 0,
         coupon_code: paymentInfo?.couponCode || null,
         influencer: infMap.get(row.utm_source) || null,

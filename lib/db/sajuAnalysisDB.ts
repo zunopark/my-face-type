@@ -106,10 +106,9 @@ export async function getSajuAnalysisById(
     .from("saju_analyses")
     .select("*")
     .eq("id", id)
-    .single();
+    .maybeSingle();
 
   if (error) {
-    if (error.code === "PGRST116") return null; // 결과 없음
     console.error("분석 조회 실패:", error);
     return null;
   }

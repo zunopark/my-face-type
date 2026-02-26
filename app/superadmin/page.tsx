@@ -52,6 +52,7 @@ interface AllPayment {
   id: string;
   service_type: string;
   user_name: string;
+  wish: string | null;
   price: number;
   coupon_code: string | null;
   influencer: string | null;
@@ -1269,6 +1270,7 @@ export default function SuperAdminPage() {
                       <th>날짜</th>
                       <th style={{ minWidth: 100 }}>서비스</th>
                       <th style={{ minWidth: 80 }}>이름</th>
+                      <th style={{ minWidth: 120 }}>고민/소원</th>
                       <th>인플루언서</th>
                       <th>쿠폰</th>
                       <th className={styles.text_right}>금액</th>
@@ -1292,6 +1294,10 @@ export default function SuperAdminPage() {
                           </td>
                           <td>{SERVICE_LABELS[p.service_type] || p.service_type}</td>
                           <td>{p.user_name}</td>
+                          <td className={styles.wish_cell}>
+                            <span className={styles.wish_text}>{p.wish || "-"}</span>
+                            {p.wish && <div className={styles.wish_tooltip}>{p.wish}</div>}
+                          </td>
                           <td>{p.influencer || "-"}</td>
                           <td>{p.coupon_code ? (
                             <span className={`${styles.badge} ${styles.badge_free}`}>{p.coupon_code}</span>

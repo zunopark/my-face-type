@@ -3347,9 +3347,9 @@ function WaitingCard({
     analysisStartedAt ? new Date(analysisStartedAt).getTime() : Date.now()
   );
 
-  // 4분(240초) 동안 0-99% 불균일하게 진행
+  // 8분(480초) 동안 0-99% 불균일하게 진행
   useEffect(() => {
-    const totalDuration = 240000; // 4분
+    const totalDuration = 480000; // 8분
     const maxProgress = 99;
 
     // 이미 경과한 시간 계산
