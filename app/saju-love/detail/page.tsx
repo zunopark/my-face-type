@@ -226,6 +226,7 @@ function SajuDetailContent() {
   const [showPaymentModal, setShowPaymentModal] = useState(false);
   const [couponCode, setCouponCode] = useState("");
   const [couponError, setCouponError] = useState("");
+  const [isApplyingCoupon, setIsApplyingCoupon] = useState(false);
   const [appliedCoupon, setAppliedCoupon] = useState<{
     code: string;
     discount: number;
@@ -450,9 +451,10 @@ function SajuDetailContent() {
 
   // 쿠폰 적용
   const handleCouponSubmit = useCallback(async () => {
-    if (!data || !couponCode.trim()) return;
+    if (!data || !couponCode.trim() || isApplyingCoupon) return;
 
     const code = couponCode.trim();
+    setIsApplyingCoupon(true);
 
     try {
       const res = await fetch("/api/coupon/validate", {
@@ -507,6 +509,39 @@ function SajuDetailContent() {
           coupon_code: code,
         });
 
+        // Supabase 저장 (무료 쿠폰)
+        try {
+          const existsInSupabase = await getSajuAnalysisByShareId(data.id);
+          if (!existsInSupabase) {
+            await createSajuAnalysis({
+              service_type: "saju_love",
+              id: data.id,
+              user_info: {
+                userName: data.input.userName,
+                gender: data.input.gender,
+                date: data.input.date,
+                calendar: data.input.calendar as "solar" | "lunar",
+                time: data.input.time,
+                userConcern: data.input.userConcern,
+                status: data.input.status,
+              },
+              raw_saju_data: data.rawSajuData || null,
+              analysis_result: null,
+              image_paths: [],
+              is_paid: true,
+              paid_at: new Date().toISOString(),
+              payment_info: {
+                method: "coupon",
+                price: 0,
+                couponCode: code,
+                isDiscount: true,
+              },
+            });
+          }
+        } catch (e) {
+          console.error("무료 쿠폰 Supabase 저장 실패:", e);
+        }
+
         // 결과 페이지로 이동
         router.push(`/saju-love/result?id=${data.id}`);
       } else {
@@ -521,8 +556,10 @@ function SajuDetailContent() {
     } catch (error) {
       console.error("쿠폰 검증 오류:", error);
       setCouponError("쿠폰 확인 중 오류가 발생했습니다");
+    } finally {
+      setIsApplyingCoupon(false);
     }
-  }, [data, couponCode, router]);
+  }, [data, couponCode, isApplyingCoupon, router]);
 
   // 결제 요청
   const handlePaymentRequest = useCallback(async () => {
@@ -1087,9 +1124,9 @@ function SajuDetailContent() {
                     <button
                       className={styles["coupon-submit-btn"]}
                       onClick={handleCouponSubmit}
-                      disabled={!!appliedCoupon}
+                      disabled={!!appliedCoupon || isApplyingCoupon}
                     >
-                      {appliedCoupon ? "적용됨" : "적용"}
+                      {isApplyingCoupon ? "확인 중..." : appliedCoupon ? "적용됨" : "적용"}
                     </button>
                   </div>
                   {couponError && (

@@ -15,6 +15,10 @@ import {
   NewYearRecord,
   saveNewYearRecord,
 } from "@/lib/db/newYearDB";
+import {
+  createSajuAnalysis,
+  getSajuAnalysisByShareId,
+} from "@/lib/db/sajuAnalysisDB";
 import styles from "./detail.module.css";
 
 // TossPayments 타입 선언
@@ -247,6 +251,7 @@ function NewYearDetailContent() {
   const [showPaymentModal, setShowPaymentModal] = useState(false);
   const [couponCode, setCouponCode] = useState("");
   const [couponError, setCouponError] = useState("");
+  const [isApplyingCoupon, setIsApplyingCoupon] = useState(false);
   const [appliedCoupon, setAppliedCoupon] = useState<{
     code: string;
     discount: number;
@@ -365,9 +370,10 @@ function NewYearDetailContent() {
 
   // 쿠폰 적용
   const handleCouponSubmit = useCallback(async () => {
-    if (!data || !couponCode.trim()) return;
+    if (!data || !couponCode.trim() || isApplyingCoupon) return;
 
     const code = couponCode.trim();
+    setIsApplyingCoupon(true);
 
     try {
       const res = await fetch("/api/coupon/validate", {
@@ -421,6 +427,40 @@ function NewYearDetailContent() {
           coupon_code: code,
         });
 
+        // Supabase 저장 (무료 쿠폰)
+        try {
+          const existsInSupabase = await getSajuAnalysisByShareId(data.id);
+          if (!existsInSupabase) {
+            await createSajuAnalysis({
+              service_type: "new_year",
+              id: data.id,
+              user_info: {
+                userName: data.input.userName,
+                gender: data.input.gender,
+                date: data.input.date,
+                calendar: data.input.calendar as "solar" | "lunar",
+                time: data.input.time,
+                jobStatus: data.input.jobStatus,
+                relationshipStatus: data.input.relationshipStatus,
+                wish2026: data.input.wish2026,
+              },
+              raw_saju_data: data.rawSajuData || null,
+              analysis_result: data.analysis as unknown as import("@/lib/db/sajuAnalysisDB").AnalysisResult | null,
+              image_paths: [],
+              is_paid: true,
+              paid_at: new Date().toISOString(),
+              payment_info: {
+                method: "coupon",
+                price: 0,
+                couponCode: code,
+                isDiscount: true,
+              },
+            });
+          }
+        } catch (e) {
+          console.error("무료 쿠폰 Supabase 저장 실패:", e);
+        }
+
         // 결과 페이지로 이동
         router.push(`/new-year/result?id=${data.id}`);
         return;
@@ -438,8 +478,10 @@ function NewYearDetailContent() {
     } catch (error) {
       console.error("쿠폰 검증 오류:", error);
       setCouponError("쿠폰 확인 중 오류가 발생했습니다");
+    } finally {
+      setIsApplyingCoupon(false);
     }
-  }, [data, couponCode, router]);
+  }, [data, couponCode, isApplyingCoupon, router]);
 
   // 결제 요청
   const handlePaymentRequest = useCallback(async () => {
@@ -901,9 +943,9 @@ function NewYearDetailContent() {
                     <button
                       className={styles["coupon-submit-btn"]}
                       onClick={handleCouponSubmit}
-                      disabled={!!appliedCoupon}
+                      disabled={!!appliedCoupon || isApplyingCoupon}
                     >
-                      {appliedCoupon ? "적용됨" : "적용"}
+                      {isApplyingCoupon ? "확인 중..." : appliedCoupon ? "적용됨" : "적용"}
                     </button>
                   </div>
                   {couponError && (

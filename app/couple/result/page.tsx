@@ -116,6 +116,7 @@ function CoupleResultContent() {
   // 쿠폰 관련 상태
   const [couponCode, setCouponCode] = useState("");
   const [couponError, setCouponError] = useState("");
+  const [isApplyingCoupon, setIsApplyingCoupon] = useState(false);
   const [appliedCoupon, setAppliedCoupon] = useState<{
     code: string;
     discount: number;
@@ -417,9 +418,10 @@ function CoupleResultContent() {
 
   // 쿠폰 검증 및 적용
   const handleCouponSubmit = useCallback(async () => {
-    if (!couponCode.trim()) return;
+    if (!couponCode.trim() || isApplyingCoupon) return;
 
     const code = couponCode.trim();
+    setIsApplyingCoupon(true);
 
     try {
       const res = await fetch("/api/coupon/validate", {
@@ -483,8 +485,10 @@ function CoupleResultContent() {
     } catch (error) {
       console.error("쿠폰 검증 오류:", error);
       setCouponError("쿠폰 확인 중 오류가 발생했습니다");
+    } finally {
+      setIsApplyingCoupon(false);
     }
-  }, [couponCode, handleFreeCouponPayment, result?.id]);
+  }, [couponCode, isApplyingCoupon, handleFreeCouponPayment, result?.id]);
 
   // 결제 모달 열기
   const openPaymentModal = () => {
@@ -924,9 +928,9 @@ function CoupleResultContent() {
                   <button
                     className="coupon-submit-btn"
                     onClick={handleCouponSubmit}
-                    disabled={!!appliedCoupon}
+                    disabled={!!appliedCoupon || isApplyingCoupon}
                   >
-                    {appliedCoupon ? "적용됨" : "적용"}
+                    {isApplyingCoupon ? "확인 중..." : appliedCoupon ? "적용됨" : "적용"}
                   </button>
                 </div>
                 {couponError && <div className="coupon-error">{couponError}</div>}
