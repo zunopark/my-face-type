@@ -1,5 +1,6 @@
 import { supabaseAdmin as supabase } from "@/lib/supabase";
 import { getInfluencerBySlug } from "./influencerDB";
+import { kstMonthRange } from "@/lib/utils";
 
 export interface RecordVisitInput {
   utm_source?: string;
@@ -57,10 +58,7 @@ export async function getMonthlySettlement(
   month: number,
   adminId?: string
 ): Promise<SettlementRow[]> {
-  // 해당 월의 시작/끝 날짜 (KST 기준)
-  const KST_OFFSET = 9 * 60 * 60 * 1000;
-  const startDate = new Date(Date.UTC(year, month - 1, 1) - KST_OFFSET).toISOString();
-  const endDate = new Date(Date.UTC(year, month, 1) - KST_OFFSET).toISOString();
+  const { startDate, endDate } = kstMonthRange(year, month);
 
   // 1. 활성 인플루언서 목록
   let infQuery = supabase
@@ -79,64 +77,63 @@ export async function getMonthlySettlement(
     return [];
   }
 
-  const results: SettlementRow[] = [];
+  // 모든 인플루언서 데이터를 병렬로 조회
+  const settled = await Promise.all(
+    influencers.map(async (inf) => {
+      const [{ count: visitCount }, { data: sajuPayments }, { data: facePayments }] =
+        await Promise.all([
+          supabase
+            .from("utm_visits")
+            .select("id", { count: "exact", head: true })
+            .eq("influencer_id", inf.id)
+            .gte("visited_at", startDate)
+            .lt("visited_at", endDate),
+          supabase
+            .from("saju_analyses")
+            .select("payment_info")
+            .eq("influencer_id", inf.id)
+            .eq("is_paid", true)
+            .eq("is_refunded", false)
+            .gte("paid_at", startDate)
+            .lt("paid_at", endDate),
+          supabase
+            .from("face_analyses")
+            .select("payment_info")
+            .eq("influencer_id", inf.id)
+            .eq("is_paid", true)
+            .eq("is_refunded", false)
+            .gte("paid_at", startDate)
+            .lt("paid_at", endDate),
+        ]);
 
-  for (const inf of influencers) {
-    // 2. 방문수
-    const { count: visitCount } = await supabase
-      .from("utm_visits")
-      .select("id", { count: "exact", head: true })
-      .eq("influencer_id", inf.id)
-      .gte("visited_at", startDate)
-      .lt("visited_at", endDate);
+      const allPayments = [...(sajuPayments || []), ...(facePayments || [])];
+      const paymentCount = allPayments.length;
+      const totalRevenue = allPayments.reduce((sum, p) => {
+        const price = (p.payment_info as { price?: number } | null)?.price || 0;
+        return sum + price;
+      }, 0);
 
-    // 3. 사주 결제 건수 및 매출
-    const { data: sajuPayments } = await supabase
-      .from("saju_analyses")
-      .select("payment_info")
-      .eq("influencer_id", inf.id)
-      .eq("is_paid", true)
-      .eq("is_refunded", false)
-      .gte("paid_at", startDate)
-      .lt("paid_at", endDate);
+      const rsPercentage = Number(inf.rs_percentage);
+      const settlementAmount = Math.round(totalRevenue * rsPercentage / 100);
 
-    // 4. 관상 결제 건수 및 매출
-    const { data: facePayments } = await supabase
-      .from("face_analyses")
-      .select("payment_info")
-      .eq("influencer_id", inf.id)
-      .eq("is_paid", true)
-      .eq("is_refunded", false)
-      .gte("paid_at", startDate)
-      .lt("paid_at", endDate);
+      if (visitCount || paymentCount > 0) {
+        return {
+          influencer_id: inf.id,
+          influencer_name: inf.name,
+          slug: inf.slug,
+          platform: inf.platform,
+          visit_count: visitCount || 0,
+          payment_count: paymentCount,
+          total_revenue: totalRevenue,
+          rs_percentage: rsPercentage,
+          settlement_amount: settlementAmount,
+        } as SettlementRow;
+      }
+      return null;
+    })
+  );
 
-    const allPayments = [...(sajuPayments || []), ...(facePayments || [])];
-    const paymentCount = allPayments.length;
-    const totalRevenue = allPayments.reduce((sum, p) => {
-      const price =
-        (p.payment_info as { price?: number } | null)?.price || 0;
-      return sum + price;
-    }, 0);
-
-    const rsPercentage = Number(inf.rs_percentage);
-    const settlementAmount = Math.round(totalRevenue * rsPercentage / 100);
-
-    if (visitCount || paymentCount > 0) {
-      results.push({
-        influencer_id: inf.id,
-        influencer_name: inf.name,
-        slug: inf.slug,
-        platform: inf.platform,
-        visit_count: visitCount || 0,
-        payment_count: paymentCount,
-        total_revenue: totalRevenue,
-        rs_percentage: rsPercentage,
-        settlement_amount: settlementAmount,
-      });
-    }
-  }
-
-  return results;
+  return settled.filter((r): r is SettlementRow => r !== null);
 }
 
 export interface PaymentDetail {

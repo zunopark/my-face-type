@@ -84,6 +84,13 @@ interface SettlementRow {
   settlement_amount: number;
 }
 
+interface SettlementStatus {
+  influencer_id: string;
+  year: number;
+  month: number;
+  amount: number;
+}
+
 const SERVICE_LABELS: Record<string, string> = {
   face: "관상",
   couple: "커플궁합",
@@ -125,6 +132,7 @@ const EMPTY_INF_FORM = {
   contact: "",
   memo: "",
   rs_percentage: 40,
+  password: "",
 };
 
 const BASE_URL = "https://yangban.ai";
@@ -194,6 +202,7 @@ export default function SuperAdminPage() {
   const [settlementYear, setSettlementYear] = useState(new Date().getFullYear());
   const [settlementMonth, setSettlementMonth] = useState(new Date().getMonth() + 1);
   const [settlementLoading, setSettlementLoading] = useState(false);
+  const [settlementStatuses, setSettlementStatuses] = useState<Map<string, SettlementStatus>>(new Map());
 
   // All payments state
   const [allPayments, setAllPayments] = useState<AllPayment[]>([]);
@@ -520,17 +529,49 @@ export default function SuperAdminPage() {
   const fetchSettlement = useCallback(async () => {
     setSettlementLoading(true);
     try {
-      const res = await fetch(
-        `/api/admin/settlement?year=${settlementYear}&month=${settlementMonth}`
-      );
-      const data = await res.json();
-      setSettlement(Array.isArray(data) ? data : []);
+      const [settleRes, statusRes] = await Promise.all([
+        fetch(`/api/admin/settlement?year=${settlementYear}&month=${settlementMonth}`),
+        fetch(`/api/admin/settlements?year=${settlementYear}&month=${settlementMonth}`),
+      ]);
+      const settleData = await settleRes.json();
+      const statusData = await statusRes.json();
+      setSettlement(Array.isArray(settleData) ? settleData : []);
+      const map = new Map<string, SettlementStatus>();
+      if (Array.isArray(statusData)) {
+        for (const s of statusData) map.set(s.influencer_id, s);
+      }
+      setSettlementStatuses(map);
     } catch (err) {
       console.error("정산 데이터 조회 오류:", err);
     } finally {
       setSettlementLoading(false);
     }
   }, [settlementYear, settlementMonth]);
+
+  const handleSaveSettlementAmount = async (influencerId: string, amount: number) => {
+    try {
+      const res = await fetch("/api/admin/settlements", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          influencer_id: influencerId,
+          year: settlementYear,
+          month: settlementMonth,
+          amount,
+        }),
+      });
+      const data = await res.json();
+      if (data.influencer_id) {
+        setSettlementStatuses((prev) => {
+          const next = new Map(prev);
+          next.set(influencerId, data);
+          return next;
+        });
+      }
+    } catch (err) {
+      console.error("정산 금액 저장 오류:", err);
+    }
+  };
 
   // ─── 전체 결제 내역 ──────────────────────────────
 
@@ -801,6 +842,18 @@ export default function SuperAdminPage() {
                     />
                   </div>
                   <div className={styles.form_field}>
+                    <label className={styles.form_label}>비밀번호</label>
+                    <input
+                      className={styles.form_input}
+                      type="password"
+                      placeholder="인플루언서 로그인용 비밀번호"
+                      value={infFormData.password}
+                      onChange={(e) =>
+                        setInfFormData({ ...infFormData, password: e.target.value })
+                      }
+                    />
+                  </div>
+                  <div className={styles.form_field}>
                     <label className={styles.form_label}>메모</label>
                     <input
                       className={styles.form_input}
@@ -954,24 +1007,45 @@ export default function SuperAdminPage() {
                         <th className={styles.text_right}>총 매출</th>
                         <th className={styles.text_right}>RS%</th>
                         <th className={styles.text_right}>정산액</th>
+                        <th className={styles.text_right}>정산 금액</th>
                       </tr>
                     </thead>
                     <tbody>
-                      {settlement.map((row) => (
-                        <tr key={row.influencer_id}>
-                          <td>{row.influencer_name}</td>
-                          <td className={styles.text_right}>
-                            {row.visit_count.toLocaleString()}
-                          </td>
-                          <td className={styles.text_right}>
-                            {row.payment_count.toLocaleString()}
-                          </td>
-                          <td className={styles.text_right}>{row.visit_count > 0 ? ((row.payment_count / row.visit_count) * 100).toFixed(1) : "0.0"}%</td>
-                          <td className={styles.text_right}>{row.total_revenue.toLocaleString()}원</td>
-                          <td className={styles.text_right}>{row.rs_percentage}%</td>
-                          <td className={styles.text_right}>{row.settlement_amount.toLocaleString()}원</td>
-                        </tr>
-                      ))}
+                      {settlement.map((row) => {
+                        const status = settlementStatuses.get(row.influencer_id);
+                        return (
+                          <tr key={row.influencer_id}>
+                            <td>{row.influencer_name}</td>
+                            <td className={styles.text_right}>
+                              {row.visit_count.toLocaleString()}
+                            </td>
+                            <td className={styles.text_right}>
+                              {row.payment_count.toLocaleString()}
+                            </td>
+                            <td className={styles.text_right}>{row.visit_count > 0 ? ((row.payment_count / row.visit_count) * 100).toFixed(1) : "0.0"}%</td>
+                            <td className={styles.text_right}>{row.total_revenue.toLocaleString()}원</td>
+                            <td className={styles.text_right}>{row.rs_percentage}%</td>
+                            <td className={styles.text_right}>{row.settlement_amount.toLocaleString()}원</td>
+                            <td className={styles.text_right}>
+                              <input
+                                type="number"
+                                className={styles.settlement_input}
+                                defaultValue={status?.amount ?? 0}
+                                key={`${row.influencer_id}-${status?.amount}`}
+                                onBlur={(e) => {
+                                  const val = Number(e.target.value) || 0;
+                                  if (val !== (status?.amount ?? 0)) {
+                                    handleSaveSettlementAmount(row.influencer_id, val);
+                                  }
+                                }}
+                                onKeyDown={(e) => {
+                                  if (e.key === "Enter") (e.target as HTMLInputElement).blur();
+                                }}
+                              />
+                            </td>
+                          </tr>
+                        );
+                      })}
                     </tbody>
                     <tfoot>
                       <tr className={styles.table_foot}>
@@ -982,6 +1056,9 @@ export default function SuperAdminPage() {
                         <td className={styles.text_right}>{settlement.reduce((s, r) => s + r.total_revenue, 0).toLocaleString()}원</td>
                         <td className={styles.text_right}></td>
                         <td className={styles.text_right}>{settlement.reduce((s, r) => s + r.settlement_amount, 0).toLocaleString()}원</td>
+                        <td className={styles.text_right}>
+                          {Array.from(settlementStatuses.values()).reduce((s, r) => s + (r.amount || 0), 0).toLocaleString()}원
+                        </td>
                       </tr>
                     </tfoot>
                   </table>
@@ -1288,7 +1365,7 @@ export default function SuperAdminPage() {
                             {(() => {
                               const d = new Date(p.paid_at);
                               const date = d.toLocaleDateString("ko-KR", { year: "numeric", month: "2-digit", day: "2-digit" });
-                              const time = d.toLocaleTimeString("ko-KR", { hour: "2-digit", minute: "2-digit" });
+                              const time = d.toLocaleTimeString("ko-KR", { hour: "2-digit", minute: "2-digit", second: "2-digit", hour12: false });
                               return <>{date}<br />{time}</>;
                             })()}
                           </td>
@@ -1656,6 +1733,18 @@ export default function SuperAdminPage() {
                   </select>
                 </div>
                 <div className={styles.form_field_full}>
+                  <label className={styles.form_label}>비밀번호 변경</label>
+                  <input
+                    className={styles.form_input}
+                    type="password"
+                    placeholder="변경할 비밀번호 (비워두면 유지)"
+                    value={(editInfData.password as string) || ""}
+                    onChange={(e) =>
+                      setEditInfData({ ...editInfData, password: e.target.value })
+                    }
+                  />
+                </div>
+                <div className={styles.form_field_full}>
                   <label className={styles.form_label}>메모</label>
                   <textarea
                     className={styles.form_textarea}
@@ -1716,10 +1805,14 @@ export default function SuperAdminPage() {
                       {paymentDetails.map((p) => (
                         <tr key={p.id}>
                           <td>
-                            {new Date(p.paid_at).toLocaleDateString("ko-KR", {
+                            {new Date(p.paid_at).toLocaleString("ko-KR", {
                               year: "numeric",
                               month: "2-digit",
                               day: "2-digit",
+                              hour: "2-digit",
+                              minute: "2-digit",
+                              second: "2-digit",
+                              hour12: false,
                             })}
                           </td>
                           <td>{SERVICE_LABELS[p.service_type] || p.service_type}</td>

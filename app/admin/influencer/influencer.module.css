@@ -288,7 +288,7 @@
 /* Summary Cards */
 .summary_cards {
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
+  grid-template-columns: repeat(3, 1fr);
   gap: 12px;
   margin-bottom: 28px;
 }
@@ -302,6 +302,7 @@
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
 }
 
+
 .summary_label {
   font-size: 12px;
   color: #8b7355;
@@ -312,6 +313,31 @@
   font-size: 15px;
   font-weight: 700;
   color: #4a3c2a;
+}
+
+.settlement_row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 4px 0;
+}
+
+.settlement_row_label {
+  font-size: 12px;
+  color: #8b7355;
+}
+
+.settlement_row_value {
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.settlement_row_value.settled_value {
+  color: #2e7d32;
+}
+
+.settlement_row_value.pending_value {
+  color: #e67e22;
 }
 
 /* Settlement Section */
@@ -485,6 +511,7 @@
     grid-template-columns: repeat(2, 1fr);
   }
 
+
   .settlement_grid {
     grid-template-columns: repeat(3, 1fr);
   }
@@ -498,3 +525,4 @@
     padding: 8px 4px;
   }
 }
+

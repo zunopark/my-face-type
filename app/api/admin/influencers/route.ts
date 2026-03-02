@@ -33,7 +33,7 @@ export async function GET(request: NextRequest) {
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { name, slug, platform, contact, memo, rs_percentage, admin_id } = body;
+    const { name, slug, platform, contact, memo, rs_percentage, password, admin_id } = body;
 
     if (!name || !slug) {
       return NextResponse.json(
@@ -49,6 +49,7 @@ export async function POST(request: NextRequest) {
       contact,
       memo,
       rs_percentage,
+      password,
       admin_id,
     });
 
@@ -68,6 +69,11 @@ export async function PATCH(request: NextRequest) {
 
     if (!id) {
       return NextResponse.json({ error: "ID는 필수입니다." }, { status: 400 });
+    }
+
+    // 빈 비밀번호는 업데이트에서 제외 (기존 유지)
+    if ("password" in updates && !updates.password) {
+      delete updates.password;
     }
 
     const result = await updateInfluencer(id, updates, admin_id);

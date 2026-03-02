@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useCallback } from "react";
 import styles from "./influencer.module.css";
+import { supabase } from "@/lib/supabase";
 
 interface InfluencerInfo {
   id: string;
@@ -14,6 +15,8 @@ interface Summary {
   total_visits: number;
   total_payments: number;
   total_revenue: number;
+  total_settled: number;
+  total_pending: number;
 }
 
 interface SettlementData {
@@ -134,16 +137,29 @@ export default function InfluencerPage() {
     sessionStorage.removeItem("influencer_auth");
   };
 
-  // Fetch summary
+  // Fetch summary + settlement totals
   const fetchSummary = useCallback(async () => {
     if (!influencer) return;
     setSummaryLoading(true);
     try {
-      const res = await fetch(
-        `/api/admin/influencer/data?influencer_id=${influencer.id}&type=summary`
-      );
-      const data = await res.json();
-      setSummary(data);
+      const [summaryRes, settlementsRes] = await Promise.all([
+        fetch(`/api/admin/influencer/data?influencer_id=${influencer.id}&type=summary`),
+        fetch(`/api/admin/settlements?influencer_id=${influencer.id}`),
+      ]);
+      const data = await summaryRes.json();
+      const settlements = await settlementsRes.json();
+
+      const rsPercent = influencer.rs_percentage || 0;
+      const totalSettlementAmount = Math.round(data.total_revenue * rsPercent / 100);
+      const settledAmount = Array.isArray(settlements)
+        ? settlements.reduce((sum: number, s: { amount: number }) => sum + (s.amount || 0), 0)
+        : 0;
+
+      setSummary({
+        ...data,
+        total_settled: settledAmount,
+        total_pending: totalSettlementAmount - settledAmount,
+      });
     } catch (err) {
       console.error("Summary error:", err);
     } finally {
@@ -229,6 +245,36 @@ export default function InfluencerPage() {
       fetchPayments();
     }
   }, [isAuthenticated, influencer, fetchSettlement, fetchPayments]);
+
+  // Supabase Realtime subscriptions
+  useEffect(() => {
+    if (!isAuthenticated || !influencer) return;
+
+    const channel = supabase
+      .channel(`influencer-realtime-${influencer.id}`)
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'saju_analyses', filter: `influencer_id=eq.${influencer.id}` }, () => {
+        fetchSummary();
+        fetchSettlement();
+        fetchPayments();
+      })
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'face_analyses', filter: `influencer_id=eq.${influencer.id}` }, () => {
+        fetchSummary();
+        fetchSettlement();
+        fetchPayments();
+      })
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'utm_visits', filter: `influencer_id=eq.${influencer.id}` }, () => {
+        fetchSummary();
+        fetchSettlement();
+      })
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'influencer_settlements', filter: `influencer_id=eq.${influencer.id}` }, () => {
+        fetchSummary();
+      })
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, [isAuthenticated, influencer, fetchSummary, fetchSettlement, fetchPayments]);
 
   // Loading check
   if (!authChecked) {
@@ -363,35 +409,45 @@ export default function InfluencerPage() {
         ) : summary ? (
           <div className={styles.summary_cards}>
             <div className={styles.summary_card}>
-              <div className={styles.summary_label}>총 방문수</div>
-              <div className={styles.summary_value}>
-                {summary.total_visits.toLocaleString()}
+              <div className={styles.settlement_row}>
+                <span className={styles.settlement_row_label}>총 방문수</span>
+                <span className={styles.settlement_row_value}>
+                  {summary.total_visits.toLocaleString()}
+                </span>
+              </div>
+              <div className={styles.settlement_row}>
+                <span className={styles.settlement_row_label}>총 결제 (전환율 {summary.total_visits > 0 ? ((summary.total_payments / summary.total_visits) * 100).toFixed(1) : "0.0"}%)</span>
+                <span className={styles.settlement_row_value}>
+                  {summary.total_payments.toLocaleString()}건
+                </span>
               </div>
             </div>
             <div className={styles.summary_card}>
-              <div className={styles.summary_label}>총 결제</div>
-              <div className={styles.summary_value}>
-                {summary.total_payments.toLocaleString()}건
+              <div className={styles.settlement_row}>
+                <span className={styles.settlement_row_label}>총 매출</span>
+                <span className={styles.settlement_row_value}>
+                  {summary.total_revenue.toLocaleString()}원
+                </span>
+              </div>
+              <div className={styles.settlement_row}>
+                <span className={styles.settlement_row_label}>총 정산액 (RS {rsPercent}%)</span>
+                <span className={styles.settlement_row_value}>
+                  {settlementAmount.toLocaleString()}원
+                </span>
               </div>
             </div>
             <div className={styles.summary_card}>
-              <div className={styles.summary_label}>전환율</div>
-              <div className={styles.summary_value}>
-                {summary.total_visits > 0
-                  ? ((summary.total_payments / summary.total_visits) * 100).toFixed(1)
-                  : "0.0"}%
+              <div className={styles.settlement_row}>
+                <span className={styles.settlement_row_label}>정산 예정</span>
+                <span className={`${styles.settlement_row_value} ${styles.pending_value}`}>
+                  {(summary.total_pending || 0).toLocaleString()}원
+                </span>
               </div>
-            </div>
-            <div className={styles.summary_card}>
-              <div className={styles.summary_label}>총 매출</div>
-              <div className={styles.summary_value}>
-                {summary.total_revenue.toLocaleString()}원
-              </div>
-            </div>
-            <div className={styles.summary_card}>
-              <div className={styles.summary_label}>총 정산액 (RS {rsPercent}%)</div>
-              <div className={styles.summary_value}>
-                {settlementAmount.toLocaleString()}원
+              <div className={styles.settlement_row}>
+                <span className={styles.settlement_row_label}>정산 완료</span>
+                <span className={`${styles.settlement_row_value} ${styles.settled_value}`}>
+                  {(summary.total_settled || 0).toLocaleString()}원
+                </span>
               </div>
             </div>
           </div>
@@ -484,10 +540,14 @@ export default function InfluencerPage() {
                   {payments.map((p) => (
                     <tr key={p.id}>
                       <td>
-                        {new Date(p.paid_at).toLocaleDateString("ko-KR", {
+                        {new Date(p.paid_at).toLocaleString("ko-KR", {
                           year: "numeric",
                           month: "2-digit",
                           day: "2-digit",
+                          hour: "2-digit",
+                          minute: "2-digit",
+                          second: "2-digit",
+                          hour12: false,
                         })}
                       </td>
                       <td>

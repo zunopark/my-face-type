@@ -862,3 +862,19 @@
     flex-wrap: wrap;
   }
 }
+
+/* 정산 금액 입력 */
+.settlement_input {
+  width: 90px;
+  padding: 4px 8px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 12px;
+  text-align: right;
+  background: #fff;
+}
+
+.settlement_input:focus {
+  outline: none;
+  border-color: #4A90D9;
+}

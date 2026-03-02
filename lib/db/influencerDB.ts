@@ -20,6 +20,7 @@ export interface CreateInfluencerInput {
   contact?: string;
   memo?: string;
   rs_percentage?: number;
+  password?: string;
   admin_id?: string;
 }
 
@@ -30,6 +31,7 @@ export interface UpdateInfluencerInput {
   contact?: string;
   memo?: string;
   rs_percentage?: number;
+  password?: string;
   is_active?: boolean;
 }
 

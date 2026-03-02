@@ -1,13 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { supabaseAdmin as supabase } from "@/lib/supabase";
-
-// KST(UTC+9) 기준 월 시작/끝 → UTC ISO string
-function kstMonthRange(year: number, month: number) {
-  const KST_OFFSET = 9 * 60 * 60 * 1000;
-  const startDate = new Date(Date.UTC(year, month - 1, 1) - KST_OFFSET).toISOString();
-  const endDate = new Date(Date.UTC(year, month, 1) - KST_OFFSET).toISOString();
-  return { startDate, endDate };
-}
+import { kstMonthRange } from "@/lib/utils";
 
 export async function GET(request: NextRequest) {
   const influencerId = request.nextUrl.searchParams.get("influencer_id");
@@ -21,27 +14,12 @@ export async function GET(request: NextRequest) {
 
   try {
     if (type === "summary") {
-      // Visit count
-      const { count: visitCount } = await supabase
-        .from("utm_visits")
-        .select("id", { count: "exact", head: true })
-        .eq("influencer_id", influencerId);
-
-      // Saju payments
-      const { data: sajuPayments } = await supabase
-        .from("saju_analyses")
-        .select("payment_info")
-        .eq("influencer_id", influencerId)
-        .eq("is_paid", true)
-        .eq("is_refunded", false);
-
-      // Face payments
-      const { data: facePayments } = await supabase
-        .from("face_analyses")
-        .select("payment_info")
-        .eq("influencer_id", influencerId)
-        .eq("is_paid", true)
-        .eq("is_refunded", false);
+      const [{ count: visitCount }, { data: sajuPayments }, { data: facePayments }] =
+        await Promise.all([
+          supabase.from("utm_visits").select("id", { count: "exact", head: true }).eq("influencer_id", influencerId),
+          supabase.from("saju_analyses").select("payment_info").eq("influencer_id", influencerId).eq("is_paid", true).eq("is_refunded", false),
+          supabase.from("face_analyses").select("payment_info").eq("influencer_id", influencerId).eq("is_paid", true).eq("is_refunded", false),
+        ]);
 
       const allPayments = [...(sajuPayments || []), ...(facePayments || [])];
       const totalRevenue = allPayments.reduce((sum, p) => {
@@ -60,39 +38,16 @@ export async function GET(request: NextRequest) {
       const now = new Date();
       const year = yearParam ? parseInt(yearParam) : now.getFullYear();
       const month = monthParam ? parseInt(monthParam) : now.getMonth() + 1;
-
       const { startDate, endDate } = kstMonthRange(year, month);
 
-      // Visits
-      const { count: visitCount } = await supabase
-        .from("utm_visits")
-        .select("id", { count: "exact", head: true })
-        .eq("influencer_id", influencerId)
-        .gte("visited_at", startDate)
-        .lt("visited_at", endDate);
-
-      // Saju payments
-      const { data: sajuPayments } = await supabase
-        .from("saju_analyses")
-        .select("payment_info")
-        .eq("influencer_id", influencerId)
-        .eq("is_paid", true)
-        .eq("is_refunded", false)
-        .gte("paid_at", startDate)
-        .lt("paid_at", endDate);
-
-      // Face payments
-      const { data: facePayments } = await supabase
-        .from("face_analyses")
-        .select("payment_info")
-        .eq("influencer_id", influencerId)
-        .eq("is_paid", true)
-        .eq("is_refunded", false)
-        .gte("paid_at", startDate)
-        .lt("paid_at", endDate);
+      const [{ count: visitCount }, { data: sajuPayments }, { data: facePayments }] =
+        await Promise.all([
+          supabase.from("utm_visits").select("id", { count: "exact", head: true }).eq("influencer_id", influencerId).gte("visited_at", startDate).lt("visited_at", endDate),
+          supabase.from("saju_analyses").select("payment_info").eq("influencer_id", influencerId).eq("is_paid", true).eq("is_refunded", false).gte("paid_at", startDate).lt("paid_at", endDate),
+          supabase.from("face_analyses").select("payment_info").eq("influencer_id", influencerId).eq("is_paid", true).eq("is_refunded", false).gte("paid_at", startDate).lt("paid_at", endDate),
+        ]);
 
       const allPayments = [...(sajuPayments || []), ...(facePayments || [])];
-      const paymentCount = allPayments.length;
       const totalRevenue = allPayments.reduce((sum, p) => {
         const price = (p.payment_info as { price?: number } | null)?.price || 0;
         return sum + price;
@@ -102,7 +57,7 @@ export async function GET(request: NextRequest) {
         year,
         month,
         visit_count: visitCount || 0,
-        payment_count: paymentCount,
+        payment_count: allPayments.length,
         total_revenue: totalRevenue,
       });
     }
@@ -128,8 +83,10 @@ export async function GET(request: NextRequest) {
         faceQuery = faceQuery.gte("paid_at", startDate).lt("paid_at", endDate);
       }
 
-      const { data: sajuData } = await sajuQuery.order("paid_at", { ascending: false });
-      const { data: faceData } = await faceQuery.order("paid_at", { ascending: false });
+      const [{ data: sajuData }, { data: faceData }] = await Promise.all([
+        sajuQuery.order("paid_at", { ascending: false }),
+        faceQuery.order("paid_at", { ascending: false }),
+      ]);
 
       const results: Array<{
         id: string;
