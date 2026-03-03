@@ -945,7 +945,7 @@ export default function SuperAdminPage() {
                       <th>슬러그</th>
                       <th className={styles.text_right}>RS%</th>
                       <th className={styles.text_right}>방문수</th>
-                      <th className={styles.text_right}>결제</th>
+                      <th className={styles.text_right}>결제(전환율)</th>
                       <th className={styles.text_right}>매출</th>
                       <th className={styles.text_right}>정산액</th>
                       <th className={styles.text_right}>정산 완료</th>
@@ -974,6 +974,12 @@ export default function SuperAdminPage() {
                           ) : (
                             "0"
                           )}
+                          {" "}
+                          <span style={{ color: "#888", fontSize: "0.85em" }}>
+                            ({(inf.total_visits || 0) > 0
+                              ? ((inf.total_payments || 0) / (inf.total_visits || 1) * 100).toFixed(1)
+                              : "0.0"}%)
+                          </span>
                         </td>
                         <td className={styles.text_right}>{revenue.toLocaleString()}원</td>
                         <td className={styles.text_right}>{settlementAmt.toLocaleString()}원</td>
