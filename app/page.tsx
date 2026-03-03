@@ -78,9 +78,10 @@ export default function LandingPage() {
         {/* 2026 신년 사주 */}
         <Link
           href="/new-year"
-          className={styles.card_wrapper}
+          className={`${styles.card_wrapper} ${styles.card_wrapper_badge}`}
           onClick={() => handleCardClick("new_year")}
         >
+          <span className={styles.badge_limited}>기간한정 3월까지</span>
           <div className={`${styles.service_card} ${styles.card_newyear}`}>
             <div className={styles.card_title_wrap}>
               <span className={styles.card_subtitle}>까치도령</span>

@@ -135,6 +135,10 @@
   text-decoration: none;
 }
 
+.card_wrapper_badge {
+  position: relative;
+}
+
 .card_info {
   padding: 4px 4px 12px 4px;
 }
@@ -183,6 +187,20 @@
 .card_newyear {
   background: url("/new-year/img/doryung.jpg") center center / cover no-repeat;
   position: relative;
+}
+
+.badge_limited {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  z-index: 2;
+  background: #e53e3e;
+  color: #fff;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: 20px;
+  letter-spacing: -0.3px;
 }
 
 .card_newyear::before {
