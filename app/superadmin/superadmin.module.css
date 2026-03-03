@@ -872,6 +872,13 @@
   font-size: 12px;
   text-align: right;
   background: #fff;
+  -moz-appearance: textfield;
+}
+
+.settlement_input::-webkit-outer-spin-button,
+.settlement_input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
 }
 
 .settlement_input:focus {

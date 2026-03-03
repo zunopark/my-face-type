@@ -826,10 +826,10 @@ export default function AdminPage() {
               </div>
             )}
 
-            {/* 월별 정산 */}
+            {/* 월별 통계 */}
             <div className={styles.settlement_section}>
               <div className={styles.settlement_header}>
-                <h3 className={styles.settlement_title}>월별 정산</h3>
+                <h3 className={styles.settlement_title}>월별 통계</h3>
                 <div className={styles.month_selector}>
                   <button
                     className={styles.month_arrow}

@@ -11,6 +11,7 @@ export interface Influencer {
   is_active: boolean;
   created_at: string;
   admin_id?: string | null;
+  total_settled: number;
 }
 
 export interface CreateInfluencerInput {
@@ -33,6 +34,7 @@ export interface UpdateInfluencerInput {
   rs_percentage?: number;
   password?: string;
   is_active?: boolean;
+  total_settled?: number;
 }
 
 export async function getAllInfluencers(): Promise<Influencer[]> {

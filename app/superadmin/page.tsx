@@ -3,6 +3,7 @@
 import { useState, useEffect, useCallback } from "react";
 import { Link2, Ticket, Pencil, Trash2, ExternalLink, Star } from "lucide-react";
 import styles from "./superadmin.module.css";
+import { supabase } from "@/lib/supabase";
 
 interface Coupon {
   id: string;
@@ -38,6 +39,7 @@ interface Influencer {
   total_visits?: number;
   total_payments?: number;
   total_revenue?: number;
+  total_settled?: number;
 }
 
 interface PaymentDetail {
@@ -442,6 +444,21 @@ export default function SuperAdminPage() {
     }
   };
 
+  const handleSaveTotalSettled = async (id: string, amount: number) => {
+    try {
+      await fetch("/api/admin/influencers", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id, total_settled: amount }),
+      });
+      setInfluencers((prev) =>
+        prev.map((inf) => (inf.id === id ? { ...inf, total_settled: amount } : inf))
+      );
+    } catch (err) {
+      console.error("정산 완료 금액 저장 오류:", err);
+    }
+  };
+
   const openInfEdit = (inf: Influencer) => {
     setEditInfluencer(inf);
     setEditInfData({
@@ -681,6 +698,39 @@ export default function SuperAdminPage() {
     }
   }, [isAuthenticated, activeTab, fetchAllPayments]);
 
+  // Supabase Realtime subscriptions
+  useEffect(() => {
+    if (!isAuthenticated) return;
+
+    const channel = supabase
+      .channel('superadmin-realtime')
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'saju_analyses' }, () => {
+        fetchInfluencers();
+        fetchSettlement();
+        fetchAllPayments();
+      })
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'face_analyses' }, () => {
+        fetchInfluencers();
+        fetchSettlement();
+        fetchAllPayments();
+      })
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'utm_visits' }, () => {
+        fetchInfluencers();
+        fetchSettlement();
+      })
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'influencer_settlements' }, () => {
+        fetchSettlement();
+      })
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'influencers' }, () => {
+        fetchInfluencers();
+      })
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, [isAuthenticated, fetchInfluencers, fetchSettlement, fetchAllPayments]);
+
   // ─── 로그인 화면 ──────────────────────────
 
   if (!authChecked) {
@@ -897,6 +947,7 @@ export default function SuperAdminPage() {
                       <th className={styles.text_right}>결제</th>
                       <th className={styles.text_right}>매출</th>
                       <th className={styles.text_right}>정산액</th>
+                      <th className={styles.text_right}>정산 완료</th>
                       <th className={styles.text_right}>관리</th>
                     </tr>
                   </thead>
@@ -925,6 +976,23 @@ export default function SuperAdminPage() {
                         </td>
                         <td className={styles.text_right}>{revenue.toLocaleString()}원</td>
                         <td className={styles.text_right}>{settlementAmt.toLocaleString()}원</td>
+                        <td className={styles.text_right}>
+                          <input
+                            type="number"
+                            className={styles.settlement_input}
+                            defaultValue={inf.total_settled || 0}
+                            key={`settled-${inf.id}-${inf.total_settled}`}
+                            onBlur={(e) => {
+                              const val = Number(e.target.value) || 0;
+                              if (val !== (inf.total_settled || 0)) {
+                                handleSaveTotalSettled(inf.id, val);
+                              }
+                            }}
+                            onKeyDown={(e) => {
+                              if (e.key === "Enter") (e.target as HTMLInputElement).blur();
+                            }}
+                          />
+                        </td>
                         <td className={styles.text_right}>
                           <div className={styles.action_buttons}>
                             <button
@@ -968,10 +1036,10 @@ export default function SuperAdminPage() {
               </div>
             )}
 
-            {/* 월별 정산 */}
+            {/* 월별 통계 */}
             <div className={styles.settlement_section}>
               <div className={styles.settlement_header}>
-                <h3 className={styles.settlement_title}>월별 정산</h3>
+                <h3 className={styles.settlement_title}>월별 통계</h3>
                 <div className={styles.month_selector}>
                   <button
                     className={styles.month_arrow}

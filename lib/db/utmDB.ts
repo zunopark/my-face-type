@@ -51,7 +51,7 @@ export async function recordVisit(input: RecordVisitInput): Promise<boolean> {
 }
 
 /**
- * 월별 정산 데이터 조회
+ * 월별 통계 데이터 조회
  */
 export async function getMonthlySettlement(
   year: number,
