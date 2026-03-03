@@ -468,6 +468,7 @@ export default function SuperAdminPage() {
       memo: inf.memo || "",
       rs_percentage: inf.rs_percentage,
       is_active: inf.is_active,
+      password: (inf as Record<string, unknown>).password || "",
     });
     setInfFormError("");
   };
@@ -1801,11 +1802,11 @@ export default function SuperAdminPage() {
                   </select>
                 </div>
                 <div className={styles.form_field_full}>
-                  <label className={styles.form_label}>비밀번호 변경</label>
+                  <label className={styles.form_label}>비밀번호</label>
                   <input
                     className={styles.form_input}
-                    type="password"
-                    placeholder="변경할 비밀번호 (비워두면 유지)"
+                    type="text"
+                    placeholder="비밀번호 (비워두면 유지)"
                     value={(editInfData.password as string) || ""}
                     onChange={(e) =>
                       setEditInfData({ ...editInfData, password: e.target.value })
