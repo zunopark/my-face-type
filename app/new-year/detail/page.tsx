@@ -680,61 +680,6 @@ function NewYearDetailContent() {
           </div>
         </div>
 
-        {/* 가격 비교 섹션 */}
-        <div className={styles.price_compare_section}>
-          <p className={styles.price_compare_title}>
-            까치도령 신년 운세 분석 보고서 복채
-          </p>
-          <div className={styles.price_compare_cards}>
-            <div className={styles.price_card}>
-              <span className={styles.price_card_badge}>
-                오프라인
-                <br />
-                사주
-              </span>
-              <span className={styles.price_card_value}>5만원</span>
-              <span className={styles.price_card_sep}>~</span>
-              <span className={styles.price_card_value}>30만원</span>
-            </div>
-            <div className={styles.price_card}>
-              <span className={styles.price_card_badge}>
-                온라인
-                <br />
-                사주
-              </span>
-              <span className={styles.price_card_value}>3만원</span>
-              <span className={styles.price_card_sep}>~</span>
-              <span className={styles.price_card_value}>5만원</span>
-            </div>
-            <div className={styles.price_card}>
-              <span className={styles.price_card_badge}>
-                프리미엄
-                <br />
-                신점
-              </span>
-              <span className={styles.price_card_value}>20만원</span>
-              <span className={styles.price_card_sep}>~</span>
-              <span className={styles.price_card_value}>400만원</span>
-            </div>
-          </div>
-
-          <div className={styles.price_vs}>VS</div>
-
-          <div className={styles.our_price_section}>
-            <div className={styles.our_price_badge}>까치도령 신년 운세</div>
-            <div className={styles.our_price_original}>
-              {PAYMENT_CONFIG.originalPrice.toLocaleString()}원
-            </div>
-            <div className={styles.our_price_final}>
-              {PAYMENT_CONFIG.price.toLocaleString()}원
-            </div>
-            <div className={styles.discount_save}>
-              {Math.floor(
-                (1 - PAYMENT_CONFIG.price / PAYMENT_CONFIG.originalPrice) * 100
-              )}% 할인
-            </div>
-          </div>
-        </div>
       </div>
 
       {/* 하단 고정 버튼 */}

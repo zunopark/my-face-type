@@ -822,12 +822,16 @@ export default function SajuLovePage() {
               </div>
             )}
 
+            {/* 입력 영역 - inline in chat flow */}
+            {nangjaTypingDone && (
+              <div className={styles.chat_inline_input}>
+                {renderCurrentInput()}
+              </div>
+            )}
+
             <div className={styles.chat_bottom_spacer} />
             <div ref={chatBottomRef} />
           </div>
-
-          {/* 입력 영역 */}
-          <div className={styles.chat_input_area}>{renderCurrentInput()}</div>
         </div>
       )}
 
