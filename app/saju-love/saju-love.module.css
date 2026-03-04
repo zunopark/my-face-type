@@ -1,4 +1,4 @@
-/* 연애 사주 메인 페이지 스타일 - 원본 CSS와 동일 */
+/* 연애 사주 메인 페이지 스타일 - Chat/Messenger 디자인 */
 
 /* 랜딩 페이지 스타일 */
 .landing_page {
@@ -64,6 +64,27 @@
   color: #333;
   font-size: 14px;
   font-weight: 500;
+}
+
+/* Chat mode: dark back button */
+.back_btn_dark {
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: none;
+}
+
+.back_btn_dark :global(.material-icons) {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.back_btn_dark .back_btn_text {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.back_btn_dark:hover,
+.back_btn_dark:active,
+.back_btn_dark:focus {
+  background: rgba(255, 255, 255, 0.18);
 }
 
 .landing_bg {
@@ -206,65 +227,128 @@
   display: none;
 }
 
-/* 대화 오버레이 */
-.dialogue_overlay {
+/* ==================== */
+/* Chat Overlay         */
+/* ==================== */
+
+.chat_overlay {
   position: fixed;
   top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: transparent;
-  z-index: 99;
-  display: none;
-}
-
-.dialogue_overlay.active {
-  display: block;
-}
-
-/* 대화 UI 스타일 */
-.dialogue_wrap {
-  position: fixed;
-  bottom: 0;
   left: 50%;
   transform: translateX(-50%);
   width: 100%;
   max-width: 500px;
-  padding: 20px;
-  padding-bottom: calc(20px + env(safe-area-inset-bottom));
+  height: 100%;
+  background: #1a1a1a;
   z-index: 100;
-  display: none;
-  flex-direction: column;
-  gap: 12px;
-}
-
-.dialogue_wrap.active {
   display: flex;
+  flex-direction: column;
 }
 
-.dialogue_box {
-  background: rgba(0, 0, 0, 0.8);
-  border-radius: 16px;
-  padding: 24px;
-  min-height: 120px;
+/* Chat messages scrollable area */
+.chat_messages {
+  flex: 1;
+  overflow-y: auto;
+  padding: 20px;
+  padding-top: calc(68px + env(safe-area-inset-top));
+  padding-bottom: 30vh;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  -webkit-overflow-scrolling: touch;
 }
 
-.dialogue_speaker {
-  font-size: 13px;
+/* Bottom spacer grows to push messages to top when few */
+.chat_bottom_spacer {
+  flex: 1 0 0;
+}
+
+/* Chat message row */
+.chat_row {
+  display: flex;
+  flex-direction: column;
+  max-width: 82%;
+}
+
+.chat_row_new {
+  animation: chatBubbleIn 0.3s ease-out;
+}
+
+.chat_row_nangja {
+  align-self: flex-start;
+  align-items: flex-start;
+}
+
+.chat_row_user {
+  align-self: flex-end;
+  align-items: flex-end;
+}
+
+@keyframes chatBubbleIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Speaker label */
+.chat_speaker {
+  font-size: 12px;
   font-weight: 600;
   color: #f5a5a5;
-  margin-bottom: 12px;
-  letter-spacing: 1px;
+  margin-bottom: 4px;
+  margin-left: 4px;
+  letter-spacing: 0.5px;
 }
 
-.dialogue_text {
-  font-size: 17px;
-  line-height: 1.8;
+/* Nangja bubble */
+.chat_bubble_nangja {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 4px 16px 16px 16px;
+  padding: 14px 18px;
   color: white;
   font-family: "KimjungchulMyungjo-Bold", serif;
+  font-size: 15px;
+  line-height: 1.7;
   white-space: pre-line;
 }
 
+/* User bubble */
+.chat_bubble_user {
+  background: rgba(231, 76, 60, 0.2);
+  border-radius: 16px 4px 16px 16px;
+  padding: 12px 18px;
+  color: white;
+  font-size: 15px;
+  line-height: 1.5;
+  font-weight: 500;
+}
+
+/* Editable user bubble */
+.chat_bubble_user_editable {
+  cursor: pointer;
+  position: relative;
+  -webkit-tap-highlight-color: transparent;
+  transition: background 0.15s ease;
+}
+
+.chat_bubble_user_editable:active {
+  background: rgba(231, 76, 60, 0.35);
+}
+
+.edit_hint {
+  display: block;
+  font-size: 10px;
+  color: rgba(255, 255, 255, 0.35);
+  margin-top: 4px;
+  font-weight: 400;
+}
+
+/* Typing indicator */
 .typing_cursor {
   display: inline-block;
   width: 2px;
@@ -285,94 +369,82 @@
   }
 }
 
-.dialogue_buttons {
-  display: none;
-  gap: 10px;
-}
-
-.dialogue_buttons.visible {
+/* Typing dots (for nangja thinking) */
+.typing_dots {
   display: flex;
+  gap: 4px;
+  padding: 14px 18px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 4px 16px 16px 16px;
+  align-self: flex-start;
+  animation: chatBubbleIn 0.3s ease-out;
 }
 
-.dialogue_prev_btn {
-  padding: 16px 24px;
-  font-size: 16px;
-  font-weight: 700;
-  background: white;
-  color: #333;
-  border: 1px solid #ddd;
-  border-radius: 12px;
-  cursor: pointer;
+.typing_dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.5);
+  animation: typingBounce 1.2s ease-in-out infinite;
 }
 
-.dialogue_next_btn {
-  flex: 1;
+.typing_dot:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.typing_dot:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+@keyframes typingBounce {
+  0%, 60%, 100% {
+    transform: translateY(0);
+    opacity: 0.4;
+  }
+  30% {
+    transform: translateY(-4px);
+    opacity: 1;
+  }
+}
+
+/* ==================== */
+/* Chat Input Area      */
+/* ==================== */
+
+.chat_input_area {
+  flex-shrink: 0;
+  padding: 12px 20px;
+  padding-bottom: calc(16px + env(safe-area-inset-bottom));
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  background: #1a1a1a;
+}
+
+/* "시작할게요" button in chat */
+.chat_start_btn {
+  width: 100%;
   padding: 16px 32px;
   font-size: 16px;
   font-weight: 700;
   background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
   color: white;
   border: none;
-  border-radius: 12px;
+  border-radius: 14px;
   cursor: pointer;
   box-shadow: 0 4px 20px rgba(231, 76, 60, 0.4);
+  animation: fadeInUp 0.3s ease-out;
 }
 
-/* 입력 폼 오버레이 */
-.input_overlay {
-  position: fixed;
-  top: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 100%;
-  max-width: 500px;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.75);
-  z-index: 100;
-  display: none;
-  flex-direction: column;
-  justify-content: flex-end;
-  padding: 20px;
-  padding-bottom: calc(20px + env(safe-area-inset-bottom));
+.chat_start_btn:hover {
+  box-shadow: 0 6px 25px rgba(231, 76, 60, 0.5);
 }
 
-.input_overlay.active {
-  display: flex;
-}
-
-.input_form_wrap {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-  margin-bottom: 16px;
-}
-
-.input_group {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
+/* Input fields in chat */
 .input_row {
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
-.input_label {
-  font-size: 14px;
-  font-weight: 600;
-  color: white;
-}
-
-.input_optional {
-  font-size: 12px;
-  font-weight: 400;
-  color: rgba(255, 255, 255, 0.5);
-  margin-left: 6px;
-}
-
-/* 입력 필드 */
 .input_field {
   width: 100%;
   padding: 14px 16px;
@@ -484,49 +556,6 @@
   color: white;
 }
 
-/* 하단 버튼 */
-.input_buttons {
-  display: flex;
-  gap: 10px;
-}
-
-.input_prev_btn {
-  padding: 16px 24px;
-  font-size: 16px;
-  font-weight: 700;
-  background: white;
-  color: #333;
-  border: none;
-  border-radius: 12px;
-  cursor: pointer;
-}
-
-.input_submit_btn {
-  flex: 1;
-  padding: 16px 32px;
-  font-size: 16px;
-  font-weight: 700;
-  background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
-  color: white;
-  border: none;
-  border-radius: 12px;
-  cursor: pointer;
-  box-shadow: 0 4px 20px rgba(231, 76, 60, 0.4);
-}
-
-.input_submit_btn:disabled {
-  background: #666;
-  box-shadow: none;
-  cursor: not-allowed;
-}
-
-/* 텍스트에어리어 */
-.input_field.textarea {
-  resize: none;
-  line-height: 1.6;
-  min-height: 100px;
-}
-
 /* 연애 상태 선택 */
 .status_options {
   display: flex;
@@ -551,29 +580,97 @@
   color: #8b4a5e;
 }
 
-/* 관심사 선택 */
-.interest_options {
+/* 이름 입력 + 인라인 다음 버튼 */
+.name_input_row {
   display: flex;
-  flex-wrap: wrap;
   gap: 10px;
+  align-items: stretch;
 }
 
-.interest_btn {
-  padding: 10px 16px;
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  border-radius: 20px;
-  background: transparent;
-  font-size: 14px;
-  font-weight: 500;
-  color: rgba(255, 255, 255, 0.7);
-  cursor: pointer;
-  transition: all 0.2s ease;
+.name_input_row .input_field {
+  flex: 1;
 }
 
-.interest_btn.active {
-  border-color: #e74c3c;
-  background: rgba(231, 76, 60, 0.2);
+.inline_next_btn {
+  padding: 12px 20px;
+  font-size: 15px;
+  font-weight: 700;
+  background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
   color: white;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.inline_next_btn:disabled {
+  background: #555;
+  cursor: not-allowed;
+}
+
+/* 텍스트에어리어 */
+.input_field.textarea {
+  resize: none;
+  line-height: 1.6;
+  min-height: 100px;
+}
+
+/* Concern textarea in chat */
+.concern_textarea {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 12px;
+  padding: 16px;
+  border-bottom: none;
+}
+
+/* Submit button in chat */
+.chat_submit_btn {
+  width: 100%;
+  padding: 16px 32px;
+  font-size: 16px;
+  font-weight: 700;
+  background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+  color: white;
+  border: none;
+  border-radius: 14px;
+  cursor: pointer;
+  box-shadow: 0 4px 20px rgba(231, 76, 60, 0.4);
+  margin-top: 8px;
+}
+
+.chat_submit_btn:disabled {
+  background: #555;
+  box-shadow: none;
+  cursor: not-allowed;
+}
+
+/* Form label in chat input area */
+.chat_input_label {
+  font-size: 13px;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.5);
+  margin-bottom: 8px;
+}
+
+/* Chat input group */
+.chat_input_group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  animation: fadeInUp 0.3s ease-out;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 /* 분석 중 로딩 오버레이 */
@@ -629,193 +726,4 @@
 .analyze_subtext {
   font-size: 14px;
   color: #666;
-}
-
-/* 인사 오버레이 */
-.step_overlay {
-  position: fixed;
-  top: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 100%;
-  max-width: 500px;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.78);
-  z-index: 100;
-  display: flex;
-  flex-direction: column;
-  padding: 20px;
-  padding-top: calc(20px + env(safe-area-inset-top));
-  padding-bottom: calc(20px + env(safe-area-inset-bottom));
-}
-
-.step_spacer {
-  flex: 1;
-}
-
-.step_dialogue {
-  background: rgba(0, 0, 0, 0.5);
-  border-radius: 16px;
-  padding: 24px;
-  min-height: 90px;
-  margin-bottom: 16px;
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-}
-
-.step_next_btn_full {
-  width: 100%;
-  padding: 18px 32px;
-  font-size: 17px;
-  font-weight: 700;
-  background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
-  color: white;
-  border: none;
-  border-radius: 14px;
-  cursor: pointer;
-  box-shadow: 0 4px 20px rgba(231, 76, 60, 0.4);
-  animation: fadeInUp 0.3s ease-out;
-}
-
-.step_next_btn_full:disabled {
-  background: #666;
-  box-shadow: none;
-  cursor: not-allowed;
-}
-
-@keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(12px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-/* 프로그레시브 폼 오버레이 */
-.form_overlay {
-  position: fixed;
-  top: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 100%;
-  max-width: 500px;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.82);
-  z-index: 100;
-  display: flex;
-  flex-direction: column;
-}
-
-.form_scroll {
-  flex: 1;
-  overflow-y: auto;
-  padding: 20px;
-  padding-top: calc(60px + env(safe-area-inset-top));
-  padding-bottom: 20px;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  gap: 28px;
-  -webkit-overflow-scrolling: touch;
-}
-
-/* Progress bar */
-.step_progress_wrap {
-  flex-shrink: 0;
-}
-
-.step_progress_bar {
-  width: 100%;
-  height: 3px;
-  background: rgba(255, 255, 255, 0.12);
-  border-radius: 2px;
-  overflow: hidden;
-}
-
-.step_progress_fill {
-  height: 100%;
-  background: linear-gradient(90deg, #e74c3c, #ff6b6b);
-  border-radius: 2px;
-  transition: width 0.4s ease;
-}
-
-/* 폼 필드 */
-.form_field {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-
-.form_field_enter {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  animation: fieldSlideUp 0.4s ease-out;
-}
-
-@keyframes fieldSlideUp {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.form_label {
-  font-size: 14px;
-  font-weight: 600;
-  color: rgba(255, 255, 255, 0.6);
-  letter-spacing: 0.5px;
-}
-
-/* 이름 입력 + 인라인 다음 버튼 */
-.name_input_row {
-  display: flex;
-  gap: 10px;
-  align-items: stretch;
-}
-
-.name_input_row .input_field {
-  flex: 1;
-}
-
-.inline_next_btn {
-  padding: 12px 20px;
-  font-size: 15px;
-  font-weight: 700;
-  background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
-  color: white;
-  border: none;
-  border-radius: 10px;
-  cursor: pointer;
-  white-space: nowrap;
-  flex-shrink: 0;
-}
-
-.inline_next_btn:disabled {
-  background: #555;
-  cursor: not-allowed;
-}
-
-/* 연애 고민 영역 */
-.concern_area {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  animation: fadeInUp 0.4s ease-out;
-}
-
-.concern_textarea {
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  border-radius: 12px;
-  padding: 16px;
-  border-bottom: none;
 }

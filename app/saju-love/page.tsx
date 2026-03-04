@@ -26,9 +26,19 @@ const TIME_OPTIONS = [
   { value: "22:30", label: "해시 (21:30~23:29)" },
 ];
 
-// 필드 순서: 성별 → 생년월일 → 시간 → 이름 → 연애상태
-// visibleFields: 현재까지 보이는 필드 수 (0 = 아직 폼 안 보임, 1 = 성별만, ...)
-const TOTAL_FIELDS = 5;
+// 연애상태 라벨 매핑
+const STATUS_LABELS: Record<string, string> = {
+  single: "솔로",
+  some: "썸 타는 중",
+  dating: "연애 중",
+  breakup: "이별 앓이 중",
+};
+
+type ChatMessage = {
+  sender: "nangja" | "user";
+  text: string;
+  step?: number;
+};
 
 export default function SajuLovePage() {
   const router = useRouter();
@@ -40,19 +50,14 @@ export default function SajuLovePage() {
   const [prevImage, setPrevImage] = useState("/saju-love/img/nangja2.jpg");
   const [isImageTransitioning, setIsImageTransitioning] = useState(false);
   const [showLanding, setShowLanding] = useState(true);
-  const [showGreeting, setShowGreeting] = useState(false);
-  const [showForm, setShowForm] = useState(false);
-  const [showConcern, setShowConcern] = useState(false);
-  const [concernTypingDone, setConcernTypingDone] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
-  // 보이는 필드 수 (1~6)
-  const [visibleFields, setVisibleFields] = useState(1);
-
-  // 인사 대화 상태
-  const [dialogueText, setDialogueText] = useState("");
+  // Chat 상태
+  const [chatStep, setChatStep] = useState(-1); // -1 = not started
+  const [chatMessages, setChatMessages] = useState<ChatMessage[]>([]);
   const [isTyping, setIsTyping] = useState(false);
-  const [greetingDone, setGreetingDone] = useState(false);
+  const [currentNangjaText, setCurrentNangjaText] = useState("");
+  const [nangjaTypingDone, setNangjaTypingDone] = useState(false);
 
   // 폼 상태
   const [userName, setUserName] = useState("");
@@ -65,7 +70,7 @@ export default function SajuLovePage() {
 
   // refs
   const typingIntervalRef = useRef<NodeJS.Timeout | null>(null);
-  const formBottomRef = useRef<HTMLDivElement | null>(null);
+  const chatBottomRef = useRef<HTMLDivElement | null>(null);
 
   // 이미지 전환
   const changeImage = useCallback(
@@ -92,82 +97,137 @@ export default function SajuLovePage() {
     });
   }, []);
 
-  // 타이핑 효과
-  const typeText = useCallback((text: string, onComplete: () => void) => {
-    if (typingIntervalRef.current) {
-      clearInterval(typingIntervalRef.current);
-    }
-    setIsTyping(true);
-    setDialogueText("");
+  // 스크롤 to bottom
+  const scrollToBottom = useCallback(() => {
+    setTimeout(() => {
+      chatBottomRef.current?.scrollIntoView({ behavior: "smooth" });
+    }, 100);
+  }, []);
 
-    let i = 0;
-    typingIntervalRef.current = setInterval(() => {
-      if (i < text.length) {
-        setDialogueText(text.substring(0, i + 1));
-        i++;
-      } else {
-        if (typingIntervalRef.current) {
-          clearInterval(typingIntervalRef.current);
-          typingIntervalRef.current = null;
-        }
-        setIsTyping(false);
-        onComplete();
+  // 타이핑 효과 for nangja bubble
+  const typeNangjaMessage = useCallback(
+    (text: string, onComplete?: () => void) => {
+      if (typingIntervalRef.current) {
+        clearInterval(typingIntervalRef.current);
       }
-    }, 50);
-  }, []);
+      setIsTyping(true);
+      setCurrentNangjaText("");
+      setNangjaTypingDone(false);
 
-  // 필드 추가 시 하단으로 스크롤
+      let i = 0;
+      typingIntervalRef.current = setInterval(() => {
+        if (i < text.length) {
+          setCurrentNangjaText(text.substring(0, i + 1));
+          i++;
+        } else {
+          if (typingIntervalRef.current) {
+            clearInterval(typingIntervalRef.current);
+            typingIntervalRef.current = null;
+          }
+          setIsTyping(false);
+          setNangjaTypingDone(true);
+          onComplete?.();
+        }
+      }, 50);
+    },
+    []
+  );
+
+  // chatMessages or chatStep 변경 시 스크롤
   useEffect(() => {
-    if (formBottomRef.current) {
-      setTimeout(() => {
-        formBottomRef.current?.scrollIntoView({ behavior: "smooth" });
-      }, 100);
-    }
-  }, [visibleFields]);
+    scrollToBottom();
+  }, [chatMessages, chatStep, nangjaTypingDone, scrollToBottom]);
 
-  // 다음 필드 보이기
-  const revealNextField = useCallback(() => {
-    setVisibleFields((prev) => Math.min(prev + 1, TOTAL_FIELDS));
-  }, []);
+  // 낭자 메시지들 정의
+  const NANGJA_MESSAGES: Record<number, string> = {
+    0: "안녕하세요!\n사주 정보를 알려주시면\n인연을 풀어드릴게요.",
+    1: "이름을 알려주세요.",
+    2: "성별을 알려주세요.",
+    3: "생년월일은요?",
+    4: "태어난 시간도 알고 계신가요?",
+    5: "현재 연애 상태는 어떠세요?",
+    6: "혹시 요즘 연애 고민이 있으세요?\n없으면 바로 넘어가도 돼요!",
+  };
 
-  // 시작하기
+  // 다음 스텝으로 이동 (낭자 메시지 타이핑)
+  const goToStep = useCallback(
+    (step: number) => {
+      setChatStep(step);
+      const msg = NANGJA_MESSAGES[step];
+      if (msg) {
+        // 짧은 딜레이 후 타이핑 시작 (자연스러운 느낌)
+        setTimeout(() => {
+          typeNangjaMessage(msg);
+        }, 400);
+      }
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [typeNangjaMessage]
+  );
+
+  // 유저 답변 추가 + 다음 단계
+  const addUserAnswer = useCallback(
+    (text: string, nextStep: number) => {
+      // 현재 낭자 메시지를 chatMessages에 확정
+      const nangjaMsg = NANGJA_MESSAGES[chatStep];
+      setChatMessages((prev) => [
+        ...prev,
+        { sender: "nangja", text: nangjaMsg },
+        { sender: "user", text, step: chatStep },
+      ]);
+      setCurrentNangjaText("");
+      setNangjaTypingDone(false);
+
+      goToStep(nextStep);
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [chatStep, goToStep]
+  );
+
+  // 시작하기 (랜딩 → 채팅)
   const handleStart = () => {
     setShowLanding(false);
     changeImage("/saju-love/img/nangja.jpg");
     setTimeout(() => {
-      setShowGreeting(true);
-      typeText("안녕하세요!\n사주 정보를 알려주시면\n인연을 풀어드릴게요.", () => {
-        setGreetingDone(true);
-      });
+      goToStep(0);
     }, 500);
   };
 
-  // 인사 후 폼 시작
-  const handleGreetingNext = () => {
+  // Step 0: 시작할게요 버튼
+  const handleChatBegin = () => {
     if (isTyping) {
+      // 타이핑 중이면 즉시 완료
       if (typingIntervalRef.current) {
         clearInterval(typingIntervalRef.current);
         typingIntervalRef.current = null;
       }
-      setDialogueText("안녕하세요!\n사주 정보를 알려주시면\n인연을 풀어드릴게요.");
+      setCurrentNangjaText(NANGJA_MESSAGES[0]);
       setIsTyping(false);
-      setGreetingDone(true);
+      setNangjaTypingDone(true);
       return;
     }
-    setShowGreeting(false);
-    setShowForm(true);
-    setVisibleFields(1);
+    // 인사 메시지를 저장하고 step 1로
+    setChatMessages([{ sender: "nangja", text: NANGJA_MESSAGES[0] }]);
+    setCurrentNangjaText("");
+    setNangjaTypingDone(false);
+    goToStep(1);
   };
 
-  // 성별 선택 → 자동으로 다음 필드
-  const handleGenderSelect = (value: string) => {
-    setGender(value);
-    if (visibleFields === 1) {
-      setTimeout(() => revealNextField(), 350);
+  // Step 1: 이름 다음
+  const handleNameNext = () => {
+    if (userName.trim() && chatStep === 1) {
+      addUserAnswer(userName.trim(), 2);
     }
   };
 
-  // 생년월일 포맷팅
+  // Step 2: 성별 선택
+  const handleGenderSelect = (value: string) => {
+    setGender(value);
+    const label = value === "female" ? "여성" : "남성";
+    addUserAnswer(label, 3);
+  };
+
+  // Step 3: 생년월일
   const handleBirthDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     let value = e.target.value.replace(/\D/g, "");
     if (value.length > 8) value = value.slice(0, 8);
@@ -180,41 +240,99 @@ export default function SajuLovePage() {
     setBirthDate(formatted);
 
     // 8자리 다 입력하면 자동으로 다음
-    if (value.length === 8 && visibleFields === 2) {
-      setTimeout(() => revealNextField(), 400);
-    }
-  };
-
-  // 시간 선택 시 자동으로 다음
-  const handleBirthTimeChange = (value: string) => {
-    setBirthTime(value);
-    if (value && visibleFields === 3) {
-      setTimeout(() => revealNextField(), 350);
-    }
-  };
-
-  // 연애 상태 선택 → 고민 화면으로 전환
-  const handleStatusSelect = (value: string) => {
-    setStatus(value);
-    if (visibleFields === 5) {
+    if (value.length === 8 && chatStep === 3) {
+      const displayDate =
+        value.slice(0, 4) +
+        "." +
+        value.slice(4, 6) +
+        "." +
+        value.slice(6, 8);
+      const calLabel = calendar === "solar" ? "양력" : "음력";
       setTimeout(() => {
-        setShowForm(false);
-        setShowConcern(true);
-        setConcernTypingDone(false);
-        typeText(
-          "혹시 요즘 연애 고민이 있으세요?\n없으면 바로 넘어가도 돼요!",
-          () => setConcernTypingDone(true)
-        );
+        addUserAnswer(`${displayDate} (${calLabel})`, 4);
       }, 400);
     }
   };
 
-  // 이름 입력 후 다음 (엔터 또는 버튼)
-  const handleNameNext = () => {
-    if (userName.trim() && visibleFields === 4) {
-      revealNextField();
+  // Step 4: 시간 선택
+  const handleBirthTimeChange = (value: string) => {
+    setBirthTime(value);
+    if (value && chatStep === 4) {
+      const opt = TIME_OPTIONS.find((t) => t.value === value);
+      const label = opt ? opt.label : value;
+      setTimeout(() => {
+        addUserAnswer(label, 5);
+      }, 350);
     }
   };
+
+  // Step 5: 연애 상태 선택
+  const handleStatusSelect = (value: string) => {
+    setStatus(value);
+    const label = STATUS_LABELS[value] || value;
+    addUserAnswer(label, 6);
+  };
+
+  // 수정: 유저 버블 탭하여 해당 스텝으로 되돌아가기
+  const handleEditAnswer = useCallback(
+    (step: number) => {
+      // 해당 step의 nangja 메시지 인덱스 찾기 (user answer 직전)
+      const userMsgIdx = chatMessages.findIndex(
+        (msg) => msg.sender === "user" && msg.step === step
+      );
+      if (userMsgIdx < 0) return;
+      // nangja message is right before the user message
+      const nangjaMsgIdx = userMsgIdx - 1;
+      if (nangjaMsgIdx < 0) return;
+
+      // 해당 nangja 메시지 이전까지만 유지
+      setChatMessages((prev) => prev.slice(0, nangjaMsgIdx));
+
+      // 해당 스텝 이후의 폼 값 리셋
+      if (step <= 1) {
+        setUserName("");
+        setGender(null);
+        setBirthDate("");
+        setBirthTime("");
+        setStatus(null);
+        setUserConcern("");
+      }
+      if (step === 2) {
+        setGender(null);
+        setBirthDate("");
+        setBirthTime("");
+        setStatus(null);
+        setUserConcern("");
+      }
+      if (step === 3) {
+        setBirthDate("");
+        setBirthTime("");
+        setStatus(null);
+        setUserConcern("");
+      }
+      if (step === 4) {
+        setBirthTime("");
+        setStatus(null);
+        setUserConcern("");
+      }
+      if (step === 5) {
+        setStatus(null);
+        setUserConcern("");
+      }
+
+      // 타이핑 중이면 정리
+      if (typingIntervalRef.current) {
+        clearInterval(typingIntervalRef.current);
+        typingIntervalRef.current = null;
+      }
+      setCurrentNangjaText("");
+      setNangjaTypingDone(false);
+      setIsTyping(false);
+
+      goToStep(step);
+    },
+    [chatMessages, goToStep]
+  );
 
   // 전체 폼 유효성
   const isFormValid =
@@ -382,10 +500,221 @@ export default function SajuLovePage() {
     }
   };
 
+  // 현재 스텝의 입력 UI 렌더링
+  const renderCurrentInput = () => {
+    if (!nangjaTypingDone) return null;
+
+    switch (chatStep) {
+      case 0:
+        return (
+          <button className={styles.chat_start_btn} onClick={handleChatBegin}>
+            시작할게요
+          </button>
+        );
+
+      case 1:
+        return (
+          <div className={styles.chat_input_group}>
+            <div className={styles.name_input_row}>
+              <input
+                type="text"
+                className={styles.input_field}
+                placeholder="이름을 알려주세요."
+                value={userName}
+                onChange={(e) => setUserName(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") handleNameNext();
+                }}
+                autoFocus
+              />
+              <button
+                className={styles.inline_next_btn}
+                onClick={handleNameNext}
+                disabled={!userName.trim()}
+              >
+                다음
+              </button>
+            </div>
+          </div>
+        );
+
+      case 2:
+        return (
+          <div className={styles.chat_input_group}>
+            <div className={styles.gender_options}>
+              <button
+                className={`${styles.gender_btn} ${
+                  gender === "female" ? styles.active : ""
+                }`}
+                onClick={() => handleGenderSelect("female")}
+              >
+                여성
+              </button>
+              <button
+                className={`${styles.gender_btn} ${
+                  gender === "male" ? styles.active : ""
+                }`}
+                onClick={() => handleGenderSelect("male")}
+              >
+                남성
+              </button>
+            </div>
+          </div>
+        );
+
+      case 3:
+        return (
+          <div className={styles.chat_input_group}>
+            <div className={styles.input_row}>
+              <div className={styles.calendar_options}>
+                <button
+                  className={`${styles.calendar_btn} ${
+                    calendar === "solar" ? styles.active : ""
+                  }`}
+                  onClick={() => setCalendar("solar")}
+                >
+                  {calendar === "solar" && (
+                    <span className={styles.check_icon}>✓</span>
+                  )}{" "}
+                  양력
+                </button>
+                <button
+                  className={`${styles.calendar_btn} ${
+                    calendar === "lunar" ? styles.active : ""
+                  }`}
+                  onClick={() => setCalendar("lunar")}
+                >
+                  {calendar === "lunar" && (
+                    <span className={styles.check_icon}>✓</span>
+                  )}{" "}
+                  음력
+                </button>
+              </div>
+            </div>
+            <input
+              type="text"
+              className={styles.input_field}
+              placeholder="예: 20040312"
+              inputMode="numeric"
+              maxLength={10}
+              value={birthDate}
+              onChange={handleBirthDateChange}
+              autoFocus
+            />
+          </div>
+        );
+
+      case 4:
+        return (
+          <div className={styles.chat_input_group}>
+            <div className={styles.input_row}>
+              <button
+                className={`${styles.time_unknown_btn} ${
+                  birthTime === "unknown" ? styles.active : ""
+                }`}
+                onClick={() => {
+                  const val = birthTime === "unknown" ? "" : "unknown";
+                  handleBirthTimeChange(val);
+                }}
+              >
+                {birthTime === "unknown" && (
+                  <span className={styles.check_icon}>✓</span>
+                )}{" "}
+                시간 모름
+              </button>
+            </div>
+            <select
+              className={styles.input_field}
+              value={birthTime}
+              onChange={(e) => handleBirthTimeChange(e.target.value)}
+            >
+              {TIME_OPTIONS.map((opt) => (
+                <option key={opt.value} value={opt.value}>
+                  {opt.label}
+                </option>
+              ))}
+            </select>
+          </div>
+        );
+
+      case 5:
+        return (
+          <div className={styles.chat_input_group}>
+            <div className={styles.status_options}>
+              <button
+                className={`${styles.status_btn} ${
+                  status === "single" ? styles.active : ""
+                }`}
+                onClick={() => handleStatusSelect("single")}
+              >
+                솔로
+              </button>
+              <button
+                className={`${styles.status_btn} ${
+                  status === "some" ? styles.active : ""
+                }`}
+                onClick={() => handleStatusSelect("some")}
+              >
+                썸 타는 중
+              </button>
+              <button
+                className={`${styles.status_btn} ${
+                  status === "dating" ? styles.active : ""
+                }`}
+                onClick={() => handleStatusSelect("dating")}
+              >
+                연애 중
+              </button>
+              <button
+                className={`${styles.status_btn} ${
+                  status === "breakup" ? styles.active : ""
+                }`}
+                onClick={() => handleStatusSelect("breakup")}
+              >
+                이별 앓이 중
+              </button>
+            </div>
+          </div>
+        );
+
+      case 6:
+        return (
+          <div className={styles.chat_input_group}>
+            <textarea
+              className={`${styles.input_field} ${styles.textarea} ${styles.concern_textarea}`}
+              placeholder={
+                "적지 않아도 괜찮아요!\n고민을 알려주시면 더 맞춤 풀이를 해드려요."
+              }
+              rows={3}
+              value={userConcern}
+              onChange={(e) => setUserConcern(e.target.value)}
+              autoFocus
+            />
+            <button
+              className={styles.chat_submit_btn}
+              onClick={handleSubmit}
+              disabled={!isFormValid || isLoading}
+            >
+              {userConcern.trim() ? "풀이 시작!" : "건너뛰고 풀이 시작!"}
+            </button>
+          </div>
+        );
+
+      default:
+        return null;
+    }
+  };
+
+  // Chat 화면 표시 여부
+  const showChat = !showLanding && chatStep >= 0;
+
   return (
     <div className={`${styles.main_body_wrap} ${styles.landing_page}`}>
       {/* 뒤로가기 버튼 */}
-      <button className={styles.back_btn} onClick={() => router.push("/")}>
+      <button
+        className={`${styles.back_btn} ${showChat ? styles.back_btn_dark : ""}`}
+        onClick={() => router.push("/")}
+      >
         <span className="material-icons">arrow_back</span>
         <span className={styles.back_btn_text}>홈으로</span>
       </button>
@@ -432,253 +761,73 @@ export default function SajuLovePage() {
         </>
       )}
 
-      {/* 인사 대화 */}
-      {showGreeting && (
-        <div className={styles.step_overlay} onClick={handleGreetingNext}>
-          <div className={styles.step_spacer} />
-          <div className={styles.step_dialogue}>
-            <div className={styles.dialogue_speaker}>색동낭자</div>
-            <div className={styles.dialogue_text}>
-              {dialogueText.split("\n").map((line, i) => (
-                <span key={i}>
-                  {line}
-                  {i < dialogueText.split("\n").length - 1 && <br />}
-                </span>
-              ))}
-              {isTyping && <span className={styles.typing_cursor} />}
-            </div>
-          </div>
-          {greetingDone && (
-            <button
-              className={styles.step_next_btn_full}
-              onClick={handleGreetingNext}
-            >
-              시작할게요
-            </button>
-          )}
-        </div>
-      )}
+      {/* 채팅 화면 */}
+      {showChat && !isLoading && (
+        <div className={styles.chat_overlay}>
+          {/* 메시지 영역 */}
+          <div className={styles.chat_messages}>
+            {/* 완료된 메시지들 */}
+            {chatMessages.map((msg, idx) => {
+              // 낭자 메시지 위에 speaker label 표시 (첫번째이거나 이전이 user일 때)
+              const showSpeaker =
+                msg.sender === "nangja" &&
+                (idx === 0 || chatMessages[idx - 1]?.sender === "user");
 
-      {/* 프로그레시브 폼 */}
-      {showForm && !isLoading && (
-        <div className={styles.form_overlay}>
-          <div className={styles.form_scroll}>
-            {/* 필드 1: 성별 */}
-            {visibleFields >= 1 && (
-              <div className={styles.form_field} key="gender">
-                <label className={styles.form_label}>성별</label>
-                <div className={styles.gender_options}>
-                  <button
-                    className={`${styles.gender_btn} ${
-                      gender === "female" ? styles.active : ""
-                    }`}
-                    onClick={() => handleGenderSelect("female")}
+              return (
+                <div
+                  key={idx}
+                  className={`${styles.chat_row} ${
+                    msg.sender === "nangja"
+                      ? styles.chat_row_nangja
+                      : styles.chat_row_user
+                  }`}
+                >
+                  {showSpeaker && (
+                    <div className={styles.chat_speaker}>색동낭자</div>
+                  )}
+                  <div
+                    className={`${
+                      msg.sender === "nangja"
+                        ? styles.chat_bubble_nangja
+                        : styles.chat_bubble_user
+                    }${msg.sender === "user" ? ` ${styles.chat_bubble_user_editable}` : ""}`}
+                    onClick={
+                      msg.sender === "user" && msg.step !== undefined
+                        ? () => handleEditAnswer(msg.step!)
+                        : undefined
+                    }
                   >
-                    여성
-                  </button>
-                  <button
-                    className={`${styles.gender_btn} ${
-                      gender === "male" ? styles.active : ""
-                    }`}
-                    onClick={() => handleGenderSelect("male")}
-                  >
-                    남성
-                  </button>
-                </div>
-              </div>
-            )}
-
-            {/* 필드 2: 생년월일 */}
-            {visibleFields >= 2 && (
-              <div className={styles.form_field_enter} key="birthDate">
-                <div className={styles.input_row}>
-                  <label className={styles.form_label}>생년월일</label>
-                  <div className={styles.calendar_options}>
-                    <button
-                      className={`${styles.calendar_btn} ${
-                        calendar === "solar" ? styles.active : ""
-                      }`}
-                      onClick={() => setCalendar("solar")}
-                    >
-                      {calendar === "solar" && (
-                        <span className={styles.check_icon}>✓</span>
-                      )}{" "}
-                      양력
-                    </button>
-                    <button
-                      className={`${styles.calendar_btn} ${
-                        calendar === "lunar" ? styles.active : ""
-                      }`}
-                      onClick={() => setCalendar("lunar")}
-                    >
-                      {calendar === "lunar" && (
-                        <span className={styles.check_icon}>✓</span>
-                      )}{" "}
-                      음력
-                    </button>
+                    {msg.text}
+                    {msg.sender === "user" && (
+                      <span className={styles.edit_hint}>탭하여 수정</span>
+                    )}
                   </div>
                 </div>
-                <input
-                  type="text"
-                  className={styles.input_field}
-                  placeholder="예: 20040312"
-                  inputMode="numeric"
-                  maxLength={10}
-                  value={birthDate}
-                  onChange={handleBirthDateChange}
-                  autoFocus
-                />
-              </div>
-            )}
+              );
+            })}
 
-            {/* 필드 3: 태어난 시간 */}
-            {visibleFields >= 3 && (
-              <div className={styles.form_field_enter} key="birthTime">
-                <div className={styles.input_row}>
-                  <label className={styles.form_label}>태어난 시간</label>
-                  <button
-                    className={`${styles.time_unknown_btn} ${
-                      birthTime === "unknown" ? styles.active : ""
-                    }`}
-                    onClick={() => {
-                      const val = birthTime === "unknown" ? "" : "unknown";
-                      handleBirthTimeChange(val);
-                    }}
-                  >
-                    {birthTime === "unknown" && (
-                      <span className={styles.check_icon}>✓</span>
-                    )}{" "}
-                    시간 모름
-                  </button>
-                </div>
-                <select
-                  className={styles.input_field}
-                  value={birthTime}
-                  onChange={(e) => handleBirthTimeChange(e.target.value)}
-                >
-                  {TIME_OPTIONS.map((opt) => (
-                    <option key={opt.value} value={opt.value}>
-                      {opt.label}
-                    </option>
-                  ))}
-                </select>
-              </div>
-            )}
-
-            {/* 필드 4: 이름 */}
-            {visibleFields >= 4 && (
-              <div className={styles.form_field_enter} key="name">
-                <label className={styles.form_label}>이름</label>
-                <div className={styles.name_input_row}>
-                  <input
-                    type="text"
-                    className={styles.input_field}
-                    placeholder="이름을 알려주세요."
-                    value={userName}
-                    onChange={(e) => setUserName(e.target.value)}
-                    onKeyDown={(e) => {
-                      if (e.key === "Enter") handleNameNext();
-                    }}
-                    autoFocus
-                  />
-                  {visibleFields === 4 && (
-                    <button
-                      className={styles.inline_next_btn}
-                      onClick={handleNameNext}
-                      disabled={!userName.trim()}
-                    >
-                      다음
-                    </button>
-                  )}
-                </div>
-              </div>
-            )}
-
-            {/* 필드 5: 연애 상태 */}
-            {visibleFields >= 5 && (
-              <div className={styles.form_field_enter} key="status">
-                <label className={styles.form_label}>현재 연애 상태</label>
-                <div className={styles.status_options}>
-                  <button
-                    className={`${styles.status_btn} ${
-                      status === "single" ? styles.active : ""
-                    }`}
-                    onClick={() => handleStatusSelect("single")}
-                  >
-                    솔로
-                  </button>
-                  <button
-                    className={`${styles.status_btn} ${
-                      status === "some" ? styles.active : ""
-                    }`}
-                    onClick={() => handleStatusSelect("some")}
-                  >
-                    썸 타는 중
-                  </button>
-                  <button
-                    className={`${styles.status_btn} ${
-                      status === "dating" ? styles.active : ""
-                    }`}
-                    onClick={() => handleStatusSelect("dating")}
-                  >
-                    연애 중
-                  </button>
-                  <button
-                    className={`${styles.status_btn} ${
-                      status === "breakup" ? styles.active : ""
-                    }`}
-                    onClick={() => handleStatusSelect("breakup")}
-                  >
-                    이별 앓이 중
-                  </button>
-                </div>
-              </div>
-            )}
-
-            <div ref={formBottomRef} />
-          </div>
-        </div>
-      )}
-
-      {/* 연애 고민 화면 (말풍선 + textarea) */}
-      {showConcern && !isLoading && (
-        <div className={styles.step_overlay}>
-          <div className={styles.step_spacer} />
-          <div className={styles.step_dialogue}>
-            <div className={styles.dialogue_speaker}>색동낭자</div>
-            <div className={styles.dialogue_text}>
-              {dialogueText.split("\n").map((line, i) => (
-                <span key={i}>
-                  {line}
-                  {i < dialogueText.split("\n").length - 1 && <br />}
-                </span>
-              ))}
-              {isTyping && <span className={styles.typing_cursor} />}
-            </div>
-          </div>
-          {concernTypingDone && (
-            <div className={styles.concern_area}>
-              <textarea
-                className={`${styles.input_field} ${styles.textarea} ${styles.concern_textarea}`}
-                placeholder={
-                  "적지 않아도 괜찮아요!\n고민을 알려주시면 더 맞춤 풀이를 해드려요."
-                }
-                rows={3}
-                value={userConcern}
-                onChange={(e) => setUserConcern(e.target.value)}
-                autoFocus
-              />
-              <button
-                className={styles.step_next_btn_full}
-                onClick={handleSubmit}
-                disabled={!isFormValid || isLoading}
+            {/* 현재 타이핑 중인 낭자 메시지 */}
+            {chatStep >= 0 && (currentNangjaText || isTyping) && (
+              <div
+                className={`${styles.chat_row} ${styles.chat_row_nangja} ${styles.chat_row_new}`}
               >
-                {userConcern.trim()
-                  ? "풀이 시작!"
-                  : "건너뛰고 풀이 시작!"}
-              </button>
-            </div>
-          )}
+                {chatMessages.length === 0 ||
+                chatMessages[chatMessages.length - 1]?.sender === "user" ? (
+                  <div className={styles.chat_speaker}>색동낭자</div>
+                ) : null}
+                <div className={styles.chat_bubble_nangja}>
+                  {currentNangjaText}
+                  {isTyping && <span className={styles.typing_cursor} />}
+                </div>
+              </div>
+            )}
+
+            <div className={styles.chat_bottom_spacer} />
+            <div ref={chatBottomRef} />
+          </div>
+
+          {/* 입력 영역 */}
+          <div className={styles.chat_input_area}>{renderCurrentInput()}</div>
         </div>
       )}
 
