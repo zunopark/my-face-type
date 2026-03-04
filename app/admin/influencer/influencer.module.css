@@ -288,7 +288,7 @@
 /* Summary Cards */
 .summary_cards {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(5, 1fr);
   gap: 12px;
   margin-bottom: 28px;
 }
@@ -299,6 +299,9 @@
   border-radius: 12px;
   padding: 16px;
   text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
 }
 
@@ -508,7 +511,7 @@
 /* Responsive */
 @media (max-width: 640px) {
   .summary_cards {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(3, 1fr);
   }
 
 

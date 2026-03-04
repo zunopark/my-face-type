@@ -409,46 +409,36 @@ export default function InfluencerPage() {
         ) : summary ? (
           <div className={styles.summary_cards}>
             <div className={styles.summary_card}>
-              <div className={styles.settlement_row}>
-                <span className={styles.settlement_row_label}>총 방문수</span>
-                <span className={styles.settlement_row_value}>
-                  {summary.total_visits.toLocaleString()}
-                </span>
-              </div>
-              <div className={styles.settlement_row}>
-                <span className={styles.settlement_row_label}>총 결제 (전환율 {summary.total_visits > 0 ? ((summary.total_payments / summary.total_visits) * 100).toFixed(1) : "0.0"}%)</span>
-                <span className={styles.settlement_row_value}>
-                  {summary.total_payments.toLocaleString()}건
-                </span>
-              </div>
+              <span className={styles.summary_label}>방문수</span>
+              <span className={styles.summary_value}>
+                {summary.total_visits.toLocaleString()}
+              </span>
             </div>
             <div className={styles.summary_card}>
-              <div className={styles.settlement_row}>
-                <span className={styles.settlement_row_label}>총 매출</span>
-                <span className={styles.settlement_row_value}>
-                  {summary.total_revenue.toLocaleString()}원
-                </span>
-              </div>
-              <div className={styles.settlement_row}>
-                <span className={styles.settlement_row_label}>총 정산액 (RS {rsPercent}%)</span>
-                <span className={styles.settlement_row_value}>
-                  {settlementAmount.toLocaleString()}원
-                </span>
-              </div>
+              <span className={styles.summary_label}>결제건수</span>
+              <span className={styles.summary_value}>
+                {summary.total_payments.toLocaleString()}건
+              </span>
             </div>
             <div className={styles.summary_card}>
-              <div className={styles.settlement_row}>
-                <span className={styles.settlement_row_label}>정산 예정</span>
-                <span className={`${styles.settlement_row_value} ${styles.pending_value}`}>
-                  {(summary.total_pending || 0).toLocaleString()}원
-                </span>
-              </div>
-              <div className={styles.settlement_row}>
-                <span className={styles.settlement_row_label}>정산 완료</span>
-                <span className={`${styles.settlement_row_value} ${styles.settled_value}`}>
-                  {(summary.total_settled || 0).toLocaleString()}원
-                </span>
-              </div>
+              <span className={styles.summary_label}>전환율</span>
+              <span className={styles.summary_value}>
+                {summary.total_visits > 0
+                  ? ((summary.total_payments / summary.total_visits) * 100).toFixed(1)
+                  : "0.0"}%
+              </span>
+            </div>
+            <div className={styles.summary_card}>
+              <span className={styles.summary_label}>총 매출</span>
+              <span className={styles.summary_value}>
+                {summary.total_revenue.toLocaleString()}원
+              </span>
+            </div>
+            <div className={styles.summary_card}>
+              <span className={styles.summary_label}>총 정산액 (RS {rsPercent}%)</span>
+              <span className={styles.summary_value}>
+                {settlementAmount.toLocaleString()}원
+              </span>
             </div>
           </div>
         ) : null}
