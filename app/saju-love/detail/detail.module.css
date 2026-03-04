@@ -421,15 +421,19 @@
 
 /* ========== 섹션 2: 나의 결정적 매력 ========== */
 .section_2 {
-  padding: 40px 20px;
-  background: linear-gradient(180deg, #fff8f8 0%, #fff0f0 100%);
+  padding: 44px 24px 48px;
+  background: linear-gradient(180deg, #fff5f5 0%, #ffffff 100%);
   text-align: center;
+  border-top: 1px solid #ffe8e8;
 }
 
-.section_label {
+.section_eyebrow {
+  font-size: 13px;
   font-weight: 400;
-  font-size: 14px;
-  color: #1a1a1a;
+  letter-spacing: 0.06em;
+  color: #e74c3c;
+  margin-bottom: 6px;
+  text-transform: none;
 }
 
 .section_main_title {
@@ -437,107 +441,94 @@
   font-size: 26px;
   font-weight: 500;
   color: #1a1a1a;
-  margin-bottom: 24px;
+  margin-bottom: 32px;
 }
 
-/* 일간 매력 헤드라인 */
+/* 헤드라인 블록 */
 .charm_headline_wrap {
-  padding: 20px 0;
-  margin-bottom: 8px;
-}
-
-.charm_quote {
-  font-family: "East Sea Dokdo", cursive;
-  font-size: 28px;
-  color: #333;
-  line-height: 1;
+  margin-bottom: 20px;
+  padding: 0 4px;
 }
 
 .charm_headline {
   font-family: "Danjo", serif;
-  font-size: 20px;
-  color: #717171;
-  line-height: 1.5;
-  padding: 8px 0;
-  padding-bottom: 20px;
-}
-
-.charm_ilgan_info {
-  font-size: 13px;
-  font-weight: 500;
-  color: #999;
-  margin-bottom: 28px;
-}
-
-/* 내 일간 성향 */
-.charm_detail_wrap {
-  text-align: left;
-  margin-bottom: 20px;
-  padding: 0 24px;
-  color: #999;
-}
-
-.charm_detail_title {
-  font-size: 15px;
-  font-weight: 700;
-  margin-bottom: 12px;
-  margin-top: 24px;
-  color: #606060;
-}
-
-.charm_detail_title:first-child {
-  margin-top: 0;
-}
-
-.charm_detail_desc {
-  font-size: 14px;
-  color: #606060;
-  line-height: 1.8;
+  font-size: 19px;
+  color: #1a1a1a;
+  line-height: 1.6;
+  padding: 20px 24px;
+  background: #fff;
+  border-radius: 14px;
+  border: 1px solid #f0e0e0;
+  box-shadow: 0 2px 12px rgba(231, 76, 60, 0.06);
   word-break: keep-all;
 }
 
-/* 내 일간의 분위기 - 페이드 효과 */
-.charm_appearance_wrap {
-  position: relative;
+/* 일간 뱃지 */
+.charm_ilgan_badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: #fff9f9;
+  border: 1px solid #ffe0e0;
+  border-radius: 20px;
+  padding: 7px 16px;
+  margin-bottom: 32px;
 }
 
-.charm_appearance_list {
+.charm_ilgan_char {
+  font-size: 18px;
+  font-weight: 700;
+  color: #e74c3c;
+}
+
+.charm_ilgan_label {
+  font-size: 13px;
+  color: #888;
+  font-weight: 400;
+}
+
+/* 본문 */
+.charm_body {
+  text-align: left;
+}
+
+.charm_summary {
+  font-size: 14px;
+  color: #555;
+  line-height: 1.85;
+  word-break: keep-all;
+  margin: 0 0 24px 0;
+  padding: 0 4px;
+}
+
+/* 특성 리스트 */
+.charm_traits {
   list-style: none;
   padding: 0;
   margin: 0;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  border-top: 1px solid #f5eded;
 }
 
-.charm_appearance_list li {
+.charm_traits li {
+  display: flex;
+  align-items: center;
+  gap: 12px;
   font-size: 14px;
-  color: #555;
-  padding-left: 16px;
-  position: relative;
+  color: #444;
   line-height: 1.6;
+  padding: 14px 4px;
+  border-bottom: 1px solid #f5eded;
 }
 
-.charm_appearance_list li::before {
-  content: "-";
-  position: absolute;
-  left: 0;
-  color: #888;
-  font-weight: normal;
-}
-
-.charm_appearance_fade {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  height: 60px;
-  background: linear-gradient(
-    to bottom,
-    rgba(255, 248, 248, 0) 0%,
-    rgba(255, 240, 240, 1) 100%
-  );
-  pointer-events: none;
+.charm_trait_dot {
+  flex-shrink: 0;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #e74c3c;
+  opacity: 0.6;
 }
 
 /* 이런 내용을 알려드려요 박스 */
@@ -1338,84 +1329,6 @@
   50% { opacity: 1; }
 }
 
-/* ===== 가격 비교 섹션 ===== */
-.price_compare_section {
-  margin-top: 32px;
-  padding: 28px 20px;
-  text-align: center;
-  background: #fff;
-}
-
-.price_compare_title {
-  font-size: 15px;
-  font-weight: 500;
-  color: #666;
-  margin: 0 0 20px 0;
-}
-
-.price_compare_cards {
-  display: flex;
-  gap: 10px;
-  justify-content: center;
-}
-
-.price_card {
-  flex: 1;
-  max-width: 110px;
-  padding: 0px 0px 12px 0 ; 
-  background: #fff;
-  border-radius: 12px;
-  border: 1px solid #f0e0dc;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 4px;
-}
-
-.price_card_badge {
-  display: inline-block;
-  font-size: 11px;
-  width: 100%;
-  font-weight: 600;
-  color: #c0392b;
-  background: #fce8e6;
-  padding: 4px 10px;
-  border-radius: 12px 12px 0 0;
-
-  margin-bottom: 8px;
-}
-
-.price_card_value {
-  font-size: 15px;
-  font-weight: 700;
-  color: #333;
-}
-
-.price_card_sep {
-  font-size: 12px;
-  color: #999;
-}
-
-.price_vs {
-  font-size: 32px;
-  font-weight: 800;
-  color: #c0392b;
-  margin: 28px 0 0 0;
-}
-
-.price_compare_img {
-  width: 100%;
-  max-width: none;
-  display: block;
-  text-align: center;
-}
-
-.price_final_img {
-  width: 100%;
-  max-width: none;
-  display: block;
-  margin-top: 40px;
-}
 
 /* ============================================
    학생 할인 모달

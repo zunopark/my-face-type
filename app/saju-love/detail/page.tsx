@@ -777,46 +777,34 @@ function SajuDetailContent() {
 
         {/* 섹션 2: 나의 결정적 매력 */}
         <section className={`${styles.detail_section} ${styles.section_2}`}>
-          <div className={styles.section_label}>이성을 사로잡는</div>
+          <div className={styles.section_eyebrow}>이성을 사로잡는</div>
           <div className={styles.section_main_title}>나의 결정적 매력</div>
 
           {dmData && (
             <>
               <div className={styles.charm_headline_wrap}>
-                <span className={styles.charm_quote}>&ldquo;</span>
                 <div className={styles.charm_headline}>{dmData.headline}</div>
-                <span className={styles.charm_quote}>&rdquo;</span>
-              </div>
-              <div className={styles.charm_ilgan_info}>
-                {dayMaster.title} | {dayMaster.char}
-                {elementHanja}
               </div>
 
-              <div className={styles.charm_detail_wrap}>
-                <h3 className={styles.charm_detail_title}>내 일간 성향</h3>
-                <p className={styles.charm_detail_desc}>{dmData.summary}</p>
+              <div className={styles.charm_ilgan_badge}>
+                <span className={styles.charm_ilgan_char}>{dayMaster.char}</span>
+                <span className={styles.charm_ilgan_label}>{dayMaster.title} · {elementHanja}</span>
+              </div>
 
-                <div className={styles.charm_appearance_wrap}>
-                  <h3 className={styles.charm_detail_title}>내 일간의 분위기</h3>
-                  <ul className={styles.charm_appearance_list}>
-                    {dmData.appearance.map((item, i) => (
-                      <li key={i}>{item}</li>
-                    ))}
-                  </ul>
-                  <div className={styles.charm_appearance_fade} />
-                </div>
+              <div className={styles.charm_body}>
+                <p className={styles.charm_summary}>{dmData.summary}</p>
+
+                <ul className={styles.charm_traits}>
+                  {dmData.appearance.map((item, i) => (
+                    <li key={i}>
+                      <span className={styles.charm_trait_dot} />
+                      {item}
+                    </li>
+                  ))}
+                </ul>
               </div>
             </>
           )}
-
-          {/* 이런 내용을 알려드려요 */}
-          <div className={styles.info_preview_box}>
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src="/saju-love/img/info_preview_box.jpg"
-              alt="이런 내용을 알려드려요"
-            />
-          </div>
         </section>
 
         {/* 섹션 3: 하단 이미지 */}
@@ -845,62 +833,6 @@ function SajuDetailContent() {
           </div>
         </div>
 
-        {/* 가격 비교 섹션 */}
-        <div className={styles.price_compare_section}>
-          {/* 다른 곳 가격 비교 */}
-          <p className={styles.price_compare_title}>
-            색동낭자 연애 사주 분석 보고서 복채
-          </p>
-          <div className={styles.price_compare_cards}>
-            <div className={styles.price_card}>
-              <span className={styles.price_card_badge}>
-                오프라인
-                <br />
-                사주
-              </span>
-              <span className={styles.price_card_value}>5만원</span>
-              <span className={styles.price_card_sep}>~</span>
-              <span className={styles.price_card_value}>30만원</span>
-            </div>
-            <div className={styles.price_card}>
-              <span className={styles.price_card_badge}>
-                온라인
-                <br />
-                사주
-              </span>
-              <span className={styles.price_card_value}>3만원</span>
-              <span className={styles.price_card_sep}>~</span>
-              <span className={styles.price_card_value}>5만원</span>
-            </div>
-            <div className={styles.price_card}>
-              <span className={styles.price_card_badge}>
-                프리미엄
-                <br />
-                신점
-              </span>
-              <span className={styles.price_card_value}>20만원</span>
-              <span className={styles.price_card_sep}>~</span>
-              <span className={styles.price_card_value}>400만원</span>
-            </div>
-          </div>
-
-          {/* VS */}
-          <div className={styles.price_vs}>VS</div>
-
-          {/* 우리 가격 이미지 */}
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src="/saju-love/img/love-price.jpg"
-            alt="색동낭자 가격"
-            className={styles.price_compare_img}
-          />
-        </div>
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
-          src="/saju-love/img/love-price2.jpg"
-          alt="색동낭자 가격 상세"
-          className={styles.price_final_img}
-        />
       </div>
 
       {/* 하단 고정 버튼 */}

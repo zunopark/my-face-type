@@ -8,33 +8,9 @@ import { saveSajuLoveRecord } from "@/lib/db/sajuLoveDB";
 import { createSajuAnalysis } from "@/lib/db/sajuAnalysisDB";
 import styles from "./saju-love.module.css";
 
-// 대화 내용
-const DIALOGUES = [
-  {
-    text: "어서오세요,\n인연을 찾아 이 곳에 오셨군요!",
-    nextBtnText: "다음",
-  },
-  {
-    text: "먼저 성함과 생년월일을\n알려주시겠어요?",
-    nextBtnText: "좋아, 내 이름은..",
-  },
-];
-
-// 추가 대화 (기본 정보 입력 후)
-const ADDITIONAL_DIALOGUES = [
-  {
-    text: "이대로 연애비책을\n드릴 수도 있지만,",
-    nextBtnText: "다음",
-  },
-  {
-    text: "조금만 더 알려주시면\n훨씬 자세한 풀이가 가능하답니다",
-    nextBtnText: "응, 어떤걸 알려줄까?",
-  },
-];
-
 // 시간 옵션
 const TIME_OPTIONS = [
-  { value: "", label: "태어난 시간을 선택해주세요." },
+  { value: "", label: "태어난 시간을 골라주세요." },
   { value: "unknown", label: "시간 모름" },
   { value: "00:30", label: "자시 (23:30~01:29)" },
   { value: "02:30", label: "축시 (01:30~03:29)" },
@@ -50,6 +26,10 @@ const TIME_OPTIONS = [
   { value: "22:30", label: "해시 (21:30~23:29)" },
 ];
 
+// 필드 순서: 성별 → 생년월일 → 시간 → 이름 → 연애상태
+// visibleFields: 현재까지 보이는 필드 수 (0 = 아직 폼 안 보임, 1 = 성별만, ...)
+const TOTAL_FIELDS = 5;
+
 export default function SajuLovePage() {
   const router = useRouter();
 
@@ -60,17 +40,19 @@ export default function SajuLovePage() {
   const [prevImage, setPrevImage] = useState("/saju-love/img/nangja2.jpg");
   const [isImageTransitioning, setIsImageTransitioning] = useState(false);
   const [showLanding, setShowLanding] = useState(true);
-  const [showDialogue, setShowDialogue] = useState(false);
-  const [showInputForm, setShowInputForm] = useState(false);
-  const [showAdditionalForm, setShowAdditionalForm] = useState(false);
+  const [showGreeting, setShowGreeting] = useState(false);
+  const [showForm, setShowForm] = useState(false);
+  const [showConcern, setShowConcern] = useState(false);
+  const [concernTypingDone, setConcernTypingDone] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
-  // 대화 상태
-  const [currentDialogue, setCurrentDialogue] = useState(0);
-  const [isAdditionalDialogue, setIsAdditionalDialogue] = useState(false);
+  // 보이는 필드 수 (1~6)
+  const [visibleFields, setVisibleFields] = useState(1);
+
+  // 인사 대화 상태
   const [dialogueText, setDialogueText] = useState("");
   const [isTyping, setIsTyping] = useState(false);
-  const [showButtons, setShowButtons] = useState(false);
+  const [greetingDone, setGreetingDone] = useState(false);
 
   // 폼 상태
   const [userName, setUserName] = useState("");
@@ -81,10 +63,11 @@ export default function SajuLovePage() {
   const [status, setStatus] = useState<string | null>(null);
   const [userConcern, setUserConcern] = useState("");
 
-  // 타이핑 인터벌 ref
+  // refs
   const typingIntervalRef = useRef<NodeJS.Timeout | null>(null);
+  const formBottomRef = useRef<HTMLDivElement | null>(null);
 
-  // 이미지 부드럽게 전환하는 함수
+  // 이미지 전환
   const changeImage = useCallback(
     (newImage: string) => {
       if (newImage === currentImage) return;
@@ -99,8 +82,6 @@ export default function SajuLovePage() {
   // 페이지 방문 추적 + 이미지 프리로드
   useEffect(() => {
     trackPageView("saju_love");
-
-    // 이미지 프리로드
     const imagesToPreload = [
       "/saju-love/img/nangja.jpg",
       "/saju-love/img/nangja-1.jpg",
@@ -113,13 +94,10 @@ export default function SajuLovePage() {
 
   // 타이핑 효과
   const typeText = useCallback((text: string, onComplete: () => void) => {
-    // 기존 인터벌 클리어
     if (typingIntervalRef.current) {
       clearInterval(typingIntervalRef.current);
     }
-
     setIsTyping(true);
-    setShowButtons(false);
     setDialogueText("");
 
     let i = 0;
@@ -138,120 +116,55 @@ export default function SajuLovePage() {
     }, 50);
   }, []);
 
-  // 타이핑 스킵 (클릭 시 즉시 완성)
-  const skipTyping = useCallback(() => {
-    if (typingIntervalRef.current) {
-      clearInterval(typingIntervalRef.current);
-      typingIntervalRef.current = null;
+  // 필드 추가 시 하단으로 스크롤
+  useEffect(() => {
+    if (formBottomRef.current) {
+      setTimeout(() => {
+        formBottomRef.current?.scrollIntoView({ behavior: "smooth" });
+      }, 100);
     }
+  }, [visibleFields]);
+
+  // 다음 필드 보이기
+  const revealNextField = useCallback(() => {
+    setVisibleFields((prev) => Math.min(prev + 1, TOTAL_FIELDS));
   }, []);
 
-  // 시작하기 버튼
+  // 시작하기
   const handleStart = () => {
     setShowLanding(false);
     changeImage("/saju-love/img/nangja.jpg");
-
     setTimeout(() => {
-      setShowDialogue(true);
-      typeText(DIALOGUES[0].text, () => setShowButtons(true));
+      setShowGreeting(true);
+      typeText("어서 오세요,\n인연을 찾아 여기까지 오셨군요!", () => {
+        setGreetingDone(true);
+      });
     }, 500);
   };
 
-  // 다음 대화
-  const handleNextDialogue = () => {
+  // 인사 후 폼 시작
+  const handleGreetingNext = () => {
     if (isTyping) {
-      // 타이핑 중이면 즉시 완성
-      skipTyping();
-      const dialogues = isAdditionalDialogue ? ADDITIONAL_DIALOGUES : DIALOGUES;
-      setDialogueText(dialogues[currentDialogue].text);
+      if (typingIntervalRef.current) {
+        clearInterval(typingIntervalRef.current);
+        typingIntervalRef.current = null;
+      }
+      setDialogueText("어서 오세요,\n인연을 찾아 여기까지 오셨군요!");
       setIsTyping(false);
-      setShowButtons(true);
+      setGreetingDone(true);
       return;
     }
+    setShowGreeting(false);
+    setShowForm(true);
+    setVisibleFields(1);
+  };
 
-    if (isAdditionalDialogue) {
-      if (currentDialogue < ADDITIONAL_DIALOGUES.length - 1) {
-        setCurrentDialogue((prev) => prev + 1);
-        setShowButtons(false);
-        typeText(ADDITIONAL_DIALOGUES[currentDialogue + 1].text, () =>
-          setShowButtons(true)
-        );
-      } else {
-        setShowDialogue(false);
-        setShowAdditionalForm(true);
-      }
-    } else {
-      if (currentDialogue < DIALOGUES.length - 1) {
-        setCurrentDialogue((prev) => prev + 1);
-        setShowButtons(false);
-        typeText(DIALOGUES[currentDialogue + 1].text, () =>
-          setShowButtons(true)
-        );
-      } else {
-        setShowDialogue(false);
-        setShowInputForm(true);
-      }
+  // 성별 선택 → 자동으로 다음 필드
+  const handleGenderSelect = (value: string) => {
+    setGender(value);
+    if (visibleFields === 1) {
+      setTimeout(() => revealNextField(), 350);
     }
-  };
-
-  // 이전 대화
-  const handlePrevDialogue = () => {
-    if (isAdditionalDialogue) {
-      if (currentDialogue > 0) {
-        setCurrentDialogue((prev) => prev - 1);
-        setShowButtons(false);
-        typeText(ADDITIONAL_DIALOGUES[currentDialogue - 1].text, () =>
-          setShowButtons(true)
-        );
-      } else {
-        setIsAdditionalDialogue(false);
-        setCurrentDialogue(0);
-        setShowDialogue(false);
-        setCurrentImage("/saju-love/img/nangja.jpg");
-        setShowInputForm(true);
-      }
-    } else {
-      if (currentDialogue > 0) {
-        setCurrentDialogue((prev) => prev - 1);
-        setShowButtons(false);
-        typeText(DIALOGUES[currentDialogue - 1].text, () =>
-          setShowButtons(true)
-        );
-      } else {
-        setShowDialogue(false);
-        setShowLanding(true);
-        setCurrentImage("/saju-love/img/nangja.jpg");
-        setCurrentDialogue(0);
-      }
-    }
-  };
-
-  // 기본 폼 이전 버튼
-  const handleInputPrev = () => {
-    setShowInputForm(false);
-    setShowDialogue(true);
-    setCurrentDialogue(DIALOGUES.length - 1);
-    typeText(DIALOGUES[DIALOGUES.length - 1].text, () => setShowButtons(true));
-  };
-
-  // 기본 폼 다음 버튼 -> 추가 대화
-  const handleInputNext = () => {
-    setShowInputForm(false);
-    setIsAdditionalDialogue(true);
-    setCurrentDialogue(0);
-    setCurrentImage("/saju-love/img/nangja.jpg");
-    setShowDialogue(true);
-    typeText(ADDITIONAL_DIALOGUES[0].text, () => setShowButtons(true));
-  };
-
-  // 추가 폼 이전 버튼
-  const handleAdditionalPrev = () => {
-    setShowAdditionalForm(false);
-    setShowDialogue(true);
-    setCurrentDialogue(ADDITIONAL_DIALOGUES.length - 1);
-    typeText(ADDITIONAL_DIALOGUES[ADDITIONAL_DIALOGUES.length - 1].text, () =>
-      setShowButtons(true)
-    );
   };
 
   // 생년월일 포맷팅
@@ -265,20 +178,56 @@ export default function SajuLovePage() {
     if (value.length > 6) formatted += "-" + value.slice(6, 8);
 
     setBirthDate(formatted);
+
+    // 8자리 다 입력하면 자동으로 다음
+    if (value.length === 8 && visibleFields === 2) {
+      setTimeout(() => revealNextField(), 400);
+    }
   };
 
-  // 폼 유효성 검사
-  const isBasicFormValid =
-    userName.trim() && birthDate.replace(/\D/g, "").length === 8 && gender;
+  // 시간 선택 시 자동으로 다음
+  const handleBirthTimeChange = (value: string) => {
+    setBirthTime(value);
+    if (value && visibleFields === 3) {
+      setTimeout(() => revealNextField(), 350);
+    }
+  };
 
-  const isAdditionalFormValid = status;
+  // 연애 상태 선택 → 고민 화면으로 전환
+  const handleStatusSelect = (value: string) => {
+    setStatus(value);
+    if (visibleFields === 5) {
+      setTimeout(() => {
+        setShowForm(false);
+        setShowConcern(true);
+        setConcernTypingDone(false);
+        typeText(
+          "혹시 요즘 연애 고민이 있으세요?\n없으면 바로 넘어가도 돼요!",
+          () => setConcernTypingDone(true)
+        );
+      }, 400);
+    }
+  };
+
+  // 이름 입력 후 다음 (엔터 또는 버튼)
+  const handleNameNext = () => {
+    if (userName.trim() && visibleFields === 4) {
+      revealNextField();
+    }
+  };
+
+  // 전체 폼 유효성
+  const isFormValid =
+    gender !== null &&
+    birthDate.replace(/\D/g, "").length === 8 &&
+    userName.trim() !== "" &&
+    status !== null;
 
   // 분석 시작
   const handleSubmit = async () => {
-    if (!isAdditionalFormValid) return;
+    if (!isFormValid) return;
 
     setIsLoading(true);
-    // 분석 중 이미지를 다른 이미지로 부드럽게 전환
     changeImage("/saju-love/img/nangja-1.jpg");
 
     try {
@@ -295,7 +244,6 @@ export default function SajuLovePage() {
 
       const resultId = crypto.randomUUID();
 
-      // 전체 API 응답 데이터
       const rawData = result.data;
       const {
         dayMaster,
@@ -320,7 +268,6 @@ export default function SajuLovePage() {
         pengZu,
       } = rawData;
 
-      // 납음 데이터 추출 (pillars에서)
       const nayin: Record<string, string> = {};
       if (pillars) {
         for (const key of ["year", "month", "day", "hour"]) {
@@ -330,7 +277,6 @@ export default function SajuLovePage() {
         }
       }
 
-      // sajuData에 모든 데이터 포함
       const fullSajuData = {
         dayMaster,
         pillars,
@@ -351,7 +297,6 @@ export default function SajuLovePage() {
             }
           : null,
         sinsal: sinsal || null,
-        // 추가 데이터
         daeun: daeun || null,
         zodiac: zodiac || null,
         taiYuan: gong?.taiYuan || null,
@@ -372,7 +317,6 @@ export default function SajuLovePage() {
         pengZu: pengZu || null,
       };
 
-      // IndexedDB에 저장 (rawSajuData에 전체 원본 데이터도 저장)
       const userInput = {
         userName,
         gender: gender!,
@@ -393,7 +337,6 @@ export default function SajuLovePage() {
         loveAnalysis: null,
       });
 
-      // Supabase에도 저장 (초기 상태: 미결제, 분석 전)
       try {
         await createSajuAnalysis({
           service_type: "saju_love",
@@ -434,16 +377,9 @@ export default function SajuLovePage() {
       router.push(`/saju-love/detail?id=${resultId}`);
     } catch (error) {
       console.error("분석 실패:", error);
-      alert("분석 중 오류가 발생했습니다. 다시 시도해주세요.");
+      alert("풀이 중 오류가 생겼어요. 다시 시도해주세요.");
       setIsLoading(false);
     }
-  };
-
-  const getCurrentBtnText = () => {
-    if (isAdditionalDialogue) {
-      return ADDITIONAL_DIALOGUES[currentDialogue]?.nextBtnText || "다음";
-    }
-    return DIALOGUES[currentDialogue]?.nextBtnText || "다음";
   };
 
   return (
@@ -456,7 +392,6 @@ export default function SajuLovePage() {
 
       {/* 배경 이미지 - crossfade */}
       <div className={styles.landing_bg}>
-        {/* 이전 이미지 (전환 중에만 보임) */}
         {isImageTransitioning && (
           // eslint-disable-next-line @next/next/no-img-element
           <img
@@ -465,7 +400,6 @@ export default function SajuLovePage() {
             className={`${styles.landing_image} ${styles.landing_image_prev}`}
           />
         )}
-        {/* 현재 이미지 */}
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           src={currentImage}
@@ -476,17 +410,20 @@ export default function SajuLovePage() {
         />
       </div>
 
-      {/* 랜딩 타이틀 */}
+      {/* 랜딩 */}
       {showLanding && (
         <>
           <div className={styles.landing_title_wrap}>
             <h1 className={styles.landing_title}>
-              <span className={`${styles.title_line} ${styles.title_name}`}>색동낭자</span>
-              <span className={`${styles.title_line} ${styles.title_saju}`}>연애사주</span>
+              <span className={`${styles.title_line} ${styles.title_name}`}>
+                색동낭자
+              </span>
+              <span className={`${styles.title_line} ${styles.title_saju}`}>
+                연애사주
+              </span>
             </h1>
-            <p className={styles.landing_subtitle}>당신의 인연을 찾아드립니다</p>
+            <p className={styles.landing_subtitle}>당신의 인연을 풀어드려요</p>
           </div>
-
           <div className={styles.landing_bottom}>
             <button className={styles.landing_start_btn} onClick={handleStart}>
               시작하기
@@ -495,247 +432,253 @@ export default function SajuLovePage() {
         </>
       )}
 
-      {/* 대화 UI */}
-      {showDialogue && (
-        <>
-          <div
-            className={`${styles.dialogue_overlay} ${styles.active}`}
-            onClick={handleNextDialogue}
-          />
-          <div className={`${styles.dialogue_wrap} ${styles.active}`} onClick={handleNextDialogue}>
-            <div className={styles.dialogue_box}>
-              <div className={styles.dialogue_speaker}>색동낭자</div>
-              <div className={styles.dialogue_text}>
-                {dialogueText.split("\n").map((line, i) => (
-                  <span key={i}>
-                    {line}
-                    {i < dialogueText.split("\n").length - 1 && <br />}
-                  </span>
-                ))}
-                {isTyping && <span className={styles.typing_cursor} />}
-              </div>
+      {/* 인사 대화 */}
+      {showGreeting && (
+        <div className={styles.step_overlay} onClick={handleGreetingNext}>
+          <div className={styles.step_spacer} />
+          <div className={styles.step_dialogue}>
+            <div className={styles.dialogue_speaker}>색동낭자</div>
+            <div className={styles.dialogue_text}>
+              {dialogueText.split("\n").map((line, i) => (
+                <span key={i}>
+                  {line}
+                  {i < dialogueText.split("\n").length - 1 && <br />}
+                </span>
+              ))}
+              {isTyping && <span className={styles.typing_cursor} />}
             </div>
-            {showButtons && (
-              <div className={`${styles.dialogue_buttons} ${styles.visible}`}>
-                <button
-                  className={styles.dialogue_prev_btn}
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    handlePrevDialogue();
-                  }}
-                >
-                  이전
-                </button>
-                <button
-                  className={styles.dialogue_next_btn}
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    handleNextDialogue();
-                  }}
-                >
-                  {getCurrentBtnText()}
-                </button>
-              </div>
-            )}
           </div>
-        </>
+          {greetingDone && (
+            <button
+              className={styles.step_next_btn_full}
+              onClick={handleGreetingNext}
+            >
+              시작할게요
+            </button>
+          )}
+        </div>
       )}
 
-      {/* 기본 정보 입력 폼 */}
-      {showInputForm && (
-        <div className={`${styles.input_overlay} ${styles.active}`}>
-          <div className={styles.input_form_wrap}>
-            {/* 이름 */}
-            <div className={styles.input_group}>
-              <label className={styles.input_label}>이름</label>
-              <input
-                type="text"
-                className={styles.input_field}
-                placeholder="이름을 입력해주세요."
-                value={userName}
-                onChange={(e) => setUserName(e.target.value)}
-              />
-            </div>
-
-            {/* 생년월일 + 양력/음력 */}
-            <div className={styles.input_group}>
-              <div className={styles.input_row}>
-                <label className={styles.input_label}>생년월일</label>
-                <div className={styles.calendar_options}>
+      {/* 프로그레시브 폼 */}
+      {showForm && !isLoading && (
+        <div className={styles.form_overlay}>
+          <div className={styles.form_scroll}>
+            {/* 필드 1: 성별 */}
+            {visibleFields >= 1 && (
+              <div className={styles.form_field} key="gender">
+                <label className={styles.form_label}>성별</label>
+                <div className={styles.gender_options}>
                   <button
-                    className={`${styles.calendar_btn} ${
-                      calendar === "solar" ? styles.active : ""
+                    className={`${styles.gender_btn} ${
+                      gender === "female" ? styles.active : ""
                     }`}
-                    onClick={() => setCalendar("solar")}
+                    onClick={() => handleGenderSelect("female")}
                   >
-                    {calendar === "solar" && (
-                      <span className={styles.check_icon}>✓</span>
-                    )}{" "}
-                    양력
+                    여성
                   </button>
                   <button
-                    className={`${styles.calendar_btn} ${
-                      calendar === "lunar" ? styles.active : ""
+                    className={`${styles.gender_btn} ${
+                      gender === "male" ? styles.active : ""
                     }`}
-                    onClick={() => setCalendar("lunar")}
+                    onClick={() => handleGenderSelect("male")}
                   >
-                    {calendar === "lunar" && (
-                      <span className={styles.check_icon}>✓</span>
-                    )}{" "}
-                    음력
+                    남성
                   </button>
                 </div>
               </div>
-              <input
-                type="text"
-                className={styles.input_field}
-                placeholder="예: 20040312"
-                inputMode="numeric"
-                maxLength={10}
-                value={birthDate}
-                onChange={handleBirthDateChange}
-              />
-            </div>
+            )}
 
-            {/* 태어난 시간 */}
-            <div className={styles.input_group}>
-              <div className={styles.input_row}>
-                <label className={styles.input_label}>태어난 시간</label>
-                <button
-                  className={`${styles.time_unknown_btn} ${
-                    birthTime === "unknown" ? styles.active : ""
-                  }`}
-                  onClick={() =>
-                    setBirthTime(birthTime === "unknown" ? "" : "unknown")
-                  }
-                >
-                  {birthTime === "unknown" && (
-                    <span className={styles.check_icon}>✓</span>
-                  )}{" "}
-                  시간 모름
-                </button>
+            {/* 필드 2: 생년월일 */}
+            {visibleFields >= 2 && (
+              <div className={styles.form_field_enter} key="birthDate">
+                <div className={styles.input_row}>
+                  <label className={styles.form_label}>생년월일</label>
+                  <div className={styles.calendar_options}>
+                    <button
+                      className={`${styles.calendar_btn} ${
+                        calendar === "solar" ? styles.active : ""
+                      }`}
+                      onClick={() => setCalendar("solar")}
+                    >
+                      {calendar === "solar" && (
+                        <span className={styles.check_icon}>✓</span>
+                      )}{" "}
+                      양력
+                    </button>
+                    <button
+                      className={`${styles.calendar_btn} ${
+                        calendar === "lunar" ? styles.active : ""
+                      }`}
+                      onClick={() => setCalendar("lunar")}
+                    >
+                      {calendar === "lunar" && (
+                        <span className={styles.check_icon}>✓</span>
+                      )}{" "}
+                      음력
+                    </button>
+                  </div>
+                </div>
+                <input
+                  type="text"
+                  className={styles.input_field}
+                  placeholder="예: 20040312"
+                  inputMode="numeric"
+                  maxLength={10}
+                  value={birthDate}
+                  onChange={handleBirthDateChange}
+                  autoFocus
+                />
               </div>
-              <select
-                className={styles.input_field}
-                value={birthTime}
-                onChange={(e) => setBirthTime(e.target.value)}
-              >
-                {TIME_OPTIONS.map((opt) => (
-                  <option key={opt.value} value={opt.value}>
-                    {opt.label}
-                  </option>
-                ))}
-              </select>
-            </div>
+            )}
 
-            {/* 성별 */}
-            <div className={styles.input_group}>
-              <label className={styles.input_label}>성별</label>
-              <div className={styles.gender_options}>
-                <button
-                  className={`${styles.gender_btn} ${
-                    gender === "female" ? styles.active : ""
-                  }`}
-                  onClick={() => setGender("female")}
+            {/* 필드 3: 태어난 시간 */}
+            {visibleFields >= 3 && (
+              <div className={styles.form_field_enter} key="birthTime">
+                <div className={styles.input_row}>
+                  <label className={styles.form_label}>태어난 시간</label>
+                  <button
+                    className={`${styles.time_unknown_btn} ${
+                      birthTime === "unknown" ? styles.active : ""
+                    }`}
+                    onClick={() => {
+                      const val = birthTime === "unknown" ? "" : "unknown";
+                      handleBirthTimeChange(val);
+                    }}
+                  >
+                    {birthTime === "unknown" && (
+                      <span className={styles.check_icon}>✓</span>
+                    )}{" "}
+                    시간 모름
+                  </button>
+                </div>
+                <select
+                  className={styles.input_field}
+                  value={birthTime}
+                  onChange={(e) => handleBirthTimeChange(e.target.value)}
                 >
-                  여성
-                </button>
-                <button
-                  className={`${styles.gender_btn} ${gender === "male" ? styles.active : ""}`}
-                  onClick={() => setGender("male")}
-                >
-                  남성
-                </button>
+                  {TIME_OPTIONS.map((opt) => (
+                    <option key={opt.value} value={opt.value}>
+                      {opt.label}
+                    </option>
+                  ))}
+                </select>
               </div>
-            </div>
-          </div>
+            )}
 
-          <div className={styles.input_buttons}>
-            <button className={styles.input_prev_btn} onClick={handleInputPrev}>
-              이전
-            </button>
-            <button
-              className={styles.input_submit_btn}
-              onClick={handleInputNext}
-              disabled={!isBasicFormValid}
-            >
-              다 입력했어!
-            </button>
+            {/* 필드 4: 이름 */}
+            {visibleFields >= 4 && (
+              <div className={styles.form_field_enter} key="name">
+                <label className={styles.form_label}>이름</label>
+                <div className={styles.name_input_row}>
+                  <input
+                    type="text"
+                    className={styles.input_field}
+                    placeholder="이름을 알려주세요."
+                    value={userName}
+                    onChange={(e) => setUserName(e.target.value)}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter") handleNameNext();
+                    }}
+                    autoFocus
+                  />
+                  {visibleFields === 4 && (
+                    <button
+                      className={styles.inline_next_btn}
+                      onClick={handleNameNext}
+                      disabled={!userName.trim()}
+                    >
+                      다음
+                    </button>
+                  )}
+                </div>
+              </div>
+            )}
+
+            {/* 필드 5: 연애 상태 */}
+            {visibleFields >= 5 && (
+              <div className={styles.form_field_enter} key="status">
+                <label className={styles.form_label}>현재 연애 상태</label>
+                <div className={styles.status_options}>
+                  <button
+                    className={`${styles.status_btn} ${
+                      status === "single" ? styles.active : ""
+                    }`}
+                    onClick={() => handleStatusSelect("single")}
+                  >
+                    솔로
+                  </button>
+                  <button
+                    className={`${styles.status_btn} ${
+                      status === "some" ? styles.active : ""
+                    }`}
+                    onClick={() => handleStatusSelect("some")}
+                  >
+                    썸 타는 중
+                  </button>
+                  <button
+                    className={`${styles.status_btn} ${
+                      status === "dating" ? styles.active : ""
+                    }`}
+                    onClick={() => handleStatusSelect("dating")}
+                  >
+                    연애 중
+                  </button>
+                  <button
+                    className={`${styles.status_btn} ${
+                      status === "breakup" ? styles.active : ""
+                    }`}
+                    onClick={() => handleStatusSelect("breakup")}
+                  >
+                    이별 앓이 중
+                  </button>
+                </div>
+              </div>
+            )}
+
+            <div ref={formBottomRef} />
           </div>
         </div>
       )}
 
-      {/* 추가 정보 입력 폼 */}
-      {showAdditionalForm && (
-        <div className={`${styles.input_overlay} ${styles.active}`}>
-          <div className={styles.input_form_wrap}>
-            {/* 연애 상태 */}
-            <div className={styles.input_group}>
-              <label className={styles.input_label}>현재 연애 상태</label>
-              <div className={styles.status_options}>
-                <button
-                  className={`${styles.status_btn} ${
-                    status === "single" ? styles.active : ""
-                  }`}
-                  onClick={() => setStatus("single")}
-                >
-                  솔로
-                </button>
-                <button
-                  className={`${styles.status_btn} ${status === "some" ? styles.active : ""}`}
-                  onClick={() => setStatus("some")}
-                >
-                  썸 타는 중
-                </button>
-                <button
-                  className={`${styles.status_btn} ${
-                    status === "dating" ? styles.active : ""
-                  }`}
-                  onClick={() => setStatus("dating")}
-                >
-                  연애 중
-                </button>
-                <button
-                  className={`${styles.status_btn} ${
-                    status === "breakup" ? styles.active : ""
-                  }`}
-                  onClick={() => setStatus("breakup")}
-                >
-                  이별 앓이 중
-                </button>
-              </div>
+      {/* 연애 고민 화면 (말풍선 + textarea) */}
+      {showConcern && !isLoading && (
+        <div className={styles.step_overlay}>
+          <div className={styles.step_spacer} />
+          <div className={styles.step_dialogue}>
+            <div className={styles.dialogue_speaker}>색동낭자</div>
+            <div className={styles.dialogue_text}>
+              {dialogueText.split("\n").map((line, i) => (
+                <span key={i}>
+                  {line}
+                  {i < dialogueText.split("\n").length - 1 && <br />}
+                </span>
+              ))}
+              {isTyping && <span className={styles.typing_cursor} />}
             </div>
-
-            {/* 연애 고민 */}
-            <div className={styles.input_group}>
-              <label className={styles.input_label}>
-                요즘 연애 고민이 있나요?
-                <span className={styles.input_optional}>(선택)</span>
-              </label>
+          </div>
+          {concernTypingDone && (
+            <div className={styles.concern_area}>
               <textarea
-                className={`${styles.input_field} ${styles.textarea}`}
+                className={`${styles.input_field} ${styles.textarea} ${styles.concern_textarea}`}
                 placeholder={
-                  "적지 않아도 괜찮아요!\n고민이 있다면 더 맞춤형 답변을 드릴게요."
+                  "적지 않아도 괜찮아요!\n고민을 알려주시면 더 맞춤 풀이를 해드려요."
                 }
-                rows={4}
+                rows={3}
                 value={userConcern}
                 onChange={(e) => setUserConcern(e.target.value)}
+                autoFocus
               />
+              <button
+                className={styles.step_next_btn_full}
+                onClick={handleSubmit}
+                disabled={!isFormValid || isLoading}
+              >
+                {userConcern.trim()
+                  ? "풀이 시작!"
+                  : "건너뛰고 풀이 시작!"}
+              </button>
             </div>
-          </div>
-
-          <div className={styles.input_buttons}>
-            <button className={styles.input_prev_btn} onClick={handleAdditionalPrev}>
-              이전
-            </button>
-            <button
-              className={styles.input_submit_btn}
-              onClick={handleSubmit}
-              disabled={!isAdditionalFormValid || isLoading}
-            >
-              {isLoading ? "분석 중..." : "분석 시작!"}
-            </button>
-          </div>
+          )}
         </div>
       )}
 
@@ -744,8 +687,10 @@ export default function SajuLovePage() {
         <div className={`${styles.analyze_overlay} ${styles.active}`}>
           <div className={styles.analyze_content}>
             <div className={styles.analyze_spinner} />
-            <div className={styles.analyze_text}>사주 분석중</div>
-            <div className={styles.analyze_subtext}>잠시만 기다려주세요...</div>
+            <div className={styles.analyze_text}>사주 풀이중</div>
+            <div className={styles.analyze_subtext}>
+              잠시만요, 운명의 실을 풀고 있어요...
+            </div>
           </div>
         </div>
       )}
