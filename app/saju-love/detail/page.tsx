@@ -26,11 +26,11 @@ declare global {
   interface Window {
     PaymentWidget: (
       clientKey: string,
-      customerKey: string
+      customerKey: string,
     ) => {
       renderPaymentMethods: (
         selector: string,
-        options: { value: number }
+        options: { value: number },
       ) => unknown;
       renderAgreement: (selector: string) => void;
       requestPayment: (options: {
@@ -184,7 +184,7 @@ const elementColors: Record<string, string> = {
 // 오행 한글 변환 함수 (음양 포함)
 const getElementKorean = (
   element: string | undefined,
-  yinYang?: string
+  yinYang?: string,
 ): string => {
   if (!element) return "";
   const el = element.toLowerCase();
@@ -280,11 +280,11 @@ function SajuDetailContent() {
             loveAnalysis: null, // detail 페이지에서는 분석 결과 필요 없음
             paymentInfo: supabaseRecord.payment_info
               ? {
-                method: supabaseRecord.payment_info.method,
-                price: supabaseRecord.payment_info.price,
-                couponCode: supabaseRecord.payment_info.couponCode,
-                isDiscount: supabaseRecord.payment_info.isDiscount,
-              }
+                  method: supabaseRecord.payment_info.method,
+                  price: supabaseRecord.payment_info.price,
+                  couponCode: supabaseRecord.payment_info.couponCode,
+                  isDiscount: supabaseRecord.payment_info.isDiscount,
+                }
               : undefined,
           };
 
@@ -322,9 +322,9 @@ function SajuDetailContent() {
               raw_saju_data: record.rawSajuData || null,
               analysis_result: record.loveAnalysis
                 ? {
-                  user_name: record.loveAnalysis.user_name,
-                  chapters: record.loveAnalysis.chapters,
-                }
+                    user_name: record.loveAnalysis.user_name,
+                    chapters: record.loveAnalysis.chapters,
+                  }
                 : null,
               image_paths: [],
               is_paid: record.paid || false,
@@ -399,7 +399,7 @@ function SajuDetailContent() {
         const customerKey = `customer_${Date.now()}`;
         const widget = window.PaymentWidget(
           PAYMENT_CONFIG.clientKey,
-          customerKey
+          customerKey,
         );
         paymentWidgetRef.current = widget;
 
@@ -516,9 +516,12 @@ function SajuDetailContent() {
         // 할인 쿠폰: 결제 위젯 금액 업데이트
         if (paymentWidgetRef.current) {
           const newPrice = Math.max(PAYMENT_CONFIG.price - discount, 100);
-          paymentWidgetRef.current.renderPaymentMethods("#saju-payment-method", {
-            value: newPrice,
-          });
+          paymentWidgetRef.current.renderPaymentMethods(
+            "#saju-payment-method",
+            {
+              value: newPrice,
+            },
+          );
         }
       }
     } catch (error) {
@@ -562,10 +565,12 @@ function SajuDetailContent() {
         orderId: `saju-love${orderSuffix}_${Date.now()}`,
         orderName: `${PAYMENT_CONFIG.orderName}${orderNameSuffix}`,
         customerName: data.input.userName || "고객",
-        successUrl: `${window.location.origin
-          }/payment/success?type=saju&id=${encodeURIComponent(data.id)}${appliedCoupon ? `&couponCode=${encodeURIComponent(appliedCoupon.code)}` : ""}`,
-        failUrl: `${window.location.origin
-          }/payment/fail?id=${encodeURIComponent(data.id)}&type=saju`,
+        successUrl: `${
+          window.location.origin
+        }/payment/success?type=saju&id=${encodeURIComponent(data.id)}${appliedCoupon ? `&couponCode=${encodeURIComponent(appliedCoupon.code)}` : ""}`,
+        failUrl: `${
+          window.location.origin
+        }/payment/fail?id=${encodeURIComponent(data.id)}&type=saju`,
       });
     } catch (err) {
       console.error("결제 오류:", err);
@@ -628,7 +633,10 @@ function SajuDetailContent() {
   return (
     <div className={styles.main_body_wrap}>
       {/* 뒤로가기 */}
-      <button className={styles.back_btn} onClick={() => router.push("/saju-love")}>
+      <button
+        className={styles.back_btn}
+        onClick={() => router.push("/saju-love")}
+      >
         <span className="material-icons">arrow_back</span>
         <span className={styles.back_btn_text}>사주 다시 입력</span>
       </button>
@@ -746,7 +754,7 @@ function SajuDetailContent() {
                           >
                             {getElementKorean(
                               p.branch.element,
-                              p.branch.yinYang
+                              p.branch.yinYang,
                             )}
                           </span>
                         </td>
@@ -787,8 +795,12 @@ function SajuDetailContent() {
               </div>
 
               <div className={styles.charm_ilgan_badge}>
-                <span className={styles.charm_ilgan_char}>{dayMaster.char}</span>
-                <span className={styles.charm_ilgan_label}>{dayMaster.title} · {elementHanja}</span>
+                <span className={styles.charm_ilgan_char}>
+                  {dayMaster.char}
+                </span>
+                <span className={styles.charm_ilgan_label}>
+                  {dayMaster.title} · {elementHanja}
+                </span>
               </div>
 
               <div className={styles.charm_body}>
@@ -832,7 +844,6 @@ function SajuDetailContent() {
             </p>
           </div>
         </div>
-
       </div>
 
       {/* 하단 고정 버튼 */}
@@ -851,7 +862,10 @@ function SajuDetailContent() {
                 <div className={styles["payment-title"]}>
                   색동낭자 연애 사주 복채
                 </div>
-                <div className={styles["payment-close"]} onClick={closePaymentModal}>
+                <div
+                  className={styles["payment-close"]}
+                  onClick={closePaymentModal}
+                >
                   ✕
                 </div>
               </div>
@@ -872,32 +886,33 @@ function SajuDetailContent() {
 
                 {/* 할인 */}
                 <div className={`${styles["payment-row"]} ${styles.discount}`}>
-                    <span className={styles["payment-row-label"]}>
-                      병오년(丙午年) 1월 특가 할인
+                  <span className={styles["payment-row-label"]}>
+                    병오년(丙午年) 3월 특가 할인
+                  </span>
+                  <div className={styles["payment-row-discount-value"]}>
+                    <span className={styles["discount-badge"]}>
+                      {Math.floor(
+                        (1 -
+                          PAYMENT_CONFIG.price / PAYMENT_CONFIG.originalPrice) *
+                          100,
+                      )}
+                      %
                     </span>
-                    <div className={styles["payment-row-discount-value"]}>
-                      <span className={styles["discount-badge"]}>
-                        {Math.floor(
-                          (1 -
-                            PAYMENT_CONFIG.price /
-                            PAYMENT_CONFIG.originalPrice) *
-                          100
-                        )}
-                        %
-                      </span>
-                      <span className={styles["discount-amount"]}>
-                        -
-                        {(
-                          PAYMENT_CONFIG.originalPrice - PAYMENT_CONFIG.price
-                        ).toLocaleString()}
-                        원
-                      </span>
-                    </div>
+                    <span className={styles["discount-amount"]}>
+                      -
+                      {(
+                        PAYMENT_CONFIG.originalPrice - PAYMENT_CONFIG.price
+                      ).toLocaleString()}
+                      원
+                    </span>
                   </div>
+                </div>
 
                 {/* 쿠폰 할인 적용 표시 */}
                 {appliedCoupon && (
-                  <div className={`${styles["payment-row"]} ${styles.discount}`}>
+                  <div
+                    className={`${styles["payment-row"]} ${styles.discount}`}
+                  >
                     <span className={styles["payment-row-label"]}>
                       {appliedCoupon.code} 쿠폰
                     </span>
@@ -912,14 +927,14 @@ function SajuDetailContent() {
 
                 {/* 최종 금액 */}
                 <div className={`${styles["payment-row"]} ${styles.final}`}>
-                  <span className={styles["payment-row-label"]}>최종 결제금액</span>
-                  <span
-                    className={styles["payment-row-final-value"]}
-                  >
+                  <span className={styles["payment-row-label"]}>
+                    최종 결제금액
+                  </span>
+                  <span className={styles["payment-row-final-value"]}>
                     {appliedCoupon
                       ? (
-                        PAYMENT_CONFIG.price - appliedCoupon.discount
-                      ).toLocaleString()
+                          PAYMENT_CONFIG.price - appliedCoupon.discount
+                        ).toLocaleString()
                       : PAYMENT_CONFIG.price.toLocaleString()}
                     원
                   </span>
@@ -928,30 +943,34 @@ function SajuDetailContent() {
 
               {/* 쿠폰 입력 */}
               <div className={styles["coupon-section"]}>
-                  <div className={styles["coupon-input-row"]}>
-                    <input
-                      type="text"
-                      className={styles["coupon-input"]}
-                      placeholder="쿠폰 코드 입력"
-                      value={couponCode}
-                      onChange={(e) => {
-                        setCouponCode(e.target.value);
-                        setCouponError("");
-                      }}
-                      disabled={!!appliedCoupon}
-                    />
-                    <button
-                      className={styles["coupon-submit-btn"]}
-                      onClick={handleCouponSubmit}
-                      disabled={!!appliedCoupon || isApplyingCoupon}
-                    >
-                      {isApplyingCoupon ? "확인 중..." : appliedCoupon ? "적용됨" : "적용"}
-                    </button>
-                  </div>
-                  {couponError && (
-                    <div className={styles["coupon-error"]}>{couponError}</div>
-                  )}
+                <div className={styles["coupon-input-row"]}>
+                  <input
+                    type="text"
+                    className={styles["coupon-input"]}
+                    placeholder="쿠폰 코드 입력"
+                    value={couponCode}
+                    onChange={(e) => {
+                      setCouponCode(e.target.value);
+                      setCouponError("");
+                    }}
+                    disabled={!!appliedCoupon}
+                  />
+                  <button
+                    className={styles["coupon-submit-btn"]}
+                    onClick={handleCouponSubmit}
+                    disabled={!!appliedCoupon || isApplyingCoupon}
+                  >
+                    {isApplyingCoupon
+                      ? "확인 중..."
+                      : appliedCoupon
+                        ? "적용됨"
+                        : "적용"}
+                  </button>
                 </div>
+                {couponError && (
+                  <div className={styles["coupon-error"]}>{couponError}</div>
+                )}
+              </div>
 
               <div style={{ padding: "0 20px" }}>
                 <div
