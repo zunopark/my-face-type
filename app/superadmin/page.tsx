@@ -40,6 +40,7 @@ interface Influencer {
   total_payments?: number;
   total_revenue?: number;
   total_settled?: number;
+  password?: string;
 }
 
 interface PaymentDetail {
@@ -468,7 +469,7 @@ export default function SuperAdminPage() {
       memo: inf.memo || "",
       rs_percentage: inf.rs_percentage,
       is_active: inf.is_active,
-      password: (inf as Record<string, unknown>).password || "",
+      password: inf.password || "",
     });
     setInfFormError("");
   };
