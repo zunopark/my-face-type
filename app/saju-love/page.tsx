@@ -136,7 +136,7 @@ export default function SajuLovePage() {
     changeImage("/saju-love/img/nangja.jpg");
     setTimeout(() => {
       setShowGreeting(true);
-      typeText("어서 오세요,\n인연을 찾아 여기까지 오셨군요!", () => {
+      typeText("안녕하세요!\n사주 정보를 알려주시면\n인연을 풀어드릴게요.", () => {
         setGreetingDone(true);
       });
     }, 500);
@@ -149,7 +149,7 @@ export default function SajuLovePage() {
         clearInterval(typingIntervalRef.current);
         typingIntervalRef.current = null;
       }
-      setDialogueText("어서 오세요,\n인연을 찾아 여기까지 오셨군요!");
+      setDialogueText("안녕하세요!\n사주 정보를 알려주시면\n인연을 풀어드릴게요.");
       setIsTyping(false);
       setGreetingDone(true);
       return;
