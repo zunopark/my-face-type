@@ -28,7 +28,7 @@ export default function LandingPage() {
 
       {/* 서비스 카드 2x2 그리드 */}
       <section className={styles.landing_cards}>
-        {/* 1행: 관상 */}
+        {/* 1행: 정통 관상 + 신년 운세 */}
         <div className={styles.card_row}>
           <Link
             href="/face"
@@ -39,35 +39,6 @@ export default function LandingPage() {
               <div className={styles.card_title_wrap}>
                 <span className={styles.card_character}>관상가 양반</span>
                 <h2 className={styles.card_title}>정통 관상</h2>
-              </div>
-            </div>
-          </Link>
-
-          <Link
-            href="/face?tab=match"
-            className={`${styles.card_wrapper}`}
-            onClick={() => handleCardClick("face_compatibility")}
-          >
-            <div className={`${styles.service_card} ${styles.card_match}`}>
-              <div className={styles.card_title_wrap}>
-                <span className={styles.card_character}>관상가 양반</span>
-                <h2 className={styles.card_title}>궁합 관상</h2>
-              </div>
-            </div>
-          </Link>
-        </div>
-
-        {/* 2행: 사주 */}
-        <div className={styles.card_row}>
-          <Link
-            href="/saju-love"
-            className={`${styles.card_wrapper}`}
-            onClick={() => handleCardClick("saju_love")}
-          >
-            <div className={`${styles.service_card} ${styles.card_saju}`}>
-              <div className={styles.card_title_wrap}>
-                <span className={styles.card_character}>색동낭자</span>
-                <h2 className={styles.card_title}>연애 사주</h2>
               </div>
             </div>
           </Link>
@@ -85,6 +56,23 @@ export default function LandingPage() {
               </div>
             </div>
           </Link>
+        </div>
+
+        {/* 2행: 연애 사주 + 빈 칸 */}
+        <div className={styles.card_row}>
+          <Link
+            href="/saju-love"
+            className={`${styles.card_wrapper}`}
+            onClick={() => handleCardClick("saju_love")}
+          >
+            <div className={`${styles.service_card} ${styles.card_saju}`}>
+              <div className={styles.card_title_wrap}>
+                <span className={styles.card_character}>색동낭자</span>
+                <h2 className={styles.card_title}>연애 사주</h2>
+              </div>
+            </div>
+          </Link>
+          <div className={styles.card_wrapper} />
         </div>
       </section>
 

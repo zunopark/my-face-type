@@ -227,7 +227,7 @@
   flex: 1;
   overflow-y: auto;
   padding: 20px;
-  padding-top: calc(68px + env(safe-area-inset-top));
+  padding-top: calc(88px + env(safe-area-inset-top));
   padding-bottom: calc(45vh + env(safe-area-inset-bottom));
   display: flex;
   flex-direction: column;

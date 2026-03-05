@@ -197,7 +197,7 @@ export default function SajuLovePage() {
           setCurrentNangjaText("");
           setNangjaTypingDone(false);
           goToStep(1);
-        }, 400);
+        }, 200);
       });
     }, 500);
   };
