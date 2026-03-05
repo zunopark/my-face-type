@@ -58,6 +58,7 @@ export default function SajuLovePage() {
   const [isTyping, setIsTyping] = useState(false);
   const [currentNangjaText, setCurrentNangjaText] = useState("");
   const [nangjaTypingDone, setNangjaTypingDone] = useState(false);
+  const [inputFadingOut, setInputFadingOut] = useState(false);
 
   // 폼 상태
   const [userName, setUserName] = useState("");
@@ -133,10 +134,12 @@ export default function SajuLovePage() {
     []
   );
 
-  // chatMessages or chatStep 변경 시 스크롤
+  // chatMessages or chatStep 변경 시 스크롤 (fadeOut 중에는 스킵)
   useEffect(() => {
-    scrollToBottom();
-  }, [chatMessages, chatStep, nangjaTypingDone, scrollToBottom]);
+    if (!inputFadingOut) {
+      scrollToBottom();
+    }
+  }, [chatMessages, chatStep, nangjaTypingDone, inputFadingOut, scrollToBottom]);
 
   // 낭자 메시지들 정의
   const NANGJA_MESSAGES: Record<number, string> = {
@@ -165,23 +168,35 @@ export default function SajuLovePage() {
     [typeNangjaMessage]
   );
 
-  // 유저 답변 추가 + 다음 단계
+  // 유저 답변 추가 + 다음 단계 (fadeOut → 말풍선 → 다음 질문)
   const addUserAnswer = useCallback(
     (text: string, nextStep: number) => {
-      // 현재 낭자 메시지를 chatMessages에 확정
-      const nangjaMsg = NANGJA_MESSAGES[chatStep];
-      setChatMessages((prev) => [
-        ...prev,
-        { sender: "nangja", text: nangjaMsg },
-        { sender: "user", text, step: chatStep },
-      ]);
-      setCurrentNangjaText("");
-      setNangjaTypingDone(false);
+      setInputFadingOut(true);
 
-      goToStep(nextStep);
+      setTimeout(() => {
+        const nangjaMsg = NANGJA_MESSAGES[chatStep];
+        const chatEl = chatBottomRef.current?.parentElement;
+        const scrollBefore = chatEl?.scrollTop ?? 0;
+
+        setChatMessages((prev) => [
+          ...prev,
+          { sender: "nangja", text: nangjaMsg },
+          { sender: "user", text, step: chatStep },
+        ]);
+        setCurrentNangjaText("");
+        setNangjaTypingDone(false);
+        setInputFadingOut(false);
+
+        requestAnimationFrame(() => {
+          if (chatEl) chatEl.scrollTop = scrollBefore;
+          scrollToBottom();
+        });
+
+        goToStep(nextStep);
+      }, 250);
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [chatStep, goToStep]
+    [chatStep, goToStep, scrollToBottom]
   );
 
   // 시작하기 (랜딩 → 채팅) - 인사 타이핑 후 이름 질문
@@ -681,7 +696,7 @@ export default function SajuLovePage() {
 
       case 6:
         return (
-          <div className={styles.chat_input_group}>
+          <div className={`${styles.chat_input_group} ${styles.chat_input_full}`}>
             <textarea
               className={`${styles.input_field} ${styles.textarea} ${styles.concern_textarea}`}
               placeholder={
@@ -825,8 +840,8 @@ export default function SajuLovePage() {
             )}
 
             {/* 입력 영역 - inline in chat flow */}
-            {nangjaTypingDone && (
-              <div className={styles.chat_inline_input}>
+            {(nangjaTypingDone || inputFadingOut) && (
+              <div className={inputFadingOut ? styles.chat_inline_input_fadeout : styles.chat_inline_input}>
                 {renderCurrentInput()}
               </div>
             )}
