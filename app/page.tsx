@@ -23,7 +23,7 @@ export default function LandingPage() {
 
       {/* 브랜드 로고 */}
       <div className={styles.landing_brand}>
-        <span className={styles.brand_name}>양반가</span>
+        <span className={styles.brand_name}>AI 양반가</span>
       </div>
 
       {/* 서비스 카드 2x2 그리드 */}

@@ -239,7 +239,7 @@
   width: 100%;
   max-width: 500px;
   height: 100%;
-  background: rgba(0, 0, 0, 0.9);
+  background: rgba(0, 0, 0, 0.95);
   z-index: 100;
   display: flex;
   flex-direction: column;
@@ -271,7 +271,7 @@
 }
 
 .chat_row_new {
-  animation: chatBubbleIn 0.3s ease-out;
+  /* animation removed */
 }
 
 .chat_row_nangja {
@@ -280,18 +280,17 @@
 }
 
 .chat_row_user {
-  align-self: flex-end;
+  align-self: stretch;
   align-items: flex-end;
+  max-width: 100%;
 }
 
 @keyframes chatBubbleIn {
   from {
     opacity: 0;
-    transform: translateY(8px);
   }
   to {
     opacity: 1;
-    transform: translateY(0);
   }
 }
 
@@ -348,6 +347,39 @@
   font-weight: 400;
 }
 
+/* 답변 완료 필드 스타일 */
+.answered_field {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 12px;
+  padding: 12px 16px;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: border-color 0.2s ease;
+  width: 100%;
+}
+
+.answered_field:active {
+  border-color: rgba(231, 76, 60, 0.5);
+}
+
+.answered_value {
+  font-size: 15px;
+  color: white;
+  font-weight: 500;
+}
+
+.answered_edit {
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.4);
+  font-weight: 400;
+  flex-shrink: 0;
+}
+
 /* Typing indicator */
 .typing_cursor {
   display: inline-block;
@@ -377,7 +409,7 @@
   background: rgba(255, 255, 255, 0.1);
   border-radius: 4px 16px 16px 16px;
   align-self: flex-start;
-  animation: chatBubbleIn 0.3s ease-out;
+  /* animation removed */
 }
 
 .typing_dot {
@@ -415,7 +447,7 @@
   display: flex;
   flex-direction: column;
   align-items: flex-end;
-  animation: fadeInUp 0.35s ease-out;
+  /* animation removed */
 }
 
 .chat_inline_input_fadeout {
@@ -474,7 +506,7 @@
   border-radius: 14px;
   cursor: pointer;
   box-shadow: 0 4px 20px rgba(231, 76, 60, 0.4);
-  animation: fadeInUp 0.3s ease-out;
+  /* animation removed */
 }
 
 .chat_start_btn:hover {
@@ -658,7 +690,7 @@
 .input_field.textarea {
   resize: none;
   line-height: 1.6;
-  min-height: 140px;
+  min-height: 210px;
 }
 
 /* Concern textarea in chat */
@@ -671,6 +703,19 @@
 }
 
 /* Submit button in chat */
+.chat_fixed_bottom {
+  position: fixed;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  max-width: 500px;
+  padding: 16px 16px calc(16px + env(safe-area-inset-bottom));
+  box-sizing: border-box;
+  z-index: 200;
+  background: linear-gradient(transparent, rgba(0, 0, 0, 0.95) 24px);
+}
+
 .chat_submit_btn {
   width: 100%;
   padding: 16px 32px;
@@ -682,7 +727,6 @@
   border-radius: 14px;
   cursor: pointer;
   box-shadow: 0 4px 20px rgba(231, 76, 60, 0.4);
-  margin-top: 8px;
 }
 
 .chat_submit_btn:disabled {
@@ -704,17 +748,18 @@
   display: flex;
   flex-direction: column;
   gap: 8px;
-  animation: fadeInUp 0.3s ease-out;
+}
+
+.chat_input_group *:disabled {
+  pointer-events: none;
 }
 
 @keyframes fadeInUp {
   from {
     opacity: 0;
-    transform: translateY(12px);
   }
   to {
     opacity: 1;
-    transform: translateY(0);
   }
 }
 

@@ -36,10 +36,11 @@
 }
 
 .brand_name {
-  font-family: "KimjungchulMyungjo-Bold", serif;
+  font-family: "Danjo", serif;
   font-size: 20px;
   font-weight: 700;
   color: #ffffff;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
 }
 
 /* 서비스 카드 2x2 */
@@ -89,6 +90,8 @@
   padding: 48px 12px 12px;
   background: linear-gradient(transparent, rgba(0, 0, 0, 0.7));
   text-align: right;
+  position: relative;
+  z-index: 2;
 }
 
 .card_title {
@@ -159,6 +162,31 @@
   padding: 4px 10px;
   border-radius: 20px;
   letter-spacing: -0.3px;
+}
+
+/* 카드 텍스트 테두리 */
+.card_face .card_title,
+.card_face .card_character {
+  color: rgb(139, 90, 43);
+  -webkit-text-stroke: 5px rgba(255, 255, 255, 0.8);
+  paint-order: stroke fill;
+  text-shadow: none;
+}
+
+.card_newyear .card_title,
+.card_newyear .card_character {
+  color: rgb(74, 144, 217);
+  -webkit-text-stroke: 5px rgba(255, 255, 255, 0.8);
+  paint-order: stroke fill;
+  text-shadow: none;
+}
+
+.card_saju .card_title,
+.card_saju .card_character {
+  color: rgb(206, 55, 17);
+  -webkit-text-stroke: 5px rgba(255, 255, 255, 0.8);
+  paint-order: stroke fill;
+  text-shadow: none;
 }
 
 /* 반응형 */

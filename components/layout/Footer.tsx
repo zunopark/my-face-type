@@ -6,7 +6,7 @@ export default function Footer() {
   return (
     <footer className="footer">
       <div className="footer_text_wrap">
-        <span className="footer_company">AI 관상가 양반</span>
+        <span className="footer_company">AI 양반가</span>
       </div>
 
       <div className="business_info">
