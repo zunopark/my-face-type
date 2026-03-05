@@ -10,14 +10,10 @@ import {
   trackCouponApplied,
   trackPaymentSuccess,
 } from "@/lib/mixpanel";
-import {
-  getSajuLoveRecord,
-  SajuLoveRecord,
-  saveSajuLoveRecord,
-} from "@/lib/db/sajuLoveDB";
+import { SajuLoveRecord } from "@/lib/db/sajuLoveDB";
 import {
   getSajuAnalysisByShareId,
-  createSajuAnalysis,
+  updateSajuAnalysis,
 } from "@/lib/db/sajuAnalysisDB";
 import styles from "./detail.module.css";
 
@@ -228,114 +224,62 @@ function SajuDetailContent() {
     }
 
     const loadData = async () => {
-      let record = await getSajuLoveRecord(resultId);
-
-      // IndexedDB에 없으면 Supabase에서 조회 (외부 공유 링크로 접근한 경우)
-      if (!record) {
-        console.log("🔍 IndexedDB에 없음 - Supabase 조회 시도");
-        const supabaseRecord = await getSajuAnalysisByShareId(resultId);
-        if (supabaseRecord) {
-          console.log("✅ Supabase에서 데이터 발견");
-          // Supabase 데이터를 SajuLoveRecord 형태로 변환
-          record = {
-            id: supabaseRecord.id,
-            createdAt: supabaseRecord.created_at || new Date().toISOString(),
-            paid: supabaseRecord.is_paid || false,
-            paidAt: supabaseRecord.paid_at || undefined,
-            seenIntro: false,
-            input: {
-              userName: supabaseRecord.user_info?.userName || "",
-              gender: supabaseRecord.user_info?.gender || "",
-              date: supabaseRecord.user_info?.date || "",
-              calendar: supabaseRecord.user_info?.calendar || "solar",
-              time: supabaseRecord.user_info?.time || null,
-              userConcern: supabaseRecord.user_info?.userConcern || "",
-              status: supabaseRecord.user_info?.status || "",
-            },
-            rawSajuData:
-              supabaseRecord.raw_saju_data as SajuLoveRecord["rawSajuData"],
-            sajuData: {
-              dayMaster: ((
-                supabaseRecord.raw_saju_data as Record<string, unknown>
-              )?.dayMaster as SajuLoveRecord["sajuData"]["dayMaster"]) || {
-                char: "",
-                title: "",
-              },
-              pillars:
-                ((supabaseRecord.raw_saju_data as Record<string, unknown>)
-                  ?.pillars as SajuLoveRecord["sajuData"]["pillars"]) || {},
-              fiveElements: (
-                supabaseRecord.raw_saju_data as Record<string, unknown>
-              )?.fiveElements as SajuLoveRecord["sajuData"]["fiveElements"],
-              loveFacts: (
-                supabaseRecord.raw_saju_data as Record<string, unknown>
-              )?.loveFacts as SajuLoveRecord["sajuData"]["loveFacts"],
-              sinsal: (supabaseRecord.raw_saju_data as Record<string, unknown>)
-                ?.sinsal as SajuLoveRecord["sajuData"]["sinsal"],
-              daeun: (supabaseRecord.raw_saju_data as Record<string, unknown>)
-                ?.daeun as SajuLoveRecord["sajuData"]["daeun"],
-              zodiac: (supabaseRecord.raw_saju_data as Record<string, unknown>)
-                ?.zodiac as SajuLoveRecord["sajuData"]["zodiac"],
-            },
-            loveAnalysis: null, // detail 페이지에서는 분석 결과 필요 없음
-            paymentInfo: supabaseRecord.payment_info
-              ? {
-                  method: supabaseRecord.payment_info.method,
-                  price: supabaseRecord.payment_info.price,
-                  couponCode: supabaseRecord.payment_info.couponCode,
-                  isDiscount: supabaseRecord.payment_info.isDiscount,
-                }
-              : undefined,
-          };
-
-          // IndexedDB에도 저장 (다음 방문 시 로컬에서 빠르게 로드)
-          try {
-            await saveSajuLoveRecord(record);
-            console.log("✅ 외부 공유 데이터 IndexedDB에 캐싱 완료");
-          } catch (cacheErr) {
-            console.warn("IndexedDB 캐싱 실패:", cacheErr);
-          }
-        }
+      const supabaseRecord = await getSajuAnalysisByShareId(resultId);
+      if (!supabaseRecord) {
+        setIsLoading(false);
+        return;
       }
+
+      const raw = supabaseRecord.raw_saju_data as Record<
+        string,
+        unknown
+      > | null;
+      const record: SajuLoveRecord = {
+        id: supabaseRecord.id,
+        createdAt: supabaseRecord.created_at || new Date().toISOString(),
+        paid: supabaseRecord.is_paid || false,
+        paidAt: supabaseRecord.paid_at || undefined,
+        seenIntro: false,
+        input: {
+          userName: supabaseRecord.user_info?.userName || "",
+          gender: supabaseRecord.user_info?.gender || "",
+          date: supabaseRecord.user_info?.date || "",
+          calendar: supabaseRecord.user_info?.calendar || "solar",
+          time: supabaseRecord.user_info?.time || null,
+          userConcern: supabaseRecord.user_info?.userConcern || "",
+          status: supabaseRecord.user_info?.status || "",
+        },
+        rawSajuData:
+          supabaseRecord.raw_saju_data as SajuLoveRecord["rawSajuData"],
+        sajuData: {
+          dayMaster:
+            (raw?.dayMaster as SajuLoveRecord["sajuData"]["dayMaster"]) || {
+              char: "",
+              title: "",
+            },
+          pillars:
+            (raw?.pillars as SajuLoveRecord["sajuData"]["pillars"]) || {},
+          fiveElements:
+            raw?.fiveElements as SajuLoveRecord["sajuData"]["fiveElements"],
+          loveFacts: raw?.loveFacts as SajuLoveRecord["sajuData"]["loveFacts"],
+          sinsal: raw?.sinsal as SajuLoveRecord["sajuData"]["sinsal"],
+          daeun: raw?.daeun as SajuLoveRecord["sajuData"]["daeun"],
+          zodiac: raw?.zodiac as SajuLoveRecord["sajuData"]["zodiac"],
+        },
+        loveAnalysis: null,
+        paymentInfo: supabaseRecord.payment_info
+          ? {
+              method: supabaseRecord.payment_info.method,
+              price: supabaseRecord.payment_info.price,
+              couponCode: supabaseRecord.payment_info.couponCode,
+              isDiscount: supabaseRecord.payment_info.isDiscount,
+            }
+          : undefined,
+      };
 
       if (record) {
         setData(record);
         setIsLoading(false);
-
-        // IndexedDB에서 가져온 경우: Supabase에 없으면 저장 (fallback)
-        const existsInSupabase = await getSajuAnalysisByShareId(resultId);
-        if (!existsInSupabase) {
-          console.log("🔄 Supabase에 없음 - fallback 저장");
-          try {
-            await createSajuAnalysis({
-              service_type: "saju_love",
-              id: record.id,
-              user_info: {
-                userName: record.input.userName,
-                gender: record.input.gender,
-                date: record.input.date,
-                calendar: record.input.calendar as "solar" | "lunar",
-                time: record.input.time,
-                userConcern: record.input.userConcern,
-                status: record.input.status,
-              },
-              raw_saju_data: record.rawSajuData || null,
-              analysis_result: record.loveAnalysis
-                ? {
-                    user_name: record.loveAnalysis.user_name,
-                    chapters: record.loveAnalysis.chapters,
-                  }
-                : null,
-              image_paths: [],
-              is_paid: record.paid || false,
-              paid_at: record.paidAt || null,
-              payment_info: record.paymentInfo || null,
-            });
-            console.log("✅ Supabase fallback 저장 완료");
-          } catch (err) {
-            console.error("Supabase fallback 저장 실패:", err);
-          }
-        }
 
         trackPageView("saju_love_detail", {
           id: record.id,
@@ -440,50 +384,20 @@ function SajuDetailContent() {
       if (isFree) {
         setAppliedCoupon({ code, discount });
 
-        // 1. 결과 저장 확정 (IndexedDB)
-        await saveSajuLoveRecord({
-          ...data,
-          paid: true,
-          paidAt: new Date().toISOString(),
-          paymentInfo: {
-            method: "coupon",
-            price: 0,
-            couponCode: code,
-            isDiscount: true,
-          },
-        });
-
-        // 2. Supabase 저장
+        // Supabase 결제 완료 처리
         try {
-          const existsInSupabase = await getSajuAnalysisByShareId(data.id);
-          if (!existsInSupabase) {
-            await createSajuAnalysis({
-              service_type: "saju_love",
-              id: data.id,
-              user_info: {
-                userName: data.input.userName,
-                gender: data.input.gender,
-                date: data.input.date,
-                calendar: data.input.calendar as "solar" | "lunar",
-                time: data.input.time,
-                userConcern: data.input.userConcern,
-                status: data.input.status,
-              },
-              raw_saju_data: data.rawSajuData || null,
-              analysis_result: null,
-              image_paths: [],
-              is_paid: true,
-              paid_at: new Date().toISOString(),
-              payment_info: {
-                method: "coupon",
-                price: 0,
-                couponCode: code,
-                isDiscount: true,
-              },
-            });
-          }
+          await updateSajuAnalysis(data.id, {
+            is_paid: true,
+            paid_at: new Date().toISOString(),
+            payment_info: {
+              method: "coupon",
+              price: 0,
+              couponCode: code,
+              isDiscount: true,
+            },
+          });
         } catch (e) {
-          console.error("무료 쿠폰 Supabase 저장 실패:", e);
+          console.error("무료 쿠폰 결제 처리 실패:", e);
         }
 
         // 3. 결과 확정 후 쿠폰 수량 차감
@@ -513,6 +427,8 @@ function SajuDetailContent() {
         // 4. 결과 페이지로 이동
         router.push(`/saju-love/result?id=${data.id}`);
       } else {
+        setAppliedCoupon({ code, discount });
+
         // 할인 쿠폰: 결제 위젯 금액 업데이트
         if (paymentWidgetRef.current) {
           const newPrice = Math.max(PAYMENT_CONFIG.price - discount, 100);
@@ -901,7 +817,7 @@ function SajuDetailContent() {
                 </strong>
                 <br />
                 저에게 맞는 운명의 상대 초상화도 만들어주는데.. 제발 그 사람이랑
-                만나고 싶어요. 제발. 친구들한테도 이미 추천해줬어요 최고 🦋
+                만나고 싶어요. 제발. 친구들한테도 이미 추천해줬어요 최고 💘
               </p>
               <div className={styles.review_footer}>
                 <span className={styles.review_avatar}>🥳</span>

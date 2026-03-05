@@ -12,8 +12,9 @@ import {
   trackAnalysisComplete,
   trackButtonClick,
 } from "@/lib/mixpanel";
-import { saveCoupleAnalysisRecord } from "@/lib/db/coupleAnalysisDB";
-import { saveFaceAnalysisRecord } from "@/lib/db/faceAnalysisDB";
+import { upsertFaceAnalysisSupabase } from "@/lib/db/faceSupabaseDB";
+import { uploadFaceImage, uploadCoupleImages } from "@/lib/storage/imageStorage";
+import { getStoredUtmParams } from "@/components/providers/MixpanelProvider";
 import Footer from "@/components/layout/Footer";
 import styles from "./face.module.css";
 
@@ -128,23 +129,35 @@ function FacePageContent() {
           }
 
           const resultId = crypto.randomUUID();
-          const resultData = {
-            id: resultId,
-            imageBase64: base64,
-            features: result.data.features,
-            paid: false,
-            timestamp: new Date().toISOString(),
-            reports: {
-              base: { paid: false, data: null },
-              wealth: { paid: false, data: null },
-              love: { paid: false, data: null },
-              marriage: { paid: false, data: null },
-              career: { paid: false, data: null },
-              health: { paid: false, data: null },
-            },
-          };
 
-          await saveFaceAnalysisRecord(resultData);
+          // UTM 정보 조회
+          let utmSource: string | null = null;
+          let influencerId: string | null = null;
+          try {
+            const utmParams = getStoredUtmParams();
+            if (utmParams.utm_source) {
+              utmSource = utmParams.utm_source;
+              const infRes = await fetch(`/api/admin/influencers?slug=${encodeURIComponent(utmSource)}`);
+              if (infRes.ok) {
+                const infData = await infRes.json();
+                if (infData?.id) influencerId = infData.id;
+              }
+            }
+          } catch {}
+
+          // 이미지 Storage 업로드
+          const uploadedImage = await uploadFaceImage(resultId, base64);
+
+          await upsertFaceAnalysisSupabase({
+            id: resultId,
+            service_type: "face",
+            features: result.data.features,
+            image_path: uploadedImage?.path,
+            analysis_result: {},
+            is_paid: false,
+            ...(utmSource ? { utm_source: utmSource } : {}),
+            ...(influencerId ? { influencer_id: influencerId } : {}),
+          });
 
           // 분석 완료 추적
           trackAnalysisComplete("face", { result_id: resultId });
@@ -217,21 +230,41 @@ function FacePageContent() {
       if (result.data.error) throw new Error(result.data.error);
 
       const resultId = crypto.randomUUID();
-      const resultData = {
+
+      // UTM 정보 조회
+      let utmSource: string | null = null;
+      let influencerId: string | null = null;
+      try {
+        const utmParams = getStoredUtmParams();
+        if (utmParams.utm_source) {
+          utmSource = utmParams.utm_source;
+          const infRes = await fetch(`/api/admin/influencers?slug=${encodeURIComponent(utmSource)}`);
+          if (infRes.ok) {
+            const infData = await infRes.json();
+            if (infData?.id) influencerId = infData.id;
+          }
+        }
+      } catch {}
+
+      // 이미지 Storage 업로드
+      const uploadedImages = await uploadCoupleImages(resultId, {
+        image1: selfImage,
+        image2: partnerImage,
+      });
+
+      await upsertFaceAnalysisSupabase({
         id: resultId,
+        service_type: "couple",
         features1: result.data.features1,
         features2: result.data.features2,
-        image1Base64: selfImage,
-        image2Base64: partnerImage,
-        relationshipType: selectedRelation,
-        relationshipFeeling: selectedFeeling,
-        createdAt: new Date().toISOString(),
-        reports: {
-          couple: { paid: false, data: null },
-        },
-      };
-
-      await saveCoupleAnalysisRecord(resultData);
+        image1_path: uploadedImages.image1Path,
+        image2_path: uploadedImages.image2Path,
+        relationship_type: selectedRelation,
+        relationship_feeling: selectedFeeling,
+        is_paid: false,
+        ...(utmSource ? { utm_source: utmSource } : {}),
+        ...(influencerId ? { influencer_id: influencerId } : {}),
+      });
 
       // 궁합 분석 완료 추적
       trackAnalysisComplete("couple", { result_id: resultId });

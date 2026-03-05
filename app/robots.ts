@@ -16,7 +16,6 @@ export default function robots(): MetadataRoute.Robots {
           "/saju-love/detail",
           "/new-year/result",
           "/new-year/detail",
-          "/history/",
         ],
       },
       {

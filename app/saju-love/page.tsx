@@ -4,8 +4,8 @@ import { useState, useEffect, useCallback, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { computeSaju } from "@/app/actions/analyze";
 import { trackPageView, trackFormSubmit } from "@/lib/mixpanel";
-import { saveSajuLoveRecord } from "@/lib/db/sajuLoveDB";
 import { createSajuAnalysis } from "@/lib/db/sajuAnalysisDB";
+import { getStoredUtmParams } from "@/components/providers/MixpanelProvider";
 import styles from "./saju-love.module.css";
 
 // 시간 옵션
@@ -468,38 +468,41 @@ export default function SajuLovePage() {
         status: status!,
       };
 
-      await saveSajuLoveRecord({
-        id: resultId,
-        createdAt: new Date().toISOString(),
-        paid: false,
-        input: userInput,
-        rawSajuData: rawData,
-        sajuData: fullSajuData,
-        loveAnalysis: null,
-      });
-
+      // UTM 정보 조회 (인플루언서 연결)
+      let utmSource: string | null = null;
+      let influencerId: string | null = null;
       try {
-        await createSajuAnalysis({
-          service_type: "saju_love",
-          id: resultId,
-          user_info: {
-            userName: userInput.userName,
-            gender: userInput.gender,
-            date: userInput.date,
-            calendar: userInput.calendar as "solar" | "lunar",
-            time: userInput.time,
-            userConcern: userInput.userConcern,
-            status: userInput.status,
-          },
-          raw_saju_data: rawData,
-          analysis_result: null,
-          image_paths: [],
-          is_paid: false,
-          payment_info: null,
-        });
-      } catch (supabaseErr) {
-        console.error("Supabase 저장 실패 (계속 진행):", supabaseErr);
-      }
+        const utmParams = getStoredUtmParams();
+        if (utmParams.utm_source) {
+          utmSource = utmParams.utm_source;
+          const infRes = await fetch(`/api/admin/influencers?slug=${encodeURIComponent(utmSource)}`);
+          if (infRes.ok) {
+            const infData = await infRes.json();
+            if (infData?.id) influencerId = infData.id;
+          }
+        }
+      } catch {}
+
+      await createSajuAnalysis({
+        service_type: "saju_love",
+        id: resultId,
+        user_info: {
+          userName: userInput.userName,
+          gender: userInput.gender,
+          date: userInput.date,
+          calendar: userInput.calendar as "solar" | "lunar",
+          time: userInput.time,
+          userConcern: userInput.userConcern,
+          status: userInput.status,
+        },
+        raw_saju_data: rawData,
+        analysis_result: null,
+        image_paths: [],
+        is_paid: false,
+        payment_info: null,
+        ...(utmSource ? { utm_source: utmSource } : {}),
+        ...(influencerId ? { influencer_id: influencerId } : {}),
+      });
 
       trackFormSubmit("saju_love", {
         gender,

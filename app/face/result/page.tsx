@@ -27,14 +27,9 @@ import {
   trackCouponApplied,
   trackPageView,
 } from "@/lib/mixpanel";
-import {
-  getFaceAnalysisRecord,
-  updateFaceAnalysisRecord,
-  FaceAnalysisRecord,
-} from "@/lib/db/faceAnalysisDB";
-import { upsertFaceAnalysisSupabase, updateFaceAnalysisSupabase, getFaceAnalysisSupabase } from "@/lib/db/faceSupabaseDB";
+import { updateFaceAnalysisSupabase, getFaceAnalysisSupabase } from "@/lib/db/faceSupabaseDB";
 import { createReview, getReviewByRecordId, Review } from "@/lib/db/reviewDB";
-import { uploadFaceImage, getImageUrl } from "@/lib/storage/imageStorage";
+import { getImageUrl } from "@/lib/storage/imageStorage";
 
 // TossPayments 타입 선언
 declare global {
@@ -202,132 +197,80 @@ function ResultContent() {
     }
 
     const loadData = async () => {
-      // 1. 먼저 IndexedDB에서 확인
-      const stored = await getFaceAnalysisRecord(resultId);
-      if (stored) {
-        // FaceAnalysisRecord를 FaceResult로 변환
-        const parsed: FaceResult = {
-          id: stored.id,
-          imageBase64: stored.imageBase64,
-          features: stored.features,
-          paid: stored.paid || false,
-          timestamp: stored.timestamp,
-          summary: (stored.reports?.base?.data as { summary?: string })
-            ?.summary,
-          detail: (stored.reports?.base?.data as { detail?: string })?.detail,
-          sections: (
-            stored.reports?.base?.data as { sections?: FaceResult["sections"] }
-          )?.sections,
-          reports: stored.reports as FaceResult["reports"],
-        };
-        setResult(parsed);
-        trackPageView("face_result", { id: parsed.id, paid: parsed.paid });
-
-        // 이미 분석 완료된 경우 바로 결과 표시
-        if (parsed.summary && parsed.detail) {
-          setShowResult(true);
-          setIsLoading(false);
-          return;
-        }
-
-        // 결제 완료 상태면 바로 분석 시작
-        if (parsed.paid || parsed.reports?.base?.paid) {
-          setIsLoading(false);
-          startRealAnalysis(parsed);
-          return;
-        }
-
-        // 미결제 상태: 가라 분석 시작
-        const loadingDoneKey = `base_report_loading_done_${resultId}`;
-        const loadingDone = sessionStorage.getItem(loadingDoneKey);
-
-        if (loadingDone) {
-          // 이미 가라 분석 완료 → 결제 유도 페이지 표시
-          setShowPaymentPage(true);
-          setIsLoading(false);
-        } else {
-          // 가라 분석 시작
-          setShowFakeAnalysis(true);
-          setIsLoading(false);
-          startFakeAnalysis(resultId);
-        }
-        return;
-      }
-
-      // 2. IndexedDB에 없으면 Supabase에서 확인
-      console.log("IndexedDB에 없음, Supabase에서 확인:", resultId);
       const supabaseRecord = await getFaceAnalysisSupabase(resultId);
-
-      if (supabaseRecord && supabaseRecord.is_paid) {
-        console.log("Supabase에서 결제 완료된 기록 발견:", supabaseRecord);
-
-        // 이미지 URL 가져오기
-        let imageUrl = "";
-        if (supabaseRecord.image_path) {
-          imageUrl = getImageUrl(supabaseRecord.image_path);
-        }
-
-        // analysis_result에서 데이터 파싱
-        const analysisResult = supabaseRecord.analysis_result as {
-          base?: { data?: { summary?: string; detail?: string; sections?: FaceResult["sections"] } };
-        } | null;
-
-        const parsed: FaceResult = {
-          id: supabaseRecord.id,
-          imageBase64: imageUrl, // Storage URL 사용
-          features: supabaseRecord.features || "",
-          paid: true,
-          timestamp: supabaseRecord.created_at || new Date().toISOString(),
-          summary: analysisResult?.base?.data?.summary,
-          detail: analysisResult?.base?.data?.detail,
-          sections: analysisResult?.base?.data?.sections,
-          reports: supabaseRecord.analysis_result as FaceResult["reports"],
-        };
-
-        setResult(parsed);
-        trackPageView("face_result", { id: parsed.id, paid: true, source: "supabase" });
-
-        // 분석 결과가 있으면 바로 표시
-        if (parsed.summary || parsed.sections) {
-          setShowResult(true);
-          setIsLoading(false);
-          return;
-        }
-
-        // 결제는 됐지만 분석 결과가 없으면 다시 분석
-        if (!imageUrl) {
-          console.error("이미지 URL을 가져올 수 없음");
-          alert("이미지를 불러올 수 없습니다. 다시 시도해주세요.");
-          router.push("/face");
-          return;
-        }
-
-        // 이미지 URL → base64 변환 후 재분석
-        try {
-          const imgResponse = await fetch(imageUrl);
-          const imgBlob = await imgResponse.blob();
-          const reader = new FileReader();
-          const imageBase64: string = await new Promise((resolve, reject) => {
-            reader.onloadend = () => resolve(reader.result as string);
-            reader.onerror = reject;
-            reader.readAsDataURL(imgBlob);
-          });
-
-          const retryParsed: FaceResult = { ...parsed, imageBase64 };
-          setResult(retryParsed);
-          setIsLoading(false);
-          startRealAnalysis(retryParsed);
-        } catch (imgErr) {
-          console.error("이미지 로드 실패:", imgErr);
-          alert("이미지를 불러올 수 없습니다. 다시 시도해주세요.");
-          router.push("/face");
-        }
+      if (!supabaseRecord) {
+        router.push("/");
         return;
       }
 
-      // 3. Supabase에도 없거나 미결제 상태면 홈으로
-      console.log("데이터를 찾을 수 없음, 홈으로 이동");
-      router.push("/");
+      // 이미지 URL 가져오기
+      let imageUrl = "";
+      if (supabaseRecord.image_path) {
+        imageUrl = getImageUrl(supabaseRecord.image_path);
+      }
+
+      // analysis_result에서 데이터 파싱
+      const analysisResult = supabaseRecord.analysis_result as {
+        base?: { data?: { summary?: string; detail?: string; sections?: FaceResult["sections"] } };
+      } | null;
+
+      const parsed: FaceResult = {
+        id: supabaseRecord.id,
+        imageBase64: imageUrl,
+        features: supabaseRecord.features || "",
+        paid: supabaseRecord.is_paid || false,
+        timestamp: supabaseRecord.created_at || new Date().toISOString(),
+        summary: analysisResult?.base?.data?.summary,
+        detail: analysisResult?.base?.data?.detail,
+        sections: analysisResult?.base?.data?.sections,
+        reports: supabaseRecord.analysis_result as FaceResult["reports"],
+      };
+
+      setResult(parsed);
+      trackPageView("face_result", { id: parsed.id, paid: parsed.paid });
+
+      // 이미 분석 완료된 경우 바로 결과 표시
+      if (parsed.summary && parsed.detail) {
+        setShowResult(true);
+        setIsLoading(false);
+        return;
+      }
+
+      // 결제 완료 상태면 분석 시작
+      if (parsed.paid || parsed.reports?.base?.paid) {
+        // 이미지가 URL이면 base64로 변환 필요 (분석 API는 base64 사용)
+        if (imageUrl && !parsed.imageBase64.startsWith("data:")) {
+          try {
+            const imgResponse = await fetch(imageUrl);
+            const imgBlob = await imgResponse.blob();
+            const reader = new FileReader();
+            const base64: string = await new Promise((resolve, reject) => {
+              reader.onloadend = () => resolve(reader.result as string);
+              reader.onerror = reject;
+              reader.readAsDataURL(imgBlob);
+            });
+            parsed.imageBase64 = base64;
+          } catch (imgErr) {
+            console.error("이미지 로드 실패:", imgErr);
+          }
+        }
+        setIsLoading(false);
+        startRealAnalysis(parsed);
+        return;
+      }
+
+      // 미결제 상태: 가라 분석 시작
+      const loadingDoneKey = `base_report_loading_done_${resultId}`;
+      const loadingDone = sessionStorage.getItem(loadingDoneKey);
+
+      if (loadingDone) {
+        setShowPaymentPage(true);
+        setIsLoading(false);
+      } else {
+        setShowFakeAnalysis(true);
+        setIsLoading(false);
+        startFakeAnalysis(resultId);
+      }
     };
 
     loadData();
@@ -504,23 +447,11 @@ function ResultContent() {
         },
       };
 
-      // IndexedDB 업데이트
-      await updateFaceAnalysisRecord(data.id, {
+      // Supabase 업데이트
+      await updateFaceAnalysisSupabase(data.id, {
         features: features || data.features,
-        paid: true,
-        reports: updatedResult.reports as FaceAnalysisRecord["reports"],
+        analysis_result: updatedResult.reports as Record<string, unknown>,
       });
-
-      // Supabase에도 분석 결과 저장
-      try {
-        await updateFaceAnalysisSupabase(data.id, {
-          features: features || data.features,
-          analysis_result: updatedResult.reports as Record<string, unknown>,
-        });
-        console.log("✅ Supabase에 관상 분석 결과 저장 완료");
-      } catch (supabaseErr) {
-        console.error("Supabase 분석 결과 저장 실패:", supabaseErr);
-      }
 
       console.log("🔍 updatedResult:", {
         summary: updatedResult.summary?.substring(0, 50),
@@ -556,32 +487,13 @@ function ResultContent() {
         updatedReports[reportKey] = { paid: true, data: updatedReports[reportKey]?.data || null };
       }
 
-      // IndexedDB에 결제 완료 표시
-      await updateFaceAnalysisRecord(result.id, {
-        paid: true,
-        reports: updatedReports as FaceAnalysisRecord["reports"],
+      // Supabase 결제 완료 + 분석 결과 저장
+      await updateFaceAnalysisSupabase(result.id, {
+        analysis_result: updatedReports as Record<string, unknown>,
+        is_paid: true,
+        paid_at: new Date().toISOString(),
+        payment_info: { method: "coupon", price: 0, couponCode: appliedCoupon?.code },
       });
-
-      // Supabase 저장 (정통 관상 - 무료 쿠폰)
-      try {
-        // 이미지 Storage 업로드
-        const uploadedImage = await uploadFaceImage(result.id, result.imageBase64);
-
-        // Supabase에 저장/업데이트
-        await upsertFaceAnalysisSupabase({
-          id: result.id,
-          service_type: "face",
-          features: result.features,
-          image_path: uploadedImage?.path,
-          analysis_result: result.reports as Record<string, unknown>,
-          is_paid: true,
-          paid_at: new Date().toISOString(),
-          payment_info: { method: "coupon", price: 0, couponCode: appliedCoupon?.code },
-        });
-        console.log("✅ Supabase에 정통 관상 결과 저장 완료 (무료 쿠폰)");
-      } catch (supabaseErr) {
-        console.error("Supabase 정통 관상 저장 실패:", supabaseErr);
-      }
 
       // 모달 닫고 분석 시작
       setShowPaymentModal(false);

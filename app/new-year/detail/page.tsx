@@ -11,13 +11,11 @@ import {
   trackPaymentSuccess,
 } from "@/lib/mixpanel";
 import {
-  getNewYearRecord,
   NewYearRecord,
-  saveNewYearRecord,
 } from "@/lib/db/newYearDB";
 import {
-  createSajuAnalysis,
   getSajuAnalysisByShareId,
+  updateSajuAnalysis,
 } from "@/lib/db/sajuAnalysisDB";
 import styles from "./detail.module.css";
 
@@ -256,26 +254,49 @@ function NewYearDetailContent() {
     }
 
     const loadData = async () => {
-      const record = await getNewYearRecord(resultId);
-
-      if (record) {
-        setData(record);
-        setIsLoading(false);
-
-        trackPageView("new_year_detail", {
-          id: record.id,
-          gender: record.input.gender,
-          user_name: record.input.userName,
-          birth_date: record.input.date,
-          birth_time: record.input.time || "모름",
-          job_status: record.input.jobStatus,
-          relationship_status: record.input.relationshipStatus,
-          day_master: record.sajuData.dayMaster?.char,
-          day_master_title: record.sajuData.dayMaster?.title,
-        });
-      } else {
+      const serverData = await getSajuAnalysisByShareId(resultId);
+      if (!serverData) {
         router.push("/new-year");
+        return;
       }
+
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const userInfo = serverData.user_info as any;
+      const record: NewYearRecord = {
+        id: serverData.id,
+        createdAt: serverData.created_at || new Date().toISOString(),
+        input: {
+          userName: userInfo?.userName || "-",
+          gender: userInfo?.gender || "male",
+          date: userInfo?.date || "",
+          calendar: (userInfo?.calendar as "solar" | "lunar") || "solar",
+          time: userInfo?.time || null,
+          jobStatus: userInfo?.jobStatus || "",
+          relationshipStatus: userInfo?.relationshipStatus || "",
+          wish2026: userInfo?.wish2026 || "",
+        },
+        rawSajuData: serverData.raw_saju_data as NewYearRecord["rawSajuData"],
+        sajuData: serverData.raw_saju_data as NewYearRecord["sajuData"],
+        analysis: serverData.analysis_result ? (serverData.analysis_result as NewYearRecord["analysis"]) : null,
+        paid: serverData.is_paid || false,
+        paidAt: serverData.paid_at || undefined,
+        seenIntro: false,
+      };
+
+      setData(record);
+      setIsLoading(false);
+
+      trackPageView("new_year_detail", {
+        id: record.id,
+        gender: record.input.gender,
+        user_name: record.input.userName,
+        birth_date: record.input.date,
+        birth_time: record.input.time || "모름",
+        job_status: record.input.jobStatus,
+        relationship_status: record.input.relationshipStatus,
+        day_master: record.sajuData.dayMaster?.char,
+        day_master_title: record.sajuData.dayMaster?.title,
+      });
     };
 
     loadData();
@@ -362,52 +383,20 @@ function NewYearDetailContent() {
       setCouponError("");
 
       if (isFree) {
-        // 1. 결과 저장 확정 (IndexedDB)
-        await saveNewYearRecord({
-          ...data,
-          paid: true,
-          paidAt: new Date().toISOString(),
-          personalityType,
-          paymentInfo: {
-            method: "coupon",
-            price: 0,
-            couponCode: code,
-            isDiscount: true,
-          },
-        });
-
-        // 2. Supabase 저장
+        // Supabase 결제 완료 처리
         try {
-          const existsInSupabase = await getSajuAnalysisByShareId(data.id);
-          if (!existsInSupabase) {
-            await createSajuAnalysis({
-              service_type: "new_year",
-              id: data.id,
-              user_info: {
-                userName: data.input.userName,
-                gender: data.input.gender,
-                date: data.input.date,
-                calendar: data.input.calendar as "solar" | "lunar",
-                time: data.input.time,
-                jobStatus: data.input.jobStatus,
-                relationshipStatus: data.input.relationshipStatus,
-                wish2026: data.input.wish2026,
-              },
-              raw_saju_data: data.rawSajuData || null,
-              analysis_result: data.analysis as unknown as import("@/lib/db/sajuAnalysisDB").AnalysisResult | null,
-              image_paths: [],
-              is_paid: true,
-              paid_at: new Date().toISOString(),
-              payment_info: {
-                method: "coupon",
-                price: 0,
-                couponCode: code,
-                isDiscount: true,
-              },
-            });
-          }
+          await updateSajuAnalysis(data.id, {
+            is_paid: true,
+            paid_at: new Date().toISOString(),
+            payment_info: {
+              method: "coupon",
+              price: 0,
+              couponCode: code,
+              isDiscount: true,
+            },
+          });
         } catch (e) {
-          console.error("무료 쿠폰 Supabase 저장 실패:", e);
+          console.error("무료 쿠폰 결제 처리 실패:", e);
         }
 
         // 3. 결과 확정 후 쿠폰 수량 차감
@@ -461,11 +450,8 @@ function NewYearDetailContent() {
   const handlePaymentRequest = useCallback(async () => {
     if (!paymentWidgetRef.current || !data) return;
 
-    // T/F 성향 선택 저장 (결제 리다이렉트 전)
-    await saveNewYearRecord({
-      ...data,
-      personalityType,
-    });
+    // T/F 성향 선택을 sessionStorage에 저장 (결제 리다이렉트 후 복원용)
+    sessionStorage.setItem(`personalityType_${data.id}`, personalityType);
 
     const basePrice = PAYMENT_CONFIG.price;
 

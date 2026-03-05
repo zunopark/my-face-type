@@ -15,13 +15,8 @@ import {
   trackCouponApplied,
   trackPageView,
 } from "@/lib/mixpanel";
-import {
-  getCoupleAnalysisRecord,
-  updateCoupleAnalysisRecord,
-  CoupleAnalysisRecord,
-} from "@/lib/db/coupleAnalysisDB";
-import { upsertFaceAnalysisSupabase } from "@/lib/db/faceSupabaseDB";
-import { uploadCoupleImages } from "@/lib/storage/imageStorage";
+import { getFaceAnalysisSupabase, updateFaceAnalysisSupabase } from "@/lib/db/faceSupabaseDB";
+import { getImageUrl } from "@/lib/storage/imageStorage";
 import { createReview, getReviewByRecordId, Review } from "@/lib/db/reviewDB";
 
 // TossPayments 타입 선언
@@ -134,7 +129,7 @@ function CoupleResultContent() {
   const [reviewModalDismissed, setReviewModalDismissed] = useState(false);
   const reviewModalTriggered = useRef(false);
 
-  // IndexedDB에서 결과 가져오기
+  // Supabase에서 결과 가져오기
   useEffect(() => {
     if (!resultId) {
       router.push("/");
@@ -142,22 +137,32 @@ function CoupleResultContent() {
     }
 
     const loadData = async () => {
-      const stored = await getCoupleAnalysisRecord(resultId);
-      if (stored) {
-        // CoupleAnalysisRecord를 CoupleResult로 변환
-        const existingReport = stored.report as CoupleResult["reports"] | null;
+      const stored = await getFaceAnalysisSupabase(resultId);
+      if (stored && stored.service_type === "couple") {
+        const existingReport = stored.couple_report as CoupleResult["reports"] | null;
+
+        // Get image URLs from Storage
+        let image1Base64 = "";
+        let image2Base64 = "";
+        if (stored.image1_path) {
+          image1Base64 = getImageUrl(stored.image1_path);
+        }
+        if (stored.image2_path) {
+          image2Base64 = getImageUrl(stored.image2_path);
+        }
+
         const parsed: CoupleResult = {
           id: stored.id,
-          features1: stored.features1,
-          features2: stored.features2,
-          image1Base64: stored.image1Base64,
-          image2Base64: stored.image2Base64,
-          relationshipType: stored.relationshipType,
-          relationshipFeeling: stored.relationshipFeeling,
-          createdAt: stored.createdAt,
+          features1: stored.features1 || "",
+          features2: stored.features2 || "",
+          image1Base64: image1Base64,
+          image2Base64: image2Base64,
+          relationshipType: stored.relationship_type || "",
+          relationshipFeeling: stored.relationship_feeling || "",
+          createdAt: stored.created_at || new Date().toISOString(),
           reports: {
             couple: {
-              paid: stored.paid || false,
+              paid: stored.is_paid || false,
               data: existingReport?.couple?.data || null,
             },
           },
@@ -165,14 +170,12 @@ function CoupleResultContent() {
         setResult(parsed);
         trackPageView("couple_result", { id: parsed.id, paid: parsed.reports?.couple?.paid });
 
-        // 이미 분석 완료된 경우 바로 결과 표시
         if (parsed.reports?.couple?.data?.details?.length === 5) {
           setShowResult(true);
           setIsLoading(false);
           return;
         }
 
-        // 분석 시작
         setIsLoading(false);
         startAnalysis(parsed);
       } else {
@@ -340,9 +343,9 @@ function CoupleResultContent() {
         },
       };
 
-      // IndexedDB 업데이트
-      await updateCoupleAnalysisRecord(data.id, {
-        report: updatedResult.reports as unknown,
+      // Supabase 업데이트
+      await updateFaceAnalysisSupabase(data.id, {
+        couple_report: updatedResult.reports as unknown as Record<string, unknown>,
       });
       setResult(updatedResult);
       setShowResult(true);
@@ -361,43 +364,16 @@ function CoupleResultContent() {
     if (!result) return;
 
     try {
-      // IndexedDB에 결제 완료 표시
-      await updateCoupleAnalysisRecord(result.id, {
-        paid: true,
-        paidAt: new Date().toISOString(),
-        report: {
+      // Supabase 결제 완료 표시
+      await updateFaceAnalysisSupabase(result.id, {
+        couple_report: {
           ...result.reports,
           couple: { ...result.reports.couple, paid: true },
-        },
+        } as unknown as Record<string, unknown>,
+        is_paid: true,
+        paid_at: new Date().toISOString(),
+        payment_info: { method: "coupon" as const, price: 0, couponCode: appliedCoupon?.code },
       });
-
-      // Supabase 저장 (궁합 관상 - 무료 쿠폰)
-      try {
-        // 이미지 Storage 업로드
-        const uploadedImages = await uploadCoupleImages(result.id, {
-          image1: result.image1Base64,
-          image2: result.image2Base64,
-        });
-
-        // Supabase에 저장/업데이트
-        await upsertFaceAnalysisSupabase({
-          id: result.id,
-          service_type: "couple",
-          features1: result.features1,
-          features2: result.features2,
-          image1_path: uploadedImages.image1Path,
-          image2_path: uploadedImages.image2Path,
-          relationship_type: result.relationshipType,
-          relationship_feeling: result.relationshipFeeling,
-          couple_report: result.reports.couple as unknown as Record<string, unknown>,
-          is_paid: true,
-          paid_at: new Date().toISOString(),
-          payment_info: { method: "coupon", price: 0, couponCode: appliedCoupon?.code },
-        });
-        console.log("✅ Supabase에 궁합 관상 결과 저장 완료 (무료 쿠폰)");
-      } catch (supabaseErr) {
-        console.error("Supabase 궁합 관상 저장 실패:", supabaseErr);
-      }
 
       // 모달 닫기
       setShowPaymentModal(false);

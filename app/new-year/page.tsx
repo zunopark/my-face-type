@@ -3,7 +3,8 @@
 import { useState, useEffect, useCallback, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { computeSaju } from "@/app/actions/analyze";
-import { saveNewYearRecord } from "@/lib/db/newYearDB";
+import { createSajuAnalysis } from "@/lib/db/sajuAnalysisDB";
+import { getStoredUtmParams } from "@/components/providers/MixpanelProvider";
 import { trackPageView, trackFormSubmit } from "@/lib/mixpanel";
 import styles from "./new-year.module.css";
 
@@ -438,7 +439,42 @@ export default function NewYearPage() {
         paid: false,
       };
 
-      await saveNewYearRecord(record);
+      // UTM 정보 조회 (인플루언서 연결)
+      let utmSource: string | null = null;
+      let influencerId: string | null = null;
+      try {
+        const utmParams = getStoredUtmParams();
+        if (utmParams.utm_source) {
+          utmSource = utmParams.utm_source;
+          const infRes = await fetch(`/api/admin/influencers?slug=${encodeURIComponent(utmSource)}`);
+          if (infRes.ok) {
+            const infData = await infRes.json();
+            if (infData?.id) influencerId = infData.id;
+          }
+        }
+      } catch {}
+
+      await createSajuAnalysis({
+        service_type: "new_year",
+        id: recordId,
+        user_info: {
+          userName: record.input.userName,
+          gender: record.input.gender,
+          date: record.input.date,
+          calendar: record.input.calendar,
+          time: record.input.time,
+          jobStatus: record.input.jobStatus,
+          relationshipStatus: record.input.relationshipStatus,
+          wish2026: record.input.wish2026,
+        },
+        raw_saju_data: sajuResult.data,
+        analysis_result: null,
+        image_paths: [],
+        is_paid: false,
+        payment_info: null,
+        ...(utmSource ? { utm_source: utmSource } : {}),
+        ...(influencerId ? { influencer_id: influencerId } : {}),
+      });
 
       trackFormSubmit("new_year", {
         user_name: userName,

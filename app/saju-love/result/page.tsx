@@ -5,14 +5,11 @@ import { useSearchParams } from "next/navigation";
 // 클라이언트에서 직접 FastAPI 호출 (Netlify 타임아웃 우회)
 const SAJU_API_URL = process.env.NEXT_PUBLIC_SAJU_API_URL;
 import {
-  getSajuLoveRecord,
-  updateSajuLoveRecord,
-  saveSajuLoveRecord,
   SajuLoveRecord,
 } from "@/lib/db/sajuLoveDB";
 import { trackPageView } from "@/lib/mixpanel";
 import { createReview, getReviewByRecordId, Review } from "@/lib/db/reviewDB";
-import { getSajuAnalysisByShareId, createSajuAnalysis, updateSajuAnalysis } from "@/lib/db/sajuAnalysisDB";
+import { getSajuAnalysisByShareId, updateSajuAnalysis, SajuAnalysis } from "@/lib/db/sajuAnalysisDB";
 import { uploadSajuLoveImages, getImageUrl } from "@/lib/storage/imageStorage";
 import {
   getColor,
@@ -27,6 +24,69 @@ import {
 import { ScenePlayer, Scene, CardScene, WaitingScene, ActionScene } from "@/components/scene-player";
 import { getChapterConfig, CHAPTER_TITLES, sajuLovePlayerConfig } from "./config";
 import styles from "./result.module.css";
+
+// Supabase → SajuLoveRecord 변환 헬퍼
+function supabaseToRecord(r: SajuAnalysis, seenIntro = false): SajuLoveRecord {
+  const raw = r.raw_saju_data as Record<string, unknown> | null;
+  const gong = raw?.gong as Record<string, unknown> | undefined;
+  const result = r.analysis_result as {
+    user_name?: string;
+    chapters?: Array<{ number: number; title: string; content: string }>;
+    ideal_partner_image?: { prompt?: string; storage_path?: string };
+    avoid_type_image?: { prompt?: string; storage_path?: string };
+  } | null;
+
+  return {
+    id: r.id,
+    createdAt: r.created_at || new Date().toISOString(),
+    paid: r.is_paid || false,
+    paidAt: r.paid_at || undefined,
+    seenIntro,
+    input: {
+      userName: r.user_info?.userName || "",
+      gender: r.user_info?.gender || "",
+      date: r.user_info?.date || "",
+      calendar: r.user_info?.calendar || "solar",
+      time: r.user_info?.time || null,
+      userConcern: r.user_info?.userConcern || "",
+      status: r.user_info?.status || "",
+    },
+    rawSajuData: r.raw_saju_data as SajuLoveRecord["rawSajuData"],
+    sajuData: {
+      dayMaster: raw?.dayMaster as SajuLoveRecord["sajuData"]["dayMaster"] || { char: "", title: "" },
+      pillars: raw?.pillars as SajuLoveRecord["sajuData"]["pillars"] || {},
+      fiveElements: raw?.fiveElements as SajuLoveRecord["sajuData"]["fiveElements"],
+      loveFacts: raw?.loveFacts as SajuLoveRecord["sajuData"]["loveFacts"],
+      sinsal: raw?.sinsal as SajuLoveRecord["sajuData"]["sinsal"],
+      daeun: raw?.daeun as SajuLoveRecord["sajuData"]["daeun"],
+      zodiac: raw?.zodiac as SajuLoveRecord["sajuData"]["zodiac"],
+      luckCycles: raw?.luckCycles as SajuLoveRecord["sajuData"]["luckCycles"],
+      taiYuan: gong?.taiYuan as SajuLoveRecord["sajuData"]["taiYuan"],
+      mingGong: gong?.mingGong as SajuLoveRecord["sajuData"]["mingGong"],
+      shenGong: gong?.shenGong as SajuLoveRecord["sajuData"]["shenGong"],
+    },
+    loveAnalysis: result ? {
+      user_name: result.user_name || "",
+      chapters: result.chapters || [],
+      ideal_partner_image: result.ideal_partner_image?.storage_path ? {
+        image_base64: "",
+        image_url: getImageUrl(result.ideal_partner_image.storage_path),
+        prompt: result.ideal_partner_image.prompt,
+      } : undefined,
+      avoid_type_image: result.avoid_type_image?.storage_path ? {
+        image_base64: "",
+        image_url: getImageUrl(result.avoid_type_image.storage_path),
+        prompt: result.avoid_type_image.prompt,
+      } : undefined,
+    } : null,
+    paymentInfo: r.payment_info ? {
+      method: r.payment_info.method,
+      price: r.payment_info.price,
+      couponCode: r.payment_info.couponCode,
+      isDiscount: r.payment_info.isDiscount,
+    } : undefined,
+  };
+}
 
 // 색동낭자 전용 마크다운 파서
 const simpleMD = (src: string = "") =>
@@ -268,11 +328,7 @@ function SajuLoveResultContent() {
         isFetchingRef.current = true;
         startLoadingMessages(userName);
 
-        // 분석 시작 상태 저장 (중복 호출 방지)
-        await updateSajuLoveRecord(storedData.id, {
-          isAnalyzing: true,
-          analysisStartedAt: new Date().toISOString(),
-        });
+        // 분석 시작 상태는 로컬에서만 관리
       }
 
       try {
@@ -316,104 +372,42 @@ function SajuLoveResultContent() {
           loveAnalysis: loveResult,
           isAnalyzing: false,
         };
-        await updateSajuLoveRecord(storedData.id, {
-          loveAnalysis: loveResult,
-          isAnalyzing: false,
-        });
 
-        // 🔥 분석 완료 후 Supabase에 저장 (결제 완료 상태인 경우)
-        if (storedData.paid) {
-          console.log("🔍 분석 완료 - Supabase 저장 시도");
-          const existsInSupabase = await getSajuAnalysisByShareId(storedData.id);
-          if (!existsInSupabase) {
-            // 이미지 Storage에 업로드
-            const imagePaths: string[] = [];
-            if (loveResult.ideal_partner_image?.image_base64 ||
-              loveResult.avoid_type_image?.image_base64) {
-              try {
-                const uploadedImages = await uploadSajuLoveImages(storedData.id, {
-                  idealPartner: loveResult.ideal_partner_image?.image_base64,
-                  avoidType: loveResult.avoid_type_image?.image_base64,
-                });
-                if (uploadedImages.idealPartner) imagePaths.push(uploadedImages.idealPartner.path);
-                if (uploadedImages.avoidType) imagePaths.push(uploadedImages.avoidType.path);
-                console.log("✅ 이미지 Storage 업로드 완료:", imagePaths);
-              } catch (imgErr) {
-                console.error("이미지 업로드 실패:", imgErr);
-              }
+        // Supabase에 분석 결과 업데이트
+        try {
+          // 이미지 Storage에 업로드
+          const imagePaths: string[] = [];
+          if (loveResult.ideal_partner_image?.image_base64 ||
+            loveResult.avoid_type_image?.image_base64) {
+            try {
+              const uploadedImages = await uploadSajuLoveImages(storedData.id, {
+                idealPartner: loveResult.ideal_partner_image?.image_base64,
+                avoidType: loveResult.avoid_type_image?.image_base64,
+              });
+              if (uploadedImages.idealPartner) imagePaths.push(uploadedImages.idealPartner.path);
+              if (uploadedImages.avoidType) imagePaths.push(uploadedImages.avoidType.path);
+            } catch (imgErr) {
+              console.error("이미지 업로드 실패:", imgErr);
             }
-
-            // Supabase DB에 저장
-            await createSajuAnalysis({
-              service_type: "saju_love",
-              id: storedData.id,
-              user_info: {
-                userName: storedData.input.userName,
-                gender: storedData.input.gender,
-                date: storedData.input.date,
-                calendar: storedData.input.calendar as "solar" | "lunar",
-                time: storedData.input.time,
-                userConcern: storedData.input.userConcern,
-                status: storedData.input.status,
-              },
-              raw_saju_data: storedData.rawSajuData || null,
-              analysis_result: {
-                user_name: loveResult.user_name,
-                chapters: loveResult.chapters,
-                ideal_partner_image: loveResult.ideal_partner_image ? {
-                  prompt: loveResult.ideal_partner_image.prompt,
-                  storage_path: imagePaths[0],
-                } : undefined,
-                avoid_type_image: loveResult.avoid_type_image ? {
-                  prompt: loveResult.avoid_type_image.prompt,
-                  storage_path: imagePaths[1],
-                } : undefined,
-              },
-              image_paths: imagePaths,
-              is_paid: true,
-              paid_at: storedData.paidAt || new Date().toISOString(),
-              payment_info: storedData.paymentInfo || null,
-            });
-            console.log("✅ Supabase에 사주 분석 결과 저장 완료");
-          } else {
-            // 이미 존재하면 analysis_result 업데이트
-            console.log("🔄 Supabase 분석 결과 업데이트 시도");
-
-            // 이미지 Storage에 업로드
-            const updateImagePaths: string[] = [];
-            if (loveResult.ideal_partner_image?.image_base64 ||
-              loveResult.avoid_type_image?.image_base64) {
-              try {
-                const uploadedImages = await uploadSajuLoveImages(storedData.id, {
-                  idealPartner: loveResult.ideal_partner_image?.image_base64,
-                  avoidType: loveResult.avoid_type_image?.image_base64,
-                });
-                if (uploadedImages.idealPartner) updateImagePaths.push(uploadedImages.idealPartner.path);
-                if (uploadedImages.avoidType) updateImagePaths.push(uploadedImages.avoidType.path);
-                console.log("✅ 이미지 Storage 업로드 완료:", updateImagePaths);
-              } catch (imgErr) {
-                console.error("이미지 업로드 실패:", imgErr);
-              }
-            }
-
-            // analysis_result 업데이트
-            await updateSajuAnalysis(storedData.id, {
-              analysis_result: {
-                user_name: loveResult.user_name,
-                chapters: loveResult.chapters,
-                ideal_partner_image: loveResult.ideal_partner_image ? {
-                  prompt: loveResult.ideal_partner_image.prompt,
-                  storage_path: updateImagePaths[0],
-                } : undefined,
-                avoid_type_image: loveResult.avoid_type_image ? {
-                  prompt: loveResult.avoid_type_image.prompt,
-                  storage_path: updateImagePaths[1],
-                } : undefined,
-              },
-              image_paths: updateImagePaths.length > 0 ? updateImagePaths : existsInSupabase.image_paths,
-            });
-            console.log("✅ Supabase 분석 결과 업데이트 완료");
           }
+
+          await updateSajuAnalysis(storedData.id, {
+            analysis_result: {
+              user_name: loveResult.user_name,
+              chapters: loveResult.chapters,
+              ideal_partner_image: loveResult.ideal_partner_image ? {
+                prompt: loveResult.ideal_partner_image.prompt,
+                storage_path: imagePaths[0],
+              } : undefined,
+              avoid_type_image: loveResult.avoid_type_image ? {
+                prompt: loveResult.avoid_type_image.prompt,
+                storage_path: imagePaths[1],
+              } : undefined,
+            },
+            image_paths: imagePaths.length > 0 ? imagePaths : undefined,
+          });
+        } catch (dbErr) {
+          console.error("Supabase 업데이트 실패:", dbErr);
         }
 
         stopLoadingMessages();
@@ -437,8 +431,7 @@ function SajuLoveResultContent() {
         stopLoadingMessages();
         setIsAnalyzing(false);
 
-        // 에러 시 분석 상태 해제 (재시도 허용)
-        await updateSajuLoveRecord(storedData.id, { isAnalyzing: false });
+        // 에러 시 분석 상태 해제 (재시도 허용 - 로컬에서만 관리)
 
         console.error("분석 API 실패:", err);
 
@@ -502,121 +495,11 @@ function SajuLoveResultContent() {
 
     const loadData = async () => {
       try {
-        let record = await getSajuLoveRecord(resultId);
-
-        // IndexedDB에 없으면 Supabase에서 조회 (공유 링크로 접근한 경우)
-        if (!record) {
-          const supabaseRecord = await getSajuAnalysisByShareId(resultId);
-          if (supabaseRecord && supabaseRecord.is_paid) {
-            // Supabase 데이터를 SajuLoveRecord 형태로 변환
-            const analysisResult = supabaseRecord.analysis_result as {
-              user_name?: string;
-              chapters?: Array<{ number: number; title: string; content: string }>;
-              ideal_partner_image?: { prompt?: string; storage_path?: string };
-              avoid_type_image?: { prompt?: string; storage_path?: string };
-            } | null;
-
-            record = {
-              id: supabaseRecord.id,
-              createdAt: supabaseRecord.created_at || new Date().toISOString(),
-              paid: supabaseRecord.is_paid || false,
-              paidAt: supabaseRecord.paid_at || undefined,
-              seenIntro: true, // 공유로 접근하면 인트로 스킵
-              input: {
-                userName: supabaseRecord.user_info?.userName || "",
-                gender: supabaseRecord.user_info?.gender || "",
-                date: supabaseRecord.user_info?.date || "",
-                calendar: supabaseRecord.user_info?.calendar || "solar",
-                time: supabaseRecord.user_info?.time || null,
-                userConcern: supabaseRecord.user_info?.userConcern || "",
-                status: supabaseRecord.user_info?.status || "",
-              },
-              rawSajuData: supabaseRecord.raw_saju_data as SajuLoveRecord["rawSajuData"],
-              sajuData: {
-                dayMaster: (supabaseRecord.raw_saju_data as Record<string, unknown>)?.dayMaster as SajuLoveRecord["sajuData"]["dayMaster"] || { char: "", title: "" },
-                pillars: (supabaseRecord.raw_saju_data as Record<string, unknown>)?.pillars as SajuLoveRecord["sajuData"]["pillars"] || {},
-                fiveElements: (supabaseRecord.raw_saju_data as Record<string, unknown>)?.fiveElements as SajuLoveRecord["sajuData"]["fiveElements"],
-                loveFacts: (supabaseRecord.raw_saju_data as Record<string, unknown>)?.loveFacts as SajuLoveRecord["sajuData"]["loveFacts"],
-                sinsal: (supabaseRecord.raw_saju_data as Record<string, unknown>)?.sinsal as SajuLoveRecord["sajuData"]["sinsal"],
-                daeun: (supabaseRecord.raw_saju_data as Record<string, unknown>)?.daeun as SajuLoveRecord["sajuData"]["daeun"],
-                zodiac: (supabaseRecord.raw_saju_data as Record<string, unknown>)?.zodiac as SajuLoveRecord["sajuData"]["zodiac"],
-                luckCycles: (supabaseRecord.raw_saju_data as Record<string, unknown>)?.luckCycles as SajuLoveRecord["sajuData"]["luckCycles"],
-                taiYuan: ((supabaseRecord.raw_saju_data as Record<string, unknown>)?.gong as Record<string, unknown>)?.taiYuan as SajuLoveRecord["sajuData"]["taiYuan"],
-                mingGong: ((supabaseRecord.raw_saju_data as Record<string, unknown>)?.gong as Record<string, unknown>)?.mingGong as SajuLoveRecord["sajuData"]["mingGong"],
-                shenGong: ((supabaseRecord.raw_saju_data as Record<string, unknown>)?.gong as Record<string, unknown>)?.shenGong as SajuLoveRecord["sajuData"]["shenGong"],
-              },
-              loveAnalysis: analysisResult ? {
-                user_name: analysisResult.user_name || "",
-                chapters: analysisResult.chapters || [],
-                // Storage URL로 변환
-                ideal_partner_image: analysisResult.ideal_partner_image?.storage_path ? {
-                  image_base64: "", // base64 대신 빈 문자열
-                  image_url: getImageUrl(analysisResult.ideal_partner_image.storage_path), // URL 사용
-                  prompt: analysisResult.ideal_partner_image.prompt,
-                } : undefined,
-                avoid_type_image: analysisResult.avoid_type_image?.storage_path ? {
-                  image_base64: "",
-                  image_url: getImageUrl(analysisResult.avoid_type_image.storage_path),
-                  prompt: analysisResult.avoid_type_image.prompt,
-                } : undefined,
-              } : null,
-              paymentInfo: supabaseRecord.payment_info ? {
-                method: supabaseRecord.payment_info.method,
-                price: supabaseRecord.payment_info.price,
-                couponCode: supabaseRecord.payment_info.couponCode,
-                isDiscount: supabaseRecord.payment_info.isDiscount,
-              } : undefined,
-            };
-
-            // 이미지를 base64로 변환해서 IndexedDB에 저장 (다음 방문 시 빠르게 로드)
-            try {
-              // Storage URL에서 이미지를 가져와서 base64로 변환 (5초 타임아웃)
-              const fetchImageAsBase64 = async (url: string): Promise<string> => {
-                const controller = new AbortController();
-                const timeoutId = setTimeout(() => controller.abort(), 5000);
-                try {
-                  const response = await fetch(url, { signal: controller.signal });
-                  clearTimeout(timeoutId);
-                  const blob = await response.blob();
-                  return new Promise((resolve, reject) => {
-                    const reader = new FileReader();
-                    reader.onloadend = () => resolve(reader.result as string);
-                    reader.onerror = reject;
-                    reader.readAsDataURL(blob);
-                  });
-                } catch {
-                  clearTimeout(timeoutId);
-                  throw new Error("이미지 로드 타임아웃");
-                }
-              };
-
-              // 이미지 base64 변환
-              if (record.loveAnalysis?.ideal_partner_image?.image_url) {
-                try {
-                  const base64 = await fetchImageAsBase64(record.loveAnalysis.ideal_partner_image.image_url);
-                  record.loveAnalysis.ideal_partner_image.image_base64 = base64;
-                  console.log("✅ ideal_partner 이미지 base64 변환 완료");
-                } catch (imgErr) {
-                  console.warn("ideal_partner 이미지 변환 실패:", imgErr);
-                }
-              }
-              if (record.loveAnalysis?.avoid_type_image?.image_url) {
-                try {
-                  const base64 = await fetchImageAsBase64(record.loveAnalysis.avoid_type_image.image_url);
-                  record.loveAnalysis.avoid_type_image.image_base64 = base64;
-                  console.log("✅ avoid_type 이미지 base64 변환 완료");
-                } catch (imgErr) {
-                  console.warn("avoid_type 이미지 변환 실패:", imgErr);
-                }
-              }
-
-              await saveSajuLoveRecord(record);
-              console.log("✅ 외부 공유 데이터 IndexedDB에 캐싱 완료 (이미지 포함)");
-            } catch (cacheErr) {
-              console.warn("IndexedDB 캐싱 실패:", cacheErr);
-            }
-          }
-        }
+        const supabaseRecord = await getSajuAnalysisByShareId(resultId);
+        // seenIntro는 sessionStorage로 관리 (DB 불필요)
+        const seenIntroKey = `seenIntro_${resultId}`;
+        const seenIntro = sessionStorage.getItem(seenIntroKey) === "true";
+        const record = supabaseRecord ? supabaseToRecord(supabaseRecord, seenIntro) : null;
 
         if (!record) {
           setError("데이터를 찾을 수 없습니다.");
@@ -666,7 +549,7 @@ function SajuLoveResultContent() {
           startLoadingMessages(userName);
           setTimeout(async () => {
             stopLoadingMessages();
-            await updateSajuLoveRecord(record.id, { seenIntro: true });
+            sessionStorage.setItem(seenIntroKey, "true");
             setScenes(buildPartialScenes(record));
             setIsLoading(false);
           }, 10000);
@@ -699,7 +582,7 @@ function SajuLoveResultContent() {
           startLoadingMessages(userName);
           setTimeout(async () => {
             stopLoadingMessages();
-            await updateSajuLoveRecord(record.id, { seenIntro: true });
+            sessionStorage.setItem(seenIntroKey, "true");
             setScenes(buildPartialScenes(record));
             setIsLoading(false);
           }, 10000);
@@ -713,13 +596,8 @@ function SajuLoveResultContent() {
         setScenes(buildPartialScenes(record));
         setIsLoading(false);
 
-        // 이미 분석 중인지 확인 (5분 이내)
-        const ANALYSIS_TIMEOUT = 5 * 60 * 1000;
-        const isStillAnalyzing =
-          record.isAnalyzing &&
-          record.analysisStartedAt &&
-          Date.now() - new Date(record.analysisStartedAt).getTime() <
-          ANALYSIS_TIMEOUT;
+        // 분석 결과가 아직 없는 경우 → 분석 시작
+        const isStillAnalyzing = false; // Supabase에서는 분석 상태를 별도로 관리하지 않음
 
         if (isStillAnalyzing) {
           partialStartedRef.current = true;
@@ -728,7 +606,8 @@ function SajuLoveResultContent() {
 
           const checkInterval = setInterval(async () => {
             checkCount++;
-            const updated = await getSajuLoveRecord(record.id);
+            const updatedSupabase = await getSajuAnalysisByShareId(record.id);
+            const updated = updatedSupabase ? supabaseToRecord(updatedSupabase, true) : null;
 
             if (updated?.loveAnalysis) {
               clearInterval(checkInterval);

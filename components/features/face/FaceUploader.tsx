@@ -5,7 +5,9 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { Progress } from "@/components/ui/progress";
 import { analyzeFaceFeatures } from "@/app/actions/analyze";
-import { saveFaceAnalysisRecord } from "@/lib/db/faceAnalysisDB";
+import { upsertFaceAnalysisSupabase } from "@/lib/db/faceSupabaseDB";
+import { uploadFaceImage } from "@/lib/storage/imageStorage";
+import { getStoredUtmParams } from "@/components/providers/MixpanelProvider";
 
 interface FaceUploaderProps {
   onAnalysisStart?: () => void;
@@ -57,15 +59,36 @@ export default function FaceUploader({
           clearInterval(interval);
           setProgress(100);
 
-          // IndexedDB에 저장하고 결과 페이지로 이동
+          // Supabase에 저장하고 결과 페이지로 이동
           const resultId = crypto.randomUUID();
 
-          // IndexedDB에 저장
-          await saveFaceAnalysisRecord({
+          // 이미지 Storage 업로드
+          const uploadedImage = await uploadFaceImage(resultId, base64);
+
+          // UTM 정보 조회
+          let utmSource: string | null = null;
+          let influencerId: string | null = null;
+          try {
+            const utmParams = getStoredUtmParams();
+            if (utmParams.utm_source) {
+              utmSource = utmParams.utm_source;
+              const infRes = await fetch(`/api/admin/influencers?slug=${encodeURIComponent(utmSource)}`);
+              if (infRes.ok) {
+                const infData = await infRes.json();
+                if (infData?.id) influencerId = infData.id;
+              }
+            }
+          } catch {}
+
+          // Supabase에 저장
+          await upsertFaceAnalysisSupabase({
             id: resultId,
-            imageBase64: base64,
+            service_type: "face",
             features: result.data.features,
-            timestamp: new Date().toISOString(),
+            image_path: uploadedImage?.path,
+            is_paid: false,
+            ...(utmSource ? { utm_source: utmSource } : {}),
+            ...(influencerId ? { influencer_id: influencerId } : {}),
           });
 
           onAnalysisComplete?.(result.data);

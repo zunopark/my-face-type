@@ -3,12 +3,9 @@
 import { useEffect, useState, useCallback, useRef, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import {
-  getNewYearRecord,
-  updateNewYearRecord,
-  saveNewYearRecord,
   NewYearRecord,
 } from "@/lib/db/newYearDB";
-import { updateSajuAnalysis, getSajuAnalysisById } from "@/lib/db/sajuAnalysisDB";
+import { updateSajuAnalysis, getSajuAnalysisById, SajuAnalysis } from "@/lib/db/sajuAnalysisDB";
 import { createReview, getReviewByRecordId, Review } from "@/lib/db/reviewDB";
 import { trackPageView } from "@/lib/mixpanel";
 import {
@@ -30,6 +27,32 @@ import styles from "./result.module.css";
 
 // 클라이언트에서 직접 FastAPI 호출
 const SAJU_API_URL = process.env.NEXT_PUBLIC_SAJU_API_URL;
+
+// Supabase → NewYearRecord 변환 헬퍼
+function supabaseToNewYearRecord(r: SajuAnalysis, seenIntro = false): NewYearRecord {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const userInfo = r.user_info as any;
+  return {
+    id: r.id,
+    createdAt: r.created_at || new Date().toISOString(),
+    input: {
+      userName: userInfo?.userName || "-",
+      gender: userInfo?.gender || "male",
+      date: userInfo?.date || "",
+      calendar: (userInfo?.calendar as "solar" | "lunar") || "solar",
+      time: userInfo?.time || null,
+      jobStatus: userInfo?.jobStatus || "",
+      relationshipStatus: userInfo?.relationshipStatus || "",
+      wish2026: userInfo?.wish2026 || "",
+    },
+    rawSajuData: r.raw_saju_data as NewYearRecord["rawSajuData"],
+    sajuData: r.raw_saju_data as NewYearRecord["sajuData"],
+    analysis: r.analysis_result ? (r.analysis_result as NewYearRecord["analysis"]) : null,
+    paid: r.is_paid || false,
+    paidAt: r.paid_at || undefined,
+    seenIntro,
+  };
+}
 
 // 까치도령 전용 마크다운 파서
 const simpleMD = (src: string = "") =>
@@ -178,10 +201,7 @@ function NewYearResultContent() {
         isFetchingRef.current = true;
         startLoadingMessages(userName);
 
-        await updateNewYearRecord(storedData.id, {
-          isAnalyzing: true,
-          analysisStartedAt: new Date().toISOString(),
-        });
+        // 분석 시작 상태는 로컬에서만 관리
       }
 
       try {
@@ -196,7 +216,7 @@ function NewYearResultContent() {
             user_job_status: storedData.input?.jobStatus || "",
             user_relationship_status: storedData.input?.relationshipStatus || "",
             user_wish_2026: storedData.input?.wish2026?.trim() || "",
-            personality_type: storedData.personalityType || "T",
+            personality_type: sessionStorage.getItem(`personalityType_${storedData.id}`) || "T",
             year: 2026,
           }),
         });
@@ -221,17 +241,11 @@ function NewYearResultContent() {
           analysis: analysisWithMeta,
           isAnalyzing: false,
         };
-        await updateNewYearRecord(storedData.id, {
-          analysis: analysisWithMeta,
-          isAnalyzing: false,
-        });
-
-        // Supabase에도 분석 결과 저장
+        // Supabase에 분석 결과 저장
         try {
           await updateSajuAnalysis(storedData.id, {
             analysis_result: analysisWithMeta as unknown as Record<string, unknown>,
           });
-          console.log("✅ Supabase에 신년사주 분석 결과 저장 완료");
         } catch (supabaseErr) {
           console.error("Supabase 신년사주 결과 저장 실패:", supabaseErr);
         }
@@ -253,7 +267,7 @@ function NewYearResultContent() {
         stopLoadingMessages();
         setIsAnalyzing(false);
 
-        await updateNewYearRecord(storedData.id, { isAnalyzing: false });
+        // 에러 시 분석 상태 해제 (로컬에서만 관리)
 
         console.error("분석 API 실패:", err);
 
@@ -296,40 +310,11 @@ function NewYearResultContent() {
 
     const loadData = async () => {
       try {
-        let record = await getNewYearRecord(resultId);
-        let fromSupabase = false;
-
-        // IndexedDB에 없으면 Supabase에서 가져오기 (다른 기기/브라우저 접근 시)
-        if (!record) {
-          const serverData = await getSajuAnalysisById(resultId);
-          if (serverData && serverData.is_paid) {
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            const userInfo = serverData.user_info as any;
-            record = {
-              id: serverData.id,
-              createdAt: serverData.created_at || new Date().toISOString(),
-              input: {
-                userName: userInfo?.userName || "-",
-                gender: userInfo?.gender || "male",
-                date: userInfo?.date || "",
-                calendar: (userInfo?.calendar as "solar" | "lunar") || "solar",
-                time: userInfo?.time || null,
-                jobStatus: userInfo?.jobStatus || "",
-                relationshipStatus: userInfo?.relationshipStatus || "",
-                wish2026: userInfo?.wish2026 || "",
-              },
-              rawSajuData: serverData.raw_saju_data as NewYearRecord["rawSajuData"],
-              sajuData: serverData.raw_saju_data as NewYearRecord["sajuData"],
-              analysis: serverData.analysis_result ? (serverData.analysis_result as NewYearRecord["analysis"]) : null,
-              paid: true,
-              paidAt: serverData.paid_at || undefined,
-              seenIntro: true,
-            };
-            // IndexedDB에 캐시하여 다음 접근 시 바로 로드
-            await saveNewYearRecord(record);
-            fromSupabase = true;
-          }
-        }
+        const seenIntroKey = `seenIntro_${resultId}`;
+        const seenIntro = sessionStorage.getItem(seenIntroKey) === "true";
+        const serverData = await getSajuAnalysisById(resultId);
+        const record = serverData ? supabaseToNewYearRecord(serverData, seenIntro) : null;
+        const fromSupabase = !!(serverData && serverData.is_paid && serverData.analysis_result);
 
         if (!record) {
           setError("데이터를 찾을 수 없습니다.");
@@ -360,7 +345,7 @@ function NewYearResultContent() {
           startLoadingMessages(userName);
           setTimeout(async () => {
             stopLoadingMessages();
-            await updateNewYearRecord(record.id, { seenIntro: true });
+            sessionStorage.setItem(seenIntroKey, "true");
             setScenes(buildPartialScenes(record));
             setIsLoading(false);
           }, 10000);
@@ -391,7 +376,7 @@ function NewYearResultContent() {
           startLoadingMessages(userName);
           setTimeout(async () => {
             stopLoadingMessages();
-            await updateNewYearRecord(record.id, { seenIntro: true });
+            sessionStorage.setItem(seenIntroKey, "true");
             setScenes(buildPartialScenes(record));
             setIsLoading(false);
           }, 10000);
@@ -413,11 +398,7 @@ function NewYearResultContent() {
         setScenes(buildPartialScenes(record));
         setIsLoading(false);
 
-        const ANALYSIS_TIMEOUT = 5 * 60 * 1000;
-        const isStillAnalyzing =
-          record.isAnalyzing &&
-          record.analysisStartedAt &&
-          Date.now() - new Date(record.analysisStartedAt).getTime() < ANALYSIS_TIMEOUT;
+        const isStillAnalyzing = false; // Supabase에서는 분석 상태를 별도로 관리하지 않음
 
         if (isStillAnalyzing) {
           partialStartedRef.current = true;
@@ -426,7 +407,8 @@ function NewYearResultContent() {
 
           const checkInterval = setInterval(async () => {
             checkCount++;
-            const updated = await getNewYearRecord(record.id);
+            const updatedSupabase = await getSajuAnalysisById(record.id);
+            const updated = updatedSupabase ? supabaseToNewYearRecord(updatedSupabase, true) : null;
 
             if (updated?.analysis) {
               clearInterval(checkInterval);

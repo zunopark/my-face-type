@@ -4,13 +4,8 @@ import { useEffect, useState, Suspense } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { trackPaymentSuccess, trackPaymentFail, ServiceType } from "@/lib/mixpanel";
 import { confirmPayment as confirmPaymentAction } from "@/app/actions/analyze";
-import { markSajuLovePaid, getSajuLoveRecord } from "@/lib/db/sajuLoveDB";
-import { markFaceReportPaid, getFaceAnalysisRecord } from "@/lib/db/faceAnalysisDB";
-import { markCoupleAnalysisPaid, getCoupleAnalysisRecord } from "@/lib/db/coupleAnalysisDB";
-import { markNewYearPaid, getNewYearRecord } from "@/lib/db/newYearDB";
 import { createSajuAnalysis, getSajuAnalysisByShareId, updateSajuAnalysis } from "@/lib/db/sajuAnalysisDB";
-import { upsertFaceAnalysisSupabase, getFaceAnalysisSupabase } from "@/lib/db/faceSupabaseDB";
-import { uploadSajuLoveImages, uploadFaceImage, uploadCoupleImages } from "@/lib/storage/imageStorage";
+import { updateFaceAnalysisSupabase } from "@/lib/db/faceSupabaseDB";
 import { getStoredUtmParams } from "@/components/providers/MixpanelProvider";
 
 const MAX_RETRY = 3;
@@ -121,26 +116,20 @@ function SuccessContent() {
 
       // 사주 결제인 경우 상세 정보 추가
       if (reportType === "saju" && resultId) {
-        const sajuRecord = await getSajuLoveRecord(resultId);
-        if (sajuRecord) {
+        const sajuSupabase = await getSajuAnalysisByShareId(resultId);
+        if (sajuSupabase) {
           trackPaymentSuccess(serviceType, {
             order_id: orderId,
             amount: Number(amount),
             result_id: resultId,
             report_type: reportType,
-            // 유저 입력 정보
-            user_name: sajuRecord.input.userName,
-            gender: sajuRecord.input.gender,
-            birth_date: sajuRecord.input.date,
-            birth_time: sajuRecord.input.time || "모름",
-            calendar: sajuRecord.input.calendar,
-            status: sajuRecord.input.status,
-            user_concern: sajuRecord.input.userConcern,
-            // 사주 정보
-            day_master: sajuRecord.sajuData.dayMaster?.char,
-            day_master_title: sajuRecord.sajuData.dayMaster?.title,
-            day_master_element: sajuRecord.sajuData.dayMaster?.element,
-            day_master_yinyang: sajuRecord.sajuData.dayMaster?.yinYang,
+            user_name: sajuSupabase.user_info?.userName,
+            gender: sajuSupabase.user_info?.gender,
+            birth_date: sajuSupabase.user_info?.date,
+            birth_time: sajuSupabase.user_info?.time || "모름",
+            calendar: sajuSupabase.user_info?.calendar,
+            status: sajuSupabase.user_info?.status,
+            user_concern: sajuSupabase.user_info?.userConcern,
           });
         } else {
           trackPaymentSuccess(serviceType, {
@@ -151,28 +140,18 @@ function SuccessContent() {
           });
         }
       } else if (reportType === "new_year" && resultId) {
-        // 신년 사주 결제인 경우 상세 정보 추가
-        const newYearRecord = await getNewYearRecord(resultId);
-        if (newYearRecord) {
+        const nySupabase = await getSajuAnalysisByShareId(resultId);
+        if (nySupabase) {
           trackPaymentSuccess(serviceType, {
             order_id: orderId,
             amount: Number(amount),
             result_id: resultId,
             report_type: reportType,
-            // 유저 입력 정보
-            user_name: newYearRecord.input.userName,
-            gender: newYearRecord.input.gender,
-            birth_date: newYearRecord.input.date,
-            birth_time: newYearRecord.input.time || "모름",
-            calendar: newYearRecord.input.calendar,
-            job_status: newYearRecord.input.jobStatus,
-            relationship_status: newYearRecord.input.relationshipStatus,
-            wish_2026: newYearRecord.input.wish2026,
-            // 사주 정보
-            day_master: newYearRecord.sajuData.dayMaster?.char,
-            day_master_title: newYearRecord.sajuData.dayMaster?.title,
-            day_master_element: newYearRecord.sajuData.dayMaster?.element,
-            day_master_yinyang: newYearRecord.sajuData.dayMaster?.yinYang,
+            user_name: nySupabase.user_info?.userName,
+            gender: nySupabase.user_info?.gender,
+            birth_date: nySupabase.user_info?.date,
+            birth_time: nySupabase.user_info?.time || "모름",
+            calendar: nySupabase.user_info?.calendar,
           });
         } else {
           trackPaymentSuccess(serviceType, {
@@ -214,7 +193,7 @@ function SuccessContent() {
       if (resultId) {
         try {
           if (reportType === "saju") {
-            // 사주 결제인 경우
+            // 사주 결제인 경우 - Supabase만 업데이트
             const isDiscount = orderId?.includes("discount") || !!couponCode;
             const paymentInfo = {
               method: "toss" as const,
@@ -223,79 +202,14 @@ function SuccessContent() {
               ...(couponCode ? { couponCode } : {}),
             };
 
-            // IndexedDB 업데이트
-            await markSajuLovePaid(resultId, paymentInfo);
-
-            // Supabase 결제 상태 업데이트
-            const sajuRecord = await getSajuLoveRecord(resultId);
-            if (sajuRecord) {
-              const existsInSupabase = await getSajuAnalysisByShareId(resultId);
-              if (existsInSupabase) {
-                // 이미 있으면 결제 상태만 업데이트
-                await updateSajuAnalysis(resultId, {
-                  is_paid: true,
-                  paid_at: new Date().toISOString(),
-                  payment_info: paymentInfo,
-                  ...(utmSource ? { utm_source: utmSource } : {}),
-                  ...(influencerId ? { influencer_id: influencerId } : {}),
-                });
-                console.log("✅ Supabase 결제 상태 업데이트 완료");
-              } else {
-                // 없으면 새로 생성
-                // 이미지 Storage에 업로드
-                const imagePaths: string[] = [];
-                if (sajuRecord.loveAnalysis?.ideal_partner_image?.image_base64 ||
-                    sajuRecord.loveAnalysis?.avoid_type_image?.image_base64) {
-                  try {
-                    const uploadedImages = await uploadSajuLoveImages(resultId, {
-                      idealPartner: sajuRecord.loveAnalysis?.ideal_partner_image?.image_base64,
-                      avoidType: sajuRecord.loveAnalysis?.avoid_type_image?.image_base64,
-                    });
-                    if (uploadedImages.idealPartner) imagePaths.push(uploadedImages.idealPartner.path);
-                    if (uploadedImages.avoidType) imagePaths.push(uploadedImages.avoidType.path);
-                  } catch (imgErr) {
-                    console.error("이미지 업로드 실패:", imgErr);
-                  }
-                }
-
-                // Supabase DB에 저장
-                await createSajuAnalysis({
-                  service_type: "saju_love",
-                  id: resultId,
-                  user_info: {
-                    userName: sajuRecord.input.userName,
-                    gender: sajuRecord.input.gender,
-                    date: sajuRecord.input.date,
-                    calendar: sajuRecord.input.calendar as "solar" | "lunar",
-                    time: sajuRecord.input.time,
-                    userConcern: sajuRecord.input.userConcern,
-                    status: sajuRecord.input.status,
-                  },
-                  raw_saju_data: sajuRecord.rawSajuData || null,
-                  analysis_result: sajuRecord.loveAnalysis ? {
-                    ...sajuRecord.loveAnalysis,
-                    // base64 이미지 제거 (Storage에 저장됨)
-                    ideal_partner_image: sajuRecord.loveAnalysis.ideal_partner_image ? {
-                      prompt: sajuRecord.loveAnalysis.ideal_partner_image.prompt,
-                      storage_path: imagePaths[0],
-                    } : undefined,
-                    avoid_type_image: sajuRecord.loveAnalysis.avoid_type_image ? {
-                      prompt: sajuRecord.loveAnalysis.avoid_type_image.prompt,
-                      storage_path: imagePaths[1],
-                    } : undefined,
-                  } : null,
-                  image_paths: imagePaths,
-                  is_paid: true,
-                  paid_at: new Date().toISOString(),
-                  payment_info: paymentInfo,
-                  ...(utmSource ? { utm_source: utmSource } : {}),
-                  ...(influencerId ? { influencer_id: influencerId } : {}),
-                });
-                console.log("✅ Supabase에 사주 분석 결과 저장 완료");
-              }
-            }
+            await updateSajuAnalysis(resultId, {
+              is_paid: true,
+              paid_at: new Date().toISOString(),
+              payment_info: paymentInfo,
+            });
+            console.log("✅ Supabase 결제 상태 업데이트 완료");
           } else if (reportType === "new_year") {
-            // 신년 사주 결제인 경우
+            // 신년 사주 결제인 경우 - Supabase만 업데이트
             const isDiscount = orderId?.includes("discount") || !!couponCode;
             const paymentInfo = {
               method: "toss" as const,
@@ -304,124 +218,33 @@ function SuccessContent() {
               ...(couponCode ? { couponCode } : {}),
             };
 
-            // IndexedDB 업데이트
-            await markNewYearPaid(resultId, paymentInfo);
-
-            // Supabase 저장 (신년사주)
-            const newYearRecord = await getNewYearRecord(resultId);
-            if (newYearRecord) {
-              const existsInSupabase = await getSajuAnalysisByShareId(resultId);
-              if (existsInSupabase) {
-                // 이미 있으면 결제 상태만 업데이트
-                await updateSajuAnalysis(resultId, {
-                  is_paid: true,
-                  paid_at: new Date().toISOString(),
-                  payment_info: paymentInfo,
-                  ...(utmSource ? { utm_source: utmSource } : {}),
-                  ...(influencerId ? { influencer_id: influencerId } : {}),
-                });
-                console.log("✅ Supabase 신년사주 결제 상태 업데이트 완료");
-              } else {
-                // 없으면 새로 생성
-                await createSajuAnalysis({
-                  service_type: "new_year",
-                  id: resultId,
-                  user_info: {
-                    userName: newYearRecord.input.userName,
-                    gender: newYearRecord.input.gender,
-                    date: newYearRecord.input.date,
-                    calendar: newYearRecord.input.calendar as "solar" | "lunar",
-                    time: newYearRecord.input.time,
-                    jobStatus: newYearRecord.input.jobStatus,
-                    relationshipStatus: newYearRecord.input.relationshipStatus,
-                    wish2026: newYearRecord.input.wish2026,
-                  },
-                  raw_saju_data: newYearRecord.rawSajuData || null,
-                  analysis_result: newYearRecord.analysis as unknown as import("@/lib/db/sajuAnalysisDB").AnalysisResult | null,
-                  image_paths: [],
-                  is_paid: true,
-                  paid_at: new Date().toISOString(),
-                  payment_info: paymentInfo,
-                  ...(utmSource ? { utm_source: utmSource } : {}),
-                  ...(influencerId ? { influencer_id: influencerId } : {}),
-                });
-                console.log("✅ Supabase에 신년사주 분석 결과 저장 완료");
-              }
-            }
+            await updateSajuAnalysis(resultId, {
+              is_paid: true,
+              paid_at: new Date().toISOString(),
+              payment_info: paymentInfo,
+            });
+            console.log("✅ Supabase 신년사주 결제 상태 업데이트 완료");
           } else if (reportType === "couple") {
-            // 궁합 결제인 경우
-            await markCoupleAnalysisPaid(resultId);
-
-            // Supabase 저장 (궁합 관상)
-            const coupleRecord = await getCoupleAnalysisRecord(resultId);
-            if (coupleRecord) {
-              try {
-                // 이미지 Storage 업로드
-                const uploadedImages = await uploadCoupleImages(resultId, {
-                  image1: coupleRecord.image1Base64,
-                  image2: coupleRecord.image2Base64,
-                });
-
-                // Supabase에 저장/업데이트
-                await upsertFaceAnalysisSupabase({
-                  id: resultId,
-                  service_type: "couple",
-                  features1: coupleRecord.features1,
-                  features2: coupleRecord.features2,
-                  image1_path: uploadedImages.image1Path,
-                  image2_path: uploadedImages.image2Path,
-                  relationship_type: coupleRecord.relationshipType,
-                  relationship_feeling: coupleRecord.relationshipFeeling,
-                  couple_report: coupleRecord.report as Record<string, unknown>,
-                  is_paid: true,
-                  paid_at: new Date().toISOString(),
-                  payment_info: { method: "toss", price: Number(amount), ...(couponCode ? { couponCode } : {}) },
-                  ...(utmSource ? { utm_source: utmSource } : {}),
-                  ...(influencerId ? { influencer_id: influencerId } : {}),
-                });
-                console.log("✅ Supabase에 궁합 관상 결과 저장 완료");
-              } catch (err) {
-                console.error("Supabase 궁합 관상 저장 실패:", err);
-              }
-            }
+            // 궁합 결제 - Supabase만 업데이트
+            await updateFaceAnalysisSupabase(resultId, {
+              is_paid: true,
+              paid_at: new Date().toISOString(),
+              payment_info: { method: "toss" as const, price: Number(amount), ...(couponCode ? { couponCode } : {}) },
+            });
+            console.log("✅ Supabase 궁합 결제 상태 업데이트 완료");
           } else {
-            // 관상 결제인 경우 (base + 선택된 addon들)
-            await markFaceReportPaid(resultId, "base");
-            // 선택된 addon들도 paid 처리
-            for (const addon of selectedAddons) {
-              await markFaceReportPaid(resultId, addon as "base" | "wealth" | "love" | "marriage" | "career" | "health");
-            }
-
-            // Supabase 저장 (정통 관상)
-            const faceRecord = await getFaceAnalysisRecord(resultId);
-            if (faceRecord) {
-              try {
-                // 이미지 Storage 업로드
-                const uploadedImage = await uploadFaceImage(resultId, faceRecord.imageBase64);
-
-                // Supabase에 저장/업데이트
-                await upsertFaceAnalysisSupabase({
-                  id: resultId,
-                  service_type: "face",
-                  features: faceRecord.features,
-                  image_path: uploadedImage?.path,
-                  analysis_result: faceRecord.reports as Record<string, unknown>,
-                  is_paid: true,
-                  paid_at: new Date().toISOString(),
-                  payment_info: {
-                    method: "toss",
-                    price: Number(amount),
-                    ...(couponCode ? { couponCode } : {}),
-                    selected_addons: selectedAddons,
-                  },
-                  ...(utmSource ? { utm_source: utmSource } : {}),
-                  ...(influencerId ? { influencer_id: influencerId } : {}),
-                });
-                console.log("✅ Supabase에 정통 관상 결과 저장 완료");
-              } catch (err) {
-                console.error("Supabase 정통 관상 저장 실패:", err);
-              }
-            }
+            // 관상 결제 - Supabase만 업데이트
+            await updateFaceAnalysisSupabase(resultId, {
+              is_paid: true,
+              paid_at: new Date().toISOString(),
+              payment_info: {
+                method: "toss" as const,
+                price: Number(amount),
+                ...(couponCode ? { couponCode } : {}),
+                selected_addons: selectedAddons,
+              },
+            });
+            console.log("✅ Supabase 관상 결제 상태 업데이트 완료");
           }
         } catch (e) {
           console.error("결제 정보 업데이트 실패:", e);
