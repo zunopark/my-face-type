@@ -10,9 +10,7 @@ import {
   trackCouponApplied,
   trackPaymentSuccess,
 } from "@/lib/mixpanel";
-import {
-  NewYearRecord,
-} from "@/lib/db/newYearDB";
+import { NewYearRecord } from "@/lib/db/newYearDB";
 import {
   getSajuAnalysisByShareId,
   updateSajuAnalysis,
@@ -24,11 +22,11 @@ declare global {
   interface Window {
     PaymentWidget: (
       clientKey: string,
-      customerKey: string
+      customerKey: string,
     ) => {
       renderPaymentMethods: (
         selector: string,
-        options: { value: number }
+        options: { value: number },
       ) => unknown;
       renderAgreement: (selector: string) => void;
       requestPayment: (options: {
@@ -128,61 +126,71 @@ const weatherData: Record<
     emoji: "🌤️",
     weather: "묵혀둔 재능을 밖으로 꺼내야만 빛을 보는 해",
     abilityTitle: "숨겨진 포텐을 터트리는 올라운더",
-    abilityDesc: "판이 깔렸으니 춤을 춘다.\n일도 놀이처럼 즐기니 결과물마저 예술이 된다.",
+    abilityDesc:
+      "판이 깔렸으니 춤을 춘다.\n일도 놀이처럼 즐기니 결과물마저 예술이 된다.",
   },
   乙: {
     emoji: "🌅",
     weather: "가만히 있어도 세상의 시선이 나에게 꽂히는 해",
     abilityTitle: "시선을 훔치는 분위기 메이커",
-    abilityDesc: "꽃이 만개하듯 매력이 절정에 달하니,\n나 자체가 걸어 다니는 브랜드가 된다.",
+    abilityDesc:
+      "꽃이 만개하듯 매력이 절정에 달하니,\n나 자체가 걸어 다니는 브랜드가 된다.",
   },
   丙: {
     emoji: "☀️",
     weather: "누구의 눈치도 보지 않고 마음껏 질주하는 해",
     abilityTitle: "대체 불가능한 독보적 존재감",
-    abilityDesc: "어딜 가나 자연스레 중심에 선다.\n행보가 곧 트렌드가 되는 압도적인 영향력을 발휘한다.",
+    abilityDesc:
+      "어딜 가나 자연스레 중심에 선다.\n행보가 곧 트렌드가 되는 압도적인 영향력을 발휘한다.",
   },
   丁: {
     emoji: "⚡",
     weather: "치열한 경쟁 속에서 결국 승기를 잡아채는 해",
     abilityTitle: "판세를 뒤집는 반전의 승부사",
-    abilityDesc: "거대한 불길이 내 힘이 된다.\n위기를 기회로 바꾸는 탁월한 센스가 돋보인다.",
+    abilityDesc:
+      "거대한 불길이 내 힘이 된다.\n위기를 기회로 바꾸는 탁월한 센스가 돋보인다.",
   },
   戊: {
     emoji: "🌄",
     weather: "나의 가치를 인정받고 우뚝 서는 해",
     abilityTitle: "깊이가 남다른 진짜 실력자",
-    abilityDesc: "가벼운 유행에 휩쓸리지 않고,\n오랫동안 쌓아온 지식과 실력이 드디어 빛을 발한다.",
+    abilityDesc:
+      "가벼운 유행에 휩쓸리지 않고,\n오랫동안 쌓아온 지식과 실력이 드디어 빛을 발한다.",
   },
   己: {
     emoji: "🌈",
     weather: "노력해온 것들이 확실한 몫으로 돌아오는 해",
     abilityTitle: "실패 없는 확신의 결과주의자",
-    abilityDesc: "차곡차곡 쌓아온 안목이 비로소 빛을 발하니,\n누구도 부정할 수 없는 단단한 자산이 된다.",
+    abilityDesc:
+      "차곡차곡 쌓아온 안목이 비로소 빛을 발하니,\n누구도 부정할 수 없는 단단한 자산이 된다.",
   },
   庚: {
     emoji: "⛈️",
     weather: "뜨거운 담금질을 견디고 다시 태어나는 해",
     abilityTitle: "한계를 뛰어넘는 성장의 아이콘",
-    abilityDesc: "힘들수록 더 불타오른다.\n압박감을 성과로 승화시키는 비범한 저력이 드러난다.",
+    abilityDesc:
+      "힘들수록 더 불타오른다.\n압박감을 성과로 승화시키는 비범한 저력이 드러난다.",
   },
   辛: {
     emoji: "🌟",
     weather: "갈고 닦을수록 빛이 나고 이름값이 높아지는 해",
     abilityTitle: "가장 높은 곳에서 빛나는 주인공",
-    abilityDesc: "조명 아래 보석처럼 빛난다.\n갈고 닦아 최상의 가치를 만드는 세련된 감각이 돋보인다.",
+    abilityDesc:
+      "조명 아래 보석처럼 빛난다.\n갈고 닦아 최상의 가치를 만드는 세련된 감각이 돋보인다.",
   },
   壬: {
     emoji: "🌊",
     weather: "판을 크게 벌려 거대한 기회의 파도에 올라타는 해",
     abilityTitle: "흐름을 읽는 감각적인 리더",
-    abilityDesc: "큰 물에서 노니,\n넓은 시야로 기회를 포착하는 탁월한 직관이 발휘된다.",
+    abilityDesc:
+      "큰 물에서 노니,\n넓은 시야로 기회를 포착하는 탁월한 직관이 발휘된다.",
   },
   癸: {
     emoji: "🌦️",
     weather: "남들은 모르는 알짜배기 실속을 쏙쏙 챙겨가는 해",
     abilityTitle: "티 안 나게 이득 보는 실속파",
-    abilityDesc: "화려함 속에 감춰진 알맹이를 차지하니,\n영리하게 내 몫을 챙기는 현명함이 드러난다.",
+    abilityDesc:
+      "화려함 속에 감춰진 알맹이를 차지하니,\n영리하게 내 몫을 챙기는 현명함이 드러난다.",
   },
 };
 
@@ -208,7 +216,7 @@ const elementColors: Record<string, string> = {
 // 오행 한글 변환 함수 (음양 포함)
 const getElementKorean = (
   element: string | undefined,
-  yinYang?: string
+  yinYang?: string,
 ): string => {
   if (!element) return "";
   const el = element.toLowerCase();
@@ -277,7 +285,9 @@ function NewYearDetailContent() {
         },
         rawSajuData: serverData.raw_saju_data as NewYearRecord["rawSajuData"],
         sajuData: serverData.raw_saju_data as NewYearRecord["sajuData"],
-        analysis: serverData.analysis_result ? (serverData.analysis_result as NewYearRecord["analysis"]) : null,
+        analysis: serverData.analysis_result
+          ? (serverData.analysis_result as NewYearRecord["analysis"])
+          : null,
         paid: serverData.is_paid || false,
         paidAt: serverData.paid_at || undefined,
         seenIntro: false,
@@ -344,7 +354,7 @@ function NewYearDetailContent() {
         const customerKey = `customer_${Date.now()}`;
         const widget = window.PaymentWidget(
           PAYMENT_CONFIG.clientKey,
-          customerKey
+          customerKey,
         );
         paymentWidgetRef.current = widget;
 
@@ -433,9 +443,12 @@ function NewYearDetailContent() {
 
       if (paymentWidgetRef.current) {
         const newPrice = Math.max(PAYMENT_CONFIG.price - discount, 100);
-        paymentWidgetRef.current.renderPaymentMethods("#new-year-payment-method", {
-          value: newPrice,
-        });
+        paymentWidgetRef.current.renderPaymentMethods(
+          "#new-year-payment-method",
+          {
+            value: newPrice,
+          },
+        );
       }
     } catch (error) {
       console.error("쿠폰 검증 오류:", error);
@@ -471,9 +484,7 @@ function NewYearDetailContent() {
     });
 
     try {
-      const orderSuffix = appliedCoupon
-        ? `-${appliedCoupon.code}`
-        : "";
+      const orderSuffix = appliedCoupon ? `-${appliedCoupon.code}` : "";
       const orderNameSuffix = appliedCoupon
         ? ` - ${appliedCoupon.code} 할인`
         : "";
@@ -482,10 +493,12 @@ function NewYearDetailContent() {
         orderId: `new-year${orderSuffix}_${Date.now()}`,
         orderName: `${PAYMENT_CONFIG.orderName}${orderNameSuffix}`,
         customerName: data.input.userName || "고객",
-        successUrl: `${window.location.origin
-          }/payment/success?type=new_year&id=${encodeURIComponent(data.id)}${appliedCoupon ? `&couponCode=${encodeURIComponent(appliedCoupon.code)}` : ""}`,
-        failUrl: `${window.location.origin
-          }/payment/fail?id=${encodeURIComponent(data.id)}&type=new_year`,
+        successUrl: `${
+          window.location.origin
+        }/payment/success?type=new_year&id=${encodeURIComponent(data.id)}${appliedCoupon ? `&couponCode=${encodeURIComponent(appliedCoupon.code)}` : ""}`,
+        failUrl: `${
+          window.location.origin
+        }/payment/fail?id=${encodeURIComponent(data.id)}&type=new_year`,
       });
     } catch (err) {
       console.error("결제 오류:", err);
@@ -529,12 +542,25 @@ function NewYearDetailContent() {
 
   const { input, sajuData } = data;
   const dayMaster = sajuData.dayMaster;
-  const pillars = sajuData.pillars as Record<string, {
-    stem?: { char?: string; korean?: string; element?: string; yinYang?: string };
-    branch?: { char?: string; korean?: string; element?: string; yinYang?: string };
-    tenGodStem?: string;
-    tenGodBranchMain?: string;
-  }>;
+  const pillars = sajuData.pillars as Record<
+    string,
+    {
+      stem?: {
+        char?: string;
+        korean?: string;
+        element?: string;
+        yinYang?: string;
+      };
+      branch?: {
+        char?: string;
+        korean?: string;
+        element?: string;
+        yinYang?: string;
+      };
+      tenGodStem?: string;
+      tenGodBranchMain?: string;
+    }
+  >;
   const dmData = dayMasterData[dayMaster.char];
   const birthTime = formatTimeToSi(input.time);
 
@@ -552,7 +578,10 @@ function NewYearDetailContent() {
   return (
     <div className={styles.main_body_wrap}>
       {/* 뒤로가기 */}
-      <button className={styles.back_btn} onClick={() => router.push("/new-year")}>
+      <button
+        className={styles.back_btn}
+        onClick={() => router.push("/new-year")}
+      >
         <span className="material-icons">arrow_back</span>
         <span className={styles.back_btn_text}>정보 다시 입력</span>
       </button>
@@ -575,14 +604,24 @@ function NewYearDetailContent() {
 
             <div className={styles.weather_quote_section}>
               <span className={styles.weather_quote_mark}>"</span>
-              <div className={styles.weather_emoji}>{weatherData[dayMaster.char].emoji}</div>
-              <p className={styles.weather_headline}>{weatherData[dayMaster.char].weather}</p>
+              <div className={styles.weather_emoji}>
+                {weatherData[dayMaster.char].emoji}
+              </div>
+              <p className={styles.weather_headline}>
+                {weatherData[dayMaster.char].weather}
+              </p>
               <span className={styles.weather_quote_mark_bottom}>"</span>
             </div>
 
             {/* 블러 처리된 미리보기 */}
             <div className={styles.blurred_preview}>
-              <p>불의 기운이 강한 올 해는 당신의 <span className={styles.blur_text}>숨겨진 잠재력이 빛을 발하는 시기입니다. 특히 창의적인 분야에서 두각을 나타내며</span></p>
+              <p>
+                불의 기운이 강한 올 해는 당신의{" "}
+                <span className={styles.blur_text}>
+                  숨겨진 잠재력이 빛을 발하는 시기입니다. 특히 창의적인 분야에서
+                  두각을 나타내며
+                </span>
+              </p>
             </div>
           </section>
         )}
@@ -599,25 +638,42 @@ function NewYearDetailContent() {
         {weatherData[dayMaster.char] && (
           <section className={styles.ability_section}>
             <p className={styles.ability_label}>당신의 사주에 나타난,</p>
-            <h2 className={styles.ability_title_main}>올해 돋보일 나만의 능력</h2>
+            <h2 className={styles.ability_title_main}>
+              올해 돋보일 나만의 능력
+            </h2>
 
             <div className={styles.ability_quote_section}>
               <span className={styles.ability_quote_mark}>"</span>
               <p className={styles.ability_headline}>
-                {weatherData[dayMaster.char].abilityTitle.split(' ').slice(0, -1).join(' ')}
+                {weatherData[dayMaster.char].abilityTitle
+                  .split(" ")
+                  .slice(0, -1)
+                  .join(" ")}
                 <br />
                 <span className={styles.ability_highlight}>
-                  {weatherData[dayMaster.char].abilityTitle.split(' ').slice(-1)[0]}
+                  {
+                    weatherData[dayMaster.char].abilityTitle
+                      .split(" ")
+                      .slice(-1)[0]
+                  }
                 </span>
               </p>
               <span className={styles.ability_quote_mark_bottom}>"</span>
             </div>
 
-            <p className={styles.ability_desc}>{weatherData[dayMaster.char].abilityDesc}</p>
+            <p className={styles.ability_desc}>
+              {weatherData[dayMaster.char].abilityDesc}
+            </p>
 
             {/* 블러 처리된 미리보기 */}
             <div className={styles.blurred_preview}>
-              <p>올해는 당신의 재능 중, <span className={styles.blur_text}>특히 리더십과 소통 능력이 빛을 발하는 시기입니다. 팀을 이끌거나 새로운 프로젝트를 시작하기에</span></p>
+              <p>
+                올해는 당신의 재능 중,{" "}
+                <span className={styles.blur_text}>
+                  특히 리더십과 소통 능력이 빛을 발하는 시기입니다. 팀을
+                  이끌거나 새로운 프로젝트를 시작하기에
+                </span>
+              </p>
             </div>
 
             {/* 잠금 미리보기 박스 */}
@@ -637,7 +693,10 @@ function NewYearDetailContent() {
                 </li>
                 <li>
                   <span className={styles.bullet}>💙</span>
-                  나에게 맞는 돈 버는 수단 <span className={styles.sub_text}>(직장 vs 투자 vs 부업 vs 사업)</span>
+                  나에게 맞는 돈 버는 수단{" "}
+                  <span className={styles.sub_text}>
+                    (직장 vs 투자 vs 부업 vs 사업)
+                  </span>
                 </li>
                 <li>
                   <span className={styles.bullet}>💙</span>
@@ -665,7 +724,6 @@ function NewYearDetailContent() {
             </p>
           </div>
         </div>
-
       </div>
 
       {/* 하단 고정 버튼 */}
@@ -684,7 +742,10 @@ function NewYearDetailContent() {
                 <div className={styles["payment-title"]}>
                   까치도령 신년 운세 복채
                 </div>
-                <div className={styles["payment-close"]} onClick={closePaymentModal}>
+                <div
+                  className={styles["payment-close"]}
+                  onClick={closePaymentModal}
+                >
                   ✕
                 </div>
               </div>
@@ -706,7 +767,7 @@ function NewYearDetailContent() {
                 {/* 할인 */}
                 <div className={`${styles["payment-row"]} ${styles.discount}`}>
                   <span className={styles["payment-row-label"]}>
-                    병오년(丙午年) 2월 특가 할인
+                    병오년(丙午年) 3월 특가 할인
                   </span>
                   <span className={styles["discount-amount"]}>
                     -
@@ -719,7 +780,9 @@ function NewYearDetailContent() {
 
                 {/* 쿠폰 할인 */}
                 {appliedCoupon && (
-                  <div className={`${styles["payment-row"]} ${styles.discount}`}>
+                  <div
+                    className={`${styles["payment-row"]} ${styles.discount}`}
+                  >
                     <span className={styles["payment-row-label"]}>
                       {appliedCoupon.code} 쿠폰
                     </span>
@@ -733,12 +796,14 @@ function NewYearDetailContent() {
 
                 {/* 최종 금액 */}
                 <div className={`${styles["payment-row"]} ${styles.final}`}>
-                  <span className={styles["payment-row-label"]}>최종 결제금액</span>
+                  <span className={styles["payment-row-label"]}>
+                    최종 결제금액
+                  </span>
                   <span className={styles["payment-row-final-value"]}>
                     {appliedCoupon
                       ? (
-                        PAYMENT_CONFIG.price - appliedCoupon.discount
-                      ).toLocaleString()
+                          PAYMENT_CONFIG.price - appliedCoupon.discount
+                        ).toLocaleString()
                       : PAYMENT_CONFIG.price.toLocaleString()}
                     원
                   </span>
@@ -764,7 +829,11 @@ function NewYearDetailContent() {
                     onClick={handleCouponSubmit}
                     disabled={!!appliedCoupon || isApplyingCoupon}
                   >
-                    {isApplyingCoupon ? "확인 중..." : appliedCoupon ? "적용됨" : "적용"}
+                    {isApplyingCoupon
+                      ? "확인 중..."
+                      : appliedCoupon
+                        ? "적용됨"
+                        : "적용"}
                   </button>
                 </div>
                 {couponError && (
@@ -782,11 +851,15 @@ function NewYearDetailContent() {
               {/* 직설 분석 선택 */}
               <div className={styles["spicy-section"]}>
                 <label className={styles["spicy-label"]}>
-                  <span className={styles["spicy-text"]}>직설적으로 말해줘도 괜찮아요</span>
+                  <span className={styles["spicy-text"]}>
+                    직설적으로 말해줘도 괜찮아요
+                  </span>
                   <input
                     type="checkbox"
                     checked={personalityType === "T"}
-                    onChange={(e) => setPersonalityType(e.target.checked ? "T" : "F")}
+                    onChange={(e) =>
+                      setPersonalityType(e.target.checked ? "T" : "F")
+                    }
                     className={styles["spicy-checkbox"]}
                   />
                   <span className={styles["spicy-toggle"]} />
