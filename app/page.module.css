@@ -13,19 +13,33 @@
   width: 100%;
 }
 
+/* 메인 배경 이미지 */
+.main_bg {
+  width: 100%;
+  max-width: 500px;
+  height: auto;
+  display: block;
+  margin-bottom: 24px;
+}
+
 /* 브랜드 로고 */
 .landing_brand {
+  position: fixed;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
   width: 100%;
   max-width: 500px;
   padding: 16px;
   box-sizing: border-box;
+  z-index: 100;
 }
 
 .brand_name {
   font-family: "KimjungchulMyungjo-Bold", serif;
   font-size: 20px;
   font-weight: 700;
-  color: #171717;
+  color: #ffffff;
 }
 
 /* 서비스 카드 2x2 */

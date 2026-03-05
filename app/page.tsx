@@ -17,6 +17,10 @@ export default function LandingPage() {
 
   return (
     <div className={styles.landing_container}>
+      {/* 메인 배경 이미지 */}
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img src="/img/main-bg.jpg" alt="" className={styles.main_bg} />
+
       {/* 브랜드 로고 */}
       <div className={styles.landing_brand}>
         <span className={styles.brand_name}>양반가</span>
