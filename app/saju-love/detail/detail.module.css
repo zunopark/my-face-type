@@ -1186,6 +1186,230 @@
   color: #e74c3c;
 }
 
+/* ===== 후기 섹션 (detail3 대체) ===== */
+.review_section {
+  background: linear-gradient(180deg, #fff5f0 0%, #ffeef0 50%, #fff5f0 100%);
+  padding: 44px 20px 40px;
+}
+
+.review_title_wrap {
+  text-align: center;
+  margin-bottom: 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.review_title_red {
+  font-family: "Danjo", serif;
+  font-size: 20px;
+  font-weight: 700;
+  color: #e74c3c;
+  line-height: 1.5;
+}
+
+.review_card {
+  background: #fff;
+  border-radius: 16px;
+  padding: 24px 20px 20px;
+  margin-bottom: 16px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+.review_headline {
+  font-size: 15px;
+  font-weight: 700;
+  color: #1a1a1a;
+  line-height: 1.6;
+  margin: 0 0 12px 0;
+  word-break: keep-all;
+}
+
+.review_body {
+  font-size: 13px;
+  color: #666;
+  line-height: 1.75;
+  margin: 0 0 16px 0;
+  word-break: keep-all;
+}
+
+.review_body strong {
+  color: #e74c3c;
+  font-weight: 600;
+}
+
+.review_footer {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 8px;
+}
+
+.review_name {
+  font-size: 13px;
+  color: #888;
+  font-weight: 500;
+}
+
+.review_stars {
+  font-size: 14px;
+  letter-spacing: 1px;
+}
+
+/* ===== 목차 섹션 (detail4 대체) ===== */
+.toc_section {
+  background: #fff;
+  padding: 48px 24px 40px;
+}
+
+.toc_top {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.toc_main_title {
+  font-family: "Danjo", serif;
+  font-size: 28px;
+  font-weight: 700;
+  color: #e74c3c;
+  line-height: 1.4;
+  margin: 0 0 24px 0;
+}
+
+.toc_points {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  align-items: center;
+}
+
+.toc_point {
+  font-size: 13px;
+  color: #e74c3c;
+}
+
+.toc_point strong {
+  font-weight: 700;
+  margin-right: 6px;
+}
+
+/* 챕터 공통 */
+.toc_chapter {
+  padding: 0 0 28px 0;
+}
+
+.toc_chapter_num {
+  font-size: 12px;
+  font-weight: 700;
+  color: #e74c3c;
+  margin-bottom: 4px;
+  padding-left: 2px;
+}
+
+.toc_chapter_title {
+  font-family: "Danjo", serif;
+  font-size: 22px;
+  font-weight: 700;
+  color: #1a1a1a;
+  line-height: 1.45;
+  margin: 0 0 16px 0;
+}
+
+.toc_chapter_desc {
+  font-size: 14px;
+  color: #888;
+  margin: 0;
+  padding-left: 2px;
+}
+
+/* 풀이 리스트 */
+.toc_list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.toc_list li {
+  font-size: 14px;
+  color: #333;
+  line-height: 1.6;
+  padding-left: 2px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.toc_sub {
+  font-size: 12px;
+  color: #999;
+  padding-left: 12px;
+  line-height: 1.5;
+}
+
+/* 보너스 뱃지 */
+.toc_bonus {
+  display: inline-block;
+  margin-top: 16px;
+  padding: 8px 16px;
+  background: #fff0f0;
+  border: 1px solid #ffe0e0;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #e74c3c;
+}
+
+/* 구분선 */
+.toc_divider {
+  height: 1px;
+  background: #f0e8e8;
+  margin-bottom: 28px;
+}
+
+/* 5장 잠금 그리드 */
+.toc_lock_grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-top: 4px;
+}
+
+.toc_lock_item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 16px;
+  background: #f8f4f4;
+  border-radius: 10px;
+}
+
+.toc_lock_icon {
+  font-size: 16px;
+  opacity: 0.6;
+}
+
+.toc_lock_text {
+  font-size: 14px;
+  color: #333;
+  font-weight: 500;
+}
+
+/* 하단 보너스 */
+.toc_extra_bonus {
+  text-align: center;
+  margin-top: 12px;
+  padding: 16px 20px;
+  background: #fff9f9;
+  border: 1.5px dashed #ffe0e0;
+  border-radius: 12px;
+  font-size: 15px;
+  font-weight: 600;
+  color: #e74c3c;
+}
+
 /* ===== 고민 유도 섹션 ===== */
 .hesitate_section {
   margin-top: 40px;

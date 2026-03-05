@@ -141,7 +141,7 @@ export default function SajuLovePage() {
   // 낭자 메시지들 정의
   const NANGJA_MESSAGES: Record<number, string> = {
     0: "안녕하세요!\n사주 정보를 알려주시면\n인연을 풀어드릴게요.",
-    1: "이름을 알려주세요.",
+    1: "어떻게 불러드릴까요?",
     2: "성별을 알려주세요.",
     3: "생년월일은요?",
     4: "태어난 시간도 알고 계신가요?",
@@ -184,12 +184,21 @@ export default function SajuLovePage() {
     [chatStep, goToStep]
   );
 
-  // 시작하기 (랜딩 → 채팅)
+  // 시작하기 (랜딩 → 채팅) - 인사 타이핑 후 이름 질문
   const handleStart = () => {
     setShowLanding(false);
     changeImage("/saju-love/img/nangja.jpg");
     setTimeout(() => {
-      goToStep(0);
+      // 인사 메시지를 타이핑하고, 끝나면 이름 질문으로
+      setChatStep(0);
+      typeNangjaMessage(NANGJA_MESSAGES[0], () => {
+        setTimeout(() => {
+          setChatMessages([{ sender: "nangja", text: NANGJA_MESSAGES[0] }]);
+          setCurrentNangjaText("");
+          setNangjaTypingDone(false);
+          goToStep(1);
+        }, 400);
+      });
     }, 500);
   };
 
@@ -273,20 +282,18 @@ export default function SajuLovePage() {
     addUserAnswer(label, 6);
   };
 
-  // 수정: 유저 버블 탭하여 해당 스텝으로 되돌아가기
+  // 수정: 유저 버블 탭하여 해당 스텝의 input만 다시 보여주기
   const handleEditAnswer = useCallback(
     (step: number) => {
-      // 해당 step의 nangja 메시지 인덱스 찾기 (user answer 직전)
+      // 해당 step의 user answer 찾기
       const userMsgIdx = chatMessages.findIndex(
         (msg) => msg.sender === "user" && msg.step === step
       );
       if (userMsgIdx < 0) return;
-      // nangja message is right before the user message
-      const nangjaMsgIdx = userMsgIdx - 1;
-      if (nangjaMsgIdx < 0) return;
 
-      // 해당 nangja 메시지 이전까지만 유지
-      setChatMessages((prev) => prev.slice(0, nangjaMsgIdx));
+      // 해당 낭자 질문 + user answer부터 이후 메시지 모두 제거
+      const nangjaMsgIdx = userMsgIdx - 1;
+      setChatMessages((prev) => prev.slice(0, nangjaMsgIdx >= 0 ? nangjaMsgIdx : userMsgIdx));
 
       // 해당 스텝 이후의 폼 값 리셋
       if (step <= 1) {
@@ -326,12 +333,14 @@ export default function SajuLovePage() {
         typingIntervalRef.current = null;
       }
       setCurrentNangjaText("");
-      setNangjaTypingDone(false);
       setIsTyping(false);
 
-      goToStep(step);
+      // 낭자 질문을 currentNangjaText로 바로 표시하고 input도 바로 표시
+      setChatStep(step);
+      setCurrentNangjaText(NANGJA_MESSAGES[step]);
+      setNangjaTypingDone(true);
     },
-    [chatMessages, goToStep]
+    [chatMessages]
   );
 
   // 전체 폼 유효성
@@ -505,13 +514,6 @@ export default function SajuLovePage() {
     if (!nangjaTypingDone) return null;
 
     switch (chatStep) {
-      case 0:
-        return (
-          <button className={styles.chat_start_btn} onClick={handleChatBegin}>
-            시작할게요
-          </button>
-        );
-
       case 1:
         return (
           <div className={styles.chat_input_group}>
@@ -519,7 +521,7 @@ export default function SajuLovePage() {
               <input
                 type="text"
                 className={styles.input_field}
-                placeholder="이름을 알려주세요."
+                placeholder="예시) 김민지"
                 value={userName}
                 onChange={(e) => setUserName(e.target.value)}
                 onKeyDown={(e) => {

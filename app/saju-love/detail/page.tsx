@@ -825,14 +825,211 @@ function SajuDetailContent() {
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img src="/saju-love/img/detail2.jpg" alt="운명의 상대" />
           </div>
-          <div className={styles.hero_image}>
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="/saju-love/img/detail3.jpg" alt="연애 사주 분석" />
+          {/* 후기 섹션 - detail3 대체 */}
+          <div className={styles.review_section}>
+            <div className={styles.review_title_wrap}>
+              <span className={styles.review_title_red}>색동낭자가</span>
+              <span className={styles.review_title_red}>자신하는 100% 실제 후기</span>
+            </div>
+
+            <div className={styles.review_card}>
+              <p className={styles.review_headline}>&ldquo;굳이 비싼 돈 주고 점집을 찾아다닐 필요가 있을까?&rdquo;</p>
+              <p className={styles.review_body}>
+                실을 만큼 퀄리티가 좋았어요!! 내용도 다른 곳의 2배 이상? 엄청 많고,
+                내가 어떤 사람에게 끌리는지, 내 성향이 이런지 등 너무 정확하게 맞혀서
+                놀랐어요. 진짜 내 취향 이렇게 안 거지...볼수록 신기!!
+                사주 모바일로 사주를 보면 내 사정 잘 끌려서 생동감 소리를 하지
+                않을까 싶었는데, 내가 어떤 사람인지 성격을 수 있다 더 자세히
+                확인할 수 있다는 게 제일 좋았던 포인트!!
+                연애 운명의 짝을 만나게 될 궁금하신 분들거든요 이거 꼭 써보세요 다시
+                순서대로 즐겨요!!!!!
+              </p>
+              <div className={styles.review_footer}>
+                <span className={styles.review_name}>유지민 님</span>
+                <span className={styles.review_stars}>&#11088;&#11088;&#11088;&#11088;&#11088;</span>
+              </div>
+            </div>
+
+            <div className={styles.review_card}>
+              <p className={styles.review_headline}>&ldquo;지금까지 사주를 수도없이 많이 본 사람인데요.&rdquo;</p>
+              <p className={styles.review_body}>
+                이건 실제 역술가한테 사주를 본 것 처럼 세세하고, 흔히보기 힘든 끌리는
+                성격적 질문이나 관계도 알려줘서는 상보다 잘 적이 맞은 것들이 많아
+                읽으면서 놀랐어요; 센터 풀이 클리닝 번호, 스인살, 자필 살펴보기까지 되어
+                궁금한 거 다 해석해주고, 알찼!알찼!성의있어서 진짜 좋은 것 같습니다 ♥
+              </p>
+              <div className={styles.review_footer}>
+                <span className={styles.review_name}>김소희 님 (30)</span>
+                <span className={styles.review_stars}>&#11088;&#11088;&#11088;&#11088;&#11088;</span>
+              </div>
+            </div>
+
+            <div className={styles.review_card}>
+              <p className={styles.review_headline}>&ldquo;내 연애 성향과 끌리는 사람까지 다 맞네요...&rdquo;</p>
+              <p className={styles.review_body}>
+                다른 곳들과 다르게 NPC 게임처럼 진행되어서 재밌게 사주를 볼 수 있
+                고, 지루하지가 않네요. 사주는 잘 모르는데 사주 용어 풀이도 좀 있어서
+                맨 사주 풀이도 더 높은 연애에 관련된 모든 것들을 다 알려주는데다,
+                하며 내 연애 성향과 끌리는 사람까지 다 맞아서 너무 신기했어요!!!!
+                제가도 운명도 잘 모르는 초심자인데 조금은 만족하죠. 제발 그 사람이랑
+                만나고 싶네요, 제발.. 친구들한테도 다 추천해야지 ㅋㅋㅋ
+              </p>
+              <div className={styles.review_footer}>
+                <span className={styles.review_name}>강소윤 님 (23)</span>
+                <span className={styles.review_stars}>&#11088;&#11088;&#11088;&#11088;&#11088;</span>
+              </div>
+            </div>
+
+            <div className={styles.review_card}>
+              <p className={styles.review_headline}>&ldquo;간지러운 곳을 정확하게 긁어주는 느낌&rdquo;</p>
+              <p className={styles.review_body}>
+                다른 사주 앱들은 연애에 집중해서 이렇게 자세하게 파고들어서 보는 본
+                적이 없어서 늘 궁금한 게 풀리지 않는 느낌이었는데요,
+                <strong>색동낭자는 정말 간지러운 곳을 정확하게 긁어줘 다녀서 안 간지럽잖아하는 느낌이에요!!!</strong> 이해하기 쉽게 알려가 주는 것도 세련 센스고요.
+                지금 보는 상대랑 기간에 나온 분 맞았으면 해서 개인적으로 어떤 사람일까
+                궁금하고 앞으로 4주간, 그리고 새로운 사람과의
+                결론을 보여줘야해요....
+                옛날부터 내가 좋아하는 사람들은 나를 별로 안 좋아해서 사주로 알아보니...
+                악연의 얼굴도 그려주는데 닮았넛, 소개팅뷰에는 목련의 생겨서 소개
+                친구들도 비슷해서 님 님 다해야지!!!!!
+              </p>
+              <div className={styles.review_footer}>
+                <span className={styles.review_name}>박현지 님 (25)</span>
+                <span className={styles.review_stars}>&#11088;&#11088;&#11088;&#11088;&#11088;</span>
+              </div>
+            </div>
           </div>
+          {/* 목차 이미지 */}
           <div className={styles.hero_image}>
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img src="/saju-love/img/detail4.jpg" alt="사주 상세 분석" />
           </div>
+
+          {/* 목차 섹션 - detail4 코드 버전 (비활성) */}
+          {false && <div className={styles.toc_section}>
+            <div className={styles.toc_top}>
+              <h2 className={styles.toc_main_title}>색동낭자 연애사주<br/>목차</h2>
+              <div className={styles.toc_points}>
+                <span className={styles.toc_point}><strong>Point 1</strong> 20,000자 이상 분량</span>
+                <span className={styles.toc_point}><strong>Point 2</strong> 구체적인 연애운 상승 비법부터</span>
+                <span className={styles.toc_point}><strong>Point 3</strong> 1:1 맞춤 상담까지 한 번에</span>
+              </div>
+            </div>
+
+            {/* 1장 */}
+            <div className={styles.toc_chapter}>
+              <div className={styles.toc_chapter_num}>1장</div>
+              <h3 className={styles.toc_chapter_title}>나만의 매력과<br/>연애 성향</h3>
+              <ul className={styles.toc_list}>
+                <li>풀이 1 처음 본 순간 이성이 느끼는 나의 매력</li>
+                <li>풀이 2 내 연애 스타일 장점과 숨겨진 반전 매력</li>
+                <li>풀이 3 인만추 vs 자만추 vs 결정사,<br/>나에게 맞는 방식은</li>
+                <li>풀이 4 내가 끌리는 사람 vs 나에게 끌리는 사람
+                  <span className={styles.toc_sub}>· 어떤 사람을 만나야 행복하게 연애할 수 있을까?</span>
+                </li>
+              </ul>
+            </div>
+
+            <div className={styles.toc_divider} />
+
+            {/* 2장 */}
+            <div className={styles.toc_chapter}>
+              <div className={styles.toc_chapter_num}>2장</div>
+              <h3 className={styles.toc_chapter_title}>앞으로 펼쳐질<br/>사랑의 흐름</h3>
+              <ul className={styles.toc_list}>
+                <li>풀이 1 앞으로의 연애 좋은 흐름</li>
+                <li>풀이 2 향후 3년간 연애운 종합 시기
+                  <span className={styles.toc_sub}>· 몇 번의 만남 기회가 있을까</span>
+                  <span className={styles.toc_sub}>· 시기마다 어떤 사람이 나타날까</span>
+                </li>
+                <li>풀이 3 바로 지금, 이번 달 연애 운세
+                  <span className={styles.toc_sub}>· 이번 달 연애운의 길흉과 포인트</span>
+                  <span className={styles.toc_sub}>· 인연을 만드는 이달의 실천 가이드</span>
+                </li>
+              </ul>
+            </div>
+
+            <div className={styles.toc_divider} />
+
+            {/* 3장 */}
+            <div className={styles.toc_chapter}>
+              <div className={styles.toc_chapter_num}>3장</div>
+              <h3 className={styles.toc_chapter_title}>결국 만나게 될<br/>운명의 상대</h3>
+              <ul className={styles.toc_list}>
+                <li>풀이 1 운명의 짝, 그 사람의 모든 것
+                  <span className={styles.toc_sub}>· 그 사람의 초성부터 MBTI, 직업 특성, 성향까지</span>
+                  <span className={styles.toc_sub}>· 만남의 장소와 오르는 길</span>
+                </li>
+                <li>풀이 2 언제, 어떻게 만나게 될까
+                  <span className={styles.toc_sub}>· 소개팅인, 독서모임, 소개 구체적인 첫소개 루트</span>
+                </li>
+                <li>풀이 3 그 사람을 끌어당길 나만의 공략법
+                  <span className={styles.toc_sub}>· 첫 데이트 장소 추천, 스타일링 가이드, 플러팅 팁</span>
+                </li>
+              </ul>
+              <div className={styles.toc_bonus}>보너스 운명의 상대 이미지</div>
+            </div>
+
+            <div className={styles.toc_divider} />
+
+            {/* 4장 */}
+            <div className={styles.toc_chapter}>
+              <div className={styles.toc_chapter_num}>4장</div>
+              <h3 className={styles.toc_chapter_title}>운명으로 착각하는<br/>가짜인연</h3>
+              <ul className={styles.toc_list}>
+                <li>풀이 1 내가 유독 약해지는 가짜 인연
+                  <span className={styles.toc_sub}>· 왜 유독 그런 타입에게 끌릴까</span>
+                </li>
+                <li>풀이 2 운명으로 착각하게 되는 이유
+                  <span className={styles.toc_sub}>· 첫 끌림 뒤에 숨은 진짜 이유</span>
+                </li>
+                <li>풀이 3 가짜 인연을 거르는 법
+                  <span className={styles.toc_sub}>· 구체적인 필터링 체크 포인트</span>
+                </li>
+              </ul>
+              <div className={styles.toc_bonus}>보너스 피해야 할 인연 이미지</div>
+            </div>
+
+            <div className={styles.toc_divider} />
+
+            {/* 5장 */}
+            <div className={styles.toc_chapter}>
+              <div className={styles.toc_chapter_num}>5장</div>
+              <h3 className={styles.toc_chapter_title}>누구에게도 말 못할,<br/>19금 연애 사주</h3>
+              <div className={styles.toc_lock_grid}>
+                <div className={styles.toc_lock_item}>
+                  <span className={styles.toc_lock_icon}>&#x1F512;</span>
+                  <span className={styles.toc_lock_text}>빈도</span>
+                </div>
+                <div className={styles.toc_lock_item}>
+                  <span className={styles.toc_lock_icon}>&#x1F512;</span>
+                  <span className={styles.toc_lock_text}>성향</span>
+                </div>
+                <div className={styles.toc_lock_item}>
+                  <span className={styles.toc_lock_icon}>&#x1F512;</span>
+                  <span className={styles.toc_lock_text}>주도권</span>
+                </div>
+                <div className={styles.toc_lock_item}>
+                  <span className={styles.toc_lock_icon}>&#x1F512;</span>
+                  <span className={styles.toc_lock_text}>민감부위</span>
+                </div>
+              </div>
+            </div>
+
+            <div className={styles.toc_divider} />
+
+            {/* 6장 */}
+            <div className={styles.toc_chapter}>
+              <div className={styles.toc_chapter_num}>6장</div>
+              <h3 className={styles.toc_chapter_title}>색동낭자의 귀띔</h3>
+              <p className={styles.toc_chapter_desc}>고민에 대한 사주 기반 맞춤 조언</p>
+            </div>
+
+            {/* 보너스 풀이 */}
+            <div className={styles.toc_extra_bonus}>
+              + 그 외 보너스 풀이 추가 제공
+            </div>
+          </div>}
         </section>
 
         {/* 고민 유도 섹션 */}

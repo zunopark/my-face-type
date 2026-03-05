@@ -215,7 +215,8 @@ export default function AdminPage() {
   const fetchCoupons = useCallback(async () => {
     setLoading(true);
     try {
-      const res = await fetch("/api/admin/coupons");
+      const params = adminAccount ? `?admin_id=${adminAccount.id}` : "";
+      const res = await fetch(`/api/admin/coupons${params}`);
       const data = await res.json();
       setCoupons(data);
     } catch (err) {
@@ -223,7 +224,7 @@ export default function AdminPage() {
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [adminAccount]);
 
   const handleCreate = async () => {
     setFormError("");
@@ -328,6 +329,7 @@ export default function AdminPage() {
     try {
       const params = new URLSearchParams({ action: "usage_logs" });
       if (usageFilter) params.set("coupon_code", usageFilter);
+      if (adminAccount) params.set("admin_id", adminAccount.id);
       const res = await fetch(`/api/admin/coupons?${params}`);
       const data = await res.json();
       setUsageLogs(data);
@@ -336,7 +338,7 @@ export default function AdminPage() {
     } finally {
       setUsageLoading(false);
     }
-  }, [usageFilter]);
+  }, [usageFilter, adminAccount]);
 
   // ─── 인플루언서 CRUD ──────────────────────────
 
