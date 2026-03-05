@@ -714,6 +714,18 @@
   box-sizing: border-box;
   z-index: 200;
   background: linear-gradient(transparent, rgba(0, 0, 0, 0.95) 24px);
+  animation: slideUpBtn 0.4s ease-out;
+}
+
+@keyframes slideUpBtn {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(100%);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
 }
 
 .chat_submit_btn {

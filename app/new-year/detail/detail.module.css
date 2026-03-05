@@ -97,6 +97,7 @@
 /* 히어로 이미지 */
 .hero_image {
   width: 100%;
+  margin-top: -16px;
 }
 
 .hero_image img {

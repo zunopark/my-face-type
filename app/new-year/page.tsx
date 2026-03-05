@@ -843,7 +843,7 @@ export default function NewYearPage() {
       )}
 
       {/* 하단 고정 제출 버튼 */}
-      {showChat && chatStep >= 7 && !isLoading && (
+      {showChat && chatStep >= 7 && nangjaTypingDone && !isLoading && (
         <div className={styles.chat_fixed_bottom}>
           <button
             className={styles.chat_submit_btn}

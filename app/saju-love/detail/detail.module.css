@@ -1240,26 +1240,68 @@
 
 .review_footer {
   display: flex;
-  justify-content: flex-end;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
+  margin-top: 16px;
+}
+
+.review_avatar {
+  font-size: 32px;
+  line-height: 1;
+}
+
+.review_footer_info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
 }
 
 .review_name {
-  font-size: 13px;
-  color: #888;
-  font-weight: 500;
+  font-size: 14px;
+  color: #4A4A4A;
+  font-weight: 600;
 }
 
 .review_stars {
-  font-size: 14px;
+  font-size: 13px;
   letter-spacing: 1px;
+}
+
+.review_highlight {
+  color: #e74c3c;
+  font-weight: 600;
 }
 
 /* ===== 목차 섹션 (detail4 대체) ===== */
 .toc_section {
-  background: #fff;
-  padding: 48px 24px 40px;
+  background: #F6F6EE;
+  padding: 32px 24px 40px;
+  position: relative;
+  border: 1px solid #d4c9b8;
+  margin: 0 16px;
+  border-radius: 2px;
+}
+
+.toc_section::before,
+.toc_section::after {
+  content: "";
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  border-color: #b8a890;
+  border-style: solid;
+}
+
+.toc_section::before {
+  top: 8px;
+  left: 8px;
+  border-width: 2px 0 0 2px;
+}
+
+.toc_section::after {
+  top: 8px;
+  right: 8px;
+  border-width: 2px 2px 0 0;
 }
 
 .toc_top {
@@ -1269,28 +1311,33 @@
 
 .toc_main_title {
   font-family: "Danjo", serif;
-  font-size: 28px;
+  font-size: 38px;
   font-weight: 700;
-  color: #e74c3c;
+  color: rgb(206, 55, 17);
+  -webkit-text-stroke: 5px rgba(255, 255, 255, 0.8);
+  paint-order: stroke fill;
   line-height: 1.4;
-  margin: 0 0 24px 0;
+  margin: 0 0 28px 0;
 }
 
 .toc_points {
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 10px;
   align-items: center;
 }
 
 .toc_point {
-  font-size: 13px;
-  color: #e74c3c;
+  font-size: 19px;
+  color: #4A4A4A;
 }
 
 .toc_point strong {
+  font-family: "Danjo", serif;
+  font-size: 20px;
   font-weight: 700;
-  margin-right: 6px;
+  margin-right: 8px;
+  color: rgb(206, 55, 17);
 }
 
 /* 챕터 공통 */
@@ -1299,24 +1346,40 @@
 }
 
 .toc_chapter_num {
-  font-size: 12px;
+  font-family: "Danjo", serif;
+  font-size: 18px;
   font-weight: 700;
-  color: #e74c3c;
-  margin-bottom: 4px;
-  padding-left: 2px;
+  color: #4A4A4A;
+  margin-bottom: 6px;
+  padding-left: 12px;
+  position: relative;
+}
+
+.toc_chapter_num::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 4px;
+  height: 28px;
+  background: #e74c3c;
+  border-radius: 1px;
 }
 
 .toc_chapter_title {
   font-family: "Danjo", serif;
-  font-size: 22px;
+  font-size: 30px;
   font-weight: 700;
-  color: #1a1a1a;
+  color: #4A4A4A;
   line-height: 1.45;
   margin: 0 0 16px 0;
+  padding-left: 4px;
+  padding-top: 8px;
 }
 
 .toc_chapter_desc {
-  font-size: 14px;
+  font-size: 15px;
   color: #888;
   margin: 0;
   padding-left: 2px;
@@ -1329,52 +1392,98 @@
   margin: 0;
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 0;
 }
 
 .toc_list li {
-  font-size: 14px;
-  color: #333;
+  font-size: 17px;
+  font-weight: 500;
+  color: #4A4A4A;
   line-height: 1.6;
-  padding-left: 2px;
+  padding: 14px 0;
+  padding-left: 12px;
   display: flex;
   flex-direction: column;
   gap: 2px;
+  border-bottom: 1px solid #e8ddd0;
+}
+
+.toc_list li:last-child {
+  border-bottom: none;
 }
 
 .toc_sub {
-  font-size: 12px;
+  font-size: 13px;
   color: #999;
   padding-left: 12px;
   line-height: 1.5;
 }
 
-/* 보너스 뱃지 */
+/* 보너스 - 챕터와 동일 구조 */
 .toc_bonus {
-  display: inline-block;
-  margin-top: 16px;
-  padding: 8px 16px;
-  background: #fff0f0;
-  border: 1px solid #ffe0e0;
-  border-radius: 20px;
-  font-size: 13px;
-  font-weight: 600;
-  color: #e74c3c;
+  padding: 0 0 28px 0;
+}
+
+.toc_bonus_label {
+  font-family: "Danjo", serif;
+  font-size: 18px;
+  font-weight: 700;
+  color: #d4a017;
+  display: block;
+  margin-bottom: 6px;
+  padding-left: 12px;
+  position: relative;
+}
+
+.toc_bonus_label::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 4px;
+  height: 28px;
+  background: #d4a017;
+  border-radius: 1px;
+}
+
+.toc_bonus_title {
+  font-family: "Danjo", serif;
+  font-size: 26px;
+  font-weight: 700;
+  color: #4A4A4A;
+  padding-left: 4px;
 }
 
 /* 구분선 */
 .toc_divider {
-  height: 1px;
-  background: #f0e8e8;
+  height: 0;
   margin-bottom: 28px;
 }
 
-/* 5장 잠금 그리드 */
-.toc_lock_grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 10px;
-  margin-top: 4px;
+/* 5장 블러 처리 */
+.toc_blur_wrap {
+  position: relative;
+  margin-top: 8px;
+}
+
+.toc_blur_content {
+  filter: blur(6px);
+  -webkit-filter: blur(6px);
+  pointer-events: none;
+  user-select: none;
+}
+
+.toc_blur_lock {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1;
+}
+
+.toc_blur_lock_icon {
+  font-size: 40px;
 }
 
 .toc_lock_item {
@@ -1400,13 +1509,14 @@
 /* 하단 보너스 */
 .toc_extra_bonus {
   text-align: center;
-  margin-top: 12px;
-  padding: 16px 20px;
-  background: #fff9f9;
-  border: 1.5px dashed #ffe0e0;
-  border-radius: 12px;
-  font-size: 15px;
-  font-weight: 600;
+  margin-top: 24px;
+  padding: 20px 24px;
+  background: #fff5f3;
+  border: 1.5px dashed #f0b8ab;
+  border-radius: 16px;
+  font-family: "Danjo", serif;
+  font-size: 18px;
+  font-weight: 700;
   color: #e74c3c;
 }
 
