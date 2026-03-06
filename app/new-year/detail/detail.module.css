@@ -1114,7 +1114,7 @@
   max-width: 500px;
   min-height: 100vh;
   background: #fff;
-  padding: 34px 22px 28px 22px;
+  padding: 34px 22px 60px 22px;
   box-shadow: 0 10px 28px rgba(0, 0, 0, 0.19);
   position: relative;
   display: flex;
@@ -1339,6 +1339,7 @@
 
 .payment-final-btn {
   margin-top: 16px;
+  margin-bottom: 40px;
   width: 100%;
   padding: 15px 0;
   background: linear-gradient(135deg, #4A90D9 0%, #3A7BC8 100%);
