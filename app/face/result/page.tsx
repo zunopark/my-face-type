@@ -473,7 +473,7 @@ function ResultContent() {
   }, []);
 
   // 무료 쿠폰 결제 처리
-  const handleFreeCouponPayment = useCallback(async () => {
+  const handleFreeCouponPayment = useCallback(async (couponCodeParam?: string) => {
     if (!result) return;
 
     try {
@@ -492,7 +492,7 @@ function ResultContent() {
         analysis_result: updatedReports as Record<string, unknown>,
         is_paid: true,
         paid_at: new Date().toISOString(),
-        payment_info: { method: "coupon", price: 0, couponCode: appliedCoupon?.code },
+        payment_info: { method: "coupon", price: 0, couponCode: couponCodeParam || appliedCoupon?.code },
       });
 
       // 모달 닫고 분석 시작
@@ -550,8 +550,8 @@ function ResultContent() {
       });
 
       if (isFree) {
-        // 1. 결과 저장 확정
-        await handleFreeCouponPayment();
+        // 1. 결과 저장 확정 (쿠폰 코드를 직접 전달 - setState 반영 전이므로)
+        await handleFreeCouponPayment(code);
 
         // 2. 결과 확정 후 쿠폰 수량 차감
         try {

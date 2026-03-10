@@ -317,8 +317,7 @@ function NewYearResultContent() {
         const fromSupabase = !!(serverData && serverData.is_paid && serverData.analysis_result);
 
         if (!record) {
-          setError("데이터를 찾을 수 없습니다.");
-          setIsLoading(false);
+          window.location.href = "/new-year";
           return;
         }
 
