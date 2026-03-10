@@ -2389,6 +2389,10 @@
 
 .chapter_structured {
   padding: 0;
+  font-family: 'MaruBuri', serif;
+  text-align: justify;
+  text-align-last: left;
+  word-break: break-word;
 }
 
 .chapter_structured h4 {
@@ -2397,7 +2401,7 @@
 
 .chapter_structured p {
   margin: 0;
-  line-height: 1.7;
+  line-height: 2;
 }
 
 /* 등급 카드 */
@@ -2450,18 +2454,19 @@
 }
 
 .congrats_subtitle {
-  font-size: 15px;
+  font-size: 16px;
   color: #666;
 }
 
 /* 섹션 타이틀 */
 .section_title {
-  font-size: 14px;
+  font-size: 16px;
   font-weight: 600;
   color: #333;
   margin-bottom: 12px;
   padding-bottom: 6px;
   border-bottom: 1px solid #e0e0e0;
+  text-align: left;
 }
 
 /* 텍스트 블록 */
@@ -2470,9 +2475,9 @@
 }
 
 .text_block p {
-  font-size: 14px;
+  font-size: 16px;
   color: #333;
-  line-height: 1.8;
+  line-height: 2;
 }
 
 /* 섹션 블록 */
@@ -2494,7 +2499,7 @@
 
 .info_label {
   flex-shrink: 0;
-  font-size: 13px;
+  font-size: 16px;
   font-weight: 600;
   color: #666;
   white-space: nowrap;
@@ -2503,9 +2508,9 @@
 
 .info_value {
   flex: 1;
-  font-size: 14px;
+  font-size: 16px;
   color: #333;
-  line-height: 1.6;
+  line-height: 2;
   display: flex;
   align-items: flex-start;
   gap: 8px;
@@ -2520,7 +2525,7 @@
   height: 20px;
   padding: 0 6px;
   border-radius: 4px;
-  font-size: 12px;
+  font-size: 16px;
   font-weight: 600;
   flex-shrink: 0;
   margin-top: 2px;
@@ -2562,7 +2567,7 @@
 
 .score_label {
   width: 70px;
-  font-size: 13px;
+  font-size: 16px;
   color: #666;
 }
 
@@ -2584,7 +2589,7 @@
 
 .score_num {
   width: 30px;
-  font-size: 12px;
+  font-size: 16px;
   color: #999;
   text-align: right;
 }
@@ -2601,13 +2606,13 @@
 
 .list_item strong {
   display: block;
-  font-size: 14px;
+  font-size: 16px;
   color: #333;
   margin-bottom: 4px;
 }
 
 .list_item p {
-  font-size: 13px;
+  font-size: 16px;
   color: #666;
 }
 
@@ -2619,13 +2624,13 @@
 }
 
 .list_meta {
-  font-size: 12px;
+  font-size: 16px;
   color: #999;
   margin-left: auto;
 }
 
 .list_sub {
-  font-size: 13px;
+  font-size: 16px;
   color: #888;
   margin-top: 6px !important;
 }

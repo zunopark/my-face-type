@@ -16,6 +16,7 @@ interface Coupon {
   remaining_quantity: number;
   is_active: boolean;
   created_at: string;
+  admin_id?: string | null;
 }
 
 interface UsageLog {
@@ -41,6 +42,15 @@ interface Influencer {
   total_revenue?: number;
   total_settled?: number;
   password?: string;
+  admin_id?: string | null;
+}
+
+interface AdminAccount {
+  id: string;
+  name: string;
+  rs_percentage: number;
+  filtered_revenue: number;
+  rs_start_date: string | null;
 }
 
 interface PaymentDetail {
@@ -92,6 +102,9 @@ interface SettlementStatus {
   year: number;
   month: number;
   amount: number;
+  is_paid?: boolean;
+  paid_at?: string | null;
+  memo?: string;
 }
 
 const SERVICE_LABELS: Record<string, string> = {
@@ -163,7 +176,7 @@ export default function SuperAdminPage() {
   }, []);
 
   // Tab state
-  const [activeTab, setActiveTab] = useState<"influencers" | "coupons" | "usage" | "payments">("payments");
+  const [activeTab, setActiveTab] = useState<"influencers" | "coupons" | "usage" | "payments" | "marketers" | "settlement">("payments");
 
   // Coupon state
   const [coupons, setCoupons] = useState<Coupon[]>([]);
@@ -189,6 +202,10 @@ export default function SuperAdminPage() {
   const [infFormError, setInfFormError] = useState("");
   const [editInfluencer, setEditInfluencer] = useState<Influencer | null>(null);
   const [editInfData, setEditInfData] = useState<Record<string, unknown>>({});
+
+  // Admin (marketer) accounts
+  const [adminAccounts, setAdminAccounts] = useState<AdminAccount[]>([]);
+  const [marketerMonthly, setMarketerMonthly] = useState<AdminAccount[]>([]);
 
   // UTM modal state
   const [utmInfluencer, setUtmInfluencer] = useState<Influencer | null>(null);
@@ -377,6 +394,28 @@ export default function SuperAdminPage() {
       setInfLoading(false);
     }
   }, []);
+
+  const fetchAdminAccounts = useCallback(async () => {
+    try {
+      const res = await fetch("/api/superadmin/marketers");
+      const data = await res.json();
+      setAdminAccounts(Array.isArray(data) ? data : []);
+    } catch (err) {
+      console.error("마케터 목록 조회 오류:", err);
+    }
+  }, []);
+
+  const fetchMarketerMonthly = useCallback(async () => {
+    try {
+      const res = await fetch(
+        `/api/superadmin/marketers?year=${settlementYear}&month=${settlementMonth}`
+      );
+      const data = await res.json();
+      setMarketerMonthly(Array.isArray(data) ? data : []);
+    } catch (err) {
+      console.error("마케터 월별 조회 오류:", err);
+    }
+  }, [settlementYear, settlementMonth]);
 
   const handleCreateInfluencer = async () => {
     setInfFormError("");
@@ -592,6 +631,31 @@ export default function SuperAdminPage() {
     }
   };
 
+  const handleTogglePaid = async (influencerId: string, currentlyPaid: boolean) => {
+    try {
+      const res = await fetch("/api/admin/settlements", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          influencer_id: influencerId,
+          year: settlementYear,
+          month: settlementMonth,
+          is_paid: !currentlyPaid,
+        }),
+      });
+      const data = await res.json();
+      if (data.influencer_id) {
+        setSettlementStatuses((prev) => {
+          const next = new Map(prev);
+          next.set(influencerId, data);
+          return next;
+        });
+      }
+    } catch (err) {
+      console.error("정산 상태 변경 오류:", err);
+    }
+  };
+
   // ─── 전체 결제 내역 ──────────────────────────────
 
   const fetchAllPayments = useCallback(async () => {
@@ -679,8 +743,9 @@ export default function SuperAdminPage() {
     if (isAuthenticated) {
       fetchCoupons();
       fetchInfluencers();
+      fetchAdminAccounts();
     }
-  }, [isAuthenticated, fetchCoupons, fetchInfluencers]);
+  }, [isAuthenticated, fetchCoupons, fetchInfluencers, fetchAdminAccounts]);
 
   useEffect(() => {
     if (isAuthenticated && activeTab === "usage") {
@@ -689,10 +754,16 @@ export default function SuperAdminPage() {
   }, [isAuthenticated, activeTab, fetchUsageLogs]);
 
   useEffect(() => {
-    if (isAuthenticated && activeTab === "influencers") {
+    if (isAuthenticated && (activeTab === "influencers" || activeTab === "settlement")) {
       fetchSettlement();
     }
   }, [isAuthenticated, activeTab, fetchSettlement]);
+
+  useEffect(() => {
+    if (isAuthenticated && activeTab === "settlement") {
+      fetchMarketerMonthly();
+    }
+  }, [isAuthenticated, activeTab, fetchMarketerMonthly]);
 
   useEffect(() => {
     if (isAuthenticated && activeTab === "payments") {
@@ -800,6 +871,12 @@ export default function SuperAdminPage() {
             결제 내역
           </button>
           <button
+            className={`${styles.tab} ${activeTab === "settlement" ? styles.tab_active : ""}`}
+            onClick={() => setActiveTab("settlement")}
+          >
+            정산
+          </button>
+          <button
             className={`${styles.tab} ${activeTab === "influencers" ? styles.tab_active : ""}`}
             onClick={() => setActiveTab("influencers")}
           >
@@ -816,6 +893,12 @@ export default function SuperAdminPage() {
             onClick={() => setActiveTab("usage")}
           >
             사용 내역
+          </button>
+          <button
+            className={`${styles.tab} ${activeTab === "marketers" ? styles.tab_active : ""}`}
+            onClick={() => setActiveTab("marketers")}
+          >
+            마케터
           </button>
         </div>
 
@@ -943,6 +1026,7 @@ export default function SuperAdminPage() {
                   <thead>
                     <tr>
                       <th>이름</th>
+                      <th>담당</th>
                       <th>슬러그</th>
                       <th className={styles.text_right}>RS%</th>
                       <th className={styles.text_right}>방문수</th>
@@ -961,6 +1045,9 @@ export default function SuperAdminPage() {
                       return (
                       <tr key={inf.id}>
                         <td>{inf.name}</td>
+                        <td style={{ fontSize: "0.85em", color: "#888" }}>
+                          {inf.admin_id ? adminAccounts.find(a => a.id === inf.admin_id)?.name || "-" : "-"}
+                        </td>
                         <td className={styles.code_cell}>{inf.slug}</td>
                         <td className={styles.text_right}>{rs}%</td>
                         <td className={styles.text_right}>{(inf.total_visits || 0).toLocaleString()}</td>
@@ -1043,11 +1130,16 @@ export default function SuperAdminPage() {
                 </table>
               </div>
             )}
+          </>
+        )}
 
-            {/* 월별 통계 */}
+        {/* ── 정산 탭 ──────────────── */}
+        {activeTab === "settlement" && (
+          <>
+            {/* 월 네비게이션 */}
             <div className={styles.settlement_section}>
               <div className={styles.settlement_header}>
-                <h3 className={styles.settlement_title}>월별 통계</h3>
+                <h3 className={styles.settlement_title}>정산</h3>
                 <div className={styles.month_selector}>
                   <button
                     className={styles.month_arrow}
@@ -1066,6 +1158,11 @@ export default function SuperAdminPage() {
                   </button>
                 </div>
               </div>
+            </div>
+
+            {/* Section A: 인플루언서 정산 */}
+            <div className={styles.settlement_section}>
+              <h3 className={styles.settlement_title}>인플루언서 정산</h3>
 
               {settlementLoading ? (
                 <div className={styles.loading}>불러오는 중...</div>
@@ -1084,11 +1181,13 @@ export default function SuperAdminPage() {
                         <th className={styles.text_right}>RS%</th>
                         <th className={styles.text_right}>정산액</th>
                         <th className={styles.text_right}>정산 금액</th>
+                        <th className={styles.text_right}>정산 상태</th>
                       </tr>
                     </thead>
                     <tbody>
                       {settlement.map((row) => {
                         const status = settlementStatuses.get(row.influencer_id);
+                        const isPaid = status?.is_paid ?? false;
                         return (
                           <tr key={row.influencer_id}>
                             <td>{row.influencer_name}</td>
@@ -1098,7 +1197,9 @@ export default function SuperAdminPage() {
                             <td className={styles.text_right}>
                               {row.payment_count.toLocaleString()}
                             </td>
-                            <td className={styles.text_right}>{row.visit_count > 0 ? ((row.payment_count / row.visit_count) * 100).toFixed(1) : "0.0"}%</td>
+                            <td className={styles.text_right}>
+                              {row.visit_count > 0 ? ((row.payment_count / row.visit_count) * 100).toFixed(1) : "0.0"}%
+                            </td>
                             <td className={styles.text_right}>{row.total_revenue.toLocaleString()}원</td>
                             <td className={styles.text_right}>{row.rs_percentage}%</td>
                             <td className={styles.text_right}>{row.settlement_amount.toLocaleString()}원</td>
@@ -1107,7 +1208,7 @@ export default function SuperAdminPage() {
                                 type="number"
                                 className={styles.settlement_input}
                                 defaultValue={status?.amount ?? 0}
-                                key={`${row.influencer_id}-${status?.amount}`}
+                                key={`settle-${row.influencer_id}-${status?.amount}`}
                                 onBlur={(e) => {
                                   const val = Number(e.target.value) || 0;
                                   if (val !== (status?.amount ?? 0)) {
@@ -1119,6 +1220,20 @@ export default function SuperAdminPage() {
                                 }}
                               />
                             </td>
+                            <td className={styles.text_right}>
+                              <button
+                                className={`${styles.badge} ${isPaid ? styles.badge_active : styles.badge_inactive}`}
+                                onClick={() => handleTogglePaid(row.influencer_id, isPaid)}
+                                style={{ cursor: "pointer", border: "none" }}
+                              >
+                                {isPaid ? "정산완료" : "미정산"}
+                              </button>
+                              {isPaid && status?.paid_at && (
+                                <div style={{ fontSize: "0.75em", color: "#888", marginTop: 2 }}>
+                                  {new Date(status.paid_at).toLocaleDateString("ko-KR")}
+                                </div>
+                              )}
+                            </td>
                           </tr>
                         );
                       })}
@@ -1128,12 +1243,80 @@ export default function SuperAdminPage() {
                         <td>합계</td>
                         <td className={styles.text_right}>{settlement.reduce((s, r) => s + r.visit_count, 0).toLocaleString()}</td>
                         <td className={styles.text_right}>{settlement.reduce((s, r) => s + r.payment_count, 0).toLocaleString()}</td>
-                        <td className={styles.text_right}>{(() => { const v = settlement.reduce((s, r) => s + r.visit_count, 0); const p = settlement.reduce((s, r) => s + r.payment_count, 0); return v > 0 ? ((p / v) * 100).toFixed(1) : "0.0"; })()}%</td>
+                        <td className={styles.text_right}>
+                          {(() => {
+                            const v = settlement.reduce((s, r) => s + r.visit_count, 0);
+                            const p = settlement.reduce((s, r) => s + r.payment_count, 0);
+                            return v > 0 ? ((p / v) * 100).toFixed(1) : "0.0";
+                          })()}%
+                        </td>
                         <td className={styles.text_right}>{settlement.reduce((s, r) => s + r.total_revenue, 0).toLocaleString()}원</td>
                         <td className={styles.text_right}></td>
                         <td className={styles.text_right}>{settlement.reduce((s, r) => s + r.settlement_amount, 0).toLocaleString()}원</td>
                         <td className={styles.text_right}>
                           {Array.from(settlementStatuses.values()).reduce((s, r) => s + (r.amount || 0), 0).toLocaleString()}원
+                        </td>
+                        <td></td>
+                      </tr>
+                    </tfoot>
+                  </table>
+                </div>
+              )}
+            </div>
+
+            {/* Section B: 마케터 정산 */}
+            <div className={styles.settlement_section}>
+              <h3 className={styles.settlement_title}>마케터 정산</h3>
+
+              {marketerMonthly.length === 0 ? (
+                <div className={styles.empty}>등록된 마케터가 없습니다.</div>
+              ) : (
+                <div className={styles.table_wrap}>
+                  <table className={styles.table}>
+                    <thead>
+                      <tr>
+                        <th>마케터</th>
+                        <th className={styles.text_right}>RS%</th>
+                        <th className={styles.text_right}>인플루언서 수</th>
+                        <th className={styles.text_right}>월 매출</th>
+                        <th className={styles.text_right}>정산액</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {marketerMonthly.map((admin) => {
+                        const adminInfCount = influencers.filter((inf) => inf.admin_id === admin.id).length;
+                        const monthlyRevenue = admin.filtered_revenue;
+                        const monthlySettlement = Math.round(monthlyRevenue * admin.rs_percentage / 100);
+                        return (
+                          <tr key={admin.id}>
+                            <td>
+                              {admin.name}
+                              {admin.rs_start_date && (
+                                <span style={{ fontSize: "0.75em", color: "#888", marginLeft: 4 }}>
+                                  ({new Date(admin.rs_start_date).toLocaleDateString("ko-KR", { month: "numeric", day: "numeric" })}~)
+                                </span>
+                              )}
+                            </td>
+                            <td className={styles.text_right}>{admin.rs_percentage}%</td>
+                            <td className={styles.text_right}>{adminInfCount}</td>
+                            <td className={styles.text_right}>{monthlyRevenue.toLocaleString()}원</td>
+                            <td className={styles.text_right} style={{ color: "#c4965a", fontWeight: 700 }}>
+                              {monthlySettlement.toLocaleString()}원
+                            </td>
+                          </tr>
+                        );
+                      })}
+                    </tbody>
+                    <tfoot>
+                      <tr className={styles.table_foot}>
+                        <td>합계</td>
+                        <td></td>
+                        <td></td>
+                        <td className={styles.text_right}>
+                          {marketerMonthly.reduce((s, a) => s + a.filtered_revenue, 0).toLocaleString()}원
+                        </td>
+                        <td className={styles.text_right} style={{ color: "#c4965a", fontWeight: 700 }}>
+                          {marketerMonthly.reduce((s, a) => s + Math.round(a.filtered_revenue * a.rs_percentage / 100), 0).toLocaleString()}원
                         </td>
                       </tr>
                     </tfoot>
@@ -1289,6 +1472,7 @@ export default function SuperAdminPage() {
                     <tr>
                       <th>코드</th>
                       <th>이름</th>
+                      <th>담당</th>
                       <th>서비스</th>
                       <th>유형</th>
                       <th>할인</th>
@@ -1302,6 +1486,9 @@ export default function SuperAdminPage() {
                       <tr key={coupon.id}>
                         <td className={styles.code_cell}>{coupon.code}</td>
                         <td>{coupon.name}</td>
+                        <td style={{ fontSize: "0.85em", color: "#888" }}>
+                          {coupon.admin_id ? adminAccounts.find(a => a.id === coupon.admin_id)?.name || "-" : "-"}
+                        </td>
                         <td>
                           {SERVICE_LABELS[coupon.service_type] ||
                             coupon.service_type}
@@ -1586,6 +1773,243 @@ export default function SuperAdminPage() {
                     ))}
                   </tbody>
                 </table>
+              </div>
+            )}
+          </>
+        )}
+
+        {/* ── 마케터 탭 ──────────────── */}
+        {activeTab === "marketers" && (
+          <>
+            {adminAccounts.length === 0 ? (
+              <div className={styles.empty}>등록된 마케터가 없습니다.</div>
+            ) : (
+              <div style={{ display: "flex", flexDirection: "column", gap: 24 }}>
+                {adminAccounts.map((admin) => {
+                  const adminInfluencers = influencers.filter(
+                    (inf) => inf.admin_id === admin.id
+                  );
+                  const adminCoupons = coupons.filter(
+                    (c) => c.admin_id === admin.id
+                  );
+                  const totalRevenue = adminInfluencers.reduce(
+                    (sum, inf) => sum + (inf.total_revenue || 0), 0
+                  );
+                  const filteredRevenue = admin.filtered_revenue || 0;
+                  const rsRevenue = admin.rs_start_date ? filteredRevenue : totalRevenue;
+                  const settlementAmount = Math.round(rsRevenue * admin.rs_percentage / 100);
+                  return (
+                    <div key={admin.id} className={styles.form_container}>
+                      <h3 className={styles.form_title}>{admin.name}</h3>
+
+                      <div style={{
+                        display: "flex", gap: 24, marginBottom: 16, padding: "12px 16px",
+                        background: "#f8f8f8", borderRadius: 8, flexWrap: "wrap",
+                      }}>
+                        <div style={{ display: "flex", flexDirection: "column", gap: 2 }}>
+                          <span style={{ fontSize: 12, color: "#888" }}>전체 매출</span>
+                          <span style={{ fontSize: 16, fontWeight: 700 }}>{totalRevenue.toLocaleString()}원</span>
+                        </div>
+                        {admin.rs_start_date && (
+                        <div style={{ display: "flex", flexDirection: "column", gap: 2 }}>
+                          <span style={{ fontSize: 12, color: "#888" }}>
+                            {new Date(admin.rs_start_date).toLocaleDateString("ko-KR", { month: "numeric", day: "numeric" })} 이후 매출
+                          </span>
+                          <span style={{ fontSize: 16, fontWeight: 700 }}>{filteredRevenue.toLocaleString()}원</span>
+                        </div>
+                        )}
+                        <div style={{ display: "flex", flexDirection: "column", gap: 2 }}>
+                          <span style={{ fontSize: 12, color: "#888" }}>RS 비율</span>
+                          <span style={{ fontSize: 16, fontWeight: 700 }}>{admin.rs_percentage}%</span>
+                        </div>
+                        <div style={{ display: "flex", flexDirection: "column", gap: 2 }}>
+                          <span style={{ fontSize: 12, color: "#888" }}>정산 금액</span>
+                          <span style={{ fontSize: 16, fontWeight: 700, color: "#c4965a" }}>{settlementAmount.toLocaleString()}원</span>
+                        </div>
+                      </div>
+
+                      <div style={{ marginBottom: 16 }}>
+                        <h4 style={{ fontSize: 14, fontWeight: 600, marginBottom: 8, color: "#666" }}>
+                          인플루언서 ({adminInfluencers.length})
+                        </h4>
+                        {adminInfluencers.length === 0 ? (
+                          <div style={{ fontSize: 13, color: "#999" }}>없음</div>
+                        ) : (
+                          <div className={styles.table_wrap}>
+                            <table className={styles.table}>
+                              <thead>
+                                <tr>
+                                  <th>이름</th>
+                                  <th>슬러그</th>
+                                  <th className={styles.text_right}>RS%</th>
+                                  <th className={styles.text_right}>방문</th>
+                                  <th className={styles.text_right}>결제</th>
+                                  <th className={styles.text_right}>매출</th>
+                                  <th>상태</th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                {adminInfluencers.map((inf) => (
+                                  <tr key={inf.id}>
+                                    <td>{inf.name}</td>
+                                    <td className={styles.code_cell}>{inf.slug}</td>
+                                    <td className={styles.text_right}>{inf.rs_percentage}%</td>
+                                    <td className={styles.text_right}>{(inf.total_visits || 0).toLocaleString()}</td>
+                                    <td className={styles.text_right}>{(inf.total_payments || 0).toLocaleString()}</td>
+                                    <td className={styles.text_right}>{(inf.total_revenue || 0).toLocaleString()}원</td>
+                                    <td>
+                                      <span className={`${styles.badge} ${inf.is_active ? styles.badge_active : styles.badge_inactive}`}>
+                                        {inf.is_active ? "활성" : "비활성"}
+                                      </span>
+                                    </td>
+                                  </tr>
+                                ))}
+                              </tbody>
+                            </table>
+                          </div>
+                        )}
+                      </div>
+
+                      <div>
+                        <h4 style={{ fontSize: 14, fontWeight: 600, marginBottom: 8, color: "#666" }}>
+                          쿠폰 ({adminCoupons.length})
+                        </h4>
+                        {adminCoupons.length === 0 ? (
+                          <div style={{ fontSize: 13, color: "#999" }}>없음</div>
+                        ) : (
+                          <div className={styles.table_wrap}>
+                            <table className={styles.table}>
+                              <thead>
+                                <tr>
+                                  <th>코드</th>
+                                  <th>이름</th>
+                                  <th>서비스</th>
+                                  <th>유형</th>
+                                  <th>수량</th>
+                                  <th>상태</th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                {adminCoupons.map((c) => (
+                                  <tr key={c.id}>
+                                    <td className={styles.code_cell}>{c.code}</td>
+                                    <td>{c.name}</td>
+                                    <td>{SERVICE_LABELS[c.service_type] || c.service_type}</td>
+                                    <td>
+                                      <span className={`${styles.badge} ${c.discount_type === "free" ? styles.badge_free : styles.badge_fixed}`}>
+                                        {DISCOUNT_LABELS[c.discount_type] || c.discount_type}
+                                      </span>
+                                    </td>
+                                    <td className={styles.quantity_cell}>{c.remaining_quantity} / {c.total_quantity}</td>
+                                    <td>
+                                      <span className={`${styles.badge} ${c.is_active ? styles.badge_active : styles.badge_inactive}`}>
+                                        {c.is_active ? "활성" : "비활성"}
+                                      </span>
+                                    </td>
+                                  </tr>
+                                ))}
+                              </tbody>
+                            </table>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  );
+                })}
+
+                {/* 미배정 인플루언서/쿠폰 */}
+                {(() => {
+                  const unassignedInf = influencers.filter((inf) => !inf.admin_id);
+                  const unassignedCoupons = coupons.filter((c) => !c.admin_id);
+                  if (unassignedInf.length === 0 && unassignedCoupons.length === 0) return null;
+                  return (
+                    <div className={styles.form_container} style={{ borderLeft: "3px solid #999" }}>
+                      <h3 className={styles.form_title} style={{ color: "#999" }}>미배정</h3>
+
+                      {unassignedInf.length > 0 && (
+                        <div style={{ marginBottom: 16 }}>
+                          <h4 style={{ fontSize: 14, fontWeight: 600, marginBottom: 8, color: "#666" }}>
+                            인플루언서 ({unassignedInf.length})
+                          </h4>
+                          <div className={styles.table_wrap}>
+                            <table className={styles.table}>
+                              <thead>
+                                <tr>
+                                  <th>이름</th>
+                                  <th>슬러그</th>
+                                  <th className={styles.text_right}>RS%</th>
+                                  <th className={styles.text_right}>방문</th>
+                                  <th className={styles.text_right}>결제</th>
+                                  <th className={styles.text_right}>매출</th>
+                                  <th>상태</th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                {unassignedInf.map((inf) => (
+                                  <tr key={inf.id}>
+                                    <td>{inf.name}</td>
+                                    <td className={styles.code_cell}>{inf.slug}</td>
+                                    <td className={styles.text_right}>{inf.rs_percentage}%</td>
+                                    <td className={styles.text_right}>{(inf.total_visits || 0).toLocaleString()}</td>
+                                    <td className={styles.text_right}>{(inf.total_payments || 0).toLocaleString()}</td>
+                                    <td className={styles.text_right}>{(inf.total_revenue || 0).toLocaleString()}원</td>
+                                    <td>
+                                      <span className={`${styles.badge} ${inf.is_active ? styles.badge_active : styles.badge_inactive}`}>
+                                        {inf.is_active ? "활성" : "비활성"}
+                                      </span>
+                                    </td>
+                                  </tr>
+                                ))}
+                              </tbody>
+                            </table>
+                          </div>
+                        </div>
+                      )}
+
+                      {unassignedCoupons.length > 0 && (
+                        <div>
+                          <h4 style={{ fontSize: 14, fontWeight: 600, marginBottom: 8, color: "#666" }}>
+                            쿠폰 ({unassignedCoupons.length})
+                          </h4>
+                          <div className={styles.table_wrap}>
+                            <table className={styles.table}>
+                              <thead>
+                                <tr>
+                                  <th>코드</th>
+                                  <th>이름</th>
+                                  <th>서비스</th>
+                                  <th>유형</th>
+                                  <th>수량</th>
+                                  <th>상태</th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                {unassignedCoupons.map((c) => (
+                                  <tr key={c.id}>
+                                    <td className={styles.code_cell}>{c.code}</td>
+                                    <td>{c.name}</td>
+                                    <td>{SERVICE_LABELS[c.service_type] || c.service_type}</td>
+                                    <td>
+                                      <span className={`${styles.badge} ${c.discount_type === "free" ? styles.badge_free : styles.badge_fixed}`}>
+                                        {DISCOUNT_LABELS[c.discount_type] || c.discount_type}
+                                      </span>
+                                    </td>
+                                    <td className={styles.quantity_cell}>{c.remaining_quantity} / {c.total_quantity}</td>
+                                    <td>
+                                      <span className={`${styles.badge} ${c.is_active ? styles.badge_active : styles.badge_inactive}`}>
+                                        {c.is_active ? "활성" : "비활성"}
+                                      </span>
+                                    </td>
+                                  </tr>
+                                ))}
+                              </tbody>
+                            </table>
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  );
+                })()}
               </div>
             )}
           </>

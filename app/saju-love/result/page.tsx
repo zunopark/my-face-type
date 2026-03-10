@@ -317,6 +317,84 @@ function SajuLoveResultContent() {
   }, []);
 
 
+  // 악연 이미지 백그라운드 재생성
+  const regenerateAvoidImage = useCallback(async (storedData: SajuLoveRecord) => {
+    try {
+      console.log("[INFO] 악연 이미지 재생성 시작...");
+      const response = await fetch(`${SAJU_API_URL}/saju_love/generate_avoid_image`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          saju_data: {
+            ...storedData.sajuData,
+            input: storedData.input,
+          },
+        }),
+      });
+
+      if (!response.ok) {
+        console.error("악연 이미지 재생성 실패:", await response.text());
+        return;
+      }
+
+      const result = await response.json();
+      if (!result.success || !result.avoid_type_image?.image_base64) {
+        console.error("악연 이미지 재생성 결과 없음");
+        return;
+      }
+
+      // Storage에 업로드
+      const uploadedImages = await uploadSajuLoveImages(storedData.id, {
+        avoidType: result.avoid_type_image.image_base64,
+      });
+
+      if (!uploadedImages.avoidType) {
+        console.error("악연 이미지 업로드 실패");
+        return;
+      }
+
+      // Supabase DB 업데이트 (기존 analysis_result에 avoid_type_image만 추가)
+      const currentRecord = await getSajuAnalysisByShareId(storedData.id);
+      if (!currentRecord) return;
+
+      const currentResult = currentRecord.analysis_result as Record<string, unknown> || {};
+      await updateSajuAnalysis(storedData.id, {
+        analysis_result: {
+          ...currentResult,
+          avoid_type_image: {
+            prompt: result.avoid_type_image.prompt_used,
+            storage_path: uploadedImages.avoidType.path,
+          },
+        },
+        image_paths: [
+          ...(currentRecord.image_paths || []),
+          uploadedImages.avoidType.path,
+        ],
+      });
+
+      // UI 업데이트 - 악연 이미지 반영
+      setData(prev => {
+        if (!prev?.loveAnalysis) return prev;
+        const updated = {
+          ...prev,
+          loveAnalysis: {
+            ...prev.loveAnalysis,
+            avoid_type_image: {
+              image_base64: "",
+              image_url: uploadedImages.avoidType!.url,
+              prompt: result.avoid_type_image.prompt_used,
+            },
+          },
+        };
+        return updated;
+      });
+
+      console.log("[INFO] 악연 이미지 재생성 완료!");
+    } catch (err) {
+      console.error("악연 이미지 재생성 오류:", err);
+    }
+  }, []);
+
   // 연애 사주 분석 API 호출
   const fetchLoveAnalysis = useCallback(
     async (storedData: SajuLoveRecord, retryCount = 0) => {
@@ -563,6 +641,13 @@ function SajuLoveResultContent() {
           setScenes(buildFullScenes(record, hasReview));
           setAllTocUnlocked(true);
           setIsLoading(false);
+
+          // 악연 이미지가 누락된 경우 백그라운드에서 재생성
+          const hasAvoidImage = !!(record.loveAnalysis.avoid_type_image?.image_base64 || record.loveAnalysis.avoid_type_image?.image_url);
+          if (!hasAvoidImage && record.sajuData) {
+            regenerateAvoidImage(record);
+          }
+
           return;
         }
 

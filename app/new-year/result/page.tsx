@@ -205,7 +205,7 @@ function NewYearResultContent() {
       }
 
       try {
-        const response = await fetch(`${SAJU_API_URL}/saju_new_year/analyze`, {
+        const response = await fetch(`${SAJU_API_URL}/saju_new_year_v2/analyze`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
