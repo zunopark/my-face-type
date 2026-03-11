@@ -41,6 +41,15 @@ interface Influencer {
   password?: string;
 }
 
+interface InfluencerDiscount {
+  id: string;
+  influencer_id: string;
+  service_type: string;
+  discount_code: string;
+  discount_start_at: string | null;
+  discount_end_at: string | null;
+}
+
 interface PaymentDetail {
   id: string;
   service_type: string;
@@ -170,6 +179,13 @@ export default function AdminPage() {
   const [infFormError, setInfFormError] = useState("");
   const [editInfluencer, setEditInfluencer] = useState<Influencer | null>(null);
   const [editInfData, setEditInfData] = useState<Record<string, unknown>>({});
+
+  // 인플루언서 할인 설정
+  const [discountInfluencer, setDiscountInfluencer] = useState<Influencer | null>(null);
+  const [discountList, setDiscountList] = useState<InfluencerDiscount[]>([]);
+  const [discountLoading, setDiscountLoading] = useState(false);
+  const [discountForm, setDiscountForm] = useState({ service_type: "face", discount_code: "", discount_start_at: "", discount_end_at: "" });
+  const [discountFormError, setDiscountFormError] = useState("");
 
   // UTM modal state
   const [utmInfluencer, setUtmInfluencer] = useState<Influencer | null>(null);
@@ -436,6 +452,67 @@ export default function AdminPage() {
       password: inf.password || "",
     });
     setInfFormError("");
+  };
+
+  // ─── 인플루언서 할인 관리 ──────────────────────────
+  const fetchDiscounts = useCallback(async (influencerId: string) => {
+    setDiscountLoading(true);
+    try {
+      const res = await fetch(`/api/admin/influencer-discounts?influencer_id=${influencerId}`);
+      const data = await res.json();
+      setDiscountList(Array.isArray(data) ? data : []);
+    } catch (err) {
+      console.error("할인 목록 조회 오류:", err);
+    } finally {
+      setDiscountLoading(false);
+    }
+  }, []);
+
+  const openDiscountModal = (inf: Influencer) => {
+    setDiscountInfluencer(inf);
+    setDiscountForm({ service_type: "face", discount_code: "", discount_start_at: "", discount_end_at: "" });
+    setDiscountFormError("");
+    fetchDiscounts(inf.id);
+  };
+
+  const handleSaveDiscount = async () => {
+    if (!discountInfluencer || !discountForm.discount_code.trim()) {
+      setDiscountFormError("쿠폰 코드는 필수입니다.");
+      return;
+    }
+    setDiscountFormError("");
+    try {
+      const res = await fetch("/api/admin/influencer-discounts", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          influencer_id: discountInfluencer.id,
+          service_type: discountForm.service_type,
+          discount_code: discountForm.discount_code.trim(),
+          discount_start_at: discountForm.discount_start_at ? `${discountForm.discount_start_at}:00+09:00` : null,
+          discount_end_at: discountForm.discount_end_at ? `${discountForm.discount_end_at}:00+09:00` : null,
+        }),
+      });
+      const data = await res.json();
+      if (data.error) {
+        setDiscountFormError(data.error);
+        return;
+      }
+      setDiscountForm({ service_type: "face", discount_code: "", discount_start_at: "", discount_end_at: "" });
+      fetchDiscounts(discountInfluencer.id);
+    } catch {
+      setDiscountFormError("저장 실패");
+    }
+  };
+
+  const handleDeleteDiscount = async (discountId: string) => {
+    if (!discountInfluencer) return;
+    try {
+      await fetch(`/api/admin/influencer-discounts?id=${discountId}`, { method: "DELETE" });
+      fetchDiscounts(discountInfluencer.id);
+    } catch (err) {
+      console.error("할인 삭제 오류:", err);
+    }
   };
 
   // ─── UTM 링크 ──────────────────────────────
@@ -752,6 +829,7 @@ export default function AdminPage() {
                     <tr>
                       <th>이름</th>
                       <th>슬러그</th>
+                      <th>할인</th>
                       <th className={styles.text_right}>RS%</th>
                       <th className={styles.text_right}>방문수</th>
                       <th className={styles.text_right}>결제(전환율)</th>
@@ -769,6 +847,15 @@ export default function AdminPage() {
                       <tr key={inf.id}>
                         <td>{inf.name}</td>
                         <td className={styles.code_cell}>{inf.slug}</td>
+                        <td>
+                          <button
+                            className={styles.btn_icon}
+                            onClick={() => openDiscountModal(inf)}
+                            title="할인 설정"
+                          >
+                            <Ticket size={14} />
+                          </button>
+                        </td>
                         <td className={styles.text_right}>{rs}%</td>
                         <td className={styles.text_right}>{(inf.total_visits || 0).toLocaleString()}</td>
                         <td className={styles.text_right}>
@@ -1447,6 +1534,134 @@ export default function AdminPage() {
                 </button>
                 <button className={styles.form_submit} onClick={handleUpdateInfluencer}>
                   저장
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* ── 할인 설정 모달 ──────────────── */}
+        {discountInfluencer && (
+          <div
+            className={styles.modal_overlay}
+            onClick={(e) => {
+              if (e.target === e.currentTarget) setDiscountInfluencer(null);
+            }}
+          >
+            <div className={styles.modal_wide}>
+              <h3 className={styles.modal_title}>
+                {discountInfluencer.name} - 서비스별 할인 설정
+              </h3>
+
+              {/* 기존 할인 목록 */}
+              {discountLoading ? (
+                <div className={styles.loading}>불러오는 중...</div>
+              ) : discountList.length === 0 ? (
+                <div className={styles.empty} style={{ margin: "12px 0" }}>설정된 할인이 없습니다.</div>
+              ) : (
+                <div className={styles.table_wrap} style={{ marginBottom: 16 }}>
+                  <table className={styles.table}>
+                    <thead>
+                      <tr>
+                        <th>서비스</th>
+                        <th>쿠폰 코드</th>
+                        <th>시작일</th>
+                        <th>종료일</th>
+                        <th>삭제</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {discountList.map((d) => (
+                        <tr key={d.id}>
+                          <td>{SERVICE_LABELS[d.service_type] || d.service_type}</td>
+                          <td className={styles.code_cell}>{d.discount_code}</td>
+                          <td style={{ fontSize: "0.85em" }}>
+                            {d.discount_start_at
+                              ? new Date(d.discount_start_at).toLocaleString("ko-KR")
+                              : "-"}
+                          </td>
+                          <td style={{ fontSize: "0.85em" }}>
+                            {d.discount_end_at
+                              ? new Date(d.discount_end_at).toLocaleString("ko-KR")
+                              : "-"}
+                          </td>
+                          <td>
+                            <button
+                              className={styles.btn_icon}
+                              onClick={() => handleDeleteDiscount(d.id)}
+                              title="삭제"
+                            >
+                              <Trash2 size={14} />
+                            </button>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              )}
+
+              {/* 추가 폼 */}
+              <div className={styles.form_grid}>
+                <div className={styles.form_field}>
+                  <label className={styles.form_label}>서비스</label>
+                  <select
+                    className={styles.form_select}
+                    value={discountForm.service_type}
+                    onChange={(e) => setDiscountForm({ ...discountForm, service_type: e.target.value })}
+                  >
+                    <option value="face">관상</option>
+                    <option value="couple">커플궁합</option>
+                    <option value="saju_love">연애사주</option>
+                    <option value="new_year">신년사주</option>
+                  </select>
+                </div>
+                <div className={styles.form_field}>
+                  <label className={styles.form_label}>쿠폰 선택</label>
+                  <select
+                    className={styles.form_select}
+                    value={discountForm.discount_code}
+                    onChange={(e) => setDiscountForm({ ...discountForm, discount_code: e.target.value })}
+                  >
+                    <option value="">쿠폰을 선택하세요</option>
+                    {coupons
+                      .filter((c) => c.is_active && (c.service_type === "all" || c.service_type === discountForm.service_type))
+                      .map((c) => (
+                        <option key={c.id} value={c.code}>
+                          {c.code} - {c.name} ({c.discount_type === "free" ? "무료" : `${c.discount_amount.toLocaleString()}원 할인`})
+                        </option>
+                      ))}
+                  </select>
+                </div>
+                <div className={styles.form_field}>
+                  <label className={styles.form_label}>시작일</label>
+                  <input
+                    className={styles.form_input}
+                    type="datetime-local"
+                    value={discountForm.discount_start_at}
+                    onChange={(e) => setDiscountForm({ ...discountForm, discount_start_at: e.target.value })}
+                  />
+                </div>
+                <div className={styles.form_field}>
+                  <label className={styles.form_label}>종료일</label>
+                  <input
+                    className={styles.form_input}
+                    type="datetime-local"
+                    value={discountForm.discount_end_at}
+                    onChange={(e) => setDiscountForm({ ...discountForm, discount_end_at: e.target.value })}
+                  />
+                </div>
+              </div>
+              {discountFormError && <p className={styles.error_msg}>{discountFormError}</p>}
+              <div className={styles.form_actions}>
+                <button
+                  className={styles.form_cancel}
+                  onClick={() => setDiscountInfluencer(null)}
+                >
+                  닫기
+                </button>
+                <button className={styles.form_submit} onClick={handleSaveDiscount}>
+                  추가 / 수정
                 </button>
               </div>
             </div>

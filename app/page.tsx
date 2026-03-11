@@ -49,7 +49,6 @@ export default function LandingPage() {
             onClick={() => handleCardClick("new_year")}
           >
             <div className={`${styles.service_card} ${styles.card_newyear}`}>
-              <span className={styles.badge_limited}>3월 이후 종료</span>
               <div className={styles.card_title_wrap}>
                 <span className={styles.card_character}>까치도령</span>
                 <h2 className={styles.card_title}>신년 운세</h2>

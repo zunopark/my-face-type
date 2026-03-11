@@ -2415,10 +2415,14 @@ function Chapter1Content({ sections }: { sections: Record<string, ParsedSection>
             {Object.entries(scores).map(([label, score]) => (
               <div key={label} className={styles.score_row}>
                 <span className={styles.score_label}>{label}</span>
-                <span className={styles.score_bar}>
-                  <span className={styles.score_fill} style={{ width: `${score * 20}%` }} />
+                <span className={styles.score_dots}>
+                  {[1, 2, 3, 4, 5].map((i) => (
+                    <span
+                      key={i}
+                      className={`${styles.score_dot} ${i <= score ? styles.score_dot_filled : ""}`}
+                    />
+                  ))}
                 </span>
-                <span className={styles.score_num}>{score}/5</span>
               </div>
             ))}
           </div>

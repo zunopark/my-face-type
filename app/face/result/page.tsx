@@ -169,6 +169,7 @@ function ResultContent() {
     discount: number;
     isFree: boolean;
   } | null>(null);
+  const [influencerDiscountName, setInfluencerDiscountName] = useState("");
 
   // 추가 보고서 선택 상태 (1개만 무료 선택)
   const [selectedAddon, setSelectedAddon] = useState<string | null>("wealth");
@@ -621,6 +622,41 @@ function ResultContent() {
     }, 100);
   };
 
+  // 인플루언서 링크 자동 할인 적용
+  useEffect(() => {
+    if (!showPaymentModal || !result || appliedCoupon) return;
+
+    const applyInfluencerDiscount = async () => {
+      try {
+        const utmSource = localStorage.getItem("utm_source");
+        if (!utmSource) return;
+
+        const res = await fetch(`/api/influencer/discount?slug=${encodeURIComponent(utmSource)}&serviceType=face`);
+        const discountResult = await res.json();
+        if (!discountResult.hasDiscount) return;
+
+        const discount = discountResult.is_free ? totalPrice : discountResult.discount_amount;
+        setInfluencerDiscountName(discountResult.influencer_name || "");
+
+        if (discountResult.is_free) {
+          setAppliedCoupon({ code: discountResult.discount_code, discount, isFree: true });
+          handleFreeCouponPayment(discountResult.discount_code);
+        } else {
+          setAppliedCoupon({ code: discountResult.discount_code, discount, isFree: false });
+          if (paymentWidgetRef.current) {
+            const newPrice = Math.max(totalPrice - discount, 100);
+            paymentWidgetRef.current.renderPaymentMethods("#payment-method", { value: newPrice });
+          }
+        }
+      } catch (err) {
+        console.error("인플루언서 할인 적용 오류:", err);
+      }
+    };
+
+    const timer = setTimeout(applyInfluencerDiscount, 200);
+    return () => clearTimeout(timer);
+  }, [showPaymentModal, result, appliedCoupon, handleFreeCouponPayment, totalPrice]);
+
   // 결제 요청
   const handlePaymentRequest = async () => {
     if (!paymentWidgetRef.current || !result) return;
@@ -672,6 +708,7 @@ function ResultContent() {
     setAppliedCoupon(null);
     setCouponCode("");
     setCouponError("");
+    setInfluencerDiscountName("");
 
   };
 
@@ -998,7 +1035,7 @@ function ResultContent() {
                   {appliedCoupon && !appliedCoupon.isFree && (
                     <div className={`${styles.payment_row} ${styles.discount}`}>
                       <span className={styles.payment_row_label}>
-                        {appliedCoupon.code} 쿠폰
+                        {influencerDiscountName ? `특별 추가 할인 (${influencerDiscountName})` : `${appliedCoupon.code} 쿠폰`}
                       </span>
                       <span className={styles.discount_amount}>
                         -{appliedCoupon.discount.toLocaleString()}원

@@ -211,6 +211,7 @@ function SajuDetailContent() {
     code: string;
     discount: number;
   } | null>(null);
+  const [influencerDiscountName, setInfluencerDiscountName] = useState("");
   const paymentWidgetRef = useRef<ReturnType<
     typeof window.PaymentWidget
   > | null>(null);
@@ -354,6 +355,58 @@ function SajuDetailContent() {
       }
     }, 100);
   }, [data]);
+
+  // 인플루언서 링크 자동 할인 적용
+  useEffect(() => {
+    if (!showPaymentModal || !data || appliedCoupon) return;
+
+    const applyInfluencerDiscount = async () => {
+      try {
+        const utmSource = localStorage.getItem("utm_source");
+        if (!utmSource) return;
+
+        const res = await fetch(`/api/influencer/discount?slug=${encodeURIComponent(utmSource)}&serviceType=saju_love`);
+        const result = await res.json();
+        if (!result.hasDiscount) return;
+
+        const discount = result.is_free ? PAYMENT_CONFIG.price : result.discount_amount;
+        setInfluencerDiscountName(result.influencer_name || "");
+
+        if (result.is_free) {
+          setAppliedCoupon({ code: result.discount_code, discount });
+          // 무료 쿠폰: 바로 결제 처리
+          try {
+            await updateSajuAnalysis(data.id, {
+              is_paid: true,
+              paid_at: new Date().toISOString(),
+              payment_info: { method: "coupon", price: 0, couponCode: result.discount_code, isDiscount: true },
+            });
+          } catch (e) { console.error("무료 쿠폰 결제 처리 실패:", e); }
+          try {
+            await fetch("/api/coupon/use", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ code: result.discount_code, serviceType: "saju_love" }),
+            });
+          } catch (e) { console.error("쿠폰 수량 차감 실패:", e); }
+          router.push(`/saju-love/result?id=${data.id}`);
+        } else {
+          setAppliedCoupon({ code: result.discount_code, discount });
+          // 할인 쿠폰: 위젯 금액 업데이트
+          if (paymentWidgetRef.current) {
+            const newPrice = Math.max(PAYMENT_CONFIG.price - discount, 100);
+            paymentWidgetRef.current.renderPaymentMethods("#saju-payment-method", { value: newPrice });
+          }
+        }
+      } catch (err) {
+        console.error("인플루언서 할인 적용 오류:", err);
+      }
+    };
+
+    // 위젯이 렌더된 후에 실행 (setTimeout 100ms in openPaymentModal)
+    const timer = setTimeout(applyInfluencerDiscount, 200);
+    return () => clearTimeout(timer);
+  }, [showPaymentModal, data, appliedCoupon, router]);
 
   // 쿠폰 적용
   const handleCouponSubmit = useCallback(async () => {
@@ -507,6 +560,7 @@ function SajuDetailContent() {
     setAppliedCoupon(null);
     setCouponCode("");
     setCouponError("");
+    setInfluencerDiscountName("");
   }, [data]);
 
   const getColor = (element: string | undefined) => {
@@ -1136,23 +1190,13 @@ function SajuDetailContent() {
                   <span className={styles["payment-row-label"]}>
                     병오년(丙午年) 3월 특가 할인
                   </span>
-                  <div className={styles["payment-row-discount-value"]}>
-                    <span className={styles["discount-badge"]}>
-                      {Math.floor(
-                        (1 -
-                          PAYMENT_CONFIG.price / PAYMENT_CONFIG.originalPrice) *
-                          100,
-                      )}
-                      %
-                    </span>
-                    <span className={styles["discount-amount"]}>
-                      -
-                      {(
-                        PAYMENT_CONFIG.originalPrice - PAYMENT_CONFIG.price
-                      ).toLocaleString()}
-                      원
-                    </span>
-                  </div>
+                  <span className={styles["discount-amount"]}>
+                    -
+                    {(
+                      PAYMENT_CONFIG.originalPrice - PAYMENT_CONFIG.price
+                    ).toLocaleString()}
+                    원
+                  </span>
                 </div>
 
                 {/* 쿠폰 할인 적용 표시 */}
@@ -1161,7 +1205,7 @@ function SajuDetailContent() {
                     className={`${styles["payment-row"]} ${styles.discount}`}
                   >
                     <span className={styles["payment-row-label"]}>
-                      {appliedCoupon.code} 쿠폰
+                      {influencerDiscountName ? `특별 추가 할인 (${influencerDiscountName})` : `${appliedCoupon.code} 쿠폰`}
                     </span>
                     <span className={styles["discount-amount"]}>
                       -{appliedCoupon.discount.toLocaleString()}원
