@@ -2201,10 +2201,54 @@ function SajuCard({ data }: { data: NewYearRecord }) {
 function NarrativeText({ sections, name }: { sections: Record<string, ParsedSection>; name: string }) {
   const text = sections[name]?.content;
   if (!text) return null;
+
+  const lines = text.split("\n").filter(line => line.trim());
+  const keywordPattern = /^#([^\s:]+)[:\s]\s*(.*)/;
+
+  // 키워드 헤더가 있는지 확인
+  const hasKeywordHeaders = lines.some(line => keywordPattern.test(line));
+
+  if (!hasKeywordHeaders) {
+    return (
+      <div className={styles.text_block}>
+        {lines.map((para, i) => (
+          <p key={i} dangerouslySetInnerHTML={{ __html: para.replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>") }} />
+        ))}
+      </div>
+    );
+  }
+
+  // 키워드별로 그룹핑
+  const groups: { keyword: string; content: string[] }[] = [];
+  let currentGroup: { keyword: string; content: string[] } | null = null;
+
+  for (const line of lines) {
+    const match = line.match(keywordPattern);
+    if (match) {
+      if (currentGroup) groups.push(currentGroup);
+      currentGroup = { keyword: match[1], content: match[2] ? [match[2]] : [] };
+    } else if (currentGroup) {
+      currentGroup.content.push(line);
+    } else {
+      // 키워드 전 텍스트
+      groups.push({ keyword: "", content: [line] });
+    }
+  }
+  if (currentGroup) groups.push(currentGroup);
+
   return (
-    <div className={styles.text_block}>
-      {text.split("\n").filter(line => line.trim()).map((para, i) => (
-        <p key={i} dangerouslySetInnerHTML={{ __html: para.replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>") }} />
+    <div className={styles.keyword_narrative}>
+      {groups.map((group, i) => (
+        <div key={i} className={group.keyword ? styles.keyword_section : styles.text_block}>
+          {group.keyword && (
+            <div className={styles.keyword_tag}>{group.keyword}</div>
+          )}
+          <div className={styles.text_block}>
+            {group.content.map((para, j) => (
+              <p key={j} dangerouslySetInnerHTML={{ __html: para.replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>") }} />
+            ))}
+          </div>
+        </div>
       ))}
     </div>
   );
@@ -2285,7 +2329,7 @@ function ReportCard({
       case 10:
         return <Chapter10Content sections={sections} />;
       case 11:
-        return <Chapter11Content sections={sections} />;
+        return <Chapter11Content sections={sections} rawContent={cleanedContent} />;
       default:
         return (
           <div
@@ -2430,9 +2474,9 @@ function Chapter1Content({ sections }: { sections: Record<string, ParsedSection>
       )}
 
       {keywords.length > 0 && (
-        <div className={styles.info_row}>
+        <div className={styles.info_row} style={{ marginBottom: 20 }}>
           <span className={styles.info_label}>키워드</span>
-          <span className={styles.info_value}>{keywords.join(", ")}</span>
+          <span className={styles.info_value}>{keywords.map(k => k.replace(/^#/, "")).join(", ")}</span>
         </div>
       )}
 
@@ -2563,26 +2607,24 @@ function Chapter2Content({ sections }: { sections: Record<string, ParsedSection>
       {methods.length > 0 && (
         <div className={styles.section_block}>
           <h4 className={styles.section_title}>돈 버는 방식</h4>
-          {methodData["추천_방식"] && (
-            <div className={styles.info_row}>
-              <span className={styles.info_label}>추천</span>
-              <span className={styles.info_value}>{methodData["추천_방식"]}</span>
-            </div>
-          )}
-          {methods.map((m, i) => {
-            const ratingClass = m.rating === "상" ? styles.rating_high
-              : m.rating === "중" ? styles.rating_mid
-              : styles.rating_low;
-            return (
-              <div key={i} className={styles.info_row}>
-                <span className={styles.info_label}>{m.label}</span>
-                <span className={styles.info_value}>
-                  <span className={`${styles.rating_badge} ${ratingClass}`}>{m.rating}</span>
-                  <span className={styles.rating_text}>{m.advice}</span>
-                </span>
-              </div>
-            );
-          })}
+          <div className={styles.method_grid}>
+            {methods.map((m, i) => {
+              const level = m.rating === "상" ? 3 : m.rating === "중" ? 2 : 1;
+              return (
+                <div key={i} className={styles.method_item}>
+                  <div className={styles.method_dots}>
+                    {[1, 2, 3].map((n) => (
+                      <span
+                        key={n}
+                        className={`${styles.method_dot} ${n <= level ? styles.level_filled : styles.level_empty}`}
+                      />
+                    ))}
+                  </div>
+                  <span className={styles.method_label}>{m.label}</span>
+                </div>
+              );
+            })}
+          </div>
         </div>
       )}
 
@@ -3226,7 +3268,7 @@ function Chapter10Content({ sections }: { sections: Record<string, ParsedSection
 }
 
 // 11장: 까치도령 귀띔 콘텐츠
-function Chapter11Content({ sections }: { sections: Record<string, ParsedSection> }) {
+function Chapter11Content({ sections, rawContent }: { sections: Record<string, ParsedSection>; rawContent?: string }) {
   // 새 형식: 귀띔_제목 + 귀띔_서술
   const titleText = sections["귀띔_제목"]?.content || "";
   const narrativeText = sections["귀띔_서술"]?.content || "";
@@ -3234,42 +3276,48 @@ function Chapter11Content({ sections }: { sections: Record<string, ParsedSection
   // 구 형식 호환
   const oldData = getSectionData(sections, "까치도령_귀띔");
 
-  // 귀띔_서술을 소제목 기준으로 분리 (숫자. 제목 패턴 또는 ### 헤딩)
+  const hasOldFormat = oldData["고민_주제"] || oldData["맞춤_조언"] || oldData["특별_메시지"];
+  const hasNewFormat = titleText || narrativeText;
+
+  // 귀띔 서술 텍스트 결정: 새 형식 → 구 형식 → rawContent fallback
+  const fullText = narrativeText || rawContent || "";
+
+  // 소제목 기준으로 분리 렌더링 (숫자. 제목, ### 헤딩, [숫자. 제목] 패턴)
   const renderNarrative = (text: string) => {
     if (!text) return null;
-    // 마크다운 인라인 처리: **bold**, ### 제거
     const renderLine = (line: string) => {
       const cleaned = line
-        .replace(/^#{1,4}\s*/, "") // ### 헤딩 마크다운 제거
-        .replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>");
+        .replace(/^#{1,4}\s*/, "")
+        .replace(/^\[(\d+)\.\s*([^\]]+)\]/, "$1. $2") // [1. 제목] → 1. 제목
+        .replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>")
+        .replace(/<u>([^<]+)<\/u>/g, "<u>$1</u>");
       return <span dangerouslySetInnerHTML={{ __html: cleaned }} />;
     };
-    // ### 또는 숫자. 패턴으로 분리
-    const parts = text.split(/\n(?=#{1,4}\s|\d+\.\s)/);
+    // ### 또는 숫자. 또는 [숫자. 패턴으로 분리
+    const parts = text.split(/\n(?=#{1,4}\s|\d+\.\s|\[\d+\.\s)/);
     return (
       <>
         {parts.map((part, i) => {
           const lines = part.split("\n").filter(l => l.trim());
           if (lines.length === 0) return null;
-          // "### 1. 제목" 또는 "1. 제목" 패턴 매칭
-          const cleanFirst = lines[0].replace(/^#{1,4}\s*/, "");
+          const cleanFirst = lines[0]
+            .replace(/^#{1,4}\s*/, "")
+            .replace(/^\[(\d+)\.\s*([^\]]+)\]/, "$1. $2");
           const headMatch = cleanFirst.match(/^(\d+)\.\s*(.+)/);
           if (headMatch) {
             return (
-              <div key={i} className={styles.section_block}>
+              <div key={i} style={{ marginBottom: "1.5rem" }}>
                 <h4 className={styles.section_title}>{renderLine(headMatch[2])}</h4>
-                <div className={styles.text_block}>
-                  {lines.slice(1).map((line, j) => (
-                    <p key={j}>{renderLine(line)}</p>
-                  ))}
-                </div>
+                {lines.slice(1).map((line, j) => (
+                  <p key={j} style={{ margin: "0.4rem 0" }}>{renderLine(line)}</p>
+                ))}
               </div>
             );
           }
           return (
-            <div key={i} className={styles.text_block}>
+            <div key={i}>
               {lines.map((line, j) => (
-                <p key={j}>{renderLine(line)}</p>
+                <p key={j} style={{ margin: "0.4rem 0" }}>{renderLine(line)}</p>
               ))}
             </div>
           );
@@ -3287,10 +3335,9 @@ function Chapter11Content({ sections }: { sections: Record<string, ParsedSection
         </div>
       )}
 
-      {/* 새 형식: 서술 (소제목 분리) */}
-      {narrativeText ? renderNarrative(narrativeText) : (
+      {/* 구 형식 호환 */}
+      {hasOldFormat && !hasNewFormat && (
         <>
-          {/* 구 형식 호환 */}
           {oldData["고민_주제"] && (
             <div className={styles.info_row}>
               <span className={styles.info_label}>고민 주제</span>
@@ -3312,6 +3359,9 @@ function Chapter11Content({ sections }: { sections: Record<string, ParsedSection
           <NarrativeText sections={sections} name="귀띔_서술" />
         </>
       )}
+
+      {/* 서술 렌더링: 새 형식이든 fallback이든 renderNarrative로 통일 */}
+      {!hasOldFormat && renderNarrative(fullText)}
     </div>
   );
 }
