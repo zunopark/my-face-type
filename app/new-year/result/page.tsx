@@ -205,7 +205,7 @@ function NewYearResultContent() {
       }
 
       try {
-        const response = await fetch(`${SAJU_API_URL}/saju_new_year_v2/analyze`, {
+        const response = await fetch(`${SAJU_API_URL}/saju_new_year_v3/analyze`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -2563,122 +2563,11 @@ function Chapter1Content({ sections }: { sections: Record<string, ParsedSection>
 // 2장: 재물운 콘텐츠
 function Chapter2Content({ sections }: { sections: Record<string, ParsedSection> }) {
   const summary = sections["재물운_한줄요약"]?.content || "";
-  const flow = sections["재물운_흐름"]?.content || "";
-  const eventData = getSectionData(sections, "재물_사건");
-  const methodData = getSectionData(sections, "돈버는_방식");
-  const monthlyData = getSectionData(sections, "월별_재물운");
-  const benefactorData = getSectionData(sections, "재물_귀인");
-  const villainData = getSectionData(sections, "재물_악인");
-  const adviceData = getSectionData(sections, "재물운_조언");
-
-  const events = [1, 2, 3].map(i => ({
-    keyword: eventData[`사건${i}_키워드`],
-    content: eventData[`사건${i}_내용`],
-  })).filter(e => e.keyword);
-
-  const methods = [
-    { label: "직장", rating: methodData["직장_적합도"], advice: methodData["직장_조언"] },
-    { label: "투자", rating: methodData["투자_적합도"], advice: methodData["투자_조언"] },
-    { label: "부업", rating: methodData["부업_적합도"], advice: methodData["부업_조언"] },
-    { label: "사업", rating: methodData["사업_적합도"], advice: methodData["사업_조언"] },
-  ].filter(m => m.rating);
 
   return (
     <div className={styles.chapter_structured}>
       {summary && <div className={styles.text_block}><p>{summary}</p></div>}
-      {flow && <div className={styles.text_block}><p>{flow}</p></div>}
-
       <NarrativeText sections={sections} name="재물운_서술" />
-
-      {events.length > 0 && (
-        <div className={styles.section_block}>
-          <h4 className={styles.section_title}>올해의 재물 사건</h4>
-          {events.map((e, i) => (
-            <div key={i} className={styles.list_item}>
-              <strong>{e.keyword}</strong>
-              <p>{e.content}</p>
-            </div>
-          ))}
-        </div>
-      )}
-
-      <NarrativeText sections={sections} name="재물사건_서술" />
-
-      {methods.length > 0 && (
-        <div className={styles.section_block}>
-          <h4 className={styles.section_title}>돈 버는 방식</h4>
-          <div className={styles.method_grid}>
-            {methods.map((m, i) => {
-              const level = m.rating === "상" ? 3 : m.rating === "중" ? 2 : 1;
-              return (
-                <div key={i} className={styles.method_item}>
-                  <div className={styles.method_dots}>
-                    {[1, 2, 3].map((n) => (
-                      <span
-                        key={n}
-                        className={`${styles.method_dot} ${n <= level ? styles.level_filled : styles.level_empty}`}
-                      />
-                    ))}
-                  </div>
-                  <span className={styles.method_label}>{m.label}</span>
-                </div>
-              );
-            })}
-          </div>
-        </div>
-      )}
-
-      <NarrativeText sections={sections} name="돈버는방식_서술" />
-
-      {(monthlyData["상승기_월"] || monthlyData["주의기_월"]) && (
-        <div className={styles.section_block}>
-          <h4 className={styles.section_title}>월별 재물운</h4>
-          {monthlyData["상승기_월"] && (
-            <div className={styles.info_row}>
-              <span className={styles.info_label}>상승기</span>
-              <span className={styles.info_value}>{monthlyData["상승기_월"]} - {monthlyData["상승기_조언"]}</span>
-            </div>
-          )}
-          {monthlyData["주의기_월"] && (
-            <div className={styles.info_row}>
-              <span className={styles.info_label}>주의기</span>
-              <span className={styles.info_value}>{monthlyData["주의기_월"]} - {monthlyData["주의기_조언"]}</span>
-            </div>
-          )}
-        </div>
-      )}
-
-      {(benefactorData["외모_특징"] || benefactorData["직업_특징"]) && (
-        <div className={styles.section_block}>
-          <h4 className={styles.section_title}>재물 귀인</h4>
-          {benefactorData["외모_특징"] && <div className={styles.info_row}><span className={styles.info_label}>외모</span><span className={styles.info_value}>{benefactorData["외모_특징"]}</span></div>}
-          {benefactorData["직업_특징"] && <div className={styles.info_row}><span className={styles.info_label}>직업</span><span className={styles.info_value}>{benefactorData["직업_특징"]}</span></div>}
-          {benefactorData["만나는_장소"] && <div className={styles.info_row}><span className={styles.info_label}>장소</span><span className={styles.info_value}>{benefactorData["만나는_장소"]}</span></div>}
-        </div>
-      )}
-
-      {(villainData["외모_특징"] || villainData["특징"]) && (
-        <div className={styles.section_block}>
-          <h4 className={styles.section_title}>조심할 사람</h4>
-          {villainData["외모_특징"] && <div className={styles.info_row}><span className={styles.info_label}>외모</span><span className={styles.info_value}>{villainData["외모_특징"]}</span></div>}
-          {villainData["특징"] && <div className={styles.info_row}><span className={styles.info_label}>특징</span><span className={styles.info_value}>{villainData["특징"]}</span></div>}
-          {villainData["상황"] && <div className={styles.info_row}><span className={styles.info_label}>상황</span><span className={styles.info_value}>{villainData["상황"]}</span></div>}
-        </div>
-      )}
-
-      <NarrativeText sections={sections} name="귀인악인_서술" />
-
-      {(adviceData["수입_흐름"] || adviceData["지출_새는이유"]) && (
-        <div className={styles.section_block}>
-          <h4 className={styles.section_title}>재물 조언</h4>
-          {adviceData["수입_흐름"] && <div className={styles.info_row}><span className={styles.info_label}>수입 흐름</span><span className={styles.info_value}>{adviceData["수입_흐름"]}</span></div>}
-          {adviceData["수입_늘리는법"] && <div className={styles.info_row}><span className={styles.info_label}>수입 늘리기</span><span className={styles.info_value}>{adviceData["수입_늘리는법"]}</span></div>}
-          {adviceData["지출_새는이유"] && <div className={styles.info_row}><span className={styles.info_label}>지출 주의</span><span className={styles.info_value}>{adviceData["지출_새는이유"]}</span></div>}
-          {adviceData["지출_막는법"] && <div className={styles.info_row}><span className={styles.info_label}>지출 막기</span><span className={styles.info_value}>{adviceData["지출_막는법"]}</span></div>}
-        </div>
-      )}
-
-      <NarrativeText sections={sections} name="재물운_조언_서술" />
     </div>
   );
 }
@@ -2686,89 +2575,11 @@ function Chapter2Content({ sections }: { sections: Record<string, ParsedSection>
 // 3장: 건강운 콘텐츠
 function Chapter3Content({ sections }: { sections: Record<string, ParsedSection> }) {
   const summary = sections["건강운_한줄요약"]?.content || "";
-  const constitutionData = getSectionData(sections, "체질_분석");
-  const issueData = getSectionData(sections, "주의_건강이슈");
-  const exerciseData = getSectionData(sections, "추천_운동");
-  const avoidData = getSectionData(sections, "피해야할_운동");
-  const habitData = getSectionData(sections, "생활습관_추천");
-  const dietData = getSectionData(sections, "식습관_추천");
-
-  const issues = [1, 2, 3].map(i => ({
-    issue: issueData[`이슈${i}`],
-    desc: issueData[`이슈${i}_설명`],
-  })).filter(i => i.issue);
-
-  const exercises = [1, 2, 3].map(i => ({
-    name: exerciseData[`운동${i}`],
-    reason: exerciseData[`운동${i}_이유`],
-  })).filter(e => e.name);
-
-  const habits = [habitData["습관1"], habitData["습관2"], habitData["습관3"]].filter(Boolean);
 
   return (
     <div className={styles.chapter_structured}>
       {summary && <div className={styles.text_block}><p>{summary}</p></div>}
-
       <NarrativeText sections={sections} name="건강운_서술" />
-
-      {(constitutionData["타고난_체질"] || constitutionData["체질_장점"]) && (
-        <div className={styles.section_block}>
-          <h4 className={styles.section_title}>체질 분석</h4>
-          {constitutionData["타고난_체질"] && <div className={styles.text_block}><p>{constitutionData["타고난_체질"]}</p></div>}
-          {constitutionData["체질_장점"] && <div className={styles.info_row}><span className={styles.info_label}>장점</span><span className={styles.info_value}>{constitutionData["체질_장점"]}</span></div>}
-          {constitutionData["체질_단점"] && <div className={styles.info_row}><span className={styles.info_label}>단점</span><span className={styles.info_value}>{constitutionData["체질_단점"]}</span></div>}
-        </div>
-      )}
-
-      {issues.length > 0 && (
-        <div className={styles.section_block}>
-          <h4 className={styles.section_title}>주의할 건강 이슈</h4>
-          {issues.map((item, i) => (
-            <div key={i} className={styles.list_item}>
-              <strong>{item.issue}</strong>
-              <p>{item.desc}</p>
-            </div>
-          ))}
-        </div>
-      )}
-
-      {exercises.length > 0 && (
-        <div className={styles.section_block}>
-          <h4 className={styles.section_title}>추천 운동</h4>
-          {exercises.map((e, i) => (
-            <div key={i} className={styles.info_row}>
-              <span className={styles.info_label}>{e.name}</span>
-              <span className={styles.info_value}>{e.reason}</span>
-            </div>
-          ))}
-          {avoidData["운동"] && (
-            <div className={styles.info_row}>
-              <span className={styles.info_label}>피할 운동</span>
-              <span className={styles.info_value}>{avoidData["운동"]} {avoidData["이유"] && `- ${avoidData["이유"]}`}</span>
-            </div>
-          )}
-        </div>
-      )}
-
-      {habits.length > 0 && (
-        <div className={styles.section_block}>
-          <h4 className={styles.section_title}>추천 생활습관</h4>
-          <ul className={styles.simple_list}>
-            {habits.map((h, i) => <li key={i}>{h}</li>)}
-          </ul>
-        </div>
-      )}
-
-      {(dietData["추천_음식"] || dietData["피해야할_음식"]) && (
-        <div className={styles.section_block}>
-          <h4 className={styles.section_title}>식습관</h4>
-          {dietData["추천_음식"] && <div className={styles.info_row}><span className={styles.info_label}>추천 음식</span><span className={styles.info_value}>{dietData["추천_음식"]}</span></div>}
-          {dietData["피해야할_음식"] && <div className={styles.info_row}><span className={styles.info_label}>피할 음식</span><span className={styles.info_value}>{dietData["피해야할_음식"]}</span></div>}
-          {dietData["추천_영양제"] && <div className={styles.info_row}><span className={styles.info_label}>영양제</span><span className={styles.info_value}>{dietData["추천_영양제"]}</span></div>}
-        </div>
-      )}
-
-      <NarrativeText sections={sections} name="운동식습관_서술" />
     </div>
   );
 }
@@ -2776,73 +2587,11 @@ function Chapter3Content({ sections }: { sections: Record<string, ParsedSection>
 // 4장: 애정운 콘텐츠
 function Chapter4Content({ sections }: { sections: Record<string, ParsedSection> }) {
   const summary = sections["애정운_한줄요약"]?.content || "";
-  const summaryData = getSectionData(sections, "애정운_한줄요약");
-  const mainText = sections["애정운_총운"]?.content || "";
-  const risingData = getSectionData(sections, "애정운_상승시기");
-  const placeData = getSectionData(sections, "인연_만날장소");
-  const charmData = getSectionData(sections, "나의_매력포인트");
-  const luckData = getSectionData(sections, "개운법") || getSectionData(sections, "애정운_개운법");
-  const itemData = getSectionData(sections, "행운_아이템");
-
-  const places = [placeData["장소1"], placeData["장소2"], placeData["장소3"]].filter(Boolean);
-  const charms = [charmData["매력1"], charmData["매력2"], charmData["매력3"]].filter(Boolean);
 
   return (
     <div className={styles.chapter_structured}>
-      {summaryData["연애_장르"] && (
-        <div className={styles.info_row}>
-          <span className={styles.info_label}>연애 장르</span>
-          <span className={styles.info_value}>{summaryData["연애_장르"]}</span>
-        </div>
-      )}
-      {(summary || summaryData["요약"]) && <div className={styles.text_block}><p>{summary || summaryData["요약"]}</p></div>}
-      {mainText && <div className={styles.text_block}><p>{mainText}</p></div>}
-
+      {summary && <div className={styles.text_block}><p>{summary}</p></div>}
       <NarrativeText sections={sections} name="애정운_서술" />
-
-      {(risingData["상승_월"] || risingData["상승_이유"]) && (
-        <div className={styles.section_block}>
-          <h4 className={styles.section_title}>애정운 상승 시기</h4>
-          {risingData["상승_월"] && <div className={styles.info_row}><span className={styles.info_label}>시기</span><span className={styles.info_value}>{risingData["상승_월"]}</span></div>}
-          {risingData["상승_이유"] && <div className={styles.text_block}><p>{risingData["상승_이유"]}</p></div>}
-        </div>
-      )}
-
-      <NarrativeText sections={sections} name="상승시기_서술" />
-
-      {places.length > 0 && (
-        <div className={styles.info_row}>
-          <span className={styles.info_label}>인연 만날 장소</span>
-          <span className={styles.info_value}>{places.join(", ")}</span>
-        </div>
-      )}
-
-      {charms.length > 0 && (
-        <div className={styles.info_row}>
-          <span className={styles.info_label}>매력 포인트</span>
-          <span className={styles.info_value}>{charms.join(", ")}</span>
-        </div>
-      )}
-
-      <NarrativeText sections={sections} name="매력포인트_서술" />
-
-      {luckData["개운법"] && (
-        <div className={styles.section_block}>
-          <h4 className={styles.section_title}>애정운 개운법</h4>
-          <div className={styles.text_block}><p>{luckData["개운법"]}</p></div>
-        </div>
-      )}
-
-      {(itemData["행운_색상"] || itemData["행운_액세서리"]) && (
-        <div className={styles.section_block}>
-          <h4 className={styles.section_title}>행운 아이템</h4>
-          {itemData["행운_색상"] && <div className={styles.info_row}><span className={styles.info_label}>색상</span><span className={styles.info_value}>{itemData["행운_색상"]}</span></div>}
-          {itemData["행운_액세서리"] && <div className={styles.info_row}><span className={styles.info_label}>액세서리</span><span className={styles.info_value}>{itemData["행운_액세서리"]}</span></div>}
-          {itemData["행운_향기"] && <div className={styles.info_row}><span className={styles.info_label}>향기</span><span className={styles.info_value}>{itemData["행운_향기"]}</span></div>}
-        </div>
-      )}
-
-      <NarrativeText sections={sections} name="개운법_서술" />
     </div>
   );
 }
@@ -2850,103 +2599,11 @@ function Chapter4Content({ sections }: { sections: Record<string, ParsedSection>
 // 5장: 직업운 콘텐츠
 function Chapter5Content({ sections }: { sections: Record<string, ParsedSection> }) {
   const summary = sections["직업운_한줄요약"]?.content || "";
-  const socialText = sections["사회적_위치"]?.content || "";
-  const jobData = getSectionData(sections, "이직퇴사_분석");
-  const abilityData = getSectionData(sections, "일잘러_능력");
-  const timingData = getSectionData(sections, "커리어_타이밍");
-  const salaryData = getSectionData(sections, "연봉승진_예측");
-  const benefactorData = getSectionData(sections, "직장_귀인");
-  const villainData = getSectionData(sections, "직장_악인");
-
-  const abilities = [1, 2, 3].map(i => ({
-    name: abilityData[`능력${i}`],
-    desc: abilityData[`능력${i}_설명`],
-  })).filter(a => a.name);
 
   return (
     <div className={styles.chapter_structured}>
       {summary && <div className={styles.text_block}><p>{summary}</p></div>}
-      {socialText && <div className={styles.text_block}><p>{socialText}</p></div>}
-
       <NarrativeText sections={sections} name="직업운_서술" />
-
-      {(jobData["이직_적합도"] || jobData["퇴사_적합도"]) && (
-        <div className={styles.section_block}>
-          <h4 className={styles.section_title}>이직/퇴사 분석</h4>
-          {jobData["현재_상태"] && <div className={styles.info_row}><span className={styles.info_label}>현재 상태</span><span className={styles.info_value}>{jobData["현재_상태"]}</span></div>}
-          {jobData["이직_적합도"] && <div className={styles.info_row}><span className={styles.info_label}>이직 적합도</span><span className={styles.info_value}>{jobData["이직_적합도"]}</span></div>}
-          {jobData["퇴사_적합도"] && <div className={styles.info_row}><span className={styles.info_label}>퇴사 적합도</span><span className={styles.info_value}>{jobData["퇴사_적합도"]}</span></div>}
-          {jobData["직무전환_적합도"] && <div className={styles.info_row}><span className={styles.info_label}>직무전환 적합도</span><span className={styles.info_value}>{jobData["직무전환_적합도"]}</span></div>}
-          {jobData["조언"] && <div className={styles.text_block}><p>{jobData["조언"]}</p></div>}
-          {jobData["이직_적기"] && <div className={styles.info_row}><span className={styles.info_label}>이직 적기</span><span className={styles.info_value}>{jobData["이직_적기"]}</span></div>}
-        </div>
-      )}
-
-      <NarrativeText sections={sections} name="이직퇴사_서술" />
-
-      {abilities.length > 0 && (
-        <div className={styles.section_block}>
-          <h4 className={styles.section_title}>일잘러 능력</h4>
-          {abilities.map((a, i) => (
-            <div key={i} className={styles.list_item}>
-              <strong>{a.name}</strong>
-              <p>{a.desc}</p>
-            </div>
-          ))}
-        </div>
-      )}
-
-      <NarrativeText sections={sections} name="일잘러능력_서술" />
-
-      {(timingData["상승기_월"] || timingData["주의기_월"]) && (
-        <div className={styles.section_block}>
-          <h4 className={styles.section_title}>커리어 타이밍</h4>
-          {timingData["상승기_월"] && (
-            <div className={styles.info_row}>
-              <span className={styles.info_label}>상승기</span>
-              <span className={styles.info_value}>{timingData["상승기_월"]} - {timingData["상승기_내용"]}</span>
-            </div>
-          )}
-          {timingData["주의기_월"] && (
-            <div className={styles.info_row}>
-              <span className={styles.info_label}>주의기</span>
-              <span className={styles.info_value}>{timingData["주의기_월"]} - {timingData["주의기_내용"]}</span>
-            </div>
-          )}
-        </div>
-      )}
-
-      {(salaryData["승진_가능성"] || salaryData["연봉협상_적기"]) && (
-        <div className={styles.section_block}>
-          <h4 className={styles.section_title}>연봉/승진</h4>
-          {salaryData["취업_시기"] && <div className={styles.info_row}><span className={styles.info_label}>취업 시기</span><span className={styles.info_value}>{salaryData["취업_시기"]}</span></div>}
-          {salaryData["이직_시기"] && <div className={styles.info_row}><span className={styles.info_label}>이직 시기</span><span className={styles.info_value}>{salaryData["이직_시기"]}</span></div>}
-          {salaryData["승진_가능성"] && <div className={styles.info_row}><span className={styles.info_label}>승진 가능성</span><span className={styles.info_value}>{salaryData["승진_가능성"]}</span></div>}
-          {salaryData["연봉협상_적기"] && <div className={styles.info_row}><span className={styles.info_label}>연봉협상 적기</span><span className={styles.info_value}>{salaryData["연봉협상_적기"]}</span></div>}
-          {salaryData["성과급_예측"] && <div className={styles.info_row}><span className={styles.info_label}>성과급</span><span className={styles.info_value}>{salaryData["성과급_예측"]}</span></div>}
-        </div>
-      )}
-
-      {(benefactorData["외모_특징"] || benefactorData["직급_특징"]) && (
-        <div className={styles.section_block}>
-          <h4 className={styles.section_title}>직장 귀인</h4>
-          {benefactorData["외모_특징"] && <div className={styles.info_row}><span className={styles.info_label}>외모</span><span className={styles.info_value}>{benefactorData["외모_특징"]}</span></div>}
-          {benefactorData["직급_특징"] && <div className={styles.info_row}><span className={styles.info_label}>직급</span><span className={styles.info_value}>{benefactorData["직급_특징"]}</span></div>}
-          {benefactorData["만나는_상황"] && <div className={styles.info_row}><span className={styles.info_label}>상황</span><span className={styles.info_value}>{benefactorData["만나는_상황"]}</span></div>}
-        </div>
-      )}
-
-      {(villainData["특징"] || villainData["상황"]) && (
-        <div className={styles.section_block}>
-          <h4 className={styles.section_title}>조심할 사람</h4>
-          {villainData["특징"] && <div className={styles.info_row}><span className={styles.info_label}>특징</span><span className={styles.info_value}>{villainData["특징"]}</span></div>}
-          {villainData["상황"] && <div className={styles.info_row}><span className={styles.info_label}>상황</span><span className={styles.info_value}>{villainData["상황"]}</span></div>}
-        </div>
-      )}
-
-      <NarrativeText sections={sections} name="귀인악인_서술" />
-
-      <NarrativeText sections={sections} name="연봉승진_서술" />
     </div>
   );
 }
@@ -2954,73 +2611,11 @@ function Chapter5Content({ sections }: { sections: Record<string, ParsedSection>
 // 6장: 관계운 콘텐츠
 function Chapter6Content({ sections }: { sections: Record<string, ParsedSection> }) {
   const summary = sections["관계운_한줄요약"]?.content || "";
-  const flowData = getSectionData(sections, "인연_흐름");
-  const parentData = getSectionData(sections, "부모_관계");
-  const siblingData = getSectionData(sections, "형제_관계");
-  const friendData = getSectionData(sections, "친구_관계");
-  const workData = getSectionData(sections, "직장_관계");
-  const benefactorData = getSectionData(sections, "올해_귀인");
-  const avoidData = getSectionData(sections, "멀어져야할_사람");
-
-  const relationships = [
-    { label: "부모", data: parentData },
-    { label: "형제", data: siblingData },
-    { label: "친구", data: friendData },
-    { label: "직장", data: workData },
-  ].filter(r => r.data["흐름"]);
 
   return (
     <div className={styles.chapter_structured}>
       {summary && <div className={styles.text_block}><p>{summary}</p></div>}
-
       <NarrativeText sections={sections} name="관계운_서술" />
-
-      {(flowData["가까워질_사람"] || flowData["멀어질_사람"]) && (
-        <div className={styles.section_block}>
-          <h4 className={styles.section_title}>인연의 흐름</h4>
-          {flowData["가까워질_사람"] && <div className={styles.info_row}><span className={styles.info_label}>가까워질 사람</span><span className={styles.info_value}>{flowData["가까워질_사람"]}</span></div>}
-          {flowData["멀어질_사람"] && <div className={styles.info_row}><span className={styles.info_label}>멀어질 사람</span><span className={styles.info_value}>{flowData["멀어질_사람"]}</span></div>}
-        </div>
-      )}
-
-      {relationships.length > 0 && (
-        <div className={styles.section_block}>
-          <h4 className={styles.section_title}>관계별 운세</h4>
-          {relationships.map((r, i) => (
-            <div key={i} className={styles.list_item}>
-              <strong>{r.label} 관계</strong>
-              <p>{r.data["흐름"]}</p>
-              {r.data["위기"] && <p className={styles.list_sub}>주의: {r.data["위기"]}</p>}
-              {r.data["조언"] && <p className={styles.list_sub}>조언: {r.data["조언"]}</p>}
-            </div>
-          ))}
-        </div>
-      )}
-
-      <NarrativeText sections={sections} name="관계별_서술" />
-
-      {(benefactorData["외모_특징"] || benefactorData["직업"]) && (
-        <div className={styles.section_block}>
-          <h4 className={styles.section_title}>올해의 귀인</h4>
-          {benefactorData["외모_특징"] && <div className={styles.info_row}><span className={styles.info_label}>외모</span><span className={styles.info_value}>{benefactorData["외모_특징"]}</span></div>}
-          {benefactorData["직업"] && <div className={styles.info_row}><span className={styles.info_label}>직업</span><span className={styles.info_value}>{benefactorData["직업"]}</span></div>}
-          {benefactorData["만나는_장소"] && <div className={styles.info_row}><span className={styles.info_label}>장소</span><span className={styles.info_value}>{benefactorData["만나는_장소"]}</span></div>}
-          {benefactorData["만나는_시기"] && <div className={styles.info_row}><span className={styles.info_label}>시기</span><span className={styles.info_value}>{benefactorData["만나는_시기"]}</span></div>}
-        </div>
-      )}
-
-      <NarrativeText sections={sections} name="귀인_서술" />
-
-      {(avoidData["감정쓰레기통"] || avoidData["악인_특징"]) && (
-        <div className={styles.section_block}>
-          <h4 className={styles.section_title}>멀리해야 할 사람</h4>
-          {avoidData["감정쓰레기통"] && <div className={styles.info_row}><span className={styles.info_label}>감정 쓰레기통</span><span className={styles.info_value}>{avoidData["감정쓰레기통"]}</span></div>}
-          {avoidData["일방적_관계"] && <div className={styles.info_row}><span className={styles.info_label}>일방적 관계</span><span className={styles.info_value}>{avoidData["일방적_관계"]}</span></div>}
-          {avoidData["악인_특징"] && <div className={styles.info_row}><span className={styles.info_label}>특징</span><span className={styles.info_value}>{avoidData["악인_특징"]}</span></div>}
-        </div>
-      )}
-
-      <NarrativeText sections={sections} name="악인_서술" />
     </div>
   );
 }
@@ -3028,52 +2623,11 @@ function Chapter6Content({ sections }: { sections: Record<string, ParsedSection>
 // 7장: 감정/마음 관리 콘텐츠
 function Chapter7Content({ sections }: { sections: Record<string, ParsedSection> }) {
   const summary = sections["마음관리_한줄요약"]?.content || "";
-  const flowText = sections["감정_흐름"]?.content || "";
-  const weakData = getSectionData(sections, "약해지는_시기");
-  const routineData = getSectionData(sections, "마음_루틴");
-  const prescriptionData = getSectionData(sections, "마음_처방전");
 
   return (
     <div className={styles.chapter_structured}>
       {summary && <div className={styles.text_block}><p>{summary}</p></div>}
-      {flowText && <div className={styles.text_block}><p>{flowText}</p></div>}
-
       <NarrativeText sections={sections} name="감정흐름_서술" />
-
-      {(weakData["시기"] || weakData["감정_패턴"]) && (
-        <div className={styles.section_block}>
-          <h4 className={styles.section_title}>약해지는 시기</h4>
-          {weakData["시기"] && <div className={styles.info_row}><span className={styles.info_label}>시기</span><span className={styles.info_value}>{weakData["시기"]}</span></div>}
-          {weakData["감정_패턴"] && <div className={styles.info_row}><span className={styles.info_label}>패턴</span><span className={styles.info_value}>{weakData["감정_패턴"]}</span></div>}
-          {weakData["주의사항"] && <div className={styles.info_row}><span className={styles.info_label}>주의사항</span><span className={styles.info_value}>{weakData["주의사항"]}</span></div>}
-        </div>
-      )}
-
-      <NarrativeText sections={sections} name="약해지는시기_서술" />
-
-      {(routineData["하루_루틴"] || routineData["주간_루틴"]) && (
-        <div className={styles.section_block}>
-          <h4 className={styles.section_title}>마음 루틴</h4>
-          {routineData["하루_루틴"] && <div className={styles.info_row}><span className={styles.info_label}>매일</span><span className={styles.info_value}>{routineData["하루_루틴"]}</span></div>}
-          {routineData["주간_루틴"] && <div className={styles.info_row}><span className={styles.info_label}>매주</span><span className={styles.info_value}>{routineData["주간_루틴"]}</span></div>}
-          {routineData["월간_루틴"] && <div className={styles.info_row}><span className={styles.info_label}>매월</span><span className={styles.info_value}>{routineData["월간_루틴"]}</span></div>}
-        </div>
-      )}
-
-      <NarrativeText sections={sections} name="마음루틴_서술" />
-
-      {(prescriptionData["개운_색상"] || prescriptionData["개운_활동"]) && (
-        <div className={styles.section_block}>
-          <h4 className={styles.section_title}>마음 처방전</h4>
-          {prescriptionData["개운_색상"] && <div className={styles.info_row}><span className={styles.info_label}>색상</span><span className={styles.info_value}>{prescriptionData["개운_색상"]}</span></div>}
-          {prescriptionData["개운_장소"] && <div className={styles.info_row}><span className={styles.info_label}>장소</span><span className={styles.info_value}>{prescriptionData["개운_장소"]}</span></div>}
-          {prescriptionData["개운_활동"] && <div className={styles.info_row}><span className={styles.info_label}>활동</span><span className={styles.info_value}>{prescriptionData["개운_활동"]}</span></div>}
-          {prescriptionData["추천_음악"] && <div className={styles.info_row}><span className={styles.info_label}>음악</span><span className={styles.info_value}>{prescriptionData["추천_음악"]}</span></div>}
-          {prescriptionData["추천_향기"] && <div className={styles.info_row}><span className={styles.info_label}>향기</span><span className={styles.info_value}>{prescriptionData["추천_향기"]}</span></div>}
-        </div>
-      )}
-
-      <NarrativeText sections={sections} name="마음처방전_서술" />
     </div>
   );
 }

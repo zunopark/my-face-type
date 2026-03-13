@@ -844,25 +844,15 @@ export default function SuperAdminPage() {
 
     const channel = supabase
       .channel('superadmin-realtime')
-      .on('postgres_changes', { event: '*', schema: 'public', table: 'saju_analyses' }, () => {
+      .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'saju_analyses' }, () => {
         fetchInfluencers();
         fetchSettlement();
         fetchAllPayments();
       })
-      .on('postgres_changes', { event: '*', schema: 'public', table: 'face_analyses' }, () => {
+      .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'face_analyses' }, () => {
         fetchInfluencers();
         fetchSettlement();
         fetchAllPayments();
-      })
-      .on('postgres_changes', { event: '*', schema: 'public', table: 'utm_visits' }, () => {
-        fetchInfluencers();
-        fetchSettlement();
-      })
-      .on('postgres_changes', { event: '*', schema: 'public', table: 'influencer_settlements' }, () => {
-        fetchSettlement();
-      })
-      .on('postgres_changes', { event: '*', schema: 'public', table: 'influencers' }, () => {
-        fetchInfluencers();
       })
       .subscribe();
 

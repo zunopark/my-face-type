@@ -14,7 +14,7 @@ export async function GET(request: NextRequest) {
     const [{ data: sajuData }, { data: faceData }] = await Promise.all([
       supabase
         .from("saju_analyses")
-        .select("id, service_type, user_info, payment_info, paid_at, utm_source, is_refunded, refunded_at")
+        .select("id, service_type, user_info, payment_info, paid_at, utm_source, influencer_id, is_refunded, refunded_at")
         .eq("is_paid", true)
         .gte("paid_at", startDate)
         .lt("paid_at", endDate)
@@ -32,10 +32,13 @@ export async function GET(request: NextRequest) {
     const results = [];
     const slugs = new Set<string>();
 
+    const influencerIds = new Set<string>();
+
     for (const row of sajuData || []) {
       const userInfo = row.user_info as { userName?: string; wish2026?: string; userConcern?: string } | null;
       const paymentInfo = row.payment_info as { price?: number; couponCode?: string } | null;
       if (row.utm_source) slugs.add(row.utm_source);
+      if (row.influencer_id) influencerIds.add(row.influencer_id);
       results.push({
         id: row.id,
         service_type: row.service_type,
@@ -44,6 +47,7 @@ export async function GET(request: NextRequest) {
         price: paymentInfo?.price || 0,
         coupon_code: paymentInfo?.couponCode || null,
         utm_source: row.utm_source,
+        influencer_id: row.influencer_id || null,
         paid_at: row.paid_at,
         is_refunded: row.is_refunded || false,
         refunded_at: row.refunded_at || null,
@@ -62,6 +66,7 @@ export async function GET(request: NextRequest) {
         price: paymentInfo?.price || 0,
         coupon_code: paymentInfo?.couponCode || null,
         utm_source: row.utm_source,
+        influencer_id: null,
         paid_at: row.paid_at,
         is_refunded: row.is_refunded || false,
         refunded_at: row.refunded_at || null,
@@ -74,17 +79,29 @@ export async function GET(request: NextRequest) {
     const BATCH_SIZE = 50;
 
     const [infMap, reviewMap] = await Promise.all([
-      // 인플루언서
+      // 인플루언서 (slug + id 모두 조회)
       (async () => {
-        const map = new Map<string, string>();
+        const slugMap = new Map<string, string>();
+        const idMap = new Map<string, string>();
+        const queries = [];
         if (slugs.size > 0) {
-          const { data } = await supabase
-            .from("influencers")
-            .select("slug, name")
-            .in("slug", Array.from(slugs));
-          for (const inf of data || []) map.set(inf.slug, inf.name);
+          queries.push(
+            supabase.from("influencers").select("id, slug, name").in("slug", Array.from(slugs))
+          );
         }
-        return map;
+        if (influencerIds.size > 0) {
+          queries.push(
+            supabase.from("influencers").select("id, slug, name").in("id", Array.from(influencerIds))
+          );
+        }
+        const results = await Promise.all(queries);
+        for (const { data } of results) {
+          for (const inf of data || []) {
+            slugMap.set(inf.slug, inf.name);
+            idMap.set(inf.id, inf.name);
+          }
+        }
+        return { slugMap, idMap };
       })(),
       // 리뷰 (배치 병렬)
       (async () => {
@@ -107,6 +124,7 @@ export async function GET(request: NextRequest) {
     ]);
 
     // 4) 최종 조합
+    const { slugMap, idMap } = infMap;
     const final = results.map((r) => {
       const review = reviewMap.get(r.id);
       return {
@@ -116,7 +134,7 @@ export async function GET(request: NextRequest) {
         wish: r.wish,
         price: r.price,
         coupon_code: r.coupon_code,
-        influencer: infMap.get(r.utm_source) || null,
+        influencer: slugMap.get(r.utm_source) || (r.influencer_id ? idMap.get(r.influencer_id) : null) || null,
         paid_at: r.paid_at,
         is_refunded: r.is_refunded,
         refunded_at: r.refunded_at,

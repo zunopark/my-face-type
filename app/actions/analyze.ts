@@ -425,7 +425,7 @@ interface NewYearAnalyzeInput {
 
 /**
  * 신년 사주 분석 (2026 병오년)
- * - /saju_new_year_v2/analyze 엔드포인트 호출
+ * - /saju_new_year_v3/analyze 엔드포인트 호출
  */
 export async function analyzeNewYear(input: NewYearAnalyzeInput) {
   try {
@@ -438,9 +438,9 @@ export async function analyzeNewYear(input: NewYearAnalyzeInput) {
       year: input.year,
     };
 
-    console.log("Calling API:", `${SAJU_API_URL}/saju_new_year_v2/analyze`);
+    console.log("Calling API:", `${SAJU_API_URL}/saju_new_year_v3/analyze`);
 
-    const response = await fetch(`${SAJU_API_URL}/saju_new_year_v2/analyze`, {
+    const response = await fetch(`${SAJU_API_URL}/saju_new_year_v3/analyze`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
