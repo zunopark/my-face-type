@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-const APP_VERSION = "2.21";
+const APP_VERSION = "2.22";
 
 export default function Footer() {
   return (
