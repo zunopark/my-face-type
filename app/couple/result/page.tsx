@@ -387,6 +387,19 @@ function CoupleResultContent() {
         },
       };
       setResult(updatedResult);
+
+      // Slack 알림
+      fetch("/api/slack/payment-notify", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          serviceType: "couple",
+          userName: "-",
+          amount: 0,
+          couponCode: appliedCoupon?.code || null,
+          influencerName: null,
+        }),
+      }).catch(() => {});
     } catch (error) {
       console.error("무료 쿠폰 처리 오류:", error);
       setCouponError("쿠폰 처리 중 오류가 발생했습니다");

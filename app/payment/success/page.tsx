@@ -114,22 +114,29 @@ function SuccessContent() {
       };
       const serviceType = serviceTypeMap[reportType] || "face";
 
+      // Supabase에서 사용자 정보 조회 (Mixpanel + Slack 공용)
+      let userName: string | null = null;
+      let supabaseData: Awaited<ReturnType<typeof getSajuAnalysisByShareId>> = null;
+      if (resultId && (reportType === "saju" || reportType === "new_year")) {
+        supabaseData = await getSajuAnalysisByShareId(resultId);
+        userName = supabaseData?.user_info?.userName || null;
+      }
+
       // 사주 결제인 경우 상세 정보 추가
       if (reportType === "saju" && resultId) {
-        const sajuSupabase = await getSajuAnalysisByShareId(resultId);
-        if (sajuSupabase) {
+        if (supabaseData) {
           trackPaymentSuccess(serviceType, {
             order_id: orderId,
             amount: Number(amount),
             result_id: resultId,
             report_type: reportType,
-            user_name: sajuSupabase.user_info?.userName,
-            gender: sajuSupabase.user_info?.gender,
-            birth_date: sajuSupabase.user_info?.date,
-            birth_time: sajuSupabase.user_info?.time || "모름",
-            calendar: sajuSupabase.user_info?.calendar,
-            status: sajuSupabase.user_info?.status,
-            user_concern: sajuSupabase.user_info?.userConcern,
+            user_name: supabaseData.user_info?.userName,
+            gender: supabaseData.user_info?.gender,
+            birth_date: supabaseData.user_info?.date,
+            birth_time: supabaseData.user_info?.time || "모름",
+            calendar: supabaseData.user_info?.calendar,
+            status: supabaseData.user_info?.status,
+            user_concern: supabaseData.user_info?.userConcern,
           });
         } else {
           trackPaymentSuccess(serviceType, {
@@ -140,18 +147,17 @@ function SuccessContent() {
           });
         }
       } else if (reportType === "new_year" && resultId) {
-        const nySupabase = await getSajuAnalysisByShareId(resultId);
-        if (nySupabase) {
+        if (supabaseData) {
           trackPaymentSuccess(serviceType, {
             order_id: orderId,
             amount: Number(amount),
             result_id: resultId,
             report_type: reportType,
-            user_name: nySupabase.user_info?.userName,
-            gender: nySupabase.user_info?.gender,
-            birth_date: nySupabase.user_info?.date,
-            birth_time: nySupabase.user_info?.time || "모름",
-            calendar: nySupabase.user_info?.calendar,
+            user_name: supabaseData.user_info?.userName,
+            gender: supabaseData.user_info?.gender,
+            birth_date: supabaseData.user_info?.date,
+            birth_time: supabaseData.user_info?.time || "모름",
+            calendar: supabaseData.user_info?.calendar,
           });
         } else {
           trackPaymentSuccess(serviceType, {
@@ -173,6 +179,7 @@ function SuccessContent() {
       // UTM 정보 조회 (인플루언서 연결)
       let utmSource: string | null = null;
       let influencerId: string | null = null;
+      let influencerName: string | null = null;
       try {
         const utmParams = getStoredUtmParams();
         if (utmParams.utm_source) {
@@ -182,12 +189,30 @@ function SuccessContent() {
             const infData = await infRes.json();
             if (infData && infData.id) {
               influencerId = infData.id;
+              influencerName = infData.name || null;
             }
           }
         }
       } catch (utmErr) {
         console.error("UTM 정보 조회 실패:", utmErr);
       }
+
+      // Slack 결제 알림
+      fetch("/api/slack/payment-notify", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          serviceType,
+          userName: userName || "-",
+          amount: Number(amount),
+          couponCode: couponCode || null,
+          influencerName: influencerName || null,
+          gender: supabaseData?.user_info?.gender || null,
+          birthDate: supabaseData?.user_info?.date || null,
+          birthTime: supabaseData?.user_info?.time || null,
+          wish: supabaseData?.user_info?.wish2026 || supabaseData?.user_info?.userConcern || null,
+        }),
+      }).catch((err) => console.error("Slack 알림 실패:", err));
 
       // 결제 정보 업데이트
       if (resultId) {

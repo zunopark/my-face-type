@@ -496,6 +496,19 @@ function ResultContent() {
         payment_info: { method: "coupon", price: 0, couponCode: couponCodeParam || appliedCoupon?.code },
       });
 
+      // Slack 알림
+      fetch("/api/slack/payment-notify", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          serviceType: "face",
+          userName: "-",
+          amount: 0,
+          couponCode: couponCodeParam || appliedCoupon?.code || null,
+          influencerName: null,
+        }),
+      }).catch(() => {});
+
       // 모달 닫고 분석 시작
       setShowPaymentModal(false);
       setShowPaymentPage(false);

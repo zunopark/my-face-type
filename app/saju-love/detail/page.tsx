@@ -389,6 +389,21 @@ function SajuDetailContent() {
               body: JSON.stringify({ code: result.discount_code, serviceType: "saju_love" }),
             });
           } catch (e) { console.error("쿠폰 수량 차감 실패:", e); }
+          fetch("/api/slack/payment-notify", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              serviceType: "saju_love",
+              userName: data.input.userName,
+              amount: 0,
+              couponCode: result.discount_code,
+              influencerName: result.influencer_name || null,
+              gender: data.input.gender,
+              birthDate: data.input.date,
+              birthTime: data.input.time,
+              wish: data.input.userConcern || null,
+            }),
+          }).catch(() => {});
           router.push(`/saju-love/result?id=${data.id}`);
         } else {
           setAppliedCoupon({ code: result.discount_code, discount });
@@ -476,6 +491,23 @@ function SajuDetailContent() {
           method: "coupon",
           coupon_code: code,
         });
+
+        // Slack 알림
+        fetch("/api/slack/payment-notify", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            serviceType: "saju_love",
+            userName: data.input.userName,
+            amount: 0,
+            couponCode: code,
+            influencerName: null,
+            gender: data.input.gender,
+            birthDate: data.input.date,
+            birthTime: data.input.time,
+            wish: data.input.userConcern || null,
+          }),
+        }).catch(() => {});
 
         // 4. 결과 페이지로 이동
         router.push(`/saju-love/result?id=${data.id}`);
