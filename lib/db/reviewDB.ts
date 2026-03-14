@@ -17,6 +17,39 @@ export interface Review {
   created_at?: string;
 }
 
+const SERVICE_LABELS: Record<string, string> = {
+  saju_love: "사주",
+  new_year: "신년사주",
+  couple: "궁합",
+  face: "관상",
+};
+
+async function sendReviewSlackNotification(review: Omit<Review, "id" | "created_at">) {
+  const webhookUrl = process.env.SLACK_REVIEW_WEBHOOK_URL;
+  if (!webhookUrl) return;
+
+  try {
+    const stars = "⭐".repeat(review.rating);
+    const serviceName = SERVICE_LABELS[review.service_type] || review.service_type;
+
+    const lines = [
+      `*📝 새 리뷰가 등록됐어요!*`,
+      `• 서비스: ${serviceName}`,
+      `• 이름: ${review.user_name || "-"}`,
+      `• 별점: ${stars} (${review.rating}점)`,
+    ];
+    if (review.content) lines.push(`• 내용: ${review.content}`);
+
+    await fetch(webhookUrl, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ text: lines.join("\n") }),
+    });
+  } catch (e) {
+    console.error("리뷰 Slack 알림 실패:", e);
+  }
+}
+
 // 리뷰 저장
 export async function createReview(
   review: Omit<Review, "id" | "created_at">
@@ -31,6 +64,10 @@ export async function createReview(
     console.error("리뷰 저장 실패:", error);
     return null;
   }
+
+  // Slack 알림 (비동기, 실패해도 무시)
+  sendReviewSlackNotification(review).catch(() => {});
+
   return data;
 }
 
