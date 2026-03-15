@@ -3825,8 +3825,6 @@ function ReviewSection({
   }, [recordId]);
 
   const handleSubmit = async () => {
-    if (!content.trim()) return;
-
     setIsSubmitting(true);
     const review = await createReview({
       service_type: "saju_love",
@@ -3840,6 +3838,16 @@ function ReviewSection({
     if (review) {
       setExistingReview(review);
       setSubmitted(true);
+      fetch("/api/slack/review-notify", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          serviceType: "saju_love",
+          rating,
+          content: content.trim(),
+          recordId,
+        }),
+      }).catch(() => {});
     }
     setIsSubmitting(false);
   };
@@ -3900,7 +3908,7 @@ function ReviewSection({
       <div className={styles.review_content_input}>
         <textarea
           className={styles.review_textarea}
-          placeholder={rating === 1 ? "어떤 점이 아쉬우셨나요? 더 나은 서비스를 위해 지금 생각나시는 피드백을 남겨주시면 일부 결제 금액 페이백과 함께 색동낭자에게도 반영할게요. 만족스럽지 못한 풀이, 진심으로 죄송합니다." : "연애 사주 리포트는 어떠셨나요? 솔직한 후기를 남겨주세요."}
+          placeholder={rating === 1 ? "어떤 점이 아쉬우셨나요? 더 나은 서비스를 위해 지금 생각나시는 피드백을 남겨주시면 확인 후 일부 결제 금액 페이백과 함께 색동낭자에게도 반영할게요. 만족스럽지 못한 풀이, 진심으로 죄송합니다." : "연애 사주 리포트는 어떠셨나요? 솔직한 후기를 남겨주세요."}
           value={content}
           onChange={(e) => setContent(e.target.value)}
           maxLength={500}
@@ -3948,8 +3956,6 @@ function ReviewModal({
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleSubmit = async () => {
-    if (!content.trim()) return;
-
     setIsSubmitting(true);
     const review = await createReview({
       service_type: "saju_love",
@@ -3961,6 +3967,16 @@ function ReviewModal({
     });
 
     if (review) {
+      fetch("/api/slack/review-notify", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          serviceType: "saju_love",
+          rating,
+          content: content.trim(),
+          recordId,
+        }),
+      }).catch(() => {});
       onClose();
     }
     setIsSubmitting(false);
@@ -4001,7 +4017,7 @@ function ReviewModal({
         <div className={styles.review_content_input}>
           <textarea
             className={styles.review_textarea}
-            placeholder={rating === 1 ? "어떤 점이 아쉬우셨나요? 더 나은 서비스를 위해 지금 생각나시는 피드백을 남겨주시면 일부 결제 금액 페이백과 함께 색동낭자에게도 반영할게요. 만족스럽지 못한 풀이, 진심으로 죄송합니다." : "연애 사주 리포트는 어떠셨나요?"}
+            placeholder={rating === 1 ? "어떤 점이 아쉬우셨나요? 더 나은 서비스를 위해 지금 생각나시는 피드백을 남겨주시면 확인 후 일부 결제 금액 페이백과 함께 색동낭자에게도 반영할게요. 만족스럽지 못한 풀이, 진심으로 죄송합니다." : "연애 사주 리포트는 어떠셨나요?"}
             value={content}
             onChange={(e) => setContent(e.target.value)}
             maxLength={500}
@@ -4058,7 +4074,6 @@ function ReviewInlineCard({
   // 여기까지 도달하면 리뷰가 없는 상태임
 
   const handleSubmit = async () => {
-    if (!content.trim()) return;
     setIsSubmitting(true);
     await createReview({
       service_type: "saju_love",
@@ -4068,6 +4083,16 @@ function ReviewInlineCard({
       content: content.trim(),
       is_public: true,
     });
+    fetch("/api/slack/review-notify", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        serviceType: "saju_love",
+        rating,
+        content: content.trim(),
+        recordId,
+      }),
+    }).catch(() => {});
     setSubmitted(true);
     setIsSubmitting(false);
     setTimeout(onDone, 1200);
@@ -4118,7 +4143,7 @@ function ReviewInlineCard({
           <label className={styles.input_label}>의견을 알려주세요</label>
           <textarea
             className={`${styles.input_field} ${styles.textarea}`}
-            placeholder={rating === 1 ? "어떤 점이 아쉬우셨나요? 더 나은 서비스를 위해 지금 생각나시는 피드백을 남겨주시면 일부 결제 금액 페이백과 함께 색동낭자에게도 반영할게요. 만족스럽지 못한 풀이, 진심으로 죄송합니다." : "색동낭자의 풀이에 대해 솔직한 의견을 남겨주세요.\n의견을 참고하여 계속해서 공부할게요!"}
+            placeholder={rating === 1 ? "어떤 점이 아쉬우셨나요? 더 나은 서비스를 위해 지금 생각나시는 피드백을 남겨주시면 확인 후 일부 결제 금액 페이백과 함께 색동낭자에게도 반영할게요. 만족스럽지 못한 풀이, 진심으로 죄송합니다." : "색동낭자의 풀이에 대해 솔직한 의견을 남겨주세요.\n의견을 참고하여 계속해서 공부할게요!"}
             rows={4}
             value={content}
             onChange={(e) => setContent(e.target.value)}

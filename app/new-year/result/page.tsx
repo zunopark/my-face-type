@@ -83,7 +83,7 @@ function NewYearResultContent() {
   const pendingDataRef = useRef<NewYearRecord | null>(null);
 
   // 리뷰 관련 상태
-  const [reviewRating, setReviewRating] = useState(4);
+  const [reviewRating, setReviewRating] = useState(5);
   const [reviewContent, setReviewContent] = useState("");
   const [isReviewSubmitting, setIsReviewSubmitting] = useState(false);
   const [reviewSubmitted, setReviewSubmitted] = useState(false);
@@ -512,11 +512,12 @@ function NewYearResultContent() {
 
   const handleReviewSubmit = async () => {
     if (!resultId) return;
+    const userName = data?.input?.userName || "익명";
     setIsReviewSubmitting(true);
     const review = await createReview({
       service_type: "new_year",
       record_id: resultId,
-      user_name: "익명",
+      user_name: userName,
       rating: reviewRating,
       content: reviewContent.trim(),
       is_public: true,
@@ -524,6 +525,16 @@ function NewYearResultContent() {
     if (review) {
       setExistingReview(review);
       setReviewSubmitted(true);
+      fetch("/api/slack/review-notify", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          serviceType: "new_year",
+          rating: reviewRating,
+          content: reviewContent.trim(),
+          recordId: resultId,
+        }),
+      }).catch(() => {});
     }
     setIsReviewSubmitting(false);
   };
@@ -672,9 +683,9 @@ function NewYearResultContent() {
           <div className={styles.review_rating_options}>
             {[
               { value: 1, label: "아쉬워요" },
-              { value: 2, label: "보통" },
-              { value: 3, label: "좋았어요" },
-              { value: 4, label: "고마워요" },
+              { value: 3, label: "보통" },
+              { value: 4, label: "좋았어요" },
+              { value: 5, label: "고마워요" },
             ].map((option) => (
               <button
                 key={option.value}
@@ -689,7 +700,7 @@ function NewYearResultContent() {
           <div className={styles.review_content_input}>
             <textarea
               className={styles.review_textarea}
-              placeholder={reviewRating === 1 ? "어떤 점이 아쉬우셨나요? 더 나은 서비스를 위해 지금 생각나시는 피드백을 남겨주시면 일부 결제 금액 페이백과 함께 까치도령에게도 반영할게요. 만족스럽지 못한 풀이, 진심으로 죄송합니다." : "신년운세는 어떠셨나요? 솔직한 후기를 남겨주세요."}
+              placeholder={reviewRating === 1 ? "어떤 점이 아쉬우셨나요? 더 나은 서비스를 위해 지금 생각나시는 피드백을 남겨주시면 확인 후 일부 결제 금액 페이백과 함께 까치도령에게도 반영할게요. 만족스럽지 못한 풀이, 진심으로 죄송합니다." : "신년운세는 어떠셨나요? 솔직한 후기를 남겨주세요."}
               value={reviewContent}
               onChange={(e) => setReviewContent(e.target.value)}
               maxLength={500}
@@ -3124,9 +3135,9 @@ function EndingCard({ data, reviewProps }: {
           <div className={styles.review_rating_options}>
             {[
               { value: 1, label: "아쉬워요" },
-              { value: 2, label: "보통" },
-              { value: 3, label: "좋았어요" },
-              { value: 4, label: "고마워요" },
+              { value: 3, label: "보통" },
+              { value: 4, label: "좋았어요" },
+              { value: 5, label: "고마워요" },
             ].map((option) => (
               <button
                 key={option.value}
@@ -3141,7 +3152,7 @@ function EndingCard({ data, reviewProps }: {
           <div className={styles.review_content_input}>
             <textarea
               className={styles.review_textarea}
-              placeholder={reviewRating === 1 ? "어떤 점이 아쉬우셨나요? 더 나은 서비스를 위해 지금 생각나시는 피드백을 남겨주시면 일부 결제 금액 페이백과 함께 까치도령에게도 반영할게요. 만족스럽지 못한 풀이, 진심으로 죄송합니다." : "신년운세는 어떠셨나요? 솔직한 후기를 남겨주세요."}
+              placeholder={reviewRating === 1 ? "어떤 점이 아쉬우셨나요? 더 나은 서비스를 위해 지금 생각나시는 피드백을 남겨주시면 확인 후 일부 결제 금액 페이백과 함께 까치도령에게도 반영할게요. 만족스럽지 못한 풀이, 진심으로 죄송합니다." : "신년운세는 어떠셨나요? 솔직한 후기를 남겨주세요."}
               value={reviewContent}
               onChange={(e) => setReviewContent(e.target.value)}
               maxLength={500}

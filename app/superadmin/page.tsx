@@ -1206,7 +1206,14 @@ export default function SuperAdminPage() {
             {/* 월 네비게이션 */}
             <div className={styles.settlement_section}>
               <div className={styles.settlement_header}>
-                <h3 className={styles.settlement_title}>정산</h3>
+                <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
+                  <h3 className={styles.settlement_title}>정산</h3>
+                  <span style={{ fontSize: 13, color: "#888" }}>
+                    인플루언서 {settlement.reduce((s, r) => s + r.settlement_amount, 0).toLocaleString()}원
+                    {" / "}
+                    마케터 {marketerMonthly.reduce((s, a) => s + Math.round(a.filtered_revenue * a.rs_percentage / 100), 0).toLocaleString()}원
+                  </span>
+                </div>
                 <div className={styles.month_selector}>
                   <button
                     className={styles.month_arrow}

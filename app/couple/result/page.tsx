@@ -241,7 +241,7 @@ function CoupleResultContent() {
 
   // 리뷰 제출
   const handleReviewSubmit = async () => {
-    if (!reviewContent.trim() || !resultId) return;
+    if (!resultId) return;
     setIsReviewSubmitting(true);
     const review = await createReview({
       service_type: "couple",
@@ -254,6 +254,16 @@ function CoupleResultContent() {
     if (review) {
       setExistingReview(review);
       setReviewSubmitted(true);
+      fetch("/api/slack/review-notify", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          serviceType: "couple",
+          rating: reviewRating,
+          content: reviewContent.trim(),
+          recordId: resultId,
+        }),
+      }).catch(() => {});
     }
     setIsReviewSubmitting(false);
   };
