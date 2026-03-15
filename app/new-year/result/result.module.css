@@ -2494,22 +2494,29 @@
 }
 
 .keyword_section {
+  background: #f8fafc;
+  border-radius: 12px;
+  padding: 18px 20px;
 }
 
 .keyword_tag {
   display: inline-block;
-  font-size: 14px;
+  font-size: 15px;
   font-weight: 700;
-  color: #3A7BC8;
-  background: rgba(74, 144, 217, 0.1);
-  padding: 4px 12px;
-  border-radius: 20px;
-  margin-bottom: 10px;
+  color: #2d2d2d;
+  margin-bottom: 12px;
   letter-spacing: 0.3px;
 }
 
 .keyword_section .text_block {
   margin-bottom: 0;
+}
+
+.keyword_section .text_block p strong,
+.keyword_narrative .text_block p strong {
+  font-weight: 600;
+  color: #1e3a5f;
+  background: linear-gradient(transparent 60%, rgba(74, 144, 217, 0.18) 60%);
 }
 
 /* 섹션 블록 */

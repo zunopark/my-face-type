@@ -2214,7 +2214,7 @@ function NarrativeText({ sections, name }: { sections: Record<string, ParsedSect
   if (!text) return null;
 
   const lines = text.split("\n").filter(line => line.trim());
-  const keywordPattern = /^#([^\s:]+)[:\s]\s*(.*)/;
+  const keywordPattern = /^#([^:]+):\s*(.*)/;
 
   // 키워드 헤더가 있는지 확인
   const hasKeywordHeaders = lines.some(line => keywordPattern.test(line));
