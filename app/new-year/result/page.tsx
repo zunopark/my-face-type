@@ -2223,7 +2223,7 @@ function NarrativeText({ sections, name }: { sections: Record<string, ParsedSect
     return (
       <div className={styles.text_block}>
         {lines.map((para, i) => (
-          <p key={i} dangerouslySetInnerHTML={{ __html: para.replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>") }} />
+          <p key={i} dangerouslySetInnerHTML={{ __html: para.replace(/\*\*\s*([^*]+?)\s*\*\*/g, "<strong>$1</strong>") }} />
         ))}
       </div>
     );
@@ -2256,7 +2256,7 @@ function NarrativeText({ sections, name }: { sections: Record<string, ParsedSect
           )}
           <div className={styles.text_block}>
             {group.content.map((para, j) => (
-              <p key={j} dangerouslySetInnerHTML={{ __html: para.replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>") }} />
+              <p key={j} dangerouslySetInnerHTML={{ __html: para.replace(/\*\*\s*([^*]+?)\s*\*\*/g, "<strong>$1</strong>") }} />
             ))}
           </div>
         </div>
@@ -2479,8 +2479,6 @@ function Chapter1Content({ sections }: { sections: Record<string, ParsedSection>
           </div>
         </div>
       )}
-
-      <NarrativeText sections={sections} name="키워드_서술" />
 
       {(mainData["주요_특징"] || mainData["전반적_흐름"]) && (
         <div className={styles.text_block}>
