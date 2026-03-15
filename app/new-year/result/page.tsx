@@ -689,7 +689,7 @@ function NewYearResultContent() {
           <div className={styles.review_content_input}>
             <textarea
               className={styles.review_textarea}
-              placeholder="신년운세는 어떠셨나요? 솔직한 후기를 남겨주세요."
+              placeholder={reviewRating === 1 ? "어떤 점이 아쉬우셨나요? 더 나은 서비스를 위해 지금 생각나시는 피드백을 남겨주시면 일부 결제 금액 페이백과 함께 까치도령에게도 반영할게요. 만족스럽지 못한 풀이, 진심으로 죄송합니다." : "신년운세는 어떠셨나요? 솔직한 후기를 남겨주세요."}
               value={reviewContent}
               onChange={(e) => setReviewContent(e.target.value)}
               maxLength={500}
@@ -3141,7 +3141,7 @@ function EndingCard({ data, reviewProps }: {
           <div className={styles.review_content_input}>
             <textarea
               className={styles.review_textarea}
-              placeholder="신년운세는 어떠셨나요? 솔직한 후기를 남겨주세요."
+              placeholder={reviewRating === 1 ? "어떤 점이 아쉬우셨나요? 더 나은 서비스를 위해 지금 생각나시는 피드백을 남겨주시면 일부 결제 금액 페이백과 함께 까치도령에게도 반영할게요. 만족스럽지 못한 풀이, 진심으로 죄송합니다." : "신년운세는 어떠셨나요? 솔직한 후기를 남겨주세요."}
               value={reviewContent}
               onChange={(e) => setReviewContent(e.target.value)}
               maxLength={500}
