@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 
 const SERVICE_LABELS: Record<string, string> = {
-  saju_love: "사주",
+  saju_love: "연애사주",
   new_year: "신년사주",
   couple: "궁합",
   face: "관상",
