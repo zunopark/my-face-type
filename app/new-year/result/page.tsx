@@ -2376,21 +2376,17 @@ function Chapter1Content({ sections }: { sections: Record<string, ParsedSection>
   const keywordsData = getSectionData(sections, "키워드");
   const mainData = getSectionData(sections, "나의_2026년_총운");
   const quarterlyData = getSectionData(sections, "분기별_흐름");
-  const crisisData = getSectionData(sections, "위기");
-  const opportunityData = getSectionData(sections, "기회");
 
   const scores = {
     재물운: parseScore(scoresData["재물운"], 3),
+    건강운: parseScore(scoresData["건강운"], 3),
     연애운: parseScore(scoresData["연애운"], 3),
     직장명예운: parseScore(scoresData["직장명예운"], 3),
-    학업계약운: parseScore(scoresData["학업계약운"], 3),
-    건강운: parseScore(scoresData["건강운"], 3),
+    관계운: parseScore(scoresData["관계운"], 3),
   };
 
   const keywords = [
     keywordsData["키워드1"],
-    keywordsData["키워드2"],
-    keywordsData["키워드3"],
   ].filter(Boolean);
 
   // 등급별 색상
@@ -2524,49 +2520,7 @@ function Chapter1Content({ sections }: { sections: Record<string, ParsedSection>
         </div>
       )}
 
-      {crisisData["위기1_제목"] && (
-        <div className={styles.section_block}>
-          <h4 className={styles.section_title}>주의할 시기</h4>
-          {[1, 2, 3].map(i => {
-            const title = crisisData[`위기${i}_제목`];
-            if (!title) return null;
-            return (
-              <div key={i} className={styles.list_item}>
-                <div className={styles.list_header}>
-                  <strong>{title}</strong>
-                  {crisisData[`위기${i}_시기`] && <span className={styles.list_meta}>{crisisData[`위기${i}_시기`]}</span>}
-                </div>
-                {crisisData[`위기${i}_내용`] && <p>{crisisData[`위기${i}_내용`]}</p>}
-                {crisisData[`위기${i}_대처법`] && <p className={styles.list_sub}>대처법: {crisisData[`위기${i}_대처법`]}</p>}
-              </div>
-            );
-          })}
-        </div>
-      )}
-
-      <NarrativeText sections={sections} name="위기_서술" />
-
-      {opportunityData["기회1_제목"] && (
-        <div className={styles.section_block}>
-          <h4 className={styles.section_title}>기회의 시기</h4>
-          {[1, 2, 3].map(i => {
-            const title = opportunityData[`기회${i}_제목`];
-            if (!title) return null;
-            return (
-              <div key={i} className={styles.list_item}>
-                <div className={styles.list_header}>
-                  <strong>{title}</strong>
-                  {opportunityData[`기회${i}_시기`] && <span className={styles.list_meta}>{opportunityData[`기회${i}_시기`]}</span>}
-                </div>
-                {opportunityData[`기회${i}_내용`] && <p>{opportunityData[`기회${i}_내용`]}</p>}
-                {opportunityData[`기회${i}_극대화`] && <p className={styles.list_sub}>극대화: {opportunityData[`기회${i}_극대화`]}</p>}
-              </div>
-            );
-          })}
-        </div>
-      )}
-
-      <NarrativeText sections={sections} name="기회_서술" />
+      <NarrativeText sections={sections} name="위기와기회_서술" />
     </div>
   );
 }
