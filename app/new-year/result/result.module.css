@@ -2512,8 +2512,7 @@
   margin-bottom: 0;
 }
 
-.keyword_section .text_block p strong,
-.keyword_narrative .text_block p strong {
+.text_block p strong {
   font-weight: 600;
   color: #1e3a5f;
   background: linear-gradient(transparent 60%, rgba(74, 144, 217, 0.18) 60%);
