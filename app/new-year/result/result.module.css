@@ -2494,6 +2494,7 @@
 }
 
 .keyword_section {
+  padding-top: 20px;
 }
 
 .keyword_tag {
@@ -2759,16 +2760,64 @@
   border-bottom: none;
 }
 
+/* 8장: 최고의 달 / 조심할 달 */
+.best_worst_wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  margin-bottom: 20px;
+}
+
+.highlight_month {
+  flex: 1;
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 14px 0;
+}
+
+.highlight_month + .highlight_month {
+  border-top: none;
+}
+
+.highlight_month_body {
+  flex: 1;
+}
+
+.highlight_month_title {
+  font-size: 14px;
+  font-weight: 600;
+  color: #888;
+  margin-bottom: 4px;
+  letter-spacing: 0.5px;
+}
+
+.highlight_month_value {
+  font-size: 16px;
+  font-weight: 700;
+  color: #2d2d2d;
+  line-height: 1.6;
+}
+
+.highlight_month_reason {
+  font-size: 14px;
+  color: #666;
+  margin-top: 2px;
+  line-height: 1.6;
+}
+
 /* 월별 테이블 */
 .month_table {
   display: flex;
   flex-direction: column;
+  margin-top: 4px;
 }
 
 .month_row {
   display: flex;
-  padding: 10px 0;
-  border-bottom: 1px solid #f0f0f0;
+  align-items: flex-start;
+  padding: 12px 0;
+  border-bottom: 1px solid #f0ece6;
 }
 
 .month_row:last-child {
@@ -2777,28 +2826,61 @@
 
 .month_num {
   flex-shrink: 0;
-  width: 40px;
-  font-size: 14px;
-  font-weight: 600;
-  color: #333;
+  width: 44px;
+  font-size: 15px;
+  font-weight: 700;
+  color: #3A7BC8;
+  padding-top: 1px;
 }
 
 .month_content {
   flex: 1;
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  gap: 3px;
 }
 
 .month_kw {
-  font-size: 13px;
-  color: #4A90D9;
-  font-weight: 500;
+  font-size: 14px;
+  color: #2d2d2d;
+  font-weight: 600;
 }
 
 .month_desc {
-  font-size: 13px;
-  color: #666;
+  font-size: 14px;
+  color: #555;
+  line-height: 1.7;
+}
+
+/* 금기일 */
+.forbidden_list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.forbidden_item {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 10px 0;
+  font-size: 14px;
+  color: #333;
+  line-height: 1.7;
+  border-bottom: 1px solid #f0ece6;
+}
+
+.forbidden_item:last-child {
+  border-bottom: none;
+}
+
+.forbidden_dot {
+  flex-shrink: 0;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #c0392b;
+  margin-top: 7px;
 }
 
 /* 편지 텍스트 */

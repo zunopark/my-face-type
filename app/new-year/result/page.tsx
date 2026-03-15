@@ -2340,7 +2340,7 @@ function ReportCard({
       case 10:
         return <Chapter10Content sections={sections} />;
       case 11:
-        return <Chapter11Content sections={sections} rawContent={cleanedContent} />;
+        return <Chapter11Content sections={sections} />;
       default:
         return (
           <div
@@ -2595,15 +2595,12 @@ function Chapter8Content({ sections }: { sections: Record<string, ParsedSection>
   const bestData = getSectionData(sections, "최고의_달");
   const cautionData = getSectionData(sections, "조심할_달");
   const monthlyData = getSectionData(sections, "월별_운세");
-  const chanceData = getSectionData(sections, "월별_기회위기");
   const forbiddenData = getSectionData(sections, "금기일");
 
   const months = Array.from({ length: 12 }, (_, i) => i + 1).map(m => ({
     month: m,
     keyword: monthlyData[`${m}월_키워드`] || "",
     sentence: monthlyData[`${m}월_한문장`] || "",
-    opportunity: chanceData[`${m}월_기회`] || "",
-    crisis: chanceData[`${m}월_위기`] || "",
   }));
 
   const forbiddenDays = [1, 2, 3].map(i => forbiddenData[`금기일${i}`]).filter(Boolean);
@@ -2611,17 +2608,23 @@ function Chapter8Content({ sections }: { sections: Record<string, ParsedSection>
   return (
     <div className={styles.chapter_structured}>
       {(bestData["월"] || cautionData["월"]) && (
-        <div className={styles.section_block}>
+        <div className={styles.best_worst_wrap}>
           {bestData["월"] && (
-            <div className={styles.info_row}>
-              <span className={styles.info_label}>최고의 달</span>
-              <span className={styles.info_value}>{bestData["월"]}{bestData["이유"] ? ` - ${bestData["이유"]}` : ""}</span>
+            <div className={styles.highlight_month}>
+              <div className={styles.highlight_month_body}>
+                <div className={styles.highlight_month_title}>최고의 달</div>
+                <div className={styles.highlight_month_value}>{bestData["월"]}</div>
+                {bestData["이유"] && <div className={styles.highlight_month_reason}>{bestData["이유"]}</div>}
+              </div>
             </div>
           )}
           {cautionData["월"] && (
-            <div className={styles.info_row}>
-              <span className={styles.info_label}>조심할 달</span>
-              <span className={styles.info_value}>{cautionData["월"]}{cautionData["이유"] ? ` - ${cautionData["이유"]}` : ""}</span>
+            <div className={styles.highlight_month}>
+              <div className={styles.highlight_month_body}>
+                <div className={styles.highlight_month_title}>조심할 달</div>
+                <div className={styles.highlight_month_value}>{cautionData["월"]}</div>
+                {cautionData["이유"] && <div className={styles.highlight_month_reason}>{cautionData["이유"]}</div>}
+              </div>
             </div>
           )}
         </div>
@@ -2630,7 +2633,7 @@ function Chapter8Content({ sections }: { sections: Record<string, ParsedSection>
       <NarrativeText sections={sections} name="최고의달_서술" />
       <NarrativeText sections={sections} name="조심할달_서술" />
 
-      <div className={styles.section_block}>
+      <div style={{ marginBottom: 20 }}>
         <h4 className={styles.section_title}>월별 운세</h4>
         <div className={styles.month_table}>
           {months.map(m => (
@@ -2648,10 +2651,15 @@ function Chapter8Content({ sections }: { sections: Record<string, ParsedSection>
       <NarrativeText sections={sections} name="월별_서술" />
 
       {forbiddenDays.length > 0 && (
-        <div className={styles.section_block}>
+        <div style={{ marginBottom: 20 }}>
           <h4 className={styles.section_title}>금기일</h4>
-          <ul className={styles.simple_list}>
-            {forbiddenDays.map((d, i) => <li key={i}>{d}</li>)}
+          <ul className={styles.forbidden_list}>
+            {forbiddenDays.map((d, i) => (
+              <li key={i} className={styles.forbidden_item}>
+                <span className={styles.forbidden_dot} />
+                <span>{d}</span>
+              </li>
+            ))}
           </ul>
         </div>
       )}
@@ -2663,109 +2671,48 @@ function Chapter8Content({ sections }: { sections: Record<string, ParsedSection>
 
 // 9장: 미래 일기 콘텐츠
 function Chapter9Content({ sections }: { sections: Record<string, ParsedSection> }) {
-  const letterText = sections["연말_편지"]?.content || "";
-  const hardData = getSectionData(sections, "힘들었던_순간");
-  const achieveData = getSectionData(sections, "가장큰_성취");
-  const actionData = getSectionData(sections, "오늘의_행동");
-
-  // 미래일기 전체 내용 (섹션이 없을 때 fallback용)
-  const diaryContent = sections["미래일기"]?.content || sections["미래_일기"]?.content || "";
-
-  const hasStructuredContent = letterText || hardData["시기"] || hardData["상황"] || achieveData["성취"] || actionData["action_item"];
-
-  // 구조화된 데이터가 없으면 전체 내용 또는 모든 섹션 내용 표시
-  if (!hasStructuredContent) {
-    const allContent = diaryContent || Object.values(sections).map(s => s.content).filter(Boolean).join("\n\n");
-    if (allContent) {
-      return (
-        <div className={styles.chapter_structured}>
-          <div className={styles.text_block}>
-            {allContent.split("\n").map((line, i) => (
-              <p key={i}>{line || <br />}</p>
-            ))}
-          </div>
-        </div>
-      );
-    }
-  }
-
   return (
     <div className={styles.chapter_structured}>
-      {letterText && (
-        <div className={styles.text_block}>
-          <p className={styles.letter_text}>{letterText}</p>
-        </div>
-      )}
-
       <NarrativeText sections={sections} name="연말편지_서술" />
-
-      {(hardData["시기"] || hardData["상황"]) && (
-        <div className={styles.section_block}>
-          <h4 className={styles.section_title}>힘들었던 순간</h4>
-          {hardData["시기"] && <div className={styles.info_row}><span className={styles.info_label}>시기</span><span className={styles.info_value}>{hardData["시기"]}</span></div>}
-          {hardData["상황"] && <div className={styles.info_row}><span className={styles.info_label}>상황</span><span className={styles.info_value}>{hardData["상황"]}</span></div>}
-          {hardData["선택"] && <div className={styles.info_row}><span className={styles.info_label}>선택</span><span className={styles.info_value}>{hardData["선택"]}</span></div>}
-          {hardData["결과"] && <div className={styles.info_row}><span className={styles.info_label}>결과</span><span className={styles.info_value}>{hardData["결과"]}</span></div>}
-        </div>
-      )}
-
-      {(achieveData["성취"] || achieveData["의미"]) && (
-        <div className={styles.section_block}>
-          <h4 className={styles.section_title}>가장 큰 성취</h4>
-          {achieveData["성취"] && <div className={styles.text_block}><p><strong>{achieveData["성취"]}</strong></p></div>}
-          {achieveData["의미"] && <div className={styles.text_block}><p>{achieveData["의미"]}</p></div>}
-        </div>
-      )}
-
-      <NarrativeText sections={sections} name="성취_서술" />
-
-      {actionData["action_item"] && (
-        <div className={styles.section_block}>
-          <h4 className={styles.section_title}>오늘 당장 시작하기</h4>
-          <div className={styles.text_block}><p>{actionData["action_item"]}</p></div>
-        </div>
-      )}
-
-      <NarrativeText sections={sections} name="행동_서술" />
     </div>
   );
 }
 
 // 10장: 개운법 콘텐츠
 function Chapter10Content({ sections }: { sections: Record<string, ParsedSection> }) {
-  const doData = getSectionData(sections, "Do_리스트");
-  const dontData = getSectionData(sections, "Dont_리스트");
+  const doData = getSectionData(sections, "해야할_리스트");
+  const dontData = getSectionData(sections, "피해야할_리스트");
   const luckyData = getSectionData(sections, "행운_아이템");
 
-  const doList = [1, 2, 3, 4, 5].map(i => doData[`do${i}`]).filter(Boolean);
-  const dontList = [1, 2, 3, 4, 5].map(i => dontData[`dont${i}`]).filter(Boolean);
+  // 새 형식 fallback: 기존 Do_리스트도 지원
+  const doDataFallback = Object.keys(doData).length > 0 ? doData : getSectionData(sections, "Do_리스트");
+  const dontDataFallback = Object.keys(dontData).length > 0 ? dontData : getSectionData(sections, "Dont_리스트");
+
+  const doList = [1, 2, 3, 4, 5].map(i => doDataFallback[`do${i}`]).filter(Boolean);
+  const dontList = [1, 2, 3, 4, 5].map(i => dontDataFallback[`dont${i}`]).filter(Boolean);
 
   return (
     <div className={styles.chapter_structured}>
       {doList.length > 0 && (
-        <div className={styles.section_block}>
-          <h4 className={styles.section_title}>Do</h4>
+        <div style={{ marginBottom: 20 }}>
+          <h4 className={styles.section_title}>올해 반드시 해야 할 5계명</h4>
           <ul className={styles.simple_list}>
             {doList.map((item, i) => <li key={i}>{item}</li>)}
           </ul>
         </div>
       )}
 
-      <NarrativeText sections={sections} name="Do_서술" />
-
       {dontList.length > 0 && (
-        <div className={styles.section_block}>
-          <h4 className={styles.section_title}>Don&apos;t</h4>
+        <div style={{ marginBottom: 20 }}>
+          <h4 className={styles.section_title}>올해 절대 피해야 할 5계명</h4>
           <ul className={styles.simple_list}>
             {dontList.map((item, i) => <li key={i}>{item}</li>)}
           </ul>
         </div>
       )}
 
-      <NarrativeText sections={sections} name="Dont_서술" />
-
       {(luckyData["행운_색상"] || luckyData["행운_숫자"]) && (
-        <div className={styles.section_block}>
+        <div style={{ marginBottom: 20 }}>
           <h4 className={styles.section_title}>행운 아이템</h4>
           {luckyData["행운_색상"] && <div className={styles.info_row}><span className={styles.info_label}>색상</span><span className={styles.info_value}>{luckyData["행운_색상"]}</span></div>}
           {luckyData["행운_숫자"] && <div className={styles.info_row}><span className={styles.info_label}>숫자</span><span className={styles.info_value}>{luckyData["행운_숫자"]}</span></div>}
@@ -2774,106 +2721,17 @@ function Chapter10Content({ sections }: { sections: Record<string, ParsedSection
         </div>
       )}
 
-      <NarrativeText sections={sections} name="행운아이템_서술" />
+      <NarrativeText sections={sections} name="개운법_서술" />
+      <NarrativeText sections={sections} name="개운법_총정리" />
     </div>
   );
 }
 
 // 11장: 까치도령 귀띔 콘텐츠
-function Chapter11Content({ sections, rawContent }: { sections: Record<string, ParsedSection>; rawContent?: string }) {
-  // 새 형식: 귀띔_제목 + 귀띔_서술
-  const titleText = sections["귀띔_제목"]?.content || "";
-  const narrativeText = sections["귀띔_서술"]?.content || "";
-
-  // 구 형식 호환
-  const oldData = getSectionData(sections, "까치도령_귀띔");
-
-  const hasOldFormat = oldData["고민_주제"] || oldData["맞춤_조언"] || oldData["특별_메시지"];
-  const hasNewFormat = titleText || narrativeText;
-
-  // 귀띔 서술 텍스트 결정: 새 형식 → 구 형식 → rawContent fallback
-  const fullText = narrativeText || rawContent || "";
-
-  // 소제목 기준으로 분리 렌더링 (숫자. 제목, ### 헤딩, [숫자. 제목] 패턴)
-  const renderNarrative = (text: string) => {
-    if (!text) return null;
-    const renderLine = (line: string) => {
-      const cleaned = line
-        .replace(/^#{1,4}\s*/, "")
-        .replace(/^\[(\d+)\.\s*([^\]]+)\]/, "$1. $2") // [1. 제목] → 1. 제목
-        .replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>")
-        .replace(/<u>([^<]+)<\/u>/g, "<u>$1</u>");
-      return <span dangerouslySetInnerHTML={{ __html: cleaned }} />;
-    };
-    // ### 또는 숫자. 또는 [숫자. 패턴으로 분리
-    const parts = text.split(/\n(?=#{1,4}\s|\d+\.\s|\[\d+\.\s)/);
-    return (
-      <>
-        {parts.map((part, i) => {
-          const lines = part.split("\n").filter(l => l.trim());
-          if (lines.length === 0) return null;
-          const cleanFirst = lines[0]
-            .replace(/^#{1,4}\s*/, "")
-            .replace(/^\[(\d+)\.\s*([^\]]+)\]/, "$1. $2");
-          const headMatch = cleanFirst.match(/^(\d+)\.\s*(.+)/);
-          if (headMatch) {
-            return (
-              <div key={i} style={{ marginBottom: "1.5rem" }}>
-                <h4 className={styles.section_title}>{renderLine(headMatch[2])}</h4>
-                {lines.slice(1).map((line, j) => (
-                  <p key={j} style={{ margin: "0.4rem 0" }}>{renderLine(line)}</p>
-                ))}
-              </div>
-            );
-          }
-          return (
-            <div key={i}>
-              {lines.map((line, j) => (
-                <p key={j} style={{ margin: "0.4rem 0" }}>{renderLine(line)}</p>
-              ))}
-            </div>
-          );
-        })}
-      </>
-    );
-  };
-
+function Chapter11Content({ sections }: { sections: Record<string, ParsedSection> }) {
   return (
     <div className={styles.chapter_structured}>
-      {/* 새 형식: 제목 */}
-      {titleText && (
-        <div className={styles.text_block}>
-          <p><strong>{titleText}</strong></p>
-        </div>
-      )}
-
-      {/* 구 형식 호환 */}
-      {hasOldFormat && !hasNewFormat && (
-        <>
-          {oldData["고민_주제"] && (
-            <div className={styles.info_row}>
-              <span className={styles.info_label}>고민 주제</span>
-              <span className={styles.info_value}>{oldData["고민_주제"]}</span>
-            </div>
-          )}
-          {oldData["맞춤_조언"] && (
-            <div className={styles.section_block}>
-              <h4 className={styles.section_title}>맞춤 조언</h4>
-              <div className={styles.text_block}><p>{oldData["맞춤_조언"]}</p></div>
-            </div>
-          )}
-          {oldData["특별_메시지"] && (
-            <div className={styles.section_block}>
-              <h4 className={styles.section_title}>특별 메시지</h4>
-              <div className={styles.text_block}><p>{oldData["특별_메시지"]}</p></div>
-            </div>
-          )}
-          <NarrativeText sections={sections} name="귀띔_서술" />
-        </>
-      )}
-
-      {/* 서술 렌더링: 새 형식이든 fallback이든 renderNarrative로 통일 */}
-      {!hasOldFormat && renderNarrative(fullText)}
+      <NarrativeText sections={sections} name="귀띔_서술" />
     </div>
   );
 }
