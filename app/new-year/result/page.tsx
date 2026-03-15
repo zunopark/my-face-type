@@ -2480,13 +2480,6 @@ function Chapter1Content({ sections }: { sections: Record<string, ParsedSection>
         </div>
       )}
 
-      {keywords.length > 0 && (
-        <div className={styles.info_row} style={{ marginBottom: 20 }}>
-          <span className={styles.info_label}>키워드</span>
-          <span className={styles.info_value}>{keywords.map(k => k.replace(/^#/, "")).join(", ")}</span>
-        </div>
-      )}
-
       <NarrativeText sections={sections} name="키워드_서술" />
 
       {(mainData["주요_특징"] || mainData["전반적_흐름"]) && (
