@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useCallback } from "react";
 import { Link2, Ticket, Pencil, Trash2 } from "lucide-react";
+import * as XLSX from "xlsx";
 import styles from "./admin.module.css";
 
 interface Coupon {
@@ -566,6 +567,43 @@ export default function AdminPage() {
     } finally {
       setPaymentLoading(false);
     }
+  };
+
+  // ─── 결제 내역 엑셀 다운로드 ──────────────────────────────
+
+  const handleExportPayments = () => {
+    if (!paymentInfluencer || paymentDetails.length === 0) return;
+
+    const rows = paymentDetails.map((p) => ({
+      날짜: new Date(p.paid_at).toLocaleString("ko-KR", {
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit",
+        hour: "2-digit",
+        minute: "2-digit",
+        second: "2-digit",
+        hour12: false,
+      }),
+      서비스: SERVICE_LABELS[p.service_type] || p.service_type,
+      이름: p.user_name,
+      금액: p.price,
+      환불여부: p.is_refunded ? "환불" : "",
+    }));
+
+    const ws = XLSX.utils.json_to_sheet(rows);
+
+    // 컬럼 너비 설정
+    ws["!cols"] = [
+      { wch: 22 }, // 날짜
+      { wch: 12 }, // 서비스
+      { wch: 10 }, // 이름
+      { wch: 10 }, // 금액
+      { wch: 8 },  // 환불여부
+    ];
+
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, "결제내역");
+    XLSX.writeFile(wb, `${paymentInfluencer.name}_결제내역.xlsx`);
   };
 
   // ─── 정산 월 이동 ──────────────────────────────
@@ -1679,7 +1717,18 @@ export default function AdminPage() {
             }}
           >
             <div className={styles.modal}>
-              <h3 className={styles.modal_title}>{paymentInfluencer.name} 결제 내역</h3>
+              <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+                <h3 className={styles.modal_title} style={{ margin: 0 }}>{paymentInfluencer.name} 결제 내역</h3>
+                {paymentDetails.length > 0 && (
+                  <button
+                    className={styles.form_submit}
+                    onClick={handleExportPayments}
+                    style={{ padding: "6px 14px", fontSize: 13 }}
+                  >
+                    엑셀 다운로드
+                  </button>
+                )}
+              </div>
               {paymentLoading ? (
                 <div className={styles.loading}>불러오는 중...</div>
               ) : paymentDetails.length === 0 ? (
