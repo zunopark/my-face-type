@@ -574,6 +574,8 @@ export default function AdminPage() {
   const handleExportPayments = () => {
     if (!paymentInfluencer || paymentDetails.length === 0) return;
 
+    const rsRate = paymentInfluencer.rs_percentage / 100;
+
     const rows = paymentDetails.map((p) => ({
       날짜: new Date(p.paid_at).toLocaleString("ko-KR", {
         year: "numeric",
@@ -587,6 +589,7 @@ export default function AdminPage() {
       서비스: SERVICE_LABELS[p.service_type] || p.service_type,
       이름: p.user_name,
       금액: p.price,
+      정산금액: p.is_refunded ? 0 : Math.round(p.price * rsRate),
       환불여부: p.is_refunded ? "환불" : "",
     }));
 
@@ -598,6 +601,7 @@ export default function AdminPage() {
       { wch: 12 }, // 서비스
       { wch: 10 }, // 이름
       { wch: 10 }, // 금액
+      { wch: 12 }, // 정산금액
       { wch: 8 },  // 환불여부
     ];
 
