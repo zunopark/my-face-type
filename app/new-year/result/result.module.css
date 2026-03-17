@@ -2150,6 +2150,38 @@
   font-size: 10px;
 }
 
+/* ===== 신살/귀인 셀 스타일 ===== */
+.newyear_result_page .saju_full_table .cell_gilsung {
+  font-size: 9px;
+  color: #3b82f6;
+  line-height: 1.4;
+}
+
+.newyear_result_page .saju_full_table .gilsung_vertical {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+
+.newyear_result_page .saju_full_table .cell_sinsal {
+  font-size: 9px;
+  color: #666;
+  line-height: 1.4;
+}
+
+.newyear_result_page .saju_full_table .sinsal_vertical {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+
+.newyear_result_page .saju_full_table .cell_sinsal_highlight {
+  color: #e74c3c;
+  font-weight: 600;
+}
+
 /* ===== 용신/희신/기신 카드 ===== */
 .newyear_result_page .yongsin_cards {
   display: flex;

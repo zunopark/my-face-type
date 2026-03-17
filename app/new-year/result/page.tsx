@@ -1376,19 +1376,6 @@ function SajuCard({ data }: { data: NewYearRecord }) {
   };
   const yongsin = (data.sajuData?.yongsin || rawSaju.yongsin || {}) as YongsinData;
 
-  // 귀인 정보 추출
-  const getGuiinForPillar = (pillarKey: string): string[] => {
-    const guiinList: string[] = [];
-    const byPillar = sinsal._byPillar || {};
-    const pillarData = byPillar[pillarKey];
-    if (pillarData) {
-      const stemGuiin = pillarData.stem?.filter((s: string) => s.includes("귀인")) || [];
-      const branchGuiin = pillarData.branch?.filter((s: string) => s.includes("귀인")) || [];
-      guiinList.push(...stemGuiin, ...branchGuiin);
-    }
-    return [...new Set(guiinList)]; // 중복 제거
-  };
-
   // 일간별 데이터
   const dmData = dayMaster?.char ? dayMasterYearData[dayMaster.char] : null;
 
@@ -1540,8 +1527,14 @@ function SajuCard({ data }: { data: NewYearRecord }) {
                 {(["hour", "day", "month", "year"] as const).map((key) => {
                   const p = pillars[key];
                   const isDay = key === "day";
-                  const twelveStage = p?.twelveUnsung;
-                  const displayValue = typeof twelveStage === "string" ? twelveStage : "—";
+                  const twelveStage =
+                    (p as unknown as { twelveStage?: string })?.twelveStage ||
+                    p?.twelveUnsung;
+                  const displayValue =
+                    typeof twelveStage === "string"
+                      ? twelveStage
+                      : (twelveStage as unknown as { display?: string })
+                        ?.display || "—";
                   return (
                     <td key={key} className={isDay ? styles.highlight : ""}>
                       {displayValue}
@@ -1556,10 +1549,57 @@ function SajuCard({ data }: { data: NewYearRecord }) {
                   const p = pillars[key];
                   const isDay = key === "day";
                   const twelveSinsal = p?.twelveSinsal;
-                  const displayValue = typeof twelveSinsal === "string" ? twelveSinsal : "—";
+                  const displayValue =
+                    typeof twelveSinsal === "string"
+                      ? twelveSinsal
+                      : (twelveSinsal as unknown as { display?: string })
+                        ?.display || "—";
+                  const isSinsalHighlight = displayValue === "도화살";
                   return (
-                    <td key={key} className={isDay ? styles.highlight : ""}>
+                    <td
+                      key={key}
+                      className={`${isDay ? styles.highlight : ""} ${isSinsalHighlight ? styles.cell_sinsal_highlight : ""}`}
+                    >
                       {displayValue}
+                    </td>
+                  );
+                })}
+              </tr>
+              {/* 신살 */}
+              <tr className={styles.row_extra}>
+                <td className={styles.row_label}>신살</td>
+                {(["hour", "day", "month", "year"] as const).map((key) => {
+                  const isDay = key === "day";
+                  const byPillar = sinsal?._byPillar;
+                  const stemSinsal = byPillar?.[key]?.stem || [];
+                  const branchSinsal = byPillar?.[key]?.branch || [];
+                  const allSinsal = [...stemSinsal, ...branchSinsal].filter(
+                    (s: string) => !s.includes("귀인")
+                  );
+                  const highlightSinsal = ["홍염살", "화개살", "도화살"];
+                  return (
+                    <td
+                      key={key}
+                      className={`${styles.cell_sinsal} ${isDay ? styles.highlight : ""}`}
+                    >
+                      {allSinsal.length > 0 ? (
+                        <div className={styles.sinsal_vertical}>
+                          {allSinsal.map((s: string, i: number) => (
+                            <span
+                              key={i}
+                              className={
+                                highlightSinsal.some((hs) => s.includes(hs))
+                                  ? styles.cell_sinsal_highlight
+                                  : ""
+                              }
+                            >
+                              {s}
+                            </span>
+                          ))}
+                        </div>
+                      ) : (
+                        "—"
+                      )}
                     </td>
                   );
                 })}
@@ -1569,15 +1609,26 @@ function SajuCard({ data }: { data: NewYearRecord }) {
                 <td className={styles.row_label}>귀인</td>
                 {(["hour", "day", "month", "year"] as const).map((key) => {
                   const isDay = key === "day";
-                  const guiinList = getGuiinForPillar(key);
-                  const displayValue = guiinList.length > 0
-                    ? guiinList.map(g => g.replace("귀인", "")).join(", ")
-                    : "—";
+                  const byPillar = sinsal?._byPillar;
+                  const stemSinsal = byPillar?.[key]?.stem || [];
+                  const branchSinsal = byPillar?.[key]?.branch || [];
+                  const allSinsal = [...stemSinsal, ...branchSinsal].filter(
+                    (s: string) => s.includes("귀인")
+                  );
                   return (
-                    <td key={key} className={isDay ? styles.highlight : ""}>
-                      <span className={guiinList.length > 0 ? styles.guiin_text : ""}>
-                        {displayValue}
-                      </span>
+                    <td
+                      key={key}
+                      className={`${styles.cell_gilsung} ${isDay ? styles.highlight : ""}`}
+                    >
+                      {allSinsal.length > 0 ? (
+                        <div className={styles.gilsung_vertical}>
+                          {allSinsal.map((s: string, i: number) => (
+                            <span key={i}>{s}</span>
+                          ))}
+                        </div>
+                      ) : (
+                        "—"
+                      )}
                     </td>
                   );
                 })}
