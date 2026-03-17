@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useCallback } from "react";
 import { Link2, Ticket, Pencil, Trash2, ExternalLink, Star } from "lucide-react";
+import * as XLSX from "xlsx";
 import styles from "./superadmin.module.css";
 import { supabase } from "@/lib/supabase";
 
@@ -68,6 +69,7 @@ interface PaymentDetail {
   user_name: string;
   price: number;
   paid_at: string;
+  is_refunded: boolean;
 }
 
 interface AllPayment {
@@ -631,6 +633,79 @@ export default function SuperAdminPage() {
     } finally {
       setPaymentLoading(false);
     }
+  };
+
+  // ─── 결제 내역 엑셀 다운로드 ──────────────────────────────
+
+  const handleExportPayments = () => {
+    if (!paymentInfluencer || paymentDetails.length === 0) return;
+
+    const rsRate = paymentInfluencer.rs_percentage / 100;
+
+    const rows = paymentDetails.map((p) => ({
+      날짜: new Date(p.paid_at).toLocaleString("ko-KR", {
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit",
+        hour: "2-digit",
+        minute: "2-digit",
+        second: "2-digit",
+        hour12: false,
+      }),
+      서비스: SERVICE_LABELS[p.service_type] || p.service_type,
+      이름: p.user_name,
+      금액: p.price,
+      정산금액: p.is_refunded ? 0 : Math.round(p.price * rsRate),
+      환불여부: p.is_refunded ? "환불" : "",
+    }));
+
+    // 서비스별 요약 (환불 제외)
+    const active = paymentDetails.filter((p) => !p.is_refunded);
+    const summaryMap: Record<string, { count: number; revenue: number }> = {};
+    for (const p of active) {
+      const label = SERVICE_LABELS[p.service_type] || p.service_type;
+      if (!summaryMap[label]) summaryMap[label] = { count: 0, revenue: 0 };
+      summaryMap[label].count += 1;
+      summaryMap[label].revenue += p.price;
+    }
+
+    const summaryHeader = [["서비스", "건수", "매출", "정산금액"]];
+    const summaryRows = Object.entries(summaryMap).map(([label, s]) => [
+      label,
+      s.count,
+      s.revenue,
+      Math.round(s.revenue * rsRate),
+    ]);
+    const summaryTotal = [
+      "합계",
+      active.length,
+      active.reduce((s, p) => s + p.price, 0),
+      Math.round(active.reduce((s, p) => s + p.price, 0) * rsRate),
+    ];
+
+    const ws = XLSX.utils.json_to_sheet(rows);
+
+    XLSX.utils.sheet_add_aoa(ws, summaryHeader, { origin: "H1" });
+    XLSX.utils.sheet_add_aoa(ws, summaryRows, { origin: "H2" });
+    XLSX.utils.sheet_add_aoa(ws, [summaryTotal], { origin: `H${2 + summaryRows.length}` });
+
+    ws["!cols"] = [
+      { wch: 22 }, // 날짜
+      { wch: 12 }, // 서비스
+      { wch: 10 }, // 이름
+      { wch: 10 }, // 금액
+      { wch: 12 }, // 정산금액
+      { wch: 8 },  // 환불여부
+      { wch: 2 },  // G (빈 구분)
+      { wch: 12 }, // 서비스
+      { wch: 8 },  // 건수
+      { wch: 12 }, // 매출
+      { wch: 12 }, // 정산금액
+    ];
+
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, "결제내역");
+    XLSX.writeFile(wb, `${paymentInfluencer.name}_결제내역.xlsx`);
   };
 
   // ─── 정산 월 이동 ──────────────────────────────
@@ -2427,7 +2502,18 @@ export default function SuperAdminPage() {
             }}
           >
             <div className={styles.modal}>
-              <h3 className={styles.modal_title}>{paymentInfluencer.name} 결제 내역</h3>
+              <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+                <h3 className={styles.modal_title} style={{ margin: 0 }}>{paymentInfluencer.name} 결제 내역</h3>
+                {paymentDetails.length > 0 && (
+                  <button
+                    className={styles.form_submit}
+                    onClick={handleExportPayments}
+                    style={{ padding: "6px 14px", fontSize: 13 }}
+                  >
+                    엑셀 다운로드
+                  </button>
+                )}
+              </div>
               {paymentLoading ? (
                 <div className={styles.loading}>불러오는 중...</div>
               ) : paymentDetails.length === 0 ? (
