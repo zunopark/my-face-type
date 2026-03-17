@@ -593,7 +593,37 @@ export default function AdminPage() {
       환불여부: p.is_refunded ? "환불" : "",
     }));
 
+    // 서비스별 요약 (환불 제외)
+    const active = paymentDetails.filter((p) => !p.is_refunded);
+    const summaryMap: Record<string, { count: number; revenue: number }> = {};
+    for (const p of active) {
+      const label = SERVICE_LABELS[p.service_type] || p.service_type;
+      if (!summaryMap[label]) summaryMap[label] = { count: 0, revenue: 0 };
+      summaryMap[label].count += 1;
+      summaryMap[label].revenue += p.price;
+    }
+
+    // 우측에 요약 테이블 추가 (H열부터)
+    const summaryHeader = [["서비스", "건수", "매출", "정산금액"]];
+    const summaryRows = Object.entries(summaryMap).map(([label, s]) => [
+      label,
+      s.count,
+      s.revenue,
+      Math.round(s.revenue * rsRate),
+    ]);
+    const summaryTotal = [
+      "합계",
+      active.length,
+      active.reduce((s, p) => s + p.price, 0),
+      Math.round(active.reduce((s, p) => s + p.price, 0) * rsRate),
+    ];
+
     const ws = XLSX.utils.json_to_sheet(rows);
+
+    // 우측 요약 삽입 (H1부터)
+    XLSX.utils.sheet_add_aoa(ws, summaryHeader, { origin: "H1" });
+    XLSX.utils.sheet_add_aoa(ws, summaryRows, { origin: "H2" });
+    XLSX.utils.sheet_add_aoa(ws, [summaryTotal], { origin: `H${2 + summaryRows.length}` });
 
     // 컬럼 너비 설정
     ws["!cols"] = [
@@ -603,6 +633,11 @@ export default function AdminPage() {
       { wch: 10 }, // 금액
       { wch: 12 }, // 정산금액
       { wch: 8 },  // 환불여부
+      { wch: 2 },  // G (빈 구분)
+      { wch: 12 }, // 서비스
+      { wch: 8 },  // 건수
+      { wch: 12 }, // 매출
+      { wch: 12 }, // 정산금액
     ];
 
     const wb = XLSX.utils.book_new();
