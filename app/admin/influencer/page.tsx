@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
+import * as XLSX from "xlsx";
 import styles from "./influencer.module.css";
 import { supabase } from "@/lib/supabase";
 
@@ -276,6 +277,79 @@ export default function InfluencerPage() {
     };
   }, [isAuthenticated, influencer, fetchSummary, fetchSettlement, fetchPayments]);
 
+  // ─── 결제 내역 엑셀 다운로드 ──────────────────────────────
+
+  const handleExportPayments = () => {
+    if (!influencer || payments.length === 0) return;
+
+    const rsRate = influencer.rs_percentage / 100;
+
+    const rows = payments.map((p) => ({
+      날짜: new Date(p.paid_at).toLocaleString("ko-KR", {
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit",
+        hour: "2-digit",
+        minute: "2-digit",
+        second: "2-digit",
+        hour12: false,
+      }),
+      서비스: SERVICE_LABELS[p.service_type] || p.service_type,
+      이름: p.user_name,
+      금액: p.price,
+      정산금액: p.is_refunded ? 0 : Math.round(p.price * rsRate),
+      환불여부: p.is_refunded ? "환불" : "",
+    }));
+
+    // 서비스별 요약 (환불 제외)
+    const active = payments.filter((p) => !p.is_refunded);
+    const summaryMap: Record<string, { count: number; revenue: number }> = {};
+    for (const p of active) {
+      const label = SERVICE_LABELS[p.service_type] || p.service_type;
+      if (!summaryMap[label]) summaryMap[label] = { count: 0, revenue: 0 };
+      summaryMap[label].count += 1;
+      summaryMap[label].revenue += p.price;
+    }
+
+    const summaryHeader = [["서비스", "건수", "매출", "정산금액"]];
+    const summaryRows = Object.entries(summaryMap).map(([label, s]) => [
+      label,
+      s.count,
+      s.revenue,
+      Math.round(s.revenue * rsRate),
+    ]);
+    const summaryTotal = [
+      "합계",
+      active.length,
+      active.reduce((s, p) => s + p.price, 0),
+      Math.round(active.reduce((s, p) => s + p.price, 0) * rsRate),
+    ];
+
+    const ws = XLSX.utils.json_to_sheet(rows);
+
+    XLSX.utils.sheet_add_aoa(ws, summaryHeader, { origin: "H1" });
+    XLSX.utils.sheet_add_aoa(ws, summaryRows, { origin: "H2" });
+    XLSX.utils.sheet_add_aoa(ws, [summaryTotal], { origin: `H${2 + summaryRows.length}` });
+
+    ws["!cols"] = [
+      { wch: 22 }, // 날짜
+      { wch: 12 }, // 서비스
+      { wch: 10 }, // 이름
+      { wch: 10 }, // 금액
+      { wch: 12 }, // 정산금액
+      { wch: 8 },  // 환불여부
+      { wch: 2 },  // G (빈 구분)
+      { wch: 12 }, // 서비스
+      { wch: 8 },  // 건수
+      { wch: 12 }, // 매출
+      { wch: 12 }, // 정산금액
+    ];
+
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, "결제내역");
+    XLSX.writeFile(wb, `${influencer.name}_결제내역.xlsx`);
+  };
+
   // Loading check
   if (!authChecked) {
     return (
@@ -341,6 +415,15 @@ export default function InfluencerPage() {
             </h1>
           </div>
           <div className={styles.header_actions}>
+            {payments.length > 0 && (
+              <button
+                className={styles.utm_toggle_button}
+                onClick={handleExportPayments}
+                style={{ background: "#1D6F42", borderColor: "#1D6F42", color: "#fff" }}
+              >
+                결제 내역 엑셀 다운
+              </button>
+            )}
             <button
               className={styles.utm_toggle_button}
               onClick={() => setShowUtm(!showUtm)}
