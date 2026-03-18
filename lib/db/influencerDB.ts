@@ -139,43 +139,49 @@ export async function getAllInfluencersWithStats(adminId?: string): Promise<Infl
 
   if (error || !influencers || influencers.length === 0) return [];
 
-  const results: InfluencerWithStats[] = [];
+  const ids = influencers.map((inf) => inf.id);
 
-  for (const inf of influencers) {
-    const { count: visitCount } = await supabase
+  // 모든 인플루언서의 데이터를 한번에 조회
+  const [visitRes, sajuRes, faceRes] = await Promise.all([
+    supabase
       .from("utm_visits")
-      .select("id", { count: "exact", head: true })
-      .eq("influencer_id", inf.id);
-
-    const { data: sajuPayments } = await supabase
+      .select("influencer_id")
+      .in("influencer_id", ids),
+    supabase
       .from("saju_analyses")
-      .select("payment_info")
-      .eq("influencer_id", inf.id)
+      .select("influencer_id, payment_info")
+      .in("influencer_id", ids)
       .eq("is_paid", true)
-      .eq("is_refunded", false);
-
-    const { data: facePayments } = await supabase
+      .eq("is_refunded", false),
+    supabase
       .from("face_analyses")
-      .select("payment_info")
-      .eq("influencer_id", inf.id)
+      .select("influencer_id, payment_info")
+      .in("influencer_id", ids)
       .eq("is_paid", true)
-      .eq("is_refunded", false);
+      .eq("is_refunded", false),
+  ]);
 
-    const allPayments = [...(sajuPayments || []), ...(facePayments || [])];
-    const totalRevenue = allPayments.reduce((sum, p) => {
-      const price = (p.payment_info as { price?: number } | null)?.price || 0;
-      return sum + price;
-    }, 0);
-
-    results.push({
-      ...inf,
-      total_visits: visitCount || 0,
-      total_payments: allPayments.length,
-      total_revenue: totalRevenue,
-    });
+  // 인플루언서별 방문수 집계
+  const visitMap = new Map<string, number>();
+  for (const v of visitRes.data || []) {
+    visitMap.set(v.influencer_id, (visitMap.get(v.influencer_id) || 0) + 1);
   }
 
-  return results;
+  // 인플루언서별 결제 집계
+  const paymentMap = new Map<string, { count: number; revenue: number }>();
+  for (const p of [...(sajuRes.data || []), ...(faceRes.data || [])]) {
+    const existing = paymentMap.get(p.influencer_id) || { count: 0, revenue: 0 };
+    existing.count += 1;
+    existing.revenue += (p.payment_info as { price?: number } | null)?.price || 0;
+    paymentMap.set(p.influencer_id, existing);
+  }
+
+  return influencers.map((inf) => ({
+    ...inf,
+    total_visits: visitMap.get(inf.id) || 0,
+    total_payments: paymentMap.get(inf.id)?.count || 0,
+    total_revenue: paymentMap.get(inf.id)?.revenue || 0,
+  }));
 }
 
 export async function deleteInfluencer(
