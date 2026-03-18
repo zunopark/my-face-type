@@ -875,6 +875,117 @@
   }
 }
 
+/* 정산 서브 탭 */
+.sub_tab {
+  padding: 6px 16px;
+  background: transparent;
+  border: 1px solid #d4c5a9;
+  border-radius: 20px;
+  color: #8b7355;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 500;
+  transition: all 0.15s;
+}
+
+.sub_tab:hover {
+  border-color: #c4965a;
+  color: #4a3c2a;
+}
+
+.sub_tab_active {
+  background: #c4965a;
+  color: #fff;
+  border-color: #c4965a;
+}
+
+/* 정산 완료 리스트 */
+.done_group {
+  margin-bottom: 16px;
+}
+
+.done_header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 0;
+  border-bottom: 1px solid #e5e0d5;
+}
+
+.done_name {
+  font-size: 13px;
+  font-weight: 600;
+  color: #4a3c2a;
+}
+
+.done_type {
+  font-size: 11px;
+  font-weight: 400;
+  color: #999;
+  margin-inline-start: 6px;
+}
+
+.done_total {
+  font-size: 13px;
+  font-weight: 600;
+  color: #27ae60;
+}
+
+.done_list {
+  display: flex;
+  flex-direction: column;
+}
+
+.done_row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 5px 0;
+  font-size: 12px;
+  border-bottom: 1px solid #f0ece4;
+}
+
+.done_date {
+  color: #888;
+  min-width: 80px;
+  flex-shrink: 0;
+}
+
+.done_memo {
+  color: #aaa;
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.done_amount {
+  font-weight: 500;
+  color: #4a3c2a;
+  white-space: nowrap;
+}
+
+.done_actions {
+  display: flex;
+  gap: 4px;
+  flex-shrink: 0;
+}
+
+.done_btn {
+  padding: 1px 6px;
+  background: transparent;
+  border: 1px solid #d4c5a9;
+  border-radius: 3px;
+  color: #999;
+  cursor: pointer;
+  font-size: 11px;
+}
+
+.done_btn:hover {
+  border-color: #c4965a;
+  color: #4a3c2a;
+}
+
 /* 정산 금액 입력 */
 .settlement_input {
   width: 90px;

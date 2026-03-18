@@ -1,0 +1,5025 @@
+/* 연애 사주 결과 페이지 스타일 */
+
+/* 프리텐다드 폰트 (UI용) */
+@font-face {
+  font-family: 'Pretendard';
+  src: url('/fonts/Pretendard-Regular.otf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Pretendard';
+  src: url('/fonts/Pretendard-Medium.otf') format('opentype');
+  font-weight: 500;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Pretendard';
+  src: url('/fonts/Pretendard-SemiBold.otf') format('opentype');
+  font-weight: 600;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Pretendard';
+  src: url('/fonts/Pretendard-Bold.otf') format('opentype');
+  font-weight: 700;
+  font-style: normal;
+}
+
+/* 마루 부리 폰트 (본문용) */
+@font-face {
+  font-family: 'MaruBuri';
+  src: url('/fonts/MaruBuri-Regular.otf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'MaruBuri';
+  src: url('/fonts/MaruBuri-SemiBold.otf') format('opentype');
+  font-weight: 600;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'MaruBuri';
+  src: url('/fonts/MaruBuri-Bold.otf') format('opentype');
+  font-weight: 700;
+  font-style: normal;
+}
+
+.saju_result_page {
+  font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, sans-serif;
+  background: #f8f5ff url('/saju/img/unhak-1.jpg') center top / 100% auto no-repeat;
+  background-attachment: fixed;
+  min-height: 100vh;
+  min-height: 100dvh;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.saju_result_page .main_body_wrap {
+  background: white;
+  min-height: 100vh;
+  min-height: 100dvh;
+  width: 100%;
+  max-width: 500px;
+  margin: 0 auto;
+  position: relative;
+  box-sizing: border-box;
+  overflow-x: hidden;
+}
+
+/* 로딩 */
+.saju_result_page .loading_wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  height: 100dvh;
+  width: 100%;
+  max-width: 500px;
+  margin: 0 auto;
+  gap: 20px;
+  background: white;
+}
+
+.saju_result_page .loading_spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid #e8dff5;
+  border-top-color: #6b4c9a;
+  border-radius: 50%;
+  animation: saju-spin 1s linear infinite;
+}
+
+@keyframes saju-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* 가로 Progress Bar */
+.saju_result_page .loading_progress_bar {
+  width: 200px;
+  height: 4px;
+  background: #e8dff5;
+  border-radius: 2px;
+  overflow: hidden;
+  position: relative;
+}
+
+.saju_result_page .loading_progress_fill {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 40%;
+  height: 100%;
+  background: linear-gradient(90deg, #6b4c9a, #4b3778);
+  border-radius: 2px;
+  animation: progress-slide 1.5s ease-in-out infinite;
+}
+
+@keyframes progress-slide {
+  0% {
+    left: -40%;
+  }
+  100% {
+    left: 100%;
+  }
+}
+
+.saju_result_page .loading_text {
+  font-size: 16px;
+  color: #666;
+  text-align: center;
+  padding: 0 20px;
+}
+
+/* 에러 */
+.saju_result_page .error_wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  width: 100%;
+  max-width: 500px;
+  margin: 0 auto;
+  gap: 16px;
+  background: white;
+}
+
+.saju_result_page .error_icon {
+  width: 48px;
+  height: 48px;
+  background: #e8dff5;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  font-weight: bold;
+  color: #6b4c9a;
+}
+
+.saju_result_page .error_text {
+  font-size: 16px;
+  color: #666;
+  text-align: center;
+  padding: 0 20px;
+}
+
+.saju_result_page .error_btn {
+  padding: 12px 24px;
+  background: #6b4c9a;
+  color: white;
+  text-decoration: none;
+  border-radius: 8px;
+  font-weight: 600;
+}
+
+/* 결과 래퍼 */
+
+/* 상단 고정 헤더 */
+
+
+/* 프로그레스 바 */
+
+
+/* 챕터 컨테이너 */
+
+
+/* 하단 네비게이션 */
+
+
+/* 챕터 헤더 */
+
+
+/* 챕터 본문 */
+
+
+/* 고민 박스 */
+
+
+/* 챕터 섹션 스타일 */
+.saju_result_page :global(.chapter_section) {
+  margin-bottom: 32px;
+  padding: 20px;
+  background: #faf8ff;
+  border-radius: 16px;
+  border: 1px solid #e8e0f5;
+}
+
+.saju_result_page :global(.chapter_section):first-child {
+  margin-top: 24px;
+}
+
+.saju_result_page :global(.chapter_section):last-child {
+  margin-bottom: 0;
+}
+
+.saju_result_page :global(.section_title) {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+  padding-bottom: 14px;
+  border-bottom: 1px dashed #d8cff0;
+  font-size: 17px;
+  font-weight: 600;
+  color: #1a1a1a;
+  line-height: 1.4;
+}
+
+
+.saju_result_page :global(.section_content) {
+  margin-top: 0;
+  padding-left: 0;
+  line-height: 2;
+  color: #444;
+  word-break: keep-all;
+}
+
+.saju_result_page :global(.section_content) p {
+  margin-bottom: 18px;
+  margin-top: 0;
+}
+
+.saju_result_page :global(.section_content) p:first-child {
+  margin-top: 0;
+}
+
+.saju_result_page :global(.section_content) p:last-child {
+  margin-bottom: 0;
+}
+
+/* 하위 섹션 */
+.saju_result_page :global(.subsection) {
+  margin-top: 20px;
+  padding: 16px;
+  background: #f8f5ff;
+  border-radius: 12px;
+}
+
+.saju_result_page :global(.subsection):first-child {
+  margin-top: 16px;
+}
+
+.saju_result_page :global(.subsection_title) {
+  font-size: 15px;
+  font-weight: 700;
+  color: #6b4c9a;
+  margin: 0 0 12px 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.saju_result_page :global(.subsection_title)::before {
+  content: "•";
+  color: #6b4c9a;
+}
+
+.saju_result_page :global(.subsection_content) {
+  font-size: 15px;
+  line-height: 1.9;
+  color: #4a4a4a;
+}
+
+.saju_result_page :global(.subsection_content) p {
+  margin: 0 0 12px 0;
+}
+
+.saju_result_page :global(.subsection_content) p:last-child {
+  margin-bottom: 0;
+}
+
+/* 인트로/목차 슬라이드 */
+
+
+/* 인트로/목차 헤더 */
+
+
+/* 기본 정보 카드 */
+
+
+/* 사주 팔자 섹션 */
+
+
+.saju_result_page .pillar_label {
+  font-size: 12px;
+  color: #6b4c9a;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+
+.saju_result_page .pillar_chars {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+
+.saju_result_page .pillar_stem,
+.saju_result_page .pillar_branch {
+  font-size: 24px;
+  font-weight: 700;
+}
+
+
+/* 연애 사주 핵심 카드 */
+
+
+/* 리포트 목차 */
+
+
+.saju_result_page .toc_list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+
+/* 마지막 슬라이드 */
+
+
+.saju_result_page .ending_sign {
+  font-size: 14px;
+  color: #999;
+  font-style: italic;
+  margin-top: 20px;
+}
+
+
+/* 이상형 이미지 */
+
+
+/* 클릭 시 흔들림 애니메이션 */
+
+@keyframes shake-reveal {
+  0%,
+  100% {
+    transform: translateX(0) rotate(0deg);
+  }
+  10% {
+    transform: translateX(-8px) rotate(-2deg);
+  }
+  20% {
+    transform: translateX(8px) rotate(2deg);
+  }
+  30% {
+    transform: translateX(-6px) rotate(-1.5deg);
+  }
+  40% {
+    transform: translateX(6px) rotate(1.5deg);
+  }
+  50% {
+    transform: translateX(-4px) rotate(-1deg);
+  }
+  60% {
+    transform: translateX(4px) rotate(1deg);
+  }
+  70% {
+    transform: translateX(-2px) rotate(-0.5deg);
+  }
+  80% {
+    transform: translateX(2px) rotate(0.5deg);
+  }
+  90% {
+    transform: translateX(-1px) rotate(0deg);
+  }
+}
+
+/* 마크다운 표 */
+.saju_result_page :global(.md-table) {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 16px 0;
+  font-size: 14px;
+  border: 1px solid #d8cff0;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.saju_result_page :global(.md-table) th,
+.saju_result_page :global(.md-table) td {
+  padding: 10px 12px;
+  text-align: center;
+  border: 1px solid #d8cff0;
+}
+
+.saju_result_page :global(.md-table) th {
+  background: #f8f5ff;
+  font-weight: 600;
+  color: #6b4c9a;
+}
+
+.saju_result_page :global(.md-table) tr:nth-child(even) {
+  background: #faf8ff;
+}
+
+/* 블록인용 프로필 */
+.saju_result_page :global(.quote-header) {
+  display: flex;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.saju_result_page :global(.quote-pinch) strong,
+.saju_result_page :global(.quote-sokdak) strong,
+.saju_result_page :global(.quote-todak) strong {
+  display: inline;
+  margin-bottom: 0;
+  padding-top: 4px;
+  font-size: 16px;
+}
+
+.saju_result_page :global(.quote-profile) {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-right: 8px;
+}
+
+/* 리스트 스타일 */
+.saju_result_page :global(.section_content) ul {
+  list-style: none;
+  margin: 16px 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.saju_result_page :global(.section_content) ul li {
+  position: relative;
+  padding: 14px 16px 14px 44px;
+  background: linear-gradient(135deg, #faf8ff 0%, #f8f5ff 100%);
+  border-radius: 12px;
+  border: 1px solid #e8e0f5;
+  font-size: 15px;
+  line-height: 1.7;
+  color: #444;
+}
+
+
+/* 순서 있는 리스트 */
+.saju_result_page :global(.section_content) ol {
+  list-style: none;
+  margin: 16px 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  counter-reset: list-counter;
+}
+
+.saju_result_page :global(.section_content) ol li {
+  position: relative;
+  padding: 16px 16px 16px 52px;
+  background: #fff;
+  border-radius: 14px;
+  border: 1px solid #e8dff5;
+  font-size: 15px;
+  line-height: 1.7;
+  color: #444;
+  counter-increment: list-counter;
+  box-shadow: 0 2px 8px rgba(107, 76, 154, 0.06);
+}
+
+.saju_result_page :global(.section_content) ol li::before {
+  content: counter(list-counter);
+  position: absolute;
+  left: 14px;
+  top: 14px;
+  width: 26px;
+  height: 26px;
+  background: linear-gradient(135deg, #6b4c9a 0%, #4b3778 100%);
+  color: #fff;
+  font-size: 13px;
+  font-weight: 700;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 6px rgba(107, 76, 154, 0.3);
+}
+
+/* 유틸리티 */
+
+/* ============================================
+   대화형 UI 스타일 (chat_mode)
+   ============================================ */
+
+.saju_result_page.chat_mode .main_body_wrap {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  height: 100dvh;
+  padding: 0;
+}
+
+/* 채팅 헤더 */
+
+
+/* 메시지 영역 */
+
+
+/* 메시지 행 */
+
+
+/* 말풍선 */
+
+
+/* 타이핑 커서 */
+.saju_result_page .typing_cursor {
+  display: inline-block;
+  animation: blink 0.8s infinite;
+  color: #6b4c9a;
+  font-weight: 700;
+}
+
+@keyframes blink {
+  0%, 50% { opacity: 1; }
+  51%, 100% { opacity: 0; }
+}
+
+/* 카드 래퍼 */
+
+/* 리포트 카드 공통 - 인트로 스타일과 통일 */
+.saju_result_page .report_card {
+  background: #fffcf8;
+  border: 1px solid #e8dff5;
+  border-left: none;
+  border-right: none;
+  border-radius: 0;
+  padding: 32px 24px;
+  box-shadow: none;
+}
+
+.saju_result_page .card_header {
+  margin-bottom: 48px;
+  padding: 0;
+  text-align: center;
+  background: transparent;
+  position: relative;
+}
+
+.saju_result_page .card_header::after {
+  content: "";
+  display: block;
+  width: 40px;
+  height: 2px;
+  background: #d4a5a5;
+  margin: 24px auto 0;
+}
+
+.saju_result_page .card_label {
+  display: inline-block;
+  padding: 0;
+  background: none;
+  color: #6b4c9a;
+  font-family: 'Pretendard', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 3px;
+  margin-bottom: 12px;
+  text-transform: uppercase;
+}
+
+.saju_result_page .card_title {
+  font-family: "KimjungchulMyungjo-Bold", serif;
+  font-size: 24px;
+  font-weight: 700;
+  color: #2a2a2a;
+  margin: 0;
+  letter-spacing: 1px;
+  line-height: 1.6;
+}
+
+/* 본문 텍스트 공통 (MaruBuri) */
+.saju_result_page .card_content,
+.saju_result_page :global(.section_content),
+.saju_result_page .intro_section_content,
+.saju_result_page .saju_explain_text,
+.saju_result_page .welcome_text,
+.saju_result_page .nangja_text,
+.saju_result_page .intro_quote {
+  font-family: 'MaruBuri', serif;
+}
+
+.saju_result_page .card_content {
+  font-size: 16px;
+  line-height: 2;
+  color: #4a3a3a;
+  text-align: justify;
+  text-align-last: left;
+  word-break: break-word;
+}
+
+/* 섹션 제목 (줄 전체가 **제목**인 경우) */
+.saju_result_page .card_content :global(.section-heading) {
+  display: block;
+  margin-top: 2.5em;
+  margin-bottom: 0.5em;
+  font-size: 1.05em;
+}
+
+.saju_result_page .card_content p:first-child :global(.section-heading):first-child {
+  margin-top: 0;
+}
+
+.saju_result_page .card_content p:has(> :global(.section-heading):only-child) {
+  margin-bottom: 0;
+}
+
+.saju_result_page .card_content :global(.section-heading) + br {
+  display: none;
+}
+
+/* 사주 인트로 카드 */
+
+
+.saju_result_page .saju_info_name {
+  font-size: 16px;
+  font-weight: 700;
+  color: #1a1a1a;
+}
+
+
+/* 미니 사주팔자 */
+
+
+/* 미니 연애 핵심 */
+
+
+/* 고민 박스 미니 */
+
+
+/* 이상형 카드 */
+.saju_result_page .ideal_type_card {
+  text-align: center;
+}
+
+.saju_result_page .ideal_type_card .ideal_image_wrap {
+  max-width: 320px;
+  margin: 0 auto;
+  aspect-ratio: 3/4;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+  cursor: pointer;
+}
+
+.saju_result_page .ideal_type_card .ideal_image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.saju_result_page .ideal_type_card .shake {
+  animation: shake-reveal 0.5s ease-out;
+}
+
+.saju_result_page .ideal_tap_hint {
+  margin-top: 16px;
+  font-size: 15px;
+  color: #5c4a3a;
+  font-weight: 500;
+}
+
+.saju_result_page .ideal_revealed_message {
+  margin-top: 20px;
+  padding: 16px 20px;
+  background: #faf7f4;
+  border-radius: 12px;
+  border: 1px solid #e8e0d8;
+}
+
+.saju_result_page .ideal_revealed_message p {
+  font-size: 15px;
+  line-height: 1.7;
+  color: #5c4a3a;
+  margin: 0;
+  font-family: "KimjungchulMyungjo", serif;
+}
+
+/* 피해야 할 인연 카드 */
+.saju_result_page .ideal_type_card.avoid_variant {
+  background: linear-gradient(180deg, #6C0D00 0%, rgba(0, 0, 0, 1) 100%);
+}
+
+.saju_result_page .ideal_type_card.avoid_variant .card_header {
+  background: transparent;
+  border-bottom: none;
+}
+
+.saju_result_page .ideal_type_card.avoid_variant .card_title {
+  color: #fff;
+}
+
+
+.saju_result_page .ideal_type_card.avoid_variant .ideal_image_wrap {
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+  border: 3px solid rgba(255, 255, 255, 0.1);
+}
+
+.saju_result_page .ideal_type_card.avoid_variant .ideal_revealed_message {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.saju_result_page .ideal_type_card.avoid_variant .ideal_revealed_message p {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+/* ========================================
+   마무리 카드 - 전체 리포트 요약
+   ======================================== */
+
+.saju_result_page .ending_card {
+  padding: 32px 24px;
+  background: #fffcf8;
+}
+
+/* 인사말 영역 */
+.saju_result_page .ending_greeting {
+  text-align: center;
+  padding: 24px;
+  background: linear-gradient(135deg, #f8f5ff 0%, #fcfaff 100%);
+  border-radius: 16px;
+  border: 1px solid #e8dff5;
+  margin-bottom: 32px;
+}
+
+.saju_result_page .ending_greeting .greeting_main {
+  font-family: "KimjungchulMyungjo-Bold", serif;
+  font-size: 18px;
+  font-weight: 700;
+  color: #3a2a2a;
+  margin: 0 0 16px 0;
+}
+
+.saju_result_page .ending_greeting p {
+  font-size: 15px;
+  color: #555;
+  line-height: 1.9;
+  margin: 0 0 8px 0;
+}
+
+.saju_result_page .ending_greeting .ending_sign {
+  font-size: 14px;
+  color: #6b4c9a;
+  font-style: italic;
+  margin-top: 16px;
+  font-weight: 600;
+}
+
+/* 보고서 전체 요약 */
+.saju_result_page .ending_summary {
+  margin-top: 0;
+  text-align: left;
+}
+
+.saju_result_page .ending_summary .summary_title {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-size: 16px;
+  font-weight: 700;
+  color: #3a2a2a;
+  text-align: center;
+  margin: 0 0 24px 0;
+  padding: 16px;
+  background: #fff;
+  border-radius: 12px;
+  border: 1px solid #f0e8e0;
+}
+
+.saju_result_page .ending_summary .summary_title::before {
+  content: "📜";
+}
+
+/* 요약 카드 공통 스타일 */
+.saju_result_page .ending_summary .summary_report_card {
+  margin-bottom: 16px;
+  background: #fff;
+  border-radius: 16px;
+  padding: 20px;
+  border: 1px solid #f0e8e0;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+.saju_result_page .ending_summary .summary_report_card .card_header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #f5f0eb;
+  text-align: left;
+}
+
+.saju_result_page .ending_summary .summary_report_card .card_label {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 48px;
+  padding: 6px 12px;
+  background: linear-gradient(135deg, #6b4c9a 0%, #4b3778 100%);
+  color: #fff;
+  font-size: 12px;
+  font-weight: 700;
+  border-radius: 8px;
+  flex-shrink: 0;
+}
+
+.saju_result_page .ending_summary .summary_report_card .card_title {
+  font-family: "KimjungchulMyungjo-Bold", serif;
+  font-size: 16px;
+  font-weight: 700;
+  color: #3a2a2a;
+  margin: 0;
+  flex: 1;
+}
+
+.saju_result_page .ending_summary .summary_report_card .card_content {
+  font-size: 14px;
+  line-height: 1.9;
+  color: #4a3a3a;
+}
+
+/* 이상형 카드 */
+.saju_result_page .ending_summary .summary_ideal_card {
+  margin-bottom: 16px;
+  text-align: center;
+  background: #fff;
+  border-radius: 16px;
+  padding: 20px;
+  border: 1px solid #f0e8e0;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+.saju_result_page .ending_summary .summary_ideal_card .card_header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #f5f0eb;
+  text-align: left;
+}
+
+.saju_result_page .ending_summary .summary_ideal_card .card_label {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 48px;
+  padding: 6px 12px;
+  background: linear-gradient(135deg, #9b59b6 0%, #8e44ad 100%);
+  color: #fff;
+  font-size: 12px;
+  font-weight: 700;
+  border-radius: 8px;
+  flex-shrink: 0;
+}
+
+.saju_result_page .ending_summary .summary_ideal_card .card_title {
+  font-family: "KimjungchulMyungjo-Bold", serif;
+  font-size: 16px;
+  font-weight: 700;
+  color: #3a2a2a;
+  margin: 0;
+  flex: 1;
+}
+
+.saju_result_page .ending_summary .summary_ideal_image {
+  padding: 12px 0;
+  display: flex;
+  justify-content: center;
+}
+
+.saju_result_page .ending_summary .ideal_image_full {
+  max-width: 200px;
+  width: 100%;
+  aspect-ratio: 3/4;
+  object-fit: cover;
+  border-radius: 12px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+}
+
+/* 피해야 할 인연 카드 */
+.saju_result_page .ending_summary .summary_avoid_card {
+  background: linear-gradient(180deg, #f8f5fa 0%, #f0eaf5 100%);
+  border: 1px solid rgba(120, 90, 140, 0.2);
+}
+
+.saju_result_page .ending_summary .summary_avoid_card .card_header {
+  border-bottom: 1px solid rgba(120, 90, 140, 0.15);
+}
+
+.saju_result_page .ending_summary .summary_avoid_card .card_title {
+  color: #6a5078;
+}
+
+/* 들어가며 요약 */
+.saju_result_page .ending_summary .intro_summary_content p {
+  font-size: 14px;
+  line-height: 1.8;
+  color: #4a3a3a;
+  margin: 0 0 8px 0;
+}
+
+.saju_result_page .ending_summary .intro_summary_content p:last-child {
+  margin-bottom: 0;
+}
+
+/* ========================================
+   사주 원국 간소화 카드
+   ======================================== */
+
+.saju_result_page .ending_summary .summary_saju_card {
+  background: linear-gradient(135deg, #fff 0%, #fffaf5 100%);
+}
+
+.saju_result_page .ending_summary .summary_saju_card .summary_saju_info {
+  text-align: center;
+  padding: 16px;
+  background: #fff;
+  border-radius: 12px;
+  border: 1px solid #f0e8e0;
+  margin-bottom: 16px;
+}
+
+.saju_result_page .ending_summary .summary_saju_card .summary_saju_birth {
+  font-size: 13px;
+  color: #888;
+  margin: 0 0 12px 0;
+}
+
+.saju_result_page .ending_summary .summary_saju_card .summary_saju_daymaster {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin: 0;
+  padding-top: 12px;
+  border-top: 1px solid #f0e8e0;
+}
+
+.saju_result_page .ending_summary .summary_saju_card .daymaster_char {
+  font-size: 28px;
+  font-weight: 700;
+}
+
+.saju_result_page .ending_summary .summary_saju_card .daymaster_title {
+  font-size: 14px;
+  color: #555;
+  font-weight: 500;
+}
+
+/* 사주 팔자 4주 표시 */
+.saju_result_page .ending_summary .summary_saju_card .summary_pillars {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+}
+
+.saju_result_page .ending_summary .summary_saju_card .summary_pillar {
+  text-align: center;
+  background: #fff;
+  border-radius: 12px;
+  padding: 14px 8px;
+  border: 1px solid #f0e8e0;
+}
+
+.saju_result_page .ending_summary .summary_saju_card .pillar_label {
+  display: block;
+  font-size: 11px;
+  color: #999;
+  margin-bottom: 10px;
+  font-weight: 500;
+}
+
+.saju_result_page .ending_summary .summary_saju_card .pillar_chars {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+
+.saju_result_page .ending_summary .summary_saju_card .pillar_stem {
+  font-size: 22px;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.saju_result_page .ending_summary .summary_saju_card .pillar_branch {
+  font-size: 22px;
+  font-weight: 700;
+  line-height: 1;
+}
+
+/* 하단 버튼 영역 */
+
+
+/* 메시지 등장 애니메이션 */
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* 카드 내 섹션 스타일 (보고서 스타일) */
+.saju_result_page .report_card :global(.chapter_section) {
+  margin: 0 0 56px 0;
+  padding: 0;
+  background: transparent;
+  border: none;
+  border-radius: 0;
+}
+
+.saju_result_page .report_card :global(.chapter_section):last-child {
+  margin-bottom: 0;
+}
+
+.saju_result_page .report_card :global(.section_title) {
+  font-family: "KimjungchulMyungjo-Bold", serif;
+  font-size: 17px;
+  font-weight: 700;
+  color: #6b4c9a;
+  text-align: center !important;
+  text-align-last: center !important;
+  margin: 0 0 24px 0;
+  padding: 16px 0;
+  display: block;
+  gap: 0;
+  letter-spacing: 1px;
+  position: relative;
+  background: linear-gradient(to right, transparent, #fff8f6 20%, #fff8f6 80%, transparent);
+  border-top: 1px solid #f0d8d8;
+  border-bottom: 1px solid #f0d8d8;
+}
+
+
+.saju_result_page .report_card :global(.section_content) {
+  font-size: 16px;
+  line-height: 2;
+  color: #4a3a3a;
+  padding: 8px 0 0 0;
+  text-align: justify;
+  text-align-last: left;
+  word-break: break-word;
+}
+
+.saju_result_page .report_card :global(.section_content) p {
+  margin: 0 0 24px 0;
+  text-indent: 0.5em;
+}
+
+.saju_result_page .report_card :global(.section_content) p:first-child {
+  margin-top: 8px;
+}
+
+.saju_result_page .report_card :global(.section_content) p:last-child {
+  margin-bottom: 0;
+}
+
+.saju_result_page .report_card :global(.section_content) strong {
+  color: #6b4c9a;
+  font-weight: 600;
+}
+
+/* 인용문 - 색동낭자 스타일 */
+.saju_result_page .report_card :global(.section_content) blockquote,
+.saju_result_page .report_card .card_content blockquote {
+  all: unset;
+  display: block;
+  position: relative;
+  margin: 24px 0;
+  padding: 20px 24px;
+  background: rgba(212, 165, 165, 0.1);
+  border-radius: 12px;
+  font-size: 15px;
+  line-height: 1.9;
+  color: #5a4a4a;
+}
+
+.saju_result_page .report_card :global(.section_content) blockquote:global(.quote-pinch),
+.saju_result_page .report_card :global(.section_content) blockquote:global(.quote-sokdak),
+.saju_result_page .report_card :global(.section_content) blockquote:global(.quote-todak),
+.saju_result_page .report_card .card_content blockquote:global(.quote-pinch),
+.saju_result_page .report_card .card_content blockquote:global(.quote-sokdak),
+.saju_result_page .report_card .card_content blockquote:global(.quote-todak) {
+  background: #fff;
+  border: 1px solid #f0e8e8;
+  padding: 20px;
+}
+
+.saju_result_page .report_card :global(.section_content) :global(.quote-header),
+.saju_result_page .report_card .card_content :global(.quote-header) {
+  display: flex;
+  align-items: center;
+  margin-bottom: 12px;
+  gap: 10px;
+}
+
+.saju_result_page .report_card :global(.section_content) :global(.quote-profile),
+.saju_result_page .report_card .card_content :global(.quote-profile) {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.saju_result_page .report_card :global(.section_content) :global(.quote-header) strong,
+.saju_result_page .report_card .card_content :global(.quote-header) strong {
+  font-size: 14px;
+  color: #6b4c9a;
+}
+
+/* 리스트 스타일 - 심플 */
+.saju_result_page .report_card :global(.section_content) ul {
+  list-style: none;
+  margin: 8px 0;
+  padding: 0;
+}
+
+/* ul 바로 뒤에 오는 br 숨기기 */
+.saju_result_page .report_card :global(.section_content) ul + br {
+  display: none;
+}
+
+.saju_result_page .report_card :global(.section_content) ul li {
+  position: relative;
+  padding: 4px 0 4px 18px;
+  background: transparent;
+  border: none;
+  font-size: 15px;
+  line-height: 1.8;
+  color: #4a3a3a;
+}
+
+.saju_result_page .report_card :global(.section_content) ul li::before {
+  content: "•";
+  position: absolute;
+  left: 0;
+  color: #6b4c9a;
+  font-weight: bold;
+}
+
+.saju_result_page .report_card :global(.section_content) ol {
+  list-style: none;
+  margin: 20px 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  counter-reset: list-counter;
+}
+
+.saju_result_page .report_card :global(.section_content) ol li {
+  position: relative;
+  padding: 16px 16px 16px 48px;
+  background: #fff;
+  border: 1px solid #f0e8e8;
+  border-radius: 12px;
+  font-size: 15px;
+  line-height: 1.8;
+  color: #4a3a3a;
+  counter-increment: list-counter;
+}
+
+.saju_result_page .report_card :global(.section_content) ol li::before {
+  content: counter(list-counter);
+  position: absolute;
+  left: 14px;
+  top: 14px;
+  width: 24px;
+  height: 24px;
+  background: linear-gradient(135deg, #6b4c9a 0%, #4b3778 100%);
+  color: #fff;
+  font-size: 12px;
+  font-weight: 700;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* 서브섹션 스타일 */
+.saju_result_page .report_card :global(.subsection) {
+  margin-top: 24px;
+  padding: 20px;
+  background: #fff;
+  border: 1px solid #f0e8e8;
+  border-radius: 12px;
+}
+
+.saju_result_page .report_card :global(.subsection):first-child {
+  margin-top: 20px;
+}
+
+.saju_result_page .report_card :global(.subsection_title) {
+  font-size: 16px;
+  font-weight: 700;
+  color: #6b4c9a;
+  margin: 0 0 16px 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.saju_result_page .report_card :global(.subsection_title)::before {
+  content: "✦";
+  color: #d4a5a5;
+  font-size: 12px;
+}
+
+.saju_result_page .report_card :global(.subsection_content) {
+  font-size: 15px;
+  line-height: 2;
+  color: #4a3a3a;
+}
+
+.saju_result_page .report_card :global(.subsection_content) p {
+  margin: 0 0 16px 0;
+}
+
+.saju_result_page .report_card :global(.subsection_content) p:last-child {
+  margin-bottom: 0;
+}
+
+/* 테이블 스타일 - 인트로와 통일 */
+.saju_result_page .report_card :global(.md-table) {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 20px 0;
+  font-size: 14px;
+  border: 1px solid #f0e8e8;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.saju_result_page .report_card :global(.md-table) th,
+.saju_result_page .report_card :global(.md-table) td {
+  padding: 12px 14px;
+  text-align: center;
+  border: 1px solid #f0e8e8;
+}
+
+.saju_result_page .report_card :global(.md-table) th {
+  background: rgba(212, 165, 165, 0.1);
+  font-weight: 600;
+  color: #3a2a2a;
+}
+
+.saju_result_page .report_card :global(.md-table) tr:nth-child(even) {
+  background: #fffcf8;
+}
+
+/* hr 스타일 */
+.saju_result_page .report_card hr {
+  border: none;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, #e8d8d8, transparent);
+  margin: 32px 0;
+}
+
+/* 미디어쿼리 - 500px 이상 */
+@media screen and (min-width: 500px) {
+  .saju_result_page,
+  .saju_result_page .main_body_wrap,
+  .saju_result_page .loading_wrap,
+  .saju_result_page .error_wrap {
+    width: 500px;
+  }
+
+}
+
+/* 미디어쿼리 - 500px 미만 (모바일) */
+@media screen and (max-width: 499px) {
+  .saju_result_page,
+  .saju_result_page .main_body_wrap,
+  .saju_result_page .loading_wrap,
+  .saju_result_page .error_wrap {
+    width: 100%;
+  }
+
+}
+
+/* ============================================
+   대화형 UI 스타일 (새로운 dialogue_wrap 기반)
+   ============================================ */
+
+/* 전체 배경 이미지 */
+.saju_result_page.chat_mode {
+  position: relative;
+  width: 100%;
+  max-width: 500px;
+  min-height: 100vh;
+  min-height: 100dvh;
+  margin: 0 auto;
+  overflow: hidden;
+  background: #000;
+}
+
+.saju_result_page .result_bg {
+  position: fixed;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  max-width: 500px;
+  height: 100%;
+  z-index: 1;
+  background: #000;
+}
+
+.saju_result_page .result_bg_image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top center;
+}
+
+.saju_result_page .result_bg_image.fade_in {
+  animation: bgFadeIn 0.3s ease-out;
+}
+
+@keyframes bgFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* 뒤로가기 버튼 - iOS 글래스모피즘 */
+.saju_result_page .back_btn {
+  position: fixed;
+  top: 16px;
+  left: calc(50% - 250px + 16px);
+  height: 40px;
+  padding: 0 14px 0 10px;
+  background: rgba(255, 255, 255, 0.4);
+  -webkit-backdrop-filter: blur(16px);
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  z-index: 9999;
+  text-decoration: none;
+  color: #333;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+  pointer-events: auto;
+  transition: none;
+  animation: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  font-family: inherit;
+}
+
+@media (max-width: 500px) {
+  .saju_result_page .back_btn {
+    left: 16px;
+  }
+
+}
+
+.saju_result_page .back_btn:hover,
+.saju_result_page .back_btn:active,
+.saju_result_page .back_btn:focus {
+  background: rgba(255, 255, 255, 0.4);
+  transition: none;
+  animation: none;
+  outline: none;
+}
+
+.saju_result_page .back_btn :global(.material-icons) {
+  color: #333;
+  font-size: 22px;
+}
+
+.saju_result_page .back_btn_text {
+  color: #333;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+/* 리포트 오버레이 - 아래에서 올라오는 애니메이션 */
+.saju_result_page .report_overlay {
+  position: fixed;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%) translateY(100%);
+  width: 100%;
+  max-width: 500px;
+  height: 100%;
+  z-index: 50;
+  display: flex;
+  flex-direction: column;
+  opacity: 0;
+  transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.3s ease;
+  pointer-events: none;
+}
+
+.saju_result_page .report_overlay.active {
+  transform: translateX(-50%) translateY(0);
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* 애니메이션 중에는 스크롤/터치 차단 */
+.saju_result_page .report_overlay.animating .report_scroll {
+  pointer-events: none;
+  overflow: hidden;
+  touch-action: none;
+}
+
+.saju_result_page .report_scroll {
+  flex: 1;
+  overflow-y: auto;
+  padding: 0;
+  -webkit-overflow-scrolling: touch;
+}
+
+.saju_result_page .report_scroll > *:first-child {
+  padding-top: 100px;
+}
+
+.saju_result_page .report_scroll > *:last-child {
+  margin-bottom: 0;
+  padding-bottom: 300px;
+}
+
+/* 리포트 카드 등장 애니메이션 */
+.saju_result_page .report_scroll > * {
+  animation: cardFadeInUp 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  opacity: 0;
+}
+
+@keyframes cardFadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.saju_result_page .report_scroll::-webkit-scrollbar {
+  display: none;
+}
+
+.saju_result_page .report_scroll {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* 대화 UI (하단 고정) - saju-love.css 스타일 재사용 */
+.saju_result_page .dialogue_wrap {
+  position: fixed;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  max-width: 500px;
+  padding: 20px;
+  padding-bottom: calc(20px + env(safe-area-inset-bottom));
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.15s ease;
+}
+
+.saju_result_page .dialogue_wrap.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.saju_result_page .dialogue_box {
+  background: rgba(0, 0, 0, 0.8);
+  border-radius: 16px;
+  padding: 24px;
+  min-height: 120px;
+}
+
+.saju_result_page .dialogue_speaker {
+  font-size: 13px;
+  font-weight: 600;
+  color: #b8a0d2;
+  margin-bottom: 12px;
+  letter-spacing: 1px;
+}
+
+.saju_result_page .dialogue_text {
+  font-size: 17px;
+  line-height: 1.8;
+  color: white;
+  font-family: "KimjungchulMyungjo-Bold", serif;
+  white-space: pre-line;
+  margin: 0;
+}
+
+.saju_result_page .dialogue_text .typing_cursor {
+  display: inline-block;
+  width: 2px;
+  height: 1em;
+  background: white;
+  margin-left: 2px;
+  animation: dialogue-blink 0.7s infinite;
+}
+
+@keyframes dialogue-blink {
+  0%, 50% { opacity: 1; }
+  51%, 100% { opacity: 0; }
+}
+
+.saju_result_page .dialogue_buttons {
+  display: none;
+  gap: 10px;
+}
+
+.saju_result_page .dialogue_buttons.visible {
+  display: flex;
+}
+
+.saju_result_page .dialogue_prev_btn {
+  padding: 16px 24px;
+  font-size: 16px;
+  font-weight: 700;
+  background: white;
+  color: #333;
+  border: 1px solid #ddd;
+  border-radius: 12px;
+  cursor: pointer;
+}
+
+.saju_result_page .dialogue_next_btn {
+  flex: 1;
+  padding: 16px 32px;
+  font-size: 16px;
+  font-weight: 700;
+  background: linear-gradient(135deg, #6b4c9a 0%, #4b3778 100%);
+  color: white;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  box-shadow: 0 4px 20px rgba(107, 76, 154, 0.4);
+  text-decoration: none;
+  text-align: center;
+}
+
+.saju_result_page .dialogue_secondary_btn {
+  padding: 16px 24px;
+  font-size: 16px;
+  font-weight: 700;
+  background: white;
+  color: #333;
+  border: 1px solid #ddd;
+  border-radius: 12px;
+  cursor: pointer;
+  text-decoration: none;
+  text-align: center;
+}
+
+.saju_result_page .end_buttons {
+  display: flex;
+  gap: 10px;
+  width: 100%;
+}
+
+/* 리포트 카드 내 하단 다음 버튼 */
+.saju_result_page .report_bottom_btn_wrap {
+  position: fixed;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  max-width: 500px;
+  padding: 20px;
+  padding-bottom: calc(20px + env(safe-area-inset-bottom));
+  background: linear-gradient(0deg, rgba(255, 255, 255, 1) 60%, transparent 100%);
+  z-index: 60;
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.saju_result_page .report_nav_buttons {
+  display: flex;
+  gap: 10px;
+  width: 100%;
+}
+
+.saju_result_page .report_prev_btn {
+  padding: 16px 24px;
+  font-size: 16px;
+  font-weight: 700;
+  background: white;
+  color: #333;
+  border: 1px solid #ddd;
+  border-radius: 12px;
+  cursor: pointer;
+}
+
+.saju_result_page .report_next_btn {
+  flex: 1;
+  padding: 16px 32px;
+  font-size: 16px;
+  font-weight: 700;
+  background: linear-gradient(135deg, #6b4c9a 0%, #4b3778 100%);
+  color: white;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  box-shadow: 0 4px 20px rgba(107, 76, 154, 0.4);
+}
+
+/* 스크롤 힌트 */
+.saju_result_page .scroll_hint {
+  position: fixed;
+  bottom: 100px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 10px 20px;
+  background: rgba(0, 0, 0, 0.6);
+  color: white;
+  font-size: 14px;
+  border-radius: 20px;
+  z-index: 55;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  animation: bounce 1.5s infinite;
+}
+
+.saju_result_page .scroll_hint :global(.material-icons) {
+  font-size: 18px;
+  animation: arrow-bounce 1.5s infinite;
+}
+
+@keyframes bounce {
+  0%, 100% { transform: translateX(-50%) translateY(0); }
+  50% { transform: translateX(-50%) translateY(-5px); }
+}
+
+@keyframes arrow-bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(3px); }
+}
+
+/* ============================================
+   IntroCard 스타일 (들어가며)
+   - 전통 한지 질감 + 파스텔 색동 컬러 + 우아한 디자인
+   ============================================ */
+
+.saju_result_page .intro_card {
+  background: #fffcf8;
+  padding: 32px 24px;
+}
+
+.saju_result_page .intro_section {
+  margin-bottom: 48px;
+}
+
+.saju_result_page .intro_section:last-child {
+  margin-bottom: 0;
+}
+
+/* 장면 1: 인사 섹션 */
+.saju_result_page .intro_welcome {
+  text-align: center;
+  padding: 24px 0 32px;
+}
+
+.saju_result_page .intro_welcome.compact {
+  padding: 16px 0 8px;
+  margin-bottom: 0;
+}
+
+.saju_result_page .welcome_main {
+  font-family: "KimjungchulMyungjo-Bold", serif;
+  font-size: 22px;
+  font-weight: 700;
+  color: #3a2a2a;
+  margin: 0 0 8px 0;
+  letter-spacing: 2px;
+}
+
+.saju_result_page .welcome_sub {
+  font-size: 14px;
+  color: #8a7a7a;
+  margin: 0;
+  letter-spacing: 1px;
+}
+
+.saju_result_page .welcome_divider {
+  font-size: 16px;
+  color: #d4a5a5;
+  margin: 24px 0;
+  letter-spacing: 8px;
+}
+
+.saju_result_page .welcome_text {
+  font-size: 15px;
+  line-height: 2;
+  color: #5a4a4a;
+  margin: 0 0 16px 0;
+}
+
+.saju_result_page .welcome_text:last-child {
+  margin-bottom: 0;
+}
+
+.saju_result_page .welcome_text strong {
+  color: #6b4c9a;
+  font-weight: 600;
+}
+
+/* 섹션 제목 */
+.saju_result_page .intro_section_title {
+  font-family: "KimjungchulMyungjo-Bold", serif;
+  font-size: 18px;
+  font-weight: 700;
+  color: #3a2a2a;
+  text-align: center;
+  margin: 0 0 8px 0;
+}
+
+/* 섹션 부제목 */
+.saju_result_page .intro_section_subtitle {
+  font-size: 13px;
+  color: #a08080;
+  text-align: center;
+  margin: 0 0 28px 0;
+  letter-spacing: 1px;
+}
+
+/* 섹션 본문 */
+.saju_result_page .intro_section_content {
+  font-size: 15px;
+  line-height: 2;
+  color: #4a3a3a;
+}
+
+.saju_result_page .intro_section_content p {
+  margin: 0 0 20px 0;
+}
+
+.saju_result_page .intro_section_content p:last-child {
+  margin-bottom: 0;
+}
+
+.saju_result_page .intro_section_content strong {
+  color: #6b4c9a;
+  font-weight: 600;
+}
+
+/* 인용/강조 텍스트 */
+.saju_result_page .intro_quote {
+  font-family: "KimjungchulMyungjo-Bold", serif;
+  font-size: 16px;
+  color: #5a4a4a;
+  text-align: center;
+  padding: 20px;
+  background: rgba(212, 165, 165, 0.1);
+  border-radius: 8px;
+  margin-bottom: 24px !important;
+}
+
+/* 노트/참고 텍스트 */
+.saju_result_page .intro_note {
+  color: #7a6a6a;
+  font-style: italic;
+  padding-left: 16px;
+  border-left: 2px solid #e8d8d8;
+}
+
+/* 약속 강조 */
+.saju_result_page .intro_promise {
+  text-align: center;
+  font-size: 16px;
+  color: #6b4c9a;
+  font-weight: 500;
+  margin-top: 24px !important;
+}
+
+/* 장 목록 */
+.saju_result_page .intro_chapters_list {
+  margin-top: 24px;
+  padding: 20px;
+  background: #fff;
+  border: 1px solid #f0e8e8;
+  border-radius: 8px;
+}
+
+.saju_result_page .intro_chapters_list p {
+  margin: 0 0 12px 0;
+  font-size: 14px;
+  color: #5a4a4a;
+  line-height: 1.6;
+}
+
+.saju_result_page .intro_chapters_list p:last-child {
+  margin-bottom: 0;
+}
+
+.saju_result_page .intro_chapters_list strong {
+  display: inline-block;
+  width: 32px;
+  color: #6b4c9a;
+  font-weight: 600;
+}
+
+/* 예시 사주명식 테이블 (장면 3) */
+.saju_result_page .intro_saju_table {
+  margin: 28px 0;
+}
+
+.saju_result_page .saju_pillar_row {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+
+.saju_result_page .saju_pillar {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.saju_result_page .pillar_name {
+  font-size: 13px;
+  color: #9a8a8a;
+  font-weight: 600;
+}
+
+.saju_result_page .saju_pillar.highlight .pillar_name {
+  color: #6b4c9a;
+  font-weight: 600;
+}
+
+.saju_result_page .pillar_chars {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 14px 12px;
+  background: #fff;
+  border: 1px solid #e8d8d8;
+  border-radius: 10px;
+}
+
+.saju_result_page .saju_pillar.highlight .pillar_chars {
+  border: 2px solid #6b4c9a;
+  background: rgba(107, 76, 154, 0.03);
+}
+
+
+.saju_result_page .char_cell {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.saju_result_page .pillar_chars .cell_hanja {
+  font-size: 28px;
+  font-weight: 700;
+  text-align: center;
+}
+
+.saju_result_page .pillar_chars .cell_hanja.wood { color: #2d8659; }
+.saju_result_page .pillar_chars .cell_hanja.fire { color: #d35449; }
+.saju_result_page .pillar_chars .cell_hanja.earth { color: #b8956a; }
+.saju_result_page .pillar_chars .cell_hanja.metal { color: #7a7a7a; }
+.saju_result_page .pillar_chars .cell_hanja.water { color: #5a8fcf; }
+
+.saju_result_page .char_meaning {
+  font-size: 11px;
+  color: #a09090;
+}
+
+.saju_result_page .saju_pillar.highlight .char_meaning {
+  color: #6b4c9a;
+  font-weight: 500;
+}
+
+/* 천간 테이블 (장면 4) */
+.saju_result_page .intro_cheongan_table {
+  margin: 28px 0;
+  border: 1px solid #e8d8d8;
+  border-radius: 8px;
+  overflow: hidden;
+  background: #fff;
+}
+
+.saju_result_page .cheongan_row {
+  display: flex;
+  border-bottom: 1px solid #f0e8e8;
+}
+
+.saju_result_page .cheongan_row:last-child {
+  border-bottom: none;
+}
+
+.saju_result_page .cheongan_row > span {
+  flex: 1;
+  padding: 12px 6px;
+  text-align: center;
+  font-size: 12px;
+  line-height: 1.5;
+  border-right: 1px solid #f0e8e8;
+}
+
+.saju_result_page .cheongan_row > span:last-child {
+  border-right: none;
+}
+
+.saju_result_page .cheongan_row.header {
+  background: #faf6f6;
+  font-weight: 600;
+  font-size: 12px;
+}
+
+.saju_result_page .cheongan_row.header .element.wood { color: #2d8659; }
+.saju_result_page .cheongan_row.header .element.fire { color: #d35449; }
+.saju_result_page .cheongan_row.header .element.earth { color: #b8956a; }
+.saju_result_page .cheongan_row.header .element.metal { color: #7a7a7a; }
+.saju_result_page .cheongan_row.header .element.water { color: #5a8fcf; }
+
+.saju_result_page .cheongan_row.chars > span {
+  font-size: 15px;
+  font-weight: 600;
+  padding: 14px 6px;
+}
+
+.saju_result_page .cheongan_row.chars > span.wood { color: #2d8659; }
+.saju_result_page .cheongan_row.chars > span.fire { color: #d35449; }
+.saju_result_page .cheongan_row.chars > span.earth { color: #b8956a; }
+.saju_result_page .cheongan_row.chars > span.metal { color: #7a7a7a; }
+.saju_result_page .cheongan_row.chars > span.water { color: #5a8fcf; }
+
+.saju_result_page .cheongan_row.chars .char_kor {
+  display: block;
+  font-size: 11px;
+  font-weight: 400;
+  color: #9a8a8a;
+  margin-top: 4px;
+}
+
+.saju_result_page .cheongan_row.meaning {
+  font-size: 11px;
+  color: #8a7a7a;
+  background: #fdfafa;
+  line-height: 1.6;
+}
+
+/* 지지 테이블 (장면 5) - 이모지 없이 깔끔하게 */
+.saju_result_page .intro_jiji_table {
+  margin: 28px 0;
+}
+
+.saju_result_page .jiji_table_row {
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+  margin-bottom: 6px;
+}
+
+.saju_result_page .jiji_cell {
+  width: 72px;
+  padding: 12px 8px;
+  background: #fff;
+  border: 1px solid #e8d8d8;
+  border-radius: 6px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+
+.saju_result_page .jiji_hanja {
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.saju_result_page .jiji_hanja.wood { color: #2d8659; }
+.saju_result_page .jiji_hanja.fire { color: #d35449; }
+.saju_result_page .jiji_hanja.earth { color: #b8956a; }
+.saju_result_page .jiji_hanja.metal { color: #7a7a7a; }
+.saju_result_page .jiji_hanja.water { color: #5a8fcf; }
+
+.saju_result_page .jiji_info {
+  font-size: 10px;
+  color: #8a7a7a;
+  white-space: nowrap;
+}
+
+/* 오행 원형 다이어그램 */
+.saju_result_page .intro_ohang_circle {
+  margin: 24px 0;
+}
+
+.saju_result_page .ohang_circle_wrapper {
+  position: relative;
+  width: 260px;
+  height: 240px;
+  margin: 0 auto;
+}
+
+.saju_result_page .ohang_node {
+  position: absolute;
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  background: #fff;
+  border: 2px solid #e8d8d8;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+}
+
+.saju_result_page .ohang_node .ohang_label {
+  font-size: 14px;
+  font-weight: 700;
+  text-align: center;
+}
+
+.saju_result_page .ohang_desc {
+  font-size: 11px;
+  color: #8a7a7a;
+  text-align: center;
+}
+
+/* 오행 노드 위치 (오각형 배치) */
+.saju_result_page .ohang_node.top {
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.saju_result_page .ohang_node.left-top {
+  top: 55px;
+  left: 0;
+}
+
+.saju_result_page .ohang_node.right-top {
+  top: 55px;
+  right: 0;
+}
+
+.saju_result_page .ohang_node.left-bottom {
+  bottom: 0;
+  left: 25px;
+}
+
+.saju_result_page .ohang_node.right-bottom {
+  bottom: 0;
+  right: 25px;
+}
+
+/* 오행 노드 색상 */
+.saju_result_page .ohang_node.wood { border-color: #2d8659; }
+.saju_result_page .ohang_node.fire { border-color: #d35449; }
+.saju_result_page .ohang_node.earth { border-color: #b8956a; }
+.saju_result_page .ohang_node.metal { border-color: #7a7a7a; }
+.saju_result_page .ohang_node.water { border-color: #5a8fcf; }
+
+.saju_result_page .ohang_node.wood .ohang_label { color: #2d8659; }
+.saju_result_page .ohang_node.fire .ohang_label { color: #d35449; }
+.saju_result_page .ohang_node.earth .ohang_label { color: #b8956a; }
+.saju_result_page .ohang_node.metal .ohang_label { color: #7a7a7a; }
+.saju_result_page .ohang_node.water .ohang_label { color: #5a8fcf; }
+
+/* 생/극 관계 텍스트 */
+.saju_result_page .ohang_relations {
+  margin-top: 20px;
+  padding: 16px;
+  background: #faf8f8;
+  border-radius: 10px;
+}
+
+.saju_result_page .ohang_relation {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 13px;
+  color: #6a5a5a;
+  margin: 0;
+}
+
+.saju_result_page .ohang_relation + .ohang_relation {
+  margin-top: 8px;
+}
+
+.saju_result_page .ohang_relation .relation_label {
+  font-weight: 600;
+  min-width: 45px;
+}
+
+.saju_result_page .ohang_relation.saeng .relation_label {
+  color: #5a8fcf;
+}
+
+.saju_result_page .ohang_relation.geuk .relation_label {
+  color: #d35449;
+}
+
+/* 일주 다이어그램 */
+.saju_result_page .intro_ilju_diagram {
+  margin: 24px 0;
+  padding: 20px;
+  background: #fff;
+  border-radius: 12px;
+  border: 1px solid #e8d8d8;
+}
+
+.saju_result_page .ilju_pillars {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+}
+
+.saju_result_page .ilju_pillar {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.saju_result_page .ilju_pillar_name {
+  font-size: 12px;
+  color: #9a8a8a;
+  font-weight: 500;
+}
+
+.saju_result_page .ilju_pillar.highlight .ilju_pillar_name {
+  color: #6b4c9a;
+  font-weight: 600;
+}
+
+.saju_result_page .ilju_pillar_chars {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 12px 16px;
+  background: #f8f4f4;
+  border-radius: 8px;
+  min-width: 50px;
+}
+
+.saju_result_page .ilju_pillar.highlight .ilju_pillar_chars {
+  background: rgba(107, 76, 154, 0.08);
+  border: 2px solid #6b4c9a;
+}
+
+.saju_result_page .ilju_pillar_chars span {
+  font-size: 14px;
+  color: #6a5a5a;
+}
+
+.saju_result_page .ilju_pillar.highlight .ilju_pillar_chars span {
+  color: #6b4c9a;
+  font-weight: 600;
+}
+
+.saju_result_page .ilju_arrow {
+  font-size: 11px;
+  color: #6b4c9a;
+  font-weight: 500;
+  margin-top: 4px;
+}
+
+/* 전환 섹션 (장면 9) */
+.saju_result_page .intro_transition {
+  text-align: center;
+  padding: 40px 24px;
+  background: linear-gradient(180deg, rgba(212, 165, 165, 0.08) 0%, rgba(212, 165, 165, 0.15) 100%);
+  border-radius: 12px;
+  margin-top: 24px;
+}
+
+.saju_result_page .intro_transition .intro_section_content {
+  max-width: 280px;
+  margin: 0 auto;
+}
+
+.saju_result_page .transition_text {
+  font-family: "KimjungchulMyungjo-Bold", serif;
+  font-size: 16px;
+  line-height: 2.2;
+  color: #4a3a3a;
+  margin: 0 0 24px 0 !important;
+}
+
+.saju_result_page .transition_text:last-child {
+  margin-bottom: 0 !important;
+}
+
+/* ============================================
+   SajuCard 스타일 (사주 원국)
+   ============================================ */
+
+
+/* 신살 섹션 */
+
+
+/* ============================================
+   공유 버튼 스타일
+   ============================================ */
+
+
+/* ============================================
+   목차 버튼 & 모달 스타일
+   ============================================ */
+
+/* 목차 버튼 - 홈으로 버튼과 같은 스타일 */
+.saju_result_page .toc_btn {
+  position: fixed;
+  top: 16px;
+  right: calc(50% - 250px + 16px);
+  height: 40px;
+  padding: 0 16px;
+  background: rgba(255, 255, 255, 0.4);
+  -webkit-backdrop-filter: blur(16px);
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 200;
+  text-decoration: none;
+  color: #333;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+  pointer-events: auto;
+  transition: none;
+  animation: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  font-family: inherit;
+}
+
+@media (max-width: 500px) {
+  .saju_result_page .toc_btn {
+    right: 16px;
+  }
+
+}
+
+.saju_result_page .toc_btn:hover,
+.saju_result_page .toc_btn:active,
+.saju_result_page .toc_btn:focus {
+  background: rgba(255, 255, 255, 0.4);
+  transition: none;
+  animation: none;
+  outline: none;
+}
+
+.saju_result_page .toc_btn :global(.material-icons) {
+  color: #333;
+  font-size: 20px;
+}
+
+.saju_result_page .toc_btn_text {
+  color: #333;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+/* 목차 모달 오버레이 */
+.saju_result_page .toc_modal_overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 300;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  animation: fadeIn 0.2s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* 목차 모달 */
+.saju_result_page .toc_modal {
+  width: 100%;
+  max-width: 360px;
+  max-height: 80vh;
+  background: #fff;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  animation: slideUp 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* 모달 헤더 */
+.saju_result_page .toc_modal_header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 20px 16px;
+  border-bottom: 1px solid #ffe8e8;
+  background: linear-gradient(135deg, #fff5f5 0%, #ffe8e8 100%);
+}
+
+.saju_result_page .toc_modal_title {
+  font-family: "KimjungchulMyungjo-Bold", serif;
+  font-size: 18px;
+  font-weight: 700;
+  color: #3a2a2a;
+  margin: 0;
+}
+
+.saju_result_page .toc_modal_close {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.05);
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.saju_result_page .toc_modal_close:hover {
+  background: rgba(0, 0, 0, 0.1);
+}
+
+.saju_result_page .toc_modal_close :global(.material-icons) {
+  font-size: 20px;
+  color: #666;
+}
+
+/* 목차 리스트 */
+.saju_result_page .toc_modal_list {
+  list-style: none;
+  margin: 0;
+  padding: 12px 0;
+  max-height: calc(80vh - 80px);
+  overflow-y: auto;
+}
+
+.saju_result_page .toc_modal_item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 20px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.saju_result_page .toc_modal_item:hover {
+  background: #f8f5ff;
+}
+
+.saju_result_page .toc_modal_item.current {
+  background: linear-gradient(135deg, #fff0f0 0%, #ffe8e8 100%);
+}
+
+.saju_result_page .toc_modal_item.disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.saju_result_page .toc_modal_item.disabled:hover {
+  background: transparent;
+}
+
+.saju_result_page .toc_item_label {
+  font-size: 15px;
+  color: #3a2a2a;
+  font-weight: 500;
+}
+
+.saju_result_page .toc_modal_item.current .toc_item_label {
+  color: #6b4c9a;
+  font-weight: 600;
+}
+
+.saju_result_page .toc_item_current {
+  font-size: 12px;
+  color: #fff;
+  background: #6b4c9a;
+  padding: 3px 10px;
+  border-radius: 12px;
+  font-weight: 600;
+}
+
+/* 홈으로 돌아가기 확인 모달 */
+.saju_result_page .exit_modal_overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 20px;
+}
+
+.saju_result_page .exit_modal {
+  background: #fffcf8;
+  border-radius: 16px;
+  padding: 28px 24px;
+  max-width: 300px;
+  width: 100%;
+  text-align: center;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+}
+
+.saju_result_page .exit_modal_text {
+  font-size: 17px;
+  font-weight: 600;
+  color: #3a2a2a;
+  margin: 0 0 24px 0;
+  font-family: "KimjungchulMyungjo", serif;
+}
+
+.saju_result_page .exit_modal_buttons {
+  display: flex;
+  gap: 12px;
+}
+
+.saju_result_page .exit_modal_cancel,
+.saju_result_page .exit_modal_confirm {
+  flex: 1;
+  padding: 14px 16px;
+  border-radius: 12px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.saju_result_page .exit_modal_cancel {
+  background: #f5f0ea;
+  border: 1px solid #e8e0d8;
+  color: #5c4a3a;
+}
+
+.saju_result_page .exit_modal_cancel:hover {
+  background: #ebe5dc;
+}
+
+.saju_result_page .exit_modal_confirm {
+  background: #5c4a3a;
+  border: none;
+  color: #fff;
+}
+
+.saju_result_page .exit_modal_confirm:hover {
+  background: #4a3a2a;
+}
+
+/* ============================= */
+/* SajuCard v2 - 사주 풀이 섹션 */
+/* ============================= */
+
+
+/* 섹션 인트로 텍스트 */
+
+
+/* 섹션 타이틀 */
+
+/* 사주원국이란? 설명 박스 */
+
+
+.saju_result_page .saju_explain_title {
+  font-family: "KimjungchulMyungjo-Bold", serif;
+  font-size: 14px;
+  font-weight: 600;
+  color: #8a6a5a;
+  margin: 0 0 8px 0;
+  text-align: center;
+}
+
+
+/* 사주원국표 섹션 */
+
+/* 사주 팔자 섹션 - detail 페이지 스타일 */
+
+
+/* 사주 테이블 - detail 페이지 스타일 */
+
+
+/* 일간 섹션 */
+
+
+.saju_result_page .ilgan_char {
+  font-size: 44px;
+  font-weight: 700;
+  line-height: 1;
+}
+
+
+.saju_result_page .ilgan_love_box {
+  background: #fffaf5;
+  border: 1px solid #ffe8e0;
+  border-radius: 12px;
+  padding: 16px;
+}
+
+
+.saju_result_page .ilgan_keywords {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+
+/* 4가지 요소 섹션 */
+
+
+/* 기둥별 연애 시기 섹션 */
+
+
+.saju_result_page .timing_header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 6px;
+}
+
+
+.saju_result_page .timing_period {
+  font-size: 12px;
+  color: #8a7a6a;
+  background: #f5f0ea;
+  padding: 3px 10px;
+  border-radius: 12px;
+}
+
+
+.saju_result_page .timing_desc {
+  font-size: 13px;
+  line-height: 1.6;
+  color: #5a4a4a;
+  margin: 0;
+}
+
+/* 오행 분포 섹션 */
+
+
+.saju_result_page .ohang_label {
+  min-width: 50px;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+
+.saju_result_page .ohang_pct {
+  min-width: 48px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #5a4a4a;
+  text-align: right;
+}
+
+.saju_result_page .ohang_status {
+  min-width: 36px;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 2px 6px;
+  border-radius: 8px;
+  text-align: center;
+}
+
+.saju_result_page .ohang_status.과다 {
+  background: #ffebee;
+  color: #6b4c9a;
+}
+
+.saju_result_page .ohang_status.적정 {
+  background: #e8f5e9;
+  color: #27ae60;
+}
+
+.saju_result_page .ohang_status.부족 {
+  background: #fff8e1;
+  color: #f39c12;
+}
+
+.saju_result_page .ohang_status.결핍 {
+  background: #f5f5f5;
+  color: #999;
+}
+
+/* 신강/신약 섹션 */
+
+
+.saju_result_page .gauge_labels {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 8px;
+  font-size: 11px;
+  color: #8a7a6a;
+}
+
+
+.saju_result_page .gauge_dot {
+  width: 12px;
+  height: 12px;
+  background: rgba(255, 255, 255, 0.6);
+  border: 2px solid rgba(0, 0, 0, 0.1);
+  border-radius: 50%;
+  transition: all 0.3s;
+}
+
+.saju_result_page .gauge_dot.active {
+  width: 18px;
+  height: 18px;
+  background: #c0392b;
+  border: 3px solid #fff;
+  box-shadow: 0 2px 8px rgba(192, 57, 43, 0.4);
+}
+
+
+/* 신살과 길성 섹션 - detail 페이지 스타일 */
+
+
+/* 신살 테이블 - detail 페이지 스타일 */
+
+
+/* 사주 상식 토글 섹션 */
+
+
+/* ============================================
+   SajuCard Simple 스타일 (IntroCard 스타일 기반)
+   ============================================ */
+
+.saju_result_page .saju_card_simple {
+  background: #fffcf8;
+}
+
+/* 일간 표시 - 심플 버전 */
+.saju_result_page .ilgan_simple_display {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin: 16px 0 20px 0;
+  padding: 16px 20px;
+  background: #fffaf5;
+  border-radius: 12px;
+}
+
+.saju_result_page .ilgan_simple_display .ilgan_char {
+  font-size: 32px;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.saju_result_page .ilgan_simple_display .ilgan_label {
+  font-size: 15px;
+  color: #5a4a4a;
+  font-weight: 500;
+}
+
+/* 사주 키워드 */
+
+
+/* 신강/신약 표시 */
+
+
+/* 특성 리스트 */
+
+
+/* ============================================
+   SajuCard 기획서 기반 추가 스타일
+   ============================================ */
+
+/* 사주원국 설명 카드 */
+.saju_result_page .saju_explain_card {
+  background: #fffaf5;
+  border: 1px dashed #e8d8c8;
+  border-radius: 16px;
+  padding: 20px;
+  margin-top: 20px;
+  text-align: center;
+}
+
+.saju_result_page .saju_explain_title {
+  font-family: "KimjungchulMyungjo-Bold", serif;
+  font-size: 15px;
+  color: #8a6a5a;
+  margin: 0 0 12px 0;
+}
+
+.saju_result_page .saju_explain_text {
+  font-size: 14px;
+  line-height: 1.9;
+  color: #5a4a4a;
+  margin: 0;
+}
+
+/* 각 요소 연애 의미 설명 */
+.saju_result_page .saju_elements_meaning {
+  margin-top: 20px;
+}
+
+.saju_result_page .elements_meaning_title {
+  font-size: 14px;
+  font-weight: 600;
+  color: #5a4a4a;
+  margin: 0 0 12px 0;
+}
+
+.saju_result_page .element_meaning_list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.saju_result_page .element_meaning_item {
+  background: #fafafa;
+  border-radius: 8px;
+  padding: 12px;
+}
+
+.saju_result_page .element_meaning_item strong {
+  font-size: 13px;
+  color: #5a4a4a;
+  display: block;
+  margin-bottom: 4px;
+}
+
+.saju_result_page .element_meaning_item p {
+  font-size: 13px;
+  line-height: 1.6;
+  color: #7a6a6a;
+  margin: 0;
+}
+
+/* 사주 정보 헤더 */
+.saju_result_page .saju_info_header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  margin: 24px 0 16px;
+  padding: 16px;
+  background: #fff;
+  border: 1px solid #f0e8e8;
+  border-radius: 12px;
+}
+
+.saju_result_page .saju_info_name {
+  font-size: 16px;
+  font-weight: 700;
+  color: #3a2a2a;
+}
+
+.saju_result_page .saju_info_date {
+  font-size: 13px;
+  color: #888;
+}
+
+/* 사주 전체 테이블 카드 */
+.saju_result_page .saju_table_card {
+  background: #fffcf8;
+  border: 1px solid #e8e0d8;
+  border-radius: 16px;
+  padding: 16px;
+  overflow-x: auto;
+}
+
+.saju_result_page .saju_full_table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12px;
+  min-width: 300px;
+}
+
+.saju_result_page .saju_full_table th,
+.saju_result_page .saju_full_table td {
+  padding: 8px 4px;
+  text-align: center;
+  border-bottom: 1px solid #f0e8e8;
+  vertical-align: middle;
+}
+
+.saju_result_page .saju_full_table th {
+  font-size: 14px;
+  font-weight: 600;
+  color: #8a7a6a;
+  background: #f8f4f0;
+}
+
+.saju_result_page .saju_full_table th:first-child {
+  width: 60px;
+}
+
+.saju_result_page .saju_full_table .row_label {
+  font-size: 11px;
+  color: #999;
+  font-weight: 500;
+  text-align: left;
+  padding-left: 8px;
+  white-space: nowrap;
+}
+
+.saju_result_page .saju_full_table .highlight {
+  background: rgba(231, 76, 60, 0.08);
+}
+
+.saju_result_page .saju_full_table .char_box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+
+.saju_result_page .saju_full_table .char_hanja {
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.saju_result_page .saju_full_table .char_korean {
+  font-size: 10px;
+  color: #888;
+}
+
+.saju_result_page .saju_full_table .sipsung_text {
+  font-size: 11px;
+  color: #666;
+}
+
+.saju_result_page .saju_full_table .row_extra td {
+  font-size: 10px;
+  color: #888;
+}
+
+.saju_result_page .saju_full_table .cell_gilsung {
+  font-size: 9px;
+  color: #3b82f6;
+  line-height: 1.4;
+}
+
+.saju_result_page .saju_full_table .gilsung_vertical {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+
+/* 신살 셀 */
+.saju_result_page .saju_full_table .cell_sinsal {
+  font-size: 9px;
+  color: #666;
+  line-height: 1.4;
+}
+
+.saju_result_page .saju_full_table .sinsal_vertical {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+
+
+.saju_result_page .saju_full_table .cell_sinsal_highlight {
+  color: #6b4c9a;
+  font-weight: 600;
+}
+
+/* 천간/지지 분리 테이블 */
+.saju_result_page .saju_split_table {
+  background: #fff;
+  border: 1px solid #f0e8e8;
+  border-radius: 12px;
+  padding: 16px;
+  margin-top: 20px;
+}
+
+.saju_result_page .split_row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 0;
+}
+
+.saju_result_page .split_row:first-child {
+  border-bottom: 1px dashed #e8e0d8;
+}
+
+.saju_result_page .split_label {
+  width: 50px;
+  font-size: 11px;
+  color: #888;
+  text-align: center;
+  line-height: 1.4;
+}
+
+.saju_result_page .split_cell {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.saju_result_page .split_hanja {
+  font-size: 22px;
+  font-weight: 700;
+}
+
+.saju_result_page .split_korean {
+  font-size: 11px;
+  color: #888;
+}
+
+/* 일간 연애 박스 - 심플 버전 */
+.saju_result_page .ilgan_love_box {
+  background: #fffaf5;
+  border-radius: 12px;
+  padding: 16px;
+  margin-top: 16px;
+}
+
+.saju_result_page .ilgan_headline {
+  font-size: 15px;
+  font-weight: 600;
+  color: #5a4a4a;
+  margin: 0 0 8px 0;
+}
+
+.saju_result_page .ilgan_summary {
+  font-size: 14px;
+  line-height: 1.7;
+  color: #6a5a5a;
+  margin: 0;
+}
+
+.saju_result_page .ilgan_keywords {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.saju_result_page .ilgan_keyword {
+  font-size: 13px;
+  color: #8a7a6a;
+}
+
+/* 네 가지 요소 카드 */
+
+
+/* 연애 신살 카드 */
+.saju_result_page .love_sinsal_cards {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.saju_result_page .love_sinsal_card {
+  background: #fff;
+  border: 1px solid #f0e8e8;
+  border-radius: 14px;
+  padding: 16px;
+}
+
+.saju_result_page .sinsal_card_header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+
+.saju_result_page .sinsal_card_header strong {
+  font-size: 14px;
+  color: #3a2a2a;
+}
+
+.saju_result_page .sinsal_meaning {
+  font-size: 13px;
+  color: #666;
+  line-height: 1.6;
+  margin: 0 0 12px 0;
+}
+
+.saju_result_page .sinsal_love_effect {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.saju_result_page .sinsal_love_effect span {
+  font-size: 12px;
+  padding: 6px 10px;
+  border-radius: 6px;
+}
+
+.saju_result_page .effect_good {
+  background: #e8f5e9;
+  color: #2e7d32;
+}
+
+.saju_result_page .effect_bad {
+  background: #ffebee;
+  color: #c62828;
+}
+
+/* 기둥별 연애 시기 카드 */
+.saju_result_page .pillar_timing_cards {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+/* 미니 사주표 (기둥별 강조) */
+.saju_result_page .mini_saju_table {
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+  margin-bottom: 14px;
+  padding-bottom: 14px;
+  border-bottom: 1px dashed #f0e8e8;
+}
+
+.saju_result_page .mini_pillar {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 8px 12px;
+  border-radius: 10px;
+  transition: all 0.2s;
+}
+
+.saju_result_page .mini_pillar.highlight {
+  background: rgba(192, 57, 43, 0.12);
+  box-shadow: 0 0 0 2px rgba(192, 57, 43, 0.3);
+}
+
+.saju_result_page .mini_pillar.dimmed {
+  opacity: 0.5;
+}
+
+.saju_result_page .mini_stem,
+.saju_result_page .mini_branch {
+  font-family: "KimjungchulMyungjo-Bold", serif;
+  font-size: 20px;
+  line-height: 1.2;
+}
+
+.saju_result_page .mini_pillar.highlight .mini_stem,
+.saju_result_page .mini_pillar.highlight .mini_branch {
+  font-weight: 700;
+}
+
+.saju_result_page .mini_pillar.dimmed .mini_stem,
+.saju_result_page .mini_pillar.dimmed .mini_branch {
+  color: #888 !important;
+}
+
+.saju_result_page .timing_card {
+  background: #fff;
+  border: 1px solid #f0e8e8;
+  border-radius: 14px;
+  padding: 16px;
+}
+
+.saju_result_page .timing_card.highlight {
+  background: linear-gradient(135deg, #fff5f0 0%, #ffe8e0 100%);
+  border-color: #f5c0b0;
+}
+
+.saju_result_page .timing_header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.saju_result_page .timing_pillar {
+  font-size: 14px;
+  font-weight: 700;
+  color: #3a2a2a;
+}
+
+.saju_result_page .timing_period {
+  font-size: 12px;
+  color: #888;
+}
+
+.saju_result_page .timing_desc {
+  font-size: 13px;
+  color: #666;
+  line-height: 1.6;
+  margin: 0 0 8px 0;
+}
+
+.saju_result_page .timing_love {
+  font-size: 13px;
+  color: #6b4c9a;
+  line-height: 1.6;
+  margin: 0;
+}
+
+/* 오행 차트 카드 */
+.saju_result_page .ohang_chart_card {
+  background: #fff;
+  border: 1px solid #f0e8e8;
+  border-radius: 16px;
+  padding: 20px;
+  margin-top: 20px;
+}
+
+.saju_result_page .ohang_chart_title {
+  font-size: 14px;
+  font-weight: 600;
+  color: #3a2a2a;
+  margin: 0 0 16px 0;
+  text-align: center;
+}
+
+.saju_result_page .ohang_bar_row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.saju_result_page .ohang_bar_row:last-child {
+  margin-bottom: 0;
+}
+
+.saju_result_page .ohang_label {
+  width: 50px;
+  font-size: 12px;
+  font-weight: 600;
+  text-align: right;
+}
+
+.saju_result_page .ohang_bar_track {
+  flex: 1;
+  height: 16px;
+  background: #f5f0ea;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.saju_result_page .ohang_bar_fill {
+  height: 100%;
+  border-radius: 8px;
+  transition: width 0.3s ease;
+}
+
+.saju_result_page .ohang_pct {
+  width: 45px;
+  font-size: 11px;
+  color: #666;
+  text-align: right;
+}
+
+.saju_result_page .ohang_status {
+  width: 28px;
+  font-size: 10px;
+  font-weight: 600;
+  text-align: center;
+}
+
+.saju_result_page .ohang_status.과다 {
+  color: #6b4c9a;
+}
+
+.saju_result_page .ohang_status.적정 {
+  color: #27ae60;
+}
+
+.saju_result_page .ohang_status.부족 {
+  color: #f39c12;
+}
+
+.saju_result_page .ohang_status.결핍 {
+  color: #95a5a6;
+}
+
+/* 오행 연애 해석 카드 */
+
+
+/* 오행 섹션 타이틀 */
+.saju_result_page .ohang_section_title {
+  font-size: 14px;
+  font-weight: 600;
+  color: #3a2a2a;
+  margin: 0 0 12px 0;
+}
+
+/* 오행별 기본 특징 */
+
+
+/* 오행 궁합 섹션 */
+.saju_result_page .ohang_compatibility_section {
+  margin-top: 20px;
+}
+
+.saju_result_page .ohang_compat_cards {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.saju_result_page .ohang_compat_card {
+  border-radius: 12px;
+  padding: 16px;
+}
+
+.saju_result_page .ohang_compat_card.good {
+  background: #f0fff5;
+  border: 1px solid #d0f0d8;
+}
+
+.saju_result_page .ohang_compat_card.bad {
+  background: #f8f5ff;
+  border: 1px solid #f0d8d8;
+}
+
+.saju_result_page .compat_card_title {
+  font-size: 13px;
+  font-weight: 600;
+  margin: 0 0 12px 0;
+}
+
+.saju_result_page .ohang_compat_card.good .compat_card_title {
+  color: #2aa86c;
+}
+
+.saju_result_page .ohang_compat_card.bad .compat_card_title {
+  color: #6b4c9a;
+}
+
+.saju_result_page .compat_list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.saju_result_page .compat_item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+}
+
+.saju_result_page .compat_item > span:first-child,
+.saju_result_page .compat_item > span:nth-child(3) {
+  font-weight: 600;
+  min-width: 16px;
+}
+
+.saju_result_page .compat_arrow {
+  color: #2aa86c;
+  font-size: 12px;
+}
+
+.saju_result_page .compat_arrow.bad {
+  color: #6b4c9a;
+}
+
+.saju_result_page .compat_desc {
+  color: #7a6a6a;
+  font-size: 12px;
+  margin-left: 4px;
+}
+
+/* 오행 분석 섹션 */
+.saju_result_page .ohang_analysis_section {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+.saju_result_page .ohang_analysis_card {
+  background: #fff;
+  border: 1px solid #f0e8e8;
+  border-radius: 12px;
+  padding: 16px;
+}
+
+.saju_result_page .ohang_analysis_header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.saju_result_page .ohang_element {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.saju_result_page .ohang_status_badge {
+  font-size: 11px;
+  font-weight: 500;
+  padding: 2px 8px;
+  border-radius: 10px;
+}
+
+.saju_result_page .ohang_status_badge.과다 {
+  background: #fff0f0;
+  color: #6b4c9a;
+}
+
+.saju_result_page .ohang_status_badge.부족,
+.saju_result_page .ohang_status_badge.결핍 {
+  background: #f0f5ff;
+  color: #4a90d9;
+}
+
+.saju_result_page .ohang_analysis_title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #3a2a2a;
+  margin: 0 0 6px 0;
+}
+
+.saju_result_page .ohang_analysis_title .ohang_status_badge {
+  flex-shrink: 0;
+}
+
+.saju_result_page .ohang_analysis_desc {
+  font-size: 13px;
+  line-height: 1.7;
+  color: #5a4a4a;
+  margin: 0 0 8px 0;
+}
+
+.saju_result_page .ohang_analysis_advice {
+  font-size: 13px;
+  line-height: 1.6;
+  color: #8a7a6a;
+  margin: 0;
+  padding-top: 8px;
+  border-top: 1px dashed #e8e0d8;
+}
+
+.saju_result_page .ohang_keyword {
+  font-size: 12px;
+  color: #8a7a6a;
+  flex: 1;
+}
+
+.saju_result_page .ohang_base_desc {
+  font-size: 13px;
+  line-height: 1.6;
+  color: #5a4a4a;
+  margin: 0 0 10px 0;
+}
+
+.saju_result_page .compat_card_subtitle {
+  font-size: 12px;
+  color: #8a7a6a;
+  margin: 0 0 12px 0;
+}
+
+/* 신강신약 게이지 카드 */
+.saju_result_page .strength_gauge_card {
+  background: #fff;
+  border: 1px solid #f0e8e8;
+  border-radius: 16px;
+  padding: 20px;
+  margin-top: 20px;
+}
+
+.saju_result_page .gauge_labels {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.saju_result_page .gauge_labels span {
+  font-size: 11px;
+  color: #bbb;
+}
+
+.saju_result_page .gauge_labels span.active {
+  color: #6b4c9a;
+  font-weight: 700;
+  font-size: 13px;
+}
+
+.saju_result_page .gauge_track {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 28px;
+  background: linear-gradient(90deg,
+    #e8f5e9 0%,
+    #c8e6c9 15%,
+    #fff9c4 35%,
+    #fff59d 50%,
+    #ffcc80 65%,
+    #ffab91 85%,
+    #ffebee 100%
+  );
+  border-radius: 14px;
+  padding: 0 8px;
+  margin-bottom: 16px;
+}
+
+.saju_result_page .gauge_dot {
+  width: 12px;
+  height: 12px;
+  background: rgba(255, 255, 255, 0.6);
+  border: 2px solid rgba(0, 0, 0, 0.1);
+  border-radius: 50%;
+  transition: all 0.3s;
+}
+
+.saju_result_page .gauge_dot.active {
+  width: 18px;
+  height: 18px;
+  background: #c0392b;
+  border: 3px solid #fff;
+  box-shadow: 0 2px 8px rgba(192, 57, 43, 0.4);
+}
+
+.saju_result_page .strength_result_text {
+  font-size: 14px;
+  color: #5a4a4a;
+  text-align: center;
+  margin: 0;
+}
+
+/* 신강신약 상세 해석 카드 */
+.saju_result_page .strength_detail_card {
+  background: #fff;
+  border: 1px solid #f0e8e8;
+  border-radius: 16px;
+  padding: 16px;
+  margin-top: 16px;
+}
+
+.saju_result_page .strength_detail_title {
+  font-size: 16px;
+  font-weight: 700;
+  color: #5a4a4a;
+  margin: 0 0 4px 0;
+  text-align: center;
+}
+
+.saju_result_page .strength_detail_ratio {
+  font-size: 13px;
+  color: #6b4c9a;
+  text-align: center;
+  margin: 0 0 16px 0;
+  font-weight: 600;
+}
+
+/* 신강신약 상세 표 */
+.saju_result_page .strength_detail_table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+
+.saju_result_page .strength_detail_table th,
+.saju_result_page .strength_detail_table td {
+  padding: 12px;
+  border-bottom: 1px solid #f0e8e8;
+  text-align: left;
+  vertical-align: top;
+}
+
+.saju_result_page .strength_detail_table th {
+  width: 80px;
+  font-weight: 600;
+  color: #8a7a7a;
+  background: #fafafa;
+  white-space: nowrap;
+}
+
+.saju_result_page .strength_detail_table td {
+  color: #5a4a4a;
+  line-height: 1.7;
+}
+
+.saju_result_page .strength_detail_table tr:last-child th,
+.saju_result_page .strength_detail_table tr:last-child td {
+  border-bottom: none;
+}
+
+.saju_result_page .strength_detail_table .pattern_quote {
+  display: block;
+  font-style: italic;
+  color: #8a7a7a;
+  margin-bottom: 4px;
+}
+
+.saju_result_page .strength_detail_table .pattern_quote::before {
+  content: '"';
+}
+
+.saju_result_page .strength_detail_table .pattern_quote::after {
+  content: '"';
+}
+
+.saju_result_page .strength_detail_table .good_row th {
+  color: #2aa86c;
+}
+
+.saju_result_page .strength_detail_table .good_row td {
+  color: #2a8a5a;
+}
+
+.saju_result_page .strength_detail_table .warning_row th {
+  color: #e67e22;
+}
+
+.saju_result_page .strength_detail_table .warning_row td {
+  color: #c96a1a;
+}
+
+.saju_result_page .strength_detail_table .ideal_row {
+  background: #f8f5ff;
+}
+
+.saju_result_page .strength_detail_table .ideal_row th {
+  color: #6b4c9a;
+  background: #fff0f0;
+}
+
+.saju_result_page .strength_detail_table .ideal_row td {
+  color: #6b4c9a;
+  font-weight: 600;
+}
+
+/* 신강신약 궁합 섹션 */
+
+
+/* 신강신약 안내 문구 */
+
+
+/* 사주상식 인트로 */
+
+/* 색동낭자 대화 코멘트 */
+.saju_result_page .nangja_comment {
+  margin-bottom: 16px;
+  text-align: center;
+}
+
+.saju_result_page .nangja_comment .nangja_text {
+  font-size: 14px;
+  line-height: 1.7;
+  color: #b85a85;
+  margin: 0;
+}
+
+/* 마지막 강조 멘트 */
+.saju_result_page .nangja_final {
+  margin-top: 32px;
+  margin-bottom: 28px;
+  padding: 24px 20px;
+  background: linear-gradient(135deg, rgba(184, 90, 133, 0.08) 0%, rgba(255, 255, 255, 0) 100%);
+  border-radius: 16px;
+}
+
+.saju_result_page .nangja_final .nangja_question {
+  display: block;
+  font-size: 15px;
+  font-weight: 500;
+  color: #a04878;
+  margin-bottom: 16px;
+  opacity: 0.9;
+}
+
+.saju_result_page .nangja_final .nangja_reassure {
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1.9;
+  color: #b85a85;
+}
+
+.saju_result_page .nangja_final .nangja_reassure strong {
+  color: #9a3d6a;
+  font-weight: 700;
+}
+
+/* 사주 원국 마무리 섹션 */
+.saju_result_page .saju_outro_section {
+  margin-top: 24px;
+}
+
+
+/* 사주 데이터 플레이스홀더 */
+
+/* 보고서 목차 상세 */
+
+/* 심플 목차 스타일 */
+
+
+/* 내가 가진 연애 신살 */
+
+
+/* ========================================
+   분석 대기 카드 (Waiting Card)
+   ======================================== */
+.saju_result_page .waiting_card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  min-height: 100dvh;
+  padding: 40px 20px;
+  text-align: center;
+  background: #fff9f9;
+}
+
+.saju_result_page .waiting_content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+/* Progress Bar */
+.saju_result_page .waiting_progress_wrap {
+  width: 100%;
+  max-width: 280px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.saju_result_page .waiting_progress_bar {
+  width: 100%;
+  height: 8px;
+  background: #f0e0e0;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.saju_result_page .waiting_progress_fill {
+  height: 100%;
+  background: linear-gradient(90deg, #6b4c9a, #4b3778);
+  border-radius: 4px;
+  transition: width 0.3s ease-out;
+}
+
+.saju_result_page .waiting_progress_text {
+  font-family: 'Pretendard', sans-serif;
+  font-size: 32px;
+  font-weight: 700;
+  color: #6b4c9a;
+  letter-spacing: 2px;
+}
+
+
+.saju_result_page .waiting_title {
+  font-size: 24px;
+  font-weight: 700;
+  color: #333;
+  margin: 0;
+}
+
+.saju_result_page .waiting_text {
+  font-size: 16px;
+  color: #555;
+  line-height: 1.6;
+  margin: 0;
+}
+
+.saju_result_page .waiting_subtext {
+  font-size: 14px;
+  color: #888;
+  line-height: 1.5;
+  margin: 0;
+}
+
+
+/* 대기 중 하단 안내 텍스트 */
+.saju_result_page .waiting_info {
+  text-align: center;
+  padding: 16px 20px;
+}
+
+.saju_result_page .waiting_info p {
+  margin: 0;
+  font-size: 14px;
+  color: #888;
+}
+
+/* ===== 보고서 목차 카드 ===== */
+.saju_result_page .report_toc_card {
+  background: #f7f3f0;
+  border-radius: 0;
+  padding: 0;
+  margin: 24px 0;
+  overflow: hidden;
+}
+
+.saju_result_page .toc_chapter {
+  background: #f7f3f0;
+  padding: 28px 24px;
+  border-bottom: 1px solid #e8e0dc;
+}
+
+.saju_result_page .toc_chapter:last-child {
+  border-bottom: none;
+}
+
+.saju_result_page .toc_chapter_header {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  margin-bottom: 20px;
+  text-align: left;
+}
+
+.saju_result_page .toc_chapter.bonus .toc_chapter_header {
+  margin-bottom: 0;
+}
+
+.saju_result_page .toc_chapter_num {
+  font-family: "Danjo", serif;
+  font-size: 14px;
+  font-weight: 600;
+  color: #6b4c9a;
+  margin-bottom: 8px;
+  padding-left: 12px;
+  border-left: 4px solid #c0392b;
+  display: block;
+}
+
+.saju_result_page .toc_chapter_num.bonus {
+  color: #f5a623;
+  border-left-color: #f5a623;
+}
+
+.saju_result_page .toc_chapter_title {
+  font-family: "Danjo", serif;
+  font-size: 26px;
+  font-weight: 700;
+  color: #2a2a2a;
+  margin: 0;
+  line-height: 1.3;
+  letter-spacing: -0.5px;
+  text-align: left;
+}
+
+.saju_result_page .toc_list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.saju_result_page .toc_list li {
+  font-size: 16px;
+  color: #3a3a3a;
+  line-height: 1.5;
+  padding: 10px 0;
+  border-bottom: 1px solid #e8e0dc;
+  text-align: left;
+}
+
+.saju_result_page .toc_list li:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.saju_result_page .toc_list li:first-child {
+  padding-top: 0;
+}
+
+.saju_result_page .toc_sub {
+  display: block;
+  font-size: 14px;
+  color: #888;
+  margin-top: 6px;
+}
+
+/* 사주 데이터 종합 표 */
+
+
+/* 사주 원국 테이블 */
+
+
+/* 오행 분포 */
+
+
+/* 신살 태그 */
+
+
+/* 연애 지표 */
+
+
+/* 대운 흐름 */
+
+
+/* ==========================================
+   분석 데이터 섹션 스타일 (analysis_data_wrap)
+   ========================================== */
+
+
+/* 득력 점수 바 */
+
+
+/* 대운 스크롤 */
+
+
+/* 연애 특수 지표 그리드 */
+
+
+/* 귀인 태그 */
+
+
+/* 주의 신살 태그 */
+
+
+/* ==========================================
+   미니 데이터 섹션 (extra_data_mini_wrap)
+   ========================================== */
+
+
+/* ==========================================
+   대운/연운/월운 섹션 (luck_cycles_wrap)
+   ========================================== */
+
+.saju_result_page .luck_cycles_wrap {
+  margin: 24px 0;
+  padding: 20px 16px;
+  background: #faf8f6;
+  border: 1px solid #e8e0dc;
+  border-radius: 12px;
+}
+
+
+.saju_result_page .luck_section {
+  margin-bottom: 20px;
+}
+
+.saju_result_page .luck_section:last-of-type {
+  margin-bottom: 16px;
+}
+
+.saju_result_page .luck_section_title {
+  font-family: "Danjo", serif;
+  font-size: 14px;
+  font-weight: 600;
+  color: #666;
+  margin: 0 0 10px 0;
+}
+
+.saju_result_page .luck_scroll_wrap {
+  overflow-x: auto;
+  margin: 0 -16px;
+  padding: 0 16px;
+  -webkit-overflow-scrolling: touch;
+}
+
+.saju_result_page .luck_scroll {
+  display: flex;
+  gap: 8px;
+  min-width: max-content;
+  padding-bottom: 4px;
+}
+
+.saju_result_page .luck_scroll.reverse {
+  flex-direction: row;
+}
+
+/* 대운/연운 카드 */
+.saju_result_page .luck_card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 60px;
+  background: #fff;
+  border: 1px solid #e0d8d4;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.saju_result_page .luck_card.current {
+  border: 2px solid #6b4c9a;
+  box-shadow: 0 2px 8px rgba(192, 57, 43, 0.2);
+}
+
+.saju_result_page .luck_card_top {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 6px 4px 4px;
+  background: #f5f2ef;
+  gap: 2px;
+}
+
+.saju_result_page .luck_card_age,
+.saju_result_page .luck_card_year {
+  font-size: 11px;
+  color: #888;
+}
+
+.saju_result_page .luck_card_tengod {
+  font-size: 11px;
+  font-weight: 500;
+  color: #666;
+}
+
+.saju_result_page .luck_card_stem {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 6px 4px;
+  text-align: center;
+}
+
+.saju_result_page .luck_card_stem .char_hanja {
+  font-size: 26px;
+  font-weight: 700;
+}
+
+.saju_result_page .luck_card_stem .char_korean {
+  font-size: 11px;
+  font-weight: 500;
+  opacity: 0.8;
+}
+
+.saju_result_page .luck_card_branch {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  padding: 6px 4px;
+  text-align: center;
+}
+
+.saju_result_page .luck_card_branch .char_hanja {
+  font-size: 22px;
+  font-weight: 700;
+}
+
+.saju_result_page .luck_card_branch .char_korean {
+  font-size: 10px;
+  font-weight: 500;
+  opacity: 0.8;
+}
+
+.saju_result_page .luck_card_bottom {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 4px;
+  background: #f9f7f5;
+  gap: 2px;
+}
+
+.saju_result_page .luck_card_tengod_branch {
+  font-size: 10px;
+  color: #888;
+}
+
+.saju_result_page .luck_card_stage {
+  font-size: 10px;
+  color: #aaa;
+}
+
+/* 오행 색상 */
+.saju_result_page .elem_wood { color: #2aa86c; }
+.saju_result_page .elem_fire { color: #ff6a6a; }
+.saju_result_page .elem_earth { color: #caa46a; }
+.saju_result_page .elem_metal { color: #888; }
+.saju_result_page .elem_water { color: #6aa7ff; }
+
+/* 지지 오행 색상 */
+.saju_result_page .luck_card_branch.elem_wood { color: #2aa86c; }
+.saju_result_page .luck_card_branch.elem_fire { color: #ff6a6a; }
+.saju_result_page .luck_card_branch.elem_earth { color: #caa46a; }
+.saju_result_page .luck_card_branch.elem_metal { color: #888; }
+.saju_result_page .luck_card_branch.elem_water { color: #6aa7ff; }
+
+/* 월운 미니 카드 */
+.saju_result_page .luck_card_mini {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 50px;
+  padding: 8px 6px;
+  background: #fff;
+  border: 1px solid #e0d8d4;
+  border-radius: 6px;
+  gap: 4px;
+}
+
+.saju_result_page .luck_card_mini.current {
+  border: 2px solid #6b4c9a;
+  background: #f8f5ff;
+}
+
+.saju_result_page .luck_mini_month {
+  font-size: 12px;
+  font-weight: 600;
+  color: #666;
+}
+
+.saju_result_page .luck_mini_tengod {
+  font-size: 11px;
+  color: #888;
+}
+
+/* 추가 정보 미니 섹션 */
+.saju_result_page .extra_info_mini {
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px dashed #e0d8d4;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.saju_result_page .extra_info_row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.saju_result_page .extra_label {
+  flex-shrink: 0;
+  font-size: 12px;
+  color: #888;
+  min-width: 90px;
+}
+
+.saju_result_page .extra_values {
+  display: flex;
+  gap: 6px;
+}
+
+.saju_result_page .extra_ganzi {
+  padding: 3px 10px;
+  background: #fff;
+  border: 1px solid #c0392b;
+  border-radius: 10px;
+  font-size: 12px;
+  font-weight: 600;
+  color: #6b4c9a;
+}
+
+.saju_result_page .extra_indicator {
+  padding: 3px 8px;
+  background: #f5f5f5;
+  border: 1px solid #e0e0e0;
+  border-radius: 10px;
+  font-size: 11px;
+  color: #bbb;
+}
+
+.saju_result_page .extra_indicator.on {
+  background: #e8f5e9;
+  border-color: #a5d6a7;
+  color: #2e7d32;
+}
+
+.saju_result_page .extra_usage {
+  flex-shrink: 0;
+  font-size: 10px;
+  color: #aaa;
+  margin-left: auto;
+}
+
+
+.saju_result_page .extra_text {
+  font-size: 12px;
+  font-weight: 500;
+  color: #555;
+}
+
+.saju_result_page .extra_positions {
+  font-size: 11px;
+  color: #888;
+}
+
+.saju_result_page .extra_indicator.small {
+  padding: 2px 6px;
+  font-size: 10px;
+}
+
+.saju_result_page .extra_count {
+  font-size: 12px;
+  font-weight: 600;
+  color: #6b4c9a;
+}
+
+/* ===== 가격 비교 섹션 ===== */
+
+
+/* 색동낭자 강조 카드 */
+
+
+/* ===== 고민 유도 섹션 ===== */
+
+
+/* ===== 결제 유도 카드 (PaymentCard) ===== */
+
+
+/* 목차 미리보기 */
+
+
+/* 가격 정보 */
+
+
+/* 결제 버튼 */
+
+
+/* 힌트 텍스트 */
+
+/* ===== 결제 모달 스타일 (detail.css에서 복사) ===== */
+
+
+/* 히어로 섹션 */
+
+
+/* 결제 금액 섹션 */
+
+
+/* 쿠폰 섹션 */
+
+
+/* ========== 리뷰 섹션 ========== */
+.review_section {
+  background: linear-gradient(135deg, #fff5f5 0%, #fff0f0 100%);
+  border: 1px solid #e8dff5;
+  border-radius: 16px;
+  padding: 24px 20px;
+  margin: 24px 0;
+}
+
+.review_header {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.review_title {
+  font-size: 17px;
+  font-weight: 700;
+  color: #333;
+  margin: 0 0 8px 0;
+}
+
+.review_subtitle {
+  font-size: 13px;
+  color: #888;
+  margin: 0;
+}
+
+/* 별점 */
+.review_rating {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.rating_label {
+  font-size: 13px;
+  color: #666;
+  margin: 0;
+}
+
+.rating_stars {
+  display: flex;
+  gap: 8px;
+}
+
+.star_btn {
+  background: none;
+  border: none;
+  font-size: 32px;
+  color: #ddd;
+  cursor: pointer;
+  transition: transform 0.15s, color 0.15s;
+  padding: 0;
+}
+
+.star_btn.active {
+  color: #ffc107;
+}
+
+.star_btn:hover {
+  transform: scale(1.15);
+}
+
+/* 리뷰 내용 입력 */
+.review_content_input {
+  position: relative;
+  margin-bottom: 12px;
+}
+
+.review_textarea {
+  width: 100%;
+  min-height: 100px;
+  padding: 14px;
+  border: 1px solid #e0e0e0;
+  border-radius: 12px;
+  font-size: 14px;
+  line-height: 1.6;
+  resize: none;
+  box-sizing: border-box;
+  font-family: inherit;
+}
+
+.review_textarea:focus {
+  outline: none;
+  border-color: #6b4c9a;
+}
+
+.review_textarea::placeholder {
+  color: #aaa;
+}
+
+.review_char_count {
+  position: absolute;
+  bottom: 10px;
+  right: 14px;
+  font-size: 11px;
+  color: #999;
+}
+
+/* 닉네임 입력 */
+.review_name_input {
+  margin-bottom: 16px;
+}
+
+.review_name_field {
+  width: 100%;
+  padding: 12px 14px;
+  border: 1px solid #e0e0e0;
+  border-radius: 10px;
+  font-size: 14px;
+  box-sizing: border-box;
+}
+
+.review_name_field:focus {
+  outline: none;
+  border-color: #6b4c9a;
+}
+
+/* 제출 버튼 */
+.review_submit_btn {
+  width: 100%;
+  padding: 14px;
+  background: #6b4c9a;
+  color: #fff;
+  font-size: 15px;
+  font-weight: 600;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background 0.2s, opacity 0.2s;
+}
+
+.review_submit_btn:hover {
+  background: #d63c2c;
+}
+
+.review_submit_btn:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+}
+
+/* 리뷰 제출 완료 상태 */
+.review_submitted {
+  text-align: center;
+}
+
+.review_thank_you {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.review_check_icon {
+  width: 48px;
+  height: 48px;
+  background: #6b4c9a;
+  color: #fff;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.review_thank_text {
+  font-size: 16px;
+  font-weight: 600;
+  color: #333;
+  margin: 0;
+}
+
+.review_submitted_content {
+  background: #fff;
+  border-radius: 12px;
+  padding: 16px;
+  margin-top: 8px;
+  width: 100%;
+}
+
+.review_stars_display {
+  margin-bottom: 8px;
+}
+
+.review_stars_display .star {
+  font-size: 20px;
+  color: #ddd;
+}
+
+.review_stars_display .star.filled {
+  color: #ffc107;
+}
+
+.review_text_display {
+  font-size: 14px;
+  color: #555;
+  line-height: 1.5;
+  margin: 0;
+  text-align: left;
+}
+
+/* ========== 리뷰 모달 ========== */
+.review_modal_overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 20px;
+}
+
+.review_modal {
+  background: #fff;
+  border-radius: 20px;
+  width: 100%;
+  max-width: 400px;
+  max-height: 90vh;
+  overflow-y: auto;
+  padding: 24px 20px;
+  position: relative;
+}
+
+.review_modal_close {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  width: 32px;
+  height: 32px;
+  border: none;
+  background: #f5f5f5;
+  border-radius: 50%;
+  font-size: 16px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.review_modal_header {
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+.review_modal_title {
+  font-size: 18px;
+  font-weight: 700;
+  color: #333;
+  margin: 0 0 8px 0;
+}
+
+.review_modal_subtitle {
+  font-size: 14px;
+  color: #888;
+  margin: 0;
+}
+
+.review_modal_buttons {
+  display: flex;
+  gap: 10px;
+  margin-top: 16px;
+}
+
+.review_skip_btn {
+  flex: 1;
+  padding: 14px;
+  background: #f5f5f5;
+  color: #666;
+  font-size: 14px;
+  font-weight: 600;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.review_modal_buttons .review_submit_btn {
+  flex: 1;
+}
+
+/* ========== 리뷰 오버레이 (saju-love 스타일 그대로) ========== */
+.review_overlay {
+  position: fixed;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  max-width: 500px;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.75);
+  display: none;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 20px;
+  padding-bottom: calc(20px + env(safe-area-inset-bottom));
+  box-sizing: border-box;
+  z-index: 999;
+}
+
+.review_overlay.active {
+  display: flex;
+}
+
+.review_form_wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+/* 감사 메시지 */
+.review_thanks_wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 200px;
+}
+
+.review_thanks_text {
+  font-size: 24px;
+  font-weight: 600;
+  color: white;
+  text-align: center;
+  margin: 0;
+}
+
+/* saju-love 입력 스타일 (그대로 사용) */
+.review_overlay .input_group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.review_overlay .input_label {
+  font-size: 14px;
+  font-weight: 600;
+  color: white;
+}
+
+
+.review_overlay .input_field {
+  width: 100%;
+  padding: 14px 16px;
+  border: none;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 0;
+  font-size: 15px;
+  color: white;
+  background: transparent;
+  transition: border-color 0.2s ease;
+  box-sizing: border-box;
+}
+
+.review_overlay .input_field:focus {
+  outline: none;
+  border-bottom-color: white;
+}
+
+.review_overlay .input_field::placeholder {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.review_overlay .input_field.textarea {
+  resize: none;
+  line-height: 1.6;
+  min-height: 100px;
+  font-family: inherit;
+}
+
+/* 별점 선택 (status_options 스타일) */
+
+
+/* 버튼들 */
+.review_overlay .input_buttons {
+  display: flex;
+  gap: 10px;
+}
+
+.review_overlay .input_prev_btn {
+  padding: 16px 24px;
+  font-size: 16px;
+  font-weight: 700;
+  background: white;
+  color: #333;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+}
+
+.review_overlay .input_submit_btn {
+  flex: 1;
+  padding: 16px 32px;
+  font-size: 16px;
+  font-weight: 700;
+  background: linear-gradient(135deg, #6b4c9a 0%, #4b3778 100%);
+  color: white;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  box-shadow: 0 4px 15px rgba(107, 76, 154, 0.3);
+}
+
+.review_overlay .input_submit_btn:disabled {
+  background: #666;
+  box-shadow: none;
+  cursor: not-allowed;
+}
+
+/* 만족도 UI */
+.review_rating_options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: center;
+  padding: 8px 0;
+}
+
+.review_rating_btn {
+  padding: 8px 14px;
+  border: none;
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.15);
+  font-size: 14px;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.7);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.review_rating_btn:hover {
+  background: rgba(255, 255, 255, 0.25);
+}
+
+.review_rating_btn.active {
+  background: rgba(255, 255, 255, 0.95);
+  color: #8b4a5e;
+  font-weight: 600;
+}
+
+/* ============================================
+   결제 오버레이 (정통 사주 전용)
+   ============================================ */
+
+.payment_overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.6);
+  z-index: 9000;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
+
+.payment_modal {
+  background: white;
+  border-radius: 20px 20px 0 0;
+  width: 100%;
+  max-width: 500px;
+  max-height: 90vh;
+  overflow-y: auto;
+  padding: 24px 20px calc(24px + env(safe-area-inset-bottom));
+  animation: slideUpModal 0.3s ease-out;
+}
+
+@keyframes slideUpModal {
+  from { transform: translateY(100%); }
+  to { transform: translateY(0); }
+}
+
+.payment_header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.payment_title {
+  font-size: 20px;
+  font-weight: 700;
+  color: #1a1a1a;
+}
+
+.payment_close_btn {
+  width: 32px;
+  height: 32px;
+  border: none;
+  background: #f0f0f0;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 18px;
+  color: #666;
+}
+
+.payment_price_info {
+  text-align: center;
+  margin-bottom: 20px;
+  padding: 16px;
+  background: #faf8ff;
+  border-radius: 12px;
+}
+
+.payment_original_price {
+  font-size: 14px;
+  color: #999;
+  text-decoration: line-through;
+  margin-bottom: 4px;
+}
+
+.payment_final_price {
+  font-size: 28px;
+  font-weight: 700;
+  color: #4b3778;
+}
+
+.payment_discount_badge {
+  display: inline-block;
+  background: #6b4c9a;
+  color: white;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 4px;
+  margin-left: 8px;
+}
+
+/* 쿠폰 */
+.coupon_section {
+  margin-bottom: 16px;
+}
+
+.coupon_input_row {
+  display: flex;
+  gap: 8px;
+}
+
+.coupon_input {
+  flex: 1;
+  padding: 12px 14px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  font-size: 14px;
+}
+
+.coupon_input:focus {
+  outline: none;
+  border-color: #6b4c9a;
+}
+
+.coupon_apply_btn {
+  padding: 12px 16px;
+  border: none;
+  background: #6b4c9a;
+  color: white;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.coupon_apply_btn:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+}
+
+.coupon_error {
+  font-size: 12px;
+  color: #e53e3e;
+  margin-top: 4px;
+}
+
+.coupon_success {
+  font-size: 12px;
+  color: #38a169;
+  margin-top: 4px;
+}
+
+/* 결제 위젯 영역 */
+.payment_widget_area {
+  margin-bottom: 16px;
+}
+
+.payment_submit_btn {
+  width: 100%;
+  padding: 16px;
+  font-size: 16px;
+  font-weight: 700;
+  background: linear-gradient(135deg, #6b4c9a 0%, #4b3778 100%);
+  color: white;
+  border: none;
+  border-radius: 14px;
+  cursor: pointer;
+  box-shadow: 0 4px 20px rgba(107, 76, 154, 0.3);
+}
+
+/* ============================================
+   Paywall (무료 미리보기 후 결제 유도)
+   ============================================ */
+
+.paywall_wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+  text-align: center;
+  gap: 20px;
+  min-height: 60vh;
+}
+
+.paywall_title {
+  font-family: 'MaruBuri', serif;
+  font-size: 22px;
+  font-weight: 700;
+  color: white;
+  line-height: 1.5;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+}
+
+.paywall_subtitle {
+  font-family: 'MaruBuri', serif;
+  font-size: 15px;
+  color: rgba(255, 255, 255, 0.8);
+  line-height: 1.6;
+}
+
+.paywall_btn {
+  padding: 18px 48px;
+  font-size: 18px;
+  font-weight: 700;
+  background: linear-gradient(135deg, #6b4c9a 0%, #4b3778 100%);
+  color: white;
+  border: none;
+  border-radius: 14px;
+  cursor: pointer;
+  box-shadow: 0 4px 20px rgba(107, 76, 154, 0.4);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.paywall_btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 25px rgba(107, 76, 154, 0.5);
+}
+
+/* ============================================
+   채팅 Q&A
+   ============================================ */
+
+.chat_qa_wrap {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 70vh;
+  padding: 20px;
+}
+
+.chat_qa_title {
+  font-family: 'MaruBuri', serif;
+  font-size: 18px;
+  font-weight: 700;
+  color: white;
+  text-align: center;
+  margin-bottom: 16px;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+}
+
+.chat_qa_subtitle {
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.7);
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.chat_qa_messages {
+  flex: 1;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding-bottom: 80px;
+}
+
+.chat_qa_bubble_unhak {
+  align-self: flex-start;
+  max-width: 85%;
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 4px 16px 16px 16px;
+  padding: 14px 18px;
+  color: white;
+  font-family: 'MaruBuri', serif;
+  font-size: 15px;
+  line-height: 1.7;
+  white-space: pre-line;
+}
+
+.chat_qa_bubble_user {
+  align-self: flex-end;
+  max-width: 85%;
+  background: rgba(107, 76, 154, 0.3);
+  border-radius: 16px 4px 16px 16px;
+  padding: 12px 18px;
+  color: white;
+  font-size: 15px;
+  line-height: 1.5;
+}
+
+.chat_qa_input_wrap {
+  position: fixed;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  max-width: 500px;
+  padding: 12px 16px calc(12px + env(safe-area-inset-bottom));
+  background: rgba(0, 0, 0, 0.8);
+  display: flex;
+  gap: 8px;
+  z-index: 100;
+}
+
+.chat_qa_input {
+  flex: 1;
+  padding: 12px 16px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.1);
+  color: white;
+  font-size: 15px;
+}
+
+.chat_qa_input:focus {
+  outline: none;
+  border-color: rgba(255, 255, 255, 0.4);
+}
+
+.chat_qa_input::placeholder {
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.chat_qa_send_btn {
+  width: 44px;
+  height: 44px;
+  border: none;
+  background: linear-gradient(135deg, #6b4c9a 0%, #4b3778 100%);
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.chat_qa_send_btn:disabled {
+  background: #555;
+  cursor: not-allowed;
+}
+
+.chat_qa_remaining {
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.5);
+  text-align: center;
+  margin-top: 4px;
+}
+
+.chat_qa_typing {
+  align-self: flex-start;
+  display: flex;
+  gap: 4px;
+  padding: 14px 18px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 4px 16px 16px 16px;
+}
+
+.chat_qa_typing_dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.5);
+  animation: chatQaDotBounce 1.2s ease-in-out infinite;
+}
+
+.chat_qa_typing_dot:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.chat_qa_typing_dot:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+@keyframes chatQaDotBounce {
+  0%, 60%, 100% {
+    transform: translateY(0);
+    opacity: 0.4;
+  }
+  30% {
+    transform: translateY(-4px);
+    opacity: 1;
+  }
+}

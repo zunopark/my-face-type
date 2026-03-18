@@ -740,3 +740,55 @@
     flex-wrap: wrap;
   }
 }
+
+/* 완료된 인플루언서 리스트 */
+.done_list {
+  display: flex;
+  flex-direction: column;
+}
+
+.done_row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 5px 0;
+  font-size: 12px;
+  border-bottom: 1px solid #f0ece4;
+}
+
+.done_name {
+  font-size: 13px;
+  font-weight: 600;
+  color: #4a3c2a;
+  min-width: 60px;
+}
+
+.done_memo {
+  color: #aaa;
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-family: monospace;
+  font-size: 12px;
+}
+
+.done_amount {
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.done_btn {
+  padding: 1px 6px;
+  background: transparent;
+  border: 1px solid #d4c5a9;
+  border-radius: 3px;
+  color: #999;
+  cursor: pointer;
+  font-size: 11px;
+}
+
+.done_btn:hover {
+  border-color: #c4965a;
+  color: #4a3c2a;
+}

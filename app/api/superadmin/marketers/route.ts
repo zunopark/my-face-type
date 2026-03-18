@@ -13,7 +13,7 @@ export async function GET(request: NextRequest) {
 
   const { data: admins, error } = await supabaseAdmin
     .from("admin_accounts")
-    .select("id, name, rs_percentage")
+    .select("id, name, rs_percentage, total_paid")
     .order("name");
 
   if (error || !admins) {
@@ -83,4 +83,26 @@ export async function GET(request: NextRequest) {
   );
 
   return NextResponse.json(result);
+}
+
+export async function PATCH(request: NextRequest) {
+  try {
+    const { id, total_paid } = await request.json();
+    if (!id) {
+      return NextResponse.json({ error: "ID는 필수입니다." }, { status: 400 });
+    }
+
+    const { error } = await supabaseAdmin
+      .from("admin_accounts")
+      .update({ total_paid })
+      .eq("id", id);
+
+    if (error) {
+      console.error("마케터 정산 완료 금액 저장 오류:", error);
+      return NextResponse.json({ error: error.message }, { status: 500 });
+    }
+    return NextResponse.json({ success: true });
+  } catch {
+    return NextResponse.json({ error: "서버 오류" }, { status: 500 });
+  }
 }

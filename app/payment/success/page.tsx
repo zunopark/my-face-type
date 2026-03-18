@@ -86,7 +86,8 @@ function SuccessContent() {
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
               code: couponCode,
-              serviceType: orderId?.startsWith("saju") ? "saju_love"
+              serviceType: orderId?.startsWith("saju-general") ? "saju"
+                : orderId?.startsWith("saju") ? "saju_love"
                 : orderId?.startsWith("new-year") ? "new_year"
                 : orderId?.startsWith("couple") ? "couple"
                 : "face",
@@ -104,6 +105,7 @@ function SuccessContent() {
       // 결제 성공 추적
       const serviceTypeMap: Record<string, ServiceType> = {
         saju: "saju_love",
+        saju_general: "saju",
         new_year: "new_year",
         couple: "couple",
         base: "face",
@@ -117,13 +119,13 @@ function SuccessContent() {
       // Supabase에서 사용자 정보 조회 (Mixpanel + Slack 공용)
       let userName: string | null = null;
       let supabaseData: Awaited<ReturnType<typeof getSajuAnalysisByShareId>> = null;
-      if (resultId && (reportType === "saju" || reportType === "new_year")) {
+      if (resultId && (reportType === "saju" || reportType === "saju_general" || reportType === "new_year")) {
         supabaseData = await getSajuAnalysisByShareId(resultId);
         userName = supabaseData?.user_info?.userName || null;
       }
 
       // 사주 결제인 경우 상세 정보 추가
-      if (reportType === "saju" && resultId) {
+      if ((reportType === "saju" || reportType === "saju_general") && resultId) {
         if (supabaseData) {
           trackPaymentSuccess(serviceType, {
             order_id: orderId,
@@ -217,7 +219,7 @@ function SuccessContent() {
       // 결제 정보 업데이트
       if (resultId) {
         try {
-          if (reportType === "saju") {
+          if (reportType === "saju" || reportType === "saju_general") {
             // 사주 결제인 경우 - Supabase만 업데이트
             const isDiscount = orderId?.includes("discount") || !!couponCode;
             const paymentInfo = {
@@ -278,7 +280,9 @@ function SuccessContent() {
 
       // 2초 후 결과 페이지로 이동
       setTimeout(() => {
-        if (reportType === "saju") {
+        if (reportType === "saju_general") {
+          router.push(`/saju/result?id=${resultId}`);
+        } else if (reportType === "saju") {
           router.push(`/saju-love/result?id=${resultId}`);
         } else if (reportType === "new_year") {
           router.push(`/new-year/result?id=${resultId}`);
@@ -302,6 +306,7 @@ function SuccessContent() {
         // 결제 실패 추적
         const serviceTypeMap: Record<string, ServiceType> = {
           saju: "saju_love",
+          saju_general: "saju",
           new_year: "new_year",
           couple: "couple",
           base: "face",

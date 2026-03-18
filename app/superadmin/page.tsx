@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { Link2, Ticket, Pencil, Trash2, ExternalLink, Star } from "lucide-react";
 import * as XLSX from "xlsx";
 import styles from "./superadmin.module.css";
@@ -61,6 +61,7 @@ interface AdminAccount {
   rs_percentage: number;
   filtered_revenue: number;
   rs_start_date: string | null;
+  total_paid?: number;
 }
 
 interface PaymentDetail {
@@ -116,6 +117,26 @@ interface SettlementStatus {
   is_paid?: boolean;
   paid_at?: string | null;
   memo?: string;
+}
+
+interface MarketerSettlementStatus {
+  marketer_id: string;
+  year: number;
+  month: number;
+  amount: number;
+  is_paid?: boolean;
+  paid_at?: string | null;
+  memo?: string;
+}
+
+interface SettlementRecord {
+  id: string;
+  target_type: "influencer" | "marketer";
+  target_id: string;
+  amount: number;
+  memo: string | null;
+  settled_at: string;
+  created_at: string;
 }
 
 const SERVICE_LABELS: Record<string, string> = {
@@ -239,6 +260,12 @@ export default function SuperAdminPage() {
   const [settlementMonth, setSettlementMonth] = useState(new Date().getMonth() + 1);
   const [settlementLoading, setSettlementLoading] = useState(false);
   const [settlementStatuses, setSettlementStatuses] = useState<Map<string, SettlementStatus>>(new Map());
+  const [settlementView, setSettlementView] = useState<"all" | "done">("all");
+  const [marketerSettlementStatuses, setMarketerSettlementStatuses] = useState<Map<string, MarketerSettlementStatus>>(new Map());
+  const [settlementRecords, setSettlementRecords] = useState<SettlementRecord[]>([]);
+  const [settlementRecordsLoading, setSettlementRecordsLoading] = useState(false);
+  const [showRecordForm, setShowRecordForm] = useState<{ type: "influencer" | "marketer"; id: string; name: string } | null>(null);
+  const [recordFormData, setRecordFormData] = useState({ amount: "", memo: "", settled_at: new Date().toISOString().slice(0, 10) });
 
   // All payments state
   const [allPayments, setAllPayments] = useState<AllPayment[]>([]);
@@ -512,6 +539,21 @@ export default function SuperAdminPage() {
       );
     } catch (err) {
       console.error("정산 완료 금액 저장 오류:", err);
+    }
+  };
+
+  const handleSaveMarketerTotalPaid = async (id: string, amount: number) => {
+    try {
+      await fetch("/api/superadmin/marketers", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id, total_paid: amount }),
+      });
+      setAdminAccounts((prev) =>
+        prev.map((a) => (a.id === id ? { ...a, total_paid: amount } : a))
+      );
+    } catch (err) {
+      console.error("마케터 정산 완료 금액 저장 오류:", err);
     }
   };
 
@@ -798,6 +840,168 @@ export default function SuperAdminPage() {
     }
   };
 
+  // ─── 마케터 정산 상태 ──────────────────────────────
+
+  const fetchMarketerSettlements = useCallback(async () => {
+    try {
+      const res = await fetch(
+        `/api/admin/marketer-settlements?year=${settlementYear}&month=${settlementMonth}`
+      );
+      const data = await res.json();
+      const map = new Map<string, MarketerSettlementStatus>();
+      if (Array.isArray(data)) {
+        for (const s of data) map.set(s.marketer_id, s);
+      }
+      setMarketerSettlementStatuses(map);
+    } catch (err) {
+      console.error("마케터 정산 상태 조회 오류:", err);
+    }
+  }, [settlementYear, settlementMonth]);
+
+  const handleSaveMarketerSettlementAmount = async (marketerId: string, amount: number) => {
+    try {
+      const res = await fetch("/api/admin/marketer-settlements", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          marketer_id: marketerId,
+          year: settlementYear,
+          month: settlementMonth,
+          amount,
+        }),
+      });
+      const data = await res.json();
+      if (data.marketer_id) {
+        setMarketerSettlementStatuses((prev) => {
+          const next = new Map(prev);
+          next.set(marketerId, data);
+          return next;
+        });
+      }
+    } catch (err) {
+      console.error("마케터 정산 금액 저장 오류:", err);
+    }
+  };
+
+  const handleToggleMarketerPaid = async (marketerId: string, currentlyPaid: boolean) => {
+    try {
+      const res = await fetch("/api/admin/marketer-settlements", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          marketer_id: marketerId,
+          year: settlementYear,
+          month: settlementMonth,
+          is_paid: !currentlyPaid,
+        }),
+      });
+      const data = await res.json();
+      if (data.marketer_id) {
+        setMarketerSettlementStatuses((prev) => {
+          const next = new Map(prev);
+          next.set(marketerId, data);
+          return next;
+        });
+      }
+    } catch (err) {
+      console.error("마케터 정산 상태 변경 오류:", err);
+    }
+  };
+
+  // ─── 정산 기록 (Records) ──────────────────────────────
+
+  const fetchSettlementRecords = useCallback(async () => {
+    setSettlementRecordsLoading(true);
+    try {
+      const res = await fetch("/api/admin/settlement-records");
+      const data = await res.json();
+      setSettlementRecords(Array.isArray(data) ? data : []);
+    } catch (err) {
+      console.error("정산 기록 조회 오류:", err);
+    } finally {
+      setSettlementRecordsLoading(false);
+    }
+  }, []);
+
+  const handleAddSettlementRecord = async () => {
+    if (!showRecordForm) return;
+    const amount = Number(recordFormData.amount);
+    if (!amount) return;
+
+    try {
+      const res = await fetch("/api/admin/settlement-records", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          target_type: showRecordForm.type,
+          target_id: showRecordForm.id,
+          amount,
+          memo: recordFormData.memo || null,
+          settled_at: recordFormData.settled_at ? new Date(recordFormData.settled_at).toISOString() : undefined,
+        }),
+      });
+      const data = await res.json();
+      if (data.id) {
+        setSettlementRecords((prev) => [data, ...prev]);
+        setShowRecordForm(null);
+        setRecordFormData({ amount: "", memo: "", settled_at: new Date().toISOString().slice(0, 10) });
+      }
+    } catch (err) {
+      console.error("정산 기록 추가 오류:", err);
+    }
+  };
+
+  const handleDeleteSettlementRecord = async (id: string) => {
+    if (!confirm("이 정산 기록을 삭제하시겠습니까?")) return;
+    try {
+      const res = await fetch(`/api/admin/settlement-records?id=${id}`, { method: "DELETE" });
+      const data = await res.json();
+      if (data.success) {
+        setSettlementRecords((prev) => prev.filter((r) => r.id !== id));
+      }
+    } catch (err) {
+      console.error("정산 기록 삭제 오류:", err);
+    }
+  };
+
+  const [editRecord, setEditRecord] = useState<SettlementRecord | null>(null);
+  const [editRecordData, setEditRecordData] = useState({ amount: "", memo: "", settled_at: "" });
+
+  const openEditRecord = (rec: SettlementRecord) => {
+    setEditRecord(rec);
+    setEditRecordData({
+      amount: String(rec.amount),
+      memo: rec.memo || "",
+      settled_at: new Date(rec.settled_at).toISOString().slice(0, 10),
+    });
+  };
+
+  const handleUpdateSettlementRecord = async () => {
+    if (!editRecord) return;
+    const amount = Number(editRecordData.amount);
+    if (!amount) return;
+
+    try {
+      const res = await fetch("/api/admin/settlement-records", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          id: editRecord.id,
+          amount,
+          memo: editRecordData.memo || null,
+          settled_at: editRecordData.settled_at ? new Date(editRecordData.settled_at).toISOString() : undefined,
+        }),
+      });
+      const data = await res.json();
+      if (data.id) {
+        setSettlementRecords((prev) => prev.map((r) => (r.id === data.id ? data : r)));
+        setEditRecord(null);
+      }
+    } catch (err) {
+      console.error("정산 기록 수정 오류:", err);
+    }
+  };
+
   // ─── 전체 결제 내역 ──────────────────────────────
 
   const fetchAllPayments = useCallback(async () => {
@@ -904,8 +1108,15 @@ export default function SuperAdminPage() {
   useEffect(() => {
     if (isAuthenticated && activeTab === "settlement") {
       fetchMarketerMonthly();
+      fetchMarketerSettlements();
     }
-  }, [isAuthenticated, activeTab, fetchMarketerMonthly]);
+  }, [isAuthenticated, activeTab, fetchMarketerMonthly, fetchMarketerSettlements]);
+
+  useEffect(() => {
+    if (isAuthenticated && (activeTab === "settlement" || activeTab === "influencers")) {
+      fetchSettlementRecords();
+    }
+  }, [isAuthenticated, activeTab, fetchSettlementRecords]);
 
   useEffect(() => {
     if (isAuthenticated && activeTab === "payments") {
@@ -1166,7 +1377,7 @@ export default function SuperAdminPage() {
                       <th className={styles.text_right}>결제(전환율)</th>
                       <th className={styles.text_right}>매출</th>
                       <th className={styles.text_right}>정산액</th>
-                      <th className={styles.text_right}>정산 완료</th>
+                      <th className={styles.text_right}>기 정산</th>
                       <th className={styles.text_right}>관리</th>
                     </tr>
                   </thead>
@@ -1213,22 +1424,11 @@ export default function SuperAdminPage() {
                         </td>
                         <td className={styles.text_right}>{revenue.toLocaleString()}원</td>
                         <td className={styles.text_right}>{settlementAmt.toLocaleString()}원</td>
-                        <td className={styles.text_right}>
-                          <input
-                            type="number"
-                            className={styles.settlement_input}
-                            defaultValue={inf.total_settled || 0}
-                            key={`settled-${inf.id}-${inf.total_settled}`}
-                            onBlur={(e) => {
-                              const val = Number(e.target.value) || 0;
-                              if (val !== (inf.total_settled || 0)) {
-                                handleSaveTotalSettled(inf.id, val);
-                              }
-                            }}
-                            onKeyDown={(e) => {
-                              if (e.key === "Enter") (e.target as HTMLInputElement).blur();
-                            }}
-                          />
+                        <td className={styles.text_right} style={{ color: "#27ae60" }}>
+                          {settlementRecords
+                            .filter((r) => r.target_type === "influencer" && r.target_id === inf.id)
+                            .reduce((s, r) => s + r.amount, 0)
+                            .toLocaleString()}원
                         </td>
                         <td className={styles.text_right}>
                           <div className={styles.action_buttons}>
@@ -1278,201 +1478,426 @@ export default function SuperAdminPage() {
         {/* ── 정산 탭 ──────────────── */}
         {activeTab === "settlement" && (
           <>
-            {/* 월 네비게이션 */}
+            {/* 서브 탭: 전체 / 월 단위 */}
             <div className={styles.settlement_section}>
               <div className={styles.settlement_header}>
-                <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
-                  <h3 className={styles.settlement_title}>정산</h3>
-                  <span style={{ fontSize: 13, color: "#888" }}>
-                    인플루언서 {settlement.reduce((s, r) => s + r.settlement_amount, 0).toLocaleString()}원
-                    {" / "}
-                    마케터 {marketerMonthly.reduce((s, a) => s + Math.round(a.filtered_revenue * a.rs_percentage / 100), 0).toLocaleString()}원
-                  </span>
-                </div>
-                <div className={styles.month_selector}>
+                <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
                   <button
-                    className={styles.month_arrow}
-                    onClick={() => goSettlementMonth(-1)}
+                    className={`${styles.sub_tab} ${settlementView === "all" ? styles.sub_tab_active : ""}`}
+                    onClick={() => setSettlementView("all")}
                   >
-                    &larr;
+                    전체
                   </button>
-                  <span className={styles.month_display}>
-                    {settlementYear}년 {settlementMonth}월
-                  </span>
                   <button
-                    className={styles.month_arrow}
-                    onClick={() => goSettlementMonth(1)}
+                    className={`${styles.sub_tab} ${settlementView === "done" ? styles.sub_tab_active : ""}`}
+                    onClick={() => setSettlementView("done")}
                   >
-                    &rarr;
+                    완료
                   </button>
                 </div>
               </div>
             </div>
 
-            {/* Section A: 인플루언서 정산 */}
-            <div className={styles.settlement_section}>
-              <h3 className={styles.settlement_title}>인플루언서 정산</h3>
 
-              {settlementLoading ? (
-                <div className={styles.loading}>불러오는 중...</div>
-              ) : settlement.length === 0 ? (
-                <div className={styles.empty}>해당 월의 정산 데이터가 없습니다.</div>
-              ) : (
-                <div className={styles.table_wrap}>
-                  <table className={styles.table}>
-                    <thead>
-                      <tr>
-                        <th>인플루언서</th>
-                        <th className={styles.text_right}>방문수</th>
-                        <th className={styles.text_right}>결제건수</th>
-                        <th className={styles.text_right}>전환율</th>
-                        <th className={styles.text_right}>총 매출</th>
-                        <th className={styles.text_right}>RS%</th>
-                        <th className={styles.text_right}>정산액</th>
-                        <th className={styles.text_right}>정산 금액</th>
-                        <th className={styles.text_right}>정산 상태</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {settlement.map((row) => {
-                        const status = settlementStatuses.get(row.influencer_id);
-                        const isPaid = status?.is_paid ?? false;
+            {/* 정산 기록 추가 폼 모달 */}
+            {showRecordForm && (
+              <div className={styles.modal_overlay} onClick={() => setShowRecordForm(null)}>
+                <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
+                  <h3 className={styles.modal_title}>
+                    {showRecordForm.name} 정산 추가
+                  </h3>
+                  <div className={styles.form_grid}>
+                    <div className={styles.form_field}>
+                      <label className={styles.form_label}>정산 금액</label>
+                      <input
+                        type="number"
+                        className={styles.form_input}
+                        placeholder="금액 입력"
+                        value={recordFormData.amount}
+                        onChange={(e) => setRecordFormData({ ...recordFormData, amount: e.target.value })}
+                      />
+                    </div>
+                    <div className={styles.form_field}>
+                      <label className={styles.form_label}>정산 날짜</label>
+                      <input
+                        type="date"
+                        className={styles.form_input}
+                        value={recordFormData.settled_at}
+                        onChange={(e) => setRecordFormData({ ...recordFormData, settled_at: e.target.value })}
+                      />
+                    </div>
+                    <div className={styles.form_field_full}>
+                      <label className={styles.form_label}>메모 (선택)</label>
+                      <input
+                        className={styles.form_input}
+                        placeholder="메모"
+                        value={recordFormData.memo}
+                        onChange={(e) => setRecordFormData({ ...recordFormData, memo: e.target.value })}
+                      />
+                    </div>
+                  </div>
+                  <div className={styles.form_actions}>
+                    <button className={styles.form_cancel} onClick={() => setShowRecordForm(null)}>
+                      취소
+                    </button>
+                    <button className={styles.form_submit} onClick={handleAddSettlementRecord}>
+                      추가
+                    </button>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* 정산 기록 수정 모달 */}
+            {editRecord && (
+              <div className={styles.modal_overlay} onClick={() => setEditRecord(null)}>
+                <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
+                  <h3 className={styles.modal_title}>정산 기록 수정</h3>
+                  <div className={styles.form_grid}>
+                    <div className={styles.form_field}>
+                      <label className={styles.form_label}>정산 금액</label>
+                      <input
+                        type="number"
+                        className={styles.form_input}
+                        value={editRecordData.amount}
+                        onChange={(e) => setEditRecordData({ ...editRecordData, amount: e.target.value })}
+                      />
+                    </div>
+                    <div className={styles.form_field}>
+                      <label className={styles.form_label}>정산 날짜</label>
+                      <input
+                        type="date"
+                        className={styles.form_input}
+                        value={editRecordData.settled_at}
+                        onChange={(e) => setEditRecordData({ ...editRecordData, settled_at: e.target.value })}
+                      />
+                    </div>
+                    <div className={styles.form_field_full}>
+                      <label className={styles.form_label}>메모 (선택)</label>
+                      <input
+                        className={styles.form_input}
+                        placeholder="메모"
+                        value={editRecordData.memo}
+                        onChange={(e) => setEditRecordData({ ...editRecordData, memo: e.target.value })}
+                      />
+                    </div>
+                  </div>
+                  <div className={styles.form_actions}>
+                    <button className={styles.form_cancel} onClick={() => setEditRecord(null)}>
+                      취소
+                    </button>
+                    <button className={styles.form_submit} onClick={handleUpdateSettlementRecord}>
+                      저장
+                    </button>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* ── 전체 뷰 ── */}
+            {settlementView === "all" && (
+              <>
+                {settlementRecordsLoading ? (
+                  <div className={styles.loading}>불러오는 중...</div>
+                ) : (
+                  <>
+                    {/* 인플루언서 전체 정산 */}
+                    <div className={styles.settlement_section}>
+                      <h3 className={styles.settlement_title}>인플루언서 전체 정산</h3>
+                      {(() => {
+                        const infRows = influencers
+                          .map((inf) => {
+                            const revenue = inf.total_revenue || 0;
+                            const settlementAmt = Math.round(revenue * inf.rs_percentage / 100);
+                            const records = settlementRecords.filter(
+                              (r) => r.target_type === "influencer" && r.target_id === inf.id
+                            );
+                            const paid = records.reduce((s, r) => s + r.amount, 0);
+                            const remaining = settlementAmt - paid;
+                            return { inf, revenue, settlementAmt, records, paid, remaining };
+                          })
+                          .filter((row) => row.settlementAmt > 0 && row.remaining > 0);
+
+                        if (infRows.length === 0) {
+                          return <div className={styles.empty}>남은 정산이 없습니다.</div>;
+                        }
                         return (
-                          <tr key={row.influencer_id}>
-                            <td>{row.influencer_name}</td>
-                            <td className={styles.text_right}>
-                              {row.visit_count.toLocaleString()}
-                            </td>
-                            <td className={styles.text_right}>
-                              {row.payment_count.toLocaleString()}
-                            </td>
-                            <td className={styles.text_right}>
-                              {row.visit_count > 0 ? ((row.payment_count / row.visit_count) * 100).toFixed(1) : "0.0"}%
-                            </td>
-                            <td className={styles.text_right}>{row.total_revenue.toLocaleString()}원</td>
-                            <td className={styles.text_right}>{row.rs_percentage}%</td>
-                            <td className={styles.text_right}>{row.settlement_amount.toLocaleString()}원</td>
-                            <td className={styles.text_right}>
-                              <input
-                                type="number"
-                                className={styles.settlement_input}
-                                defaultValue={status?.amount ?? 0}
-                                key={`settle-${row.influencer_id}-${status?.amount}`}
-                                onBlur={(e) => {
-                                  const val = Number(e.target.value) || 0;
-                                  if (val !== (status?.amount ?? 0)) {
-                                    handleSaveSettlementAmount(row.influencer_id, val);
-                                  }
-                                }}
-                                onKeyDown={(e) => {
-                                  if (e.key === "Enter") (e.target as HTMLInputElement).blur();
-                                }}
-                              />
-                            </td>
-                            <td className={styles.text_right}>
-                              <button
-                                className={`${styles.badge} ${isPaid ? styles.badge_active : styles.badge_inactive}`}
-                                onClick={() => handleTogglePaid(row.influencer_id, isPaid)}
-                                style={{ cursor: "pointer", border: "none" }}
-                              >
-                                {isPaid ? "정산완료" : "미정산"}
-                              </button>
-                              {isPaid && status?.paid_at && (
-                                <div style={{ fontSize: "0.75em", color: "#888", marginTop: 2 }}>
-                                  {new Date(status.paid_at).toLocaleDateString("ko-KR")}
+                          <div className={styles.table_wrap}>
+                            <table className={styles.table}>
+                              <thead>
+                                <tr>
+                                  <th>인플루언서</th>
+                                  <th className={styles.text_right}>총 매출</th>
+                                  <th className={styles.text_right}>RS%</th>
+                                  <th className={styles.text_right}>총 정산액</th>
+                                  <th className={styles.text_right}>정산 완료</th>
+                                  <th className={styles.text_right}>남은 금액</th>
+                                  <th></th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                {infRows.map(({ inf, revenue, settlementAmt, records, paid, remaining }) => (
+                                  <React.Fragment key={inf.id}>
+                                    <tr>
+                                      <td>{inf.name}</td>
+                                      <td className={styles.text_right}>{revenue.toLocaleString()}원</td>
+                                      <td className={styles.text_right}>{inf.rs_percentage}%</td>
+                                      <td className={styles.text_right}>{settlementAmt.toLocaleString()}원</td>
+                                      <td className={styles.text_right} style={{ color: "#27ae60", fontWeight: 600 }}>
+                                        {paid.toLocaleString()}원
+                                      </td>
+                                      <td className={styles.text_right} style={{ color: "#e74c3c", fontWeight: 600 }}>
+                                        {remaining.toLocaleString()}원
+                                      </td>
+                                      <td className={styles.text_right}>
+                                        <button
+                                          className={styles.btn_edit}
+                                          onClick={() => {
+                                            setShowRecordForm({ type: "influencer", id: inf.id, name: inf.name });
+                                            setRecordFormData({ amount: "", memo: "", settled_at: new Date().toISOString().slice(0, 10) });
+                                          }}
+                                        >
+                                          + 정산
+                                        </button>
+                                      </td>
+                                    </tr>
+                                    {records.length > 0 && records.map((rec) => (
+                                      <tr key={rec.id} style={{ background: "#faf8f4" }}>
+                                        <td style={{ paddingInlineStart: 24, fontSize: 12, color: "#888" }}>
+                                          {new Date(rec.settled_at).toLocaleDateString("ko-KR")}
+                                        </td>
+                                        <td colSpan={3} style={{ fontSize: 12, color: "#888" }}>
+                                          {rec.memo || ""}
+                                        </td>
+                                        <td className={styles.text_right} style={{ fontSize: 12 }}>
+                                          {rec.amount.toLocaleString()}원
+                                        </td>
+                                        <td></td>
+                                        <td className={styles.text_right}>
+                                          <button
+                                            className={styles.btn_edit}
+                                            style={{ fontSize: 11, padding: "2px 6px" }}
+                                            onClick={() => openEditRecord(rec)}
+                                          >
+                                            수정
+                                          </button>
+                                        </td>
+                                      </tr>
+                                    ))}
+                                  </React.Fragment>
+                                ))}
+                              </tbody>
+                              <tfoot>
+                                <tr className={styles.table_foot}>
+                                  <td>합계</td>
+                                  <td className={styles.text_right}>
+                                    {infRows.reduce((s, r) => s + r.revenue, 0).toLocaleString()}원
+                                  </td>
+                                  <td></td>
+                                  <td className={styles.text_right}>
+                                    {infRows.reduce((s, r) => s + r.settlementAmt, 0).toLocaleString()}원
+                                  </td>
+                                  <td className={styles.text_right} style={{ color: "#27ae60", fontWeight: 600 }}>
+                                    {infRows.reduce((s, r) => s + r.paid, 0).toLocaleString()}원
+                                  </td>
+                                  <td className={styles.text_right} style={{ color: "#e74c3c", fontWeight: 600 }}>
+                                    {infRows.reduce((s, r) => s + r.remaining, 0).toLocaleString()}원
+                                  </td>
+                                  <td></td>
+                                </tr>
+                              </tfoot>
+                            </table>
+                          </div>
+                        );
+                      })()}
+                    </div>
+
+                    {/* 마케터 전체 정산 */}
+                    <div className={styles.settlement_section}>
+                      <h3 className={styles.settlement_title}>마케터 전체 정산</h3>
+                      {(() => {
+                        const mktRows = adminAccounts
+                          .map((admin) => {
+                            const revenue = admin.filtered_revenue || 0;
+                            const settlementAmt = Math.round(revenue * admin.rs_percentage / 100);
+                            const records = settlementRecords.filter(
+                              (r) => r.target_type === "marketer" && r.target_id === admin.id
+                            );
+                            const paid = records.reduce((s, r) => s + r.amount, 0);
+                            const remaining = settlementAmt - paid;
+                            return { admin, revenue, settlementAmt, records, paid, remaining };
+                          })
+                          .filter((row) => row.settlementAmt > 0 && row.remaining > 0);
+
+                        if (mktRows.length === 0) {
+                          return <div className={styles.empty}>남은 정산이 없습니다.</div>;
+                        }
+                        return (
+                          <div className={styles.table_wrap}>
+                            <table className={styles.table}>
+                              <thead>
+                                <tr>
+                                  <th>마케터</th>
+                                  <th className={styles.text_right}>총 매출</th>
+                                  <th className={styles.text_right}>RS%</th>
+                                  <th className={styles.text_right}>총 정산액</th>
+                                  <th className={styles.text_right}>정산 완료</th>
+                                  <th className={styles.text_right}>남은 금액</th>
+                                  <th></th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                {mktRows.map(({ admin, revenue, settlementAmt, records, paid, remaining }) => (
+                                  <React.Fragment key={admin.id}>
+                                    <tr>
+                                      <td>{admin.name}</td>
+                                      <td className={styles.text_right}>{revenue.toLocaleString()}원</td>
+                                      <td className={styles.text_right}>{admin.rs_percentage}%</td>
+                                      <td className={styles.text_right} style={{ color: "#c4965a", fontWeight: 700 }}>
+                                        {settlementAmt.toLocaleString()}원
+                                      </td>
+                                      <td className={styles.text_right} style={{ color: "#27ae60", fontWeight: 600 }}>
+                                        {paid.toLocaleString()}원
+                                      </td>
+                                      <td className={styles.text_right} style={{ color: "#e74c3c", fontWeight: 600 }}>
+                                        {remaining.toLocaleString()}원
+                                      </td>
+                                      <td className={styles.text_right}>
+                                        <button
+                                          className={styles.btn_edit}
+                                          onClick={() => {
+                                            setShowRecordForm({ type: "marketer", id: admin.id, name: admin.name });
+                                            setRecordFormData({ amount: "", memo: "", settled_at: new Date().toISOString().slice(0, 10) });
+                                          }}
+                                        >
+                                          + 정산
+                                        </button>
+                                      </td>
+                                    </tr>
+                                    {records.length > 0 && records.map((rec) => (
+                                      <tr key={rec.id} style={{ background: "#faf8f4" }}>
+                                        <td style={{ paddingInlineStart: 24, fontSize: 12, color: "#888" }}>
+                                          {new Date(rec.settled_at).toLocaleDateString("ko-KR")}
+                                        </td>
+                                        <td colSpan={3} style={{ fontSize: 12, color: "#888" }}>
+                                          {rec.memo || ""}
+                                        </td>
+                                        <td className={styles.text_right} style={{ fontSize: 12 }}>
+                                          {rec.amount.toLocaleString()}원
+                                        </td>
+                                        <td></td>
+                                        <td className={styles.text_right}>
+                                          <button
+                                            className={styles.btn_edit}
+                                            style={{ fontSize: 11, padding: "2px 6px" }}
+                                            onClick={() => openEditRecord(rec)}
+                                          >
+                                            수정
+                                          </button>
+                                        </td>
+                                      </tr>
+                                    ))}
+                                  </React.Fragment>
+                                ))}
+                              </tbody>
+                              <tfoot>
+                                <tr className={styles.table_foot}>
+                                  <td>합계</td>
+                                  <td className={styles.text_right}>
+                                    {mktRows.reduce((s, r) => s + r.revenue, 0).toLocaleString()}원
+                                  </td>
+                                  <td></td>
+                                  <td className={styles.text_right} style={{ color: "#c4965a", fontWeight: 700 }}>
+                                    {mktRows.reduce((s, r) => s + r.settlementAmt, 0).toLocaleString()}원
+                                  </td>
+                                  <td className={styles.text_right} style={{ color: "#27ae60", fontWeight: 600 }}>
+                                    {mktRows.reduce((s, r) => s + r.paid, 0).toLocaleString()}원
+                                  </td>
+                                  <td className={styles.text_right} style={{ color: "#e74c3c", fontWeight: 600 }}>
+                                    {mktRows.reduce((s, r) => s + r.remaining, 0).toLocaleString()}원
+                                  </td>
+                                  <td></td>
+                                </tr>
+                              </tfoot>
+                            </table>
+                          </div>
+                        );
+                      })()}
+                    </div>
+                  </>
+                )}
+              </>
+            )}
+
+            {/* ── 완료 뷰 ── */}
+            {settlementView === "done" && (
+              <>
+                {settlementRecordsLoading ? (
+                  <div className={styles.loading}>불러오는 중...</div>
+                ) : settlementRecords.length === 0 ? (
+                  <div className={styles.empty}>정산 기록이 없습니다.</div>
+                ) : (
+                  <div className={styles.settlement_section}>
+                    {(() => {
+                      // 인플루언서 + 마케터 통합 그룹핑
+                      const grouped = new Map<string, { name: string; type: string; records: SettlementRecord[]; total: number }>();
+                      for (const rec of settlementRecords) {
+                        const key = `${rec.target_type}-${rec.target_id}`;
+                        let name = rec.target_id;
+                        if (rec.target_type === "influencer") {
+                          name = influencers.find((i) => i.id === rec.target_id)?.name || rec.target_id;
+                        } else {
+                          name = adminAccounts.find((a) => a.id === rec.target_id)?.name || rec.target_id;
+                        }
+                        const existing = grouped.get(key) || { name, type: rec.target_type === "influencer" ? "인플루언서" : "마케터", records: [], total: 0 };
+                        existing.records.push(rec);
+                        existing.total += rec.amount;
+                        grouped.set(key, existing);
+                      }
+
+                      return Array.from(grouped.entries()).map(([key, { name, type, records, total }]) => (
+                        <div key={key} className={styles.done_group}>
+                          <div className={styles.done_header}>
+                            <span className={styles.done_name}>
+                              {name}
+                              <span className={styles.done_type}>{type}</span>
+                            </span>
+                            <span className={styles.done_total}>{total.toLocaleString()}원</span>
+                          </div>
+                          <div className={styles.done_list}>
+                            {records
+                              .sort((a, b) => new Date(b.settled_at).getTime() - new Date(a.settled_at).getTime())
+                              .map((rec) => (
+                                <div key={rec.id} className={styles.done_row}>
+                                  <span className={styles.done_date}>
+                                    {new Date(rec.settled_at).toLocaleDateString("ko-KR")}
+                                  </span>
+                                  <span className={styles.done_memo}>{rec.memo || ""}</span>
+                                  <span className={styles.done_amount}>{rec.amount.toLocaleString()}원</span>
+                                  <span className={styles.done_actions}>
+                                    <button
+                                      className={styles.done_btn}
+                                      onClick={() => openEditRecord(rec)}
+                                    >
+                                      수정
+                                    </button>
+                                    <button
+                                      className={styles.done_btn}
+                                      onClick={() => handleDeleteSettlementRecord(rec.id)}
+                                    >
+                                      삭제
+                                    </button>
+                                  </span>
                                 </div>
-                              )}
-                            </td>
-                          </tr>
-                        );
-                      })}
-                    </tbody>
-                    <tfoot>
-                      <tr className={styles.table_foot}>
-                        <td>합계</td>
-                        <td className={styles.text_right}>{settlement.reduce((s, r) => s + r.visit_count, 0).toLocaleString()}</td>
-                        <td className={styles.text_right}>{settlement.reduce((s, r) => s + r.payment_count, 0).toLocaleString()}</td>
-                        <td className={styles.text_right}>
-                          {(() => {
-                            const v = settlement.reduce((s, r) => s + r.visit_count, 0);
-                            const p = settlement.reduce((s, r) => s + r.payment_count, 0);
-                            return v > 0 ? ((p / v) * 100).toFixed(1) : "0.0";
-                          })()}%
-                        </td>
-                        <td className={styles.text_right}>{settlement.reduce((s, r) => s + r.total_revenue, 0).toLocaleString()}원</td>
-                        <td className={styles.text_right}></td>
-                        <td className={styles.text_right}>{settlement.reduce((s, r) => s + r.settlement_amount, 0).toLocaleString()}원</td>
-                        <td className={styles.text_right}>
-                          {Array.from(settlementStatuses.values()).reduce((s, r) => s + (r.amount || 0), 0).toLocaleString()}원
-                        </td>
-                        <td></td>
-                      </tr>
-                    </tfoot>
-                  </table>
-                </div>
-              )}
-            </div>
-
-            {/* Section B: 마케터 정산 */}
-            <div className={styles.settlement_section}>
-              <h3 className={styles.settlement_title}>마케터 정산</h3>
-
-              {marketerMonthly.length === 0 ? (
-                <div className={styles.empty}>등록된 마케터가 없습니다.</div>
-              ) : (
-                <div className={styles.table_wrap}>
-                  <table className={styles.table}>
-                    <thead>
-                      <tr>
-                        <th>마케터</th>
-                        <th className={styles.text_right}>RS%</th>
-                        <th className={styles.text_right}>인플루언서 수</th>
-                        <th className={styles.text_right}>월 매출</th>
-                        <th className={styles.text_right}>정산액</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {marketerMonthly.map((admin) => {
-                        const adminInfCount = influencers.filter((inf) => inf.admin_id === admin.id).length;
-                        const monthlyRevenue = admin.filtered_revenue;
-                        const monthlySettlement = Math.round(monthlyRevenue * admin.rs_percentage / 100);
-                        return (
-                          <tr key={admin.id}>
-                            <td>
-                              {admin.name}
-                              {admin.rs_start_date && (
-                                <span style={{ fontSize: "0.75em", color: "#888", marginLeft: 4 }}>
-                                  ({new Date(admin.rs_start_date).toLocaleDateString("ko-KR", { month: "numeric", day: "numeric" })}~)
-                                </span>
-                              )}
-                            </td>
-                            <td className={styles.text_right}>{admin.rs_percentage}%</td>
-                            <td className={styles.text_right}>{adminInfCount}</td>
-                            <td className={styles.text_right}>{monthlyRevenue.toLocaleString()}원</td>
-                            <td className={styles.text_right} style={{ color: "#c4965a", fontWeight: 700 }}>
-                              {monthlySettlement.toLocaleString()}원
-                            </td>
-                          </tr>
-                        );
-                      })}
-                    </tbody>
-                    <tfoot>
-                      <tr className={styles.table_foot}>
-                        <td>합계</td>
-                        <td></td>
-                        <td></td>
-                        <td className={styles.text_right}>
-                          {marketerMonthly.reduce((s, a) => s + a.filtered_revenue, 0).toLocaleString()}원
-                        </td>
-                        <td className={styles.text_right} style={{ color: "#c4965a", fontWeight: 700 }}>
-                          {marketerMonthly.reduce((s, a) => s + Math.round(a.filtered_revenue * a.rs_percentage / 100), 0).toLocaleString()}원
-                        </td>
-                      </tr>
-                    </tfoot>
-                  </table>
-                </div>
-              )}
-            </div>
+                              ))}
+                          </div>
+                        </div>
+                      ));
+                    })()}
+                  </div>
+                )}
+              </>
+            )}
           </>
         )}
 

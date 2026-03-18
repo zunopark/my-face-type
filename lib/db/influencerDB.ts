@@ -35,6 +35,7 @@ export interface UpdateInfluencerInput {
   password?: string;
   is_active?: boolean;
   total_settled?: number;
+  is_archived?: boolean;
 }
 
 export async function getAllInfluencers(): Promise<Influencer[]> {
@@ -127,6 +128,7 @@ export async function getAllInfluencersWithStats(adminId?: string): Promise<Infl
     .from("influencers")
     .select("*")
     .eq("is_active", true)
+    .order("sort_order", { ascending: true })
     .order("created_at", { ascending: false });
 
   if (adminId) {

@@ -2,6 +2,7 @@ import { supabaseAdmin as supabase } from "@/lib/supabase";
 
 // 서비스 타입
 export type SajuServiceType =
+  | "saju"           // 정통 종합 사주
   | "saju_love"      // 연애 사주
   | "saju_career"    // 직업/적성
   | "saju_wealth"    // 재물운

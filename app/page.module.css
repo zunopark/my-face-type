@@ -150,6 +150,23 @@
   z-index: 1;
 }
 
+.card_saju_general {
+  background: url("/saju/img/unhak.jpg") center center / cover no-repeat;
+}
+
+.card_saju_general > * {
+  position: relative;
+  z-index: 1;
+}
+
+.card_saju_general .card_title,
+.card_saju_general .card_character {
+  color: rgb(75, 55, 120);
+  -webkit-text-stroke: 5px #ffffff;
+  paint-order: stroke fill;
+  text-shadow: none;
+}
+
 .badge_limited {
   position: absolute;
   top: 8px;

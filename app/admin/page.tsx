@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
-import { Link2, Ticket, Pencil, Trash2 } from "lucide-react";
+import { Link2, Ticket, Pencil, Trash2, GripVertical, ArrowDownToLine } from "lucide-react";
 import * as XLSX from "xlsx";
 import styles from "./admin.module.css";
 
@@ -40,6 +40,7 @@ interface Influencer {
   total_payments?: number;
   total_revenue?: number;
   password?: string;
+  is_archived?: boolean;
 }
 
 interface InfluencerDiscount {
@@ -203,6 +204,12 @@ export default function AdminPage() {
   const [settlementYear, setSettlementYear] = useState(new Date().getFullYear());
   const [settlementMonth, setSettlementMonth] = useState(new Date().getMonth() + 1);
   const [settlementLoading, setSettlementLoading] = useState(false);
+
+  // Settlement records (정산 완료 기록)
+  const [settlementRecords, setSettlementRecords] = useState<{ target_id: string; amount: number }[]>([]);
+
+  // Drag reorder state
+  const [dragIdx, setDragIdx] = useState<number | null>(null);
 
   // ─── 인증 ────────────────────────────────────
 
@@ -372,6 +379,55 @@ export default function AdminPage() {
       setInfLoading(false);
     }
   }, [adminAccount]);
+
+  const fetchSettlementRecords = useCallback(async () => {
+    try {
+      const res = await fetch("/api/admin/settlement-records?target_type=influencer");
+      const data = await res.json();
+      if (Array.isArray(data)) {
+        // 인플루언서별 합산
+        const map = new Map<string, number>();
+        for (const r of data) {
+          map.set(r.target_id, (map.get(r.target_id) || 0) + r.amount);
+        }
+        setSettlementRecords(Array.from(map.entries()).map(([target_id, amount]) => ({ target_id, amount })));
+      }
+    } catch (err) {
+      console.error("정산 기록 조회 오류:", err);
+    }
+  }, []);
+
+  const handleDrop = (targetIdx: number) => {
+    if (dragIdx === null || dragIdx === targetIdx) return;
+    const reordered = [...influencers];
+    const [moved] = reordered.splice(dragIdx, 1);
+    reordered.splice(targetIdx, 0, moved);
+    setInfluencers(reordered);
+    setDragIdx(null);
+
+    // 순서 저장
+    const order = reordered.map((inf, i) => ({ id: inf.id, sort_order: i }));
+    fetch("/api/admin/influencers/reorder", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ order }),
+    }).catch((err) => console.error("순서 저장 오류:", err));
+  };
+
+  const handleToggleArchive = async (id: string, archived: boolean) => {
+    try {
+      await fetch("/api/admin/influencers", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id, is_archived: !archived }),
+      });
+      setInfluencers((prev) =>
+        prev.map((inf) => (inf.id === id ? { ...inf, is_archived: !archived } : inf))
+      );
+    } catch (err) {
+      console.error("아카이브 변경 오류:", err);
+    }
+  };
 
   const handleCreateInfluencer = async () => {
     setInfFormError("");
@@ -685,8 +741,9 @@ export default function AdminPage() {
     if (isAuthenticated) {
       fetchCoupons();
       fetchInfluencers();
+      fetchSettlementRecords();
     }
-  }, [isAuthenticated, fetchCoupons, fetchInfluencers]);
+  }, [isAuthenticated, fetchCoupons, fetchInfluencers, fetchSettlementRecords]);
 
   useEffect(() => {
     if (isAuthenticated && activeTab === "usage") {
@@ -904,6 +961,7 @@ export default function AdminPage() {
                 <table className={styles.table}>
                   <thead>
                     <tr>
+                      <th style={{ width: 28 }}></th>
                       <th>이름</th>
                       <th>슬러그</th>
                       <th>할인</th>
@@ -912,16 +970,27 @@ export default function AdminPage() {
                       <th className={styles.text_right}>결제(전환율)</th>
                       <th className={styles.text_right}>매출</th>
                       <th className={styles.text_right}>정산액</th>
+                      <th className={styles.text_right}>기 정산</th>
                       <th className={styles.text_right}>관리</th>
                     </tr>
                   </thead>
                   <tbody>
-                    {influencers.map((inf) => {
+                    {influencers.filter((inf) => !inf.is_archived).map((inf, idx) => {
                       const revenue = inf.total_revenue || 0;
                       const rs = Number(inf.rs_percentage);
                       const settlementAmt = Math.round(revenue * rs / 100);
                       return (
-                      <tr key={inf.id}>
+                      <tr
+                        key={inf.id}
+                        draggable
+                        onDragStart={() => setDragIdx(idx)}
+                        onDragOver={(e) => e.preventDefault()}
+                        onDrop={() => handleDrop(idx)}
+                        style={{ opacity: dragIdx === idx ? 0.4 : 1 }}
+                      >
+                        <td style={{ cursor: "grab", color: "#ccc", width: 28, textAlign: "center" }}>
+                          <GripVertical size={14} />
+                        </td>
                         <td>{inf.name}</td>
                         <td className={styles.code_cell}>{inf.slug}</td>
                         <td>
@@ -955,6 +1024,9 @@ export default function AdminPage() {
                         </td>
                         <td className={styles.text_right}>{revenue.toLocaleString()}원</td>
                         <td className={styles.text_right}>{settlementAmt.toLocaleString()}원</td>
+                        <td className={styles.text_right} style={{ color: "#27ae60" }}>
+                          {(settlementRecords.find((r) => r.target_id === inf.id)?.amount || 0).toLocaleString()}원
+                        </td>
                         <td className={styles.text_right}>
                           <div className={styles.action_buttons}>
                             <button
@@ -966,13 +1038,6 @@ export default function AdminPage() {
                               title="UTM 링크"
                             >
                               <Link2 size={14} />
-                            </button>
-                            <button
-                              className={styles.btn_icon}
-                              onClick={() => handleCreateCouponForInfluencer(inf)}
-                              title="쿠폰 만들기"
-                            >
-                              <Ticket size={14} />
                             </button>
                             <button
                               className={styles.btn_icon}
@@ -988,6 +1053,13 @@ export default function AdminPage() {
                             >
                               <Trash2 size={14} />
                             </button>
+                            <button
+                              className={styles.btn_icon}
+                              onClick={() => handleToggleArchive(inf.id, !!inf.is_archived)}
+                              title="완료로 이동"
+                            >
+                              <ArrowDownToLine size={14} />
+                            </button>
                           </div>
                         </td>
                       </tr>
@@ -998,79 +1070,34 @@ export default function AdminPage() {
               </div>
             )}
 
-            {/* 월별 통계 */}
-            <div className={styles.settlement_section}>
-              <div className={styles.settlement_header}>
-                <h3 className={styles.settlement_title}>월별 통계</h3>
-                <div className={styles.month_selector}>
-                  <button
-                    className={styles.month_arrow}
-                    onClick={() => goSettlementMonth(-1)}
-                  >
-                    &larr;
-                  </button>
-                  <span className={styles.month_display}>
-                    {settlementYear}년 {settlementMonth}월
-                  </span>
-                  <button
-                    className={styles.month_arrow}
-                    onClick={() => goSettlementMonth(1)}
-                  >
-                    &rarr;
-                  </button>
+            {/* 완료된 인플루언서 */}
+            {influencers.filter((inf) => inf.is_archived).length > 0 && (
+              <div className={styles.settlement_section}>
+                <h3 className={styles.settlement_title} style={{ fontSize: 14, color: "#999" }}>완료된 인플루언서</h3>
+                <div className={styles.done_list}>
+                  {influencers.filter((inf) => inf.is_archived).map((inf) => {
+                    const revenue = inf.total_revenue || 0;
+                    const settlementAmt = Math.round(revenue * Number(inf.rs_percentage) / 100);
+                    const paid = settlementRecords.find((r) => r.target_id === inf.id)?.amount || 0;
+                    return (
+                      <div key={inf.id} className={styles.done_row}>
+                        <span className={styles.done_name}>{inf.name}</span>
+                        <span className={styles.done_memo}>{inf.slug}</span>
+                        <span style={{ fontSize: 12, color: "#888" }}>정산 {settlementAmt.toLocaleString()}원</span>
+                        <span className={styles.done_amount} style={{ color: "#27ae60" }}>{paid.toLocaleString()}원</span>
+                        <button
+                          className={styles.done_btn}
+                          onClick={() => handleToggleArchive(inf.id, true)}
+                        >
+                          복원
+                        </button>
+                      </div>
+                    );
+                  })}
                 </div>
               </div>
+            )}
 
-              {settlementLoading ? (
-                <div className={styles.loading}>불러오는 중...</div>
-              ) : settlement.length === 0 ? (
-                <div className={styles.empty}>해당 월의 정산 데이터가 없습니다.</div>
-              ) : (
-                <div className={styles.table_wrap}>
-                  <table className={styles.table}>
-                    <thead>
-                      <tr>
-                        <th>인플루언서</th>
-                        <th className={styles.text_right}>방문수</th>
-                        <th className={styles.text_right}>결제건수</th>
-                        <th className={styles.text_right}>전환율</th>
-                        <th className={styles.text_right}>총 매출</th>
-                        <th className={styles.text_right}>RS%</th>
-                        <th className={styles.text_right}>정산액</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {settlement.map((row) => (
-                        <tr key={row.influencer_id}>
-                          <td>{row.influencer_name}</td>
-                          <td className={styles.text_right}>
-                            {row.visit_count.toLocaleString()}
-                          </td>
-                          <td className={styles.text_right}>
-                            {row.payment_count.toLocaleString()}
-                          </td>
-                          <td className={styles.text_right}>{row.visit_count > 0 ? ((row.payment_count / row.visit_count) * 100).toFixed(1) : "0.0"}%</td>
-                          <td className={styles.text_right}>{row.total_revenue.toLocaleString()}원</td>
-                          <td className={styles.text_right}>{row.rs_percentage}%</td>
-                          <td className={styles.text_right}>{row.settlement_amount.toLocaleString()}원</td>
-                        </tr>
-                      ))}
-                    </tbody>
-                    <tfoot>
-                      <tr className={styles.table_foot}>
-                        <td>합계</td>
-                        <td className={styles.text_right}>{settlement.reduce((s, r) => s + r.visit_count, 0).toLocaleString()}</td>
-                        <td className={styles.text_right}>{settlement.reduce((s, r) => s + r.payment_count, 0).toLocaleString()}</td>
-                        <td className={styles.text_right}>{(() => { const v = settlement.reduce((s, r) => s + r.visit_count, 0); const p = settlement.reduce((s, r) => s + r.payment_count, 0); return v > 0 ? ((p / v) * 100).toFixed(1) : "0.0"; })()}%</td>
-                        <td className={styles.text_right}>{settlement.reduce((s, r) => s + r.total_revenue, 0).toLocaleString()}원</td>
-                        <td className={styles.text_right}></td>
-                        <td className={styles.text_right}>{settlement.reduce((s, r) => s + r.settlement_amount, 0).toLocaleString()}원</td>
-                      </tr>
-                    </tfoot>
-                  </table>
-                </div>
-              )}
-            </div>
           </>
         )}
 
