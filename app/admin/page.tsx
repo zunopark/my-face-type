@@ -1083,6 +1083,11 @@ export default function AdminPage() {
                       <div key={inf.id} className={styles.done_row}>
                         <span className={styles.done_name}>{inf.name}</span>
                         <span className={styles.done_memo}>{inf.slug}</span>
+                        <span style={{ fontSize: 12, color: "#888" }}>{(inf.total_visits || 0).toLocaleString()}방문</span>
+                        <span style={{ fontSize: 12, color: "#888" }}>
+                          {(inf.total_payments || 0).toLocaleString()}건
+                          ({(inf.total_visits || 0) > 0 ? ((inf.total_payments || 0) / (inf.total_visits || 1) * 100).toFixed(1) : "0.0"}%)
+                        </span>
                         <span style={{ fontSize: 12, color: "#888" }}>정산 {settlementAmt.toLocaleString()}원</span>
                         <span className={styles.done_amount} style={{ color: "#27ae60" }}>{paid.toLocaleString()}원</span>
                         <button
