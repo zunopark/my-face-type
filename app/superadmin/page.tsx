@@ -430,7 +430,7 @@ export default function SuperAdminPage() {
     try {
       const res = await fetch("/api/admin/influencers");
       const data = await res.json();
-      setInfluencers(data);
+      setInfluencers(Array.isArray(data) ? data : []);
     } catch (err) {
       console.error("인플루언서 목록 조회 오류:", err);
     } finally {
@@ -1597,7 +1597,7 @@ export default function SuperAdminPage() {
             {/* ── 전체 뷰 ── */}
             {settlementView === "all" && (
               <>
-                {settlementRecordsLoading ? (
+                {(settlementRecordsLoading || infLoading) ? (
                   <div className={styles.loading}>불러오는 중...</div>
                 ) : (
                   <>
@@ -1832,7 +1832,7 @@ export default function SuperAdminPage() {
             {/* ── 완료 뷰 ── */}
             {settlementView === "done" && (
               <>
-                {settlementRecordsLoading ? (
+                {(settlementRecordsLoading || infLoading) ? (
                   <div className={styles.loading}>불러오는 중...</div>
                 ) : settlementRecords.length === 0 ? (
                   <div className={styles.empty}>정산 기록이 없습니다.</div>
