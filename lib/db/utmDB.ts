@@ -156,14 +156,16 @@ export async function getPaymentsByInfluencer(
     .select("id, service_type, user_info, payment_info, paid_at, is_refunded")
     .eq("influencer_id", influencerId)
     .eq("is_paid", true)
-    .order("paid_at", { ascending: false });
+    .order("paid_at", { ascending: false })
+    .limit(10000);
 
   const { data: faceData } = await supabase
     .from("face_analyses")
     .select("id, service_type, payment_info, paid_at, is_refunded")
     .eq("influencer_id", influencerId)
     .eq("is_paid", true)
-    .order("paid_at", { ascending: false });
+    .order("paid_at", { ascending: false })
+    .limit(10000);
 
   const results: PaymentDetail[] = [];
 

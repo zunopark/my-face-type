@@ -82,6 +82,7 @@ const SERVICE_LABELS: Record<string, string> = {
   face: "관상",
   couple: "커플궁합",
   saju_love: "연애사주",
+  saju: "사주팔자풀이",
   new_year: "신년사주",
 };
 
@@ -89,6 +90,7 @@ const SERVICE_PRICES: Record<string, number> = {
   face: 9900,
   couple: 9900,
   saju_love: 23900,
+  saju: 23900,
   new_year: 26900,
 };
 
@@ -1722,6 +1724,7 @@ export default function AdminPage() {
                     <option value="face">관상</option>
                     <option value="couple">커플궁합</option>
                     <option value="saju_love">연애사주</option>
+                    <option value="saju">사주팔자풀이</option>
                     <option value="new_year">신년사주</option>
                   </select>
                 </div>

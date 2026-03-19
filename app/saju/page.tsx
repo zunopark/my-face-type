@@ -133,12 +133,12 @@ export default function SajuPage() {
 
   // 운학선인 메시지들
   const UNHAK_MESSAGES: Record<number, string> = {
-    0: "허허, 어서 오시게.\n사주팔자를 풀어드리겠네.\n기본 정보를 알려주시게.",
-    1: "어떻게 불러드리면 되겠는가?",
-    2: "성별을 알려주시게.",
-    3: "생년월일을 알려주시게.",
-    4: "태어난 시간도 아시는가?\n모르면 '시간 모름'을 택하시게.",
-    5: "혹시 특별히 궁금한 것이 있는가?\n없으면 바로 넘어가도 되네.",
+    0: "어서 오세요.\n사주팔자를 풀어드리겠습니다.\n몇 가지 여쭤볼게요.",
+    1: "어떻게 불러드리면 될까요?",
+    2: "성별을 알려주세요.",
+    3: "생년월일을 알려주세요.",
+    4: "태어난 시간도 알고 계신가요?\n모르시면 '시간 모름'을 선택해주세요.",
+    5: "혹시 특별히 궁금한 것이 있으신가요?\n없으시면 바로 넘어가도 됩니다.",
   };
 
   // 다음 스텝으로 이동
@@ -552,7 +552,7 @@ export default function SajuPage() {
           <div className={`${styles.chat_input_group} ${styles.chat_input_full}`}>
             <textarea
               className={`${styles.input_field} ${styles.textarea} ${styles.concern_textarea}`}
-              placeholder={"적지 않아도 괜찮습니다.\n궁금한 점을 알려주시면 더 맞춤 풀이를 해드리겠네."}
+              placeholder={"적지 않아도 괜찮아요.\n궁금한 점을 알려주시면 더 맞춤 풀이를 해드릴게요."}
               rows={3}
               value={userConcern}
               onChange={(e) => setUserConcern(e.target.value)}
@@ -592,7 +592,7 @@ export default function SajuPage() {
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           src={currentImage}
-          alt="운학선인 정통사주"
+          alt="운학선인 종합 사주팔자"
           className={`${styles.landing_image} ${
             isImageTransitioning ? styles.landing_image_fade_in : ""
           }`}
@@ -608,10 +608,10 @@ export default function SajuPage() {
                 운학선인
               </span>
               <span className={`${styles.title_line} ${styles.title_saju}`}>
-                정통사주
+                사주팔자 풀이
               </span>
             </h1>
-            <p className={styles.landing_subtitle}>사주팔자의 깊은 뜻을 풀어드리겠네</p>
+            <p className={styles.landing_subtitle}>사주팔자의 깊은 뜻을 풀어드립니다</p>
           </div>
           <div className={styles.landing_bottom}>
             <button className={styles.landing_start_btn} onClick={handleStart}>
@@ -702,7 +702,7 @@ export default function SajuPage() {
             <div className={styles.analyze_spinner} />
             <div className={styles.analyze_text}>사주 풀이중</div>
             <div className={styles.analyze_subtext}>
-              잠시만요, 팔자의 기운을 살피고 있네...
+              잠시만요, 팔자의 기운을 살피고 있습니다...
             </div>
           </div>
         </div>

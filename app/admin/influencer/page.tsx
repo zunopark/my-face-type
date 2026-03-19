@@ -41,6 +41,7 @@ const SERVICE_LABELS: Record<string, string> = {
   face: "관상",
   couple: "커플궁합",
   saju_love: "연애사주",
+  saju: "사주팔자풀이",
   new_year: "신년사주",
 };
 

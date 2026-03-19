@@ -17,8 +17,8 @@ export async function GET(request: NextRequest) {
       const [{ count: visitCount }, { data: sajuPayments }, { data: facePayments }] =
         await Promise.all([
           supabase.from("utm_visits").select("id", { count: "exact", head: true }).eq("influencer_id", influencerId),
-          supabase.from("saju_analyses").select("payment_info").eq("influencer_id", influencerId).eq("is_paid", true).eq("is_refunded", false),
-          supabase.from("face_analyses").select("payment_info").eq("influencer_id", influencerId).eq("is_paid", true).eq("is_refunded", false),
+          supabase.from("saju_analyses").select("payment_info").eq("influencer_id", influencerId).eq("is_paid", true).eq("is_refunded", false).limit(10000),
+          supabase.from("face_analyses").select("payment_info").eq("influencer_id", influencerId).eq("is_paid", true).eq("is_refunded", false).limit(10000),
         ]);
 
       const allPayments = [...(sajuPayments || []), ...(facePayments || [])];
@@ -84,8 +84,8 @@ export async function GET(request: NextRequest) {
       }
 
       const [{ data: sajuData }, { data: faceData }] = await Promise.all([
-        sajuQuery.order("paid_at", { ascending: false }),
-        faceQuery.order("paid_at", { ascending: false }),
+        sajuQuery.order("paid_at", { ascending: false }).limit(10000),
+        faceQuery.order("paid_at", { ascending: false }).limit(10000),
       ]);
 
       const results: Array<{

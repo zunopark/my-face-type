@@ -253,14 +253,14 @@ function SajuResultContent() {
   const buildFreeScenes = useCallback((record: SajuRecord): Scene[] => {
     const userName = record.input?.userName || "고객";
     return [
-      { kind: "dialogue", id: "opening-dialogue", text: `허허, ${userName}님이시구먼.\n이 늙은이가 사주를 풀어드리겠네.`, bgImage: "/saju/img/unhak-1.jpg" },
-      { kind: "dialogue", id: "intro-guide-dialogue", text: `${userName}님의 사주를 살펴보기 전에,\n먼저 사주팔자가 무엇인지 간단히 알려드리겠네.`, bgImage: "/saju/img/unhak-4.jpg" },
+      { kind: "dialogue", id: "opening-dialogue", text: `${userName}님, 어서 오세요.\n사주팔자를 풀어드리겠습니다.`, bgImage: "/saju/img/unhak-1.jpg" },
+      { kind: "dialogue", id: "intro-guide-dialogue", text: `${userName}님의 사주를 살펴보기 전에,\n먼저 사주팔자가 무엇인지 간단히 알려드릴게요.`, bgImage: "/saju/img/unhak-4.jpg" },
       { kind: "card", id: "intro-card", bgImage: "/saju/img/unhak-5.jpg", tocLabel: "들어가며" },
-      { kind: "dialogue", id: "saju-intro-dialogue", text: `그럼 이제 ${userName}님의\n사주 원국을 펼쳐보겠네.`, bgImage: "/saju/img/unhak-5.jpg" },
+      { kind: "dialogue", id: "saju-intro-dialogue", text: `그럼 이제 ${userName}님의\n사주 원국을 펼쳐볼게요.`, bgImage: "/saju/img/unhak-5.jpg" },
       { kind: "card", id: "saju-card", bgImage: "/saju/img/unhak-7.jpg", tocLabel: "사주 원국" },
-      { kind: "dialogue", id: "chapter1-pre", text: `1장에서는 사주팔자의 뜻을 풀어드리겠네.\n이 부분은 무료로 살펴보시게.`, bgImage: "/saju/img/unhak-6.jpg" },
+      { kind: "dialogue", id: "chapter1-pre", text: `1장에서는 사주팔자의 뜻을 풀어드릴게요.\n이 부분은 무료로 살펴보실 수 있습니다.`, bgImage: "/saju/img/unhak-6.jpg" },
       { kind: "card", id: "chapter-chapter1-report", bgImage: "/saju/img/unhak-7.jpg", chapterIndex: 0, tocLabel: `1장. ${CHAPTER_TITLES[0]}` },
-      { kind: "dialogue", id: "chapter1-outro", text: `어떠신가, ${userName}님의 팔자가 보이시는가?\n나머지 5장의 깊은 풀이를 보시려면\n전체 풀이를 열어보시게.`, bgImage: "/saju/img/unhak-8.jpg" },
+      { kind: "dialogue", id: "chapter1-outro", text: `어떠세요, ${userName}님의 팔자가 보이시나요?\n나머지 5장의 깊은 풀이를 보시려면\n전체 풀이를 열어보세요.`, bgImage: "/saju/img/unhak-8.jpg" },
       { kind: "action", id: "paywall", bgImage: "/saju/img/unhak-1.jpg" },
     ];
   }, []);
@@ -273,7 +273,7 @@ function SajuResultContent() {
     const chapterConfig = getChapterConfig(userName);
 
     // 들어가며 + 사주원국 (재방문 시에도 보여줌)
-    result.push({ kind: "dialogue", id: "opening-dialogue", text: `${userName}님, 다시 오셨구먼.\n사주 풀이를 이어서 보시게.`, bgImage: "/saju/img/unhak-1.jpg" });
+    result.push({ kind: "dialogue", id: "opening-dialogue", text: `${userName}님, 다시 오셨군요.\n사주 풀이를 이어서 보여드릴게요.`, bgImage: "/saju/img/unhak-1.jpg" });
     result.push({ kind: "card", id: "intro-card", bgImage: "/saju/img/unhak-5.jpg", tocLabel: "들어가며" });
     result.push({ kind: "card", id: "saju-card", bgImage: "/saju/img/unhak-7.jpg", tocLabel: "사주 원국" });
 
@@ -295,8 +295,8 @@ function SajuResultContent() {
     });
 
     // 엔딩
-    result.push({ kind: "dialogue", id: "ending-intro", text: `${userName}님, 여기까지 긴 풀이를 함께해주셔서 감사하네.\n사주의 깊은 뜻이 조금은 보이시는가?`, bgImage: "/saju/img/unhak-24.jpg" });
-    result.push({ kind: "dialogue", id: "ending-outro", text: `앞으로의 삶에\n늘 좋은 기운이 함께하시길 바라겠네.\n\n궁금한 것이 있으면 물어보시게.`, bgImage: "/saju/img/unhak-24.jpg" });
+    result.push({ kind: "dialogue", id: "ending-intro", text: `${userName}님, 여기까지 긴 풀이를 함께해주셔서 감사합니다.\n사주의 깊은 뜻이 조금은 보이시나요?`, bgImage: "/saju/img/unhak-24.jpg" });
+    result.push({ kind: "dialogue", id: "ending-outro", text: `앞으로의 삶에\n늘 좋은 기운이 함께하시길 바랍니다.\n\n궁금한 것이 있으면 물어보세요.`, bgImage: "/saju/img/unhak-24.jpg" });
     result.push({ kind: "card", id: "ending", bgImage: "/saju/img/unhak-24.jpg", tocLabel: "마무리" });
 
     // 채팅 Q&A
@@ -309,7 +309,7 @@ function SajuResultContent() {
   const buildWaitingScenes = useCallback((record: SajuRecord): Scene[] => {
     const userName = record.input?.userName || "고객";
     return [
-      { kind: "dialogue", id: "paid-dialogue", text: `${userName}님, 감사하네.\n이제 깊은 풀이를 시작하겠네.`, bgImage: "/saju/img/unhak-1.jpg" },
+      { kind: "dialogue", id: "paid-dialogue", text: `${userName}님, 감사합니다.\n이제 깊은 풀이를 시작하겠습니다.`, bgImage: "/saju/img/unhak-1.jpg" },
       { kind: "waiting", id: "waiting", bgImage: "/saju/img/unhak-1.jpg" },
     ];
   }, []);
@@ -317,11 +317,11 @@ function SajuResultContent() {
   // 로딩 메시지 순환
   const startLoadingMessages = useCallback((userName: string) => {
     const loadingMsgs = [
-      `${userName}님의 사주 팔자를 분석하고 있네`,
-      "지금 페이지를 나가면 분석이 완료되지 않을 수 있네",
-      `${userName}님의 오행 관계를 살피고 있네`,
-      "대운의 흐름을 읽고 있네",
-      "곧 분석이 완료되겠네",
+      `${userName}님의 사주 팔자를 분석하고 있습니다`,
+      "지금 페이지를 나가면 분석이 완료되지 않을 수 있어요",
+      `${userName}님의 오행 관계를 살피고 있습니다`,
+      "대운의 흐름을 읽고 있습니다",
+      "곧 분석이 완료됩니다",
     ];
     let index = 0;
     setLoadingMessage(loadingMsgs[0]);
@@ -763,12 +763,12 @@ function SajuResultContent() {
 
       if (!response.ok) throw new Error("채팅 응답 실패");
       const result = await response.json();
-      const answer = result.answer || result.response || "답변을 생성하지 못했네. 다시 물어봐주시게.";
+      const answer = result.answer || result.response || "답변을 생성하지 못했습니다. 다시 물어봐주세요.";
       setChatMessages((prev) => [...prev, { sender: "unhak", text: answer }]);
       setChatRemaining((prev) => prev - 1);
     } catch (err) {
       console.error("채팅 오류:", err);
-      setChatMessages((prev) => [...prev, { sender: "unhak", text: "허허, 잠시 오류가 생겼네. 다시 한 번 물어봐주시게." }]);
+      setChatMessages((prev) => [...prev, { sender: "unhak", text: "잠시 오류가 생겼습니다. 다시 한 번 물어봐주세요." }]);
     } finally {
       setIsChatSending(false);
     }
@@ -841,10 +841,10 @@ function SajuResultContent() {
       return (
         <div className={styles.paywall_wrap}>
           <div className={styles.paywall_title}>
-            나머지 5장의 깊은 풀이를<br />열어보시겠는가?
+            나머지 5장의 깊은 풀이를<br />열어보시겠어요?
           </div>
           <div className={styles.paywall_subtitle}>
-            그대의 본색, 숨은 기운, 역학관계,<br />대운의 물결, 그리고 이 늙은이의 당부까지<br />모든 풀이를 펼쳐드리겠네.
+            본색, 숨은 기운, 역학관계,<br />대운의 물결, 그리고 운학선인의 당부까지<br />모든 풀이를 펼쳐드리겠습니다.
           </div>
           <button className={styles.paywall_btn} onClick={openPaymentModal}>
             전체 풀이 열기
@@ -862,7 +862,7 @@ function SajuResultContent() {
           <div className={styles.chat_qa_messages}>
             {chatMessages.length === 0 && (
               <div className={styles.chat_qa_bubble_unhak}>
-                {userName}님, 사주 풀이를 보시고 궁금한 점이 있으시면 편히 물어보시게.
+                {userName}님, 사주 풀이를 보시고 궁금한 점이 있으시면 편히 물어보세요.
               </div>
             )}
             {chatMessages.map((msg, idx) => (
@@ -1001,7 +1001,7 @@ function IntroCard({ userName, data }: { userName: string; data: SajuRecord }) {
       <div className={styles.section_title}>들어가며</div>
       <div className={styles.section_content}>
         <p>
-          {userName}님, 허허... 이 늙은이가 사주를 풀어드리겠네.
+          {userName}님, 반갑습니다. 사주를 풀어드리겠습니다.
         </p>
         <p>
           사주(四柱)란 태어난 <strong>연, 월, 일, 시</strong> 네 기둥을 말하고,
@@ -1122,7 +1122,7 @@ function SajuOriginalCard({ data }: { data: SajuRecord }) {
             <div className={styles.subsection_title}>일간: {dayMaster.char} ({dayMaster.title})</div>
             <p>
               일간은 사주의 중심이 되는 글자로, {userName}님의 본질적인 기질과 성격을 나타내네.
-              {dayMaster.element && ` ${getElementKorean(dayMaster.element)}의 기운을 타고났구먼.`}
+              {dayMaster.element && ` ${getElementKorean(dayMaster.element)}의 기운을 타고나셨네요.`}
             </p>
           </div>
         )}
@@ -1194,14 +1194,14 @@ function EndingCard({ data }: { data: SajuRecord }) {
       <div className={styles.section_title}>마무리</div>
       <div className={styles.section_content}>
         <p>
-          {userName}님, 여기까지 긴 사주 풀이를 함께해주셔서 감사하네.
+          {userName}님, 여기까지 긴 사주 풀이를 함께해주셔서 감사합니다.
         </p>
         <p>
           사주는 정해진 운명이 아니라, 삶의 흐름과 가능성을 보여주는 것이네.
-          좋은 기운은 살리고, 약한 부분은 보완하며 살아가시게.
+          좋은 기운은 살리고, 약한 부분은 보완하며 살아가세요.
         </p>
         <p>
-          앞으로의 삶에 늘 좋은 기운이 함께하시길 바라겠네.
+          앞으로의 삶에 늘 좋은 기운이 함께하시길 바랍니다.
         </p>
       </div>
     </div>
@@ -1222,11 +1222,11 @@ function WaitingCard({
   const [msgIndex, setMsgIndex] = useState(0);
 
   const messages = [
-    `${userName}님의 사주를 분석하고 있네`,
-    "오행의 관계를 살피고 있네",
-    "대운의 흐름을 읽고 있네",
-    "십성과 신살을 확인하고 있네",
-    "곧 분석이 완료되겠네",
+    `${userName}님의 사주를 분석하고 있습니다`,
+    "오행의 관계를 살피고 있습니다",
+    "대운의 흐름을 읽고 있습니다",
+    "십성과 신살을 확인하고 있습니다",
+    "곧 분석이 완료됩니다",
   ];
 
   useEffect(() => {
