@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { trackPageView, trackCardClick, ServiceType } from "@/lib/mixpanel";
 import Footer from "@/components/layout/Footer";
 import styles from "./page.module.css";
@@ -10,6 +10,8 @@ export default function LandingPage() {
   useEffect(() => {
     trackPageView("landing");
   }, []);
+
+  const [showComingSoon, setShowComingSoon] = useState(false);
 
   const handleCardClick = (type: ServiceType | string) => {
     trackCardClick(type, "landing");
@@ -71,9 +73,39 @@ export default function LandingPage() {
               </div>
             </div>
           </Link>
-          <div className={styles.card_wrapper} />
+          <div
+            className={`${styles.card_wrapper}`}
+            onClick={() => setShowComingSoon(true)}
+            style={{ cursor: "pointer" }}
+          >
+            <div className={`${styles.service_card} ${styles.card_saju_general}`}>
+              <span className={styles.badge_coming_soon}>섭외중</span>
+              <div className={styles.card_title_wrap}>
+                <span className={styles.card_character}>운학선인</span>
+                <h2 className={styles.card_title}>사주팔자 풀이</h2>
+              </div>
+            </div>
+          </div>
         </div>
       </section>
+
+      {/* 섭외중 알럿 */}
+      {showComingSoon && (
+        <div className={styles.alert_overlay} onClick={() => setShowComingSoon(false)}>
+          <div className={styles.alert_modal} onClick={(e) => e.stopPropagation()}>
+            <p className={styles.alert_text}>
+              아직 운학선인님을 섭외중이에요
+            </p>
+            <p className={styles.alert_subtext}>
+              3월이 마지막인 까치도령의 <strong className={styles.alert_newyear}>신년 운세</strong>와<br />
+              색동낭자의 <strong className={styles.alert_saju}>연애 사주</strong>가 용하다고 소문났어요
+            </p>
+            <button className={styles.alert_btn} onClick={() => setShowComingSoon(false)}>
+              확인
+            </button>
+          </div>
+        </div>
+      )}
 
       <Footer />
 
