@@ -47,9 +47,9 @@ const PAYMENT_CONFIG = {
   clientKey:
     process.env.NEXT_PUBLIC_TOSS_CLIENT_KEY ||
     "live_gck_yZqmkKeP8gBaRKPg1WwdrbQRxB9l",
-  price: 23900,
-  discountPrice: 9900,
-  originalPrice: 44800,
+  price: 100,
+  discountPrice: 100,
+  originalPrice: 100,
   orderName: "운학선인 정통 종합 사주 분석",
 };
 
